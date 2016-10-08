@@ -1,7 +1,10 @@
 package mchorse.metamorph;
 
 import net.minecraftforge.fml.common.Mod;
+import net.minecraftforge.fml.common.Mod.EventHandler;
 import net.minecraftforge.fml.common.SidedProxy;
+import net.minecraftforge.fml.common.event.FMLInitializationEvent;
+import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
 
 /**
  * Metamorph mod
@@ -26,4 +29,16 @@ public class Metamorph
 
     @SidedProxy(clientSide = CLIENT_PROXY, serverSide = SERVER_PROXY)
     public static CommonProxy proxy;
+
+    @EventHandler
+    public void preLoad(FMLPreInitializationEvent event)
+    {
+        proxy.preLoad();
+    }
+
+    @EventHandler
+    public void load(FMLInitializationEvent event)
+    {
+        proxy.load();
+    }
 }

@@ -1,0 +1,145 @@
+{
+    "scheme": "1.3",
+    "name": "sheep",
+    "default": "metamorph:textures/entity/sheep.png",
+    "texture": [64, 64],
+    "poses": {
+        "standing": {
+            "size": [1,1.3125,1],
+            "limbs": {
+                "head": {
+                    "translate": [0,18,8]
+                },
+                "body": {
+                    "translate": [0,15,0],
+                    "rotate": [90,0,0]
+                },
+                "left_arm": {
+                    "translate": [3,12,5]
+                },
+                "right_arm": {
+                    "translate": [-3,12,5]
+                },
+                "left_leg": {
+                    "translate": [3,12,-7]
+                },
+                "right_leg": {
+                    "translate": [-3,12,-7]
+                },
+                "outer_head": {
+                    "translate": [0,0.9,1],
+                    "scale": [1.2,1.2,1.2]
+                },
+                "outer_body": {
+                    "scale": [1.45,1.23,1.6]
+                },
+                "outer_left_arm": {
+                    "translate": [0,-0.5,0],
+                    "scale": [1.25,1,1.25]
+                },
+                "outer_right_arm": {
+                    "translate": [0,0.25,0],
+                    "scale": [1.25,1.125,1.25]
+                },
+                "outer_left_leg": {
+                    "translate": [0,0.25,0],
+                    "scale": [1.25,1.125,1.25]
+                },
+                "outer_right_leg": {
+                    "translate": [0,0.25,0],
+                    "scale": [1.25,1.125,1.25]
+                }
+            }
+        },
+        "sneaking": {
+            "size": [1,1.5,1],
+            "limbs": {}
+        },
+        "sleeping": {
+            "size": [1,1,2],
+            "limbs": {}
+        },
+        "flying": {
+            "size": [1,1,1],
+            "limbs": {}
+        }
+    },
+    "limbs": {
+        "body": {
+            "size": [8,16,6],
+            "texture": [28,8],
+            "anchor": [0.5,0.5,0.5]
+        },
+        "head": {
+            "size": [6,6,8],
+            "texture": [0,0],
+            "anchor": [0.5,0.65,0.75],
+            "looking": true
+        },
+        "outer_head": {
+            "parent": "head",
+            "size": [6,6,6],
+            "texture": [0,32],
+            "anchor": [0.5,0.5,0.5]
+        },
+        "left_arm": {
+            "size": [4,12,4],
+            "texture": [0,16],
+            "anchor": [0.5,0,0.5],
+            "holding": "left",
+            "swinging": true
+        },
+        "right_arm": {
+            "size": [4,12,4],
+            "texture": [0,16],
+            "anchor": [0.5,0,0.5],
+            "holding": "right",
+            "mirror": true,
+            "swiping": true,
+            "swinging": true
+        },
+        "left_leg": {
+            "size": [4,12,4],
+            "texture": [0,16],
+            "anchor": [0.5,0,0.5],
+            "swinging": true
+        },
+        "right_leg": {
+            "size": [4,12,4],
+            "texture": [0,16],
+            "anchor": [0.5,0,0.5],
+            "mirror": "true",
+            "swinging": true
+        },
+        "outer_body": {
+            "parent": "body",
+            "size": [8,16,6],
+            "texture": [28,40],
+            "anchor": [0.5,0.5,0.5]
+        },
+        "outer_left_arm": {
+            "parent": "left_arm",
+            "size": [4,6,4],
+            "texture": [0,48],
+            "anchor": [0.5,0,0.5]
+        },
+        "outer_right_arm": {
+            "parent": "right_arm",
+            "size": [4,6,4],
+            "texture": [0,48],
+            "anchor": [0.5,0,0.5]
+        },
+        "outer_left_leg": {
+            "parent": "left_leg",
+            "size": [4,6,4],
+            "texture": [0,48],
+            "anchor": [0.5,0,0.5]
+        },
+        "outer_right_leg": {
+            "parent": "right_leg",
+            "size": [4,6,4],
+            "texture": [0,48],
+            "anchor": [0.5,0,0.5]
+        }
+    }
+}
