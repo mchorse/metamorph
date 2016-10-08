@@ -1,0 +1,16 @@
+[
+	{
+		"modid": "metamorph",
+  		"name": "Metamorph",
+  		"description": "Morphing/shape-shifting mod for newer minecraft versions",
+  		"version": "${version}",
+  		"mcversion": "${mcversion}",
+  		"url": "https://github.com/mchorse/metamorph",
+  		"updateUrl": "",
+  		"authorList": ["mchorse"],
+  		"credits": "McHorse",
+		"logoFile": "",
+		"screenshots": [],
+		"dependencies": []
+	}
+]
