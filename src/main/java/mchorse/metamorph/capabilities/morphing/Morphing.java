@@ -23,7 +23,7 @@ public class Morphing implements IMorphing
     {
         Morph morph = MorphManager.INSTANCE.morphs.get(name);
 
-        if (morph == null || this.acquiredMorphs.contains(name))
+        if (morph == null || this.acquiredMorph(name))
         {
             return false;
         }
@@ -31,6 +31,12 @@ public class Morphing implements IMorphing
         this.acquiredMorphs.add(name);
 
         return true;
+    }
+
+    @Override
+    public boolean acquiredMorph(String name)
+    {
+        return this.acquiredMorphs.contains(name);
     }
 
     @Override
@@ -61,6 +67,8 @@ public class Morphing implements IMorphing
     @Override
     public void setCurrentMorph(String name, boolean creative)
     {
+        System.out.println(creative + " " + this.acquiredMorphs.contains(name));
+
         if (creative || this.acquiredMorphs.contains(name))
         {
             this.morph = MorphManager.INSTANCE.morphs.get(name);

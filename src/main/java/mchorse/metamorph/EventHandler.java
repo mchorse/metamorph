@@ -1,5 +1,6 @@
 package mchorse.metamorph;
 
+import mchorse.metamorph.api.morph.Morph;
 import mchorse.metamorph.api.morph.MorphManager;
 import mchorse.metamorph.capabilities.morphing.IMorphing;
 import mchorse.metamorph.capabilities.morphing.MorphingProvider;
@@ -13,6 +14,8 @@ import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.util.text.TextComponentString;
 import net.minecraftforge.event.entity.living.LivingDeathEvent;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
+import net.minecraftforge.fml.common.gameevent.TickEvent.Phase;
+import net.minecraftforge.fml.common.gameevent.TickEvent.PlayerTickEvent;
 
 /**
  * Server event handler
@@ -50,14 +53,45 @@ public class EventHandler
             return;
         }
 
+        System.out.println(capability.getAcquiredMorphs());
+
         if (capability.acquireMorph(morph))
         {
-            player.addChatMessage(new TextComponentString("You gained §7" + morph + "§r morph!"));
+            player.addChatMessage(new TextComponentString("You gained §o§7" + morph + "§r morph!"));
         }
 
         capability.setCurrentMorph(morph, player.isCreative());
 
-        Dispatcher.sendTo(new PacketMorph(morph), (EntityPlayerMP) player);
-        Dispatcher.updateTrackers(player, new PacketMorphPlayer(player.getEntityId(), morph));
+        if (capability.getCurrentMorphName().equals(morph))
+        {
+            Dispatcher.sendTo(new PacketMorph(morph), (EntityPlayerMP) player);
+            Dispatcher.updateTrackers(player, new PacketMorphPlayer(player.getEntityId(), morph));
+        }
+    }
+
+    @SubscribeEvent
+    public void onPlayerTick(PlayerTickEvent event)
+    {
+        if (event.phase == Phase.START)
+        {
+            return;
+        }
+
+        EntityPlayer player = event.player;
+        IMorphing capability = player.getCapability(MorphingProvider.MORPHING_CAP, null);
+
+        if (capability == null)
+        {
+            return;
+        }
+
+        Morph morph = capability.getCurrentMorph();
+
+        if (morph == null)
+        {
+            return;
+        }
+
+        morph.update(player, capability);
     }
 }

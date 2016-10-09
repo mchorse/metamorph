@@ -22,7 +22,7 @@ public class CommonProxy
     /**
      * Model handler. This class is responsible for managing models and more. 
      */
-    public ModelHandler models;
+    public ModelHandler models = new ModelHandler();
 
     public void preLoad()
     {
@@ -31,7 +31,6 @@ public class CommonProxy
 
     public void load()
     {
-        MinecraftForge.EVENT_BUS.register(this.models = new ModelHandler());
         MinecraftForge.EVENT_BUS.register(new CapabilityHandler());
         MinecraftForge.EVENT_BUS.register(new EventHandler());
 

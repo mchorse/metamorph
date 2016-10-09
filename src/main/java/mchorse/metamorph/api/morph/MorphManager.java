@@ -68,6 +68,7 @@ public class MorphManager
 
         Morph sheep = new Morph();
 
+        sheep.abilities = new IAbility[] {abilities.get("climb")};
         sheep.model = Metamorph.proxy.models.models.get("Sheep");
 
         /* For now, only hardcoded morphs */

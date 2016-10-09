@@ -18,6 +18,11 @@ public interface IMorphing
     public boolean acquireMorph(String name);
 
     /**
+     * Check if this capability has acquired a morph
+     */
+    public boolean acquiredMorph(String name);
+
+    /**
      * Get all acquired morphings
      */
     public List<String> getAcquiredMorphs();

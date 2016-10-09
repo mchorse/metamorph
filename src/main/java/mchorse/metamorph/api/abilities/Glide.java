@@ -13,7 +13,7 @@ public class Glide implements IAbility
     @Override
     public void update(EntityPlayer player)
     {
-        if (!player.onGround && player.motionY < 0.0D)
+        if (!player.onGround && player.motionY < 0.0D && !player.isElytraFlying())
         {
             player.motionY *= 0.6D;
             player.fallDistance = 0.0F;
