@@ -1,13 +1,16 @@
 package mchorse.metamorph;
 
+import mchorse.metamorph.api.morph.MorphManager;
 import mchorse.metamorph.capabilities.morphing.IMorphing;
 import mchorse.metamorph.capabilities.morphing.MorphingProvider;
 import mchorse.metamorph.network.Dispatcher;
 import mchorse.metamorph.network.common.PacketMorph;
 import mchorse.metamorph.network.common.PacketMorphPlayer;
 import net.minecraft.entity.Entity;
+import net.minecraft.entity.EntityList;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
+import net.minecraft.util.text.TextComponentString;
 import net.minecraftforge.event.entity.living.LivingDeathEvent;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 
@@ -25,7 +28,7 @@ public class EventHandler
         Entity source = event.getSource().getEntity();
         Entity target = event.getEntity();
 
-        if (source.worldObj.isRemote || !(source instanceof EntityPlayer) || target instanceof EntityPlayer)
+        if (target.worldObj.isRemote || !(source instanceof EntityPlayer) || target instanceof EntityPlayer)
         {
             return;
         }
@@ -38,9 +41,23 @@ public class EventHandler
             return;
         }
 
-        capability.setModel("chicken");
+        String morph = EntityList.getEntityString(target);
 
-        Dispatcher.sendTo(new PacketMorph("chicken", ""), (EntityPlayerMP) player);
-        Dispatcher.updateTrackers(player, new PacketMorphPlayer(player.getEntityId(), "chicken", ""));
+        if (!MorphManager.INSTANCE.morphs.containsKey(morph))
+        {
+            System.out.println("Morph by key '" + morph + "' doesn't exist!");
+
+            return;
+        }
+
+        if (capability.acquireMorph(morph))
+        {
+            player.addChatMessage(new TextComponentString("You gained §7" + morph + "§r morph!"));
+        }
+
+        capability.setCurrentMorph(morph, player.isCreative());
+
+        Dispatcher.sendTo(new PacketMorph(morph), (EntityPlayerMP) player);
+        Dispatcher.updateTrackers(player, new PacketMorphPlayer(player.getEntityId(), morph));
     }
 }

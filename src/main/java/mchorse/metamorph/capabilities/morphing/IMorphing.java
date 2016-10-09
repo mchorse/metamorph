@@ -1,5 +1,9 @@
 package mchorse.metamorph.capabilities.morphing;
 
+import java.util.List;
+
+import mchorse.metamorph.api.morph.Morph;
+
 /**
  * Morphing interface
  *
@@ -9,27 +13,42 @@ package mchorse.metamorph.capabilities.morphing;
 public interface IMorphing
 {
     /**
-     * Get id of model
+     * Add a morphing 
      */
-    public String getModel();
+    public boolean acquireMorph(String name);
 
     /**
-     * Get id of model's skin
+     * Get all acquired morphings
      */
-    public String getSkin();
+    public List<String> getAcquiredMorphs();
 
     /**
-     * Reset model and skin (i.e. turn off morphing)
+     * Set acquired morphings
      */
-    public void reset();
+    public void setAcquiredMorphs(List<String> morphs);
 
     /**
-     * Set current model
+     * Get current morph 
      */
-    public void setModel(String newModel);
+    public Morph getCurrentMorph();
 
     /**
-     * Set current skin
+     * Get current morph's name 
      */
-    public void setSkin(String newSkin);
+    public String getCurrentMorphName();
+
+    /**
+     * Set morph
+     */
+    public void setCurrentMorph(String name, boolean creative);
+
+    /**
+     * Demorph this capability 
+     */
+    public void demorph();
+
+    /**
+     * Is this capability is morphed at all 
+     */
+    public boolean isMorphed();
 }

@@ -1,5 +1,11 @@
 package mchorse.metamorph.capabilities.morphing;
 
+import java.util.ArrayList;
+import java.util.List;
+
+import mchorse.metamorph.api.morph.Morph;
+import mchorse.metamorph.api.morph.MorphManager;
+
 /**
  * Default implementation of {@link IMorphing} interface.
  *
@@ -8,37 +14,70 @@ package mchorse.metamorph.capabilities.morphing;
  */
 public class Morphing implements IMorphing
 {
-    private String model = "";
-    private String skin = "";
+    private Morph morph;
+    private String name = "";
+    private List<String> acquiredMorphs = new ArrayList<String>();
 
     @Override
-    public String getModel()
+    public boolean acquireMorph(String name)
     {
-        return this.model;
+        Morph morph = MorphManager.INSTANCE.morphs.get(name);
+
+        if (morph == null || this.acquiredMorphs.contains(name))
+        {
+            return false;
+        }
+
+        this.acquiredMorphs.add(name);
+
+        return true;
     }
 
     @Override
-    public String getSkin()
+    public List<String> getAcquiredMorphs()
     {
-        return this.skin;
+        return acquiredMorphs;
     }
 
     @Override
-    public void reset()
+    public void setAcquiredMorphs(List<String> morphs)
     {
-        this.setModel("");
-        this.setSkin("");
+        this.acquiredMorphs.clear();
+        this.acquiredMorphs.addAll(morphs);
     }
 
     @Override
-    public void setModel(String newModel)
+    public Morph getCurrentMorph()
     {
-        this.model = newModel;
+        return this.morph;
     }
 
     @Override
-    public void setSkin(String newSkin)
+    public String getCurrentMorphName()
     {
-        this.skin = newSkin;
+        return this.name;
+    }
+
+    @Override
+    public void setCurrentMorph(String name, boolean creative)
+    {
+        if (creative || this.acquiredMorphs.contains(name))
+        {
+            this.morph = MorphManager.INSTANCE.morphs.get(name);
+            this.name = name;
+        }
+    }
+
+    @Override
+    public void demorph()
+    {
+        this.morph = null;
+        this.name = "";
+    }
+
+    @Override
+    public boolean isMorphed()
+    {
+        return this.morph != null;
     }
 }

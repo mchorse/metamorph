@@ -32,8 +32,8 @@ public class ModelHandler
             String path = "assets/metamorph/models/entity/";
             ClassLoader loader = this.getClass().getClassLoader();
 
-            this.models.put("chicken", Model.parse(loader.getResourceAsStream(path + "chicken.json")));
-            this.models.put("sheep", Model.parse(loader.getResourceAsStream(path + "sheep.json")));
+            this.models.put("Chicken", Model.parse(loader.getResourceAsStream(path + "chicken.json")));
+            this.models.put("Sheep", Model.parse(loader.getResourceAsStream(path + "sheep.json")));
         }
         catch (Exception e)
         {
@@ -52,16 +52,18 @@ public class ModelHandler
 
         EntityPlayer player = event.player;
         IMorphing cap = player.getCapability(MorphingProvider.MORPHING_CAP, null);
-        Model data = this.models.get(cap.getModel());
 
-        if (data == null)
+        if (!cap.isMorphed())
         {
             /* Restore default eye height */
             player.eyeHeight = player.getDefaultEyeHeight();
             return;
         }
 
+        Model data = cap.getCurrentMorph().model;
         String key = player.isElytraFlying() ? "flying" : (player.isSneaking() ? "sneaking" : "standing");
+
+        System.out.println(cap.getCurrentMorphName() + " " + cap.getCurrentMorph());
 
         float[] pose = data.poses.get(key).size;
         float width = pose[0];

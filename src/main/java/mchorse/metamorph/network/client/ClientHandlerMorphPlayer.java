@@ -19,8 +19,7 @@ public class ClientHandlerMorphPlayer extends ClientMessageHandler<PacketMorphPl
 
         if (capability != null)
         {
-            capability.setModel(message.model);
-            capability.setSkin(message.skin);
+            capability.setCurrentMorph(message.morph, player.isCreative());
         }
     }
 }

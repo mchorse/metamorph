@@ -1,7 +1,13 @@
 package mchorse.metamorph.capabilities.morphing;
 
+import java.util.ArrayList;
+import java.util.List;
+
+import mchorse.metamorph.api.morph.MorphManager;
 import net.minecraft.nbt.NBTBase;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.nbt.NBTTagList;
+import net.minecraft.nbt.NBTTagString;
 import net.minecraft.util.EnumFacing;
 import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.common.capabilities.Capability.IStorage;
@@ -21,9 +27,16 @@ public class MorphingStorage implements IStorage<IMorphing>
     public NBTBase writeNBT(Capability<IMorphing> capability, IMorphing instance, EnumFacing side)
     {
         NBTTagCompound tag = new NBTTagCompound();
+        NBTTagList list = new NBTTagList();
+        String morph = MorphManager.INSTANCE.fromMorph(instance.getCurrentMorph());
 
-        tag.setString("Model", instance.getModel());
-        tag.setString("Skin", instance.getSkin());
+        tag.setString("Morph", morph);
+        tag.setTag("Morphs", list);
+
+        for (String acquiredMorph : instance.getAcquiredMorphs())
+        {
+            list.appendTag(new NBTTagString(acquiredMorph));
+        }
 
         return tag;
     }
@@ -34,9 +47,21 @@ public class MorphingStorage implements IStorage<IMorphing>
         if (nbt instanceof NBTTagCompound)
         {
             NBTTagCompound tag = (NBTTagCompound) nbt;
+            NBTTagList list = (NBTTagList) tag.getTag("Morphs");
+            List<String> acquiredMorphs = new ArrayList<String>();
 
-            instance.setModel(tag.getString("Model"));
-            instance.setSkin(tag.getString("Skin"));
+            instance.setAcquiredMorphs(acquiredMorphs);
+            instance.setCurrentMorph(tag.getString("Morph"), true);
+
+            if (list == null)
+            {
+                return;
+            }
+
+            for (int i = 0; i < list.tagCount(); i++)
+            {
+                acquiredMorphs.add(list.getStringTagAt(i));
+            }
         }
     }
 }

@@ -35,7 +35,7 @@ public class RenderPlayer extends RenderLivingBase<EntityPlayer>
     @Override
     protected ResourceLocation getEntityTexture(EntityPlayer entity)
     {
-        return this.mainModel == null ? null : ((ModelCustom) this.mainModel).model.defaultTexture;
+        return ((ModelCustom) this.mainModel).model.defaultTexture;
     }
 
     @Override
@@ -59,17 +59,20 @@ public class RenderPlayer extends RenderLivingBase<EntityPlayer>
         Map<String, ModelCustom> models = ModelCustom.MODELS;
         IMorphing capability = entity.getCapability(MorphingProvider.MORPHING_CAP, null);
 
-        String key = models.containsKey(capability.getModel()) ? capability.getModel() : "steve";
+        String key = capability.getCurrentMorphName();
         String pose = entity.isSneaking() ? "sneaking" : (entity.isElytraFlying() ? "flying" : "standing");
 
         ModelCustom model = models.get(key);
 
-        model.pose = model.model.poses.get(pose);
-        this.mainModel = model;
+        if (model != null)
+        {
+            model.pose = model.model.poses.get(pose);
+            this.mainModel = model;
+        }
     }
 
     /**
-     * Make player a little bit smaller (so he looked like steve, and not like a
+     * Make player a little bit smaller (so he looked like steve, and not like an 
      * overgrown rodent).
      */
     protected void preRenderCallback(AbstractClientPlayer entitylivingbaseIn, float partialTickTime)

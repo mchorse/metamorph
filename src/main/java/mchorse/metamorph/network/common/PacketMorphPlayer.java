@@ -7,32 +7,28 @@ import net.minecraftforge.fml.common.network.simpleimpl.IMessage;
 public class PacketMorphPlayer implements IMessage
 {
     public int id;
-    public String model = "";
-    public String skin = "";
+    public String morph = "";
 
     public PacketMorphPlayer()
     {}
 
-    public PacketMorphPlayer(int id, String model, String skin)
+    public PacketMorphPlayer(int id, String morph)
     {
         this.id = id;
-        this.model = model;
-        this.skin = skin;
+        this.morph = morph;
     }
 
     @Override
     public void fromBytes(ByteBuf buf)
     {
         this.id = buf.readInt();
-        this.model = ByteBufUtils.readUTF8String(buf);
-        this.skin = ByteBufUtils.readUTF8String(buf);
+        this.morph = ByteBufUtils.readUTF8String(buf);
     }
 
     @Override
     public void toBytes(ByteBuf buf)
     {
         buf.writeInt(this.id);
-        ByteBufUtils.writeUTF8String(buf, this.model);
-        ByteBufUtils.writeUTF8String(buf, this.skin);
+        ByteBufUtils.writeUTF8String(buf, this.morph);
     }
 }

@@ -16,11 +16,10 @@ public class ServerHandlerMorph extends ServerMessageHandler<PacketMorph>
 
         if (capability != null)
         {
-            capability.setModel(message.model);
-            capability.setSkin(message.skin);
+            capability.setCurrentMorph(message.morph, player.isCreative());
 
             Dispatcher.sendTo(message, player);
-            Dispatcher.updateTrackers(player, new PacketMorphPlayer(player.getEntityId(), message.model, message.skin));
+            Dispatcher.updateTrackers(player, new PacketMorphPlayer(player.getEntityId(), message.morph));
         }
     }
 }

@@ -35,7 +35,7 @@ public class RenderingHandler
         EntityPlayer player = event.getEntityPlayer();
         IMorphing capability = player.getCapability(MorphingProvider.MORPHING_CAP, null);
 
-        if (capability == null || capability.getModel().isEmpty()) return;
+        if (capability == null || !capability.isMorphed()) return;
 
         event.setCanceled(true);
         this.render.doRender(player, event.getX(), event.getY(), event.getZ(), player.rotationYaw, event.getPartialRenderTick());
