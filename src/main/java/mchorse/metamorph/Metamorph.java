@@ -15,7 +15,10 @@ import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
  * morph.
  * 
  * Except different shape, you gain also special abilities for specific mobs. 
- * In creative you can access all morphings. 
+ * In creative you can access all morphings.
+ * 
+ * Inspired by Morph and Shape Shifter Z mods (mostly due to the fact that 
+ * they're outdated).
  */
 @Mod(modid = Metamorph.MODID, name = Metamorph.MODNAME, version = Metamorph.VERSION)
 public class Metamorph
