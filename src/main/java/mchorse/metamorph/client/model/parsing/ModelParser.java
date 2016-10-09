@@ -5,7 +5,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import mchorse.metamorph.actor.Model;
+import mchorse.metamorph.api.Model;
 import mchorse.metamorph.client.model.ModelCustom;
 import mchorse.metamorph.client.model.ModelCustomRenderer;
 import net.minecraft.client.model.ModelRenderer;

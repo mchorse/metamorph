@@ -1,6 +1,6 @@
 package mchorse.metamorph;
 
-import mchorse.metamorph.actor.ModelHandler;
+import mchorse.metamorph.api.ModelHandler;
 import mchorse.metamorph.capabilities.CapabilityHandler;
 import mchorse.metamorph.capabilities.morphing.IMorphing;
 import mchorse.metamorph.capabilities.morphing.Morphing;

@@ -2,7 +2,7 @@ package mchorse.metamorph.client.model;
 
 import org.lwjgl.opengl.GL11;
 
-import mchorse.metamorph.actor.Model;
+import mchorse.metamorph.api.Model;
 import net.minecraft.client.model.ModelBase;
 import net.minecraft.client.model.ModelRenderer;
 

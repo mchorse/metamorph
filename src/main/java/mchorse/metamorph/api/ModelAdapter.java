@@ -1,4 +1,4 @@
-package mchorse.metamorph.actor;
+package mchorse.metamorph.api;
 
 import java.lang.reflect.Type;
 
@@ -11,6 +11,9 @@ import com.google.gson.JsonParseException;
 
 import net.minecraft.util.ResourceLocation;
 
+/**
+ * Thing responsible for doing some awesome cool stuff!
+ */
 public class ModelAdapter implements JsonDeserializer<Model>
 {
     private Gson gson = new GsonBuilder().create();
@@ -19,10 +22,9 @@ public class ModelAdapter implements JsonDeserializer<Model>
     public Model deserialize(JsonElement json, Type typeOfT, JsonDeserializationContext context) throws JsonParseException
     {
         Model model = gson.fromJson(json, Model.class);
+        String type = json.getAsJsonObject().get("default").getAsString();
 
-        model.defaultTexture = new ResourceLocation(json.getAsJsonObject().get("default").getAsString());
-
-        System.out.println(model.defaultTexture);
+        model.defaultTexture = new ResourceLocation(type);
 
         return model;
     }

@@ -1,4 +1,4 @@
-package mchorse.metamorph.actor;
+package mchorse.metamorph.api;
 
 import java.io.InputStream;
 import java.util.Arrays;

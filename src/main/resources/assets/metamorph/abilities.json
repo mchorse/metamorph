@@ -1,0 +1,41 @@
+{
+	"Bat": {
+		"abilities": ["fly"]
+	},
+	"Chicken": {
+		"abilities": ["glide"]
+	},
+	"Squid": {
+		"abilities": ["water_breath", "swim"]
+	},
+	"Enderman": {
+		"abilities": "water_allergy",
+		"action": "teleport"
+	},
+	"Spider": {
+		"abilities": ["wall_climb"]
+	},
+	"CaveSpider": {
+		"abilities": ["wall_climb"]
+	},
+	"Blaze": {
+		"abilities": ["fly", "fire_immunity"],
+		"action": "spit_fire"
+	},
+	"Ghast": {
+		"abilities": ["fly", "fire_immunity"],
+		"action": "spit_fire"
+	},
+	"Creeper": {
+		"action": "explode"
+	},
+	"Guardian": {
+		"abilities": ["water_breath", "swim"]
+	},
+	"Skeleton": {
+		"abilities": ["sun_allergy"]
+	},
+	"Zombie": {
+		"abilities": ["sun_allergy"]
+	}
+}

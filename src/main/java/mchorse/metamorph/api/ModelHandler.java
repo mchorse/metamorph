@@ -1,4 +1,4 @@
-package mchorse.metamorph.actor;
+package mchorse.metamorph.api;
 
 import java.util.HashMap;
 import java.util.Map;
