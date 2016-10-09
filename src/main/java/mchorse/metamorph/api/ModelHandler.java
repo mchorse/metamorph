@@ -25,7 +25,14 @@ public class ModelHandler
             ClassLoader loader = this.getClass().getClassLoader();
 
             this.models.put("Chicken", Model.parse(loader.getResourceAsStream(path + "chicken.json")));
+            this.models.put("Cow", Model.parse(loader.getResourceAsStream(path + "cow.json")));
+            this.models.put("MushroomCow", Model.parse(loader.getResourceAsStream(path + "mooshroom.json")));
+            this.models.put("Ozelot", Model.parse(loader.getResourceAsStream(path + "ocelot.json")));
+            this.models.put("Pig", Model.parse(loader.getResourceAsStream(path + "pig.json")));
+            this.models.put("Rabbit", Model.parse(loader.getResourceAsStream(path + "rabbit.json")));
             this.models.put("Sheep", Model.parse(loader.getResourceAsStream(path + "sheep.json")));
+            this.models.put("Squid", Model.parse(loader.getResourceAsStream(path + "squid.json")));
+            this.models.put("Wolf", Model.parse(loader.getResourceAsStream(path + "wolf.json")));
         }
         catch (Exception e)
         {

@@ -66,14 +66,56 @@ public class MorphManager
         chicken.abilities = new IAbility[] {abilities.get("glide")};
         chicken.model = Metamorph.proxy.models.models.get("Chicken");
 
+        Morph cow = new Morph();
+
+        cow.abilities = new IAbility[] {abilities.get("fire_proof")};
+        cow.model = Metamorph.proxy.models.models.get("Cow");
+
+        Morph mooshroom = new Morph();
+
+        mooshroom.abilities = new IAbility[] {abilities.get("water_allergy")};
+        mooshroom.model = Metamorph.proxy.models.models.get("MushroomCow");
+
+        Morph ocelot = new Morph();
+
+        ocelot.abilities = new IAbility[] {abilities.get("sun_allergy")};
+        ocelot.model = Metamorph.proxy.models.models.get("Ozelot");
+
+        Morph pig = new Morph();
+
+        pig.abilities = new IAbility[] {abilities.get("climb"), abilities.get("glide")};
+        pig.model = Metamorph.proxy.models.models.get("Pig");
+
+        Morph rabbit = new Morph();
+
+        rabbit.abilities = new IAbility[] {abilities.get("climb"), abilities.get("swim")};
+        rabbit.model = Metamorph.proxy.models.models.get("Rabbit");
+
         Morph sheep = new Morph();
 
         sheep.abilities = new IAbility[] {abilities.get("climb")};
         sheep.model = Metamorph.proxy.models.models.get("Sheep");
 
+        Morph squid = new Morph();
+
+        squid.abilities = new IAbility[] {abilities.get("water_breath"), abilities.get("swim")};
+        squid.model = Metamorph.proxy.models.models.get("Squid");
+
+        Morph wolf = new Morph();
+
+        wolf.abilities = new IAbility[] {abilities.get("climb"), abilities.get("fire_proof")};
+        wolf.model = Metamorph.proxy.models.models.get("Wolf");
+
         /* For now, only hardcoded morphs */
         this.morphs.put("Chicken", chicken);
+        this.morphs.put("Cow", cow);
+        this.morphs.put("MushroomCow", mooshroom);
+        this.morphs.put("Ozelot", ocelot);
+        this.morphs.put("Pig", pig);
+        this.morphs.put("Rabbit", rabbit);
         this.morphs.put("Sheep", sheep);
+        this.morphs.put("Squid", squid);
+        this.morphs.put("Wolf", wolf);
     }
 
     /**

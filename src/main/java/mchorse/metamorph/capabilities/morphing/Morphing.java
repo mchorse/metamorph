@@ -67,8 +67,6 @@ public class Morphing implements IMorphing
     @Override
     public void setCurrentMorph(String name, boolean creative)
     {
-        System.out.println(creative + " " + this.acquiredMorphs.contains(name));
-
         if (creative || this.acquiredMorphs.contains(name))
         {
             this.morph = MorphManager.INSTANCE.morphs.get(name);
