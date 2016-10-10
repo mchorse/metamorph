@@ -65,11 +65,13 @@ public class MorphManager
     {
         Morph chicken = new Morph();
 
+        chicken.health = 6;
         chicken.abilities = new IAbility[] {abilities.get("glide")};
         chicken.model = Metamorph.proxy.models.models.get("Chicken");
 
         Morph cow = new Morph();
 
+        cow.health = 10;
         cow.abilities = new IAbility[] {abilities.get("fire_proof")};
         cow.model = Metamorph.proxy.models.models.get("Cow");
 

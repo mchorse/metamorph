@@ -4,6 +4,7 @@ import mchorse.metamorph.api.IAbility;
 import mchorse.metamorph.api.IAction;
 import mchorse.metamorph.api.Model;
 import mchorse.metamorph.capabilities.morphing.IMorphing;
+import net.minecraft.entity.SharedMonsterAttributes;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.util.math.AxisAlignedBB;
 
@@ -18,6 +19,7 @@ public class Morph
     public IAbility[] abilities = new IAbility[] {};
     public IAction action;
     public Model model;
+    public int health = 20;
 
     /**
      * Update the player based on its morph abilities and properties. This 
@@ -81,19 +83,49 @@ public class Morph
         }
     }
 
+    /**
+     * Morph into the current morph
+     * 
+     * This method responsible for setting up the health of the player to 
+     * morph's health and invoke ability's onMorph methods.
+     */
     public void morph(EntityPlayer player)
     {
+        this.setHealth(player, this.health);
+
         for (IAbility ability : this.abilities)
         {
             ability.onMorph(player);
         }
     }
 
+    /**
+     * Demorph from the current morph
+     * 
+     * This method responsible for setting up the health back to player's 
+     * default health and invoke ability's onDemorph methods.
+     */
     public void demorph(EntityPlayer player)
     {
+        /* 20 is default player's health */
+        this.setHealth(player, 20);
+
         for (IAbility ability : this.abilities)
         {
             ability.onDemorph(player);
         }
+    }
+
+    /**
+     * Set player's health proprotional to the current health with given max 
+     * health. 
+     */
+    private void setHealth(EntityPlayer player, int health)
+    {
+        float ratio = player.getHealth() / player.getMaxHealth();
+        float proportionalHealth = Math.round(health * ratio);
+
+        player.getEntityAttribute(SharedMonsterAttributes.MAX_HEALTH).setBaseValue(health);
+        player.setHealth(proportionalHealth == 0 ? 1 : proportionalHealth);
     }
 }
