@@ -16,7 +16,7 @@ public class ServerHandlerMorph extends ServerMessageHandler<PacketMorph>
 
         if (capability != null)
         {
-            capability.setCurrentMorph(message.morph, player.isCreative());
+            capability.setCurrentMorph(message.morph, player, false);
 
             Dispatcher.sendTo(message, player);
             Dispatcher.updateTrackers(player, new PacketMorphPlayer(player.getEntityId(), message.morph));

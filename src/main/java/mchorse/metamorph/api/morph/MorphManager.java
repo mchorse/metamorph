@@ -8,6 +8,7 @@ import mchorse.metamorph.api.IAbility;
 import mchorse.metamorph.api.IAction;
 import mchorse.metamorph.api.abilities.Climb;
 import mchorse.metamorph.api.abilities.FireProof;
+import mchorse.metamorph.api.abilities.Fly;
 import mchorse.metamorph.api.abilities.Glide;
 import mchorse.metamorph.api.abilities.SunAllergy;
 import mchorse.metamorph.api.abilities.Swim;
@@ -44,6 +45,7 @@ public class MorphManager
         /* Register abilities */
         abilities.put("climb", new Climb());
         abilities.put("fire_proof", new FireProof());
+        abilities.put("fly", new Fly());
         abilities.put("glide", new Glide());
         abilities.put("sun_allergy", new SunAllergy());
         abilities.put("swim", new Swim());
@@ -103,7 +105,7 @@ public class MorphManager
 
         Morph wolf = new Morph();
 
-        wolf.abilities = new IAbility[] {abilities.get("climb"), abilities.get("fire_proof")};
+        wolf.abilities = new IAbility[] {abilities.get("fly"), abilities.get("fire_proof")};
         wolf.model = Metamorph.proxy.models.models.get("Wolf");
 
         /* For now, only hardcoded morphs */

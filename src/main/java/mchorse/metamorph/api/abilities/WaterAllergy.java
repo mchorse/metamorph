@@ -1,6 +1,5 @@
 package mchorse.metamorph.api.abilities;
 
-import mchorse.metamorph.api.IAbility;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.util.DamageSource;
 
@@ -12,7 +11,7 @@ import net.minecraft.util.DamageSource;
  * 
  * This is more like a disability than an ability *Ba-dum-pam-dum-tsss*
  */
-public class WaterAllergy implements IAbility
+public class WaterAllergy extends Ability
 {
     @Override
     public void update(EntityPlayer player)

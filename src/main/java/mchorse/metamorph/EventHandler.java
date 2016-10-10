@@ -60,7 +60,7 @@ public class EventHandler
             player.addChatMessage(new TextComponentString("You gained §o§7" + morph + "§r morph!"));
         }
 
-        capability.setCurrentMorph(morph, player.isCreative());
+        capability.setCurrentMorph(morph, player, false);
 
         if (capability.getCurrentMorphName().equals(morph))
         {

@@ -48,6 +48,11 @@ public class Model
      */
     public int[] texture = new int[] {64, 32};
 
+    /**
+     * Scale of the model 
+     */
+    public float[] scale = new float[] {1, 1, 1};
+
     public Map<String, Limb> limbs = new HashMap<String, Limb>();
     public Map<String, Pose> poses = new HashMap<String, Pose>();
 

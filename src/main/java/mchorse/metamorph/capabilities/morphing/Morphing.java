@@ -5,6 +5,7 @@ import java.util.List;
 
 import mchorse.metamorph.api.morph.Morph;
 import mchorse.metamorph.api.morph.MorphManager;
+import net.minecraft.entity.player.EntityPlayer;
 
 /**
  * Default implementation of {@link IMorphing} interface.
@@ -65,12 +66,24 @@ public class Morphing implements IMorphing
     }
 
     @Override
-    public void setCurrentMorph(String name, boolean creative)
+    public void setCurrentMorph(String name, EntityPlayer player, boolean force)
     {
-        if (creative || this.acquiredMorphs.contains(name))
+        boolean creative = player != null ? player.isCreative() : false;
+
+        if (force || creative || this.acquiredMorphs.contains(name))
         {
+            if (player != null && this.morph != null)
+            {
+                this.morph.demorph(player);
+            }
+
             this.morph = MorphManager.INSTANCE.morphs.get(name);
             this.name = name;
+
+            if (player != null)
+            {
+                this.morph.morph(player);
+            }
         }
     }
 

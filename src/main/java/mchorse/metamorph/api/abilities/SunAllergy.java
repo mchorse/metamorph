@@ -2,7 +2,6 @@ package mchorse.metamorph.api.abilities;
 
 import java.util.Random;
 
-import mchorse.metamorph.api.IAbility;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.util.math.BlockPos.MutableBlockPos;
 
@@ -14,7 +13,7 @@ import net.minecraft.util.math.BlockPos.MutableBlockPos;
  * 
  * This is more like a disability than an ability *Ba-dum-pam-dum-tsss*
  */
-public class SunAllergy implements IAbility
+public class SunAllergy extends Ability
 {
     private MutableBlockPos pos = new MutableBlockPos(0, 0, 0);
     private Random random = new Random();
@@ -28,10 +27,10 @@ public class SunAllergy implements IAbility
         }
 
         float brightness = player.getBrightness(1.0F);
-        boolean doit = this.random.nextFloat() * 30.0F < (brightness - 0.4F) * 2.0F;
+        boolean random = this.random.nextFloat() * 30.0F < (brightness - 0.4F) * 2.0F;
         this.pos.setPos(player.posX, player.posY, player.posZ);
 
-        if (brightness > 0.5 && doit && player.worldObj.canSeeSky(pos))
+        if (brightness > 0.5 && random && player.worldObj.canSeeSky(pos))
         {
             player.setFire(8);
         }

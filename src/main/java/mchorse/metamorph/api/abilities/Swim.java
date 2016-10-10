@@ -1,6 +1,5 @@
 package mchorse.metamorph.api.abilities;
 
-import mchorse.metamorph.api.IAbility;
 import net.minecraft.entity.player.EntityPlayer;
 
 /**
@@ -10,19 +9,31 @@ import net.minecraft.entity.player.EntityPlayer;
  * increases the swim speed and also gives player more control over vertical 
  * movement. 
  */
-public class Swim implements IAbility
+public class Swim extends Ability
 {
     @Override
     public void update(EntityPlayer player)
     {
-        double speed = 2.5D;
+        double speed = 1.25D;
 
         if (player.isInWater())
         {
-            player.motionX *= speed;
-            player.motionZ *= speed;
+            boolean flag = false;
 
-            if (player.motionY < 0 && player.isSneaking())
+            if (player.moveForward != 0 || player.moveStrafing != 0)
+            {
+                if (player.motionX <= speed && player.motionX >= -speed) player.motionX *= speed;
+                if (player.motionZ <= speed && player.motionZ >= -speed) player.motionZ *= speed;
+
+                flag = true;
+            }
+
+            if (player.motionY <= speed * (flag ? 2 : 1) && player.motionY >= -speed * (flag ? 2 : 1) && player.motionY > 0)
+            {
+                player.motionY *= speed * 1.1D;
+            }
+
+            if (player.motionY < 0 && !player.isSneaking())
             {
                 player.motionY = 0;
             }

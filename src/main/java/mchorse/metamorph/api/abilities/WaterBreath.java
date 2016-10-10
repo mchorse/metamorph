@@ -1,6 +1,5 @@
 package mchorse.metamorph.api.abilities;
 
-import mchorse.metamorph.api.IAbility;
 import net.minecraft.entity.player.EntityPlayer;
 
 /**
@@ -8,7 +7,7 @@ import net.minecraft.entity.player.EntityPlayer;
  * 
  * This ability grants its owner ability to stay in water and refill its air. 
  */
-public class WaterBreath implements IAbility
+public class WaterBreath extends Ability
 {
     @Override
     public void update(EntityPlayer player)

@@ -51,7 +51,7 @@ public class MorphingStorage implements IStorage<IMorphing>
             List<String> acquiredMorphs = new ArrayList<String>();
 
             instance.setAcquiredMorphs(acquiredMorphs);
-            instance.setCurrentMorph(tag.getString("Morph"), true);
+            instance.setCurrentMorph(tag.getString("Morph"), null, true);
 
             if (list == null)
             {

@@ -1,6 +1,5 @@
 package mchorse.metamorph.api.abilities;
 
-import mchorse.metamorph.api.IAbility;
 import net.minecraft.entity.player.EntityPlayer;
 
 /**
@@ -9,7 +8,7 @@ import net.minecraft.entity.player.EntityPlayer;
  * This ability makes player climb on the wall. Don't add this ability to the 
  * any other mobs except Spiders, otherwise player will turn into Spider man.
  */
-public class Climb implements IAbility
+public class Climb extends Ability
 {
     @Override
     public void update(EntityPlayer player)

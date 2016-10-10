@@ -15,4 +15,15 @@ public interface IAbility
      * function.
      */
     public void update(EntityPlayer player);
+
+    /**
+     * This method should be invoked when the player is about to get morphed.
+     */
+    public void onMorph(EntityPlayer player);
+
+    /**
+     * This method should be invoked when the player morphs into other morph 
+     * without this ability. 
+     */
+    public void onDemorph(EntityPlayer player);
 }

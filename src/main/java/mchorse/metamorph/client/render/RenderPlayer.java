@@ -2,11 +2,11 @@ package mchorse.metamorph.client.render;
 
 import java.util.Map;
 
+import mchorse.metamorph.api.Model;
 import mchorse.metamorph.capabilities.morphing.IMorphing;
 import mchorse.metamorph.capabilities.morphing.MorphingProvider;
 import mchorse.metamorph.client.model.ModelCustom;
 import mchorse.metamorph.client.render.layers.LayerHeldItem;
-import net.minecraft.client.entity.AbstractClientPlayer;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.renderer.entity.RenderLivingBase;
 import net.minecraft.client.renderer.entity.RenderManager;
@@ -75,10 +75,12 @@ public class RenderPlayer extends RenderLivingBase<EntityPlayer>
      * Make player a little bit smaller (so he looked like steve, and not like an 
      * overgrown rodent).
      */
-    protected void preRenderCallback(AbstractClientPlayer entitylivingbaseIn, float partialTickTime)
+    @Override
+    protected void preRenderCallback(EntityPlayer entitylivingbaseIn, float partialTickTime)
     {
-        float f = 0.920F;
-        GlStateManager.scale(f, f, f);
+        Model model = ((ModelCustom) this.mainModel).model;
+
+        GlStateManager.scale(model.scale[0], model.scale[1], model.scale[2]);
     }
 
     /**

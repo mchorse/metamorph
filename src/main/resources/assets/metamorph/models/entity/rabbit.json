@@ -2,6 +2,7 @@
     "scheme": "1.3",
     "name": "Rabbit",
     "default": "minecraft:textures/entity/rabbit/brown.png",
+    "scale": [0.6, 0.6, 0.6],
     "poses": {
         "standing": {
             "size": [ 0.4, 0.5, 0.4 ],
@@ -61,31 +62,28 @@
                     "rotate": [ -20, 0, 0 ]
                 },
                 "limb_1": {
-                    "translate": [ 3, 6.5, -3.7 ]
+                    "rotate": [ 21, 0, 0 ]
                 },
                 "limb_2": {
                     "translate": [ -3, 6.5, -3.7 ],
                     "rotate": [ -21, 0, 0 ]
                 },
                 "limb_0": {
-                    "translate": [ -3, 6.5, -3.7 ]
-                },
-                "limb_11": {
-                    "translate": [ 0, 8, 1 ]
+                    "rotate": [ 21, 0, 0 ]
                 },
                 "limb_10": {
                     "translate": [ 0, 4, -7 ],
                     "rotate": [ -20.000002, 0, 0 ]
                 },
                 "limb_9": {
-                    "translate": [ 0, 8, 1 ],
+                    "translate": [ 0, 0, 1 ],
                     "rotate": [ 0, 15, 0 ]
                 },
                 "limb_7": {
                     "translate": [ 0, 8, 1 ]
                 },
                 "limb_8": {
-                    "translate": [ 0, 8, 1 ],
+                    "translate": [ 0, 0, 1 ],
                     "rotate": [ 0, -15, 0 ]
                 },
                 "limb_5": {
@@ -110,31 +108,28 @@
                     "rotate": [ -20, 0, 0 ]
                 },
                 "limb_1": {
-                    "translate": [ 3, 6.5, -3.7 ]
+                    "rotate": [ 21, 0, 0 ]
                 },
                 "limb_2": {
                     "translate": [ -3, 6.5, -3.7 ],
                     "rotate": [ -21, 0, 0 ]
                 },
                 "limb_0": {
-                    "translate": [ -3, 6.5, -3.7 ]
-                },
-                "limb_11": {
-                    "translate": [ 0, 8, 1 ]
+                    "rotate": [ 21, 0, 0 ]
                 },
                 "limb_10": {
                     "translate": [ 0, 4, -7 ],
                     "rotate": [ -20.000002, 0, 0 ]
                 },
                 "limb_9": {
-                    "translate": [ 0, 8, 1 ],
+                    "translate": [ 0, 0, 1 ],
                     "rotate": [ 0, 15, 0 ]
                 },
                 "limb_7": {
                     "translate": [ 0, 8, 1 ]
                 },
                 "limb_8": {
-                    "translate": [ 0, 8, 1 ],
+                    "translate": [ 0, 0, 1 ],
                     "rotate": [ 0, -15, 0 ]
                 },
                 "limb_5": {
@@ -159,31 +154,28 @@
                     "rotate": [ -20, 0, 0 ]
                 },
                 "limb_1": {
-                    "translate": [ 3, 6.5, -3.7 ]
+                    "rotate": [ 21, 0, 0 ]
                 },
                 "limb_2": {
                     "translate": [ -3, 6.5, -3.7 ],
                     "rotate": [ -21, 0, 0 ]
                 },
                 "limb_0": {
-                    "translate": [ -3, 6.5, -3.7 ]
-                },
-                "limb_11": {
-                    "translate": [ 0, 8, 1 ]
+                    "rotate": [ 21, 0, 0 ]
                 },
                 "limb_10": {
                     "translate": [ 0, 4, -7 ],
                     "rotate": [ -20.000002, 0, 0 ]
                 },
                 "limb_9": {
-                    "translate": [ 0, 8, 1 ],
+                    "translate": [ 0, 0, 1 ],
                     "rotate": [ 0, 15, 0 ]
                 },
                 "limb_7": {
                     "translate": [ 0, 8, 1 ]
                 },
                 "limb_8": {
-                    "translate": [ 0, 8, 1 ],
+                    "translate": [ 0, 0, 1 ],
                     "rotate": [ 0, -15, 0 ]
                 },
                 "limb_5": {
@@ -268,7 +260,8 @@
             "texture": [ 8, 15 ],
             "anchor": [ 0.5, 0, 0.5 ],
             "holding": "right",
-            "swinging": true
+            "swinging": true,
+            "swiping": true
         },
         "limb_6": {
             "size": [ 2, 7, 2 ],

@@ -3,6 +3,7 @@ package mchorse.metamorph.capabilities.morphing;
 import java.util.List;
 
 import mchorse.metamorph.api.morph.Morph;
+import net.minecraft.entity.player.EntityPlayer;
 
 /**
  * Morphing interface
@@ -45,7 +46,7 @@ public interface IMorphing
     /**
      * Set morph
      */
-    public void setCurrentMorph(String name, boolean creative);
+    public void setCurrentMorph(String name, EntityPlayer player, boolean force);
 
     /**
      * Demorph this capability 

@@ -80,4 +80,20 @@ public class Morph
             action.execute(player);
         }
     }
+
+    public void morph(EntityPlayer player)
+    {
+        for (IAbility ability : this.abilities)
+        {
+            ability.onMorph(player);
+        }
+    }
+
+    public void demorph(EntityPlayer player)
+    {
+        for (IAbility ability : this.abilities)
+        {
+            ability.onDemorph(player);
+        }
+    }
 }
