@@ -1,6 +1,7 @@
 package mchorse.metamorph;
 
 import mchorse.metamorph.api.ModelHandler;
+import mchorse.metamorph.api.morph.MorphHandler;
 import mchorse.metamorph.api.morph.MorphManager;
 import mchorse.metamorph.capabilities.CapabilityHandler;
 import mchorse.metamorph.capabilities.morphing.IMorphing;
@@ -27,14 +28,14 @@ public class CommonProxy
     public void preLoad()
     {
         Dispatcher.register();
+
+        this.loadModels();
     }
 
     public void load()
     {
         MinecraftForge.EVENT_BUS.register(new CapabilityHandler());
-        MinecraftForge.EVENT_BUS.register(new EventHandler());
-
-        this.loadModels();
+        MinecraftForge.EVENT_BUS.register(new MorphHandler());
 
         MorphManager.INSTANCE.register();
         CapabilityManager.INSTANCE.register(IMorphing.class, new MorphingStorage(), Morphing.class);

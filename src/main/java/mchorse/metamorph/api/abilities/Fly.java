@@ -21,9 +21,7 @@ public class Fly extends Ability
 
     @Override
     public void update(EntityPlayer player)
-    {
-        this.onMorph(player);
-    }
+    {}
 
     @Override
     public void onDemorph(EntityPlayer player)

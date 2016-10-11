@@ -1,7 +1,5 @@
-package mchorse.metamorph;
+package mchorse.metamorph.api.morph;
 
-import mchorse.metamorph.api.morph.Morph;
-import mchorse.metamorph.api.morph.MorphManager;
 import mchorse.metamorph.capabilities.morphing.IMorphing;
 import mchorse.metamorph.capabilities.morphing.MorphingProvider;
 import mchorse.metamorph.network.Dispatcher;
@@ -23,7 +21,7 @@ import net.minecraftforge.fml.common.gameevent.TickEvent.PlayerTickEvent;
  * This event handler (or rather listener) is responsible for adding new 
  * available morphings to the player.
  */
-public class EventHandler
+public class MorphHandler
 {
     @SubscribeEvent
     public void onPlayerKillEntity(LivingDeathEvent event)
