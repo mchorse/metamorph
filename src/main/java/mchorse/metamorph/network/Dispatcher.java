@@ -3,8 +3,10 @@ package mchorse.metamorph.network;
 import mchorse.metamorph.Metamorph;
 import mchorse.metamorph.network.client.ClientHandlerMorph;
 import mchorse.metamorph.network.client.ClientHandlerMorphPlayer;
+import mchorse.metamorph.network.common.PacketAction;
 import mchorse.metamorph.network.common.PacketMorph;
 import mchorse.metamorph.network.common.PacketMorphPlayer;
+import mchorse.metamorph.network.server.ServerHandlerAction;
 import mchorse.metamorph.network.server.ServerHandlerMorph;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityTracker;
@@ -57,6 +59,9 @@ public class Dispatcher
      */
     public static void register()
     {
+        /* Action */
+        register(PacketAction.class, ServerHandlerAction.class, Side.SERVER);
+
         /* Morphing */
         register(PacketMorph.class, ClientHandlerMorph.class, Side.CLIENT);
         register(PacketMorph.class, ServerHandlerMorph.class, Side.SERVER);

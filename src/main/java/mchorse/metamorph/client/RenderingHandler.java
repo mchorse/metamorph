@@ -2,8 +2,11 @@ package mchorse.metamorph.client;
 
 import mchorse.metamorph.capabilities.morphing.IMorphing;
 import mchorse.metamorph.capabilities.morphing.MorphingProvider;
+import mchorse.metamorph.client.gui.GuiMorphOverlay;
 import mchorse.metamorph.client.render.RenderPlayer;
+import net.minecraft.client.gui.ScaledResolution;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraftforge.client.event.RenderGameOverlayEvent;
 import net.minecraftforge.client.event.RenderPlayerEvent;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.relauncher.Side;
@@ -19,10 +22,26 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 public class RenderingHandler
 {
     private RenderPlayer render;
+    private GuiMorphOverlay overlay;
 
-    public RenderingHandler(RenderPlayer render)
+    public RenderingHandler(GuiMorphOverlay overlay, RenderPlayer render)
     {
+        this.overlay = overlay;
         this.render = render;
+    }
+
+    /**
+     * Draw HUD additions 
+     */
+    @SubscribeEvent
+    public void onHUDRender(RenderGameOverlayEvent.Post event)
+    {
+        ScaledResolution resolution = event.getResolution();
+
+        if (event.getType() == RenderGameOverlayEvent.ElementType.ALL)
+        {
+            this.overlay.render(resolution.getScaledWidth(), resolution.getScaledHeight());
+        }
     }
 
     /**

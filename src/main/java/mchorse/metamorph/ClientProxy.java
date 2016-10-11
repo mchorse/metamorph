@@ -3,13 +3,22 @@ package mchorse.metamorph;
 import java.util.Map;
 
 import mchorse.metamorph.api.Model;
+import mchorse.metamorph.client.KeyboardHandler;
 import mchorse.metamorph.client.RenderingHandler;
+import mchorse.metamorph.client.gui.GuiMorphOverlay;
 import mchorse.metamorph.client.model.parsing.ModelParser;
 import mchorse.metamorph.client.render.RenderPlayer;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.entity.RenderManager;
 import net.minecraftforge.common.MinecraftForge;
 
+/**
+ * Client proxy
+ * 
+ * Client proxy is responsible for adding some rendering modifications (i.e. 
+ * HUD morph panel and player rendering) and also responsible for loading 
+ * (constructing ModelCustom out of) custom models. 
+ */
 public class ClientProxy extends CommonProxy
 {
     @Override
@@ -19,8 +28,10 @@ public class ClientProxy extends CommonProxy
 
         RenderManager manager = Minecraft.getMinecraft().getRenderManager();
         RenderPlayer render = new RenderPlayer(manager, 0.5F);
+        GuiMorphOverlay overlay = new GuiMorphOverlay();
 
-        MinecraftForge.EVENT_BUS.register(new RenderingHandler(render));
+        MinecraftForge.EVENT_BUS.register(new RenderingHandler(overlay, render));
+        MinecraftForge.EVENT_BUS.register(new KeyboardHandler());
     }
 
     @Override

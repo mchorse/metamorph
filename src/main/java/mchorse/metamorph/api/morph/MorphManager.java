@@ -14,6 +14,9 @@ import mchorse.metamorph.api.abilities.SunAllergy;
 import mchorse.metamorph.api.abilities.Swim;
 import mchorse.metamorph.api.abilities.WaterAllergy;
 import mchorse.metamorph.api.abilities.WaterBreath;
+import mchorse.metamorph.api.actions.Explode;
+import mchorse.metamorph.api.actions.Fireball;
+import mchorse.metamorph.api.actions.Jump;
 
 /**
  * Morph manager class
@@ -53,6 +56,9 @@ public class MorphManager
         abilities.put("water_breath", new WaterBreath());
 
         /* Register actions */
+        actions.put("explode", new Explode());
+        actions.put("fireball", new Fireball());
+        actions.put("jump", new Jump());
 
         /* Register morphs */
         this.loadFromJSON();
@@ -66,6 +72,7 @@ public class MorphManager
         Morph chicken = new Morph();
 
         chicken.health = 6;
+        chicken.action = actions.get("jump");
         chicken.abilities = new IAbility[] {abilities.get("glide")};
         chicken.model = Metamorph.proxy.models.models.get("Chicken");
 
@@ -77,36 +84,45 @@ public class MorphManager
 
         Morph mooshroom = new Morph();
 
+        mooshroom.health = 10;
+        mooshroom.action = actions.get("explode");
         mooshroom.abilities = new IAbility[] {abilities.get("water_allergy")};
         mooshroom.model = Metamorph.proxy.models.models.get("MushroomCow");
 
         Morph ocelot = new Morph();
 
+        ocelot.health = 8;
+        ocelot.action = actions.get("fireball");
         ocelot.abilities = new IAbility[] {abilities.get("sun_allergy")};
         ocelot.model = Metamorph.proxy.models.models.get("Ozelot");
 
         Morph pig = new Morph();
 
+        pig.health = 8;
         pig.abilities = new IAbility[] {abilities.get("climb"), abilities.get("glide")};
         pig.model = Metamorph.proxy.models.models.get("Pig");
 
         Morph rabbit = new Morph();
 
+        rabbit.health = 6;
         rabbit.abilities = new IAbility[] {abilities.get("climb"), abilities.get("swim")};
         rabbit.model = Metamorph.proxy.models.models.get("Rabbit");
 
         Morph sheep = new Morph();
 
+        sheep.health = 8;
         sheep.abilities = new IAbility[] {abilities.get("climb")};
         sheep.model = Metamorph.proxy.models.models.get("Sheep");
 
         Morph squid = new Morph();
 
+        squid.health = 12;
         squid.abilities = new IAbility[] {abilities.get("water_breath"), abilities.get("swim")};
         squid.model = Metamorph.proxy.models.models.get("Squid");
 
         Morph wolf = new Morph();
 
+        wolf.health = 12;
         wolf.abilities = new IAbility[] {abilities.get("fly"), abilities.get("fire_proof")};
         wolf.model = Metamorph.proxy.models.models.get("Wolf");
 
