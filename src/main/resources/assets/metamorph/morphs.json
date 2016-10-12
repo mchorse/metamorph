@@ -10,7 +10,7 @@
 	"Cow": {
 	    "health": 10
 	},
-	"Mooshroom": {
+	"MushroomCow": {
 	    "health": 10
 	},
 	"Ocelot": {
@@ -64,7 +64,7 @@
         "health": 20
 	},
 	"Enderman": {
-		"abilities": "water_allergy",
+		"abilities": ["water_allergy"],
 		"action": "teleport",
         "health": 40
 	},

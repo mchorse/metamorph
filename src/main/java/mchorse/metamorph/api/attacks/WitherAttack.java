@@ -1,4 +1,4 @@
-package mchorse.metamorph.api.abilities;
+package mchorse.metamorph.api.attacks;
 
 import mchorse.metamorph.api.IAttackAbility;
 import net.minecraft.entity.Entity;

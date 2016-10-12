@@ -26,6 +26,7 @@ public class ModelHandler
 
             this.models.put("Chicken", Model.parse(loader.getResourceAsStream(path + "chicken.json")));
             this.models.put("Cow", Model.parse(loader.getResourceAsStream(path + "cow.json")));
+            this.models.put("Creeper", Model.parse(loader.getResourceAsStream(path + "creeper.json")));
             this.models.put("MushroomCow", Model.parse(loader.getResourceAsStream(path + "mooshroom.json")));
             this.models.put("Ozelot", Model.parse(loader.getResourceAsStream(path + "ocelot.json")));
             this.models.put("Pig", Model.parse(loader.getResourceAsStream(path + "pig.json")));
