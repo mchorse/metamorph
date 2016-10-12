@@ -6,7 +6,9 @@ import mchorse.metamorph.api.Model;
 import mchorse.metamorph.capabilities.morphing.IMorphing;
 import mchorse.metamorph.capabilities.morphing.MorphingProvider;
 import mchorse.metamorph.client.model.ModelCustom;
+import mchorse.metamorph.client.model.ModelCustomRenderer;
 import mchorse.metamorph.client.render.layers.LayerHeldItem;
+import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.renderer.entity.RenderLivingBase;
 import net.minecraft.client.renderer.entity.RenderManager;
@@ -35,7 +37,7 @@ public class RenderPlayer extends RenderLivingBase<EntityPlayer>
     @Override
     protected ResourceLocation getEntityTexture(EntityPlayer entity)
     {
-        return ((ModelCustom) this.mainModel).model.defaultTexture;
+        return this.mainModel == null ? null : ((ModelCustom) this.mainModel).model.defaultTexture;
     }
 
     @Override
@@ -114,5 +116,51 @@ public class RenderPlayer extends RenderLivingBase<EntityPlayer>
                 GlStateManager.rotate((float) (Math.signum(d3) * Math.acos(d2)) * 180.0F / (float) Math.PI, 0.0F, 1.0F, 0.0F);
             }
         }
+    }
+
+    /**
+     * Render right hand 
+     */
+    public void renderRightArm(EntityPlayer player)
+    {
+        Minecraft.getMinecraft().renderEngine.bindTexture(this.getEntityTexture(player));
+        this.mainModel.setRotationAngles(0.0F, 0.0F, 0.0F, 0.0F, 0.0F, 0.0625F, player);
+
+        GlStateManager.color(1.0F, 1.0F, 1.0F);
+        GlStateManager.enableBlend();
+
+        for (ModelCustomRenderer arm : ((ModelCustom) this.mainModel).right)
+        {
+            arm.rotateAngleX = 0;
+            arm.rotationPointX = -8 + (arm.limb.size[0] * 0.5F - arm.limb.size[0] * arm.limb.anchor[0]);
+            arm.rotationPointY = 12 - (arm.limb.size[1] > 8 ? arm.limb.size[1] : arm.limb.size[1] + 2);
+            arm.rotationPointZ = 0;
+            arm.render(0.0625F);
+        }
+
+        GlStateManager.disableBlend();
+    }
+
+    /**
+     * Render left hand 
+     */
+    public void renderLeftArm(EntityPlayer player)
+    {
+        Minecraft.getMinecraft().renderEngine.bindTexture(this.getEntityTexture(player));
+        this.mainModel.setRotationAngles(0.0F, 0.0F, 0.0F, 0.0F, 0.0F, 0.0625F, player);
+
+        GlStateManager.color(1.0F, 1.0F, 1.0F);
+        GlStateManager.enableBlend();
+
+        for (ModelCustomRenderer arm : ((ModelCustom) this.mainModel).left)
+        {
+            arm.rotateAngleX = 0;
+            arm.rotationPointX = 8 + (arm.limb.size[0] * 0.5F - arm.limb.size[0] * arm.limb.anchor[0]);
+            arm.rotationPointY = 12 - (arm.limb.size[1] > 8 ? arm.limb.size[1] : arm.limb.size[1]);
+            arm.rotationPointZ = 0;
+            arm.render(0.0625F);
+        }
+
+        GlStateManager.disableBlend();
     }
 }

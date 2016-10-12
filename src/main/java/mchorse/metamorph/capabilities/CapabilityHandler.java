@@ -47,9 +47,13 @@ public class CapabilityHandler
 
         if (cap != null)
         {
-            /* Ensure that player was morphed */
-            cap.getCurrentMorph().morph(player);
             Dispatcher.sendTo(new PacketMorph(cap.getCurrentMorphName()), (EntityPlayerMP) player);
+
+            /* Ensure that player was morphed */
+            if (cap.isMorphed())
+            {
+                cap.getCurrentMorph().morph(player);
+            }
         }
     }
 

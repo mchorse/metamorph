@@ -3,11 +3,15 @@ package mchorse.metamorph.client;
 import mchorse.metamorph.capabilities.morphing.IMorphing;
 import mchorse.metamorph.capabilities.morphing.MorphingProvider;
 import mchorse.metamorph.client.gui.GuiMorphOverlay;
+import mchorse.metamorph.client.render.RenderHands;
 import mchorse.metamorph.client.render.RenderPlayer;
+import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.ScaledResolution;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.util.EnumHand;
 import net.minecraftforge.client.event.RenderGameOverlayEvent;
 import net.minecraftforge.client.event.RenderPlayerEvent;
+import net.minecraftforge.client.event.RenderSpecificHandEvent;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
@@ -23,11 +27,13 @@ public class RenderingHandler
 {
     private RenderPlayer render;
     private GuiMorphOverlay overlay;
+    private RenderHands hand;
 
     public RenderingHandler(GuiMorphOverlay overlay, RenderPlayer render)
     {
         this.overlay = overlay;
         this.render = render;
+        this.hand = new RenderHands(render);
     }
 
     /**
@@ -41,6 +47,26 @@ public class RenderingHandler
         if (event.getType() == RenderGameOverlayEvent.ElementType.ALL)
         {
             this.overlay.render(resolution.getScaledWidth(), resolution.getScaledHeight());
+        }
+    }
+
+    /**
+     * Render morphed hands in first person
+     */
+    @SubscribeEvent
+    public void onHandRender(RenderSpecificHandEvent event)
+    {
+        EntityPlayer player = Minecraft.getMinecraft().thePlayer;
+        IMorphing capability = player.getCapability(MorphingProvider.MORPHING_CAP, null);
+
+        if (capability == null || !capability.isMorphed())
+        {
+            return;
+        }
+
+        if (this.render.getMainModel() != null && event.getItemStack() == null && event.getHand() == EnumHand.MAIN_HAND)
+        {
+            this.hand.render(player, event);
         }
     }
 
