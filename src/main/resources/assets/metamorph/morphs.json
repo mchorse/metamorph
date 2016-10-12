@@ -1,0 +1,109 @@
+{
+	"Bat": {
+		"abilities": ["fly"],
+        "health": 6
+	},
+	"Chicken": {
+		"abilities": ["glide"],
+        "health": 4
+	},
+	"Cow": {
+	    "health": 10
+	},
+	"Mooshroom": {
+	    "health": 10
+	},
+	"Ocelot": {
+	    "health": 10
+	},
+	"Pig": {
+	    "health": 10
+	},
+	"PolarBear": {
+	    "health": 30
+	},
+	"Rabbit": {
+		"action": "jump",
+        "health": 3
+	},
+	"Sheep": {
+	    "health": 8
+	},
+	"Squid": {
+		"abilities": ["water_breath", "swim"],
+        "health": 10
+	},
+	"Wolf": {
+	    "health": 8
+	},
+	
+	"IronGolem": {
+		"attack": "knockback",
+        "health": 100
+	},
+    "SnowGolem": {
+        "abilities": ["sun_allergy"],
+        "health": 4
+    },
+	"Villager": {
+	    "health": 20
+	},
+	
+	"Blaze": {
+		"abilities": ["fly", "fire_immunity"],
+		"action": "fireball",
+        "health": 20
+	},
+	"CaveSpider": {
+		"abilities": ["wall_climb"],
+        "attack": "poison",
+        "health": 12
+	},
+	"Creeper": {
+		"action": "explode",
+        "health": 20
+	},
+	"Enderman": {
+		"abilities": "water_allergy",
+		"action": "teleport",
+        "health": 40
+	},
+	"Ghast": {
+		"abilities": ["fly", "fire_immunity"],
+		"action": "fireball",
+        "health": 10
+	},
+	"Guardian": {
+		"abilities": ["water_breath", "swim"],
+        "health": 30
+	},
+    "Slime": {
+        "health": 16
+    },
+    "MagmaCube": {
+        "health": 16
+    },
+	"Skeleton": {
+		"abilities": ["sun_allergy"],
+        "health": 20
+	},
+	"Spider": {
+		"abilities": ["wall_climb"],
+        "health": 16
+	},
+	"WitherSkeleton": {
+		"attack": "wither",
+        "health": 20
+	},
+    "Witch": {
+        "health": 26
+    },
+	"Zombie": {
+		"abilities": ["sun_allergy"],
+        "health": 20
+	},
+    "ZombiePigman": {
+        "abilities": ["fire_immunity"],
+        "health": 20
+    }
+}
