@@ -59,7 +59,7 @@ public class KeyboardHandler
 
             if (capability != null & capability.isMorphed())
             {
-                capability.getCurrentMorph().action.execute(player);
+                capability.getCurrentMorph().action(player);
             }
         }
 

@@ -2,8 +2,10 @@ package mchorse.metamorph.api.morph;
 
 import mchorse.metamorph.api.IAbility;
 import mchorse.metamorph.api.IAction;
+import mchorse.metamorph.api.IAttackAbility;
 import mchorse.metamorph.api.Model;
 import mchorse.metamorph.capabilities.morphing.IMorphing;
+import net.minecraft.entity.Entity;
 import net.minecraft.entity.SharedMonsterAttributes;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.util.math.AxisAlignedBB;
@@ -18,7 +20,10 @@ public class Morph
 {
     public IAbility[] abilities = new IAbility[] {};
     public IAction action;
+    public IAttackAbility attack;
+
     public Model model;
+
     public int health = 20;
 
     /**
@@ -80,6 +85,17 @@ public class Morph
         if (action != null)
         {
             action.execute(player);
+        }
+    }
+
+    /**
+     * Attack a target 
+     */
+    public void attack(Entity target, EntityPlayer player)
+    {
+        if (attack != null)
+        {
+            attack.attack(target, player);
         }
     }
 

@@ -14,7 +14,7 @@ public class ServerHandlerAction extends ServerMessageHandler<PacketAction>
 
         if (capability != null && capability.isMorphed())
         {
-            capability.getCurrentMorph().action.execute(player);
+            capability.getCurrentMorph().action(player);
         }
     }
 }

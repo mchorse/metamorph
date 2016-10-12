@@ -1,6 +1,7 @@
 package mchorse.metamorph.api;
 
 import net.minecraft.entity.Entity;
+import net.minecraft.entity.player.EntityPlayer;
 
 /**
  * Ability attack interface
@@ -8,7 +9,7 @@ import net.minecraft.entity.Entity;
  * This interface is responsible for adding some additional effect on the 
  * target (used primarly for wither)
  */
-public interface IAbilityAttack
+public interface IAttackAbility
 {
-    public void attack(Entity target);
+    public void attack(Entity target, EntityPlayer player);
 }

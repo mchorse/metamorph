@@ -6,14 +6,17 @@ import java.util.Map;
 import mchorse.metamorph.Metamorph;
 import mchorse.metamorph.api.IAbility;
 import mchorse.metamorph.api.IAction;
+import mchorse.metamorph.api.IAttackAbility;
 import mchorse.metamorph.api.abilities.Climb;
 import mchorse.metamorph.api.abilities.FireProof;
 import mchorse.metamorph.api.abilities.Fly;
 import mchorse.metamorph.api.abilities.Glide;
+import mchorse.metamorph.api.abilities.KnockbackAttack;
 import mchorse.metamorph.api.abilities.SunAllergy;
 import mchorse.metamorph.api.abilities.Swim;
 import mchorse.metamorph.api.abilities.WaterAllergy;
 import mchorse.metamorph.api.abilities.WaterBreath;
+import mchorse.metamorph.api.abilities.WitherAttack;
 import mchorse.metamorph.api.actions.Explode;
 import mchorse.metamorph.api.actions.Fireball;
 import mchorse.metamorph.api.actions.Jump;
@@ -32,6 +35,7 @@ public class MorphManager
 
     public Map<String, IAbility> abilities = new HashMap<String, IAbility>();
     public Map<String, IAction> actions = new HashMap<String, IAction>();
+    public Map<String, IAttackAbility> attacks = new HashMap<String, IAttackAbility>();
     public Map<String, Morph> morphs = new HashMap<String, Morph>();
 
     private MorphManager()
@@ -60,6 +64,10 @@ public class MorphManager
         actions.put("fireball", new Fireball());
         actions.put("jump", new Jump());
 
+        /* Register attacks */
+        attacks.put("wither", new WitherAttack());
+        attacks.put("knockback", new KnockbackAttack());
+
         /* Register morphs */
         this.loadFromJSON();
     }
@@ -73,12 +81,14 @@ public class MorphManager
 
         chicken.health = 6;
         chicken.action = actions.get("jump");
+        chicken.attack = attacks.get("wither");
         chicken.abilities = new IAbility[] {abilities.get("glide")};
         chicken.model = Metamorph.proxy.models.models.get("Chicken");
 
         Morph cow = new Morph();
 
         cow.health = 10;
+        cow.attack = attacks.get("knockback");
         cow.abilities = new IAbility[] {abilities.get("fire_proof")};
         cow.model = Metamorph.proxy.models.models.get("Cow");
 
