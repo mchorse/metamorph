@@ -1,5 +1,6 @@
 package mchorse.metamorph.client.model.parsing;
 
+import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -22,14 +23,22 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 public class ModelParser
 {
     /**
-     * Parse given input stream as JSON model, and then save this model in
-     * the custom model repository
+     * Parse with default class 
      */
     public static void parse(String key, Model data)
     {
+        parse(key, data, ModelCustom.class);
+    }
+
+    /**
+     * Parse given input stream as JSON model, and then save this model in
+     * the custom model repository
+     */
+    public static void parse(String key, Model data, Class<? extends ModelCustom> clazz)
+    {
         try
         {
-            ModelCustom model = new ModelParser().parseModel(data);
+            ModelCustom model = new ModelParser().parseModel(data, clazz);
             ModelCustom.MODELS.put(key, model);
         }
         catch (Exception e)
@@ -43,10 +52,17 @@ public class ModelParser
      * Parse and build model out of given JSON string. Throws exception in case
      * if parsed model doesn't have at least one required pose.
      */
-    public ModelCustom parseModel(Model data) throws Exception
+    public ModelCustom parseModel(Model data, Class<? extends ModelCustom> clazz) throws Exception
     {
-        ModelCustom model = new ModelCustom(data);
+        ModelCustom model = clazz.getConstructor(Model.class).newInstance(data);
         this.generateLimbs(data, model);
+
+        if (model instanceof IModelCustom)
+        {
+            IModelCustom result = (IModelCustom) model;
+
+            result.onGenerated();
+        }
 
         return model;
     }
@@ -103,6 +119,21 @@ public class ModelParser
             else
             {
                 renderable.add(entry.getValue());
+            }
+
+            /* Inject ModelCustomRenderers into the model's fields */
+            if (model instanceof IModelCustom)
+            {
+                try
+                {
+                    Field field = model.getClass().getField(entry.getKey());
+
+                    field.set(model, entry.getValue());
+                }
+                catch (Exception e)
+                {
+                    System.out.println("[WARN] No fields '" + entry.getKey() + "' was found for " + model.getClass().getSimpleName());
+                }
             }
         }
 

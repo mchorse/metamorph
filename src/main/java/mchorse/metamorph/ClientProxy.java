@@ -6,6 +6,7 @@ import mchorse.metamorph.api.Model;
 import mchorse.metamorph.client.KeyboardHandler;
 import mchorse.metamorph.client.RenderingHandler;
 import mchorse.metamorph.client.gui.GuiMorphOverlay;
+import mchorse.metamorph.client.model.ModelCustom;
 import mchorse.metamorph.client.model.parsing.ModelParser;
 import mchorse.metamorph.client.render.RenderPlayer;
 import net.minecraft.client.Minecraft;
@@ -41,7 +42,25 @@ public class ClientProxy extends CommonProxy
 
         for (Map.Entry<String, Model> model : this.models.models.entrySet())
         {
-            ModelParser.parse(model.getKey(), model.getValue());
+            Model data = model.getValue();
+
+            if (data.model.isEmpty())
+            {
+                /* Parse default type of model */
+                ModelParser.parse(model.getKey(), data);
+            }
+            else
+            {
+                try
+                {
+                    /* Parse custom custom (overcustomized) model */
+                    ModelParser.parse(model.getKey(), data, (Class<? extends ModelCustom>) Class.forName(data.model));
+                }
+                catch (ClassNotFoundException e)
+                {
+                    e.printStackTrace();
+                }
+            }
         }
     }
 }

@@ -53,12 +53,16 @@ public class Model
      */
     public float[] scale = new float[] {1, 1, 1};
 
+    /**
+     * Class for the custom model 
+     */
+    public String model = "";
+
     public Map<String, Limb> limbs = new HashMap<String, Limb>();
     public Map<String, Pose> poses = new HashMap<String, Pose>();
 
     /**
      * Parse model from input stream
-     * @throws Exception
      */
     public static Model parse(InputStream stream) throws Exception
     {

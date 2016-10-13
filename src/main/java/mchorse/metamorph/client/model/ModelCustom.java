@@ -143,7 +143,7 @@ public class ModelCustom extends ModelBase
     /**
      * Apply transform from current pose on given limb
      */
-    private void applyLimbPose(ModelCustomRenderer limb)
+    protected void applyLimbPose(ModelCustomRenderer limb)
     {
         limb.applyTransform(this.pose.limbs.get(limb.limb.name));
     }
