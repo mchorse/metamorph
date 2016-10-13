@@ -201,7 +201,9 @@
         	"parent": "head",
             "size": [ 2, 18, 2 ],
             "texture": [ 48, 0 ],
-            "anchor": [ 0.5, 0, 0.5 ]
+            "anchor": [ 0.5, 0, 0.5 ],
+            "holding": "right",
+            "swiping": true
         },
         "limb_5": {
         	"parent": "head",
@@ -213,7 +215,8 @@
         	"parent": "head",
             "size": [ 2, 18, 2 ],
             "texture": [ 48, 0 ],
-            "anchor": [ 0.5, 0, 0.5 ]
+            "anchor": [ 0.5, 0, 0.5 ],
+            "holding": "left"
         }
     },
     "texture": [ 64, 32 ]

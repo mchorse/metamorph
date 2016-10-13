@@ -37,6 +37,7 @@ public class ModelSquid extends ModelCustom implements IModelCustom
     public void setRotationAngles(float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch, float scaleFactor, Entity entityIn)
     {
         float pi = (float) Math.PI;
+        boolean inWater = entityIn.isInWater();
 
         head.rotateAngleX = 0;
 
@@ -49,10 +50,10 @@ public class ModelSquid extends ModelCustom implements IModelCustom
                 continue;
             }
 
-            limb.rotateAngleX = pi / 8 - (float) Math.sin(limbSwing / 2) * pi / 8;
+            limb.rotateAngleX = pi / 8 - (float) Math.sin(limbSwing / (inWater ? 4 : 2)) * pi / 8;
         }
 
-        if (entityIn.isInWater())
+        if (inWater)
         {
             head.rotateAngleX = pi / 2 + (float) Math.sin(limbSwing / 6) * pi / 16;
         }
