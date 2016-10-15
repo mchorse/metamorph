@@ -43,6 +43,23 @@ public class CommonProxy
 
     public void loadModels()
     {
-        this.models.loadModels();
+        /* Animals */
+        this.models.load("Chicken");
+        this.models.load("Cow");
+        this.models.load("MushroomCow", "mooshroom");
+        this.models.load("Ozelot", "ocelot");
+        this.models.load("Pig");
+        this.models.load("Rabbit");
+        this.models.load("Sheep");
+        this.models.load("Squid");
+        this.models.load("Wolf");
+
+        /* Neutral mobs */
+        this.models.load("Villager");
+
+        /* Hostile mobs */
+        this.models.load("CaveSpider", "cave_spider");
+        this.models.load("Creeper");
+        this.models.load("Spider");
     }
 }

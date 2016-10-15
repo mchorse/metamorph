@@ -55,7 +55,7 @@
         "health": 20
 	},
 	"CaveSpider": {
-		"abilities": ["wall_climb"],
+		"abilities": ["climb"],
         "attack": "poison",
         "health": 12
 	},
@@ -88,7 +88,7 @@
         "health": 20
 	},
 	"Spider": {
-		"abilities": ["wall_climb"],
+		"abilities": ["climb"],
         "health": 16
 	},
 	"WitherSkeleton": {

@@ -26,6 +26,7 @@ import mchorse.metamorph.api.actions.Explode;
 import mchorse.metamorph.api.actions.Fireball;
 import mchorse.metamorph.api.actions.Jump;
 import mchorse.metamorph.api.attacks.KnockbackAttack;
+import mchorse.metamorph.api.attacks.PoisonAttack;
 import mchorse.metamorph.api.attacks.WitherAttack;
 import net.minecraft.entity.EntityList;
 
@@ -73,6 +74,7 @@ public class MorphManager
         actions.put("jump", new Jump());
 
         /* Register default attacks */
+        attacks.put("poison", new PoisonAttack());
         attacks.put("wither", new WitherAttack());
         attacks.put("knockback", new KnockbackAttack());
 

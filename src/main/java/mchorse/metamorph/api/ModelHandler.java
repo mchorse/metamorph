@@ -1,5 +1,6 @@
 package mchorse.metamorph.api;
 
+import java.io.InputStream;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -15,48 +16,34 @@ public class ModelHandler
     public Map<String, Model> models = new HashMap<String, Model>();
 
     /**
-     * Load default provided models into model map
+     * Load a custom model with name and lowercase'd filename generated from 
+     * name. 
      */
-    public void loadModels()
+    public void load(String name)
     {
-        /* Animals */
-        this.load("Chicken");
-        this.load("Cow");
-        this.load("MushroomCow", "mooshroom");
-        this.load("Ozelot", "ocelot");
-        this.load("Pig");
-        this.load("Rabbit");
-        this.load("Sheep");
-        this.load("Squid");
-        this.load("Wolf");
-
-        /* Neutral mobs */
-        this.load("Villager");
-
-        /* Hostile mobs */
-        this.load("Creeper");
+        this.load(name, name.toLowerCase());
     }
 
     /**
      * Load a custom model with name and lowercase'd filename generated from 
      * name. 
      */
-    private void load(String name)
+    public void load(String name, String filename)
     {
-        this.load(name, name.toLowerCase());
+        String path = "assets/metamorph/models/entity/";
+        ClassLoader loader = this.getClass().getClassLoader();
+
+        this.load(name, loader.getResourceAsStream(path + filename + ".json"));
     }
 
     /**
      * Load a custom model with name and filename
      */
-    private void load(String name, String filename)
+    public void load(String name, InputStream stream)
     {
-        String path = "assets/metamorph/models/entity/";
-        ClassLoader loader = this.getClass().getClassLoader();
-
         try
         {
-            this.models.put(name, Model.parse(loader.getResourceAsStream(path + filename + ".json")));
+            this.models.put(name, Model.parse(stream));
         }
         catch (Exception e)
         {
