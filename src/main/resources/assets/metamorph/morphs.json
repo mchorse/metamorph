@@ -3,6 +3,11 @@
 		"abilities": ["fly"],
         "health": 6
 	},
+	"CaveSpider": {
+		"abilities": ["climb"],
+        "attack": "poison",
+        "health": 12
+	},
 	"Chicken": {
 		"abilities": ["glide"],
         "health": 4
@@ -29,6 +34,10 @@
 	"Sheep": {
 	    "health": 8
 	},
+	"Spider": {
+		"abilities": ["climb"],
+        "health": 16
+	},
 	"Squid": {
 		"abilities": ["water_breath", "swim"],
         "health": 10
@@ -53,11 +62,6 @@
 		"abilities": ["fly", "fire_immunity"],
 		"action": "fireball",
         "health": 20
-	},
-	"CaveSpider": {
-		"abilities": ["climb"],
-        "attack": "poison",
-        "health": 12
 	},
 	"Creeper": {
 		"action": "explode",
@@ -86,10 +90,6 @@
 	"Skeleton": {
 		"abilities": ["sun_allergy"],
         "health": 20
-	},
-	"Spider": {
-		"abilities": ["climb"],
-        "health": 16
 	},
 	"WitherSkeleton": {
 		"attack": "wither",

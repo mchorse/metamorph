@@ -49,6 +49,7 @@ public class CommonProxy
         this.models.load("MushroomCow", "mooshroom");
         this.models.load("Ozelot", "ocelot");
         this.models.load("Pig");
+        this.models.load("PolarBear", "polar_bear");
         this.models.load("Rabbit");
         this.models.load("Sheep");
         this.models.load("Squid");
