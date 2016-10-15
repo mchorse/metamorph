@@ -27,6 +27,7 @@ import mchorse.metamorph.api.actions.Fireball;
 import mchorse.metamorph.api.actions.Jump;
 import mchorse.metamorph.api.attacks.KnockbackAttack;
 import mchorse.metamorph.api.attacks.WitherAttack;
+import net.minecraft.entity.EntityList;
 
 /**
  * Morph manager class
@@ -56,7 +57,7 @@ public class MorphManager
      */
     public void register()
     {
-        /* Register abilities */
+        /* Register default abilities */
         abilities.put("climb", new Climb());
         abilities.put("fire_proof", new FireProof());
         abilities.put("fly", new Fly());
@@ -66,23 +67,26 @@ public class MorphManager
         abilities.put("water_allergy", new WaterAllergy());
         abilities.put("water_breath", new WaterBreath());
 
-        /* Register actions */
+        /* Register default actions */
         actions.put("explode", new Explode());
         actions.put("fireball", new Fireball());
         actions.put("jump", new Jump());
 
-        /* Register attacks */
+        /* Register default attacks */
         attacks.put("wither", new WitherAttack());
         attacks.put("knockback", new KnockbackAttack());
 
-        /* Register morphs */
-        this.loadFromJSON();
+        /* Register default morphs */
+        this.loadMorphsFromJSON();
+
+        /* Register other morphs */
+        this.loadMorphsFromEntityList();
     }
 
     /**
      * Loads morphs from JSON 
      */
-    private void loadFromJSON()
+    private void loadMorphsFromJSON()
     {
         GsonBuilder builder = new GsonBuilder().registerTypeAdapter(Morph.class, new MorphAdapter());
         Gson gson = builder.create();
@@ -100,21 +104,30 @@ public class MorphManager
         for (Map.Entry<String, Morph> entry : morphs.entrySet())
         {
             String key = entry.getKey();
+            Morph morph = entry.getValue();
 
             if (!Metamorph.proxy.models.models.containsKey(key))
             {
-                System.out.println("[WARN]: '" + key + "' morph couldn't be loaded");
-
-                continue;
+                System.out.println("[WARN]: Model for custom morph '" + key + "' couldn't be found!");
             }
             else
             {
-                Morph morph = entry.getValue();
                 morph.model = Metamorph.proxy.models.models.get(entry.getKey());
-
-                this.morphs.put(key, morph);
             }
+
+            this.morphs.put(key, morph);
         }
+    }
+
+    /**
+     * Load morphs from {@link EntityList}.
+     * 
+     * These morphs are quite less awesome than the morphs that were loaded by 
+     * the method above, since they're lack abilities, attacks and/or actions. 
+     */
+    private void loadMorphsFromEntityList()
+    {
+
     }
 
     /**

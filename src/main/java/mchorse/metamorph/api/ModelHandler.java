@@ -19,24 +19,49 @@ public class ModelHandler
      */
     public void loadModels()
     {
+        /* Animals */
+        this.load("Chicken");
+        this.load("Cow");
+        this.load("MushroomCow", "mooshroom");
+        this.load("Ozelot", "ocelot");
+        this.load("Pig");
+        this.load("Rabbit");
+        this.load("Sheep");
+        this.load("Squid");
+        this.load("Wolf");
+
+        /* Neutral mobs */
+        this.load("Villager");
+
+        /* Hostile mobs */
+        this.load("Creeper");
+    }
+
+    /**
+     * Load a custom model with name and lowercase'd filename generated from 
+     * name. 
+     */
+    private void load(String name)
+    {
+        this.load(name, name.toLowerCase());
+    }
+
+    /**
+     * Load a custom model with name and filename
+     */
+    private void load(String name, String filename)
+    {
+        String path = "assets/metamorph/models/entity/";
+        ClassLoader loader = this.getClass().getClassLoader();
+
         try
         {
-            String path = "assets/metamorph/models/entity/";
-            ClassLoader loader = this.getClass().getClassLoader();
-
-            this.models.put("Chicken", Model.parse(loader.getResourceAsStream(path + "chicken.json")));
-            this.models.put("Cow", Model.parse(loader.getResourceAsStream(path + "cow.json")));
-            this.models.put("Creeper", Model.parse(loader.getResourceAsStream(path + "creeper.json")));
-            this.models.put("MushroomCow", Model.parse(loader.getResourceAsStream(path + "mooshroom.json")));
-            this.models.put("Ozelot", Model.parse(loader.getResourceAsStream(path + "ocelot.json")));
-            this.models.put("Pig", Model.parse(loader.getResourceAsStream(path + "pig.json")));
-            this.models.put("Rabbit", Model.parse(loader.getResourceAsStream(path + "rabbit.json")));
-            this.models.put("Sheep", Model.parse(loader.getResourceAsStream(path + "sheep.json")));
-            this.models.put("Squid", Model.parse(loader.getResourceAsStream(path + "squid.json")));
-            this.models.put("Wolf", Model.parse(loader.getResourceAsStream(path + "wolf.json")));
+            this.models.put(name, Model.parse(loader.getResourceAsStream(path + filename + ".json")));
         }
         catch (Exception e)
         {
+            System.out.println("Failed to load a custom model by name '" + name + "'");
+
             e.printStackTrace();
         }
     }
