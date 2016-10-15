@@ -50,6 +50,10 @@
 		"attack": "knockback",
         "health": 100
 	},
+	"PigZombie": {
+        "abilities": ["fire_proof"],
+        "health": 20
+    },
     "SnowGolem": {
         "abilities": ["sun_allergy"],
         "health": 4
@@ -59,7 +63,7 @@
 	},
 	
 	"Blaze": {
-		"abilities": ["fly", "fire_immunity"],
+		"abilities": ["fly", "fire_proof"],
 		"action": "fireball",
         "health": 20
 	},
@@ -73,7 +77,7 @@
         "health": 40
 	},
 	"Ghast": {
-		"abilities": ["fly", "fire_immunity"],
+		"abilities": ["fly", "fire_proof"],
 		"action": "fireball",
         "health": 10
 	},
@@ -101,9 +105,5 @@
 	"Zombie": {
 		"abilities": ["sun_allergy"],
         "health": 20
-	},
-    "ZombiePigman": {
-        "abilities": ["fire_immunity"],
-        "health": 20
-    }
+	}
 }

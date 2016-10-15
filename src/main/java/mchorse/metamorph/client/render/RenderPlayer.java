@@ -94,10 +94,18 @@ public class RenderPlayer extends RenderLivingBase<EntityPlayer>
     @Override
     protected void rotateCorpse(EntityPlayer player, float pitch, float yaw, float partialTicks)
     {
-        super.rotateCorpse(player, pitch, yaw, partialTicks);
-
-        if (player.isElytraFlying())
+        if (player.isEntityAlive() && player.isPlayerSleeping())
         {
+            /* Nap time! */
+            GlStateManager.rotate(player.getBedOrientationInDegrees(), 0.0F, 1.0F, 0.0F);
+            GlStateManager.rotate(this.getDeathMaxRotation(player), 0.0F, 0.0F, 1.0F);
+            GlStateManager.rotate(270.0F, 0.0F, 1.0F, 0.0F);
+        }
+        else if (player.isElytraFlying())
+        {
+            /* Elytra rotation */
+            super.rotateCorpse(player, pitch, yaw, partialTicks);
+
             float f = player.getTicksElytraFlying() + partialTicks;
             float f1 = MathHelper.clamp_float(f * f / 100.0F, 0.0F, 1.0F);
 
@@ -115,6 +123,10 @@ public class RenderPlayer extends RenderLivingBase<EntityPlayer>
 
                 GlStateManager.rotate((float) (Math.signum(d3) * Math.acos(d2)) * 180.0F / (float) Math.PI, 0.0F, 1.0F, 0.0F);
             }
+        }
+        else
+        {
+            super.rotateCorpse(player, pitch, yaw, partialTicks);
         }
     }
 

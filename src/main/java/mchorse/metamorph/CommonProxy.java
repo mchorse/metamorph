@@ -41,6 +41,9 @@ public class CommonProxy
         CapabilityManager.INSTANCE.register(IMorphing.class, new MorphingStorage(), Morphing.class);
     }
 
+    /**
+     * Load mod's provided vanilla models 
+     */
     public void loadModels()
     {
         /* Animals */
@@ -57,10 +60,12 @@ public class CommonProxy
 
         /* Neutral mobs */
         this.models.load("Villager");
+        this.models.load("PigZombie", "zombie_pigman");
 
         /* Hostile mobs */
         this.models.load("CaveSpider", "cave_spider");
         this.models.load("Creeper");
         this.models.load("Spider");
+        this.models.load("Zombie");
     }
 }
