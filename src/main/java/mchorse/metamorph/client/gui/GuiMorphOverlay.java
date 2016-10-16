@@ -83,6 +83,5 @@ public class GuiMorphOverlay extends Gui
         GlStateManager.setActiveTexture(OpenGlHelper.lightmapTexUnit);
         GlStateManager.disableTexture2D();
         GlStateManager.setActiveTexture(OpenGlHelper.defaultTexUnit);
-        // GlStateManager.disableDepth();
     }
 }

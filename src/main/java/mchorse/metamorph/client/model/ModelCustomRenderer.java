@@ -73,9 +73,16 @@ public class ModelCustomRenderer extends ModelRenderer
     public void render(float scale)
     {
         GL11.glPushMatrix();
+
+        if (this.parent == null)
+        {
+            GL11.glTranslatef(0, -1.0F, 0);
+        }
+
         GL11.glScalef(this.scaleX, this.scaleY, this.scaleZ);
 
         super.render(scale);
+
         GL11.glPopMatrix();
     }
 

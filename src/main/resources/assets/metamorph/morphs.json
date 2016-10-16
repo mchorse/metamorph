@@ -18,7 +18,7 @@
 	"MushroomCow": {
 	    "health": 10
 	},
-	"Ocelot": {
+	"Ozelot": {
 	    "health": 10
 	},
 	"Pig": {
@@ -85,11 +85,13 @@
 		"abilities": ["water_breath", "swim"],
         "health": 30
 	},
-    "Slime": {
-        "health": 16
+	"LavaSlime": {
+		"abilities": ["jumping", "fire_proof"],
+        "health": 4
     },
-    "MagmaCube": {
-        "health": 16
+    "Slime": {
+    	"abilities": ["jumping"],
+        "health": 4
     },
 	"Skeleton": {
 		"abilities": ["sun_allergy"],
