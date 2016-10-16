@@ -27,6 +27,8 @@ public class ModelSlime extends ModelCustom implements IModelCustom
     @Override
     public void render(Entity entityIn, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch, float scale)
     {
+        GlStateManager.pushMatrix();
+        GlStateManager.translate(0, -1, 0);
         this.head.render(scale);
 
         GlStateManager.color(1.0F, 1.0F, 1.0F, this.model.name.equals("Slime") ? 1.0F : 0.8F);
@@ -37,5 +39,6 @@ public class ModelSlime extends ModelCustom implements IModelCustom
         this.outer.render(scale);
         GlStateManager.disableBlend();
         GlStateManager.disableNormalize();
+        GlStateManager.popMatrix();
     }
 }

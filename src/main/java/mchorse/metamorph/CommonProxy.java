@@ -65,6 +65,7 @@ public class CommonProxy
         /* Hostile mobs */
         this.models.load("CaveSpider", "cave_spider");
         this.models.load("Creeper");
+        this.models.load("Ghast");
         this.models.load("LavaSlime", "magma_cube");
         this.models.load("Slime");
         this.models.load("Spider");
