@@ -1,13 +1,19 @@
 package mchorse.metamorph.network;
 
 import mchorse.metamorph.Metamorph;
+import mchorse.metamorph.network.client.ClientHandlerAcquireMorph;
+import mchorse.metamorph.network.client.ClientHandlerAcquiredMorphs;
 import mchorse.metamorph.network.client.ClientHandlerMorph;
 import mchorse.metamorph.network.client.ClientHandlerMorphPlayer;
+import mchorse.metamorph.network.common.PacketAcquireMorph;
+import mchorse.metamorph.network.common.PacketAcquiredMorphs;
 import mchorse.metamorph.network.common.PacketAction;
 import mchorse.metamorph.network.common.PacketMorph;
 import mchorse.metamorph.network.common.PacketMorphPlayer;
+import mchorse.metamorph.network.common.PacketSelectMorph;
 import mchorse.metamorph.network.server.ServerHandlerAction;
 import mchorse.metamorph.network.server.ServerHandlerMorph;
+import mchorse.metamorph.network.server.ServerHandlerSelectMorph;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityTracker;
 import net.minecraft.entity.player.EntityPlayer;
@@ -66,6 +72,11 @@ public class Dispatcher
         register(PacketMorph.class, ClientHandlerMorph.class, Side.CLIENT);
         register(PacketMorph.class, ServerHandlerMorph.class, Side.SERVER);
         register(PacketMorphPlayer.class, ClientHandlerMorphPlayer.class, Side.CLIENT);
+
+        register(PacketAcquireMorph.class, ClientHandlerAcquireMorph.class, Side.CLIENT);
+        register(PacketAcquiredMorphs.class, ClientHandlerAcquiredMorphs.class, Side.CLIENT);
+
+        register(PacketSelectMorph.class, ServerHandlerSelectMorph.class, Side.SERVER);
     }
 
     private static <REQ extends IMessage, REPLY extends IMessage> void register(Class<REQ> message, Class<? extends IMessageHandler<REQ, REPLY>> handler, Side side)

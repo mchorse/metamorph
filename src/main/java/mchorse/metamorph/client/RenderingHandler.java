@@ -2,7 +2,7 @@ package mchorse.metamorph.client;
 
 import mchorse.metamorph.capabilities.morphing.IMorphing;
 import mchorse.metamorph.capabilities.morphing.MorphingProvider;
-import mchorse.metamorph.client.gui.GuiMorphOverlay;
+import mchorse.metamorph.client.gui.GuiMenu;
 import mchorse.metamorph.client.render.RenderHands;
 import mchorse.metamorph.client.render.RenderPlayer;
 import net.minecraft.client.Minecraft;
@@ -26,10 +26,10 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 public class RenderingHandler
 {
     private RenderPlayer render;
-    private GuiMorphOverlay overlay;
+    private GuiMenu overlay;
     private RenderHands hand;
 
-    public RenderingHandler(GuiMorphOverlay overlay, RenderPlayer render)
+    public RenderingHandler(GuiMenu overlay, RenderPlayer render)
     {
         this.overlay = overlay;
         this.render = render;

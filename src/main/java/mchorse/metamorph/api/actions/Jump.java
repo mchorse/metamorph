@@ -13,6 +13,9 @@ public class Jump implements IAction
     @Override
     public void execute(EntityPlayer player)
     {
-        player.motionY = 0.75;
+        if (player.onGround)
+        {
+            player.motionY = 0.75;
+        }
     }
 }

@@ -5,7 +5,7 @@ import java.util.Map;
 import mchorse.metamorph.api.Model;
 import mchorse.metamorph.client.KeyboardHandler;
 import mchorse.metamorph.client.RenderingHandler;
-import mchorse.metamorph.client.gui.GuiMorphOverlay;
+import mchorse.metamorph.client.gui.GuiMenu;
 import mchorse.metamorph.client.model.ModelCustom;
 import mchorse.metamorph.client.model.parsing.ModelParser;
 import mchorse.metamorph.client.render.RenderPlayer;
@@ -22,6 +22,11 @@ import net.minecraftforge.common.MinecraftForge;
  */
 public class ClientProxy extends CommonProxy
 {
+    /**
+     * Gui menu which is responsible for choosing morphs 
+     */
+    public static GuiMenu overlay = new GuiMenu();
+
     @Override
     public void load()
     {
@@ -29,13 +34,13 @@ public class ClientProxy extends CommonProxy
 
         RenderManager manager = Minecraft.getMinecraft().getRenderManager();
         RenderPlayer render = new RenderPlayer(manager, 0.5F);
-        GuiMorphOverlay overlay = new GuiMorphOverlay();
 
         MinecraftForge.EVENT_BUS.register(new RenderingHandler(overlay, render));
-        MinecraftForge.EVENT_BUS.register(new KeyboardHandler());
+        MinecraftForge.EVENT_BUS.register(new KeyboardHandler(overlay));
     }
 
     @Override
+    @SuppressWarnings("unchecked")
     public void loadModels()
     {
         super.loadModels();

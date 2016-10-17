@@ -56,7 +56,7 @@ public class RenderPlayer extends RenderLivingBase<EntityPlayer>
      * This method is responsible for picking the right model and pose based
      * on player properties.
      */
-    protected void setupModel(EntityPlayer entity)
+    public void setupModel(EntityPlayer entity)
     {
         Map<String, ModelCustom> models = ModelCustom.MODELS;
         IMorphing capability = entity.getCapability(MorphingProvider.MORPHING_CAP, null);

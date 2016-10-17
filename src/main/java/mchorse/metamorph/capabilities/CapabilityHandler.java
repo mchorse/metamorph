@@ -4,6 +4,7 @@ import mchorse.metamorph.Metamorph;
 import mchorse.metamorph.capabilities.morphing.IMorphing;
 import mchorse.metamorph.capabilities.morphing.MorphingProvider;
 import mchorse.metamorph.network.Dispatcher;
+import mchorse.metamorph.network.common.PacketAcquiredMorphs;
 import mchorse.metamorph.network.common.PacketMorph;
 import mchorse.metamorph.network.common.PacketMorphPlayer;
 import net.minecraft.entity.Entity;
@@ -48,6 +49,7 @@ public class CapabilityHandler
         if (cap != null)
         {
             Dispatcher.sendTo(new PacketMorph(cap.getCurrentMorphName()), (EntityPlayerMP) player);
+            Dispatcher.sendTo(new PacketAcquiredMorphs(cap.getAcquiredMorphs()), (EntityPlayerMP) player);
 
             /* Ensure that player was morphed */
             if (cap.isMorphed())

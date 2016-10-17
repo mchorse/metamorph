@@ -6,7 +6,7 @@ import java.util.List;
 import mchorse.metamorph.capabilities.morphing.IMorphing;
 import mchorse.metamorph.capabilities.morphing.MorphingProvider;
 import mchorse.metamorph.network.Dispatcher;
-import mchorse.metamorph.network.common.PacketMorph;
+import mchorse.metamorph.network.common.PacketAcquireMorph;
 import mchorse.metamorph.network.common.PacketMorphPlayer;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityList;
@@ -28,7 +28,7 @@ import net.minecraftforge.fml.common.gameevent.TickEvent.PlayerTickEvent;
  * 1. Acquiring morphs from killed entities
  * 2. Grant additional attack effect while morphed (more damage, explosions, 
  *    potion effects, etc.)
- * 3. Update morphs in the loop 
+ * 3. Update morphs in the player's loop 
  */
 public class MorphHandler
 {
@@ -72,6 +72,8 @@ public class MorphHandler
 
         if (capability.acquireMorph(morph))
         {
+            Dispatcher.sendTo(new PacketAcquireMorph(morph), (EntityPlayerMP) player);
+
             player.addChatMessage(new TextComponentString("You gained §o§7" + morph + "§r morph!"));
         }
 
@@ -79,7 +81,7 @@ public class MorphHandler
 
         if (capability.getCurrentMorphName().equals(morph))
         {
-            Dispatcher.sendTo(new PacketMorph(morph), (EntityPlayerMP) player);
+            Dispatcher.sendTo(new PacketAcquireMorph(morph), (EntityPlayerMP) player);
             Dispatcher.updateTrackers(player, new PacketMorphPlayer(player.getEntityId(), morph));
         }
     }

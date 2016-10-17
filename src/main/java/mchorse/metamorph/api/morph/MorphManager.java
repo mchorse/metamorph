@@ -90,6 +90,7 @@ public class MorphManager
     /**
      * Loads morphs from JSON 
      */
+    @SuppressWarnings("serial")
     private void loadMorphsFromJSON()
     {
         GsonBuilder builder = new GsonBuilder().registerTypeAdapter(Morph.class, new MorphAdapter());

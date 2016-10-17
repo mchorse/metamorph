@@ -4,8 +4,10 @@ import org.lwjgl.input.Keyboard;
 
 import mchorse.metamorph.capabilities.morphing.IMorphing;
 import mchorse.metamorph.capabilities.morphing.MorphingProvider;
+import mchorse.metamorph.client.gui.GuiMenu;
 import mchorse.metamorph.network.Dispatcher;
 import mchorse.metamorph.network.common.PacketAction;
+import mchorse.metamorph.network.common.PacketSelectMorph;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.settings.KeyBinding;
 import net.minecraft.entity.player.EntityPlayer;
@@ -29,6 +31,8 @@ public class KeyboardHandler
     private KeyBinding keyPrevMorph;
     private KeyBinding keySelectMorph;
 
+    private GuiMenu overlay;
+
     public KeyboardHandler()
     {
         String category = "key.metamorph";
@@ -44,6 +48,12 @@ public class KeyboardHandler
         ClientRegistry.registerKeyBinding(keyNextMorph);
         ClientRegistry.registerKeyBinding(keyPrevMorph);
         ClientRegistry.registerKeyBinding(keySelectMorph);
+    }
+
+    public KeyboardHandler(GuiMenu overlay)
+    {
+        this();
+        this.overlay = overlay;
     }
 
     @SubscribeEvent
@@ -66,15 +76,15 @@ public class KeyboardHandler
         /* Morphing */
         if (keyPrevMorph.isPressed())
         {
-            // index --
+            this.overlay.prev();
         }
         else if (keyNextMorph.isPressed())
         {
-            // index ++
+            this.overlay.next();
         }
         else if (keySelectMorph.isPressed())
         {
-            // Dispatcher.sendToServer(new PacketSelectMorph(index)); 
+            Dispatcher.sendToServer(new PacketSelectMorph(this.overlay.index));
         }
     }
 }

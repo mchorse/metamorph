@@ -41,6 +41,9 @@ public class RenderHands
         this.setup(swing, progress, side);
         GlStateManager.disableCull();
 
+        this.render.setupModel(player);
+        ;
+
         if (side == EnumHandSide.LEFT)
         {
             this.render.renderLeftArm(player);

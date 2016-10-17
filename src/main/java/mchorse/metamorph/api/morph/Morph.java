@@ -59,6 +59,8 @@ public class Morph
         float width = pose[0];
         float height = pose[1];
 
+        player.eyeHeight = height * 0.9F;
+
         /* This is a total rip-off of EntityPlayer#setSize method */
         if (width != player.width || height != player.height)
         {
@@ -67,7 +69,6 @@ public class Morph
 
             player.width = width;
             player.height = height;
-            player.eyeHeight = height * 0.9F;
             player.setEntityBoundingBox(new AxisAlignedBB(axisalignedbb.minX, axisalignedbb.minY, axisalignedbb.minZ, axisalignedbb.minX + width, axisalignedbb.minY + height, axisalignedbb.minZ + width));
 
             if (player.width > f && !player.worldObj.isRemote)
