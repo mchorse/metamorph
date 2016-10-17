@@ -17,15 +17,28 @@ import net.minecraft.client.renderer.entity.RenderLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.util.math.MathHelper;
 
+/**
+ * Morphing survival GUI menu
+ * 
+ * This menu is responsible for rendering and storing the index of selected 
+ * morph of currently player acquired morphs. 
+ * 
+ * This menu looks pretty similar to (alt / cmd) + tab menu like in most 
+ * GUI based Operating Systems.
+ */
 public class GuiMenu extends Gui
 {
     public Minecraft mc = Minecraft.getMinecraft();
 
+    /**
+     * Index of selected morph 
+     */
     public int index = 0;
-    public int timer = 0;
 
-    public float opacity = 0;
-    public byte state = 0;
+    /**
+     * "Fade out" timer 
+     */
+    public int timer = 0;
 
     /**
      * Render the GUI 
@@ -69,6 +82,11 @@ public class GuiMenu extends Gui
 
     /**
      * Render the menu
+     * 
+     * Pretty big method, huh? Big mix of math and rendering combined in this 
+     * method.
+     * 
+     * @todo add player
      */
     public void renderMenu(int width, int height, int w, int h)
     {
@@ -78,11 +96,11 @@ public class GuiMenu extends Gui
         float scale = (float) height * 0.17F / 2;
         float margin = 36;
         float offset = this.index * 36;
-        float max_scroll = this.getMorphCount() * margin - w / 2 - scale / 2 - 4;
+        float maxScroll = this.getMorphCount() * margin - w / 2 - scale / 2 - 4;
 
         int i = 0;
 
-        offset = (float) Math.floor(MathHelper.clamp_float(offset, 0, max_scroll));
+        offset = (float) Math.floor(MathHelper.clamp_float(offset, 0, maxScroll));
 
         for (String name : this.getMorph().getAcquiredMorphs())
         {
@@ -210,7 +228,7 @@ public class GuiMenu extends Gui
         if (this.index < length - 1)
         {
             this.index++;
-            this.timer = 80;
+            this.timer = this.getDelay();
         }
     }
 
@@ -229,8 +247,26 @@ public class GuiMenu extends Gui
         if (this.index > 0)
         {
             this.index--;
-            this.timer = 80;
+            this.timer = this.getDelay();
         }
+    }
+
+    /**
+     * Get delay for the timer
+     * 
+     * Delay is about 2 seconds, however you may never know which is it since 
+     * the game may lag. 
+     */
+    private int getDelay()
+    {
+        int frameRate = this.mc.gameSettings.limitFramerate;
+
+        if (frameRate > 120)
+        {
+            frameRate = 120;
+        }
+
+        return frameRate * 2;
     }
 
     /**

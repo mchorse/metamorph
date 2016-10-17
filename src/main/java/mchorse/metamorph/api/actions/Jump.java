@@ -6,7 +6,8 @@ import net.minecraft.entity.player.EntityPlayer;
 /**
  * Jump action
  * 
- * Makes player jump very high like a horse. 
+ * Makes player jump very high like a <s>horse</s> rabbit. The strength of 
+ * this jump is about 3 blocks high. 
  */
 public class Jump implements IAction
 {
