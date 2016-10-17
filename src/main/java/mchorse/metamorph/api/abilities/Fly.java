@@ -28,10 +28,10 @@ public class Fly extends Ability
     @Override
     public void onDemorph(EntityPlayer player)
     {
-        if (!player.capabilities.isCreativeMode)
-        {
-            player.capabilities.allowFlying = false;
-            player.sendPlayerAbilities();
-        }
+        System.out.println("Hello?");
+
+        player.capabilities.allowFlying = false;
+        player.capabilities.isFlying = false;
+        player.sendPlayerAbilities();
     }
 }

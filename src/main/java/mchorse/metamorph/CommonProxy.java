@@ -47,6 +47,7 @@ public class CommonProxy
     public void loadModels()
     {
         /* Animals */
+        this.models.load("Bat");
         this.models.load("Chicken");
         this.models.load("Cow");
         this.models.load("MushroomCow", "mooshroom");

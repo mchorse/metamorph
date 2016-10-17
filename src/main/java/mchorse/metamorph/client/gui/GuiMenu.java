@@ -78,6 +78,8 @@ public class GuiMenu extends Gui
         GL11.glEnable(GL11.GL_SCISSOR_TEST);
 
         this.renderMenu(width, height, w, h);
+
+        GlStateManager.enableDepth();
     }
 
     /**
@@ -94,8 +96,8 @@ public class GuiMenu extends Gui
         String label = "";
 
         float scale = (float) height * 0.17F / 2;
-        float margin = 36;
-        float offset = this.index * 36;
+        float margin = 40;
+        float offset = this.index * margin;
         float maxScroll = this.getMorphCount() * margin - w / 2 - scale / 2 - 4;
 
         int i = 0;
@@ -128,7 +130,6 @@ public class GuiMenu extends Gui
         }
 
         GL11.glDisable(GL11.GL_SCISSOR_TEST);
-        GL11.glPopMatrix();
 
         /* Draw the title */
         this.drawCenteredString(this.mc.fontRendererObj, label, width / 2, height / 2 + h / 2 + 4, 0xffffffff);
