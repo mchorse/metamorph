@@ -8,10 +8,13 @@ import mchorse.metamorph.client.RenderingHandler;
 import mchorse.metamorph.client.gui.GuiMenu;
 import mchorse.metamorph.client.model.ModelCustom;
 import mchorse.metamorph.client.model.parsing.ModelParser;
+import mchorse.metamorph.client.render.RenderMorph;
 import mchorse.metamorph.client.render.RenderPlayer;
+import mchorse.metamorph.entity.EntityMorph;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.entity.RenderManager;
 import net.minecraftforge.common.MinecraftForge;
+import net.minecraftforge.fml.client.registry.RenderingRegistry;
 
 /**
  * Client proxy
@@ -26,6 +29,14 @@ public class ClientProxy extends CommonProxy
      * Gui menu which is responsible for choosing morphs 
      */
     public static GuiMenu overlay = new GuiMenu();
+
+    @Override
+    public void preLoad()
+    {
+        super.preLoad();
+
+        RenderingRegistry.registerEntityRenderingHandler(EntityMorph.class, new RenderMorph.MorphFactory());
+    }
 
     @Override
     public void load()

@@ -1,5 +1,6 @@
 #PARSE_ESCAPES
 
+entity.metamorph.Morph.name=Morphing
 
 # Keyboard bindings strings
 key.metamorph=Metamorph

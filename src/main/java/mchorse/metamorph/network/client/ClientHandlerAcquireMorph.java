@@ -13,8 +13,5 @@ public class ClientHandlerAcquireMorph extends ClientMessageHandler<PacketAcquir
         IMorphing capability = player.getCapability(MorphingProvider.MORPHING_CAP, null);
 
         capability.acquireMorph(message.morph);
-        capability.setCurrentMorph(message.morph, player, false);
-
-        System.out.println(capability.getCurrentMorphName());
     }
 }

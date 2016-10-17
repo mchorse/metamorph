@@ -31,7 +31,10 @@ public class ModelSlime extends ModelCustom implements IModelCustom
         GlStateManager.translate(0, -1, 0);
         this.head.render(scale);
 
-        GlStateManager.color(1.0F, 1.0F, 1.0F, this.model.name.equals("Slime") ? 1.0F : 0.8F);
+        if (!this.model.name.equals("Slime"))
+        {
+            GlStateManager.color(1.0F, 1.0F, 1.0F, 0.8F);
+        }
 
         GlStateManager.enableNormalize();
         GlStateManager.enableBlend();

@@ -68,6 +68,13 @@ public class Morphing implements IMorphing
     @Override
     public void setCurrentMorph(String name, EntityPlayer player, boolean force)
     {
+        if (name.isEmpty())
+        {
+            this.demorph();
+
+            return;
+        }
+
         boolean creative = player != null ? player.isCreative() : false;
 
         if (force || creative || this.acquiredMorphs.contains(name))

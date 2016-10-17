@@ -53,8 +53,8 @@ public class GuiMenu extends Gui
         this.timer--;
 
         /* GUI size */
-        int w = (int) ((float) width * 0.8F);
-        int h = (int) ((float) height * 0.2F);
+        int w = (int) (width * 0.8F);
+        int h = (int) (height * 0.2F);
 
         /* F*$! those ints */
         float rx = (float) this.mc.displayWidth / (float) width;
@@ -71,7 +71,7 @@ public class GuiMenu extends Gui
         /* Clipping area around scroll area */
         int x = (int) (x1 * rx);
         int y = (int) (this.mc.displayHeight - y2 * ry);
-        int ww = (int) (w * rx);
+        int ww = (int) ((w - 1) * rx);
         int hh = (int) (h * ry);
 
         GL11.glScissor(x, y, ww, hh);
@@ -95,19 +95,19 @@ public class GuiMenu extends Gui
         EntityPlayer player = this.mc.thePlayer;
         String label = "";
 
-        float scale = (float) height * 0.17F / 2;
-        float margin = 40;
-        float offset = this.index * margin;
-        float maxScroll = this.getMorphCount() * margin - w / 2 - scale / 2 - 4;
+        int scale = (int) (height * 0.17F / 2);
+        int margin = 40;
+        int offset = this.index * margin;
+        int maxScroll = this.getMorphCount() * margin - w / 2 - scale / 2 - 4;
 
         int i = 0;
 
-        offset = (float) Math.floor(MathHelper.clamp_float(offset, 0, maxScroll));
+        offset = (int) MathHelper.clamp_float(offset, 0, maxScroll);
 
         for (String name : this.getMorph().getAcquiredMorphs())
         {
-            float x = (float) Math.floor(width / 2 - w / 2 + i * margin + scale - 1);
-            float y = (float) Math.floor(height / 2 + h / 2);
+            int x = width / 2 - w / 2 + i * margin + scale - 1;
+            int y = height / 2 + h / 2;
 
             /* Scroll the position */
             if (offset > w / 2 - margin / 2)

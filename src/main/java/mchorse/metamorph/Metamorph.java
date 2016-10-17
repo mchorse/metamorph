@@ -33,6 +33,9 @@ public class Metamorph
     @SidedProxy(clientSide = CLIENT_PROXY, serverSide = SERVER_PROXY)
     public static CommonProxy proxy;
 
+    @Mod.Instance
+    public static Metamorph instance;
+
     @EventHandler
     public void preLoad(FMLPreInitializationEvent event)
     {

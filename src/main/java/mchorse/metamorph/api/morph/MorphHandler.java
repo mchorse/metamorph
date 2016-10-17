@@ -5,14 +5,10 @@ import java.util.List;
 
 import mchorse.metamorph.capabilities.morphing.IMorphing;
 import mchorse.metamorph.capabilities.morphing.MorphingProvider;
-import mchorse.metamorph.network.Dispatcher;
-import mchorse.metamorph.network.common.PacketAcquireMorph;
-import mchorse.metamorph.network.common.PacketMorphPlayer;
+import mchorse.metamorph.entity.EntityMorph;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityList;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.entity.player.EntityPlayerMP;
-import net.minecraft.util.text.TextComponentString;
 import net.minecraftforge.event.entity.living.LivingAttackEvent;
 import net.minecraftforge.event.entity.living.LivingDeathEvent;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
@@ -70,19 +66,12 @@ public class MorphHandler
             return;
         }
 
-        if (capability.acquireMorph(morph))
+        if (!player.worldObj.isRemote)
         {
-            Dispatcher.sendTo(new PacketAcquireMorph(morph), (EntityPlayerMP) player);
+            EntityMorph morphEntity = new EntityMorph(player.worldObj, player.getUniqueID(), morph);
 
-            player.addChatMessage(new TextComponentString("You gained §o§7" + morph + "§r morph!"));
-        }
-
-        capability.setCurrentMorph(morph, player, false);
-
-        if (capability.getCurrentMorphName().equals(morph))
-        {
-            Dispatcher.sendTo(new PacketAcquireMorph(morph), (EntityPlayerMP) player);
-            Dispatcher.updateTrackers(player, new PacketMorphPlayer(player.getEntityId(), morph));
+            morphEntity.setPositionAndRotation(target.posX, target.posY + target.height / 2, target.posZ, target.rotationYaw, target.rotationPitch);
+            player.worldObj.spawnEntityInWorld(morphEntity);
         }
     }
 

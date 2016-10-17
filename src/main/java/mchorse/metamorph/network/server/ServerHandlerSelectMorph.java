@@ -18,14 +18,21 @@ public class ServerHandlerSelectMorph extends ServerMessageHandler<PacketSelectM
         IMorphing capability = player.getCapability(MorphingProvider.MORPHING_CAP, null);
         List<String> morphs = capability.getAcquiredMorphs();
 
+        if (message.index == -1)
+        {
+            capability.demorph();
+        }
+
         if (morphs.get(message.index) != null)
         {
             String morph = morphs.get(message.index);
 
             capability.setCurrentMorph(morph, player, false);
-
-            Dispatcher.sendTo(new PacketMorph(morph), player);
-            Dispatcher.updateTrackers(player, new PacketMorphPlayer(player.getEntityId(), morph));
         }
+
+        String morph = capability.getCurrentMorphName();
+
+        Dispatcher.sendTo(new PacketMorph(morph), player);
+        Dispatcher.updateTrackers(player, new PacketMorphPlayer(player.getEntityId(), morph));
     }
 }
