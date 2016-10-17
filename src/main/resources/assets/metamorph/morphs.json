@@ -46,6 +46,11 @@
 	    "health": 8
 	},
 	
+	"Enderman": {
+		"abilities": ["water_allergy"],
+		"action": "teleport",
+        "health": 40
+	},
 	"IronGolem": {
 		"attack": "knockback",
         "health": 100
@@ -54,8 +59,9 @@
         "abilities": ["fire_proof"],
         "health": 20
     },
-    "SnowGolem": {
-        "abilities": ["sun_allergy"],
+    "SnowMan": {
+    	"abilities": ["snow_walk"],
+    	"action": "snowball",
         "health": 4
     },
 	"Villager": {
@@ -70,11 +76,6 @@
 	"Creeper": {
 		"action": "explode",
         "health": 20
-	},
-	"Enderman": {
-		"abilities": ["water_allergy"],
-		"action": "teleport",
-        "health": 40
 	},
 	"Ghast": {
 		"abilities": ["fly", "fire_proof"],

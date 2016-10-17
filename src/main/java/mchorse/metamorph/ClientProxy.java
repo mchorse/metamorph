@@ -58,8 +58,10 @@ public class ClientProxy extends CommonProxy
             {
                 try
                 {
+                    Class<? extends ModelCustom> clazz = (Class<? extends ModelCustom>) Class.forName(data.model);
+
                     /* Parse custom custom (overcustomized) model */
-                    ModelParser.parse(model.getKey(), data, (Class<? extends ModelCustom>) Class.forName(data.model));
+                    ModelParser.parse(model.getKey(), data, clazz);
                 }
                 catch (ClassNotFoundException e)
                 {

@@ -19,6 +19,7 @@ import mchorse.metamorph.api.abilities.FireProof;
 import mchorse.metamorph.api.abilities.Fly;
 import mchorse.metamorph.api.abilities.Glide;
 import mchorse.metamorph.api.abilities.Jumping;
+import mchorse.metamorph.api.abilities.SnowWalk;
 import mchorse.metamorph.api.abilities.SunAllergy;
 import mchorse.metamorph.api.abilities.Swim;
 import mchorse.metamorph.api.abilities.WaterAllergy;
@@ -26,6 +27,7 @@ import mchorse.metamorph.api.abilities.WaterBreath;
 import mchorse.metamorph.api.actions.Explode;
 import mchorse.metamorph.api.actions.Fireball;
 import mchorse.metamorph.api.actions.Jump;
+import mchorse.metamorph.api.actions.Snowball;
 import mchorse.metamorph.api.attacks.KnockbackAttack;
 import mchorse.metamorph.api.attacks.PoisonAttack;
 import mchorse.metamorph.api.attacks.WitherAttack;
@@ -66,6 +68,7 @@ public class MorphManager
         abilities.put("glide", new Glide());
         abilities.put("jumping", new Jumping());
         abilities.put("sun_allergy", new SunAllergy());
+        abilities.put("snow_walk", new SnowWalk());
         abilities.put("swim", new Swim());
         abilities.put("water_allergy", new WaterAllergy());
         abilities.put("water_breath", new WaterBreath());
@@ -74,6 +77,7 @@ public class MorphManager
         actions.put("explode", new Explode());
         actions.put("fireball", new Fireball());
         actions.put("jump", new Jump());
+        actions.put("snowball", new Snowball());
 
         /* Register default attacks */
         attacks.put("poison", new PoisonAttack());
