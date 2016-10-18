@@ -45,13 +45,6 @@ public class Morph
      */
     private void updateSize(EntityPlayer player, IMorphing cap)
     {
-        if (!cap.isMorphed())
-        {
-            /* Restore default eye height */
-            player.eyeHeight = player.getDefaultEyeHeight();
-            return;
-        }
-
         Model data = cap.getCurrentMorph().model;
         String key = player.isElytraFlying() ? "flying" : (player.isSneaking() ? "sneaking" : "standing");
 

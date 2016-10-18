@@ -56,6 +56,15 @@ public class EntityMorph extends EntityLiving implements IEntityAdditionalSpawnD
     }
 
     /**
+     * No! Don't despawn morphs, they're like currency! 
+     */
+    @Override
+    protected boolean canDespawn()
+    {
+        return false;
+    }
+
+    /**
      * Update method
      * 
      * This method is responsible for looking for player owner and advancing 

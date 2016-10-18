@@ -162,7 +162,8 @@
             "parent": "body",
             "size": [ 10, 16, 1 ],
             "texture": [ 42, 0 ],
-            "anchor": [ 0, 0.5, 0 ]
+            "anchor": [ 0, 0.5, 0 ],
+            "swiping": true
         },
         "body": {
             "size": [ 6, 12, 6 ],
@@ -186,16 +187,13 @@
             "size": [ 8, 12, 1 ],
             "texture": [ 24, 16 ],
             "anchor": [ 1, 0.5, 0 ],
-            "mirror": true,
-            "holding": "left"
+            "mirror": true
         },
         "right_wing_2": {
             "parent": "right_wing",
             "size": [ 8, 12, 1 ],
             "texture": [ 24, 16 ],
-            "anchor": [ 0, 0.5, 0 ],
-            "holding": "right",
-            "swiping": true
+            "anchor": [ 0, 0.5, 0 ]
         },
         "right_ear": {
             "parent": "head",

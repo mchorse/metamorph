@@ -56,22 +56,25 @@ public class GuiMenu extends Gui
         int w = (int) (width * 0.8F);
         int h = (int) (height * 0.2F);
 
+        w = w - w % 20;
+        h = h - h % 2;
+
         /* F*$! those ints */
-        float rx = (float) this.mc.displayWidth / (float) width;
-        float ry = (float) this.mc.displayHeight / (float) height;
+        float rx = (float) Math.ceil((double) this.mc.displayWidth / (double) width);
+        float ry = (float) Math.ceil((double) this.mc.displayHeight / (double) height);
 
         /* Background */
-        int x1 = MathHelper.floor_float(width / 2 - w / 2);
-        int y1 = MathHelper.floor_float(height / 2 - h / 2);
-        int x2 = MathHelper.floor_float(width / 2 + w / 2);
-        int y2 = MathHelper.floor_float(height / 2 + h / 2);
+        int x1 = width / 2 - w / 2;
+        int y1 = height / 2 - h / 2;
+        int x2 = width / 2 + w / 2;
+        int y2 = height / 2 + h / 2;
 
         Gui.drawRect(x1, y1, x2, y2, 0x99000000);
 
         /* Clipping area around scroll area */
         int x = (int) (x1 * rx);
         int y = (int) (this.mc.displayHeight - y2 * ry);
-        int ww = (int) ((w - 1) * rx);
+        int ww = (int) (w * rx);
         int hh = (int) (h * ry);
 
         GL11.glScissor(x, y, ww, hh);
@@ -96,9 +99,13 @@ public class GuiMenu extends Gui
         String label = "";
 
         int scale = (int) (height * 0.17F / 2);
-        int margin = 40;
+        int margin = width / 10;
+
+        scale -= scale % 2;
+        margin -= margin % 2;
+
         int offset = this.index * margin;
-        int maxScroll = this.getMorphCount() * margin - w / 2 - scale / 2 - 4;
+        int maxScroll = this.getMorphCount() * margin - w / 2 - margin / 2 + 2;
 
         int i = 0;
 
@@ -106,7 +113,7 @@ public class GuiMenu extends Gui
 
         for (String name : this.getMorph().getAcquiredMorphs())
         {
-            int x = width / 2 - w / 2 + i * margin + scale - 1;
+            int x = width / 2 - w / 2 + i * margin + margin / 2 + 1;
             int y = height / 2 + h / 2;
 
             /* Scroll the position */
@@ -118,13 +125,13 @@ public class GuiMenu extends Gui
             /* Render border around the selected morph */
             if (this.index == i)
             {
-                this.renderSelected((int) (x - margin / 2), height / 2 - h / 2 + 1, (int) margin, h - 3);
+                this.renderSelected(x - margin / 2, height / 2 - h / 2 + 1, margin, h - 2);
 
                 label = name;
             }
 
             /* Render morph itself */
-            this.renderMorph(player, name, (int) x, (int) y - 2, scale);
+            this.renderMorph(player, name, x, y - 2, scale);
 
             i++;
         }
@@ -144,11 +151,11 @@ public class GuiMenu extends Gui
     {
         int color = 0xffcccccc;
 
-        this.drawHorizontalLine(x, x + width, y, color);
-        this.drawHorizontalLine(x, x + width, y + height, color);
+        this.drawHorizontalLine(x, x + width - 1, y, color);
+        this.drawHorizontalLine(x, x + width - 1, y + height - 1, color);
 
-        this.drawVerticalLine(x, y, y + height, color);
-        this.drawVerticalLine(x + width, y, y + height, color);
+        this.drawVerticalLine(x, y, y + height - 1, color);
+        this.drawVerticalLine(x + width - 1, y, y + height - 1, color);
     }
 
     /**
@@ -245,7 +252,7 @@ public class GuiMenu extends Gui
             return;
         }
 
-        if (this.index > 0)
+        if (this.index > -1)
         {
             this.index--;
             this.timer = this.getDelay();

@@ -123,6 +123,9 @@ public class MorphHandler
 
         if (capability == null || !capability.isMorphed())
         {
+            /* Restore default eye height */
+            player.eyeHeight = player.getDefaultEyeHeight();
+
             return;
         }
 
