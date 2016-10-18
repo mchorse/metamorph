@@ -106,6 +106,7 @@
         "health": 20
 	},
     "Witch": {
+    	"action": "potions",
         "health": 26
     },
 	"Zombie": {

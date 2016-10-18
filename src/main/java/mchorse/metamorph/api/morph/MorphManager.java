@@ -27,6 +27,7 @@ import mchorse.metamorph.api.abilities.WaterBreath;
 import mchorse.metamorph.api.actions.Explode;
 import mchorse.metamorph.api.actions.Fireball;
 import mchorse.metamorph.api.actions.Jump;
+import mchorse.metamorph.api.actions.Potions;
 import mchorse.metamorph.api.actions.Snowball;
 import mchorse.metamorph.api.actions.Teleport;
 import mchorse.metamorph.api.attacks.KnockbackAttack;
@@ -78,6 +79,7 @@ public class MorphManager
         actions.put("explode", new Explode());
         actions.put("fireball", new Fireball());
         actions.put("jump", new Jump());
+        actions.put("potions", new Potions());
         actions.put("snowball", new Snowball());
         actions.put("teleport", new Teleport());
 
@@ -119,7 +121,7 @@ public class MorphManager
 
             if (!Metamorph.proxy.models.models.containsKey(key))
             {
-                Metamorph.log("[WARN]: Model for custom morph '" + key + "' couldn't be found!");
+                Metamorph.log("Model for custom morph '" + key + "' couldn't be found!");
 
                 continue;
             }

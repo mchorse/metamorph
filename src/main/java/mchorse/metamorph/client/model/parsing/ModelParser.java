@@ -133,7 +133,7 @@ public class ModelParser
                 }
                 catch (Exception e)
                 {
-                    Metamorph.log("[WARN] No fields '" + entry.getKey() + "' was found for " + model.getClass().getSimpleName());
+                    Metamorph.log("No fields '" + entry.getKey() + "' was found for " + model.getClass().getSimpleName());
                 }
             }
         }
