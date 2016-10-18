@@ -63,9 +63,10 @@ public class CommonProxy
         this.models.load("Wolf");
 
         /* Neutral mobs */
-        this.models.load("Villager");
+        this.models.load("Enderman");
         this.models.load("PigZombie", "zombie_pigman");
         this.models.load("SnowMan", "snow_man");
+        this.models.load("Villager");
         this.models.load("VillagerGolem", "iron_golem");
 
         /* Hostile mobs */

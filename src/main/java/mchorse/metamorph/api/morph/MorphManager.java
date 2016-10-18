@@ -28,6 +28,7 @@ import mchorse.metamorph.api.actions.Explode;
 import mchorse.metamorph.api.actions.Fireball;
 import mchorse.metamorph.api.actions.Jump;
 import mchorse.metamorph.api.actions.Snowball;
+import mchorse.metamorph.api.actions.Teleport;
 import mchorse.metamorph.api.attacks.KnockbackAttack;
 import mchorse.metamorph.api.attacks.PoisonAttack;
 import mchorse.metamorph.api.attacks.WitherAttack;
@@ -78,6 +79,7 @@ public class MorphManager
         actions.put("fireball", new Fireball());
         actions.put("jump", new Jump());
         actions.put("snowball", new Snowball());
+        actions.put("teleport", new Teleport());
 
         /* Register default attacks */
         attacks.put("poison", new PoisonAttack());
