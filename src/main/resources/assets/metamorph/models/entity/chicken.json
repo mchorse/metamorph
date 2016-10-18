@@ -2,6 +2,7 @@
     "scheme": "1.3",
     "name": "Chicken",
     "default": "minecraft:textures/entity/chicken.png",
+    "model": "mchorse.metamorph.client.model.custom.ModelChicken",
     "poses": {
         "standing": {
             "size": [0.4,0.7,0.5],

@@ -54,7 +54,7 @@ public class MorphManager
     {}
 
     /**
-     * Registers default abilities and actions to manager's maps. 
+     * Registers default abilities, attacks and actions to manager's maps. 
      * 
      * Other people may register their own morphs and abilities via maps. Don't 
      * override default ones, unless you're extending them. 
@@ -118,6 +118,8 @@ public class MorphManager
             if (!Metamorph.proxy.models.models.containsKey(key))
             {
                 System.out.println("[WARN]: Model for custom morph '" + key + "' couldn't be found!");
+
+                continue;
             }
             else
             {
@@ -133,14 +135,15 @@ public class MorphManager
      * 
      * These morphs are quite less awesome than the morphs that were loaded by 
      * the method above, since they're lack abilities, attacks and/or actions. 
+     * 
+     * Not yet, in the next version.
      */
     private void loadMorphsFromEntityList()
-    {
-
-    }
+    {}
 
     /**
-     * Get key of the given morph. If given morph isn't registered in this
+     * Get key of the given morph. If given morph isn't registered in morph 
+     * manager, it will return empty string.
      */
     public String fromMorph(Morph morph)
     {
