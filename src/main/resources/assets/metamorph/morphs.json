@@ -51,10 +51,6 @@
 		"action": "teleport",
         "health": 40
 	},
-	"IronGolem": {
-		"attack": "knockback",
-        "health": 100
-	},
 	"PigZombie": {
         "abilities": ["fire_proof"],
         "health": 20
@@ -66,6 +62,10 @@
     },
 	"Villager": {
 	    "health": 20
+	},
+	"VillagerGolem": {
+		"attack": "knockback",
+        "health": 100
 	},
 	
 	"Blaze": {

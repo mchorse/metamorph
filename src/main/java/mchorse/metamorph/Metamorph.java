@@ -71,7 +71,7 @@ public class Metamorph
     {
         if (DEBUG)
         {
-            LOGGER.log(Level.DEBUG, message);
+            LOGGER.log(Level.INFO, message);
         }
     }
 }
