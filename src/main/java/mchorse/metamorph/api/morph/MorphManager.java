@@ -117,7 +117,7 @@ public class MorphManager
 
             if (!Metamorph.proxy.models.models.containsKey(key))
             {
-                System.out.println("[WARN]: Model for custom morph '" + key + "' couldn't be found!");
+                Metamorph.log("[WARN]: Model for custom morph '" + key + "' couldn't be found!");
 
                 continue;
             }

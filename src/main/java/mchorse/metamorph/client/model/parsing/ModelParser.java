@@ -6,6 +6,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import mchorse.metamorph.Metamorph;
 import mchorse.metamorph.api.Model;
 import mchorse.metamorph.client.model.ModelCustom;
 import mchorse.metamorph.client.model.ModelCustomRenderer;
@@ -132,7 +133,7 @@ public class ModelParser
                 }
                 catch (Exception e)
                 {
-                    System.out.println("[WARN] No fields '" + entry.getKey() + "' was found for " + model.getClass().getSimpleName());
+                    Metamorph.log("[WARN] No fields '" + entry.getKey() + "' was found for " + model.getClass().getSimpleName());
                 }
             }
         }

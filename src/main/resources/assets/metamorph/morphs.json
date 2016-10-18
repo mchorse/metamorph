@@ -90,6 +90,9 @@
 		"abilities": ["jumping", "fire_proof"],
         "health": 4
     },
+    "Silverfish": {
+    	"health": 8
+    },
     "Slime": {
     	"abilities": ["jumping"],
         "health": 4
