@@ -57,4 +57,9 @@ public interface IMorphing
      * Is this capability is morphed at all 
      */
     public boolean isMorphed();
+
+    /**
+     * Copy data from other morph 
+     */
+    public void copy(IMorphing morphing, EntityPlayer player);
 }

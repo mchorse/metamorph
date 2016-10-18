@@ -96,7 +96,7 @@ public class GuiMenu extends Gui
     public void renderMenu(int width, int height, int w, int h)
     {
         EntityPlayer player = this.mc.thePlayer;
-        String label = "";
+        String label = "Player";
 
         int scale = (int) (height * 0.17F / 2);
         int margin = width / 10;
@@ -200,7 +200,7 @@ public class GuiMenu extends Gui
         model.setLivingAnimations(player, 0, 0, 0);
         model.setRotationAngles(0, 0, 0, 0, 0, factor, player);
 
-        Minecraft.getMinecraft().renderEngine.bindTexture(data.defaultTexture);
+        this.mc.renderEngine.bindTexture(data.defaultTexture);
 
         GlStateManager.enableDepth();
         GlStateManager.color(1.0F, 1.0F, 1.0F, 1.0F);
@@ -282,7 +282,7 @@ public class GuiMenu extends Gui
      */
     private IMorphing getMorph()
     {
-        return Minecraft.getMinecraft().thePlayer.getCapability(MorphingProvider.MORPHING_CAP, null);
+        return this.mc.thePlayer.getCapability(MorphingProvider.MORPHING_CAP, null);
     }
 
     /**

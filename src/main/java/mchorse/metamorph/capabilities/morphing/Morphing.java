@@ -15,9 +15,10 @@ import net.minecraft.entity.player.EntityPlayer;
  */
 public class Morphing implements IMorphing
 {
+    private List<String> acquiredMorphs = new ArrayList<String>();
+
     private Morph morph;
     private String name = "";
-    private List<String> acquiredMorphs = new ArrayList<String>();
 
     @Override
     public boolean acquireMorph(String name)
@@ -105,5 +106,12 @@ public class Morphing implements IMorphing
     public boolean isMorphed()
     {
         return this.morph != null;
+    }
+
+    @Override
+    public void copy(IMorphing morphing, EntityPlayer player)
+    {
+        this.acquiredMorphs = morphing.getAcquiredMorphs();
+        this.demorph();
     }
 }

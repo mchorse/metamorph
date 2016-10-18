@@ -12,6 +12,8 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.event.AttachCapabilitiesEvent;
+import net.minecraftforge.event.entity.EntityJoinWorldEvent;
+import net.minecraftforge.event.entity.player.PlayerEvent;
 import net.minecraftforge.event.entity.player.PlayerEvent.StartTracking;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.common.gameevent.PlayerEvent.PlayerLoggedInEvent;
@@ -48,8 +50,7 @@ public class CapabilityHandler
 
         if (cap != null)
         {
-            Dispatcher.sendTo(new PacketMorph(cap.getCurrentMorphName()), (EntityPlayerMP) player);
-            Dispatcher.sendTo(new PacketAcquiredMorphs(cap.getAcquiredMorphs()), (EntityPlayerMP) player);
+            this.sendAcquiredMorphs(cap, player);
 
             /* Ensure that player was morphed */
             if (cap.isMorphed())
@@ -74,5 +75,51 @@ public class CapabilityHandler
 
             Dispatcher.sendTo(new PacketMorphPlayer(target.getEntityId(), cap.getCurrentMorphName()), player);
         }
+    }
+
+    /**
+     * On player's spawn in the world (when player travels in other dimension 
+     * and spawns there or when player dies and then respawns).
+     * 
+     * This method is responsible for sending morphing data on the client.
+     */
+    @SubscribeEvent
+    public void onPlayerSpawn(EntityJoinWorldEvent event)
+    {
+        if (event.getEntity() instanceof EntityPlayer)
+        {
+            EntityPlayer player = (EntityPlayer) event.getEntity();
+
+            if (!player.worldObj.isRemote)
+            {
+                IMorphing morphing = player.getCapability(MorphingProvider.MORPHING_CAP, null);
+
+                this.sendAcquiredMorphs(morphing, player);
+            }
+        }
+    }
+
+    /**
+     * Copy data from dead player to the new player
+     */
+    @SubscribeEvent
+    public void onPlayerClone(PlayerEvent.Clone event)
+    {
+        EntityPlayer player = event.getEntityPlayer();
+        IMorphing morphing = player.getCapability(MorphingProvider.MORPHING_CAP, null);
+        IMorphing oldMorphing = event.getOriginal().getCapability(MorphingProvider.MORPHING_CAP, null);
+
+        morphing.copy(oldMorphing, player);
+    }
+
+    /**
+     * Send acquired morphs (and currently morphed morph) to the given player. 
+     */
+    private void sendAcquiredMorphs(IMorphing cap, EntityPlayer player)
+    {
+        EntityPlayerMP mp = (EntityPlayerMP) player;
+
+        Dispatcher.sendTo(new PacketMorph(cap.getCurrentMorphName()), mp);
+        Dispatcher.sendTo(new PacketAcquiredMorphs(cap.getAcquiredMorphs()), mp);
     }
 }
