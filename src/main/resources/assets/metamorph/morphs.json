@@ -1,6 +1,6 @@
 {
 	"Bat": {
-		"abilities": ["fly"],
+		"abilities": ["fly", "night_vision"],
         "health": 6
 	},
 	"CaveSpider": {
@@ -103,6 +103,7 @@
         "health": 20
 	},
 	"WitherSkeleton": {
+		"abilities": ["fire_proof"],
 		"attack": "wither",
         "health": 20
 	},
