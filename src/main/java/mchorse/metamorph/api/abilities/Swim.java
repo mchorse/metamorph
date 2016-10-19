@@ -28,9 +28,9 @@ public class Swim extends Ability
                 flag = true;
             }
 
-            if (player.motionY <= speed * (flag ? 2 : 1) && player.motionY >= -speed * (flag ? 2 : 1) && player.motionY > 0)
+            if (player.motionY <= speed * 1.2 && player.motionY > 0)
             {
-                player.motionY *= speed * 1.1D;
+                player.motionY *= speed * 1.2;
             }
 
             if (player.motionY < 0 && !player.isSneaking())
