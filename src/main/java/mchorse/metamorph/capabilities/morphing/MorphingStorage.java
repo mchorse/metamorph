@@ -35,6 +35,8 @@ public class MorphingStorage implements IStorage<IMorphing>
 
         for (String acquiredMorph : instance.getAcquiredMorphs())
         {
+            System.out.println(acquiredMorph);
+
             list.appendTag(new NBTTagString(acquiredMorph));
         }
 
@@ -48,9 +50,7 @@ public class MorphingStorage implements IStorage<IMorphing>
         {
             NBTTagCompound tag = (NBTTagCompound) nbt;
             NBTTagList list = (NBTTagList) tag.getTag("Morphs");
-            List<String> acquiredMorphs = new ArrayList<String>();
 
-            instance.setAcquiredMorphs(acquiredMorphs);
             instance.setCurrentMorph(tag.getString("Morph"), null, true);
 
             if (list == null)
@@ -58,10 +58,14 @@ public class MorphingStorage implements IStorage<IMorphing>
                 return;
             }
 
+            List<String> acquiredMorphs = new ArrayList<String>();
+
             for (int i = 0; i < list.tagCount(); i++)
             {
                 acquiredMorphs.add(list.getStringTagAt(i));
             }
+
+            instance.setAcquiredMorphs(acquiredMorphs);
         }
     }
 }
