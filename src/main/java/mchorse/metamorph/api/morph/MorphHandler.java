@@ -7,7 +7,6 @@ import mchorse.metamorph.capabilities.morphing.IMorphing;
 import mchorse.metamorph.capabilities.morphing.MorphingProvider;
 import mchorse.metamorph.entity.EntityMorph;
 import net.minecraft.entity.Entity;
-import net.minecraft.entity.EntityList;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraftforge.event.entity.living.LivingAttackEvent;
 import net.minecraftforge.event.entity.living.LivingDeathEvent;
@@ -57,7 +56,7 @@ public class MorphHandler
             return;
         }
 
-        String morph = EntityList.getEntityString(target);
+        String morph = MorphManager.INSTANCE.morphNameFromEntity(target);
 
         if (!MorphManager.INSTANCE.morphs.containsKey(morph))
         {

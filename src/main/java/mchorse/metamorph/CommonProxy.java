@@ -75,9 +75,11 @@ public class CommonProxy
         this.models.load("Ghast");
         this.models.load("LavaSlime", "magma_cube");
         this.models.load("Silverfish");
+        this.models.load("Skeleton");
         this.models.load("Slime");
         this.models.load("Spider");
         this.models.load("Witch");
+        this.models.load("WitherSkeleton", "wither_skeleton");
         this.models.load("Zombie");
     }
 }

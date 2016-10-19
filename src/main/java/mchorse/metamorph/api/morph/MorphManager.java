@@ -34,7 +34,10 @@ import mchorse.metamorph.api.actions.Teleport;
 import mchorse.metamorph.api.attacks.KnockbackAttack;
 import mchorse.metamorph.api.attacks.PoisonAttack;
 import mchorse.metamorph.api.attacks.WitherAttack;
+import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityList;
+import net.minecraft.entity.monster.EntitySkeleton;
+import net.minecraft.entity.monster.SkeletonType;
 
 /**
  * Morph manager class
@@ -146,6 +149,28 @@ public class MorphManager
      */
     private void loadMorphsFromEntityList()
     {}
+
+    /**
+     * Get morph from the entity
+     * 
+     * Here I should add some kind of mechanism that allows people to substitute 
+     * the name of the morph based on the given entity (in the future with 
+     * introduction of the public API).
+     */
+    public String morphNameFromEntity(Entity entity)
+    {
+        if (entity instanceof EntitySkeleton)
+        {
+            SkeletonType skeleton = ((EntitySkeleton) entity).func_189771_df();
+
+            if (skeleton.equals(SkeletonType.WITHER))
+            {
+                return "WitherSkeleton";
+            }
+        }
+
+        return EntityList.getEntityString(entity);
+    }
 
     /**
      * Get key of the given morph. If given morph isn't registered in morph 

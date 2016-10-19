@@ -14,6 +14,8 @@ import net.minecraftforge.client.event.RenderSpecificHandEvent;
  * This class is responsible for rendering hands in first person. There's 
  * lots of stuff to consider when dealing with first person. I wonder how 
  * hard it will be to implement. It was pretty hard.
+ * 
+ * Some of the code was borrowed from {@link ItemRenderer}, I think. 
  */
 public class RenderHands
 {
