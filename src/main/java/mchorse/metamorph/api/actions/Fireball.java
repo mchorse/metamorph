@@ -25,6 +25,11 @@ public class Fireball implements IAction
             return;
         }
 
+        if (player.getCooledAttackStrength(0.0F) < 1)
+        {
+            return;
+        }
+
         Vec3d vec3d = player.getLook(1.0F);
 
         double d1 = 4.0D;
@@ -42,5 +47,6 @@ public class Fireball implements IAction
         entitylargefireball.posZ = player.posZ;
 
         world.spawnEntityInWorld(entitylargefireball);
+        player.resetCooldown();
     }
 }

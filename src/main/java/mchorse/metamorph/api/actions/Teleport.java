@@ -3,8 +3,6 @@ package mchorse.metamorph.api.actions;
 import mchorse.metamorph.api.IAction;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
-import net.minecraft.item.Item;
-import net.minecraft.util.CooldownTracker;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.RayTraceResult;
@@ -39,10 +37,8 @@ public class Teleport implements IAction
         if (result != null && result.typeOfHit == Type.BLOCK)
         {
             BlockPos block = result.getBlockPos();
-            CooldownTracker tracker = player.getCooldownTracker();
-            Item item = player.getHeldItemMainhand().getItem();
 
-            if (tracker.getCooldown(item, 1.0F) > 0.0F)
+            if (player.getCooledAttackStrength(0.0F) < 1)
             {
                 return;
             }
@@ -57,7 +53,7 @@ public class Teleport implements IAction
             double z = block.getZ() + 0.5F;
 
             player.setPositionAndUpdate(x, y, z);
-            tracker.setCooldown(item, 40);
+            player.resetCooldown();
         }
     }
 }

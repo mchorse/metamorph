@@ -37,6 +37,11 @@ public class Potions implements IAction
             return;
         }
 
+        if (player.getCooledAttackStrength(0.0F) < 1)
+        {
+            return;
+        }
+
         Vec3d look = player.getLook(1.0F);
         PotionType effect = PotionTypes.HARMING;
 
@@ -60,5 +65,6 @@ public class Potions implements IAction
         potion.setThrowableHeading(look.xCoord, look.yCoord, look.zCoord, 0.75F, 8.0F);
 
         world.spawnEntityInWorld(potion);
+        player.resetCooldown();
     }
 }
