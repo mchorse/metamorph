@@ -35,8 +35,6 @@ public class MorphingStorage implements IStorage<IMorphing>
 
         for (String acquiredMorph : instance.getAcquiredMorphs())
         {
-            System.out.println(acquiredMorph);
-
             list.appendTag(new NBTTagString(acquiredMorph));
         }
 

@@ -71,7 +71,7 @@ public class Morphing implements IMorphing
     {
         if (name.isEmpty())
         {
-            this.demorph();
+            this.demorph(player);
 
             return;
         }
@@ -96,8 +96,13 @@ public class Morphing implements IMorphing
     }
 
     @Override
-    public void demorph()
+    public void demorph(EntityPlayer player)
     {
+        if (player != null && this.morph != null)
+        {
+            this.morph.demorph(player);
+        }
+
         this.morph = null;
         this.name = "";
     }
@@ -112,6 +117,6 @@ public class Morphing implements IMorphing
     public void copy(IMorphing morphing, EntityPlayer player)
     {
         this.acquiredMorphs = morphing.getAcquiredMorphs();
-        this.demorph();
+        this.demorph(player);
     }
 }

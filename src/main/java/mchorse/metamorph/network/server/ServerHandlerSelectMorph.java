@@ -20,7 +20,7 @@ public class ServerHandlerSelectMorph extends ServerMessageHandler<PacketSelectM
 
         if (message.index == -1)
         {
-            capability.demorph();
+            capability.demorph(player);
         }
 
         if (message.index >= 0 && morphs.get(message.index) != null)

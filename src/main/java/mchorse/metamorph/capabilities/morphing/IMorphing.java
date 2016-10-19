@@ -51,7 +51,7 @@ public interface IMorphing
     /**
      * Demorph this capability 
      */
-    public void demorph();
+    public void demorph(EntityPlayer player);
 
     /**
      * Is this capability is morphed at all 
