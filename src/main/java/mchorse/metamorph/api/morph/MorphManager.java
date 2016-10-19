@@ -19,6 +19,7 @@ import mchorse.metamorph.api.abilities.FireProof;
 import mchorse.metamorph.api.abilities.Fly;
 import mchorse.metamorph.api.abilities.Glide;
 import mchorse.metamorph.api.abilities.Jumping;
+import mchorse.metamorph.api.abilities.PreventFall;
 import mchorse.metamorph.api.abilities.SnowWalk;
 import mchorse.metamorph.api.abilities.SunAllergy;
 import mchorse.metamorph.api.abilities.Swim;
@@ -69,6 +70,7 @@ public class MorphManager
         abilities.put("fly", new Fly());
         abilities.put("glide", new Glide());
         abilities.put("jumping", new Jumping());
+        abilities.put("prevent_fall", new PreventFall());
         abilities.put("sun_allergy", new SunAllergy());
         abilities.put("snow_walk", new SnowWalk());
         abilities.put("swim", new Swim());

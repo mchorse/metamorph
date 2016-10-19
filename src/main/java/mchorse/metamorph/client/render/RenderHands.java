@@ -42,15 +42,17 @@ public class RenderHands
         GlStateManager.disableCull();
 
         this.render.setupModel(player);
-        ;
 
-        if (side == EnumHandSide.LEFT)
+        if (this.render.getMainModel() != null)
         {
-            this.render.renderLeftArm(player);
-        }
-        else
-        {
-            this.render.renderRightArm(player);
+            if (side == EnumHandSide.LEFT)
+            {
+                this.render.renderLeftArm(player);
+            }
+            else
+            {
+                this.render.renderRightArm(player);
+            }
         }
 
         GlStateManager.popMatrix();

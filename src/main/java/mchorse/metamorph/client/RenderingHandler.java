@@ -64,7 +64,7 @@ public class RenderingHandler
             return;
         }
 
-        if (this.render.getMainModel() != null && event.getItemStack() == null && event.getHand() == EnumHand.MAIN_HAND)
+        if (event.getItemStack() == null && event.getHand() == EnumHand.MAIN_HAND)
         {
             this.hand.render(player, event);
         }
