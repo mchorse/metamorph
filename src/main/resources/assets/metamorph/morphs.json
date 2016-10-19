@@ -1,6 +1,6 @@
 {
 	"Bat": {
-		"abilities": ["fly", "night_vision"],
+		"abilities": ["fly", "night_vision", "prevent_fall"],
         "health": 6
 	},
 	"CaveSpider": {

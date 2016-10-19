@@ -52,7 +52,7 @@ public class EntityMorph extends EntityLiving implements IEntityAdditionalSpawnD
         this.owner = owner;
         this.morph = morph;
 
-        this.setCustomNameTag(morph);
+        this.setCustomNameTag(morph + " Morph");
     }
 
     /**
@@ -76,8 +76,6 @@ public class EntityMorph extends EntityLiving implements IEntityAdditionalSpawnD
     {
         super.onUpdate();
 
-        this.motionY = 0;
-
         if (this.timer > 0)
         {
             this.timer--;
@@ -98,14 +96,10 @@ public class EntityMorph extends EntityLiving implements IEntityAdditionalSpawnD
 
             double dist = Math.sqrt(dx * dx + dz * dz);
 
-            if (dist < this.player.width * 1.2)
+            if (dist < this.player.width * 1.25)
             {
                 this.setDead();
                 this.grantMorph();
-            }
-            else if (dist < 12.0F)
-            {
-                this.advanceToPlayer(dx, dy, dz, dist);
             }
         }
     }

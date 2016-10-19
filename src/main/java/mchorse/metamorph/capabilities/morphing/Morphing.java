@@ -117,6 +117,6 @@ public class Morphing implements IMorphing
     public void copy(IMorphing morphing, EntityPlayer player)
     {
         this.acquiredMorphs = morphing.getAcquiredMorphs();
-        this.demorph(player);
+        this.setCurrentMorph(morphing.getCurrentMorphName(), player, true);
     }
 }

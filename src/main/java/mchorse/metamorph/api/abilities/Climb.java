@@ -15,8 +15,9 @@ public class Climb extends Ability
     {
         if (player.isCollidedHorizontally)
         {
-            player.fallDistance = 0.0F;
             player.motionY = player.isSneaking() ? 0 : 0.2D;
         }
+
+        player.fallDistance = 0.0F;
     }
 }

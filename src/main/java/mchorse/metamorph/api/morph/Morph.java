@@ -44,7 +44,7 @@ public class Morph
     /**
      * Update size of the player based on the given morph.
      */
-    private void updateSize(EntityPlayer player, IMorphing cap)
+    public void updateSize(EntityPlayer player, IMorphing cap)
     {
         Model data = cap.getCurrentMorph().model;
         String key = player.isElytraFlying() ? "flying" : (player.isSneaking() ? "sneaking" : "standing");

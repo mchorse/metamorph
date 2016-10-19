@@ -24,7 +24,7 @@ public class RenderMorph extends RenderLivingBase<EntityMorph>
     @Override
     protected boolean canRenderName(EntityMorph entity)
     {
-        return false;
+        return true;
     }
 
     @Override
