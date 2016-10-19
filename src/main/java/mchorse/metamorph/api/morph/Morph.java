@@ -33,6 +33,7 @@ public class Morph
     public void update(EntityPlayer player, IMorphing cap)
     {
         this.updateSize(player, cap);
+        this.setMaxHealth(player, this.health);
 
         for (IAbility ability : abilities)
         {
@@ -135,7 +136,18 @@ public class Morph
         float ratio = player.getHealth() / player.getMaxHealth();
         float proportionalHealth = Math.round(health * ratio);
 
-        player.getEntityAttribute(SharedMonsterAttributes.MAX_HEALTH).setBaseValue(health);
         player.setHealth(proportionalHealth == 0 ? 1 : proportionalHealth);
+        this.setMaxHealth(player, health);
+    }
+
+    /**
+     * Set player's max health
+     */
+    private void setMaxHealth(EntityPlayer player, int health)
+    {
+        if (player.getMaxHealth() != health)
+        {
+            player.getEntityAttribute(SharedMonsterAttributes.MAX_HEALTH).setBaseValue(health);
+        }
     }
 }

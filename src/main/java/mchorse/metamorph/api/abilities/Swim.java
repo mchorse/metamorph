@@ -18,14 +18,10 @@ public class Swim extends Ability
 
         if (player.isInWater())
         {
-            boolean flag = false;
-
             if (player.moveForward != 0 || player.moveStrafing != 0)
             {
                 if (player.motionX <= speed && player.motionX >= -speed) player.motionX *= speed;
                 if (player.motionZ <= speed && player.motionZ >= -speed) player.motionZ *= speed;
-
-                flag = true;
             }
 
             if (player.motionY <= speed * 1.2 && player.motionY > 0)
