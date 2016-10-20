@@ -70,6 +70,7 @@ public class CommonProxy
         this.models.load("VillagerGolem", "iron_golem");
 
         /* Hostile mobs */
+        this.models.load("Blaze");
         this.models.load("CaveSpider", "cave_spider");
         this.models.load("Creeper");
         this.models.load("Ghast");
