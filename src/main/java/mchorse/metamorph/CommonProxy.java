@@ -73,6 +73,7 @@ public class CommonProxy
         this.models.load("CaveSpider", "cave_spider");
         this.models.load("Creeper");
         this.models.load("Ghast");
+        this.models.load("Guardian");
         this.models.load("LavaSlime", "magma_cube");
         this.models.load("Silverfish");
         this.models.load("Skeleton");

@@ -3,6 +3,8 @@ package mchorse.metamorph.entity;
 import java.util.UUID;
 
 import io.netty.buffer.ByteBuf;
+import mchorse.metamorph.Metamorph;
+import mchorse.metamorph.api.Model;
 import mchorse.metamorph.capabilities.morphing.IMorphing;
 import mchorse.metamorph.capabilities.morphing.MorphingProvider;
 import mchorse.metamorph.network.Dispatcher;
@@ -52,7 +54,23 @@ public class EntityMorph extends EntityLiving implements IEntityAdditionalSpawnD
         this.owner = owner;
         this.morph = morph;
 
+        this.setSize(morph);
         this.setCustomNameTag(morph + " Morph");
+    }
+
+    /**
+     * Set size based on the morph's model
+     */
+    private void setSize(String morph)
+    {
+        Model data = Metamorph.proxy.models.models.get(morph);
+
+        if (data != null)
+        {
+            float[] size = data.poses.get("standing").size;
+
+            this.setSize(MathHelper.clamp_float(size[0], 0, 1.5F), MathHelper.clamp_float(size[0], 0, 1.5F));
+        }
     }
 
     /**
@@ -94,9 +112,9 @@ public class EntityMorph extends EntityLiving implements IEntityAdditionalSpawnD
             double dy = this.posY - this.player.posY;
             double dz = this.posZ - this.player.posZ;
 
-            double dist = Math.sqrt(dx * dx + dz * dz);
+            double dist = Math.sqrt(dx * dx + dy * dy + dz * dz);
 
-            if (dist < this.player.width * 1.25)
+            if (dist < this.width / 2 * 1.2 + this.player.width / 2 * 1.2)
             {
                 this.setDead();
                 this.grantMorph();
@@ -196,6 +214,7 @@ public class EntityMorph extends EntityLiving implements IEntityAdditionalSpawnD
         this.owner = owner.isEmpty() ? null : UUID.fromString(owner);
         this.morph = ByteBufUtils.readUTF8String(buffer);
 
+        this.setSize(morph);
         this.setCustomNameTag(morph);
     }
 }

@@ -50,7 +50,7 @@ public class ModelSquid extends ModelCustom implements IModelCustom
                 continue;
             }
 
-            limb.rotateAngleX = pi / 8 - (float) Math.sin(limbSwing / (inWater ? 4 : 2)) * pi / 8;
+            limb.rotateAngleX = pi / 8 + (float) Math.sin(limbSwing / (inWater ? 4 : 2)) * pi / 8;
         }
 
         if (inWater)
