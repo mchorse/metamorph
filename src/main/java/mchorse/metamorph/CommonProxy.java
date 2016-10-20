@@ -50,38 +50,62 @@ public class CommonProxy
     public void loadModels()
     {
         /* Animals */
-        this.models.load("Bat");
-        this.models.load("Chicken");
-        this.models.load("Cow");
-        this.models.load("MushroomCow", "mooshroom");
-        this.models.load("Ozelot", "ocelot");
-        this.models.load("Pig");
-        this.models.load("PolarBear", "polar_bear");
-        this.models.load("Rabbit");
-        this.models.load("Sheep");
-        this.models.load("Squid");
-        this.models.load("Wolf");
+        this.loadModel("Bat");
+        this.loadModel("Chicken");
+        this.loadModel("Cow");
+        this.loadModel("MushroomCow", "mooshroom");
+        this.loadModel("Ozelot", "ocelot");
+        this.loadModel("Pig");
+        this.loadModel("PolarBear", "polar_bear");
+        this.loadModel("Rabbit");
+        this.loadModel("Sheep");
+        this.loadModel("Squid");
+        this.loadModel("Wolf");
 
         /* Neutral mobs */
-        this.models.load("Enderman");
-        this.models.load("PigZombie", "zombie_pigman");
-        this.models.load("SnowMan", "snow_man");
-        this.models.load("Villager");
-        this.models.load("VillagerGolem", "iron_golem");
+        this.loadModel("Enderman");
+        this.loadModel("PigZombie", "zombie_pigman");
+        this.loadModel("SnowMan", "snow_man");
+        this.loadModel("Villager");
+        this.loadModel("VillagerGolem", "iron_golem");
 
         /* Hostile mobs */
-        this.models.load("Blaze");
-        this.models.load("CaveSpider", "cave_spider");
-        this.models.load("Creeper");
-        this.models.load("Ghast");
-        this.models.load("Guardian");
-        this.models.load("LavaSlime", "magma_cube");
-        this.models.load("Silverfish");
-        this.models.load("Skeleton");
-        this.models.load("Slime");
-        this.models.load("Spider");
-        this.models.load("Witch");
-        this.models.load("WitherSkeleton", "wither_skeleton");
-        this.models.load("Zombie");
+        this.loadModel("Blaze");
+        this.loadModel("CaveSpider", "cave_spider");
+        this.loadModel("Creeper");
+        this.loadModel("Ghast");
+        this.loadModel("Guardian");
+        this.loadModel("LavaSlime", "magma_cube");
+        this.loadModel("Silverfish");
+        this.loadModel("Skeleton");
+        this.loadModel("Slime");
+        this.loadModel("Spider");
+        this.loadModel("Witch");
+        this.loadModel("WitherSkeleton", "wither_skeleton");
+        this.loadModel("Zombie");
+    }
+
+    /**
+     * Load model with name 
+     */
+    private void loadModel(String model)
+    {
+        this.loadModel(model, model.toLowerCase());
+    }
+
+    /**
+     * Load model with name and filename 
+     */
+    private void loadModel(String model, String filename)
+    {
+        try
+        {
+            this.models.load(model, filename);
+        }
+        catch (Exception e)
+        {
+            System.out.println("An exception was raised when loading '" + model + "' model!");
+            e.printStackTrace();
+        }
     }
 }
