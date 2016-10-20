@@ -14,7 +14,9 @@ import mchorse.metamorph.Metamorph;
 import mchorse.metamorph.api.IAbility;
 import mchorse.metamorph.api.IAction;
 import mchorse.metamorph.api.IAttackAbility;
+import mchorse.metamorph.api.abilities.BlazeSmoke;
 import mchorse.metamorph.api.abilities.Climb;
+import mchorse.metamorph.api.abilities.Ender;
 import mchorse.metamorph.api.abilities.FireProof;
 import mchorse.metamorph.api.abilities.Fly;
 import mchorse.metamorph.api.abilities.Glide;
@@ -70,14 +72,16 @@ public class MorphManager
     {
         /* Register default abilities */
         abilities.put("climb", new Climb());
+        abilities.put("ender", new Ender());
         abilities.put("fire_proof", new FireProof());
         abilities.put("fly", new Fly());
         abilities.put("glide", new Glide());
         abilities.put("jumping", new Jumping());
         abilities.put("night_vision", new NightVision());
         abilities.put("prevent_fall", new PreventFall());
-        abilities.put("sun_allergy", new SunAllergy());
+        abilities.put("smoke", new BlazeSmoke());
         abilities.put("snow_walk", new SnowWalk());
+        abilities.put("sun_allergy", new SunAllergy());
         abilities.put("swim", new Swim());
         abilities.put("water_allergy", new WaterAllergy());
         abilities.put("water_breath", new WaterBreath());

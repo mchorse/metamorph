@@ -69,7 +69,7 @@ public class EntityMorph extends EntityLiving implements IEntityAdditionalSpawnD
         {
             float[] size = data.poses.get("standing").size;
 
-            this.setSize(MathHelper.clamp_float(size[0], 0, 1.5F), MathHelper.clamp_float(size[0], 0, 1.5F));
+            this.setSize(MathHelper.clamp_float(size[0], 0, 1.5F), MathHelper.clamp_float(size[1], 0, 2.0F));
         }
     }
 
@@ -144,32 +144,6 @@ public class EntityMorph extends EntityLiving implements IEntityAdditionalSpawnD
         }
     }
 
-    /**
-     * Advance to current player
-     * 
-     * This method basically turn morph entity in player's side and moves 
-     * toward player.
-     */
-    private void advanceToPlayer(double dx, double dy, double dz, double dist)
-    {
-        final double speed = 0.1;
-
-        this.rotationYaw = (float) (MathHelper.atan2(dz, dx) * (180D / Math.PI)) + 90.0F;
-        this.rotationPitch = (float) (MathHelper.atan2(dy, dist) * (180D / Math.PI));
-
-        if (Math.abs(dx) > speed * 4)
-        {
-            this.motionX = Math.copySign(speed, -dx);
-        }
-
-        this.motionY = Math.copySign(speed, -dy);
-
-        if (Math.abs(dz) > speed * 4)
-        {
-            this.motionZ = Math.copySign(speed, -dz);
-        }
-    }
-
     /* Read / write */
 
     @Override
@@ -197,6 +171,9 @@ public class EntityMorph extends EntityLiving implements IEntityAdditionalSpawnD
 
         this.owner = owner.isEmpty() ? null : UUID.fromString(owner);
         this.morph = compound.getString("Morph");
+
+        this.setSize(morph);
+        this.setCustomNameTag(morph + " Morph");
     }
 
     @Override
@@ -215,6 +192,6 @@ public class EntityMorph extends EntityLiving implements IEntityAdditionalSpawnD
         this.morph = ByteBufUtils.readUTF8String(buffer);
 
         this.setSize(morph);
-        this.setCustomNameTag(morph);
+        this.setCustomNameTag(morph + " Morph");
     }
 }

@@ -48,7 +48,7 @@
 	},
 	
 	"Enderman": {
-		"abilities": ["water_allergy"],
+		"abilities": ["water_allergy", "ender"],
 		"action": "teleport",
         "health": 40
 	},
@@ -70,7 +70,7 @@
 	},
 	
 	"Blaze": {
-		"abilities": ["fly", "fire_proof"],
+		"abilities": ["fly", "fire_proof", "smoke"],
 		"action": "fireball",
         "health": 20
 	},
@@ -84,7 +84,7 @@
         "health": 10
 	},
 	"Guardian": {
-		"abilities": ["water_breath", "swim"],
+		"abilities": ["water_breath", "swim", "jumping"],
         "health": 30
 	},
 	"LavaSlime": {
