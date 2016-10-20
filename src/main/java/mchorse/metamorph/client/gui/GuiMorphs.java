@@ -12,6 +12,8 @@ import org.lwjgl.opengl.GL11;
 import mchorse.metamorph.api.morph.Morph;
 import mchorse.metamorph.api.morph.MorphManager;
 import mchorse.metamorph.client.model.ModelCustom;
+import mchorse.metamorph.network.Dispatcher;
+import mchorse.metamorph.network.common.PacketMorph;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiButton;
 import net.minecraft.client.gui.GuiScreen;
@@ -80,12 +82,23 @@ public class GuiMorphs extends GuiScreen
         this.buttonList.add(close);
     }
 
+    /**
+     * Action dispatcher method
+     * 
+     * This method is responsible for closing this GUI and optionally send a 
+     * message to server with the morph.
+     */
     @Override
     protected void actionPerformed(GuiButton button) throws IOException
     {
         if (button.id == 0)
         {
-            /* Send message to server to morph into selected moprh */
+            MorphCell morph = this.morphs.get(this.selected);
+
+            if (morph != null)
+            {
+                Dispatcher.sendToServer(new PacketMorph(morph.name));
+            }
         }
 
         Minecraft.getMinecraft().displayGuiScreen(null);
@@ -174,7 +187,7 @@ public class GuiMorphs extends GuiScreen
         drawRect(0, 0, width, 30, 0x88000000);
 
         /* Draw labels */
-        this.drawCenteredString(fontRendererObj, I18n.format("metamorph.gui.select"), width / 2, 10, 0xffffff);
+        this.drawCenteredString(fontRendererObj, I18n.format("metamorph.gui.title"), width / 2, 10, 0xffffff);
         this.drawCenteredString(fontRendererObj, selected, width / 2, height - 18, 0xffffff);
 
         /* Don't run with scissor, or you might get clipped */
@@ -199,6 +212,11 @@ public class GuiMorphs extends GuiScreen
 
             Minecraft.getMinecraft().renderEngine.bindTexture(cell.model.model.defaultTexture);
             GuiMenu.drawModel(cell.model, player, x + m / 2, y + 60, scale);
+
+            if (i == this.selected)
+            {
+                this.renderSelected(x, y + 10, m, 60);
+            }
         }
 
         /* Disable scissors */
@@ -206,6 +224,22 @@ public class GuiMorphs extends GuiScreen
 
         /* Render buttons */
         super.drawScreen(mouseX, mouseY, partialTicks);
+    }
+
+    /**
+     * Render a grey outline around the given area.
+     * 
+     * Basically, this method renders selection.
+     */
+    public void renderSelected(int x, int y, int width, int height)
+    {
+        int color = 0xffcccccc;
+
+        this.drawHorizontalLine(x, x + width - 1, y, color);
+        this.drawHorizontalLine(x, x + width - 1, y + height - 1, color);
+
+        this.drawVerticalLine(x, y, y + height - 1, color);
+        this.drawVerticalLine(x + width - 1, y, y + height - 1, color);
     }
 
     /**
