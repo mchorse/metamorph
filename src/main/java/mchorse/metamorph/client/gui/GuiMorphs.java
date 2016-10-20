@@ -11,6 +11,8 @@ import org.lwjgl.opengl.GL11;
 
 import mchorse.metamorph.api.morph.Morph;
 import mchorse.metamorph.api.morph.MorphManager;
+import mchorse.metamorph.capabilities.morphing.IMorphing;
+import mchorse.metamorph.capabilities.morphing.MorphingProvider;
 import mchorse.metamorph.client.model.ModelCustom;
 import mchorse.metamorph.network.Dispatcher;
 import mchorse.metamorph.network.common.PacketMorph;
@@ -47,14 +49,28 @@ public class GuiMorphs extends GuiScreen
 
     /* Initialization code */
 
+    /**
+     * Default constructor
+     * 
+     * This method is responsible for constructing the morphs for rendering and 
+     * also selecting the morph that player uses right now.
+     */
     public GuiMorphs()
     {
         Map<String, Morph> morphs = MorphManager.INSTANCE.morphs;
+        EntityPlayer player = Minecraft.getMinecraft().thePlayer;
+        IMorphing morphing = player.getCapability(MorphingProvider.MORPHING_CAP, null);
+
         int index = 0;
 
         for (String key : new TreeSet<String>(morphs.keySet()))
         {
             this.morphs.add(new MorphCell(key, morphs.get(key), index));
+
+            if (morphing.isMorphed() && key.equals(morphing.getCurrentMorphName()))
+            {
+                this.selected = index;
+            }
 
             index++;
         }
