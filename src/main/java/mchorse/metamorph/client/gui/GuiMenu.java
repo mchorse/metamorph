@@ -10,10 +10,12 @@ import mchorse.metamorph.client.model.ModelCustom;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.Gui;
 import net.minecraft.client.gui.inventory.GuiInventory;
+import net.minecraft.client.model.ModelBase;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.renderer.OpenGlHelper;
 import net.minecraft.client.renderer.RenderHelper;
 import net.minecraft.client.renderer.entity.RenderLivingBase;
+import net.minecraft.client.renderer.entity.RenderManager;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.util.math.MathHelper;
 
@@ -54,14 +56,10 @@ public class GuiMenu extends Gui
 
         /* GUI size */
         int w = (int) (width * 0.8F);
-        int h = (int) (height * 0.2F);
+        int h = (int) (height * 0.3F);
 
         w = w - w % 20;
         h = h - h % 2;
-
-        /* F*$! those ints */
-        float rx = (float) Math.ceil((double) this.mc.displayWidth / (double) width);
-        float ry = (float) Math.ceil((double) this.mc.displayHeight / (double) height);
 
         /* Background */
         int x1 = width / 2 - w / 2;
@@ -71,14 +69,7 @@ public class GuiMenu extends Gui
 
         Gui.drawRect(x1, y1, x2, y2, 0x99000000);
 
-        /* Clipping area around scroll area */
-        int x = (int) (x1 * rx);
-        int y = (int) (this.mc.displayHeight - y2 * ry);
-        int ww = (int) (w * rx);
-        int hh = (int) (h * ry);
-
-        GL11.glScissor(x, y, ww, hh);
-        GL11.glEnable(GL11.GL_SCISSOR_TEST);
+        scissor(x1, y1, w, h, width, height);
 
         this.renderMenu(width, height, w, h);
 
@@ -114,7 +105,7 @@ public class GuiMenu extends Gui
         for (String name : this.getMorph().getAcquiredMorphs())
         {
             int x = width / 2 - w / 2 + i * margin + margin / 2 + 1;
-            int y = height / 2 + h / 2;
+            int y = height / 2 + h / 5;
 
             /* Scroll the position */
             if (offset > w / 2 - margin / 2)
@@ -171,54 +162,14 @@ public class GuiMenu extends Gui
      */
     public void renderMorph(EntityPlayer player, String name, int x, int y, float scale)
     {
-        float factor = 0.0625F;
-
-        GlStateManager.enableColorMaterial();
-        GlStateManager.pushMatrix();
-        GlStateManager.translate(x, y, 50.0F);
-        GlStateManager.scale((-scale), scale, scale);
-        GlStateManager.rotate(180.0F, 0.0F, 0.0F, 1.0F);
-        GlStateManager.rotate(180.0F, 0.0F, 1.0F, 0.0F);
-
-        RenderHelper.enableStandardItemLighting();
-
         Model data = MorphManager.INSTANCE.morphs.get(name).model;
         ModelCustom model = ModelCustom.MODELS.get(name);
 
         model.pose = model.model.poses.get("standing");
         model.swingProgress = 0;
 
-        GlStateManager.pushMatrix();
-        GlStateManager.disableCull();
-
-        GlStateManager.enableRescaleNormal();
-        GlStateManager.scale(-1.0F, -1.0F, 1.0F);
-        GlStateManager.translate(0.0F, -1.501F, 0.0F);
-
-        GlStateManager.enableAlpha();
-
-        model.setLivingAnimations(player, 0, 0, 0);
-        model.setRotationAngles(0, 0, 0, 0, 0, factor, player);
-
         this.mc.renderEngine.bindTexture(data.defaultTexture);
-
-        GlStateManager.enableDepth();
-        GlStateManager.color(1.0F, 1.0F, 1.0F, 1.0F);
-
-        model.render(player, 0, 0, 0, 0, 0, factor);
-
-        GlStateManager.disableDepth();
-
-        GlStateManager.disableRescaleNormal();
-        GlStateManager.disableAlpha();
-        GlStateManager.popMatrix();
-
-        GlStateManager.popMatrix();
-        RenderHelper.disableStandardItemLighting();
-        GlStateManager.disableRescaleNormal();
-        GlStateManager.setActiveTexture(OpenGlHelper.lightmapTexUnit);
-        GlStateManager.disableTexture2D();
-        GlStateManager.setActiveTexture(OpenGlHelper.defaultTexUnit);
+        drawModel(model, player, x, y, scale);
     }
 
     /**
@@ -291,5 +242,76 @@ public class GuiMenu extends Gui
     private int getMorphCount()
     {
         return this.getMorph().getAcquiredMorphs().size();
+    }
+
+    /**
+     * Scissor (clip) the screen 
+     */
+    public static void scissor(int x, int y, int w, int h, int sw, int sh)
+    {
+        Minecraft mc = Minecraft.getMinecraft();
+
+        /* F*$! those ints */
+        float rx = (float) Math.ceil((double) mc.displayWidth / (double) sw);
+        float ry = (float) Math.ceil((double) mc.displayHeight / (double) sh);
+
+        /* Clipping area around scroll area */
+        int xx = (int) (x * rx);
+        int yy = (int) (mc.displayHeight - (y + h) * ry);
+        int ww = (int) (w * rx);
+        int hh = (int) (h * ry);
+
+        GL11.glScissor(xx, yy, ww, hh);
+        GL11.glEnable(GL11.GL_SCISSOR_TEST);
+    }
+
+    /**
+     * Draw a {@link ModelBase} without using the {@link RenderManager} (which 
+     * adds a lot of useless transformations and stuff to the screen rendering).
+     */
+    public static void drawModel(ModelBase model, EntityPlayer player, int x, int y, float scale)
+    {
+        float factor = 0.0625F;
+
+        GlStateManager.enableColorMaterial();
+        GlStateManager.pushMatrix();
+        GlStateManager.translate(x, y, 50.0F);
+        GlStateManager.scale((-scale), scale, scale);
+        GlStateManager.rotate(45.0F, -1.0F, 0.0F, 0.0F);
+        GlStateManager.rotate(45.0F, 0.0F, -1.0F, 0.0F);
+        GlStateManager.rotate(180.0F, 0.0F, 0.0F, 1.0F);
+        GlStateManager.rotate(180.0F, 0.0F, 1.0F, 0.0F);
+
+        RenderHelper.enableStandardItemLighting();
+
+        GlStateManager.pushMatrix();
+        GlStateManager.disableCull();
+
+        GlStateManager.enableRescaleNormal();
+        GlStateManager.scale(-1.0F, -1.0F, 1.0F);
+        GlStateManager.translate(0.0F, -1.501F, 0.0F);
+
+        GlStateManager.enableAlpha();
+
+        model.setLivingAnimations(player, 0, 0, 0);
+        model.setRotationAngles(0, 0, 0, 0, 0, factor, player);
+
+        GlStateManager.enableDepth();
+        GlStateManager.color(1.0F, 1.0F, 1.0F, 1.0F);
+
+        model.render(player, 0, 0, 0, 0, 0, factor);
+
+        GlStateManager.disableDepth();
+
+        GlStateManager.disableRescaleNormal();
+        GlStateManager.disableAlpha();
+        GlStateManager.popMatrix();
+
+        GlStateManager.popMatrix();
+        RenderHelper.disableStandardItemLighting();
+        GlStateManager.disableRescaleNormal();
+        GlStateManager.setActiveTexture(OpenGlHelper.lightmapTexUnit);
+        GlStateManager.disableTexture2D();
+        GlStateManager.setActiveTexture(OpenGlHelper.defaultTexUnit);
     }
 }

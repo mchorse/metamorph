@@ -5,6 +5,7 @@ import org.lwjgl.input.Keyboard;
 import mchorse.metamorph.capabilities.morphing.IMorphing;
 import mchorse.metamorph.capabilities.morphing.MorphingProvider;
 import mchorse.metamorph.client.gui.GuiMenu;
+import mchorse.metamorph.client.gui.GuiMorphs;
 import mchorse.metamorph.network.Dispatcher;
 import mchorse.metamorph.network.common.PacketAction;
 import mchorse.metamorph.network.common.PacketSelectMorph;
@@ -25,6 +26,7 @@ public class KeyboardHandler
 {
     /* Action key */
     private KeyBinding keyAction;
+    private KeyBinding keyMenu;
 
     /* Morph related keys */
     private KeyBinding keyNextMorph;
@@ -38,12 +40,14 @@ public class KeyboardHandler
         String category = "key.metamorph";
 
         keyAction = new KeyBinding("key.metamorph.action", Keyboard.KEY_V, category);
+        keyMenu = new KeyBinding("key.metamorph.menu", Keyboard.KEY_B, category);
 
         keyNextMorph = new KeyBinding("key.metamorph.morph.next", Keyboard.KEY_RBRACKET, category);
         keyPrevMorph = new KeyBinding("key.metamorph.morph.prev", Keyboard.KEY_LBRACKET, category);
         keySelectMorph = new KeyBinding("key.metamorph.morph.select", Keyboard.KEY_RETURN, category);
 
         ClientRegistry.registerKeyBinding(keyAction);
+        ClientRegistry.registerKeyBinding(keyMenu);
 
         ClientRegistry.registerKeyBinding(keyNextMorph);
         ClientRegistry.registerKeyBinding(keyPrevMorph);
@@ -59,6 +63,8 @@ public class KeyboardHandler
     @SubscribeEvent
     public void onKey(InputEvent.KeyInputEvent event)
     {
+        final Minecraft mc = Minecraft.getMinecraft();
+
         /* Action */
         if (keyAction.isPressed())
         {
@@ -71,6 +77,11 @@ public class KeyboardHandler
             {
                 capability.getCurrentMorph().action(player);
             }
+        }
+
+        if (keyMenu.isPressed() && mc.thePlayer.isCreative())
+        {
+            mc.displayGuiScreen(new GuiMorphs());
         }
 
         /* Morphing */

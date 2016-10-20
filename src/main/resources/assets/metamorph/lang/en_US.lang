@@ -1,12 +1,19 @@
 #PARSE_ESCAPES
 
-entity.metamorph.Morph.name=Morphing
+entity.metamorph.Morph.name=Morph
 
 # Keyboard bindings strings
 key.metamorph=Metamorph
 
 key.metamorph.action=Use action
+key.metamorph.menu=Creative morph menu
 
 key.metamorph.morph.next=Next morph
 key.metamorph.morph.prev=Previous morph
 key.metamorph.morph.select=Select current morph
+
+# GUI
+metamorph.gui.title=Creative Morphs Menu
+metamorph.gui.morph=Morph
+metamorph.gui.close=Close
+metamorph.gui.no_morph=No Morph Selected
