@@ -16,7 +16,9 @@ public class Jump implements IAction
     {
         if (player.onGround)
         {
+            player.motionX *= 4.0;
             player.motionY = 0.75;
+            player.motionZ *= 4.0;
         }
     }
 }
