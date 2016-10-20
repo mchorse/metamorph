@@ -8,6 +8,7 @@ import mchorse.metamorph.capabilities.morphing.IMorphing;
 import mchorse.metamorph.capabilities.morphing.MorphingProvider;
 import mchorse.metamorph.client.model.ModelCustom;
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.entity.EntityPlayerSP;
 import net.minecraft.client.gui.Gui;
 import net.minecraft.client.gui.inventory.GuiInventory;
 import net.minecraft.client.model.ModelBase;
@@ -81,13 +82,11 @@ public class GuiMenu extends Gui
      * 
      * Pretty big method, huh? Big mix of math and rendering combined in this 
      * method.
-     * 
-     * @todo add player
      */
     public void renderMenu(int width, int height, int w, int h)
     {
         EntityPlayer player = this.mc.thePlayer;
-        String label = "Player";
+        String label = "Demorph";
 
         int scale = (int) (height * 0.17F / 2);
         int margin = width / 10;
@@ -102,19 +101,41 @@ public class GuiMenu extends Gui
 
         offset = (int) MathHelper.clamp_float(offset, 0, maxScroll);
 
+        /* Render player */
+        int x = width / 2 - w / 2 + i * margin + margin / 2 + 1;
+        int y = height / 2 + h / 5;
+
+        /* Scroll the position */
+        if (offset > w / 2 - margin * 1.5)
+        {
+            x -= offset - (w / 2 - margin * 1.5);
+        }
+
+        /* Render border around the selected morph */
+        if (this.index + 1 == i)
+        {
+            this.renderSelected(x - margin / 2, height / 2 - h / 2 + 1, margin, h - 2);
+        }
+
+        /* Render morph itself */
+        this.renderPlayer(player, x, y - 2, scale);
+
+        i++;
+
+        /* Render morphs */
         for (String name : this.getMorph().getAcquiredMorphs())
         {
-            int x = width / 2 - w / 2 + i * margin + margin / 2 + 1;
-            int y = height / 2 + h / 5;
+            x = width / 2 - w / 2 + i * margin + margin / 2 + 1;
+            y = height / 2 + h / 5;
 
             /* Scroll the position */
-            if (offset > w / 2 - margin / 2)
+            if (offset > w / 2 - margin * 1.5)
             {
-                x -= offset - (w / 2 - margin / 2);
+                x -= offset - (w / 2 - margin * 1.5);
             }
 
             /* Render border around the selected morph */
-            if (this.index == i)
+            if (this.index + 1 == i)
             {
                 this.renderSelected(x - margin / 2, height / 2 - h / 2 + 1, margin, h - 2);
 
@@ -170,6 +191,18 @@ public class GuiMenu extends Gui
 
         this.mc.renderEngine.bindTexture(data.defaultTexture);
         drawModel(model, player, x, y, scale);
+    }
+
+    /**
+     * Render player 
+     */
+    public void renderPlayer(EntityPlayer player, int x, int y, int scale)
+    {
+        EntityPlayerSP entity = (EntityPlayerSP) player;
+        RenderLivingBase<EntityPlayerSP> render = (RenderLivingBase<EntityPlayerSP>) this.mc.getRenderManager().getEntityRenderObject(entity);
+
+        this.mc.renderEngine.bindTexture(entity.getLocationSkin());
+        drawModel(render.getMainModel(), player, x, y, scale);
     }
 
     /**
