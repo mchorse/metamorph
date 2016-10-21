@@ -12,7 +12,6 @@ import mchorse.metamorph.client.render.RenderMorph;
 import mchorse.metamorph.client.render.RenderPlayer;
 import mchorse.metamorph.entity.EntityMorph;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.entity.EntityPlayerSP;
 import net.minecraft.client.renderer.entity.RenderManager;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraftforge.common.MinecraftForge;
@@ -93,6 +92,6 @@ public class ClientProxy extends CommonProxy
     @Override
     public boolean isOwnPlayer(EntityPlayer player)
     {
-        return player instanceof EntityPlayerSP;
+        return player == Minecraft.getMinecraft().thePlayer;
     }
 }
