@@ -12,7 +12,9 @@ import mchorse.metamorph.client.render.RenderMorph;
 import mchorse.metamorph.client.render.RenderPlayer;
 import mchorse.metamorph.entity.EntityMorph;
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.entity.EntityPlayerSP;
 import net.minecraft.client.renderer.entity.RenderManager;
+import net.minecraft.entity.player.EntityPlayer;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.fml.client.registry.RenderingRegistry;
 
@@ -80,5 +82,17 @@ public class ClientProxy extends CommonProxy
                 }
             }
         }
+    }
+
+    /**
+     * Checks if the player is side's own
+     * 
+     * This method is responsible for determining to who player belongs. On 
+     * client side it will return true in case if it's the client's player.
+     */
+    @Override
+    public boolean isOwnPlayer(EntityPlayer player)
+    {
+        return player instanceof EntityPlayerSP;
     }
 }

@@ -1,5 +1,6 @@
 package mchorse.metamorph.api.morph;
 
+import mchorse.metamorph.Metamorph;
 import mchorse.metamorph.api.IAbility;
 import mchorse.metamorph.api.IAction;
 import mchorse.metamorph.api.IAttackAbility;
@@ -33,7 +34,11 @@ public class Morph
     public void update(EntityPlayer player, IMorphing cap)
     {
         this.updateSize(player, cap);
-        this.setMaxHealth(player, this.health);
+
+        if (Metamorph.proxy.isOwnPlayer(player))
+        {
+            this.setMaxHealth(player, this.health);
+        }
 
         for (IAbility ability : abilities)
         {

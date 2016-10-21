@@ -20,6 +20,7 @@ import mchorse.metamorph.api.abilities.Ender;
 import mchorse.metamorph.api.abilities.FireProof;
 import mchorse.metamorph.api.abilities.Fly;
 import mchorse.metamorph.api.abilities.Glide;
+import mchorse.metamorph.api.abilities.Hungerless;
 import mchorse.metamorph.api.abilities.Jumping;
 import mchorse.metamorph.api.abilities.NightVision;
 import mchorse.metamorph.api.abilities.PreventFall;
@@ -76,6 +77,7 @@ public class MorphManager
         abilities.put("fire_proof", new FireProof());
         abilities.put("fly", new Fly());
         abilities.put("glide", new Glide());
+        abilities.put("hungerless", new Hungerless());
         abilities.put("jumping", new Jumping());
         abilities.put("night_vision", new NightVision());
         abilities.put("prevent_fall", new PreventFall());

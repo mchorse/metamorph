@@ -58,7 +58,7 @@
         "health": 40
 	},
 	"PigZombie": {
-        "abilities": ["fire_proof"],
+        "abilities": ["fire_proof", "hungerless"],
         "health": 20
     },
     "SnowMan": {
@@ -117,7 +117,7 @@
         "health": 26
     },
 	"Zombie": {
-		"abilities": ["sun_allergy"],
+		"abilities": ["sun_allergy", "hungerless"],
         "health": 20
 	}
 }

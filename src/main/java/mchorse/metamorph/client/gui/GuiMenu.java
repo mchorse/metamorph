@@ -108,7 +108,7 @@ public class GuiMenu extends Gui
         /* Render morphs */
         for (int i = 0; i <= morphs.size(); i++)
         {
-            String name = i == 0 ? player.getName() : morphs.get(i + 1);
+            String name = i == 0 ? player.getName() : morphs.get(i - 1);
 
             int x = width / 2 - w / 2 + i * margin + margin / 2 + 1;
             int y = height / 2 + h / 5;
@@ -136,8 +136,6 @@ public class GuiMenu extends Gui
             {
                 this.renderMorph(player, name, x, y - 2, scale);
             }
-
-            i++;
         }
 
         /* Disable scissoring */

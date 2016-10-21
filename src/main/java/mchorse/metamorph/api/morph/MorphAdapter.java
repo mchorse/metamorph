@@ -10,6 +10,7 @@ import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParseException;
 
+import mchorse.metamorph.Metamorph;
 import mchorse.metamorph.api.IAbility;
 
 /**
@@ -38,7 +39,16 @@ public class MorphAdapter implements JsonDeserializer<Morph>
         {
             for (JsonElement ability : object.get("abilities").getAsJsonArray())
             {
-                abilities.add(manager.abilities.get(ability.getAsString()));
+                IAbility iability = manager.abilities.get(ability.getAsString());
+
+                if (iability != null)
+                {
+                    abilities.add(iability);
+                }
+                else
+                {
+                    Metamorph.log("Ability '" + ability.getAsString() + "' couldn't be found!");
+                }
             }
 
             morph.abilities = abilities.toArray(new IAbility[abilities.size()]);
