@@ -15,18 +15,19 @@ public class Swim extends Ability
     public void update(EntityPlayer player)
     {
         double speed = 1.25D;
+        double maxSpeed = speed * 0.75;
 
         if (player.isInWater())
         {
             if (player.moveForward != 0 || player.moveStrafing != 0)
             {
-                if (player.motionX <= speed && player.motionX >= -speed) player.motionX *= speed;
-                if (player.motionZ <= speed && player.motionZ >= -speed) player.motionZ *= speed;
+                if (player.motionX <= maxSpeed && player.motionX >= -maxSpeed) player.motionX *= speed;
+                if (player.motionZ <= maxSpeed && player.motionZ >= -maxSpeed) player.motionZ *= speed;
             }
 
-            if (player.motionY <= speed * 1.2 && player.motionY > 0)
+            if (Math.abs(player.motionY) <= maxSpeed)
             {
-                player.motionY *= speed * 1.2;
+                player.motionY *= speed;
             }
 
             if (player.motionY < 0 && !player.isSneaking())
