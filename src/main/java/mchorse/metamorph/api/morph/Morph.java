@@ -34,11 +34,7 @@ public class Morph
     public void update(EntityPlayer player, IMorphing cap)
     {
         this.updateSize(player, cap);
-
-        if (Metamorph.proxy.isOwnPlayer(player))
-        {
-            this.setMaxHealth(player, this.health);
-        }
+        this.setMaxHealth(player, this.health);
 
         for (IAbility ability : abilities)
         {
@@ -138,6 +134,11 @@ public class Morph
      */
     private void setHealth(EntityPlayer player, int health)
     {
+        if (!Metamorph.proxy.isOwnPlayer(player))
+        {
+            return;
+        }
+
         float ratio = player.getHealth() / player.getMaxHealth();
         float proportionalHealth = Math.round(health * ratio);
 
@@ -150,7 +151,7 @@ public class Morph
      */
     private void setMaxHealth(EntityPlayer player, int health)
     {
-        if (player.getMaxHealth() != health)
+        if (player.getMaxHealth() != health && Metamorph.proxy.isOwnPlayer(player))
         {
             player.getEntityAttribute(SharedMonsterAttributes.MAX_HEALTH).setBaseValue(health);
         }
