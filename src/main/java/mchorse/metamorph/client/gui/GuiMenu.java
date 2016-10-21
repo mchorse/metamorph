@@ -200,9 +200,11 @@ public class GuiMenu extends Gui
     {
         EntityPlayerSP entity = (EntityPlayerSP) player;
         RenderLivingBase<EntityPlayerSP> render = (RenderLivingBase<EntityPlayerSP>) this.mc.getRenderManager().getEntityRenderObject(entity);
+        ModelBase model = render.getMainModel();
 
         this.mc.renderEngine.bindTexture(entity.getLocationSkin());
-        drawModel(render.getMainModel(), player, x, y, scale);
+        model.isChild = false;
+        drawModel(model, player, x, y, scale);
     }
 
     /**

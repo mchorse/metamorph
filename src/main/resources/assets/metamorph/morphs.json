@@ -15,6 +15,11 @@
 	"Cow": {
 	    "health": 10
 	},
+	"EntityHorse": {
+		"abilities": ["prevent_fall"],
+		"action": "jump",
+        "health": 24
+	},
 	"MushroomCow": {
 	    "health": 10
 	},

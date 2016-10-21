@@ -53,6 +53,7 @@ public class CommonProxy
         this.loadModel("Bat");
         this.loadModel("Chicken");
         this.loadModel("Cow");
+        this.loadModel("EntityHorse", "horse");
         this.loadModel("MushroomCow", "mooshroom");
         this.loadModel("Ozelot", "ocelot");
         this.loadModel("Pig");

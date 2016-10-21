@@ -92,8 +92,8 @@ public class ModelCustom extends ModelBase
 
             if (limb.limb.looking)
             {
-                limb.rotateAngleX = headPitch * 0.017453292F;
-                limb.rotateAngleY = netHeadYaw * 0.017453292F;
+                limb.rotateAngleX += headPitch * 0.017453292F;
+                limb.rotateAngleY += netHeadYaw * 0.017453292F;
             }
 
             if (limb.limb.swinging)
