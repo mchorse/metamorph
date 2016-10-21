@@ -1,6 +1,5 @@
 package mchorse.metamorph.api.morph;
 
-import mchorse.metamorph.Metamorph;
 import mchorse.metamorph.api.IAbility;
 import mchorse.metamorph.api.IAction;
 import mchorse.metamorph.api.IAttackAbility;
@@ -134,11 +133,6 @@ public class Morph
      */
     private void setHealth(EntityPlayer player, int health)
     {
-        if (!Metamorph.proxy.isOwnPlayer(player))
-        {
-            return;
-        }
-
         float ratio = player.getHealth() / player.getMaxHealth();
         float proportionalHealth = Math.round(health * ratio);
 
@@ -151,7 +145,7 @@ public class Morph
      */
     private void setMaxHealth(EntityPlayer player, int health)
     {
-        if (player.getMaxHealth() != health && Metamorph.proxy.isOwnPlayer(player))
+        if (player.getMaxHealth() != health)
         {
             player.getEntityAttribute(SharedMonsterAttributes.MAX_HEALTH).setBaseValue(health);
         }

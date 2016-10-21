@@ -5,6 +5,7 @@ import mchorse.metamorph.capabilities.morphing.MorphingProvider;
 import mchorse.metamorph.network.common.PacketMorphPlayer;
 import net.minecraft.client.entity.EntityPlayerSP;
 import net.minecraft.entity.Entity;
+import net.minecraft.entity.player.EntityPlayer;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
@@ -19,7 +20,7 @@ public class ClientHandlerMorphPlayer extends ClientMessageHandler<PacketMorphPl
 
         if (capability != null)
         {
-            capability.setCurrentMorph(message.morph, player, true);
+            capability.setCurrentMorph(message.morph, (EntityPlayer) entity, true);
         }
     }
 }

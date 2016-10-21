@@ -9,7 +9,6 @@ import mchorse.metamorph.capabilities.morphing.Morphing;
 import mchorse.metamorph.capabilities.morphing.MorphingStorage;
 import mchorse.metamorph.entity.EntityMorph;
 import mchorse.metamorph.network.Dispatcher;
-import net.minecraft.entity.player.EntityPlayer;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.common.capabilities.CapabilityManager;
 import net.minecraftforge.fml.common.registry.EntityRegistry;
@@ -109,16 +108,5 @@ public class CommonProxy
             System.out.println("An exception was raised when loading '" + model + "' model!");
             e.printStackTrace();
         }
-    }
-
-    /**
-     * Checks if the player is side's own
-     * 
-     * This method is responsible for determining to who player belongs. On 
-     * server side it will always return true.
-     */
-    public boolean isOwnPlayer(EntityPlayer player)
-    {
-        return true;
     }
 }
