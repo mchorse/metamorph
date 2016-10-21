@@ -92,6 +92,6 @@ public class ClientProxy extends CommonProxy
     @Override
     public boolean isOwnPlayer(EntityPlayer player)
     {
-        return player == Minecraft.getMinecraft().thePlayer;
+        return player.worldObj.isRemote ? player == Minecraft.getMinecraft().thePlayer : true;
     }
 }

@@ -143,7 +143,7 @@ public class Morph
         float proportionalHealth = Math.round(health * ratio);
 
         this.setMaxHealth(player, health);
-        player.setHealth(proportionalHealth == 0 ? 1 : proportionalHealth);
+        player.setHealth(proportionalHealth <= 0 ? 1 : proportionalHealth);
     }
 
     /**
