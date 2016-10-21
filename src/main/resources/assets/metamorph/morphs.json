@@ -45,7 +45,7 @@
         "health": 16
 	},
 	"Squid": {
-		"abilities": ["water_breath", "swim"],
+		"abilities": ["water_breath", "swim", "night_vision"],
         "health": 10
 	},
 	"Wolf": {

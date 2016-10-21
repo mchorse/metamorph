@@ -1,5 +1,7 @@
 package mchorse.metamorph.client.gui;
 
+import java.util.List;
+
 import org.lwjgl.opengl.GL11;
 
 import mchorse.metamorph.api.Model;
@@ -86,47 +88,30 @@ public class GuiMenu extends Gui
     public void renderMenu(int width, int height, int w, int h)
     {
         EntityPlayer player = this.mc.thePlayer;
+        List<String> morphs = this.getMorph().getAcquiredMorphs();
         String label = "Demorph";
 
+        /* Setup scale and margin */
         int scale = (int) (height * 0.17F / 2);
         int margin = width / 10;
 
+        /* Make sure that margin and scale are divided even */
         scale -= scale % 2;
         margin -= margin % 2;
 
+        /* And comput the offset */
         int offset = this.index * margin;
         int maxScroll = this.getMorphCount() * margin - w / 2 - margin / 2 + 2;
 
-        int i = 0;
-
         offset = (int) MathHelper.clamp_float(offset, 0, maxScroll);
 
-        /* Render player */
-        int x = width / 2 - w / 2 + i * margin + margin / 2 + 1;
-        int y = height / 2 + h / 5;
-
-        /* Scroll the position */
-        if (offset > w / 2 - margin * 1.5)
-        {
-            x -= offset - (w / 2 - margin * 1.5);
-        }
-
-        /* Render border around the selected morph */
-        if (this.index + 1 == i)
-        {
-            this.renderSelected(x - margin / 2, height / 2 - h / 2 + 1, margin, h - 2);
-        }
-
-        /* Render morph itself */
-        this.renderPlayer(player, x, y - 2, scale);
-
-        i++;
-
         /* Render morphs */
-        for (String name : this.getMorph().getAcquiredMorphs())
+        for (int i = 0; i <= morphs.size(); i++)
         {
-            x = width / 2 - w / 2 + i * margin + margin / 2 + 1;
-            y = height / 2 + h / 5;
+            String name = i == 0 ? player.getName() : morphs.get(i + 1);
+
+            int x = width / 2 - w / 2 + i * margin + margin / 2 + 1;
+            int y = height / 2 + h / 5;
 
             /* Scroll the position */
             if (offset > w / 2 - margin * 1.5)
@@ -143,11 +128,19 @@ public class GuiMenu extends Gui
             }
 
             /* Render morph itself */
-            this.renderMorph(player, name, x, y - 2, scale);
+            if (i == 0)
+            {
+                this.renderPlayer(player, x, y - 2, scale);
+            }
+            else
+            {
+                this.renderMorph(player, name, x, y - 2, scale);
+            }
 
             i++;
         }
 
+        /* Disable scissoring */
         GL11.glDisable(GL11.GL_SCISSOR_TEST);
 
         /* Draw the title */

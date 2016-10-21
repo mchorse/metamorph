@@ -137,6 +137,7 @@ public class RenderPlayer extends RenderLivingBase<EntityPlayer>
     {
         Minecraft.getMinecraft().renderEngine.bindTexture(this.getEntityTexture(player));
         this.mainModel.setRotationAngles(0.0F, 0.0F, 0.0F, 0.0F, 0.0F, 0.0625F, player);
+        this.mainModel.swingProgress = 0.0F;
 
         GlStateManager.color(1.0F, 1.0F, 1.0F);
         GlStateManager.enableBlend();
@@ -160,6 +161,7 @@ public class RenderPlayer extends RenderLivingBase<EntityPlayer>
     {
         Minecraft.getMinecraft().renderEngine.bindTexture(this.getEntityTexture(player));
         this.mainModel.setRotationAngles(0.0F, 0.0F, 0.0F, 0.0F, 0.0F, 0.0625F, player);
+        this.mainModel.swingProgress = 0.0F;
 
         GlStateManager.color(1.0F, 1.0F, 1.0F);
         GlStateManager.enableBlend();
