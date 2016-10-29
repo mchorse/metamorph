@@ -9,7 +9,7 @@
 ## How to play
 
 
-To morph into other creature, you must to acquire a *morph* first. To acquire a *morph*, you have to kill a mob, then a ghost of this mob will appear (that's a *morph*), and when you'll pick it up, you'll acquire a *morph*. Only vanilla**\*** mobs have their own morphs.
+To morph into other creature, you must to acquire a *morph* first. To acquire a *morph*, you have to kill a mob, then a ghost of this mob will appear (that's a *morph*), and when you'll pick it up, you'll acquire a *morph*. Only vanilla\* mobs have their own morphs.
 
 Once you have at least one *morph*, you're able to transform into that *morph*. Use "**[**" and "**]**" keys for advancing through the list of *morphs*. Use "**enter**" key for transforming into selected *morph*.
 
@@ -17,7 +17,7 @@ You retain your *morphs* even after death. In creative, you can select any avail
 
 The outer look of *morphs* are quite limited, so you cannot kill a child pink sheep and turn into a child pink sheep. Instead, you'll turn into a white adult sheep.
 
-**\*** – vanilla mobs that are listed below.
+\* – vanilla mobs that are listed below.
 
 
 ## About morphs
