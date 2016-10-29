@@ -1,5 +1,7 @@
 ![Metamorph](./logo.png)
 
+[Download](https://github.com/mchorse/metamorph/releases/) – [PMC post](http://planetminecraft.com/mod/metamorph/) – [Minecraft Forum post](http://www.minecraftforum.net/forums/mapping-and-modding/minecraft-mods/2753214-metamorph-morph-into-vanilla-mobs)
+
 # Metamorph
 
 **Metamorph** (from *[Metamorphosis](https://en.wikipedia.org/wiki/Metamorphosis)*) – a Minecraft mod for 1.10.2, which allow players to morph into different vanilla mobs. Heavily inspired by iChun's Morph mod and zacuke's Shape Shifter Z mod. 
