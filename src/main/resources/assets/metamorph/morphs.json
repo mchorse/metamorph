@@ -1,123 +1,123 @@
 {
-	"Bat": {
-		"abilities": ["fly", "night_vision", "prevent_fall"],
+    "Bat": {
+        "abilities": ["fly", "night_vision", "prevent_fall"],
         "health": 6
-	},
-	"CaveSpider": {
-		"abilities": ["climb"],
+    },
+    "CaveSpider": {
+        "abilities": ["climb"],
         "attack": "poison",
         "health": 12
-	},
-	"Chicken": {
-		"abilities": ["glide"],
+    },
+    "Chicken": {
+        "abilities": ["glide"],
         "health": 4
-	},
-	"Cow": {
-	    "health": 10
-	},
-	"EntityHorse": {
-		"abilities": ["prevent_fall"],
-		"action": "jump",
-        "health": 24
-	},
-	"MushroomCow": {
-	    "health": 10
-	},
-	"Ozelot": {
-	    "health": 10
-	},
-	"Pig": {
-	    "health": 10
-	},
-	"PolarBear": {
-	    "health": 30
-	},
-	"Rabbit": {
-		"abilities": ["prevent_fall"],
-		"action": "jump",
-        "health": 3
-	},
-	"Sheep": {
-	    "health": 8
-	},
-	"Spider": {
-		"abilities": ["climb"],
-        "health": 16
-	},
-	"Squid": {
-		"abilities": ["water_breath", "swim", "night_vision"],
+    },
+    "Cow": {
         "health": 10
-	},
-	"Wolf": {
-	    "health": 8
-	},
-	
-	"Enderman": {
-		"abilities": ["water_allergy", "ender"],
-		"action": "teleport",
+    },
+    "EntityHorse": {
+        "abilities": ["prevent_fall"],
+        "action": "jump",
+        "health": 24
+    },
+    "MushroomCow": {
+        "health": 10
+    },
+    "Ozelot": {
+        "health": 10
+    },
+    "Pig": {
+        "health": 10
+    },
+    "PolarBear": {
+        "health": 30
+    },
+    "Rabbit": {
+        "abilities": ["prevent_fall"],
+        "action": "jump",
+        "health": 3
+    },
+    "Sheep": {
+        "health": 8
+    },
+    "Spider": {
+        "abilities": ["climb"],
+        "health": 16
+    },
+    "Squid": {
+        "abilities": ["water_breath", "swim", "night_vision"],
+        "health": 10
+    },
+    "Wolf": {
+        "health": 8
+    },
+    
+    "Enderman": {
+        "abilities": ["water_allergy", "ender"],
+        "action": "teleport",
         "health": 40
-	},
-	"PigZombie": {
+    },
+    "PigZombie": {
         "abilities": ["fire_proof", "hungerless"],
         "health": 20
     },
     "SnowMan": {
-    	"abilities": ["snow_walk"],
-    	"action": "snowball",
+        "abilities": ["snow_walk"],
+        "action": "snowball",
         "health": 4
     },
-	"Villager": {
-	    "health": 20
-	},
-	"VillagerGolem": {
-		"attack": "knockback",
+    "Villager": {
+        "health": 20
+    },
+    "VillagerGolem": {
+        "attack": "knockback",
         "health": 100
-	},
-	
-	"Blaze": {
-		"abilities": ["fly", "fire_proof", "smoke"],
-		"action": "fireball",
+    },
+    
+    "Blaze": {
+        "abilities": ["fly", "fire_proof", "smoke"],
+        "action": "fireball",
         "health": 20
-	},
-	"Creeper": {
-		"action": "explode",
+    },
+    "Creeper": {
+        "action": "explode",
         "health": 20
-	},
-	"Ghast": {
-		"abilities": ["fly", "fire_proof"],
-		"action": "fireball",
+    },
+    "Ghast": {
+        "abilities": ["fly", "fire_proof"],
+        "action": "fireball",
         "health": 10
-	},
-	"Guardian": {
-		"abilities": ["water_breath", "swim", "jumping"],
+    },
+    "Guardian": {
+        "abilities": ["water_breath", "swim", "jumping"],
         "health": 30
-	},
-	"LavaSlime": {
-		"abilities": ["jumping", "fire_proof"],
+    },
+    "LavaSlime": {
+        "abilities": ["jumping", "fire_proof"],
         "health": 4
     },
     "Silverfish": {
-    	"health": 8
+        "health": 8
     },
     "Slime": {
-    	"abilities": ["jumping"],
+        "abilities": ["jumping"],
         "health": 4
     },
-	"Skeleton": {
-		"abilities": ["sun_allergy"],
+    "Skeleton": {
+        "abilities": ["sun_allergy"],
         "health": 20
-	},
-	"WitherSkeleton": {
-		"abilities": ["fire_proof"],
-		"attack": "wither",
+    },
+    "WitherSkeleton": {
+        "abilities": ["fire_proof"],
+        "attack": "wither",
         "health": 20
-	},
+    },
     "Witch": {
-    	"action": "potions",
+        "action": "potions",
         "health": 26
     },
-	"Zombie": {
-		"abilities": ["sun_allergy", "hungerless"],
+    "Zombie": {
+        "abilities": ["sun_allergy", "hungerless"],
         "health": 20
-	}
+    }
 }
