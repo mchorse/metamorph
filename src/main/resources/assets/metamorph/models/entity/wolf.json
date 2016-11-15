@@ -28,10 +28,11 @@
                     "translate": [ -0.5, 8, -7 ]
                 },
                 "right_arm": {
-                    "translate": [ -0.5, 8, 4 ]
+                    "translate": [ -1.5, 8, 4 ],
+                    "rotate": [ 0, 0, 1 ]
                 },
                 "left_arm": {
-                    "translate": [ 2.5, 8, 4 ]
+                    "translate": [ 1.5, 8, 4 ]
                 }
             }
         },
@@ -179,7 +180,7 @@
         "left_arm": {
             "size": [ 2, 8, 2 ],
             "texture": [ 0, 18 ],
-            "anchor": [ 0, 0, 0.5 ],
+            "anchor": [ 0.5, 0, 0.5 ],
             "mirror": true,
             "holding": "left",
             "swinging": true
@@ -187,7 +188,7 @@
         "right_arm": {
             "size": [ 2, 8, 2 ],
             "texture": [ 0, 18 ],
-            "anchor": [ 0, 0, 0.5 ],
+            "anchor": [ 0.5, 0, 0.5 ],
             "holding": "right",
             "swiping": true,
             "swinging": true
@@ -197,15 +198,13 @@
             "texture": [ 0, 18 ],
             "anchor": [ 0, 0, 0.5 ],
             "mirror": true,
-            "swinging": true,
-            "invert": true
+            "swinging": true
         },
         "right_leg": {
             "size": [ 2, 8, 2 ],
             "texture": [ 0, 18 ],
             "anchor": [ 0, 0, 0.5 ],
-            "swinging": true,
-            "invert": true
+            "swinging": true
         }
     },
     "texture": [ 64, 32 ]
