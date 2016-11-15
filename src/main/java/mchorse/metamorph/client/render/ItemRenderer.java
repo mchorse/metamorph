@@ -392,8 +392,6 @@ public class ItemRenderer
     {
         AbstractClientPlayer player = this.mc.thePlayer;
 
-        this.render.setupModel(player);
-
         float swing = player.getSwingProgress(partialTicks);
         EnumHand enumhand = (EnumHand) Objects.firstNonNull(player.swingingHand, EnumHand.MAIN_HAND);
         float pitch = player.prevRotationPitch + (player.rotationPitch - player.prevRotationPitch) * partialTicks;

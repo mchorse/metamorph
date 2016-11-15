@@ -63,6 +63,8 @@ public class RenderingHandler
         IMorphing capability = player.getCapability(MorphingProvider.MORPHING_CAP, null);
         boolean flag = mc.getRenderViewEntity() instanceof EntityLivingBase && ((EntityLivingBase) mc.getRenderViewEntity()).isPlayerSleeping();
 
+        this.render.setupModel(player);
+
         if (capability == null || !capability.isMorphed() || this.render.getMainModel() == null)
         {
             return;
