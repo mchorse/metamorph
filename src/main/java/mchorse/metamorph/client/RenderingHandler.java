@@ -3,16 +3,19 @@ package mchorse.metamorph.client;
 import mchorse.metamorph.capabilities.morphing.IMorphing;
 import mchorse.metamorph.capabilities.morphing.MorphingProvider;
 import mchorse.metamorph.client.gui.GuiMenu;
-import mchorse.metamorph.client.render.RenderHands;
+import mchorse.metamorph.client.render.ItemRenderer;
 import mchorse.metamorph.client.render.RenderPlayer;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.ScaledResolution;
+import net.minecraft.client.renderer.EntityRenderer;
+import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.util.EnumHand;
 import net.minecraftforge.client.event.RenderGameOverlayEvent;
+import net.minecraftforge.client.event.RenderHandEvent;
 import net.minecraftforge.client.event.RenderPlayerEvent;
-import net.minecraftforge.client.event.RenderSpecificHandEvent;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
+import net.minecraftforge.fml.common.gameevent.TickEvent.ClientTickEvent;
+import net.minecraftforge.fml.common.gameevent.TickEvent.Phase;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
@@ -27,13 +30,13 @@ public class RenderingHandler
 {
     private RenderPlayer render;
     private GuiMenu overlay;
-    private RenderHands hand;
+    private ItemRenderer item;
 
     public RenderingHandler(GuiMenu overlay, RenderPlayer render)
     {
         this.overlay = overlay;
         this.render = render;
-        this.hand = new RenderHands(render);
+        this.item = new ItemRenderer(Minecraft.getMinecraft(), render);
     }
 
     /**
@@ -50,24 +53,40 @@ public class RenderingHandler
         }
     }
 
-    /**
-     * Render morphed hands in first person
-     */
     @SubscribeEvent
-    public void onHandRender(RenderSpecificHandEvent event)
+    public void onHandRender(RenderHandEvent event)
     {
-        EntityPlayer player = Minecraft.getMinecraft().thePlayer;
-        IMorphing capability = player.getCapability(MorphingProvider.MORPHING_CAP, null);
+        Minecraft mc = Minecraft.getMinecraft();
+        EntityPlayer player = mc.thePlayer;
+        EntityRenderer renderer = mc.entityRenderer;
 
-        if (capability == null || !capability.isMorphed())
+        IMorphing capability = player.getCapability(MorphingProvider.MORPHING_CAP, null);
+        boolean flag = mc.getRenderViewEntity() instanceof EntityLivingBase && ((EntityLivingBase) mc.getRenderViewEntity()).isPlayerSleeping();
+
+        if (capability == null || !capability.isMorphed() || this.render.getMainModel() == null)
         {
             return;
         }
 
-        if (event.getItemStack() == null && event.getHand() == EnumHand.MAIN_HAND)
+        if (mc.gameSettings.thirdPersonView == 0 && !flag && !mc.gameSettings.hideGUI && !mc.playerController.isSpectator())
         {
-            this.hand.render(player, event);
+            event.setCanceled(true);
+
+            renderer.enableLightmap();
+            this.item.renderItemInFirstPerson(event.getPartialTicks());
+            renderer.disableLightmap();
         }
+    }
+
+    @SubscribeEvent
+    public void onClientTick(ClientTickEvent event)
+    {
+        if (event.phase == Phase.START)
+        {
+            return;
+        }
+
+        this.item.updateEquippedItem();
     }
 
     /**

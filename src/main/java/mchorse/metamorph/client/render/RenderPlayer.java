@@ -145,8 +145,8 @@ public class RenderPlayer extends RenderLivingBase<EntityPlayer>
         for (ModelCustomRenderer arm : ((ModelCustom) this.mainModel).right)
         {
             arm.rotateAngleX = 0;
-            arm.rotationPointX = -6 + (arm.limb.size[0] * 0.5F - arm.limb.size[0] * arm.limb.anchor[0]);
-            arm.rotationPointY = 13 - (arm.limb.size[1] > 8 ? arm.limb.size[1] : arm.limb.size[1] + 2);
+            arm.rotationPointX = -6;
+            arm.rotationPointY = 13.8F - (arm.limb.size[1] > 8 ? arm.limb.size[1] : arm.limb.size[1] + 2);
             arm.rotationPointZ = 0;
             arm.render(0.0625F);
         }
@@ -169,8 +169,8 @@ public class RenderPlayer extends RenderLivingBase<EntityPlayer>
         for (ModelCustomRenderer arm : ((ModelCustom) this.mainModel).left)
         {
             arm.rotateAngleX = 0;
-            arm.rotationPointX = 8 + (arm.limb.size[0] * 0.5F - arm.limb.size[0] * arm.limb.anchor[0]);
-            arm.rotationPointY = 13 - (arm.limb.size[1] > 8 ? arm.limb.size[1] : arm.limb.size[1]);
+            arm.rotationPointX = 6;
+            arm.rotationPointY = 13.8F - (arm.limb.size[1] > 8 ? arm.limb.size[1] : arm.limb.size[1] + 2F);
             arm.rotationPointZ = 0;
             arm.render(0.0625F);
         }
