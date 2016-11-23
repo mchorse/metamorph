@@ -3,7 +3,7 @@ package mchorse.metamorph.client;
 import org.lwjgl.input.Keyboard;
 
 import mchorse.metamorph.capabilities.morphing.IMorphing;
-import mchorse.metamorph.capabilities.morphing.MorphingProvider;
+import mchorse.metamorph.capabilities.morphing.Morphing;
 import mchorse.metamorph.client.gui.GuiMenu;
 import mchorse.metamorph.client.gui.GuiMorphs;
 import mchorse.metamorph.network.Dispatcher;
@@ -32,6 +32,7 @@ public class KeyboardHandler
     private KeyBinding keyNextMorph;
     private KeyBinding keyPrevMorph;
     private KeyBinding keySelectMorph;
+    private KeyBinding keyDemorph;
 
     private GuiMenu overlay;
 
@@ -45,6 +46,7 @@ public class KeyboardHandler
         keyNextMorph = new KeyBinding("key.metamorph.morph.next", Keyboard.KEY_RBRACKET, category);
         keyPrevMorph = new KeyBinding("key.metamorph.morph.prev", Keyboard.KEY_LBRACKET, category);
         keySelectMorph = new KeyBinding("key.metamorph.morph.select", Keyboard.KEY_RETURN, category);
+        keyDemorph = new KeyBinding("key.metamorph.morph.demorph", Keyboard.KEY_NONE, category);
 
         ClientRegistry.registerKeyBinding(keyAction);
         ClientRegistry.registerKeyBinding(keyMenu);
@@ -52,6 +54,7 @@ public class KeyboardHandler
         ClientRegistry.registerKeyBinding(keyNextMorph);
         ClientRegistry.registerKeyBinding(keyPrevMorph);
         ClientRegistry.registerKeyBinding(keySelectMorph);
+        ClientRegistry.registerKeyBinding(keyDemorph);
     }
 
     public KeyboardHandler(GuiMenu overlay)
@@ -71,7 +74,7 @@ public class KeyboardHandler
             Dispatcher.sendToServer(new PacketAction());
 
             EntityPlayer player = Minecraft.getMinecraft().thePlayer;
-            IMorphing capability = player.getCapability(MorphingProvider.MORPHING_CAP, null);
+            IMorphing capability = Morphing.get(player);
 
             if (capability != null & capability.isMorphed())
             {
@@ -96,6 +99,16 @@ public class KeyboardHandler
         else if (keySelectMorph.isPressed())
         {
             Dispatcher.sendToServer(new PacketSelectMorph(this.overlay.index));
+            this.overlay.timer = 0;
+        }
+        else if (keyDemorph.isPressed())
+        {
+            IMorphing morph = Morphing.get(mc.thePlayer);
+
+            if (morph != null && morph.isMorphed())
+            {
+                Dispatcher.sendToServer(new PacketSelectMorph(-1));
+            }
         }
     }
 }

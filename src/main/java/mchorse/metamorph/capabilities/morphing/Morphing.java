@@ -20,6 +20,11 @@ public class Morphing implements IMorphing
     private Morph morph;
     private String name = "";
 
+    public static IMorphing get(EntityPlayer player)
+    {
+        return player.getCapability(MorphingProvider.MORPHING_CAP, null);
+    }
+
     @Override
     public boolean acquireMorph(String name)
     {
