@@ -7,7 +7,7 @@ import org.lwjgl.opengl.GL11;
 import mchorse.metamorph.api.Model;
 import mchorse.metamorph.api.morph.MorphManager;
 import mchorse.metamorph.capabilities.morphing.IMorphing;
-import mchorse.metamorph.capabilities.morphing.MorphingProvider;
+import mchorse.metamorph.capabilities.morphing.Morphing;
 import mchorse.metamorph.client.model.ModelCustom;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.entity.EntityPlayerSP;
@@ -204,6 +204,7 @@ public class GuiMenu extends Gui
     public void next()
     {
         int length = this.getMorphCount();
+        this.timer = this.getDelay();
 
         if (length == 0)
         {
@@ -213,7 +214,6 @@ public class GuiMenu extends Gui
         if (this.index < length - 1)
         {
             this.index++;
-            this.timer = this.getDelay();
         }
     }
 
@@ -223,6 +223,7 @@ public class GuiMenu extends Gui
     public void prev()
     {
         int length = this.getMorphCount();
+        this.timer = this.getDelay();
 
         if (length == 0)
         {
@@ -232,7 +233,6 @@ public class GuiMenu extends Gui
         if (this.index > -1)
         {
             this.index--;
-            this.timer = this.getDelay();
         }
     }
 
@@ -259,7 +259,7 @@ public class GuiMenu extends Gui
      */
     private IMorphing getMorph()
     {
-        return this.mc.thePlayer.getCapability(MorphingProvider.MORPHING_CAP, null);
+        return Morphing.get(this.mc.thePlayer);
     }
 
     /**
