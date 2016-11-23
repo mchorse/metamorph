@@ -2,6 +2,7 @@ package mchorse.metamorph.capabilities;
 
 import mchorse.metamorph.Metamorph;
 import mchorse.metamorph.capabilities.morphing.IMorphing;
+import mchorse.metamorph.capabilities.morphing.Morphing;
 import mchorse.metamorph.capabilities.morphing.MorphingProvider;
 import mchorse.metamorph.network.Dispatcher;
 import mchorse.metamorph.network.common.PacketAcquiredMorphs;
@@ -46,7 +47,7 @@ public class CapabilityHandler
     public void playerLogsIn(PlayerLoggedInEvent event)
     {
         EntityPlayer player = event.player;
-        IMorphing cap = player.getCapability(MorphingProvider.MORPHING_CAP, null);
+        IMorphing cap = Morphing.get(player);
 
         if (cap != null)
         {
@@ -92,7 +93,7 @@ public class CapabilityHandler
 
             if (!player.worldObj.isRemote)
             {
-                IMorphing morphing = player.getCapability(MorphingProvider.MORPHING_CAP, null);
+                IMorphing morphing = Morphing.get(player);
 
                 this.sendAcquiredMorphs(morphing, player);
             }
@@ -106,8 +107,8 @@ public class CapabilityHandler
     public void onPlayerClone(PlayerEvent.Clone event)
     {
         EntityPlayer player = event.getEntityPlayer();
-        IMorphing morphing = player.getCapability(MorphingProvider.MORPHING_CAP, null);
-        IMorphing oldMorphing = event.getOriginal().getCapability(MorphingProvider.MORPHING_CAP, null);
+        IMorphing morphing = Morphing.get(player);
+        IMorphing oldMorphing = Morphing.get(event.getOriginal());
 
         morphing.copy(oldMorphing, player);
     }

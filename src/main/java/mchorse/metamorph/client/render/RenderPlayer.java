@@ -4,7 +4,7 @@ import java.util.Map;
 
 import mchorse.metamorph.api.Model;
 import mchorse.metamorph.capabilities.morphing.IMorphing;
-import mchorse.metamorph.capabilities.morphing.MorphingProvider;
+import mchorse.metamorph.capabilities.morphing.Morphing;
 import mchorse.metamorph.client.model.ModelCustom;
 import mchorse.metamorph.client.model.ModelCustomRenderer;
 import mchorse.metamorph.client.render.layers.LayerHeldItem;
@@ -59,7 +59,7 @@ public class RenderPlayer extends RenderLivingBase<EntityPlayer>
     public void setupModel(EntityPlayer entity)
     {
         Map<String, ModelCustom> models = ModelCustom.MODELS;
-        IMorphing capability = entity.getCapability(MorphingProvider.MORPHING_CAP, null);
+        IMorphing capability = Morphing.get(entity);
 
         String key = capability.getCurrentMorphName();
         String pose = entity.isSneaking() ? "sneaking" : (entity.isElytraFlying() ? "flying" : "standing");

@@ -1,7 +1,7 @@
 package mchorse.metamorph.client.render;
 
 import mchorse.metamorph.capabilities.morphing.IMorphing;
-import mchorse.metamorph.capabilities.morphing.MorphingProvider;
+import mchorse.metamorph.capabilities.morphing.Morphing;
 import net.minecraft.client.entity.AbstractClientPlayer;
 import net.minecraft.client.renderer.entity.RenderManager;
 import net.minecraft.client.renderer.entity.RenderPlayer;
@@ -34,7 +34,7 @@ public class RenderSubPlayer extends RenderPlayer
     @Override
     public void renderLeftArm(AbstractClientPlayer clientPlayer)
     {
-        IMorphing morph = clientPlayer.getCapability(MorphingProvider.MORPHING_CAP, null);
+        IMorphing morph = Morphing.get(clientPlayer);
 
         if (morph != null && morph.isMorphed())
         {
@@ -57,7 +57,7 @@ public class RenderSubPlayer extends RenderPlayer
     @Override
     public void renderRightArm(AbstractClientPlayer clientPlayer)
     {
-        IMorphing morph = clientPlayer.getCapability(MorphingProvider.MORPHING_CAP, null);
+        IMorphing morph = Morphing.get(clientPlayer);
 
         if (morph != null && morph.isMorphed())
         {

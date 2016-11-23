@@ -1,7 +1,7 @@
 package mchorse.metamorph.client;
 
 import mchorse.metamorph.capabilities.morphing.IMorphing;
-import mchorse.metamorph.capabilities.morphing.MorphingProvider;
+import mchorse.metamorph.capabilities.morphing.Morphing;
 import mchorse.metamorph.client.gui.GuiMenu;
 import mchorse.metamorph.client.render.RenderPlayer;
 import net.minecraft.client.gui.ScaledResolution;
@@ -52,7 +52,7 @@ public class RenderingHandler
     public void onPlayerRender(RenderPlayerEvent.Pre event)
     {
         EntityPlayer player = event.getEntityPlayer();
-        IMorphing capability = player.getCapability(MorphingProvider.MORPHING_CAP, null);
+        IMorphing capability = Morphing.get(player);
 
         if (capability == null || !capability.isMorphed()) return;
 

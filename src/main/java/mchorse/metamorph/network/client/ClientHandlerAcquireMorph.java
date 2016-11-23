@@ -1,7 +1,7 @@
 package mchorse.metamorph.network.client;
 
 import mchorse.metamorph.capabilities.morphing.IMorphing;
-import mchorse.metamorph.capabilities.morphing.MorphingProvider;
+import mchorse.metamorph.capabilities.morphing.Morphing;
 import mchorse.metamorph.network.common.PacketAcquireMorph;
 import net.minecraft.client.entity.EntityPlayerSP;
 
@@ -10,7 +10,7 @@ public class ClientHandlerAcquireMorph extends ClientMessageHandler<PacketAcquir
     @Override
     public void run(EntityPlayerSP player, PacketAcquireMorph message)
     {
-        IMorphing capability = player.getCapability(MorphingProvider.MORPHING_CAP, null);
+        IMorphing capability = Morphing.get(player);
 
         capability.acquireMorph(message.morph);
     }

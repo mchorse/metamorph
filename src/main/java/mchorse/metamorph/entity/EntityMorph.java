@@ -6,7 +6,7 @@ import io.netty.buffer.ByteBuf;
 import mchorse.metamorph.Metamorph;
 import mchorse.metamorph.api.Model;
 import mchorse.metamorph.capabilities.morphing.IMorphing;
-import mchorse.metamorph.capabilities.morphing.MorphingProvider;
+import mchorse.metamorph.capabilities.morphing.Morphing;
 import mchorse.metamorph.network.Dispatcher;
 import mchorse.metamorph.network.common.PacketAcquireMorph;
 import net.minecraft.entity.EntityLiving;
@@ -134,7 +134,7 @@ public class EntityMorph extends EntityLiving implements IEntityAdditionalSpawnD
             return;
         }
 
-        IMorphing capability = this.player.getCapability(MorphingProvider.MORPHING_CAP, null);
+        IMorphing capability = Morphing.get(this.player);
 
         if (capability.acquireMorph(morph))
         {

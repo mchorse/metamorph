@@ -3,7 +3,7 @@ package mchorse.metamorph.network.server;
 import java.util.List;
 
 import mchorse.metamorph.capabilities.morphing.IMorphing;
-import mchorse.metamorph.capabilities.morphing.MorphingProvider;
+import mchorse.metamorph.capabilities.morphing.Morphing;
 import mchorse.metamorph.network.Dispatcher;
 import mchorse.metamorph.network.common.PacketMorph;
 import mchorse.metamorph.network.common.PacketMorphPlayer;
@@ -15,7 +15,7 @@ public class ServerHandlerSelectMorph extends ServerMessageHandler<PacketSelectM
     @Override
     public void run(EntityPlayerMP player, PacketSelectMorph message)
     {
-        IMorphing capability = player.getCapability(MorphingProvider.MORPHING_CAP, null);
+        IMorphing capability = Morphing.get(player);
         List<String> morphs = capability.getAcquiredMorphs();
 
         if (message.index == -1)

@@ -4,7 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import mchorse.metamorph.capabilities.morphing.IMorphing;
-import mchorse.metamorph.capabilities.morphing.MorphingProvider;
+import mchorse.metamorph.capabilities.morphing.Morphing;
 import mchorse.metamorph.entity.EntityMorph;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
@@ -49,7 +49,7 @@ public class MorphHandler
         }
 
         EntityPlayer player = (EntityPlayer) source;
-        IMorphing capability = player.getCapability(MorphingProvider.MORPHING_CAP, null);
+        IMorphing capability = Morphing.get(player);
 
         if (capability == null)
         {
@@ -90,7 +90,7 @@ public class MorphHandler
         if (source instanceof EntityPlayer)
         {
             EntityPlayer player = (EntityPlayer) source;
-            IMorphing capability = player.getCapability(MorphingProvider.MORPHING_CAP, null);
+            IMorphing capability = Morphing.get(player);
 
             if (capability == null || !capability.isMorphed())
             {
@@ -116,7 +116,7 @@ public class MorphHandler
         }
 
         EntityPlayer player = event.player;
-        IMorphing capability = player.getCapability(MorphingProvider.MORPHING_CAP, null);
+        IMorphing capability = Morphing.get(player);
 
         this.runFutureTasks(player);
 
