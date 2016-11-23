@@ -89,7 +89,7 @@
         "health": 10
     },
     "Guardian": {
-        "abilities": ["water_breath", "swim", "jumping"],
+        "abilities": ["water_breath", "night_vision", "swim", "jumping"],
         "health": 30
     },
     "LavaSlime": {
