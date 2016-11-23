@@ -12,7 +12,7 @@ import org.lwjgl.opengl.GL11;
 import mchorse.metamorph.api.morph.Morph;
 import mchorse.metamorph.api.morph.MorphManager;
 import mchorse.metamorph.capabilities.morphing.IMorphing;
-import mchorse.metamorph.capabilities.morphing.MorphingProvider;
+import mchorse.metamorph.capabilities.morphing.Morphing;
 import mchorse.metamorph.client.model.ModelCustom;
 import mchorse.metamorph.network.Dispatcher;
 import mchorse.metamorph.network.common.PacketMorph;
@@ -59,7 +59,7 @@ public class GuiMorphs extends GuiScreen
     {
         Map<String, Morph> morphs = MorphManager.INSTANCE.morphs;
         EntityPlayer player = Minecraft.getMinecraft().thePlayer;
-        IMorphing morphing = player.getCapability(MorphingProvider.MORPHING_CAP, null);
+        IMorphing morphing = Morphing.get(player);
 
         int index = 0;
 
@@ -109,10 +109,13 @@ public class GuiMorphs extends GuiScreen
     {
         if (button.id == 0)
         {
-            MorphCell morph = this.morphs.get(this.selected);
-
-            if (morph != null)
+            if (this.selected == -1)
             {
+                Dispatcher.sendToServer(new PacketMorph(""));
+            }
+            else
+            {
+                MorphCell morph = this.morphs.get(this.selected);
                 Dispatcher.sendToServer(new PacketMorph(morph.name));
             }
         }
