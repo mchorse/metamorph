@@ -20,7 +20,7 @@ import net.minecraftforge.fml.common.gameevent.InputEvent;
  * Keyboard handler 
  * 
  * This class (handler) is responsible for handling the keyboard input for 
- * executing an action and morphing the player using "special menu."
+ * executing an action and morphing the player using survival morphing menu.
  */
 public class KeyboardHandler
 {
@@ -90,15 +90,17 @@ public class KeyboardHandler
         boolean prev = keyPrevMorph.isPressed();
         boolean next = keyNextMorph.isPressed();
 
-        /* Morphing */
+        /* Selecting a morph */
         if (prev || next)
         {
             int factor = prev ? -1 : 1;
 
+            /* If any of alts is pressed, then skip to the end or beginning */
             if (Keyboard.isKeyDown(Keyboard.KEY_LMENU) || Keyboard.isKeyDown(Keyboard.KEY_LMENU))
             {
                 this.overlay.skip(factor);
             }
+            /* Then advance one or two indices forward or backward */
             else
             {
                 int skip = factor * (Keyboard.isKeyDown(Keyboard.KEY_LSHIFT) || Keyboard.isKeyDown(Keyboard.KEY_RSHIFT) ? 2 : 1);
@@ -106,12 +108,16 @@ public class KeyboardHandler
                 this.overlay.advance(skip);
             }
         }
-        else if (keySelectMorph.isPressed())
+
+        /* Apply selected morph */
+        if (keySelectMorph.isPressed())
         {
             Dispatcher.sendToServer(new PacketSelectMorph(this.overlay.index));
             this.overlay.timer = 0;
         }
-        else if (keyDemorph.isPressed())
+
+        /* Demorph from current morph */
+        if (keyDemorph.isPressed())
         {
             IMorphing morph = Morphing.get(mc.thePlayer);
 

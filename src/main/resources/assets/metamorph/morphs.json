@@ -24,7 +24,8 @@
         "health": 10
     },
     "Ozelot": {
-        "health": 10
+        "health": 10,
+        "speed": 0.15
     },
     "Pig": {
         "health": 10

@@ -35,6 +35,11 @@ public class MorphAdapter implements JsonDeserializer<Morph>
             morph.health = object.get("health").getAsInt();
         }
 
+        if (object.has("speed"))
+        {
+            morph.speed = object.get("speed").getAsFloat();
+        }
+
         if (object.has("abilities"))
         {
             for (JsonElement ability : object.get("abilities").getAsJsonArray())

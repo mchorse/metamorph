@@ -8,6 +8,7 @@ import mchorse.metamorph.capabilities.morphing.IMorphing;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.SharedMonsterAttributes;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.init.SoundEvents;
 import net.minecraft.util.math.AxisAlignedBB;
 
 /**
@@ -25,6 +26,7 @@ public class Morph
     public Model model;
 
     public int health = 20;
+    public float speed = 0.1F;
 
     /**
      * Update the player based on its morph abilities and properties. This 
@@ -34,6 +36,11 @@ public class Morph
     {
         this.updateSize(player, cap);
         this.setMaxHealth(player, this.health);
+
+        if (speed != 0.1F)
+        {
+            player.getEntityAttribute(SharedMonsterAttributes.MOVEMENT_SPEED).setBaseValue(this.speed);
+        }
 
         for (IAbility ability : abilities)
         {
@@ -106,6 +113,8 @@ public class Morph
 
         for (IAbility ability : this.abilities)
         {
+            player.playSound(SoundEvents.ENTITY_PAINTING_PLACE, 1.0F, 1.0F);
+
             ability.onMorph(player);
         }
     }
