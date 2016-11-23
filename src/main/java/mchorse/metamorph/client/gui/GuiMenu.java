@@ -199,9 +199,9 @@ public class GuiMenu extends Gui
     }
 
     /**
-     * Proceed to the next morph 
+     * Skip to the beginning or to the end of the morphing list.
      */
-    public void next()
+    public void skip(int factor)
     {
         int length = this.getMorphCount();
         this.timer = this.getDelay();
@@ -211,17 +211,23 @@ public class GuiMenu extends Gui
             return;
         }
 
-        if (this.index < length - 1)
+        if (factor > 0)
         {
-            this.index++;
+            this.index = length - 1;
+        }
+        else if (factor < 0)
+        {
+            this.index = -1;
         }
     }
 
     /**
-     * Proceed to the previous morph 
+     * Advance given indices forward or backward (depending on the provided 
+     * argument). 
      */
-    public void prev()
+    public void advance(int factor)
     {
+        int result = this.index + factor;
         int length = this.getMorphCount();
         this.timer = this.getDelay();
 
@@ -230,10 +236,8 @@ public class GuiMenu extends Gui
             return;
         }
 
-        if (this.index > -1)
-        {
-            this.index--;
-        }
+        this.index += factor;
+        this.index = MathHelper.clamp_int(this.index, -1, length - 1);
     }
 
     /**

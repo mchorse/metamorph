@@ -87,14 +87,24 @@ public class KeyboardHandler
             mc.displayGuiScreen(new GuiMorphs());
         }
 
+        boolean prev = keyPrevMorph.isPressed();
+        boolean next = keyNextMorph.isPressed();
+
         /* Morphing */
-        if (keyPrevMorph.isPressed())
+        if (prev || next)
         {
-            this.overlay.prev();
-        }
-        else if (keyNextMorph.isPressed())
-        {
-            this.overlay.next();
+            int factor = prev ? -1 : 1;
+
+            if (Keyboard.isKeyDown(Keyboard.KEY_LMENU) || Keyboard.isKeyDown(Keyboard.KEY_LMENU))
+            {
+                this.overlay.skip(factor);
+            }
+            else
+            {
+                int skip = factor * (Keyboard.isKeyDown(Keyboard.KEY_LSHIFT) || Keyboard.isKeyDown(Keyboard.KEY_RSHIFT) ? 2 : 1);
+
+                this.overlay.advance(skip);
+            }
         }
         else if (keySelectMorph.isPressed())
         {
