@@ -18,7 +18,8 @@
     "EntityHorse": {
         "abilities": ["prevent_fall"],
         "action": "jump",
-        "health": 24
+        "health": 24,
+        "speed": 0.15
     },
     "MushroomCow": {
         "health": 10
