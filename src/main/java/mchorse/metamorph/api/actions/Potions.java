@@ -62,7 +62,7 @@ public class Potions implements IAction
         EntityPotion potion = new EntityPotion(world, player, stack);
 
         potion.rotationPitch += 20.0F;
-        potion.setThrowableHeading(look.xCoord, look.yCoord, look.zCoord, 0.75F, 8.0F);
+        potion.setThrowableHeading(look.xCoord, look.yCoord, look.zCoord, 0.85F, 2.0F);
 
         world.spawnEntityInWorld(potion);
         player.resetCooldown();
