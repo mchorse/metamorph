@@ -52,8 +52,7 @@ public class GuiOverlay extends Gui
 
             int progress = this.cap - morph.timer;
             int alpha = (int) (255 * morph.timer / this.cap);
-            int x = width - 36;
-            int y = height - 6 + (disappear ? (int) (40 * (float) progress / this.cap) : 0);
+            int y = height - 10 + (disappear ? (int) (40 * (float) progress / this.cap) : 0);
             int color = disappear ? 0x00ffffff + (alpha << 24) : 0xffffffff;
 
             /* Prepare the model */
@@ -66,8 +65,8 @@ public class GuiOverlay extends Gui
 
             /* Render overlay */
             mc.renderEngine.bindTexture(data.defaultTexture);
-            GuiMenu.drawModel(model, mc.thePlayer, x + 18, y, 15, (float) alpha / 255);
-            font.drawString(string, x - font.getStringWidth(string), y - 10, color);
+            GuiMenu.drawModel(model, mc.thePlayer, 15, y, 15, (float) alpha / 255);
+            font.drawString(string, 30, y - 7, color);
 
             morph.timer--;
 
