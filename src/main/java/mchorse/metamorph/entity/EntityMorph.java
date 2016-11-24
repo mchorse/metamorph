@@ -16,7 +16,6 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.math.MathHelper;
-import net.minecraft.util.text.TextComponentString;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.common.network.ByteBufUtils;
 import net.minecraftforge.fml.common.registry.IEntityAdditionalSpawnData;
@@ -141,7 +140,6 @@ public class EntityMorph extends EntityLiving implements IEntityAdditionalSpawnD
         {
             Dispatcher.sendTo(new PacketAcquireMorph(morph), (EntityPlayerMP) player);
 
-            player.addChatMessage(new TextComponentString("You gained §o§7" + morph + "§r morph!"));
         }
     }
 

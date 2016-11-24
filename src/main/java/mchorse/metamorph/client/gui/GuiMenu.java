@@ -295,11 +295,16 @@ public class GuiMenu extends Gui
         GL11.glEnable(GL11.GL_SCISSOR_TEST);
     }
 
+    public static void drawModel(ModelBase model, EntityPlayer player, int x, int y, float scale)
+    {
+        drawModel(model, player, x, y, scale, 1.0F);
+    }
+
     /**
      * Draw a {@link ModelBase} without using the {@link RenderManager} (which 
      * adds a lot of useless transformations and stuff to the screen rendering).
      */
-    public static void drawModel(ModelBase model, EntityPlayer player, int x, int y, float scale)
+    public static void drawModel(ModelBase model, EntityPlayer player, int x, int y, float scale, float alpha)
     {
         float factor = 0.0625F;
 
@@ -327,7 +332,7 @@ public class GuiMenu extends Gui
         model.setRotationAngles(0, 0, 0, 0, 0, factor, player);
 
         GlStateManager.enableDepth();
-        GlStateManager.color(1.0F, 1.0F, 1.0F, 1.0F);
+        GlStateManager.color(1.0F, 1.0F, 1.0F, alpha);
 
         model.render(player, 0, 0, 0, 0, 0, factor);
 

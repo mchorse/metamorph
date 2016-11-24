@@ -3,6 +3,7 @@ package mchorse.metamorph.client;
 import mchorse.metamorph.capabilities.morphing.IMorphing;
 import mchorse.metamorph.capabilities.morphing.Morphing;
 import mchorse.metamorph.client.gui.GuiMenu;
+import mchorse.metamorph.client.gui.GuiOverlay;
 import mchorse.metamorph.client.render.RenderPlayer;
 import net.minecraft.client.gui.ScaledResolution;
 import net.minecraft.entity.player.EntityPlayer;
@@ -23,11 +24,13 @@ public class RenderingHandler
 {
     private RenderPlayer render;
     private GuiMenu overlay;
+    private GuiOverlay morphOverlay;
 
-    public RenderingHandler(GuiMenu overlay, RenderPlayer render)
+    public RenderingHandler(GuiMenu overlay, RenderPlayer render, GuiOverlay morphOverlay)
     {
         this.overlay = overlay;
         this.render = render;
+        this.morphOverlay = morphOverlay;
     }
 
     /**
@@ -41,6 +44,7 @@ public class RenderingHandler
         if (event.getType() == RenderGameOverlayEvent.ElementType.ALL)
         {
             this.overlay.render(resolution.getScaledWidth(), resolution.getScaledHeight());
+            this.morphOverlay.render(resolution.getScaledWidth(), resolution.getScaledHeight());
         }
     }
 

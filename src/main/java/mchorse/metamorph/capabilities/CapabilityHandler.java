@@ -110,7 +110,7 @@ public class CapabilityHandler
         IMorphing morphing = Morphing.get(player);
         IMorphing oldMorphing = Morphing.get(event.getOriginal());
 
-        morphing.copy(oldMorphing, player);
+        // morphing.copy(oldMorphing, player);
     }
 
     /**

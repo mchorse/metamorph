@@ -7,6 +7,7 @@ import mchorse.metamorph.api.Model;
 import mchorse.metamorph.client.KeyboardHandler;
 import mchorse.metamorph.client.RenderingHandler;
 import mchorse.metamorph.client.gui.GuiMenu;
+import mchorse.metamorph.client.gui.GuiOverlay;
 import mchorse.metamorph.client.model.ModelCustom;
 import mchorse.metamorph.client.model.parsing.ModelParser;
 import mchorse.metamorph.client.render.RenderMorph;
@@ -28,9 +29,14 @@ import net.minecraftforge.fml.client.registry.RenderingRegistry;
 public class ClientProxy extends CommonProxy
 {
     /**
-     * Gui menu which is responsible for choosing morphs 
+     * GUI menu which is responsible for choosing morphs 
      */
     public static GuiMenu overlay = new GuiMenu();
+
+    /**
+     * GUI overlay which is responsible for showing up acquired morphs
+     */
+    public static GuiOverlay morphOverlay = new GuiOverlay();
 
     @Override
     public void preLoad()
@@ -48,7 +54,7 @@ public class ClientProxy extends CommonProxy
         RenderManager manager = Minecraft.getMinecraft().getRenderManager();
         RenderPlayer render = new RenderPlayer(manager, 0.5F);
 
-        MinecraftForge.EVENT_BUS.register(new RenderingHandler(overlay, render));
+        MinecraftForge.EVENT_BUS.register(new RenderingHandler(overlay, render, morphOverlay));
         MinecraftForge.EVENT_BUS.register(new KeyboardHandler(overlay));
 
         this.substitutePlayerRenderers(render);
