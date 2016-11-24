@@ -3,6 +3,7 @@ package mchorse.metamorph.api.morph;
 import java.util.ArrayList;
 import java.util.List;
 
+import mchorse.metamorph.Metamorph;
 import mchorse.metamorph.capabilities.morphing.IMorphing;
 import mchorse.metamorph.capabilities.morphing.Morphing;
 import mchorse.metamorph.entity.EntityMorph;
@@ -60,17 +61,20 @@ public class MorphHandler
 
         if (!MorphManager.INSTANCE.morphs.containsKey(morph))
         {
-            System.out.println("Morph by key '" + morph + "' doesn't exist!");
+            Metamorph.log("Morph by key '" + morph + "' doesn't exist!");
 
             return;
         }
 
-        if (!player.worldObj.isRemote && !capability.getAcquiredMorphs().contains(morph))
+        if (!player.worldObj.isRemote)
         {
-            EntityMorph morphEntity = new EntityMorph(player.worldObj, player.getUniqueID(), morph);
+            if (!Metamorph.proxy.config.prevent_ghosts || !capability.getAcquiredMorphs().contains(morph))
+            {
+                EntityMorph morphEntity = new EntityMorph(player.worldObj, player.getUniqueID(), morph);
 
-            morphEntity.setPositionAndRotation(target.posX, target.posY + target.height / 2, target.posZ, target.rotationYaw, target.rotationPitch);
-            player.worldObj.spawnEntityInWorld(morphEntity);
+                morphEntity.setPositionAndRotation(target.posX, target.posY + target.height / 2, target.posZ, target.rotationYaw, target.rotationPitch);
+                player.worldObj.spawnEntityInWorld(morphEntity);
+            }
         }
     }
 

@@ -18,6 +18,7 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.entity.RenderManager;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.fml.client.registry.RenderingRegistry;
+import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
 
 /**
  * Client proxy
@@ -39,9 +40,9 @@ public class ClientProxy extends CommonProxy
     public static GuiOverlay morphOverlay = new GuiOverlay();
 
     @Override
-    public void preLoad()
+    public void preLoad(FMLPreInitializationEvent event)
     {
-        super.preLoad();
+        super.preLoad(event);
 
         RenderingRegistry.registerEntityRenderingHandler(EntityMorph.class, new RenderMorph.MorphFactory());
     }

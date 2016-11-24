@@ -211,6 +211,8 @@ public class GuiMenu extends Gui
             return;
         }
 
+        this.timer = this.getDelay();
+
         if (factor > 0)
         {
             this.index = length - 1;
@@ -229,13 +231,13 @@ public class GuiMenu extends Gui
     {
         int result = this.index + factor;
         int length = this.getMorphCount();
-        this.timer = this.getDelay();
 
         if (length == 0)
         {
             return;
         }
 
+        this.timer = this.getDelay();
         this.index += factor;
         this.index = MathHelper.clamp_int(this.index, -1, length - 1);
     }

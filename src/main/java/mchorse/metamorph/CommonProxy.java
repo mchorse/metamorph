@@ -1,5 +1,7 @@
 package mchorse.metamorph;
 
+import java.io.File;
+
 import mchorse.metamorph.api.ModelHandler;
 import mchorse.metamorph.api.morph.MorphHandler;
 import mchorse.metamorph.api.morph.MorphManager;
@@ -7,10 +9,13 @@ import mchorse.metamorph.capabilities.CapabilityHandler;
 import mchorse.metamorph.capabilities.morphing.IMorphing;
 import mchorse.metamorph.capabilities.morphing.Morphing;
 import mchorse.metamorph.capabilities.morphing.MorphingStorage;
+import mchorse.metamorph.config.MetamorphConfig;
 import mchorse.metamorph.entity.EntityMorph;
 import mchorse.metamorph.network.Dispatcher;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.common.capabilities.CapabilityManager;
+import net.minecraftforge.common.config.Configuration;
+import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
 import net.minecraftforge.fml.common.registry.EntityRegistry;
 
 /**
@@ -27,9 +32,30 @@ public class CommonProxy
      */
     public ModelHandler models = new ModelHandler();
 
-    public void preLoad()
+    /**
+     * Config
+     */
+    public MetamorphConfig config;
+
+    /**
+     * Forge config
+     */
+    public Configuration forge;
+
+    public void preLoad(FMLPreInitializationEvent event)
     {
+        /* Network messages */
         Dispatcher.register();
+
+        /* Config */
+        File config = new File(event.getModConfigurationDirectory(), "metamorph/config.cfg");
+
+        this.forge = new Configuration(config);
+        this.config = new MetamorphConfig(this.forge);
+
+        MinecraftForge.EVENT_BUS.register(this.config);
+
+        /* Entities */
         EntityRegistry.registerModEntity(EntityMorph.class, "Morph", 0, Metamorph.instance, 64, 3, false);
 
         this.loadModels();
@@ -37,9 +63,11 @@ public class CommonProxy
 
     public void load()
     {
+        /* Event listeners */
         MinecraftForge.EVENT_BUS.register(new CapabilityHandler());
         MinecraftForge.EVENT_BUS.register(new MorphHandler());
 
+        /* Morphing manager and capabilities */
         MorphManager.INSTANCE.register();
         CapabilityManager.INSTANCE.register(IMorphing.class, new MorphingStorage(), Morphing.class);
     }

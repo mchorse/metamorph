@@ -18,3 +18,8 @@ metamorph.gui.title=Creative Morphs Menu
 metamorph.gui.morph=Morph
 metamorph.gui.close=Close
 metamorph.gui.no_morph=No Morph Selected
+
+# Config
+metamorph.config.general.title=General
+metamorph.config.keep_morphs=Retain morphs on death
+metamorph.config.prevent_ghosts=Prevent ghost

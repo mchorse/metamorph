@@ -23,7 +23,7 @@ import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
  * Inspired by Morph and Shape Shifter Z mods (mostly due to the fact that 
  * they're outdated).
  */
-@Mod(modid = Metamorph.MODID, name = Metamorph.MODNAME, version = Metamorph.VERSION)
+@Mod(modid = Metamorph.MODID, name = Metamorph.MODNAME, version = Metamorph.VERSION, guiFactory = Metamorph.GUI_FACTORY)
 public class Metamorph
 {
     /* Metadata fields */
@@ -34,6 +34,8 @@ public class Metamorph
 
     public static final String CLIENT_PROXY = "mchorse.metamorph.ClientProxy";
     public static final String SERVER_PROXY = "mchorse.metamorph.ServerProxy";
+
+    public static final String GUI_FACTORY = "mchorse.metamorph.config.GuiFactory";
 
     /* Forge stuff classes */
 
@@ -50,7 +52,7 @@ public class Metamorph
     {
         LOGGER = event.getModLog();
 
-        proxy.preLoad();
+        proxy.preLoad(event);
     }
 
     @EventHandler
