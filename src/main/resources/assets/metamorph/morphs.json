@@ -4,7 +4,7 @@
         "health": 6
     },
     "CaveSpider": {
-        "abilities": ["climb"],
+        "abilities": ["climb", "hostile"],
         "attack": "poison",
         "health": 12
     },
@@ -44,7 +44,7 @@
         "health": 8
     },
     "Spider": {
-        "abilities": ["climb"],
+        "abilities": ["climb", "hostile"],
         "health": 16
     },
     "Squid": {
@@ -52,16 +52,17 @@
         "health": 10
     },
     "Wolf": {
+    	"abilities": ["hostile"],
         "health": 8
     },
     
     "Enderman": {
-        "abilities": ["water_allergy", "ender"],
+        "abilities": ["water_allergy", "ender", "hostile"],
         "action": "teleport",
         "health": 40
     },
     "PigZombie": {
-        "abilities": ["fire_proof", "hungerless"],
+        "abilities": ["fire_proof", "hungerless", "hostile"],
         "health": 20
     },
     "SnowMan": {
@@ -78,49 +79,52 @@
     },
     
     "Blaze": {
-        "abilities": ["fly", "fire_proof", "smoke"],
+        "abilities": ["fly", "fire_proof", "smoke", "hostile"],
         "action": "fireball",
         "health": 20
     },
     "Creeper": {
+    	"abilities": ["hostile"],
         "action": "explode",
         "health": 20
     },
     "Ghast": {
-        "abilities": ["fly", "fire_proof"],
+        "abilities": ["fly", "fire_proof", "hostile"],
         "action": "fireball",
         "health": 10
     },
     "Guardian": {
-        "abilities": ["water_breath", "night_vision", "swim", "jumping"],
+        "abilities": ["water_breath", "night_vision", "swim", "jumping", "hostile"],
         "health": 30
     },
     "LavaSlime": {
-        "abilities": ["jumping", "fire_proof"],
+        "abilities": ["jumping", "fire_proof", "hostile"],
         "health": 4
     },
     "Silverfish": {
+    	"abilities": ["hostile"],
         "health": 8
     },
     "Slime": {
-        "abilities": ["jumping"],
+        "abilities": ["jumping", "hostile"],
         "health": 4
     },
     "Skeleton": {
-        "abilities": ["sun_allergy"],
+        "abilities": ["sun_allergy", "hostile"],
         "health": 20
     },
     "WitherSkeleton": {
-        "abilities": ["fire_proof"],
+        "abilities": ["fire_proof", "hostile"],
         "attack": "wither",
         "health": 20
     },
     "Witch": {
+    	"abilities": ["hostile"],
         "action": "potions",
         "health": 26
     },
     "Zombie": {
-        "abilities": ["sun_allergy", "hungerless"],
+        "abilities": ["sun_allergy", "hungerless", "hostile"],
         "health": 20
     }
 }

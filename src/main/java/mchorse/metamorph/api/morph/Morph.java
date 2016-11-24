@@ -4,6 +4,7 @@ import mchorse.metamorph.api.IAbility;
 import mchorse.metamorph.api.IAction;
 import mchorse.metamorph.api.IAttackAbility;
 import mchorse.metamorph.api.Model;
+import mchorse.metamorph.api.abilities.Hostile;
 import mchorse.metamorph.capabilities.morphing.IMorphing;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.SharedMonsterAttributes;
@@ -158,5 +159,21 @@ public class Morph
         {
             player.getEntityAttribute(SharedMonsterAttributes.MAX_HEALTH).setBaseValue(health);
         }
+    }
+
+    /**
+     * Checks whether the entity is hostile 
+     */
+    public boolean isHostile()
+    {
+        for (IAbility ability : this.abilities)
+        {
+            if (ability instanceof Hostile)
+            {
+                return true;
+            }
+        }
+
+        return false;
     }
 }

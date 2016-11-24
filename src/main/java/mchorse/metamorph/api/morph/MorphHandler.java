@@ -8,9 +8,12 @@ import mchorse.metamorph.capabilities.morphing.IMorphing;
 import mchorse.metamorph.capabilities.morphing.Morphing;
 import mchorse.metamorph.entity.EntityMorph;
 import net.minecraft.entity.Entity;
+import net.minecraft.entity.EntityLiving;
+import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraftforge.event.entity.living.LivingAttackEvent;
 import net.minecraftforge.event.entity.living.LivingDeathEvent;
+import net.minecraftforge.event.entity.living.LivingSetAttackTargetEvent;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.common.gameevent.TickEvent.Phase;
 import net.minecraftforge.fml.common.gameevent.TickEvent.PlayerTickEvent;
@@ -133,6 +136,40 @@ public class MorphHandler
         }
 
         capability.getCurrentMorph().update(player, capability);
+    }
+
+    /**
+     * Another morphing handler.
+     * 
+     * This handler is responsible for canceling setting attack target for 
+     * hostile morphs.
+     */
+    @SubscribeEvent
+    public void onLivingSetAttackTarget(LivingSetAttackTargetEvent event)
+    {
+        Entity target = event.getTarget();
+        EntityLivingBase source = event.getEntityLiving();
+
+        if (target instanceof EntityPlayer)
+        {
+            EntityPlayer player = (EntityPlayer) target;
+            IMorphing morphing = Morphing.get(player);
+
+            if (morphing == null || !morphing.isMorphed())
+            {
+                return;
+            }
+
+            if (morphing.getCurrentMorph().isHostile() && source.getAttackingEntity() != target)
+            {
+                if (source instanceof EntityLiving)
+                {
+                    System.out.println("Reseting attacker for " + player);
+
+                    ((EntityLiving) event.getEntity()).setAttackTarget(null);
+                }
+            }
+        }
     }
 
     /**
