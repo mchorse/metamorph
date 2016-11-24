@@ -6,6 +6,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.TreeSet;
 
+import org.lwjgl.input.Keyboard;
 import org.lwjgl.input.Mouse;
 import org.lwjgl.opengl.GL11;
 
@@ -124,6 +125,24 @@ public class GuiMorphs extends GuiScreen
     }
 
     /**
+     * Scroll the menu vertically by given amount of units.
+     * 
+     * This method will change scroll 
+     */
+    protected void scroll(float amount)
+    {
+        float max = ((this.morphs.size() / this.perRow) + 1) * 60;
+
+        if (max > (height - 60))
+        {
+            float maxScroll = max - (height - 60);
+
+            this.scroll += amount;
+            this.scroll = MathHelper.clamp_float(this.scroll, 0.0F, maxScroll);
+        }
+    }
+
+    /**
      * Handle mouse input 
      * 
      * This method is probably one of important ones in this class. It's 
@@ -135,14 +154,10 @@ public class GuiMorphs extends GuiScreen
         super.handleMouseInput();
 
         int i = -Mouse.getEventDWheel();
-        float max = ((this.morphs.size() / this.perRow) + 1) * 60;
 
-        if (i != 0 && max > (height - 60))
+        if (i != 0)
         {
-            float maxScroll = max - (height - 60);
-
-            this.scroll += Math.copySign(3, i);
-            this.scroll = MathHelper.clamp_float(this.scroll, 0.0F, maxScroll);
+            this.scroll(Math.copySign(3, i));
         }
     }
 
@@ -180,6 +195,37 @@ public class GuiMorphs extends GuiScreen
         else
         {
             this.selected = index;
+        }
+    }
+
+    /**
+     * Shortcuts for scrolling the morph menu up and down with arrow keys. 
+     * 
+     * There are also shortcuts for getting in the end or beginning of the 
+     * screen (left and right arrow keys).
+     */
+    @Override
+    protected void keyTyped(char typedChar, int keyCode) throws IOException
+    {
+        super.keyTyped(typedChar, keyCode);
+
+        float max = ((this.morphs.size() / this.perRow) + 1) * 60;
+
+        if (keyCode == Keyboard.KEY_DOWN)
+        {
+            this.scroll(30);
+        }
+        else if (keyCode == Keyboard.KEY_UP)
+        {
+            this.scroll(-30);
+        }
+        else if (keyCode == Keyboard.KEY_LEFT)
+        {
+            this.scroll(-max);
+        }
+        else if (keyCode == Keyboard.KEY_RIGHT)
+        {
+            this.scroll(max);
         }
     }
 
