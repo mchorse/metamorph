@@ -27,7 +27,8 @@ import net.minecraftforge.fml.common.registry.IEntityAdditionalSpawnData;
  * This entity is responsible for showing up the morph which will player 
  * acquire.
  * 
- * This entity is similar to {@link EntityXPOrb} or {@link EntityItem}
+ * This entity is similar to {@link EntityXPOrb} or {@link EntityItem}, in terms 
+ * of pickin up.
  */
 public class EntityMorph extends EntityLiving implements IEntityAdditionalSpawnData
 {
@@ -114,7 +115,7 @@ public class EntityMorph extends EntityLiving implements IEntityAdditionalSpawnD
 
             double dist = Math.sqrt(dx * dx + dy * dy + dz * dz);
 
-            if (dist < this.width / 2 * 1.2 + this.player.width / 2 * 1.2)
+            if (dist < this.width / 2 * 1.4 + this.player.width / 2 * 1.4)
             {
                 this.setDead();
                 this.grantMorph();

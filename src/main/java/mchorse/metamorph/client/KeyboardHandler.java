@@ -21,6 +21,8 @@ import net.minecraftforge.fml.common.gameevent.InputEvent;
  * 
  * This class (handler) is responsible for handling the keyboard input for 
  * executing an action and morphing the player using survival morphing menu.
+ * 
+ * This handler is also responsible for opening up creative morphing menu.
  */
 public class KeyboardHandler
 {

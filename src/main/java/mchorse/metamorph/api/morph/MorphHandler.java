@@ -65,7 +65,7 @@ public class MorphHandler
             return;
         }
 
-        if (!player.worldObj.isRemote)
+        if (!player.worldObj.isRemote && !capability.getAcquiredMorphs().contains(morph))
         {
             EntityMorph morphEntity = new EntityMorph(player.worldObj, player.getUniqueID(), morph);
 
