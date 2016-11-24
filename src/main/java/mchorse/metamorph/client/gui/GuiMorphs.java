@@ -18,6 +18,7 @@ import mchorse.metamorph.client.model.ModelCustom;
 import mchorse.metamorph.network.Dispatcher;
 import mchorse.metamorph.network.common.PacketMorph;
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.gui.Gui;
 import net.minecraft.client.gui.GuiButton;
 import net.minecraft.client.gui.GuiScreen;
 import net.minecraft.client.resources.I18n;
@@ -46,7 +47,8 @@ public class GuiMorphs extends GuiScreen
     private List<MorphCell> morphs = new ArrayList<GuiMorphs.MorphCell>();
     private int selected = -1;
     private float scroll = 0;
-    private int perRow = 7;
+    private int perRow = 6;
+    private boolean dragging = false;
 
     /* Initialization code */
 
@@ -131,15 +133,24 @@ public class GuiMorphs extends GuiScreen
      */
     protected void scroll(float amount)
     {
-        float max = ((this.morphs.size() / this.perRow) + 1) * 60;
+        float max = (this.morphs.size() / this.perRow) * 60;
 
         if (max > (height - 60))
         {
-            float maxScroll = max - (height - 60);
-
             this.scroll += amount;
-            this.scroll = MathHelper.clamp_float(this.scroll, 0.0F, maxScroll);
+            this.clampScroll();
         }
+    }
+
+    /**
+     * Clamp scroll between restricted range of maximum allowed scroll height. 
+     */
+    protected void clampScroll()
+    {
+        float max = (this.morphs.size() / this.perRow) * 60;
+        float maxScroll = max - (height - 60);
+
+        this.scroll = MathHelper.clamp_float(this.scroll, 0.0F, maxScroll);
     }
 
     /**
@@ -179,6 +190,16 @@ public class GuiMorphs extends GuiScreen
             return;
         }
 
+        int scrollX = width - 20;
+
+        /* Drag the scroll bar */
+        if (mouseX >= scrollX && mouseX <= scrollX + 4)
+        {
+            this.dragging = true;
+
+            return;
+        }
+
         /* Compute the selection index */
         int w = (width - 40);
         int m = w / this.perRow;
@@ -198,6 +219,14 @@ public class GuiMorphs extends GuiScreen
         }
     }
 
+    @Override
+    protected void mouseReleased(int mouseX, int mouseY, int state)
+    {
+        super.mouseReleased(mouseX, mouseY, state);
+
+        this.dragging = false;
+    }
+
     /**
      * Shortcuts for scrolling the morph menu up and down with arrow keys. 
      * 
@@ -209,7 +238,7 @@ public class GuiMorphs extends GuiScreen
     {
         super.keyTyped(typedChar, keyCode);
 
-        float max = ((this.morphs.size() / this.perRow) + 1) * 60;
+        float max = (this.morphs.size() / this.perRow) * 60;
 
         if (keyCode == Keyboard.KEY_DOWN)
         {
@@ -262,6 +291,8 @@ public class GuiMorphs extends GuiScreen
         int w = (width - 40);
         int m = w / this.perRow;
 
+        this.drawScrollbar(mouseX, mouseY);
+
         /* Render morphs */
         for (MorphCell cell : this.morphs)
         {
@@ -292,11 +323,35 @@ public class GuiMorphs extends GuiScreen
     }
 
     /**
+     * Draw scroll bar in GUI.
+     */
+    private void drawScrollbar(int mouseX, int mouseY)
+    {
+        int trimmedHeight = (height - 60);
+
+        float max = (this.morphs.size() / this.perRow) * 60;
+        float maxScroll = max - trimmedHeight;
+        float factor = trimmedHeight / max;
+
+        if (this.dragging)
+        {
+            this.scroll = ((float) mouseY - 32) / ((float) height - 64) * maxScroll;
+            this.clampScroll();
+        }
+
+        int x = width - 20;
+        int h = MathHelper.clamp_int((int) (factor * trimmedHeight), 20, trimmedHeight);
+        int y = (int) (this.scroll / maxScroll * (trimmedHeight - h - 4));
+
+        Gui.drawRect(x, 32 + y, x + 4, 32 + y + h, 0xddffffff);
+    }
+
+    /**
      * Render a grey outline around the given area.
      * 
      * Basically, this method renders selection.
      */
-    public void renderSelected(int x, int y, int width, int height)
+    private void renderSelected(int x, int y, int width, int height)
     {
         int color = 0xffcccccc;
 
