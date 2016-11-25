@@ -24,6 +24,12 @@ public class MetamorphConfig
      */
     public boolean keep_morphs;
 
+    /**
+     * Hide username in the survival morphing menu. Added just because, for 
+     * no reason, if you're asking 
+     */
+    public boolean hide_username;
+
     private Configuration config;
 
     public MetamorphConfig(Configuration config)
@@ -42,6 +48,7 @@ public class MetamorphConfig
 
         this.prevent_ghosts = this.config.getBoolean("prevent_ghosts", cat, true, "Prevent ghosts from spawning if player has morph of mob already?", lang + "prevent_ghosts");
         this.keep_morphs = this.config.getBoolean("keep_morphs", cat, true, "Retain morphs when player dies?", lang + "keep_morphs");
+        this.hide_username = this.config.getBoolean("hide_username", cat, true, "Hide username in survival morphing menu", lang + "hide_username");
 
         this.config.getCategory(cat).setComment("General configuration of Metamorph mod");
 

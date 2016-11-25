@@ -4,6 +4,7 @@ import java.util.List;
 
 import org.lwjgl.opengl.GL11;
 
+import mchorse.metamorph.Metamorph;
 import mchorse.metamorph.api.Model;
 import mchorse.metamorph.api.morph.MorphManager;
 import mchorse.metamorph.capabilities.morphing.IMorphing;
@@ -108,7 +109,7 @@ public class GuiMenu extends Gui
         /* Render morphs */
         for (int i = 0; i <= morphs.size(); i++)
         {
-            String name = i == 0 ? player.getName() : morphs.get(i - 1);
+            String name = i == 0 ? (Metamorph.proxy.config.hide_username ? "Demorph" : player.getName()) : morphs.get(i - 1);
 
             int x = width / 2 - w / 2 + i * margin + margin / 2 + 1;
             int y = height / 2 + h / 5;
@@ -229,7 +230,6 @@ public class GuiMenu extends Gui
      */
     public void advance(int factor)
     {
-        int result = this.index + factor;
         int length = this.getMorphCount();
 
         if (length == 0)
