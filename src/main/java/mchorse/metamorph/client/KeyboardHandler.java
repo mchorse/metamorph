@@ -48,7 +48,7 @@ public class KeyboardHandler
         keyNextMorph = new KeyBinding("key.metamorph.morph.next", Keyboard.KEY_RBRACKET, category);
         keyPrevMorph = new KeyBinding("key.metamorph.morph.prev", Keyboard.KEY_LBRACKET, category);
         keySelectMorph = new KeyBinding("key.metamorph.morph.select", Keyboard.KEY_RETURN, category);
-        keyDemorph = new KeyBinding("key.metamorph.morph.demorph", Keyboard.KEY_NONE, category);
+        keyDemorph = new KeyBinding("key.metamorph.morph.demorph", Keyboard.KEY_COMMA, category);
 
         ClientRegistry.registerKeyBinding(keyAction);
         ClientRegistry.registerKeyBinding(keyMenu);
