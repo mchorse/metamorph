@@ -21,6 +21,19 @@ public class RenderMorph extends RenderLivingBase<EntityMorph>
         super(manager, model, shadowSize);
     }
 
+    /**
+     * Render morph's name only if the player is pointed at the entity
+     */
+    @Override
+    protected boolean canRenderName(EntityMorph entity)
+    {
+        return super.canRenderName(entity) && entity.hasCustomName() && entity == this.renderManager.pointedEntity;
+    }
+
+    /**
+     * Render the morph entity with some blending going on and blue-ish 
+     * coloring. 
+     */
     @Override
     public void doRender(EntityMorph entity, double x, double y, double z, float entityYaw, float partialTicks)
     {
@@ -40,6 +53,9 @@ public class RenderMorph extends RenderLivingBase<EntityMorph>
         GlStateManager.disableNormalize();
     }
 
+    /**
+     * Get default texture for entity 
+     */
     @Override
     protected ResourceLocation getEntityTexture(EntityMorph entity)
     {
