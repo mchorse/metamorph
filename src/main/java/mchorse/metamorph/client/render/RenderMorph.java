@@ -22,12 +22,6 @@ public class RenderMorph extends RenderLivingBase<EntityMorph>
     }
 
     @Override
-    protected boolean canRenderName(EntityMorph entity)
-    {
-        return true;
-    }
-
-    @Override
     public void doRender(EntityMorph entity, double x, double y, double z, float entityYaw, float partialTicks)
     {
         this.setupModel(entity);
