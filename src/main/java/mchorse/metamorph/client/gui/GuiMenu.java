@@ -21,6 +21,7 @@ import net.minecraft.client.renderer.RenderHelper;
 import net.minecraft.client.renderer.entity.RenderLivingBase;
 import net.minecraft.client.renderer.entity.RenderManager;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.MathHelper;
 
 /**
@@ -35,6 +36,9 @@ import net.minecraft.util.math.MathHelper;
 public class GuiMenu extends Gui
 {
     public Minecraft mc = Minecraft.getMinecraft();
+
+    /* My skin */
+    private ResourceLocation mchorse = new ResourceLocation("metamorph:textures/entity/mchorse.png");
 
     /**
      * Index of selected morph 
