@@ -8,7 +8,7 @@ This patch doesn't really add stuff, rather it improves `1.0` release based on s
 
 This patch adds few configuration options, improves GUIs, fixes some bugs and improves some morphs and rendering of the hand (thanks to [Blockbuster's mod](https://github.com/mchorse/blockbuster/) hands code).
 
-**Review video**:
+**Review video**:  
 <a href="https://youtu.be/4ZD8vV5Zyuw"> 
     <img src="https://img.youtube.com/vi/4ZD8vV5Zyuw/0.jpg">
 </a>
