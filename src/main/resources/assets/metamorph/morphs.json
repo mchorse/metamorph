@@ -75,11 +75,12 @@
     },
     "VillagerGolem": {
         "attack": "knockback",
-        "health": 100
+        "health": 100,
+        "speed": 0.09
     },
     
     "Blaze": {
-        "abilities": ["fly", "fire_proof", "smoke", "hostile"],
+        "abilities": ["fly", "fire_proof", "smoke", "hostile", "water_allergy"],
         "action": "fireball",
         "health": 20
     },
