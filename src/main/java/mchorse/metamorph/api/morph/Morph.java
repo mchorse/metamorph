@@ -111,11 +111,10 @@ public class Morph
     public void morph(EntityPlayer player)
     {
         this.setHealth(player, this.health);
+        player.playSound(SoundEvents.ENTITY_ITEM_PICKUP, 1.0F, 1.0F);
 
         for (IAbility ability : this.abilities)
         {
-            player.playSound(SoundEvents.ENTITY_ITEM_PICKUP, 1.0F, 1.0F);
-
             ability.onMorph(player);
         }
     }
