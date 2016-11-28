@@ -114,7 +114,7 @@ public class Morph
 
         for (IAbility ability : this.abilities)
         {
-            player.playSound(SoundEvents.ENTITY_PAINTING_PLACE, 1.0F, 1.0F);
+            player.playSound(SoundEvents.ENTITY_ITEM_PICKUP, 1.0F, 1.0F);
 
             ability.onMorph(player);
         }
