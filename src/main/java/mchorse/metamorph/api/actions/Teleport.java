@@ -3,7 +3,9 @@ package mchorse.metamorph.api.actions;
 import mchorse.metamorph.api.IAction;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
+import net.minecraft.init.SoundEvents;
 import net.minecraft.util.EnumFacing;
+import net.minecraft.util.SoundCategory;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.RayTraceResult;
 import net.minecraft.util.math.RayTraceResult.Type;
@@ -52,6 +54,8 @@ public class Teleport implements IAction
             double y = block.getY() + 1.0F;
             double z = block.getZ() + 0.5F;
 
+            player.worldObj.playSound((EntityPlayer) null, player.prevPosX, player.prevPosY, player.prevPosZ, SoundEvents.ENTITY_ENDERMEN_TELEPORT, SoundCategory.HOSTILE, 1.0F, 1.0F);
+            player.playSound(SoundEvents.ENTITY_ENDERMEN_TELEPORT, 1.0F, 1.0F);
             player.setPositionAndUpdate(x, y, z);
             player.resetCooldown();
         }
