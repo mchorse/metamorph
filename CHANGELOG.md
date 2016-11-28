@@ -8,6 +8,11 @@ This patch doesn't really add stuff, rather it improves `1.0` release based on s
 
 This patch adds few configuration options, improves GUIs, fixes some bugs and improves some morphs and rendering of the hand (thanks to [Blockbuster's mod](https://github.com/mchorse/blockbuster/) hands code).
 
+**Review video**:
+<a href="https://youtu.be/4ZD8vV5Zyuw"> 
+    <img src="https://img.youtube.com/vi/4ZD8vV5Zyuw/0.jpg">
+</a>
+
 * Added acquiring **morph** overlay (replaced chat messages).
 * Improved first-person hand rendering (will work even with shaders).
 * Improved **Creative Morphs Menu**:
@@ -26,9 +31,11 @@ This patch adds few configuration options, improves GUIs, fixes some bugs and im
     * When pressing `enter` (apply morph), the **Survival Morph Menu** will disappear.
 * Improved **morphs**:
     * Added `hostile` ability, to most of hostile **morphs** and for some neutral and animal **morphs**, making morphed players not hostile to hostile mobs.
-    * Added `speed` property. Now some of the **morphs** (`Ozelot`, `EntityHorse` and `Rabbit)` run faster.
+    * Added `speed` property. Now some of the **morphs** (`Ozelot`, `EntityHorse` and `Rabbit)` run faster or (`VillagerGolem`) run slower.
     * Added `night_vision` ability to `Guardian`.
     * Increased range and accuracy of `potions` action (`Witch` morph, basically).
+    * When a player morphs or pick ups a morph, popping sound effect is played
+* Sound effects for `teleport` action was added
 
 ## Metamorph 1.0
 
