@@ -273,7 +273,16 @@ public class GuiMorphs extends GuiScreen
         /* Label variables */
         int count = this.morphs.size();
         boolean cond = count != 0 && this.selected >= 0 && this.selected < count;
-        String selected = cond ? this.morphs.get(this.selected).name : I18n.format("metamorph.gui.no_morph");
+        String selected = null;
+
+        if (cond)
+        {
+            selected = I18n.format("entity." + this.morphs.get(this.selected).name + ".name");
+        }
+        else
+        {
+            selected = I18n.format("metamorph.gui.no_morph");
+        }
 
         /* Draw panel backgrounds */
         this.drawDefaultBackground();

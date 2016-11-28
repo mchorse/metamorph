@@ -20,6 +20,7 @@ import net.minecraft.client.renderer.OpenGlHelper;
 import net.minecraft.client.renderer.RenderHelper;
 import net.minecraft.client.renderer.entity.RenderLivingBase;
 import net.minecraft.client.renderer.entity.RenderManager;
+import net.minecraft.client.resources.I18n;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.MathHelper;
@@ -113,7 +114,12 @@ public class GuiMenu extends Gui
         /* Render morphs */
         for (int i = 0; i <= morphs.size(); i++)
         {
-            String name = i == 0 ? (Metamorph.proxy.config.hide_username ? "Demorph" : player.getName()) : morphs.get(i - 1);
+            String name = Metamorph.proxy.config.hide_username ? "Demorph" : player.getName();
+
+            if (i != 0)
+            {
+                name = I18n.format("entity." + morphs.get(i - 1) + ".name");
+            }
 
             int x = width / 2 - w / 2 + i * margin + margin / 2 + 1;
             int y = height / 2 + h / 5;
@@ -139,7 +145,7 @@ public class GuiMenu extends Gui
             }
             else
             {
-                this.renderMorph(player, name, x, y - 2, scale);
+                this.renderMorph(player, morphs.get(i - 1), x, y - 2, scale);
             }
         }
 
