@@ -1,19 +1,28 @@
 ![Metamorph](./logo.png)
 
-[Download](https://github.com/mchorse/metamorph/releases/) – [PMC post](http://planetminecraft.com/mod/metamorph/) – [Minecraft Forum post](http://www.minecraftforum.net/forums/mapping-and-modding/minecraft-mods/2753214-metamorph-morph-into-vanilla-mobs)
+[Download](https://github.com/mchorse/metamorph/releases/) – [PMC post](http://planetminecraft.com/mod/metamorph/) – [Minecraft Forum post](http://www.minecraftforum.net/forums/mapping-and-modding/minecraft-mods/2753214-metamorph-morph-into-vanilla-mobs) – [AdFly support link](http://adf.ly/15268913/metamorph-101)
 
-**Metamorph** (from *[Metamorphosis](https://en.wikipedia.org/wiki/Metamorphosis)*) – a Minecraft mod for 1.10.2, which allow players to morph into different vanilla mobs. Heavily inspired by iChun's Morph mod and zacuke's Shape Shifter Z mod. 
+**Metamorph** (from *[Metamorphosis](https://en.wikipedia.org/wiki/Metamorphosis)*) – a Minecraft mod for 1.10.2 (there is also build for 1.9.4), which allow players to morph into different vanilla mobs. Heavily inspired by iChun's Morph mod and zacuke's Shape Shifter Z mod. 
+
+## Videos
+
+Mod review made by **McHorse** (me):
+
+<a href="https://youtu.be/4ZD8vV5Zyuw"> 
+    <img src="https://img.youtube.com/vi/4ZD8vV5Zyuw/0.jpg">
+</a>
+
+Mod showcase by **xJSQ**:
+
+<a href="https://youtu.be/dPkNN2ES5NA"> 
+    <img src="https://img.youtube.com/vi/dPkNN2ES5NA/0.jpg">
+</a>
 
 ## Installation 
 
-Install [Minecraft Forge](http://files.minecraftforge.net/), then go to 
-[releases](https://github.com/mchorse/metamorph/releases) and download the 
-latest stable version (not a pre-release) of jar file. Put it in minecraft's `mods` 
-folder, and launch the game. 
+Install [Minecraft Forge](http://files.minecraftforge.net/), then go to [releases](https://github.com/mchorse/metamorph/releases) and download the latest stable version (not a pre-release) of jar file. Put it in minecraft's `mods` folder, and launch the game. 
 
-After that, Metamorph mod should be installed and will appear in Minecraft's 
-mods menu. If Metamorph didn't appear in the mods menu, then something went 
-wrong.
+After that, Metamorph mod should be installed and will appear in Minecraft's mods menu. If Metamorph didn't appear in the mods menu, then something went wrong.
 
 ## How to play
 
@@ -48,8 +57,6 @@ If you wonder about the future of this project, and what new updates might bring
 
 If you found a bug, or this mod crashed you game. I'll appreciate if you could report the bug or crash to me either in issues or on [Twitter](https://twitter.com). Please, make sure to attach a crash log ([pastebin](http://pastebin.com) please) and description of a bug or crash and the way to reproduce it. Thanks!
 
-Have fun!
-
 ## License
 
 This project is licensed under MIT. See `LICENSE.md` file.
@@ -68,4 +75,4 @@ When reposting my mod on your own website, please do following (if you want to s
 When reviewing my mod on your YT channel, please do following (if you want to support me and this mod):
 
 * Provide a link to my [YouTube channel](https://www.youtube.com/channel/UCWVDjAcecHHa8UrEWMRGI8w), please. This will be really appreciated! 
-* Provide the source link instead of reposter's page, please. Either it's GitHub page, Planet Minecraft or Minecraft forum post. However, if you have a website where you post some notes or instructions along with link to source link, it's also fine.
+* Provide the source link instead of reposter's page, please. Either it's GitHub page, Planet Minecraft or Minecraft forum post. However, if you have a website where you post some notes or instructions along with link to source link, it's also fine. AdFly link will be really appreciated!
