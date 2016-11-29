@@ -133,13 +133,8 @@ public class GuiMorphs extends GuiScreen
      */
     protected void scroll(float amount)
     {
-        float max = (this.morphs.size() / this.perRow) * 60;
-
-        if (max > (height - 60))
-        {
-            this.scroll += amount;
-            this.clampScroll();
-        }
+        this.scroll += amount;
+        this.clampScroll();
     }
 
     /**
@@ -147,7 +142,7 @@ public class GuiMorphs extends GuiScreen
      */
     protected void clampScroll()
     {
-        float max = (this.morphs.size() / this.perRow) * 60;
+        float max = MathHelper.ceiling_float_int((float) this.morphs.size() / (float) this.perRow) * 60;
         float maxScroll = max - (height - 60);
 
         this.scroll = MathHelper.clamp_float(this.scroll, 0.0F, maxScroll);
@@ -238,7 +233,7 @@ public class GuiMorphs extends GuiScreen
     {
         super.keyTyped(typedChar, keyCode);
 
-        float max = (this.morphs.size() / this.perRow) * 60;
+        float max = MathHelper.ceiling_float_int((float) this.morphs.size() / (float) this.perRow) * 60;
 
         if (keyCode == Keyboard.KEY_DOWN)
         {
@@ -277,7 +272,7 @@ public class GuiMorphs extends GuiScreen
 
         if (cond)
         {
-            selected = I18n.format("entity." + this.morphs.get(this.selected).name + ".name");
+            selected = MorphManager.INSTANCE.morphDisplayNameFromMorph(this.morphs.get(this.selected).name);
         }
         else
         {
@@ -338,7 +333,7 @@ public class GuiMorphs extends GuiScreen
     {
         int trimmedHeight = (height - 60);
 
-        float max = (this.morphs.size() / this.perRow) * 60;
+        float max = MathHelper.ceiling_float_int((float) this.morphs.size() / (float) this.perRow) * 60;
         float maxScroll = max - trimmedHeight;
         float factor = trimmedHeight / max;
 

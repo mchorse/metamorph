@@ -39,6 +39,7 @@ import mchorse.metamorph.api.actions.Teleport;
 import mchorse.metamorph.api.attacks.KnockbackAttack;
 import mchorse.metamorph.api.attacks.PoisonAttack;
 import mchorse.metamorph.api.attacks.WitherAttack;
+import net.minecraft.client.resources.I18n;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityList;
 import net.minecraft.entity.monster.EntitySkeleton;
@@ -180,6 +181,22 @@ public class MorphManager
         }
 
         return EntityList.getEntityString(entity);
+    }
+
+    /**
+     * Get display name for morph
+     */
+    public String morphDisplayNameFromMorph(String morph)
+    {
+        if (morph.equals("WitherSkeleton"))
+        {
+            morph = "Skeleton";
+        }
+
+        String key = "entity." + morph + ".name";
+        String result = I18n.format(key);
+
+        return key.equals(result) ? morph : result;
     }
 
     /**

@@ -5,11 +5,11 @@ import java.util.UUID;
 import io.netty.buffer.ByteBuf;
 import mchorse.metamorph.Metamorph;
 import mchorse.metamorph.api.Model;
+import mchorse.metamorph.api.morph.MorphManager;
 import mchorse.metamorph.capabilities.morphing.IMorphing;
 import mchorse.metamorph.capabilities.morphing.Morphing;
 import mchorse.metamorph.network.Dispatcher;
 import mchorse.metamorph.network.common.PacketAcquireMorph;
-import net.minecraft.client.resources.I18n;
 import net.minecraft.entity.EntityLiving;
 import net.minecraft.entity.item.EntityItem;
 import net.minecraft.entity.item.EntityXPOrb;
@@ -58,7 +58,7 @@ public class EntityMorph extends EntityLiving implements IEntityAdditionalSpawnD
         this.morph = morph;
 
         this.setSize(morph);
-        this.setCustomNameTag(I18n.format("entity." + morph + ".name") + " Morph");
+        this.setCustomNameTag(MorphManager.INSTANCE.morphDisplayNameFromMorph(morph) + " Morph");
     }
 
     /**
@@ -176,7 +176,7 @@ public class EntityMorph extends EntityLiving implements IEntityAdditionalSpawnD
         this.morph = compound.getString("Morph");
 
         this.setSize(morph);
-        this.setCustomNameTag(I18n.format("entity." + morph + ".name") + " Morph");
+        this.setCustomNameTag(MorphManager.INSTANCE.morphDisplayNameFromMorph(morph) + " Morph");
     }
 
     @Override
@@ -195,6 +195,6 @@ public class EntityMorph extends EntityLiving implements IEntityAdditionalSpawnD
         this.morph = ByteBufUtils.readUTF8String(buffer);
 
         this.setSize(morph);
-        this.setCustomNameTag(I18n.format("entity." + morph + ".name") + " Morph");
+        this.setCustomNameTag(MorphManager.INSTANCE.morphDisplayNameFromMorph(morph) + " Morph");
     }
 }

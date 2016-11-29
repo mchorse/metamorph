@@ -20,7 +20,6 @@ import net.minecraft.client.renderer.OpenGlHelper;
 import net.minecraft.client.renderer.RenderHelper;
 import net.minecraft.client.renderer.entity.RenderLivingBase;
 import net.minecraft.client.renderer.entity.RenderManager;
-import net.minecraft.client.resources.I18n;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.MathHelper;
@@ -118,7 +117,7 @@ public class GuiMenu extends Gui
 
             if (i != 0)
             {
-                name = I18n.format("entity." + morphs.get(i - 1) + ".name");
+                name = MorphManager.INSTANCE.morphDisplayNameFromMorph(morphs.get(i - 1));
             }
 
             int x = width / 2 - w / 2 + i * margin + margin / 2 + 1;
