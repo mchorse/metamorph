@@ -30,7 +30,7 @@ public class KnockbackAttack implements IAttackAbility
             }
         };
 
-        if (player.worldObj.isRemote)
+        if (!player.worldObj.isRemote)
         {
             MorphHandler.FUTURE_TASKS_SERVER.add(task);
         }
