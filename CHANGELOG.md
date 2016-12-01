@@ -1,5 +1,15 @@
 # Metamorph Change Log
 
+## Metamorph 1.0.2
+
+Small patch update that makes this mod work on Forge modded server (I thought it was working, but apparently I forgot to test it out).
+
+Besides that morph's names were changed a little bit and Iron Golem's attack `knockback` was fixed.
+
+* Changed the way how morph's names are displayed
+* Fixed server crashes and errors (works on server, although there might be bugs)
+* Fixed Iron Golem's `knockback` attack in multiplayer (previously it didn't worked)
+
 ## Metamorph 1.0.1
 
 First patch of Metamorph mod.
