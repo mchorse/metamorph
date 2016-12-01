@@ -44,6 +44,8 @@ import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityList;
 import net.minecraft.entity.monster.EntitySkeleton;
 import net.minecraft.entity.monster.SkeletonType;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 
 /**
  * Morph manager class
@@ -184,8 +186,9 @@ public class MorphManager
     }
 
     /**
-     * Get display name for morph
+     * Get display name for morph (only client)
      */
+    @SideOnly(Side.CLIENT)
     public String morphDisplayNameFromMorph(String morph)
     {
         if (morph.equals("WitherSkeleton"))

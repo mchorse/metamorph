@@ -5,7 +5,6 @@ import java.util.UUID;
 import io.netty.buffer.ByteBuf;
 import mchorse.metamorph.Metamorph;
 import mchorse.metamorph.api.Model;
-import mchorse.metamorph.api.morph.MorphManager;
 import mchorse.metamorph.capabilities.morphing.IMorphing;
 import mchorse.metamorph.capabilities.morphing.Morphing;
 import mchorse.metamorph.network.Dispatcher;
@@ -19,6 +18,7 @@ import net.minecraft.init.SoundEvents;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.SoundCategory;
 import net.minecraft.util.math.MathHelper;
+import net.minecraft.util.text.ITextComponent;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.common.network.ByteBufUtils;
 import net.minecraftforge.fml.common.registry.IEntityAdditionalSpawnData;
@@ -48,6 +48,7 @@ public class EntityMorph extends EntityLiving implements IEntityAdditionalSpawnD
         super(worldIn);
 
         this.setEntityInvulnerable(true);
+        this.setCustomNameTag("Morph");
     }
 
     public EntityMorph(World worldIn, UUID owner, String morph)
@@ -58,7 +59,19 @@ public class EntityMorph extends EntityLiving implements IEntityAdditionalSpawnD
         this.morph = morph;
 
         this.setSize(morph);
-        this.setCustomNameTag(MorphManager.INSTANCE.morphDisplayNameFromMorph(morph) + " Morph");
+    }
+
+    /**
+     * Get display name
+     * 
+     * I'm using proxies to get name for the correct side correctly. Server 
+     * side should display "Morph" in aqua. Whether client should display it 
+     * as the real name of morph in aqua (based on morph property).
+     */
+    @Override
+    public ITextComponent getDisplayName()
+    {
+        return Metamorph.proxy.morphName(this);
     }
 
     /**
@@ -176,7 +189,6 @@ public class EntityMorph extends EntityLiving implements IEntityAdditionalSpawnD
         this.morph = compound.getString("Morph");
 
         this.setSize(morph);
-        this.setCustomNameTag(MorphManager.INSTANCE.morphDisplayNameFromMorph(morph) + " Morph");
     }
 
     @Override
@@ -195,6 +207,5 @@ public class EntityMorph extends EntityLiving implements IEntityAdditionalSpawnD
         this.morph = ByteBufUtils.readUTF8String(buffer);
 
         this.setSize(morph);
-        this.setCustomNameTag(MorphManager.INSTANCE.morphDisplayNameFromMorph(morph) + " Morph");
     }
 }

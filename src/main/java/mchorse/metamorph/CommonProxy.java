@@ -12,6 +12,8 @@ import mchorse.metamorph.capabilities.morphing.MorphingStorage;
 import mchorse.metamorph.config.MetamorphConfig;
 import mchorse.metamorph.entity.EntityMorph;
 import mchorse.metamorph.network.Dispatcher;
+import net.minecraft.util.text.ITextComponent;
+import net.minecraft.util.text.TextComponentTranslation;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.common.capabilities.CapabilityManager;
 import net.minecraftforge.common.config.Configuration;
@@ -136,5 +138,13 @@ public class CommonProxy
             System.out.println("An exception was raised when loading '" + model + "' model!");
             e.printStackTrace();
         }
+    }
+
+    /**
+     * Get morph name 
+     */
+    public ITextComponent morphName(EntityMorph entityMorph)
+    {
+        return new TextComponentTranslation("entity." + entityMorph.morph + ".name");
     }
 }
