@@ -3,22 +3,22 @@ package mchorse.metamorph;
 import java.lang.reflect.Field;
 import java.util.Map;
 
-import mchorse.metamorph.api.Model;
 import mchorse.metamorph.client.KeyboardHandler;
 import mchorse.metamorph.client.RenderingHandler;
 import mchorse.metamorph.client.gui.GuiMenu;
 import mchorse.metamorph.client.gui.GuiOverlay;
-import mchorse.metamorph.client.model.ModelCustom;
-import mchorse.metamorph.client.model.parsing.ModelParser;
 import mchorse.metamorph.client.render.RenderMorph;
 import mchorse.metamorph.client.render.RenderPlayer;
 import mchorse.metamorph.client.render.RenderSubPlayer;
 import mchorse.metamorph.entity.EntityMorph;
+import mchorse.vanilla_pack.VanillaPack;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.entity.RenderManager;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.fml.client.registry.RenderingRegistry;
 import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 
 /**
  * Client proxy
@@ -27,6 +27,7 @@ import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
  * HUD morph panel and player rendering) and also responsible for loading 
  * (constructing ModelCustom out of) custom models. 
  */
+@SideOnly(Side.CLIENT)
 public class ClientProxy extends CommonProxy
 {
     /**
@@ -68,35 +69,11 @@ public class ClientProxy extends CommonProxy
      * already parsed data models. 
      */
     @Override
-    @SuppressWarnings("unchecked")
     public void loadModels()
     {
         super.loadModels();
 
-        for (Map.Entry<String, Model> model : this.models.models.entrySet())
-        {
-            Model data = model.getValue();
-
-            if (data.model.isEmpty())
-            {
-                /* Parse default type of model */
-                ModelParser.parse(model.getKey(), data);
-            }
-            else
-            {
-                try
-                {
-                    Class<? extends ModelCustom> clazz = (Class<? extends ModelCustom>) Class.forName(data.model);
-
-                    /* Parse custom custom (overcustomized) model */
-                    ModelParser.parse(model.getKey(), data, clazz);
-                }
-                catch (ClassNotFoundException e)
-                {
-                    e.printStackTrace();
-                }
-            }
-        }
+        VanillaPack.loadClientModels(this.models);
     }
 
     /**

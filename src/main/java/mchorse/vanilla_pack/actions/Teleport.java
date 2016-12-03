@@ -1,4 +1,4 @@
-package mchorse.metamorph.api.actions;
+package mchorse.vanilla_pack.actions;
 
 import mchorse.metamorph.api.IAction;
 import net.minecraft.entity.player.EntityPlayer;

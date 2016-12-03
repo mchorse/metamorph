@@ -21,7 +21,8 @@ import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
  * In creative you can access all morphings.
  * 
  * Inspired by Morph and Shape Shifter Z mods (mostly due to the fact that 
- * they're outdated).
+ * they're outdated), however, iChun saying that he's working on Morph for 
+ * 1.10.2, this is really exciting! :D
  */
 @Mod(modid = Metamorph.MODID, name = Metamorph.MODNAME, version = Metamorph.VERSION, guiFactory = Metamorph.GUI_FACTORY)
 public class Metamorph
@@ -67,7 +68,9 @@ public class Metamorph
     public static Logger LOGGER;
 
     /**
-     * Log out the message  
+     * Log out the message if in DEBUG mode.
+     * 
+     * But I always forget to turn it off before releasing the mod.
      */
     public static void log(String message)
     {

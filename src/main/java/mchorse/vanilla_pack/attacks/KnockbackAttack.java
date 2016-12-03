@@ -1,4 +1,4 @@
-package mchorse.metamorph.api.attacks;
+package mchorse.vanilla_pack.attacks;
 
 import mchorse.metamorph.api.IAttackAbility;
 import mchorse.metamorph.api.morph.MorphHandler;

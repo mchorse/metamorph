@@ -12,12 +12,20 @@ import com.google.gson.JsonParseException;
 import net.minecraft.util.ResourceLocation;
 
 /**
- * Thing responsible for doing some awesome cool stuff!
+ * Model JSON adapter
+ * 
+ * This adapter is responsible for only deserializing a {@link Model} instance.
  */
 public class ModelAdapter implements JsonDeserializer<Model>
 {
     private Gson gson = new GsonBuilder().create();
 
+    /**
+     * Deserializes {@link Model}
+     * 
+     * This method is responsible mainly from translating "default" field into 
+     * {@link ResourceLocation}.
+     */
     @Override
     public Model deserialize(JsonElement json, Type typeOfT, JsonDeserializationContext context) throws JsonParseException
     {

@@ -4,7 +4,6 @@ import mchorse.metamorph.api.IAbility;
 import mchorse.metamorph.api.IAction;
 import mchorse.metamorph.api.IAttackAbility;
 import mchorse.metamorph.api.Model;
-import mchorse.metamorph.api.abilities.Hostile;
 import mchorse.metamorph.capabilities.morphing.IMorphing;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.SharedMonsterAttributes;
@@ -20,14 +19,41 @@ import net.minecraft.util.math.AxisAlignedBB;
  */
 public class Morph
 {
+    /**
+     * Morph's abilities 
+     */
     public IAbility[] abilities = new IAbility[] {};
+
+    /**
+     * Morph's action
+     */
     public IAction action;
+
+    /**
+     * Morph's attack
+     */
     public IAttackAbility attack;
 
+    /**
+     * Morph's model
+     */
     public Model model;
 
+    /**
+     * Morph's health 
+     */
     public int health = 20;
+
+    /**
+     * Morph's speed 
+     */
     public float speed = 0.1F;
+
+    /**
+     * Whether this morph is "hostile" (meaning that morphed player with hostile 
+     * property won't be targeted by other hostile entities). 
+     */
+    public boolean hostile;
 
     /**
      * Update the player based on its morph abilities and properties. This 
@@ -158,21 +184,5 @@ public class Morph
         {
             player.getEntityAttribute(SharedMonsterAttributes.MAX_HEALTH).setBaseValue(health);
         }
-    }
-
-    /**
-     * Checks whether the entity is hostile 
-     */
-    public boolean isHostile()
-    {
-        for (IAbility ability : this.abilities)
-        {
-            if (ability instanceof Hostile)
-            {
-                return true;
-            }
-        }
-
-        return false;
     }
 }

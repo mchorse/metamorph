@@ -40,6 +40,11 @@ public class MorphAdapter implements JsonDeserializer<Morph>
             morph.speed = object.get("speed").getAsFloat();
         }
 
+        if (object.has("hostile"))
+        {
+            morph.hostile = object.get("hostile").getAsBoolean();
+        }
+
         if (object.has("abilities"))
         {
             for (JsonElement ability : object.get("abilities").getAsJsonArray())

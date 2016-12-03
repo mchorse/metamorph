@@ -1,4 +1,4 @@
-package mchorse.metamorph.api.abilities;
+package mchorse.vanilla_pack.abilities;
 
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.potion.Potion;

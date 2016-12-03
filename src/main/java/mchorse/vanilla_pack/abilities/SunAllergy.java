@@ -1,4 +1,4 @@
-package mchorse.metamorph.api.abilities;
+package mchorse.vanilla_pack.abilities;
 
 import java.util.Random;
 

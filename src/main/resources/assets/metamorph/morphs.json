@@ -4,9 +4,10 @@
         "health": 6
     },
     "CaveSpider": {
-        "abilities": ["climb", "hostile"],
+        "abilities": ["climb"],
         "attack": "poison",
-        "health": 12
+        "health": 12,
+        "hostile": true
     },
     "Chicken": {
         "abilities": ["glide"],
@@ -44,26 +45,29 @@
         "health": 8
     },
     "Spider": {
-        "abilities": ["climb", "hostile"],
-        "health": 16
+        "abilities": ["climb"],
+        "health": 16,
+        "hostile": true
     },
     "Squid": {
         "abilities": ["water_breath", "swim", "night_vision"],
         "health": 10
     },
     "Wolf": {
-    	"abilities": ["hostile"],
-        "health": 8
+    	"health": 8,
+    	"hostile": true
     },
     
     "Enderman": {
-        "abilities": ["water_allergy", "ender", "hostile"],
+        "abilities": ["water_allergy", "ender"],
         "action": "teleport",
-        "health": 40
+        "health": 40,
+        "hostile": true
     },
     "PigZombie": {
-        "abilities": ["fire_proof", "hungerless", "hostile"],
-        "health": 20
+        "abilities": ["fire_proof", "hungerless"],
+        "health": 20,
+        "hostile": true
     },
     "SnowMan": {
         "abilities": ["snow_walk"],
@@ -80,52 +84,60 @@
     },
     
     "Blaze": {
-        "abilities": ["fly", "fire_proof", "smoke", "hostile", "water_allergy"],
+        "abilities": ["fly", "fire_proof", "smoke", "water_allergy"],
         "action": "fireball",
-        "health": 20
+        "health": 20,
+        "hostile": true
     },
     "Creeper": {
-    	"abilities": ["hostile"],
         "action": "explode",
-        "health": 20
+        "health": 20,
+        "hostile": true
     },
     "Ghast": {
-        "abilities": ["fly", "fire_proof", "hostile"],
+        "abilities": ["fly", "fire_proof"],
         "action": "fireball",
-        "health": 10
+        "health": 10,
+        "hostile": true
     },
     "Guardian": {
-        "abilities": ["water_breath", "night_vision", "swim", "jumping", "hostile"],
-        "health": 30
+        "abilities": ["water_breath", "night_vision", "swim", "jumping"],
+        "health": 30,
+        "hostile": true
     },
     "LavaSlime": {
-        "abilities": ["jumping", "fire_proof", "hostile"],
-        "health": 4
+        "abilities": ["jumping", "fire_proof"],
+        "health": 4,
+        "hostile": true
     },
     "Silverfish": {
-    	"abilities": ["hostile"],
-        "health": 8
+        "health": 8,
+        "hostile": true
     },
     "Slime": {
-        "abilities": ["jumping", "hostile"],
-        "health": 4
+        "abilities": ["jumping"],
+        "health": 4,
+        "hostile": true
     },
     "Skeleton": {
-        "abilities": ["sun_allergy", "hostile"],
-        "health": 20
+        "abilities": ["sun_allergy"],
+        "health": 20,
+        "hostile": true
     },
     "WitherSkeleton": {
-        "abilities": ["fire_proof", "hostile"],
+        "abilities": ["fire_proof"],
         "attack": "wither",
-        "health": 20
+        "health": 20,
+        "hostile": true
     },
     "Witch": {
-    	"abilities": ["hostile"],
         "action": "potions",
-        "health": 26
+        "health": 26,
+        "hostile": true
     },
     "Zombie": {
-        "abilities": ["sun_allergy", "hungerless", "hostile"],
-        "health": 20
+        "abilities": ["sun_allergy", "hungerless"],
+        "health": 20,
+        "hostile": true
     }
 }
