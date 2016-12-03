@@ -1,5 +1,6 @@
 package mchorse.vanilla_pack.abilities;
 
+import mchorse.metamorph.api.abilities.Ability;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraftforge.client.GuiIngameForge;
 import net.minecraftforge.fml.relauncher.Side;

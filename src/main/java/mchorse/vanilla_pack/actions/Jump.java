@@ -1,6 +1,6 @@
 package mchorse.vanilla_pack.actions;
 
-import mchorse.metamorph.api.IAction;
+import mchorse.metamorph.api.abilities.IAction;
 import net.minecraft.entity.player.EntityPlayer;
 
 /**

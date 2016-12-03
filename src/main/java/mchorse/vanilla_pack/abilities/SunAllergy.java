@@ -2,6 +2,7 @@ package mchorse.vanilla_pack.abilities;
 
 import java.util.Random;
 
+import mchorse.metamorph.api.abilities.Ability;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.util.math.BlockPos.MutableBlockPos;
 

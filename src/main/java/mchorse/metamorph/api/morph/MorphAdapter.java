@@ -11,7 +11,7 @@ import com.google.gson.JsonObject;
 import com.google.gson.JsonParseException;
 
 import mchorse.metamorph.Metamorph;
-import mchorse.metamorph.api.IAbility;
+import mchorse.metamorph.api.abilities.IAbility;
 
 /**
  * Morph adapter

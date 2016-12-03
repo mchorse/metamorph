@@ -1,5 +1,6 @@
 package mchorse.vanilla_pack.abilities;
 
+import mchorse.metamorph.api.abilities.Ability;
 import net.minecraft.block.material.Material;
 import net.minecraft.entity.monster.EntitySnowman;
 import net.minecraft.entity.player.EntityPlayer;

@@ -3,9 +3,9 @@ package mchorse.metamorph.api.morph;
 import java.util.HashMap;
 import java.util.Map;
 
-import mchorse.metamorph.api.IAbility;
-import mchorse.metamorph.api.IAction;
-import mchorse.metamorph.api.IAttackAbility;
+import mchorse.metamorph.api.abilities.IAbility;
+import mchorse.metamorph.api.abilities.IAction;
+import mchorse.metamorph.api.abilities.IAttackAbility;
 import net.minecraft.client.resources.I18n;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityList;

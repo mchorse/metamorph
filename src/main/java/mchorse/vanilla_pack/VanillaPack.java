@@ -10,11 +10,11 @@ import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 
 import mchorse.metamorph.Metamorph;
-import mchorse.metamorph.api.IAbility;
-import mchorse.metamorph.api.IAction;
-import mchorse.metamorph.api.IAttackAbility;
 import mchorse.metamorph.api.Model;
 import mchorse.metamorph.api.ModelHandler;
+import mchorse.metamorph.api.abilities.IAbility;
+import mchorse.metamorph.api.abilities.IAction;
+import mchorse.metamorph.api.abilities.IAttackAbility;
 import mchorse.metamorph.api.morph.Morph;
 import mchorse.metamorph.api.morph.MorphAdapter;
 import mchorse.metamorph.api.morph.MorphManager;
@@ -211,29 +211,83 @@ public class VanillaPack
     @SideOnly(Side.CLIENT)
     public static void loadClientModels(ModelHandler models)
     {
-        for (Map.Entry<String, Model> model : models.models.entrySet())
+        /* Animals */
+        loadClientModel(models, "Bat");
+        loadClientModel(models, "Chicken");
+        loadClientModel(models, "Cow");
+        loadClientModel(models, "EntityHorse");
+        loadClientModel(models, "MushroomCow");
+        loadClientModel(models, "Ozelot");
+        loadClientModel(models, "Pig");
+        loadClientModel(models, "PolarBear");
+        loadClientModel(models, "Rabbit");
+        loadClientModel(models, "Sheep");
+        loadClientModel(models, "Squid");
+        loadClientModel(models, "Wolf");
+
+        /* Neutral mobs */
+        loadClientModel(models, "Enderman");
+        loadClientModel(models, "PigZombie");
+        loadClientModel(models, "SnowMan");
+        loadClientModel(models, "Villager");
+        loadClientModel(models, "VillagerGolem");
+
+        /* Hostile mobs */
+        loadClientModel(models, "Blaze");
+        loadClientModel(models, "CaveSpider");
+        loadClientModel(models, "Creeper");
+        loadClientModel(models, "Ghast");
+        loadClientModel(models, "Guardian");
+        loadClientModel(models, "LavaSlime");
+        loadClientModel(models, "Silverfish");
+        loadClientModel(models, "Skeleton");
+        loadClientModel(models, "Slime");
+        loadClientModel(models, "Spider");
+        loadClientModel(models, "Witch");
+        loadClientModel(models, "WitherSkeleton");
+        loadClientModel(models, "Zombie");
+    }
+
+    /**
+     * Load a client model with given name and given data custom model from 
+     * models registry 
+     */
+    private static void loadClientModel(ModelHandler models, String name)
+    {
+        loadClientModel(name, models.models.get(name));
+    }
+
+    /**
+     * Load a client model for given name with given data custom model
+     */
+    @SideOnly(Side.CLIENT)
+    private static void loadClientModel(String name, Model data)
+    {
+        if (data == null)
         {
-            Model data = model.getValue();
+            Metamorph.log("Client custom model by name " + name + " couldn't be loaded!");
 
-            if (data.model.isEmpty())
+            return;
+        }
+
+        if (data.model.isEmpty())
+        {
+            /* Parse default type of model */
+            ModelParser.parse(name, data);
+        }
+        else
+        {
+            try
             {
-                /* Parse default type of model */
-                ModelParser.parse(model.getKey(), data);
+                @SuppressWarnings("unchecked")
+                Class<? extends ModelCustom> clazz = (Class<? extends ModelCustom>) Class.forName(data.model);
+
+                /* Parse custom custom (overcustomized) model */
+                ModelParser.parse(name, data, clazz);
             }
-            else
+            catch (ClassNotFoundException e)
             {
-                try
-                {
-                    @SuppressWarnings("unchecked")
-                    Class<? extends ModelCustom> clazz = (Class<? extends ModelCustom>) Class.forName(data.model);
-
-                    /* Parse custom custom (overcustomized) model */
-                    ModelParser.parse(model.getKey(), data, clazz);
-                }
-                catch (ClassNotFoundException e)
-                {
-                    e.printStackTrace();
-                }
+                e.printStackTrace();
             }
         }
     }

@@ -1,9 +1,9 @@
 package mchorse.metamorph.api.morph;
 
-import mchorse.metamorph.api.IAbility;
-import mchorse.metamorph.api.IAction;
-import mchorse.metamorph.api.IAttackAbility;
 import mchorse.metamorph.api.Model;
+import mchorse.metamorph.api.abilities.IAbility;
+import mchorse.metamorph.api.abilities.IAction;
+import mchorse.metamorph.api.abilities.IAttackAbility;
 import mchorse.metamorph.capabilities.morphing.IMorphing;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.SharedMonsterAttributes;

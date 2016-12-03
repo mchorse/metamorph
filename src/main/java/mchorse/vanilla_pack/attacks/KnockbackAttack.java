@@ -1,6 +1,6 @@
 package mchorse.vanilla_pack.attacks;
 
-import mchorse.metamorph.api.IAttackAbility;
+import mchorse.metamorph.api.abilities.IAttackAbility;
 import mchorse.metamorph.api.morph.MorphHandler;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;

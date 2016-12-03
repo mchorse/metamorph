@@ -1,6 +1,5 @@
-package mchorse.vanilla_pack.abilities;
+package mchorse.metamorph.api.abilities;
 
-import mchorse.metamorph.api.IAbility;
 import net.minecraft.entity.player.EntityPlayer;
 
 /**

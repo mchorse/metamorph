@@ -1,4 +1,4 @@
-package mchorse.metamorph.api;
+package mchorse.metamorph.api.abilities;
 
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
