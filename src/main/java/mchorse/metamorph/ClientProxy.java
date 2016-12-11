@@ -3,6 +3,7 @@ package mchorse.metamorph;
 import java.lang.reflect.Field;
 import java.util.Map;
 
+import mchorse.metamorph.api.morphs.CustomMorph;
 import mchorse.metamorph.client.KeyboardHandler;
 import mchorse.metamorph.client.RenderingHandler;
 import mchorse.metamorph.client.gui.GuiMenu;
@@ -40,6 +41,11 @@ public class ClientProxy extends CommonProxy
      */
     public static GuiOverlay morphOverlay = new GuiOverlay();
 
+    /**
+     * Player renderer 
+     */
+    public static RenderPlayer playerRenderer;
+
     @Override
     public void preLoad(FMLPreInitializationEvent event)
     {
@@ -51,16 +57,19 @@ public class ClientProxy extends CommonProxy
     @Override
     public void load()
     {
-        super.load();
-
         /* Rendering stuff */
         RenderManager manager = Minecraft.getMinecraft().getRenderManager();
         RenderPlayer render = new RenderPlayer(manager, 0.5F);
 
         this.substitutePlayerRenderers(render, manager);
 
+        playerRenderer = render;
+
+        /* Continue loading process */
+        super.load();
+
         /* Register client event handlers */
-        MinecraftForge.EVENT_BUS.register(new RenderingHandler(overlay, render, morphOverlay));
+        MinecraftForge.EVENT_BUS.register(new RenderingHandler(overlay, morphOverlay));
         MinecraftForge.EVENT_BUS.register(new KeyboardHandler(overlay));
     }
 
@@ -125,5 +134,14 @@ public class ClientProxy extends CommonProxy
 
             System.out.println("Skin map renderers were successfully replaced with Blockbuster RenderSubPlayer substitutes!");
         }
+    }
+
+    /**
+     * Give custom morph a player renderer 
+     */
+    @Override
+    public void processCustomMorph(CustomMorph morph)
+    {
+        morph.renderer = playerRenderer;
     }
 }

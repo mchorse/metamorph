@@ -24,10 +24,10 @@ import net.minecraftforge.fml.common.gameevent.TickEvent.PlayerTickEvent;
  * This event handler (or rather listener) is responsible for morphings. In 
  * essence, there are few things going on over here:
  * 
- * 1. Acquiring morphs from killed entities
- * 2. Grant additional attack effect while morphed (more damage, explosions, 
+ * 1. Update morphs in the player's loop
+ * 2. Acquiring morphs from killed entities
+ * 3. Grant additional attack effect while morphed (more damage, explosions, 
  *    potion effects, etc.)
- * 3. Update morphs in the player's loop
  * 4. Cancel attack targeting for hostile morphs 
  */
 public class MorphHandler
@@ -35,6 +35,36 @@ public class MorphHandler
     /* Next tick tasks (used for "knockback" attack) */
     public static List<Runnable> FUTURE_TASKS_CLIENT = new ArrayList<Runnable>();
     public static List<Runnable> FUTURE_TASKS_SERVER = new ArrayList<Runnable>();
+
+    /**
+     * When player is morphed, its morphing abilities are executed over here.
+     * 
+     * Stuff like gliding, allergies, climbing, swiming and other stuff are 
+     * get applied on the player over here.
+     */
+    @SubscribeEvent
+    public void onPlayerTick(PlayerTickEvent event)
+    {
+        if (event.phase == Phase.START)
+        {
+            return;
+        }
+
+        EntityPlayer player = event.player;
+        IMorphing capability = Morphing.get(player);
+
+        this.runFutureTasks(player);
+
+        if (capability == null || !capability.isMorphed())
+        {
+            /* Restore default eye height */
+            player.eyeHeight = player.getDefaultEyeHeight();
+
+            return;
+        }
+
+        capability.getCurrentMorph().update(player, capability);
+    }
 
     /**
      * When a player kills an entity, he gains a morph based on the properties 
@@ -108,36 +138,6 @@ public class MorphHandler
 
             capability.getCurrentMorph().attack(target, player);
         }
-    }
-
-    /**
-     * When player is morphed, its morphing abilities are executed over here.
-     * 
-     * Stuff like gliding, allergies, climbing, swiming and other stuff are 
-     * get applied on the player over here.
-     */
-    @SubscribeEvent
-    public void onPlayerTick(PlayerTickEvent event)
-    {
-        if (event.phase == Phase.START)
-        {
-            return;
-        }
-
-        EntityPlayer player = event.player;
-        IMorphing capability = Morphing.get(player);
-
-        this.runFutureTasks(player);
-
-        if (capability == null || !capability.isMorphed())
-        {
-            /* Restore default eye height */
-            player.eyeHeight = player.getDefaultEyeHeight();
-
-            return;
-        }
-
-        capability.getCurrentMorph().update(player, capability);
     }
 
     /**

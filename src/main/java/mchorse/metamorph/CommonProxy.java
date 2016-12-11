@@ -4,6 +4,7 @@ import java.io.File;
 
 import mchorse.metamorph.api.ModelManager;
 import mchorse.metamorph.api.MorphHandler;
+import mchorse.metamorph.api.morphs.CustomMorph;
 import mchorse.metamorph.capabilities.CapabilityHandler;
 import mchorse.metamorph.capabilities.morphing.IMorphing;
 import mchorse.metamorph.capabilities.morphing.Morphing;
@@ -90,4 +91,10 @@ public class CommonProxy
     {
         return new TextComponentTranslation("entity." + entityMorph.morph + ".name");
     }
+
+    /**
+     * Does absolutely nothing in common proxy, see client proxy implementation 
+     */
+    public void processCustomMorph(CustomMorph morph)
+    {}
 }

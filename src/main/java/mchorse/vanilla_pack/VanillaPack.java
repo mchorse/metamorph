@@ -101,7 +101,7 @@ public class VanillaPack
     /**
      * Register morphs from JSON 
      */
-    private static void registerMorphs()
+    public static void registerMorphs()
     {
         GsonBuilder builder = new GsonBuilder().registerTypeAdapter(CustomMorph.class, new MorphAdapter());
         Gson gson = builder.create();
@@ -123,6 +123,8 @@ public class VanillaPack
         {
             String key = entry.getKey();
             CustomMorph morph = entry.getValue();
+
+            Metamorph.proxy.processCustomMorph(morph);
 
             if (!Metamorph.proxy.models.models.containsKey(key))
             {

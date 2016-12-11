@@ -4,8 +4,8 @@ import mchorse.metamorph.capabilities.morphing.IMorphing;
 import mchorse.metamorph.capabilities.morphing.Morphing;
 import mchorse.metamorph.client.gui.GuiMenu;
 import mchorse.metamorph.client.gui.GuiOverlay;
-import mchorse.metamorph.client.render.RenderPlayer;
 import net.minecraft.client.gui.ScaledResolution;
+import net.minecraft.client.renderer.entity.Render;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraftforge.client.event.RenderGameOverlayEvent;
 import net.minecraftforge.client.event.RenderPlayerEvent;
@@ -24,14 +24,12 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 @SideOnly(Side.CLIENT)
 public class RenderingHandler
 {
-    private RenderPlayer render;
     private GuiMenu overlay;
     private GuiOverlay morphOverlay;
 
-    public RenderingHandler(GuiMenu overlay, RenderPlayer render, GuiOverlay morphOverlay)
+    public RenderingHandler(GuiMenu overlay, GuiOverlay morphOverlay)
     {
         this.overlay = overlay;
-        this.render = render;
         this.morphOverlay = morphOverlay;
     }
 
@@ -55,14 +53,20 @@ public class RenderingHandler
      * related to morphing (model and skin)
      */
     @SubscribeEvent
+    @SuppressWarnings({"rawtypes", "unchecked"})
     public void onPlayerRender(RenderPlayerEvent.Pre event)
     {
         EntityPlayer player = event.getEntityPlayer();
         IMorphing capability = Morphing.get(player);
 
-        if (capability == null || !capability.isMorphed()) return;
+        if (capability == null || !capability.isMorphed())
+        {
+            return;
+        }
+
+        Render render = capability.getCurrentMorph().renderer;
 
         event.setCanceled(true);
-        this.render.doRender(player, event.getX(), event.getY(), event.getZ(), player.rotationYaw, event.getPartialRenderTick());
+        render.doRender(player, event.getX(), event.getY(), event.getZ(), player.rotationYaw, event.getPartialRenderTick());
     }
 }

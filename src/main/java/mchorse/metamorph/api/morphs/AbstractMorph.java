@@ -4,12 +4,15 @@ import mchorse.metamorph.api.abilities.IAbility;
 import mchorse.metamorph.api.abilities.IAction;
 import mchorse.metamorph.api.abilities.IAttackAbility;
 import mchorse.metamorph.capabilities.morphing.IMorphing;
+import net.minecraft.client.renderer.entity.Render;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.SharedMonsterAttributes;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.SoundEvents;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.math.AxisAlignedBB;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 
 /**
  * Base class for all different types of morphs
@@ -49,6 +52,12 @@ public abstract class AbstractMorph
      * property won't be targeted by other hostile entities). 
      */
     public boolean hostile = false;
+
+    /**
+     * Client morph renderer
+     */
+    @SideOnly(Side.CLIENT)
+    public Render<? extends Entity> renderer;
 
     /**
      * Update the player based on its morph abilities and properties. This 
