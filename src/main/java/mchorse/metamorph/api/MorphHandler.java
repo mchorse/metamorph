@@ -1,4 +1,4 @@
-package mchorse.metamorph.api.morph;
+package mchorse.metamorph.api;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -27,10 +27,12 @@ import net.minecraftforge.fml.common.gameevent.TickEvent.PlayerTickEvent;
  * 1. Acquiring morphs from killed entities
  * 2. Grant additional attack effect while morphed (more damage, explosions, 
  *    potion effects, etc.)
- * 3. Update morphs in the player's loop 
+ * 3. Update morphs in the player's loop
+ * 4. Cancel attack targeting for hostile morphs 
  */
 public class MorphHandler
 {
+    /* Next tick tasks (used for "knockback" attack) */
     public static List<Runnable> FUTURE_TASKS_CLIENT = new ArrayList<Runnable>();
     public static List<Runnable> FUTURE_TASKS_SERVER = new ArrayList<Runnable>();
 
@@ -164,8 +166,6 @@ public class MorphHandler
             {
                 if (source instanceof EntityLiving)
                 {
-                    System.out.println("Reseting attacker for " + player);
-
                     ((EntityLiving) event.getEntity()).setAttackTarget(null);
                 }
             }

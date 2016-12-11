@@ -53,13 +53,15 @@ public class ClientProxy extends CommonProxy
     {
         super.load();
 
+        /* Rendering stuff */
         RenderManager manager = Minecraft.getMinecraft().getRenderManager();
         RenderPlayer render = new RenderPlayer(manager, 0.5F);
 
+        this.substitutePlayerRenderers(render, manager);
+
+        /* Register client event handlers */
         MinecraftForge.EVENT_BUS.register(new RenderingHandler(overlay, render, morphOverlay));
         MinecraftForge.EVENT_BUS.register(new KeyboardHandler(overlay));
-
-        this.substitutePlayerRenderers(render);
     }
 
     /**
@@ -81,13 +83,13 @@ public class ClientProxy extends CommonProxy
      * hand.
      *
      * Please, kids, don't do that at home. This was made by an expert in
-     * this field, so please, don't override skinMap the way I did. Don't break
-     * the compatibility with this mod.
+     * his field, so please, don't override skinMap the way I did. Don't break
+     * the compatibility with this mod (already confirmed breaking while 
+     * using Metamorph and Blockbuster together).
      */
     @SuppressWarnings({"rawtypes", "unchecked"})
-    private void substitutePlayerRenderers(RenderPlayer render)
+    private void substitutePlayerRenderers(RenderPlayer render, RenderManager manager)
     {
-        RenderManager manager = Minecraft.getMinecraft().getRenderManager();
         Map<String, net.minecraft.client.renderer.entity.RenderPlayer> skins = null;
 
         /* Iterate over all render manager fields and get access to skinMap */

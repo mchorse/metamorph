@@ -28,7 +28,6 @@ import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
 public class Metamorph
 {
     /* Metadata fields */
-
     public static final String MODID = "metamorph";
     public static final String MODNAME = "Metamorph";
     public static final String VERSION = "1.0.2";
@@ -36,10 +35,9 @@ public class Metamorph
     public static final String CLIENT_PROXY = "mchorse.metamorph.ClientProxy";
     public static final String SERVER_PROXY = "mchorse.metamorph.CommonProxy";
 
-    public static final String GUI_FACTORY = "mchorse.metamorph.config.GuiFactory";
+    public static final String GUI_FACTORY = "mchorse.metamorph.config.gui.GuiFactory";
 
     /* Forge stuff classes */
-
     @SidedProxy(clientSide = CLIENT_PROXY, serverSide = SERVER_PROXY)
     public static CommonProxy proxy;
 
@@ -47,7 +45,6 @@ public class Metamorph
     public static Metamorph instance;
 
     /* Events */
-
     @EventHandler
     public void preLoad(FMLPreInitializationEvent event)
     {

@@ -3,7 +3,7 @@ package mchorse.metamorph.capabilities.morphing;
 import java.util.ArrayList;
 import java.util.List;
 
-import mchorse.metamorph.api.morph.MorphManager;
+import mchorse.metamorph.api.MorphManager;
 import net.minecraft.nbt.NBTBase;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;

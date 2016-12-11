@@ -2,8 +2,8 @@ package mchorse.metamorph;
 
 import java.io.File;
 
-import mchorse.metamorph.api.ModelHandler;
-import mchorse.metamorph.api.morph.MorphHandler;
+import mchorse.metamorph.api.ModelManager;
+import mchorse.metamorph.api.MorphHandler;
 import mchorse.metamorph.capabilities.CapabilityHandler;
 import mchorse.metamorph.capabilities.morphing.IMorphing;
 import mchorse.metamorph.capabilities.morphing.Morphing;
@@ -32,10 +32,10 @@ public class CommonProxy
     /**
      * Model handler. This class is responsible for managing models and more. 
      */
-    public ModelHandler models = new ModelHandler();
+    public ModelManager models = new ModelManager();
 
     /**
-     * Config
+     * Metamorph config filled with cool configuration points
      */
     public MetamorphConfig config;
 
@@ -49,7 +49,7 @@ public class CommonProxy
         /* Network messages */
         Dispatcher.register();
 
-        /* Config */
+        /* Configuration */
         File config = new File(event.getModConfigurationDirectory(), "metamorph/config.cfg");
 
         this.forge = new Configuration(config);
@@ -66,12 +66,13 @@ public class CommonProxy
     public void load()
     {
         /* Event listeners */
-        MinecraftForge.EVENT_BUS.register(new CapabilityHandler());
         MinecraftForge.EVENT_BUS.register(new MorphHandler());
+        MinecraftForge.EVENT_BUS.register(new CapabilityHandler());
 
         /* Morphing manager and capabilities */
-        VanillaPack.register();
         CapabilityManager.INSTANCE.register(IMorphing.class, new MorphingStorage(), Morphing.class);
+
+        VanillaPack.register();
     }
 
     /**

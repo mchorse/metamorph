@@ -1,4 +1,4 @@
-package mchorse.metamorph.api.morph;
+package mchorse.metamorph.api.json;
 
 import java.lang.reflect.Type;
 import java.util.ArrayList;
@@ -11,22 +11,24 @@ import com.google.gson.JsonObject;
 import com.google.gson.JsonParseException;
 
 import mchorse.metamorph.Metamorph;
+import mchorse.metamorph.api.MorphManager;
 import mchorse.metamorph.api.abilities.IAbility;
+import mchorse.metamorph.api.morphs.CustomMorph;
 
 /**
  * Morph adapter
  * 
  * This adapter is responsible for injecting abilities, attacks or actions from 
- * {@link MorphManager} into the create {@link Morph}.
+ * {@link MorphManager} into the create {@link CustomMorph}.
  */
-public class MorphAdapter implements JsonDeserializer<Morph>
+public class MorphAdapter implements JsonDeserializer<CustomMorph>
 {
     @Override
-    public Morph deserialize(JsonElement json, Type typeOfT, JsonDeserializationContext context) throws JsonParseException
+    public CustomMorph deserialize(JsonElement json, Type typeOfT, JsonDeserializationContext context) throws JsonParseException
     {
         JsonObject object = json.getAsJsonObject();
 
-        Morph morph = new Morph();
+        CustomMorph morph = new CustomMorph();
         MorphManager manager = MorphManager.INSTANCE;
         List<IAbility> abilities = new ArrayList<IAbility>();
 

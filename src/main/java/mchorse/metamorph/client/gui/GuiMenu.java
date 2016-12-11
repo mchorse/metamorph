@@ -6,7 +6,7 @@ import org.lwjgl.opengl.GL11;
 
 import mchorse.metamorph.Metamorph;
 import mchorse.metamorph.api.Model;
-import mchorse.metamorph.api.morph.MorphManager;
+import mchorse.metamorph.api.MorphManager;
 import mchorse.metamorph.capabilities.morphing.IMorphing;
 import mchorse.metamorph.capabilities.morphing.Morphing;
 import mchorse.metamorph.client.model.ModelCustom;

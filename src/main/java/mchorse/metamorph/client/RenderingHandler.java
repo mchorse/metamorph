@@ -16,8 +16,10 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 /**
  * Rendering handler
  *
- * This handler is another handler in this mod that responsible for rendering.
- * Currently this handler only renders recording overlay
+ * This handler is rendering handler which is responsible for few things:
+ * 
+ * - Overlays (survival morph menu, morph acquiring)
+ * - Player model
  */
 @SideOnly(Side.CLIENT)
 public class RenderingHandler

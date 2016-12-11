@@ -6,7 +6,8 @@ import net.minecraft.entity.player.EntityPlayer;
  * Ability interface
  * 
  * This interface should provide a method which is responsible for updating 
- * entity in such way that it provides some kind of ability.
+ * entity every tick, with ability to setup some behavior on player before 
+ * morphing, and reset player, in given way, on player's demorph.
  */
 public interface IAbility
 {

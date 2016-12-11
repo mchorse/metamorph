@@ -10,8 +10,8 @@ import org.lwjgl.input.Keyboard;
 import org.lwjgl.input.Mouse;
 import org.lwjgl.opengl.GL11;
 
-import mchorse.metamorph.api.morph.Morph;
-import mchorse.metamorph.api.morph.MorphManager;
+import mchorse.metamorph.api.MorphManager;
+import mchorse.metamorph.api.morphs.CustomMorph;
 import mchorse.metamorph.capabilities.morphing.IMorphing;
 import mchorse.metamorph.capabilities.morphing.Morphing;
 import mchorse.metamorph.client.model.ModelCustom;
@@ -60,7 +60,7 @@ public class GuiMorphs extends GuiScreen
      */
     public GuiMorphs()
     {
-        Map<String, Morph> morphs = MorphManager.INSTANCE.morphs;
+        Map<String, CustomMorph> morphs = MorphManager.INSTANCE.morphs;
         EntityPlayer player = Minecraft.getMinecraft().thePlayer;
         IMorphing morphing = Morphing.get(player);
 
@@ -375,11 +375,11 @@ public class GuiMorphs extends GuiScreen
     public static class MorphCell
     {
         public String name;
-        public Morph morph;
+        public CustomMorph morph;
         public ModelCustom model;
         public int index;
 
-        public MorphCell(String name, Morph morph, int index)
+        public MorphCell(String name, CustomMorph morph, int index)
         {
             this.name = name;
             this.morph = morph;

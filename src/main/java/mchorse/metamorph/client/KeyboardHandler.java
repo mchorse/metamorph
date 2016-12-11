@@ -36,12 +36,14 @@ public class KeyboardHandler
     private KeyBinding keySelectMorph;
     private KeyBinding keyDemorph;
 
+    /* Survival morphing menu */
     private GuiMenu overlay;
 
     public KeyboardHandler()
     {
         String category = "key.metamorph";
 
+        /* Create key bindings */
         keyAction = new KeyBinding("key.metamorph.action", Keyboard.KEY_V, category);
         keyMenu = new KeyBinding("key.metamorph.menu", Keyboard.KEY_B, category);
 
@@ -50,6 +52,7 @@ public class KeyboardHandler
         keySelectMorph = new KeyBinding("key.metamorph.morph.select", Keyboard.KEY_RETURN, category);
         keyDemorph = new KeyBinding("key.metamorph.morph.demorph", Keyboard.KEY_PERIOD, category);
 
+        /* Register them in the client registry */
         ClientRegistry.registerKeyBinding(keyAction);
         ClientRegistry.registerKeyBinding(keyMenu);
 

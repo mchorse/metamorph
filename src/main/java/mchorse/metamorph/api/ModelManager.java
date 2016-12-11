@@ -8,7 +8,7 @@ import java.util.Map;
  * This class responsible for storing domain custom models and sending models to
  * players who are logged in.
  */
-public class ModelHandler
+public class ModelManager
 {
     /**
      * Cached models, they're loaded from stuffs

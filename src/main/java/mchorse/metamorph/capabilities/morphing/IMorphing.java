@@ -2,7 +2,7 @@ package mchorse.metamorph.capabilities.morphing;
 
 import java.util.List;
 
-import mchorse.metamorph.api.morph.Morph;
+import mchorse.metamorph.api.morphs.CustomMorph;
 import net.minecraft.entity.player.EntityPlayer;
 
 /**
@@ -36,7 +36,7 @@ public interface IMorphing
     /**
      * Get current morph 
      */
-    public Morph getCurrentMorph();
+    public CustomMorph getCurrentMorph();
 
     /**
      * Get current morph's name 

@@ -5,7 +5,7 @@ import java.util.Iterator;
 import java.util.List;
 
 import mchorse.metamorph.api.Model;
-import mchorse.metamorph.api.morph.MorphManager;
+import mchorse.metamorph.api.MorphManager;
 import mchorse.metamorph.client.model.ModelCustom;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.FontRenderer;

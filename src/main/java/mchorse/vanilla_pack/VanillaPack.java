@@ -11,13 +11,13 @@ import com.google.gson.GsonBuilder;
 
 import mchorse.metamorph.Metamorph;
 import mchorse.metamorph.api.Model;
-import mchorse.metamorph.api.ModelHandler;
+import mchorse.metamorph.api.ModelManager;
+import mchorse.metamorph.api.MorphManager;
 import mchorse.metamorph.api.abilities.IAbility;
 import mchorse.metamorph.api.abilities.IAction;
 import mchorse.metamorph.api.abilities.IAttackAbility;
-import mchorse.metamorph.api.morph.Morph;
-import mchorse.metamorph.api.morph.MorphAdapter;
-import mchorse.metamorph.api.morph.MorphManager;
+import mchorse.metamorph.api.json.MorphAdapter;
+import mchorse.metamorph.api.morphs.CustomMorph;
 import mchorse.metamorph.client.model.ModelCustom;
 import mchorse.metamorph.client.model.parsing.ModelParser;
 import mchorse.vanilla_pack.abilities.BlazeSmoke;
@@ -103,7 +103,7 @@ public class VanillaPack
      */
     private static void registerMorphs()
     {
-        GsonBuilder builder = new GsonBuilder().registerTypeAdapter(Morph.class, new MorphAdapter());
+        GsonBuilder builder = new GsonBuilder().registerTypeAdapter(CustomMorph.class, new MorphAdapter());
         Gson gson = builder.create();
 
         ClassLoader loader = VanillaPack.class.getClassLoader();
@@ -111,18 +111,18 @@ public class VanillaPack
         Scanner scanner = new Scanner(stream, "UTF-8");
 
         @SuppressWarnings("serial")
-        Type type = new TypeToken<Map<String, Morph>>()
+        Type type = new TypeToken<Map<String, CustomMorph>>()
         {}.getType();
 
-        Map<String, Morph> data = gson.fromJson(scanner.useDelimiter("\\A").next(), type);
-        Map<String, Morph> morphs = MorphManager.INSTANCE.morphs;
+        Map<String, CustomMorph> data = gson.fromJson(scanner.useDelimiter("\\A").next(), type);
+        Map<String, CustomMorph> morphs = MorphManager.INSTANCE.morphs;
 
         scanner.close();
 
-        for (Map.Entry<String, Morph> entry : data.entrySet())
+        for (Map.Entry<String, CustomMorph> entry : data.entrySet())
         {
             String key = entry.getKey();
-            Morph morph = entry.getValue();
+            CustomMorph morph = entry.getValue();
 
             if (!Metamorph.proxy.models.models.containsKey(key))
             {
@@ -142,7 +142,7 @@ public class VanillaPack
     /**
      * Load served based custom models 
      */
-    public static void loadModels(ModelHandler models)
+    public static void loadModels(ModelManager models)
     {
         /* Animals */
         loadModel(models, "Bat");
@@ -184,7 +184,7 @@ public class VanillaPack
     /**
      * Load model with name and lowercase'd model name
      */
-    private static void loadModel(ModelHandler models, String model)
+    private static void loadModel(ModelManager models, String model)
     {
         loadModel(models, model, model.toLowerCase());
     }
@@ -192,7 +192,7 @@ public class VanillaPack
     /**
      * Load model with name and filename
      */
-    private static void loadModel(ModelHandler models, String model, String filename)
+    private static void loadModel(ModelManager models, String model, String filename)
     {
         try
         {
@@ -209,7 +209,7 @@ public class VanillaPack
      * Load client custom models
      */
     @SideOnly(Side.CLIENT)
-    public static void loadClientModels(ModelHandler models)
+    public static void loadClientModels(ModelManager models)
     {
         /* Animals */
         loadClientModel(models, "Bat");
@@ -252,7 +252,7 @@ public class VanillaPack
      * Load a client model with given name and given data custom model from 
      * models registry 
      */
-    private static void loadClientModel(ModelHandler models, String name)
+    private static void loadClientModel(ModelManager models, String name)
     {
         loadClientModel(name, models.models.get(name));
     }

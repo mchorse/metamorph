@@ -1,4 +1,4 @@
-package mchorse.metamorph.config;
+package mchorse.metamorph.config.gui;
 
 import java.util.Set;
 

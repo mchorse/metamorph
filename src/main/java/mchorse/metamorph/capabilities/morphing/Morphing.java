@@ -3,8 +3,8 @@ package mchorse.metamorph.capabilities.morphing;
 import java.util.ArrayList;
 import java.util.List;
 
-import mchorse.metamorph.api.morph.Morph;
-import mchorse.metamorph.api.morph.MorphManager;
+import mchorse.metamorph.api.MorphManager;
+import mchorse.metamorph.api.morphs.CustomMorph;
 import net.minecraft.entity.player.EntityPlayer;
 
 /**
@@ -17,7 +17,7 @@ public class Morphing implements IMorphing
 {
     private List<String> acquiredMorphs = new ArrayList<String>();
 
-    private Morph morph;
+    private CustomMorph morph;
     private String name = "";
 
     public static IMorphing get(EntityPlayer player)
@@ -28,7 +28,7 @@ public class Morphing implements IMorphing
     @Override
     public boolean acquireMorph(String name)
     {
-        Morph morph = MorphManager.INSTANCE.morphs.get(name);
+        CustomMorph morph = MorphManager.INSTANCE.morphs.get(name);
 
         if (morph == null || this.acquiredMorph(name))
         {
@@ -60,7 +60,7 @@ public class Morphing implements IMorphing
     }
 
     @Override
-    public Morph getCurrentMorph()
+    public CustomMorph getCurrentMorph()
     {
         return this.morph;
     }

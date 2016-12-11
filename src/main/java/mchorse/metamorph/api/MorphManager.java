@@ -1,4 +1,4 @@
-package mchorse.metamorph.api.morph;
+package mchorse.metamorph.api;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -6,6 +6,7 @@ import java.util.Map;
 import mchorse.metamorph.api.abilities.IAbility;
 import mchorse.metamorph.api.abilities.IAction;
 import mchorse.metamorph.api.abilities.IAttackAbility;
+import mchorse.metamorph.api.morphs.CustomMorph;
 import net.minecraft.client.resources.I18n;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityList;
@@ -29,7 +30,7 @@ public class MorphManager
     public Map<String, IAbility> abilities = new HashMap<String, IAbility>();
     public Map<String, IAction> actions = new HashMap<String, IAction>();
     public Map<String, IAttackAbility> attacks = new HashMap<String, IAttackAbility>();
-    public Map<String, Morph> morphs = new HashMap<String, Morph>();
+    public Map<String, CustomMorph> morphs = new HashMap<String, CustomMorph>();
 
     /**
      * That's a singleton, boy! 
@@ -80,9 +81,9 @@ public class MorphManager
      * Get key of the given morph. If given morph isn't registered in morph 
      * manager, it will return empty string.
      */
-    public String fromMorph(Morph morph)
+    public String fromMorph(CustomMorph morph)
     {
-        for (Map.Entry<String, Morph> entry : this.morphs.entrySet())
+        for (Map.Entry<String, CustomMorph> entry : this.morphs.entrySet())
         {
             if (entry.getValue().equals(morph))
             {

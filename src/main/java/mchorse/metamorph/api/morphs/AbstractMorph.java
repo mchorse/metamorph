@@ -1,6 +1,5 @@
-package mchorse.metamorph.api.morph;
+package mchorse.metamorph.api.morphs;
 
-import mchorse.metamorph.api.Model;
 import mchorse.metamorph.api.abilities.IAbility;
 import mchorse.metamorph.api.abilities.IAction;
 import mchorse.metamorph.api.abilities.IAttackAbility;
@@ -9,15 +8,16 @@ import net.minecraft.entity.Entity;
 import net.minecraft.entity.SharedMonsterAttributes;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.SoundEvents;
+import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.math.AxisAlignedBB;
 
 /**
- * Morph class
+ * Base class for all different types of morphs
  * 
- * This class is simply responsible for storing morph-related data like its 
- * abilities, action and the model in which it morphs into.
+ * This is an abstract morph. It contains all needed properties for a basic 
+ * morph such as abilities, action, attack, health, speed and hotstyle flag.
  */
-public class Morph
+public abstract class AbstractMorph
 {
     /**
      * Morph's abilities 
@@ -35,11 +35,6 @@ public class Morph
     public IAttackAbility attack;
 
     /**
-     * Morph's model
-     */
-    public Model model;
-
-    /**
      * Morph's health 
      */
     public int health = 20;
@@ -53,7 +48,7 @@ public class Morph
      * Whether this morph is "hostile" (meaning that morphed player with hostile 
      * property won't be targeted by other hostile entities). 
      */
-    public boolean hostile;
+    public boolean hostile = false;
 
     /**
      * Update the player based on its morph abilities and properties. This 
@@ -61,7 +56,6 @@ public class Morph
      */
     public void update(EntityPlayer player, IMorphing cap)
     {
-        this.updateSize(player, cap);
         this.setMaxHealth(player, this.health);
 
         if (speed != 0.1F)
@@ -72,37 +66,6 @@ public class Morph
         for (IAbility ability : abilities)
         {
             ability.update(player);
-        }
-    }
-
-    /**
-     * Update size of the player based on the given morph.
-     */
-    public void updateSize(EntityPlayer player, IMorphing cap)
-    {
-        Model data = cap.getCurrentMorph().model;
-        String key = player.isElytraFlying() ? "flying" : (player.isSneaking() ? "sneaking" : "standing");
-
-        float[] pose = data.poses.get(key).size;
-        float width = pose[0];
-        float height = pose[1];
-
-        player.eyeHeight = height * 0.9F;
-
-        /* This is a total rip-off of EntityPlayer#setSize method */
-        if (width != player.width || height != player.height)
-        {
-            float f = player.width;
-            AxisAlignedBB axisalignedbb = player.getEntityBoundingBox();
-
-            player.width = width;
-            player.height = height;
-            player.setEntityBoundingBox(new AxisAlignedBB(axisalignedbb.minX, axisalignedbb.minY, axisalignedbb.minZ, axisalignedbb.minX + width, axisalignedbb.minY + height, axisalignedbb.minZ + width));
-
-            if (player.width > f && !player.worldObj.isRemote)
-            {
-                player.moveEntity(f - player.width, 0.0D, f - player.width);
-            }
         }
     }
 
@@ -137,6 +100,8 @@ public class Morph
     public void morph(EntityPlayer player)
     {
         this.setHealth(player, this.health);
+
+        /* Pop! */
         player.playSound(SoundEvents.ENTITY_ITEM_PICKUP, 1.0F, 1.0F);
 
         for (IAbility ability : this.abilities)
@@ -163,10 +128,37 @@ public class Morph
     }
 
     /**
+     * Update player's size based on given width and height.
+     * 
+     * This method is responsible for doing trickshots, 360 noscopes while being 
+     * morped in a morph. Probably...
+     */
+    protected void updateSize(EntityPlayer player, float width, float height)
+    {
+        player.eyeHeight = height * 0.9F;
+
+        /* This is a total rip-off of EntityPlayer#setSize method */
+        if (width != player.width || height != player.height)
+        {
+            float f = player.width;
+            AxisAlignedBB axisalignedbb = player.getEntityBoundingBox();
+
+            player.width = width;
+            player.height = height;
+            player.setEntityBoundingBox(new AxisAlignedBB(axisalignedbb.minX, axisalignedbb.minY, axisalignedbb.minZ, axisalignedbb.minX + width, axisalignedbb.minY + height, axisalignedbb.minZ + width));
+
+            if (player.width > f && !player.worldObj.isRemote)
+            {
+                player.moveEntity(f - player.width, 0.0D, f - player.width);
+            }
+        }
+    }
+
+    /**
      * Set player's health proprotional to the current health with given max 
      * health. 
      */
-    private void setHealth(EntityPlayer player, int health)
+    protected void setHealth(EntityPlayer player, int health)
     {
         float ratio = player.getHealth() / player.getMaxHealth();
         float proportionalHealth = Math.round(health * ratio);
@@ -178,11 +170,22 @@ public class Morph
     /**
      * Set player's max health
      */
-    private void setMaxHealth(EntityPlayer player, int health)
+    protected void setMaxHealth(EntityPlayer player, int health)
     {
         if (player.getMaxHealth() != health)
         {
             player.getEntityAttribute(SharedMonsterAttributes.MAX_HEALTH).setBaseValue(health);
         }
+    }
+
+    /**
+     * Get morph's entity data
+     * 
+     * This method is used for getting any NBT data that can be extracted from 
+     * the entity. Used primarily by EntityMorphs.
+     */
+    public NBTTagCompound getEntityData()
+    {
+        return null;
     }
 }

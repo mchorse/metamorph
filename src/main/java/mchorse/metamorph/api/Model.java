@@ -11,6 +11,7 @@ import com.google.common.base.Objects;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 
+import mchorse.metamorph.api.json.ModelAdapter;
 import net.minecraft.client.resources.I18n;
 import net.minecraft.util.ResourceLocation;
 
