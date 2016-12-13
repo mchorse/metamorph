@@ -5,7 +5,6 @@ import java.util.Iterator;
 import java.util.List;
 
 import mchorse.metamorph.api.Model;
-import mchorse.metamorph.api.MorphManager;
 import mchorse.metamorph.client.model.ModelCustom;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.FontRenderer;
@@ -56,8 +55,8 @@ public class GuiOverlay extends Gui
             int color = disappear ? 0x00ffffff + (alpha << 24) : 0xffffffff;
 
             /* Prepare the model */
-            Model data = MorphManager.INSTANCE.morphs.get(morph.morph).model;
             ModelCustom model = ModelCustom.MODELS.get(morph.morph);
+            Model data = model.model;
             String string = "Acquired";
 
             model.pose = model.model.poses.get("standing");

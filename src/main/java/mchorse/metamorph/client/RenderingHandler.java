@@ -1,5 +1,8 @@
 package mchorse.metamorph.client;
 
+import mchorse.metamorph.api.morphs.AbstractMorph;
+import mchorse.metamorph.api.morphs.CustomMorph;
+import mchorse.metamorph.api.morphs.EntityMorph;
 import mchorse.metamorph.capabilities.morphing.IMorphing;
 import mchorse.metamorph.capabilities.morphing.Morphing;
 import mchorse.metamorph.client.gui.GuiMenu;
@@ -64,9 +67,21 @@ public class RenderingHandler
             return;
         }
 
-        Render render = capability.getCurrentMorph().renderer;
+        AbstractMorph morph = capability.getCurrentMorph();
+        Render render = morph.renderer;
 
-        event.setCanceled(true);
-        render.doRender(player, event.getX(), event.getY(), event.getZ(), player.rotationYaw, event.getPartialRenderTick());
+        if (render != null)
+        {
+            event.setCanceled(true);
+
+            if (morph instanceof CustomMorph)
+            {
+                render.doRender(player, event.getX(), event.getY(), event.getZ(), player.rotationYaw, event.getPartialRenderTick());
+            }
+            else if (morph instanceof EntityMorph)
+            {
+                render.doRender(((EntityMorph) morph).getEntity(), event.getX(), event.getY(), event.getZ(), player.rotationYaw, event.getPartialRenderTick());
+            }
+        }
     }
 }

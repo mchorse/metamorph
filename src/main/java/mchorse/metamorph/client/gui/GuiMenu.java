@@ -7,6 +7,9 @@ import org.lwjgl.opengl.GL11;
 import mchorse.metamorph.Metamorph;
 import mchorse.metamorph.api.Model;
 import mchorse.metamorph.api.MorphManager;
+import mchorse.metamorph.api.morphs.AbstractMorph;
+import mchorse.metamorph.api.morphs.CustomMorph;
+import mchorse.metamorph.api.morphs.EntityMorph;
 import mchorse.metamorph.capabilities.morphing.IMorphing;
 import mchorse.metamorph.capabilities.morphing.Morphing;
 import mchorse.metamorph.client.model.ModelCustom;
@@ -20,6 +23,7 @@ import net.minecraft.client.renderer.OpenGlHelper;
 import net.minecraft.client.renderer.RenderHelper;
 import net.minecraft.client.renderer.entity.RenderLivingBase;
 import net.minecraft.client.renderer.entity.RenderManager;
+import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.MathHelper;
@@ -93,7 +97,7 @@ public class GuiMenu extends Gui
     public void renderMenu(int width, int height, int w, int h)
     {
         EntityPlayer player = this.mc.thePlayer;
-        List<String> morphs = this.getMorph().getAcquiredMorphs();
+        List<AbstractMorph> morphs = this.getMorph().getAcquiredMorphs();
         String label = "Demorph";
 
         /* Setup scale and margin */
@@ -117,7 +121,7 @@ public class GuiMenu extends Gui
 
             if (i != 0)
             {
-                name = MorphManager.INSTANCE.morphDisplayNameFromMorph(morphs.get(i - 1));
+                name = MorphManager.INSTANCE.morphDisplayNameFromMorph(morphs.get(i - 1).name);
             }
 
             int x = width / 2 - w / 2 + i * margin + margin / 2 + 1;
@@ -182,16 +186,35 @@ public class GuiMenu extends Gui
      * {@link RenderLivingBase#doRender(net.minecraft.entity.EntityLivingBase, double, double, double, float, float)} 
      * and {@link GuiInventory#drawEntityOnScreen(int, int, int, float, float, net.minecraft.entity.EntityLivingBase)}.
      */
-    public void renderMorph(EntityPlayer player, String name, int x, int y, float scale)
+    public void renderMorph(EntityPlayer player, AbstractMorph morph, int x, int y, float scale)
     {
-        Model data = MorphManager.INSTANCE.morphs.get(name).model;
-        ModelCustom model = ModelCustom.MODELS.get(name);
+        if (morph instanceof CustomMorph)
+        {
+            ModelCustom model = ModelCustom.MODELS.get(morph.name);
+            Model data = model.model;
 
-        model.pose = model.model.poses.get("standing");
-        model.swingProgress = 0;
+            model.pose = model.model.poses.get("standing");
+            model.swingProgress = 0;
 
-        this.mc.renderEngine.bindTexture(data.defaultTexture);
-        drawModel(model, player, x, y, scale);
+            this.mc.renderEngine.bindTexture(data.defaultTexture);
+            drawModel(model, player, x, y, scale);
+        }
+        else if (morph instanceof EntityMorph)
+        {
+            EntityLivingBase entity = ((EntityMorph) morph).getEntity();
+
+            if (entity == null)
+            {
+                ((EntityMorph) morph).update(player, null);
+                entity = ((EntityMorph) morph).getEntity();
+            }
+
+            if (entity != null)
+            {
+                entity.deathTime = 0;
+                GuiUtils.drawEntityOnScreen(x, y, scale, entity);
+            }
+        }
     }
 
     /**

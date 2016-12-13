@@ -4,10 +4,10 @@ import java.util.ArrayList;
 import java.util.List;
 
 import mchorse.metamorph.api.MorphManager;
+import mchorse.metamorph.api.morphs.AbstractMorph;
 import net.minecraft.nbt.NBTBase;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
-import net.minecraft.nbt.NBTTagString;
 import net.minecraft.util.EnumFacing;
 import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.common.capabilities.Capability.IStorage;
@@ -28,14 +28,23 @@ public class MorphingStorage implements IStorage<IMorphing>
     {
         NBTTagCompound tag = new NBTTagCompound();
         NBTTagList list = new NBTTagList();
-        String morph = MorphManager.INSTANCE.fromMorph(instance.getCurrentMorph());
 
-        tag.setString("Morph", morph);
+        if (instance.getCurrentMorph() != null)
+        {
+            NBTTagCompound morph = new NBTTagCompound();
+            instance.getCurrentMorph().toNBT(morph);
+
+            tag.setTag("Morph", morph);
+        }
+
         tag.setTag("Morphs", list);
 
-        for (String acquiredMorph : instance.getAcquiredMorphs())
+        for (AbstractMorph acquiredMorph : instance.getAcquiredMorphs())
         {
-            list.appendTag(new NBTTagString(acquiredMorph));
+            NBTTagCompound acquiredTag = new NBTTagCompound();
+
+            acquiredMorph.toNBT(acquiredTag);
+            list.appendTag(acquiredTag);
         }
 
         return tag;
@@ -47,20 +56,26 @@ public class MorphingStorage implements IStorage<IMorphing>
         if (nbt instanceof NBTTagCompound)
         {
             NBTTagCompound tag = (NBTTagCompound) nbt;
-            NBTTagList list = (NBTTagList) tag.getTag("Morphs");
+            NBTTagList list = tag.getTagList("Morphs", 9);
+            NBTTagCompound morphTag = tag.getCompoundTag("Morph");
 
-            instance.setCurrentMorph(tag.getString("Morph"), null, true);
+            if (!tag.hasNoTags())
+            {
+                instance.setCurrentMorph(MorphManager.INSTANCE.morphFromNBT(morphTag), null, true);
+            }
 
-            if (list == null)
+            if (list.hasNoTags())
             {
                 return;
             }
 
-            List<String> acquiredMorphs = new ArrayList<String>();
+            List<AbstractMorph> acquiredMorphs = new ArrayList<AbstractMorph>();
 
             for (int i = 0; i < list.tagCount(); i++)
             {
-                acquiredMorphs.add(list.getStringTagAt(i));
+                NBTTagCompound acquiredTag = list.getCompoundTagAt(i);
+
+                acquiredMorphs.add(MorphManager.INSTANCE.morphFromNBT(acquiredTag));
             }
 
             instance.setAcquiredMorphs(acquiredMorphs);

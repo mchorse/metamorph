@@ -61,7 +61,7 @@ public class RenderPlayer extends RenderLivingBase<EntityPlayer>
         Map<String, ModelCustom> models = ModelCustom.MODELS;
         IMorphing capability = Morphing.get(entity);
 
-        String key = capability.getCurrentMorphName();
+        String key = capability.getCurrentMorph().name;
         String pose = entity.isSneaking() ? "sneaking" : (entity.isElytraFlying() ? "flying" : "standing");
 
         ModelCustom model = models.get(key);

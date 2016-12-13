@@ -3,7 +3,7 @@ package mchorse.metamorph;
 import java.lang.reflect.Field;
 import java.util.Map;
 
-import mchorse.metamorph.api.morphs.CustomMorph;
+import mchorse.metamorph.api.MorphManager;
 import mchorse.metamorph.client.KeyboardHandler;
 import mchorse.metamorph.client.RenderingHandler;
 import mchorse.metamorph.client.gui.GuiMenu;
@@ -12,7 +12,6 @@ import mchorse.metamorph.client.render.RenderMorph;
 import mchorse.metamorph.client.render.RenderPlayer;
 import mchorse.metamorph.client.render.RenderSubPlayer;
 import mchorse.metamorph.entity.EntityMorph;
-import mchorse.vanilla_pack.VanillaPack;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.entity.RenderManager;
 import net.minecraftforge.common.MinecraftForge;
@@ -71,20 +70,9 @@ public class ClientProxy extends CommonProxy
         /* Register client event handlers */
         MinecraftForge.EVENT_BUS.register(new RenderingHandler(overlay, morphOverlay));
         MinecraftForge.EVENT_BUS.register(new KeyboardHandler(overlay));
-    }
 
-    /**
-     * Load custom models.
-     * 
-     * This code is responsible for assembling client custom models out of 
-     * already parsed data models. 
-     */
-    @Override
-    public void loadModels()
-    {
-        super.loadModels();
-
-        VanillaPack.loadClientModels(this.models);
+        /* Register client morph manager */
+        MorphManager.INSTANCE.registerClient();
     }
 
     /**
@@ -134,14 +122,5 @@ public class ClientProxy extends CommonProxy
 
             System.out.println("Skin map renderers were successfully replaced with Blockbuster RenderSubPlayer substitutes!");
         }
-    }
-
-    /**
-     * Give custom morph a player renderer 
-     */
-    @Override
-    public void processCustomMorph(CustomMorph morph)
-    {
-        morph.renderer = playerRenderer;
     }
 }

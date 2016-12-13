@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import mchorse.metamorph.Metamorph;
+import mchorse.metamorph.api.morphs.AbstractMorph;
 import mchorse.metamorph.capabilities.morphing.IMorphing;
 import mchorse.metamorph.capabilities.morphing.Morphing;
 import mchorse.metamorph.entity.EntityMorph;
@@ -11,6 +12,7 @@ import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLiving;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.nbt.NBTTagCompound;
 import net.minecraftforge.event.entity.living.LivingAttackEvent;
 import net.minecraftforge.event.entity.living.LivingDeathEvent;
 import net.minecraftforge.event.entity.living.LivingSetAttackTargetEvent;
@@ -92,24 +94,28 @@ public class MorphHandler
             return;
         }
 
-        String morph = MorphManager.INSTANCE.morphNameFromEntity(target);
+        String name = MorphManager.INSTANCE.morphNameFromEntity(target);
 
-        if (!MorphManager.INSTANCE.morphs.containsKey(morph))
+        if (!MorphManager.INSTANCE.hasMorph(name))
         {
-            Metamorph.log("Morph by key '" + morph + "' doesn't exist!");
+            Metamorph.log("Morph by key '" + name + "' doesn't exist!");
 
             return;
         }
 
-        if (!player.worldObj.isRemote)
-        {
-            if (!Metamorph.proxy.config.prevent_ghosts || !capability.getAcquiredMorphs().contains(morph))
-            {
-                EntityMorph morphEntity = new EntityMorph(player.worldObj, player.getUniqueID(), morph);
+        NBTTagCompound tag = new NBTTagCompound();
 
-                morphEntity.setPositionAndRotation(target.posX, target.posY + target.height / 2, target.posZ, target.rotationYaw, target.rotationPitch);
-                player.worldObj.spawnEntityInWorld(morphEntity);
-            }
+        tag.setString("Name", name);
+        tag.setTag("EntityData", target.serializeNBT());
+
+        AbstractMorph morph = MorphManager.INSTANCE.morphFromNBT(tag);
+
+        if (!Metamorph.proxy.config.prevent_ghosts || !capability.getAcquiredMorphs().contains(name))
+        {
+            EntityMorph morphEntity = new EntityMorph(player.worldObj, player.getUniqueID(), morph);
+
+            morphEntity.setPositionAndRotation(target.posX, target.posY + target.height / 2, target.posZ, target.rotationYaw, target.rotationPitch);
+            player.worldObj.spawnEntityInWorld(morphEntity);
         }
     }
 

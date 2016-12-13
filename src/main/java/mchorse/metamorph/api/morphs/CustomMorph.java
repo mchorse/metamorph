@@ -7,7 +7,7 @@ import net.minecraft.entity.player.EntityPlayer;
 /**
  * Custom morph class
  * 
- * 
+ * This morph subclass is responsible for updating custom model based morphs
  */
 public class CustomMorph extends AbstractMorph
 {
@@ -33,10 +33,8 @@ public class CustomMorph extends AbstractMorph
      */
     public void updateSize(EntityPlayer player, IMorphing cap)
     {
-        Model data = cap.getCurrentMorph().model;
         String key = player.isElytraFlying() ? "flying" : (player.isSneaking() ? "sneaking" : "standing");
-
-        float[] pose = data.poses.get(key).size;
+        float[] pose = model.poses.get(key).size;
 
         this.updateSize(player, pose[0], pose[1]);
     }

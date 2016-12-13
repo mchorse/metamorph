@@ -4,7 +4,7 @@ import java.io.File;
 
 import mchorse.metamorph.api.ModelManager;
 import mchorse.metamorph.api.MorphHandler;
-import mchorse.metamorph.api.morphs.CustomMorph;
+import mchorse.metamorph.api.MorphManager;
 import mchorse.metamorph.capabilities.CapabilityHandler;
 import mchorse.metamorph.capabilities.morphing.IMorphing;
 import mchorse.metamorph.capabilities.morphing.Morphing;
@@ -12,9 +12,7 @@ import mchorse.metamorph.capabilities.morphing.MorphingStorage;
 import mchorse.metamorph.config.MetamorphConfig;
 import mchorse.metamorph.entity.EntityMorph;
 import mchorse.metamorph.network.Dispatcher;
-import mchorse.vanilla_pack.VanillaPack;
-import net.minecraft.util.text.ITextComponent;
-import net.minecraft.util.text.TextComponentTranslation;
+import mchorse.vanilla_pack.MobMorphFactory;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.common.capabilities.CapabilityManager;
 import net.minecraftforge.common.config.Configuration;
@@ -50,6 +48,12 @@ public class CommonProxy
         /* Network messages */
         Dispatcher.register();
 
+        /* Attaching model manager to morph manager */
+        MorphManager.INSTANCE.models = this.models;
+        MorphManager.INSTANCE.factories.add(new MobMorphFactory());
+        // TODO: turn on back when finished with testing MobMorphFactory
+        // MorphManager.INSTANCE.factories.add(new VanillaMorphFactory());
+
         /* Configuration */
         File config = new File(event.getModConfigurationDirectory(), "metamorph/config.cfg");
 
@@ -60,8 +64,6 @@ public class CommonProxy
 
         /* Entities */
         EntityRegistry.registerModEntity(EntityMorph.class, "Morph", 0, Metamorph.instance, 64, 3, false);
-
-        this.loadModels();
     }
 
     public void load()
@@ -73,28 +75,7 @@ public class CommonProxy
         /* Morphing manager and capabilities */
         CapabilityManager.INSTANCE.register(IMorphing.class, new MorphingStorage(), Morphing.class);
 
-        VanillaPack.register();
+        /* Register  */
+        MorphManager.INSTANCE.register();
     }
-
-    /**
-     * Load mod's provided vanilla models 
-     */
-    public void loadModels()
-    {
-        VanillaPack.loadModels(this.models);
-    }
-
-    /**
-     * Get morph name 
-     */
-    public ITextComponent morphName(EntityMorph entityMorph)
-    {
-        return new TextComponentTranslation("entity." + entityMorph.morph + ".name");
-    }
-
-    /**
-     * Does absolutely nothing in common proxy, see client proxy implementation 
-     */
-    public void processCustomMorph(CustomMorph morph)
-    {}
 }

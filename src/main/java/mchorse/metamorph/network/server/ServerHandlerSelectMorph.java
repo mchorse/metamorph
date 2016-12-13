@@ -2,6 +2,7 @@ package mchorse.metamorph.network.server;
 
 import java.util.List;
 
+import mchorse.metamorph.api.morphs.AbstractMorph;
 import mchorse.metamorph.capabilities.morphing.IMorphing;
 import mchorse.metamorph.capabilities.morphing.Morphing;
 import mchorse.metamorph.network.Dispatcher;
@@ -16,7 +17,7 @@ public class ServerHandlerSelectMorph extends ServerMessageHandler<PacketSelectM
     public void run(EntityPlayerMP player, PacketSelectMorph message)
     {
         IMorphing capability = Morphing.get(player);
-        List<String> morphs = capability.getAcquiredMorphs();
+        List<AbstractMorph> morphs = capability.getAcquiredMorphs();
 
         if (message.index == -1)
         {
@@ -25,12 +26,12 @@ public class ServerHandlerSelectMorph extends ServerMessageHandler<PacketSelectM
 
         if (message.index >= 0 && morphs.get(message.index) != null)
         {
-            String morph = morphs.get(message.index);
+            AbstractMorph morph = morphs.get(message.index);
 
             capability.setCurrentMorph(morph, player, false);
         }
 
-        String morph = capability.getCurrentMorphName();
+        AbstractMorph morph = capability.getCurrentMorph();
 
         Dispatcher.sendTo(new PacketMorph(morph), player);
         Dispatcher.updateTrackers(player, new PacketMorphPlayer(player.getEntityId(), morph));

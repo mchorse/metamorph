@@ -74,7 +74,7 @@ public class CapabilityHandler
             EntityPlayerMP player = (EntityPlayerMP) event.getEntityPlayer();
             IMorphing cap = target.getCapability(MorphingProvider.MORPHING_CAP, null);
 
-            Dispatcher.sendTo(new PacketMorphPlayer(target.getEntityId(), cap.getCurrentMorphName()), player);
+            Dispatcher.sendTo(new PacketMorphPlayer(target.getEntityId(), cap.getCurrentMorph()), player);
         }
     }
 
@@ -123,7 +123,7 @@ public class CapabilityHandler
     {
         EntityPlayerMP mp = (EntityPlayerMP) player;
 
-        Dispatcher.sendTo(new PacketMorph(cap.getCurrentMorphName()), mp);
+        Dispatcher.sendTo(new PacketMorph(cap.getCurrentMorph()), mp);
         Dispatcher.sendTo(new PacketAcquiredMorphs(cap.getAcquiredMorphs()), mp);
     }
 }

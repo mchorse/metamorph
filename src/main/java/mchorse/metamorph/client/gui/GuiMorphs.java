@@ -3,15 +3,13 @@ package mchorse.metamorph.client.gui;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
-import java.util.TreeSet;
 
 import org.lwjgl.input.Keyboard;
 import org.lwjgl.input.Mouse;
 import org.lwjgl.opengl.GL11;
 
 import mchorse.metamorph.api.MorphManager;
-import mchorse.metamorph.api.morphs.CustomMorph;
+import mchorse.metamorph.api.morphs.AbstractMorph;
 import mchorse.metamorph.capabilities.morphing.IMorphing;
 import mchorse.metamorph.capabilities.morphing.Morphing;
 import mchorse.metamorph.client.model.ModelCustom;
@@ -60,17 +58,16 @@ public class GuiMorphs extends GuiScreen
      */
     public GuiMorphs()
     {
-        Map<String, CustomMorph> morphs = MorphManager.INSTANCE.morphs;
         EntityPlayer player = Minecraft.getMinecraft().thePlayer;
         IMorphing morphing = Morphing.get(player);
 
         int index = 0;
 
-        for (String key : new TreeSet<String>(morphs.keySet()))
+        for (AbstractMorph morph : MorphManager.INSTANCE.getMorphs())
         {
-            this.morphs.add(new MorphCell(key, morphs.get(key), index));
+            this.morphs.add(new MorphCell(morph.name, morph, index));
 
-            if (morphing.isMorphed() && key.equals(morphing.getCurrentMorphName()))
+            if (morphing.isMorphed() && morph.name.equals(morphing.getCurrentMorph().name))
             {
                 this.selected = index;
             }
@@ -114,12 +111,12 @@ public class GuiMorphs extends GuiScreen
         {
             if (this.selected == -1)
             {
-                Dispatcher.sendToServer(new PacketMorph(""));
+                Dispatcher.sendToServer(new PacketMorph(null));
             }
             else
             {
                 MorphCell morph = this.morphs.get(this.selected);
-                Dispatcher.sendToServer(new PacketMorph(morph.name));
+                Dispatcher.sendToServer(new PacketMorph(morph.morph));
             }
         }
 
@@ -375,11 +372,11 @@ public class GuiMorphs extends GuiScreen
     public static class MorphCell
     {
         public String name;
-        public CustomMorph morph;
+        public AbstractMorph morph;
         public ModelCustom model;
         public int index;
 
-        public MorphCell(String name, CustomMorph morph, int index)
+        public MorphCell(String name, AbstractMorph morph, int index)
         {
             this.name = name;
             this.morph = morph;

@@ -2,6 +2,9 @@ package mchorse.vanilla_pack;
 
 import java.io.InputStream;
 import java.lang.reflect.Type;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.Scanner;
 
@@ -9,7 +12,9 @@ import com.google.common.reflect.TypeToken;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 
+import mchorse.metamorph.ClientProxy;
 import mchorse.metamorph.Metamorph;
+import mchorse.metamorph.api.IMorphFactory;
 import mchorse.metamorph.api.Model;
 import mchorse.metamorph.api.ModelManager;
 import mchorse.metamorph.api.MorphManager;
@@ -17,6 +22,7 @@ import mchorse.metamorph.api.abilities.IAbility;
 import mchorse.metamorph.api.abilities.IAction;
 import mchorse.metamorph.api.abilities.IAttackAbility;
 import mchorse.metamorph.api.json.MorphAdapter;
+import mchorse.metamorph.api.morphs.AbstractMorph;
 import mchorse.metamorph.api.morphs.CustomMorph;
 import mchorse.metamorph.client.model.ModelCustom;
 import mchorse.metamorph.client.model.parsing.ModelParser;
@@ -44,26 +50,36 @@ import mchorse.vanilla_pack.actions.Teleport;
 import mchorse.vanilla_pack.attacks.KnockbackAttack;
 import mchorse.vanilla_pack.attacks.PoisonAttack;
 import mchorse.vanilla_pack.attacks.WitherAttack;
+import net.minecraft.nbt.NBTTagCompound;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
 /**
- * Vanilla morph pack
+ * Vanilla morph factory 
  * 
- * This class is responsible for registering all shit related to vanilla morph 
- * pack. That's including abilities, attacks and actions for vanilla morphs.
+ * This morph factory is responsible for registering vanilla-based abilities, 
+ * attacks and actions.
  */
-public class VanillaPack
+public class VanillaMorphFactory implements IMorphFactory
 {
     /**
-     * Register abilities, attacks and actions
+     * Factory'r registered morphs 
      */
-    public static void register()
+    private Map<String, CustomMorph> morphs = new HashMap<String, CustomMorph>();
+
+    /**
+     * Register method
+     * 
+     * This method is responsible for registering abilities, actions, attacks, 
+     * models and morphs.
+     */
+    @Override
+    public void register(MorphManager manager)
     {
         /* Define shortcuts */
-        Map<String, IAbility> abilities = MorphManager.INSTANCE.abilities;
-        Map<String, IAttackAbility> attacks = MorphManager.INSTANCE.attacks;
-        Map<String, IAction> actions = MorphManager.INSTANCE.actions;
+        Map<String, IAbility> abilities = manager.abilities;
+        Map<String, IAttackAbility> attacks = manager.attacks;
+        Map<String, IAction> actions = manager.actions;
 
         /* Register default abilities */
         abilities.put("climb", new Climb());
@@ -95,18 +111,62 @@ public class VanillaPack
         attacks.put("wither", new WitherAttack());
         attacks.put("knockback", new KnockbackAttack());
 
-        registerMorphs();
+        this.registerModels(manager.models);
+        this.registerMorphs(manager.models);
     }
 
+    @Override
+    @SideOnly(Side.CLIENT)
+    public void registerClient(MorphManager manager)
+    {
+        for (AbstractMorph morph : this.morphs.values())
+        {
+            morph.renderer = ClientProxy.playerRenderer;
+        }
+
+        this.registerClientModels(manager.models);
+    }
+
+    @Override
+    public List<AbstractMorph> getMorphs()
+    {
+        return new ArrayList<AbstractMorph>(this.morphs.values());
+    }
+
+    @Override
+    public boolean hasMorph(String name)
+    {
+        return this.morphs.containsKey(name);
+    }
+
+    @Override
+    public AbstractMorph getMorphFromNBT(NBTTagCompound tag)
+    {
+        String name = tag.getString("Name");
+        CustomMorph morph = this.morphs.get(morphs);
+
+        if (morph != null)
+        {
+            /* TODO: add clone */
+            return morph;
+        }
+
+        return null;
+    }
+
+    /* Custom Models */
+
     /**
-     * Register morphs from JSON 
+     * Register morphs from JSON file
+     * 
+     * This method is responsible for registering all JSON 
      */
-    public static void registerMorphs()
+    protected void registerMorphs(ModelManager manager)
     {
         GsonBuilder builder = new GsonBuilder().registerTypeAdapter(CustomMorph.class, new MorphAdapter());
         Gson gson = builder.create();
 
-        ClassLoader loader = VanillaPack.class.getClassLoader();
+        ClassLoader loader = this.getClass().getClassLoader();
         InputStream stream = loader.getResourceAsStream("assets/metamorph/morphs.json");
         Scanner scanner = new Scanner(stream, "UTF-8");
 
@@ -115,7 +175,6 @@ public class VanillaPack
         {}.getType();
 
         Map<String, CustomMorph> data = gson.fromJson(scanner.useDelimiter("\\A").next(), type);
-        Map<String, CustomMorph> morphs = MorphManager.INSTANCE.morphs;
 
         scanner.close();
 
@@ -124,69 +183,58 @@ public class VanillaPack
             String key = entry.getKey();
             CustomMorph morph = entry.getValue();
 
-            Metamorph.proxy.processCustomMorph(morph);
-
-            if (!Metamorph.proxy.models.models.containsKey(key))
-            {
-                Metamorph.log("Model for custom morph '" + key + "' couldn't be found!");
-
-                continue;
-            }
-            else
-            {
-                morph.model = Metamorph.proxy.models.models.get(entry.getKey());
-            }
-
-            morphs.put(key, morph);
+            morph.name = key;
+            morph.model = manager.models.get(entry.getKey());
+            this.morphs.put(key, morph);
         }
     }
 
     /**
-     * Load served based custom models 
+     * Load served based custom models
      */
-    public static void loadModels(ModelManager models)
+    private void registerModels(ModelManager models)
     {
         /* Animals */
-        loadModel(models, "Bat");
-        loadModel(models, "Chicken");
-        loadModel(models, "Cow");
-        loadModel(models, "EntityHorse", "horse");
-        loadModel(models, "MushroomCow", "mooshroom");
-        loadModel(models, "Ozelot", "ocelot");
-        loadModel(models, "Pig");
-        loadModel(models, "PolarBear", "polar_bear");
-        loadModel(models, "Rabbit");
-        loadModel(models, "Sheep");
-        loadModel(models, "Squid");
-        loadModel(models, "Wolf");
+        this.loadModel(models, "Bat");
+        this.loadModel(models, "Chicken");
+        this.loadModel(models, "Cow");
+        this.loadModel(models, "EntityHorse", "horse");
+        this.loadModel(models, "MushroomCow", "mooshroom");
+        this.loadModel(models, "Ozelot", "ocelot");
+        this.loadModel(models, "Pig");
+        this.loadModel(models, "PolarBear", "polar_bear");
+        this.loadModel(models, "Rabbit");
+        this.loadModel(models, "Sheep");
+        this.loadModel(models, "Squid");
+        this.loadModel(models, "Wolf");
 
         /* Neutral mobs */
-        loadModel(models, "Enderman");
-        loadModel(models, "PigZombie", "zombie_pigman");
-        loadModel(models, "SnowMan", "snow_man");
-        loadModel(models, "Villager");
-        loadModel(models, "VillagerGolem", "iron_golem");
+        this.loadModel(models, "Enderman");
+        this.loadModel(models, "PigZombie", "zombie_pigman");
+        this.loadModel(models, "SnowMan", "snow_man");
+        this.loadModel(models, "Villager");
+        this.loadModel(models, "VillagerGolem", "iron_golem");
 
         /* Hostile mobs */
-        loadModel(models, "Blaze");
-        loadModel(models, "CaveSpider", "cave_spider");
-        loadModel(models, "Creeper");
-        loadModel(models, "Ghast");
-        loadModel(models, "Guardian");
-        loadModel(models, "LavaSlime", "magma_cube");
-        loadModel(models, "Silverfish");
-        loadModel(models, "Skeleton");
-        loadModel(models, "Slime");
-        loadModel(models, "Spider");
-        loadModel(models, "Witch");
-        loadModel(models, "WitherSkeleton", "wither_skeleton");
-        loadModel(models, "Zombie");
+        this.loadModel(models, "Blaze");
+        this.loadModel(models, "CaveSpider", "cave_spider");
+        this.loadModel(models, "Creeper");
+        this.loadModel(models, "Ghast");
+        this.loadModel(models, "Guardian");
+        this.loadModel(models, "LavaSlime", "magma_cube");
+        this.loadModel(models, "Silverfish");
+        this.loadModel(models, "Skeleton");
+        this.loadModel(models, "Slime");
+        this.loadModel(models, "Spider");
+        this.loadModel(models, "Witch");
+        this.loadModel(models, "WitherSkeleton", "wither_skeleton");
+        this.loadModel(models, "Zombie");
     }
 
     /**
      * Load model with name and lowercase'd model name
      */
-    private static void loadModel(ModelManager models, String model)
+    private void loadModel(ModelManager models, String model)
     {
         loadModel(models, model, model.toLowerCase());
     }
@@ -194,7 +242,7 @@ public class VanillaPack
     /**
      * Load model with name and filename
      */
-    private static void loadModel(ModelManager models, String model, String filename)
+    private void loadModel(ModelManager models, String model, String filename)
     {
         try
         {
@@ -207,54 +255,52 @@ public class VanillaPack
         }
     }
 
-    /**
-     * Load client custom models
-     */
     @SideOnly(Side.CLIENT)
-    public static void loadClientModels(ModelManager models)
+    private void registerClientModels(ModelManager models)
     {
         /* Animals */
-        loadClientModel(models, "Bat");
-        loadClientModel(models, "Chicken");
-        loadClientModel(models, "Cow");
-        loadClientModel(models, "EntityHorse");
-        loadClientModel(models, "MushroomCow");
-        loadClientModel(models, "Ozelot");
-        loadClientModel(models, "Pig");
-        loadClientModel(models, "PolarBear");
-        loadClientModel(models, "Rabbit");
-        loadClientModel(models, "Sheep");
-        loadClientModel(models, "Squid");
-        loadClientModel(models, "Wolf");
+        this.loadClientModel(models, "Bat");
+        this.loadClientModel(models, "Chicken");
+        this.loadClientModel(models, "Cow");
+        this.loadClientModel(models, "EntityHorse");
+        this.loadClientModel(models, "MushroomCow");
+        this.loadClientModel(models, "Ozelot");
+        this.loadClientModel(models, "Pig");
+        this.loadClientModel(models, "PolarBear");
+        this.loadClientModel(models, "Rabbit");
+        this.loadClientModel(models, "Sheep");
+        this.loadClientModel(models, "Squid");
+        this.loadClientModel(models, "Wolf");
 
         /* Neutral mobs */
-        loadClientModel(models, "Enderman");
-        loadClientModel(models, "PigZombie");
-        loadClientModel(models, "SnowMan");
-        loadClientModel(models, "Villager");
-        loadClientModel(models, "VillagerGolem");
+        this.loadClientModel(models, "Enderman");
+        this.loadClientModel(models, "PigZombie");
+        this.loadClientModel(models, "SnowMan");
+        this.loadClientModel(models, "Villager");
+        this.loadClientModel(models, "VillagerGolem");
 
         /* Hostile mobs */
-        loadClientModel(models, "Blaze");
-        loadClientModel(models, "CaveSpider");
-        loadClientModel(models, "Creeper");
-        loadClientModel(models, "Ghast");
-        loadClientModel(models, "Guardian");
-        loadClientModel(models, "LavaSlime");
-        loadClientModel(models, "Silverfish");
-        loadClientModel(models, "Skeleton");
-        loadClientModel(models, "Slime");
-        loadClientModel(models, "Spider");
-        loadClientModel(models, "Witch");
-        loadClientModel(models, "WitherSkeleton");
-        loadClientModel(models, "Zombie");
+        this.loadClientModel(models, "Blaze");
+        this.loadClientModel(models, "CaveSpider");
+        this.loadClientModel(models, "Creeper");
+        this.loadClientModel(models, "Ghast");
+        this.loadClientModel(models, "Guardian");
+        this.loadClientModel(models, "LavaSlime");
+        this.loadClientModel(models, "Silverfish");
+        this.loadClientModel(models, "Skeleton");
+        this.loadClientModel(models, "Slime");
+        this.loadClientModel(models, "Spider");
+        this.loadClientModel(models, "Witch");
+        this.loadClientModel(models, "WitherSkeleton");
+        this.loadClientModel(models, "Zombie");
     }
 
     /**
      * Load a client model with given name and given data custom model from 
      * models registry 
      */
-    private static void loadClientModel(ModelManager models, String name)
+    @SideOnly(Side.CLIENT)
+    private void loadClientModel(ModelManager models, String name)
     {
         loadClientModel(name, models.models.get(name));
     }
@@ -263,7 +309,7 @@ public class VanillaPack
      * Load a client model for given name with given data custom model
      */
     @SideOnly(Side.CLIENT)
-    private static void loadClientModel(String name, Model data)
+    private void loadClientModel(String name, Model data)
     {
         if (data == null)
         {

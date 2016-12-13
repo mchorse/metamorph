@@ -10,6 +10,7 @@ import net.minecraft.entity.SharedMonsterAttributes;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.SoundEvents;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
@@ -22,6 +23,8 @@ import net.minecraftforge.fml.relauncher.SideOnly;
  */
 public abstract class AbstractMorph
 {
+    /* Abilities */
+
     /**
      * Morph's abilities 
      */
@@ -36,6 +39,8 @@ public abstract class AbstractMorph
      * Morph's attack
      */
     public IAttackAbility attack;
+
+    /* Properties */
 
     /**
      * Morph's health 
@@ -53,11 +58,45 @@ public abstract class AbstractMorph
      */
     public boolean hostile = false;
 
+    /* Meta information */
+
+    /**
+     * Morph's name
+     */
+    public String name = "";
+
+    /**
+     * Morph's category
+     */
+    public String category = "";
+
+    /**
+     * Alternative skin for this morph
+     */
+    public ResourceLocation skin;
+
+    /* Rendering */
+
     /**
      * Client morph renderer
      */
     @SideOnly(Side.CLIENT)
     public Render<? extends Entity> renderer;
+
+    /* Some getters */
+
+    /**
+     * Get morph's entity data
+     * 
+     * This method is used for getting any NBT data that can be extracted from 
+     * the entity. Used primarily by EntityMorphs.
+     */
+    public NBTTagCompound getEntityData()
+    {
+        return null;
+    }
+
+    /* Update loop */
 
     /**
      * Update the player based on its morph abilities and properties. This 
@@ -78,27 +117,7 @@ public abstract class AbstractMorph
         }
     }
 
-    /**
-     * Execute action with (or on) given player 
-     */
-    public void action(EntityPlayer player)
-    {
-        if (action != null)
-        {
-            action.execute(player);
-        }
-    }
-
-    /**
-     * Attack a target 
-     */
-    public void attack(Entity target, EntityPlayer player)
-    {
-        if (attack != null)
-        {
-            attack.attack(target, player);
-        }
-    }
+    /* Morph and demorph handlers */
 
     /**
      * Morph into the current morph
@@ -136,6 +155,8 @@ public abstract class AbstractMorph
         }
     }
 
+    /* Adjusting size */
+
     /**
      * Update player's size based on given width and height.
      * 
@@ -163,6 +184,8 @@ public abstract class AbstractMorph
         }
     }
 
+    /* Adjusting health */
+
     /**
      * Set player's health proprotional to the current health with given max 
      * health. 
@@ -187,14 +210,57 @@ public abstract class AbstractMorph
         }
     }
 
+    /* Safe shortcuts for activating action and attack */
+
     /**
-     * Get morph's entity data
-     * 
-     * This method is used for getting any NBT data that can be extracted from 
-     * the entity. Used primarily by EntityMorphs.
+     * Execute action with (or on) given player 
      */
-    public NBTTagCompound getEntityData()
+    public void action(EntityPlayer player)
     {
-        return null;
+        if (action != null)
+        {
+            action.execute(player);
+        }
+    }
+
+    /**
+     * Attack a target 
+     */
+    public void attack(Entity target, EntityPlayer player)
+    {
+        if (attack != null)
+        {
+            attack.attack(target, player);
+        }
+    }
+
+    /* Reading / writing to NBT */
+
+    /**
+     * Save abstract morph's properties to NBT compound 
+     */
+    public void toNBT(NBTTagCompound tag)
+    {
+        tag.setString("Name", this.name);
+        tag.setString("Category", this.category);
+
+        if (this.skin != null)
+        {
+            tag.setString("Skin", this.skin.toString());
+        }
+    }
+
+    /**
+     * Read abstract morph's properties from NBT compound 
+     */
+    public void fromNBT(NBTTagCompound tag)
+    {
+        this.name = tag.getString("Name");
+        this.category = tag.getString("Category");
+
+        if (tag.hasKey("Skin"))
+        {
+            this.skin = new ResourceLocation(tag.getString("Skin"));
+        }
     }
 }
