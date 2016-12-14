@@ -1,7 +1,7 @@
 package mchorse.vanilla_pack.abilities;
 
 import mchorse.metamorph.api.abilities.Ability;
-import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.entity.EntityLivingBase;
 
 /**
  * Prevent fall damage ability
@@ -13,7 +13,7 @@ import net.minecraft.entity.player.EntityPlayer;
 public class PreventFall extends Ability
 {
     @Override
-    public void update(EntityPlayer player)
+    public void update(EntityLivingBase player)
     {
         player.fallDistance = 0.0F;
     }

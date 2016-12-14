@@ -1,6 +1,7 @@
 package mchorse.vanilla_pack.abilities;
 
 import mchorse.metamorph.api.abilities.Ability;
+import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
 
 /**
@@ -11,29 +12,39 @@ import net.minecraft.entity.player.EntityPlayer;
 public class Fly extends Ability
 {
     @Override
-    public void onMorph(EntityPlayer player)
+    public void onMorph(EntityLivingBase target)
     {
-        if (!player.capabilities.allowFlying)
+        if (target instanceof EntityPlayer)
         {
-            player.capabilities.allowFlying = true;
-            player.sendPlayerAbilities();
+            EntityPlayer player = (EntityPlayer) target;
+
+            if (!player.capabilities.allowFlying)
+            {
+                player.capabilities.allowFlying = true;
+                player.sendPlayerAbilities();
+            }
         }
     }
 
     @Override
-    public void update(EntityPlayer player)
+    public void update(EntityLivingBase target)
     {
-        this.onMorph(player);
+        this.onMorph(target);
     }
 
     @Override
-    public void onDemorph(EntityPlayer player)
+    public void onDemorph(EntityLivingBase target)
     {
-        if (!player.isCreative())
+        if (target instanceof EntityPlayer)
         {
-            player.capabilities.allowFlying = false;
-            player.capabilities.isFlying = false;
-            player.sendPlayerAbilities();
+            EntityPlayer player = (EntityPlayer) target;
+
+            if (!player.isCreative())
+            {
+                player.capabilities.allowFlying = false;
+                player.capabilities.isFlying = false;
+                player.sendPlayerAbilities();
+            }
         }
     }
 }

@@ -21,6 +21,7 @@ public class GuiUtils
     public static void drawEntityOnScreen(int posX, int posY, float scale, EntityLivingBase ent)
     {
         GlStateManager.enableDepth();
+        GlStateManager.enableBlend();
         GlStateManager.enableColorMaterial();
         GlStateManager.pushMatrix();
         GlStateManager.translate(posX, posY, 100.0F);
@@ -28,6 +29,10 @@ public class GuiUtils
         GlStateManager.rotate(45.0F, -1.0F, 0.0F, 0.0F);
         GlStateManager.rotate(45.0F, 0.0F, -1.0F, 0.0F);
         GlStateManager.rotate(180.0F, 0.0F, 0.0F, 1.0F);
+
+        RenderHelper.enableStandardItemLighting();
+
+        GlStateManager.enableRescaleNormal();
 
         float f = ent.renderYawOffset;
         float f1 = ent.rotationYaw;
@@ -56,8 +61,12 @@ public class GuiUtils
         ent.rotationYawHead = f4;
 
         GlStateManager.popMatrix();
+
         RenderHelper.disableStandardItemLighting();
+
         GlStateManager.disableRescaleNormal();
+
+        GlStateManager.disableBlend();
         GlStateManager.setActiveTexture(OpenGlHelper.lightmapTexUnit);
         GlStateManager.disableTexture2D();
         GlStateManager.setActiveTexture(OpenGlHelper.defaultTexUnit);

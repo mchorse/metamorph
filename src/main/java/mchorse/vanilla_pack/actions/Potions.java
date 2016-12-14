@@ -1,6 +1,7 @@
 package mchorse.vanilla_pack.actions;
 
 import mchorse.metamorph.api.abilities.IAction;
+import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.monster.EntityWitch;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.projectile.EntityPotion;
@@ -28,43 +29,47 @@ import net.minecraft.world.World;
 public class Potions implements IAction
 {
     @Override
-    public void execute(EntityPlayer player)
+    public void execute(EntityLivingBase target)
     {
-        World world = player.worldObj;
+        World world = target.worldObj;
 
         if (world.isRemote)
         {
             return;
         }
 
-        if (player.getCooledAttackStrength(0.0F) < 1)
+        if (target instanceof EntityPlayer && ((EntityPlayer) target).getCooledAttackStrength(0.0F) < 1)
         {
             return;
         }
 
-        Vec3d look = player.getLook(1.0F);
+        Vec3d look = target.getLook(1.0F);
         PotionType effect = PotionTypes.HARMING;
 
-        if (player.getRNG().nextFloat() < 0.2)
+        if (target.getRNG().nextFloat() < 0.2)
         {
             effect = PotionTypes.SLOWNESS;
         }
-        else if (player.getRNG().nextFloat() < 0.1)
+        else if (target.getRNG().nextFloat() < 0.1)
         {
             effect = PotionTypes.WEAKNESS;
         }
-        else if (player.getRNG().nextFloat() < 0.05)
+        else if (target.getRNG().nextFloat() < 0.05)
         {
             effect = PotionTypes.POISON;
         }
 
         ItemStack stack = PotionUtils.addPotionToItemStack(new ItemStack(Items.SPLASH_POTION), effect);
-        EntityPotion potion = new EntityPotion(world, player, stack);
+        EntityPotion potion = new EntityPotion(world, target, stack);
 
         potion.rotationPitch += 20.0F;
         potion.setThrowableHeading(look.xCoord, look.yCoord, look.zCoord, 0.85F, 2.0F);
 
         world.spawnEntityInWorld(potion);
-        player.resetCooldown();
+
+        if (target instanceof EntityPlayer)
+        {
+            ((EntityPlayer) target).resetCooldown();
+        }
     }
 }

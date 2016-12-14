@@ -1,7 +1,7 @@
 package mchorse.vanilla_pack.abilities;
 
 import mchorse.metamorph.api.abilities.Ability;
-import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.init.MobEffects;
 
 /**
@@ -14,17 +14,17 @@ import net.minecraft.init.MobEffects;
 public class Hungerless extends Ability
 {
     @Override
-    public void update(EntityPlayer player)
+    public void update(EntityLivingBase target)
     {
-        if (player.isPotionActive(MobEffects.HUNGER))
+        if (target.isPotionActive(MobEffects.HUNGER))
         {
-            this.onMorph(player);
+            this.onMorph(target);
         }
     }
 
     @Override
-    public void onMorph(EntityPlayer player)
+    public void onMorph(EntityLivingBase target)
     {
-        player.removePotionEffect(MobEffects.HUNGER);
+        target.removePotionEffect(MobEffects.HUNGER);
     }
 }

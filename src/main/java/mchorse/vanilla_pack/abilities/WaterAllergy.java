@@ -1,7 +1,7 @@
 package mchorse.vanilla_pack.abilities;
 
 import mchorse.metamorph.api.abilities.Ability;
-import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.util.DamageSource;
 
 /**
@@ -15,11 +15,11 @@ import net.minecraft.util.DamageSource;
 public class WaterAllergy extends Ability
 {
     @Override
-    public void update(EntityPlayer player)
+    public void update(EntityLivingBase target)
     {
-        if (player.isWet())
+        if (target.isWet())
         {
-            player.attackEntityFrom(DamageSource.drown, 1.0F);
+            target.attackEntityFrom(DamageSource.drown, 1.0F);
         }
     }
 }

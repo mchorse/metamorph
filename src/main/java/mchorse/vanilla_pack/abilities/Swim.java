@@ -1,7 +1,7 @@
 package mchorse.vanilla_pack.abilities;
 
 import mchorse.metamorph.api.abilities.Ability;
-import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.entity.EntityLivingBase;
 
 /**
  * Swim ability
@@ -13,27 +13,27 @@ import net.minecraft.entity.player.EntityPlayer;
 public class Swim extends Ability
 {
     @Override
-    public void update(EntityPlayer player)
+    public void update(EntityLivingBase target)
     {
         double speed = 1.25D;
         double maxSpeed = speed * 0.75;
 
-        if (player.isInWater())
+        if (target.isInWater())
         {
-            if (player.moveForward != 0 || player.moveStrafing != 0)
+            if (target.moveForward != 0 || target.moveStrafing != 0)
             {
-                if (player.motionX <= maxSpeed && player.motionX >= -maxSpeed) player.motionX *= speed;
-                if (player.motionZ <= maxSpeed && player.motionZ >= -maxSpeed) player.motionZ *= speed;
+                if (target.motionX <= maxSpeed && target.motionX >= -maxSpeed) target.motionX *= speed;
+                if (target.motionZ <= maxSpeed && target.motionZ >= -maxSpeed) target.motionZ *= speed;
             }
 
-            if (Math.abs(player.motionY) <= maxSpeed)
+            if (Math.abs(target.motionY) <= maxSpeed)
             {
-                player.motionY *= speed;
+                target.motionY *= speed;
             }
 
-            if (player.motionY < 0 && !player.isSneaking())
+            if (target.motionY < 0 && !target.isSneaking())
             {
-                player.motionY = 0;
+                target.motionY = 0;
             }
         }
     }

@@ -6,6 +6,7 @@ import mchorse.metamorph.api.abilities.IAttackAbility;
 import mchorse.metamorph.capabilities.morphing.IMorphing;
 import net.minecraft.client.renderer.entity.Render;
 import net.minecraft.entity.Entity;
+import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.SharedMonsterAttributes;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.SoundEvents;
@@ -102,18 +103,18 @@ public abstract class AbstractMorph
      * Update the player based on its morph abilities and properties. This 
      * method also responsible for updating AABB size. 
      */
-    public void update(EntityPlayer player, IMorphing cap)
+    public void update(EntityLivingBase target, IMorphing cap)
     {
-        this.setMaxHealth(player, this.health);
+        this.setMaxHealth(target, this.health);
 
         if (speed != 0.1F)
         {
-            player.getEntityAttribute(SharedMonsterAttributes.MOVEMENT_SPEED).setBaseValue(this.speed);
+            target.getEntityAttribute(SharedMonsterAttributes.MOVEMENT_SPEED).setBaseValue(this.speed);
         }
 
         for (IAbility ability : abilities)
         {
-            ability.update(player);
+            ability.update(target);
         }
     }
 
@@ -125,16 +126,16 @@ public abstract class AbstractMorph
      * This method responsible for setting up the health of the player to 
      * morph's health and invoke ability's onMorph methods.
      */
-    public void morph(EntityPlayer player)
+    public void morph(EntityLivingBase target)
     {
-        this.setHealth(player, this.health);
+        this.setHealth(target, this.health);
 
         /* Pop! */
-        player.playSound(SoundEvents.ENTITY_ITEM_PICKUP, 1.0F, 1.0F);
+        target.playSound(SoundEvents.ENTITY_ITEM_PICKUP, 1.0F, 1.0F);
 
         for (IAbility ability : this.abilities)
         {
-            ability.onMorph(player);
+            ability.onMorph(target);
         }
     }
 
@@ -144,14 +145,14 @@ public abstract class AbstractMorph
      * This method responsible for setting up the health back to player's 
      * default health and invoke ability's onDemorph methods.
      */
-    public void demorph(EntityPlayer player)
+    public void demorph(EntityLivingBase target)
     {
         /* 20 is default player's health */
-        this.setHealth(player, 20);
+        this.setHealth(target, 20);
 
         for (IAbility ability : this.abilities)
         {
-            ability.onDemorph(player);
+            ability.onDemorph(target);
         }
     }
 
@@ -163,23 +164,26 @@ public abstract class AbstractMorph
      * This method is responsible for doing trickshots, 360 noscopes while being 
      * morped in a morph. Probably...
      */
-    protected void updateSize(EntityPlayer player, float width, float height)
+    protected void updateSize(EntityLivingBase target, float width, float height)
     {
-        player.eyeHeight = height * 0.9F;
+        if (target instanceof EntityPlayer)
+        {
+            ((EntityPlayer) target).eyeHeight = height * 0.9F;
+        }
 
         /* This is a total rip-off of EntityPlayer#setSize method */
-        if (width != player.width || height != player.height)
+        if (width != target.width || height != target.height)
         {
-            float f = player.width;
-            AxisAlignedBB axisalignedbb = player.getEntityBoundingBox();
+            float f = target.width;
+            AxisAlignedBB axisalignedbb = target.getEntityBoundingBox();
 
-            player.width = width;
-            player.height = height;
-            player.setEntityBoundingBox(new AxisAlignedBB(axisalignedbb.minX, axisalignedbb.minY, axisalignedbb.minZ, axisalignedbb.minX + width, axisalignedbb.minY + height, axisalignedbb.minZ + width));
+            target.width = width;
+            target.height = height;
+            target.setEntityBoundingBox(new AxisAlignedBB(axisalignedbb.minX, axisalignedbb.minY, axisalignedbb.minZ, axisalignedbb.minX + width, axisalignedbb.minY + height, axisalignedbb.minZ + width));
 
-            if (player.width > f && !player.worldObj.isRemote)
+            if (target.width > f && !target.worldObj.isRemote)
             {
-                player.moveEntity(f - player.width, 0.0D, f - player.width);
+                target.moveEntity(f - target.width, 0.0D, f - target.width);
             }
         }
     }
@@ -190,23 +194,23 @@ public abstract class AbstractMorph
      * Set player's health proprotional to the current health with given max 
      * health. 
      */
-    protected void setHealth(EntityPlayer player, int health)
+    protected void setHealth(EntityLivingBase target, int health)
     {
-        float ratio = player.getHealth() / player.getMaxHealth();
+        float ratio = target.getHealth() / target.getMaxHealth();
         float proportionalHealth = Math.round(health * ratio);
 
-        this.setMaxHealth(player, health);
-        player.setHealth(proportionalHealth <= 0 ? 1 : proportionalHealth);
+        this.setMaxHealth(target, health);
+        target.setHealth(proportionalHealth <= 0 ? 1 : proportionalHealth);
     }
 
     /**
      * Set player's max health
      */
-    protected void setMaxHealth(EntityPlayer player, int health)
+    protected void setMaxHealth(EntityLivingBase target, int health)
     {
-        if (player.getMaxHealth() != health)
+        if (target.getMaxHealth() != health)
         {
-            player.getEntityAttribute(SharedMonsterAttributes.MAX_HEALTH).setBaseValue(health);
+            target.getEntityAttribute(SharedMonsterAttributes.MAX_HEALTH).setBaseValue(health);
         }
     }
 
@@ -232,6 +236,23 @@ public abstract class AbstractMorph
         {
             attack.attack(target, player);
         }
+    }
+
+    /**
+     * Check either if given object is the same as this morph 
+     */
+    @Override
+    public boolean equals(Object obj)
+    {
+        if (obj instanceof AbstractMorph)
+        {
+            AbstractMorph morph = (AbstractMorph) obj;
+            boolean skinsSame = morph.skin != null && this.skin != null && morph.skin.equals(this.skin);
+
+            return morph.name.equals(this.name) && morph.category.equals(this.category) && skinsSame;
+        }
+
+        return super.equals(obj);
     }
 
     /* Reading / writing to NBT */

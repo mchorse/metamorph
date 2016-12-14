@@ -1,6 +1,6 @@
 package mchorse.metamorph.api.abilities;
 
-import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.entity.EntityLivingBase;
 
 /**
  * Ability interface
@@ -15,16 +15,16 @@ public interface IAbility
      * This method is responsible for updating a player based on ability's 
      * function.
      */
-    public void update(EntityPlayer player);
+    public void update(EntityLivingBase target);
 
     /**
      * This method should be invoked when the player is about to get morphed.
      */
-    public void onMorph(EntityPlayer player);
+    public void onMorph(EntityLivingBase target);
 
     /**
      * This method should be invoked when the player morphs into other morph 
      * without this ability. 
      */
-    public void onDemorph(EntityPlayer player);
+    public void onDemorph(EntityLivingBase target);
 }

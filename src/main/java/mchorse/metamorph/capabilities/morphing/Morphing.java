@@ -14,7 +14,14 @@ import net.minecraft.entity.player.EntityPlayer;
  */
 public class Morphing implements IMorphing
 {
+    /**
+     * List of acquired abstract morphs 
+     */
     private List<AbstractMorph> acquiredMorphs = new ArrayList<AbstractMorph>();
+
+    /**
+     * Current used morph
+     */
     private AbstractMorph morph;
 
     public static IMorphing get(EntityPlayer player)
@@ -38,7 +45,15 @@ public class Morphing implements IMorphing
     @Override
     public boolean acquiredMorph(AbstractMorph morph)
     {
-        return this.acquiredMorphs.contains(morph);
+        for (AbstractMorph acquired : this.acquiredMorphs)
+        {
+            if (acquired.equals(morph))
+            {
+                return true;
+            }
+        }
+
+        return false;
     }
 
     @Override

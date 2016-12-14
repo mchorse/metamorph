@@ -201,19 +201,16 @@ public class GuiMenu extends Gui
         }
         else if (morph instanceof EntityMorph)
         {
-            EntityLivingBase entity = ((EntityMorph) morph).getEntity();
+            EntityMorph entityMorph = (EntityMorph) morph;
+            EntityLivingBase entity = entityMorph.getEntity();
 
             if (entity == null)
             {
-                ((EntityMorph) morph).update(player, null);
-                entity = ((EntityMorph) morph).getEntity();
+                entityMorph.setupEntity(player.worldObj);
+                entity = entityMorph.getEntity();
             }
 
-            if (entity != null)
-            {
-                entity.deathTime = 0;
-                GuiUtils.drawEntityOnScreen(x, y, scale, entity);
-            }
+            GuiUtils.drawEntityOnScreen(x, y, scale, entity);
         }
     }
 
@@ -377,7 +374,9 @@ public class GuiMenu extends Gui
         GlStateManager.popMatrix();
 
         GlStateManager.popMatrix();
+
         RenderHelper.disableStandardItemLighting();
+
         GlStateManager.disableRescaleNormal();
         GlStateManager.setActiveTexture(OpenGlHelper.lightmapTexUnit);
         GlStateManager.disableTexture2D();

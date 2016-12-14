@@ -1,7 +1,7 @@
 package mchorse.vanilla_pack.abilities;
 
 import mchorse.metamorph.api.abilities.Ability;
-import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.potion.Potion;
 import net.minecraft.potion.PotionEffect;
 
@@ -17,23 +17,23 @@ public abstract class PotionAbility extends Ability
     protected int duration = 1200;
 
     @Override
-    public void update(EntityPlayer player)
+    public void update(EntityLivingBase target)
     {
-        if (!player.isPotionActive(this.potion))
+        if (!target.isPotionActive(this.potion))
         {
-            this.onMorph(player);
+            this.onMorph(target);
         }
     }
 
     @Override
-    public void onMorph(EntityPlayer player)
+    public void onMorph(EntityLivingBase target)
     {
-        player.addPotionEffect(new PotionEffect(this.potion, this.duration, 0, false, false));
+        target.addPotionEffect(new PotionEffect(this.potion, this.duration, 0, false, false));
     }
 
     @Override
-    public void onDemorph(EntityPlayer player)
+    public void onDemorph(EntityLivingBase target)
     {
-        player.removePotionEffect(this.potion);
+        target.removePotionEffect(this.potion);
     }
 }

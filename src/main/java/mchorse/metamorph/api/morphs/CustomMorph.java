@@ -2,7 +2,7 @@ package mchorse.metamorph.api.morphs;
 
 import mchorse.metamorph.api.Model;
 import mchorse.metamorph.capabilities.morphing.IMorphing;
-import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.entity.EntityLivingBase;
 
 /**
  * Custom morph class
@@ -21,21 +21,21 @@ public class CustomMorph extends AbstractMorph
      * method also responsible for updating AABB size. 
      */
     @Override
-    public void update(EntityPlayer player, IMorphing cap)
+    public void update(EntityLivingBase target, IMorphing cap)
     {
-        this.updateSize(player, cap);
+        this.updateSize(target, cap);
 
-        super.update(player, cap);
+        super.update(target, cap);
     }
 
     /**
      * Update size of the player based on the given morph.
      */
-    public void updateSize(EntityPlayer player, IMorphing cap)
+    public void updateSize(EntityLivingBase target, IMorphing cap)
     {
-        String key = player.isElytraFlying() ? "flying" : (player.isSneaking() ? "sneaking" : "standing");
+        String key = target.isElytraFlying() ? "flying" : (target.isSneaking() ? "sneaking" : "standing");
         float[] pose = model.poses.get(key).size;
 
-        this.updateSize(player, pose[0], pose[1]);
+        this.updateSize(target, pose[0], pose[1]);
     }
 }

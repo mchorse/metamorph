@@ -2,14 +2,14 @@ package mchorse.metamorph.api.morphs;
 
 import mchorse.metamorph.capabilities.morphing.IMorphing;
 import net.minecraft.client.Minecraft;
-import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityList;
 import net.minecraft.entity.EntityLiving;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.monster.EntityMob;
 import net.minecraft.entity.passive.EntityAnimal;
-import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.nbt.NBTUtil;
+import net.minecraft.world.World;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
@@ -28,7 +28,7 @@ public class EntityMorph extends AbstractMorph
     /**
      * Used for constructing an entity during loop 
      */
-    public NBTTagCompound entityData;
+    protected NBTTagCompound entityData;
 
     /**
      * Set entity for this morph
@@ -75,68 +75,96 @@ public class EntityMorph extends AbstractMorph
     }
 
     @Override
-    public void update(EntityPlayer player, IMorphing cap)
+    public void update(EntityLivingBase target, IMorphing cap)
     {
         if (entity == null)
         {
-            Entity created = EntityList.createEntityByIDFromName(name, player.worldObj);
-
-            created.deserializeNBT(entityData);
-            this.setEntity((EntityLivingBase) created);
-
-            if (player.worldObj.isRemote)
-            {
-                this.setupRenderer();
-            }
+            this.setupEntity(target.worldObj);
         }
 
         /* Update entity */
         entity.onUpdate();
-        entity.deathTime = 0;
+        entity.deathTime = target.deathTime;
+        entity.hurtTime = target.hurtTime;
 
         /* Update player */
-        this.updateSize(player, entity.width, entity.height);
+        this.updateSize(target, entity.width, entity.height);
 
-        super.update(player, cap);
+        super.update(target, cap);
 
         /* Injecting player's properties */
-        entity.posX = player.posX;
-        entity.posY = player.posY;
-        entity.posZ = player.posZ;
+        entity.posX = target.posX;
+        entity.posY = target.posY;
+        entity.posZ = target.posZ;
 
-        entity.motionX = player.motionX;
-        entity.motionY = player.motionY;
-        entity.motionZ = player.motionZ;
+        entity.rotationYaw = target.rotationYaw;
+        entity.rotationPitch = target.rotationPitch;
 
-        entity.rotationYaw = player.rotationYaw;
-        entity.rotationPitch = player.rotationPitch;
-        entity.rotationYawHead = player.rotationYawHead;
-        entity.renderYawOffset = player.renderYawOffset;
+        entity.motionX = target.motionX;
+        entity.motionY = target.motionY;
+        entity.motionZ = target.motionZ;
 
-        entity.swingProgress = player.swingProgress;
-        entity.limbSwing = player.limbSwing;
-        entity.limbSwingAmount = player.limbSwingAmount;
+        entity.rotationYawHead = target.rotationYawHead;
+        entity.renderYawOffset = target.renderYawOffset;
 
-        entity.prevPosX = player.prevPosX;
-        entity.prevPosY = player.prevPosY;
-        entity.prevPosZ = player.prevPosZ;
+        entity.swingProgress = target.swingProgress;
+        entity.limbSwing = target.limbSwing;
+        entity.limbSwingAmount = target.limbSwingAmount;
 
-        entity.prevRotationYaw = player.prevRotationYaw;
-        entity.prevRotationPitch = player.prevRotationPitch;
-        entity.prevRotationYawHead = player.prevRotationYawHead;
-        entity.prevRenderYawOffset = player.prevRenderYawOffset;
+        entity.prevPosX = target.prevPosX;
+        entity.prevPosY = target.prevPosY;
+        entity.prevPosZ = target.prevPosZ;
 
-        entity.prevSwingProgress = player.prevSwingProgress;
-        entity.prevLimbSwingAmount = player.prevLimbSwingAmount;
+        entity.prevRotationYaw = target.prevRotationYaw;
+        entity.prevRotationPitch = target.prevRotationPitch;
+        entity.prevRotationYawHead = target.prevRotationYawHead;
+        entity.prevRenderYawOffset = target.prevRenderYawOffset;
 
-        entity.setSneaking(player.isSneaking());
-        entity.setSprinting(player.isSprinting());
+        entity.prevSwingProgress = target.prevSwingProgress;
+        entity.prevLimbSwingAmount = target.prevLimbSwingAmount;
+
+        entity.setSneaking(target.isSneaking());
+        entity.setSprinting(target.isSprinting());
+        entity.onGround = target.onGround;
+        entity.isAirBorne = target.isAirBorne;
+        entity.ticksExisted = target.ticksExisted;
+    }
+
+    /**
+     * Setup entity
+     * 
+     * This is responsible for setting the entity
+     */
+    public void setupEntity(World world)
+    {
+        EntityLivingBase created = (EntityLivingBase) EntityList.createEntityByIDFromName(name, world);
+
+        created.deserializeNBT(this.entityData);
+        created.deathTime = 0;
+        created.hurtTime = 0;
+        created.limbSwing = 0;
+        created.setFire(0);
+
+        this.setEntity(created);
+
+        if (world.isRemote)
+        {
+            this.setupRenderer();
+        }
     }
 
     @SideOnly(Side.CLIENT)
     private void setupRenderer()
     {
         this.renderer = Minecraft.getMinecraft().getRenderManager().getEntityRenderObject(this.entity);
+    }
+
+    /**
+     * Set entity data 
+     */
+    public void setEntityData(NBTTagCompound tag)
+    {
+        this.entityData = tag;
     }
 
     /**
@@ -148,7 +176,23 @@ public class EntityMorph extends AbstractMorph
     @Override
     public NBTTagCompound getEntityData()
     {
-        return entity == null ? this.entityData : entity.serializeNBT();
+        return this.entityData;
+    }
+
+    /**
+     * Check if this and given EntityMorphs are equal 
+     */
+    @Override
+    public boolean equals(Object obj)
+    {
+        boolean result = super.equals(obj);
+
+        if (obj instanceof EntityMorph)
+        {
+            return result && NBTUtil.areNBTEquals(((EntityMorph) obj).entityData, this.entityData, false);
+        }
+
+        return result;
     }
 
     @Override
@@ -156,7 +200,7 @@ public class EntityMorph extends AbstractMorph
     {
         super.toNBT(tag);
 
-        tag.setTag("EntityData", this.getEntityData());
+        tag.setTag("EntityData", this.entityData);
     }
 
     @Override

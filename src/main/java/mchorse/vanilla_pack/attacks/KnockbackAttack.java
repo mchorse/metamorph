@@ -3,7 +3,7 @@ package mchorse.vanilla_pack.attacks;
 import mchorse.metamorph.api.MorphHandler;
 import mchorse.metamorph.api.abilities.IAttackAbility;
 import net.minecraft.entity.Entity;
-import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.util.math.Vec3d;
 
 /**
@@ -14,9 +14,9 @@ import net.minecraft.util.math.Vec3d;
 public class KnockbackAttack implements IAttackAbility
 {
     @Override
-    public void attack(final Entity target, EntityPlayer player)
+    public void attack(final Entity target, EntityLivingBase source)
     {
-        final Vec3d look = player.getLook(1.0F);
+        final Vec3d look = source.getLook(1.0F);
         final double d = 1;
 
         Runnable task = new Runnable()
@@ -30,7 +30,7 @@ public class KnockbackAttack implements IAttackAbility
             }
         };
 
-        if (!player.worldObj.isRemote)
+        if (!source.worldObj.isRemote)
         {
             MorphHandler.FUTURE_TASKS_SERVER.add(task);
         }

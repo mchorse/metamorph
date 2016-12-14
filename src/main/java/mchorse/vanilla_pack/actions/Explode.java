@@ -1,6 +1,7 @@
 package mchorse.vanilla_pack.actions;
 
 import mchorse.metamorph.api.abilities.IAction;
+import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.util.DamageSource;
 
@@ -15,18 +16,18 @@ import net.minecraft.util.DamageSource;
 public class Explode implements IAction
 {
     @Override
-    public void execute(EntityPlayer player)
+    public void execute(EntityLivingBase target)
     {
-        if (player.worldObj.isRemote)
+        if (target.worldObj.isRemote)
         {
             return;
         }
 
-        player.worldObj.createExplosion(player, player.posX, player.posY, player.posZ, 3, true);
+        target.worldObj.createExplosion(target, target.posX, target.posY, target.posZ, 3, true);
 
-        if (!player.isCreative())
+        if (target instanceof EntityPlayer && !((EntityPlayer) target).isCreative())
         {
-            player.attackEntityFrom(DamageSource.outOfWorld, player.getMaxHealth());
+            target.attackEntityFrom(DamageSource.outOfWorld, target.getMaxHealth());
         }
     }
 }

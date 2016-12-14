@@ -2,8 +2,8 @@ package mchorse.vanilla_pack.abilities;
 
 import mchorse.metamorph.api.abilities.Ability;
 import net.minecraft.block.material.Material;
+import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.monster.EntitySnowman;
-import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
@@ -19,22 +19,22 @@ import net.minecraft.util.math.MathHelper;
 public class SnowWalk extends Ability
 {
     @Override
-    public void update(EntityPlayer player)
+    public void update(EntityLivingBase target)
     {
-        if (!player.onGround)
+        if (!target.onGround)
         {
             return;
         }
 
-        int i = MathHelper.floor_double(player.posX);
-        int j = MathHelper.floor_double(player.posY);
-        int k = MathHelper.floor_double(player.posZ);
+        int i = MathHelper.floor_double(target.posX);
+        int j = MathHelper.floor_double(target.posY);
+        int k = MathHelper.floor_double(target.posZ);
 
         BlockPos blockpos = new BlockPos(i, j, k);
 
-        if (player.worldObj.getBlockState(blockpos).getMaterial() == Material.AIR && Blocks.SNOW_LAYER.canPlaceBlockAt(player.worldObj, blockpos))
+        if (target.worldObj.getBlockState(blockpos).getMaterial() == Material.AIR && Blocks.SNOW_LAYER.canPlaceBlockAt(target.worldObj, blockpos))
         {
-            player.worldObj.setBlockState(blockpos, Blocks.SNOW_LAYER.getDefaultState());
+            target.worldObj.setBlockState(blockpos, Blocks.SNOW_LAYER.getDefaultState());
         }
     }
 }

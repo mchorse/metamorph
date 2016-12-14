@@ -1,6 +1,6 @@
 package mchorse.metamorph.api.abilities;
 
-import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.entity.EntityLivingBase;
 
 /**
  * Action interface
@@ -14,5 +14,5 @@ public interface IAction
      * Execute an action. Depends on action's description, it can teleport 
      * player, emit explosion, or something else.  
      */
-    public void execute(EntityPlayer player);
+    public void execute(EntityLivingBase target);
 }

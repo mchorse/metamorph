@@ -1,7 +1,7 @@
 package mchorse.metamorph.api.abilities;
 
 import net.minecraft.entity.Entity;
-import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.entity.EntityLivingBase;
 
 /**
  * Ability attack interface
@@ -11,5 +11,5 @@ import net.minecraft.entity.player.EntityPlayer;
  */
 public interface IAttackAbility
 {
-    public void attack(Entity target, EntityPlayer player);
+    public void attack(Entity target, EntityLivingBase source);
 }

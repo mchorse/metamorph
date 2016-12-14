@@ -10,6 +10,8 @@ import org.lwjgl.opengl.GL11;
 
 import mchorse.metamorph.api.MorphManager;
 import mchorse.metamorph.api.morphs.AbstractMorph;
+import mchorse.metamorph.api.morphs.CustomMorph;
+import mchorse.metamorph.api.morphs.EntityMorph;
 import mchorse.metamorph.capabilities.morphing.IMorphing;
 import mchorse.metamorph.capabilities.morphing.Morphing;
 import mchorse.metamorph.client.model.ModelCustom;
@@ -20,6 +22,7 @@ import net.minecraft.client.gui.Gui;
 import net.minecraft.client.gui.GuiButton;
 import net.minecraft.client.gui.GuiScreen;
 import net.minecraft.client.resources.I18n;
+import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.util.math.MathHelper;
 
@@ -303,12 +306,7 @@ public class GuiMorphs extends GuiScreen
             int y = i / this.perRow * 60 + 20 - (int) this.scroll;
             float scale = 21.5F;
 
-            /* Render the model */
-            cell.model.pose = cell.model.model.poses.get("standing");
-            cell.model.swingProgress = 0;
-
-            Minecraft.getMinecraft().renderEngine.bindTexture(cell.model.model.defaultTexture);
-            GuiMenu.drawModel(cell.model, player, x + m / 2, y + 60, scale);
+            this.renderMorph(cell, player, x + m / 2, y + 60, scale);
 
             if (i == this.selected)
             {
@@ -321,6 +319,26 @@ public class GuiMorphs extends GuiScreen
 
         /* Render buttons */
         super.drawScreen(mouseX, mouseY, partialTicks);
+    }
+
+    /**
+     * Render a morph 
+     */
+    private void renderMorph(MorphCell cell, EntityPlayer player, int x, int y, float scale)
+    {
+        /* Render the model */
+        if (cell.morph instanceof CustomMorph)
+        {
+            cell.model.pose = cell.model.model.poses.get("standing");
+            cell.model.swingProgress = 0;
+
+            Minecraft.getMinecraft().renderEngine.bindTexture(cell.model.model.defaultTexture);
+            GuiMenu.drawModel(cell.model, player, x, y, scale);
+        }
+        else if (cell.morph instanceof EntityMorph)
+        {
+            GuiUtils.drawEntityOnScreen(x, y, scale, ((EntityMorph) cell.morph).getEntity());
+        }
     }
 
     /**
@@ -373,8 +391,10 @@ public class GuiMorphs extends GuiScreen
     {
         public String name;
         public AbstractMorph morph;
-        public ModelCustom model;
         public int index;
+
+        public ModelCustom model;
+        public EntityLivingBase entity;
 
         public MorphCell(String name, AbstractMorph morph, int index)
         {
@@ -382,7 +402,20 @@ public class GuiMorphs extends GuiScreen
             this.morph = morph;
             this.index = index;
 
-            this.model = ModelCustom.MODELS.get(name);
+            if (morph instanceof CustomMorph)
+            {
+                this.model = ModelCustom.MODELS.get(name);
+            }
+            else if (morph instanceof EntityMorph)
+            {
+                this.entity = ((EntityMorph) morph).getEntity();
+
+                if (this.entity == null)
+                {
+                    ((EntityMorph) morph).setupEntity(Minecraft.getMinecraft().theWorld);
+                    this.entity = ((EntityMorph) morph).getEntity();
+                }
+            }
         }
     }
 }

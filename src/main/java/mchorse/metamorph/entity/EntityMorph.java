@@ -212,7 +212,9 @@ public class EntityMorph extends EntityLiving implements IEntityAdditionalSpawnD
     {
         ByteBufUtils.writeUTF8String(buffer, this.owner != null ? this.owner.toString() : "");
 
-        NBTTagCompound tag = this.morph.getEntityData();
+        NBTTagCompound tag = new NBTTagCompound();
+        this.morph.toNBT(tag);
+
         boolean hasData = tag != null && !tag.hasNoTags();
 
         buffer.writeBoolean(hasData);
@@ -232,7 +234,9 @@ public class EntityMorph extends EntityLiving implements IEntityAdditionalSpawnD
 
         if (buffer.readBoolean())
         {
-            this.morph = MorphManager.INSTANCE.morphFromNBT(ByteBufUtils.readTag(buffer));
+            NBTTagCompound tag = ByteBufUtils.readTag(buffer);
+
+            this.morph = MorphManager.INSTANCE.morphFromNBT(tag);
         }
 
         this.setSize(morph);

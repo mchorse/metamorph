@@ -1,6 +1,7 @@
 package mchorse.vanilla_pack.actions;
 
 import mchorse.metamorph.api.abilities.IAction;
+import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.SoundEvents;
@@ -26,26 +27,26 @@ import net.minecraft.util.math.Vec3d;
 public class Teleport implements IAction
 {
     @Override
-    public void execute(EntityPlayer player)
+    public void execute(EntityLivingBase target)
     {
         float reachDistance = 32;
 
-        Vec3d pos = player.getPositionEyes(1.0F);
-        Vec3d look = player.getLook(1.0F);
+        Vec3d pos = target.getPositionEyes(1.0F);
+        Vec3d look = target.getLook(1.0F);
         Vec3d vec = pos.addVector(look.xCoord * reachDistance, look.yCoord * reachDistance, look.zCoord * reachDistance);
 
-        RayTraceResult result = player.worldObj.rayTraceBlocks(pos, vec, false, false, true);
+        RayTraceResult result = target.worldObj.rayTraceBlocks(pos, vec, false, false, true);
 
         if (result != null && result.typeOfHit == Type.BLOCK)
         {
             BlockPos block = result.getBlockPos();
 
-            if (player.getCooledAttackStrength(0.0F) < 1)
+            if (target instanceof EntityPlayer && ((EntityPlayer) target).getCooledAttackStrength(0.0F) < 1)
             {
                 return;
             }
 
-            if (player.isSneaking() || !player.worldObj.getBlockState(block.offset(EnumFacing.UP)).getBlock().equals(Blocks.AIR))
+            if (target.isSneaking() || !target.worldObj.getBlockState(block.offset(EnumFacing.UP)).getBlock().equals(Blocks.AIR))
             {
                 block = block.offset(result.sideHit);
             }
@@ -54,10 +55,15 @@ public class Teleport implements IAction
             double y = block.getY() + 1.0F;
             double z = block.getZ() + 0.5F;
 
-            player.worldObj.playSound(null, player.prevPosX, player.prevPosY, player.prevPosZ, SoundEvents.ENTITY_ENDERMEN_TELEPORT, SoundCategory.HOSTILE, 1.0F, 1.0F);
-            player.setPositionAndUpdate(x, y, z);
-            player.resetCooldown();
-            player.worldObj.playSound(null, player.posX, player.posY, player.posZ, SoundEvents.ENTITY_ENDERMEN_TELEPORT, SoundCategory.HOSTILE, 1.0F, 1.0F);
+            target.worldObj.playSound(null, target.prevPosX, target.prevPosY, target.prevPosZ, SoundEvents.ENTITY_ENDERMEN_TELEPORT, SoundCategory.HOSTILE, 1.0F, 1.0F);
+            target.setPositionAndUpdate(x, y, z);
+
+            if (target instanceof EntityPlayer)
+            {
+                ((EntityPlayer) target).resetCooldown();
+            }
+
+            target.worldObj.playSound(null, target.posX, target.posY, target.posZ, SoundEvents.ENTITY_ENDERMEN_TELEPORT, SoundCategory.HOSTILE, 1.0F, 1.0F);
         }
     }
 }

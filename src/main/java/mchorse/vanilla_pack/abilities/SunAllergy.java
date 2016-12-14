@@ -3,7 +3,7 @@ package mchorse.vanilla_pack.abilities;
 import java.util.Random;
 
 import mchorse.metamorph.api.abilities.Ability;
-import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.util.math.BlockPos.MutableBlockPos;
 
 /**
@@ -20,20 +20,20 @@ public class SunAllergy extends Ability
     private Random random = new Random();
 
     @Override
-    public void update(EntityPlayer player)
+    public void update(EntityLivingBase target)
     {
-        if (!player.worldObj.isDaytime() || player.worldObj.isRemote)
+        if (!target.worldObj.isDaytime() || target.worldObj.isRemote)
         {
             return;
         }
 
-        float brightness = player.getBrightness(1.0F);
+        float brightness = target.getBrightness(1.0F);
         boolean random = this.random.nextFloat() * 30.0F < (brightness - 0.4F) * 2.0F;
-        this.pos.setPos(player.posX, player.posY, player.posZ);
+        this.pos.setPos(target.posX, target.posY, target.posZ);
 
-        if (brightness > 0.5 && random && player.worldObj.canSeeSky(pos))
+        if (brightness > 0.5 && random && target.worldObj.canSeeSky(pos))
         {
-            player.setFire(8);
+            target.setFire(8);
         }
     }
 }

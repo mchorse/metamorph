@@ -3,7 +3,7 @@ package mchorse.vanilla_pack.abilities;
 import java.util.Random;
 
 import mchorse.metamorph.api.abilities.Ability;
-import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.util.EnumParticleTypes;
 
 /**
@@ -14,19 +14,19 @@ import net.minecraft.util.EnumParticleTypes;
 public class BlazeSmoke extends Ability
 {
     @Override
-    public void update(EntityPlayer player)
+    public void update(EntityLivingBase target)
     {
-        if (player.worldObj.isRemote)
+        if (target.worldObj.isRemote)
         {
-            Random rand = player.getRNG();
+            Random rand = target.getRNG();
 
             for (int i = 0; i < 2; ++i)
             {
-                double x = player.posX + (rand.nextDouble() - 0.5D) * (double) player.width;
-                double y = player.posY + rand.nextDouble() * (double) player.height;
-                double z = player.posZ + (rand.nextDouble() - 0.5D) * (double) player.width;
+                double x = target.posX + (rand.nextDouble() - 0.5D) * (double) target.width;
+                double y = target.posY + rand.nextDouble() * (double) target.height;
+                double z = target.posZ + (rand.nextDouble() - 0.5D) * (double) target.width;
 
-                player.worldObj.spawnParticle(EnumParticleTypes.SMOKE_LARGE, x, y, z, 0.0D, 0.0D, 0.0D, new int[0]);
+                target.worldObj.spawnParticle(EnumParticleTypes.SMOKE_LARGE, x, y, z, 0.0D, 0.0D, 0.0D, new int[0]);
             }
         }
     }

@@ -1,7 +1,7 @@
 package mchorse.vanilla_pack.abilities;
 
 import mchorse.metamorph.api.abilities.Ability;
-import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.entity.EntityLivingBase;
 
 /**
  * Jumping ability
@@ -11,13 +11,13 @@ import net.minecraft.entity.player.EntityPlayer;
 public class Jumping extends Ability
 {
     @Override
-    public void update(EntityPlayer player)
+    public void update(EntityLivingBase target)
     {
-        boolean moving = player.moveStrafing != 0 || player.moveForward != 0;
+        boolean moving = target.moveStrafing != 0 || target.moveForward != 0;
 
-        if (player.onGround && moving && player.motionY <= 0)
+        if (target.onGround && moving && target.motionY <= 0)
         {
-            player.motionY += 0.5D;
+            target.motionY += 0.5D;
         }
     }
 }

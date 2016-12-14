@@ -1,6 +1,6 @@
 package mchorse.metamorph.api.abilities;
 
-import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.entity.EntityLivingBase;
 
 /**
  * Ability's base class
@@ -11,10 +11,10 @@ import net.minecraft.entity.player.EntityPlayer;
 public abstract class Ability implements IAbility
 {
     @Override
-    public void onMorph(EntityPlayer player)
+    public void onMorph(EntityLivingBase player)
     {}
 
     @Override
-    public void onDemorph(EntityPlayer player)
+    public void onDemorph(EntityLivingBase player)
     {}
 }

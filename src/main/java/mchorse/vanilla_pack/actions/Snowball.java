@@ -1,6 +1,7 @@
 package mchorse.vanilla_pack.actions;
 
 import mchorse.metamorph.api.abilities.IAction;
+import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.monster.EntitySnowman;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.projectile.EntitySnowball;
@@ -17,25 +18,25 @@ import net.minecraft.util.math.Vec3d;
 public class Snowball implements IAction
 {
     @Override
-    public void execute(EntityPlayer player)
+    public void execute(EntityLivingBase target)
     {
-        if (!player.worldObj.isRemote)
+        if (!target.worldObj.isRemote)
         {
-            EntitySnowball snowball = new EntitySnowball(player.worldObj, player);
-            Vec3d vec3d = player.getLook(1.0F);
+            EntitySnowball snowball = new EntitySnowball(target.worldObj, target);
+            Vec3d vec3d = target.getLook(1.0F);
 
             double d1 = 4.0D;
             double d2 = vec3d.xCoord * d1;
             double d3 = vec3d.yCoord * d1;
             double d4 = vec3d.zCoord * d1;
 
-            snowball.setPosition(player.posX, player.posY + player.height * 0.9F, player.posZ);
+            snowball.setPosition(target.posX, target.posY + target.height * 0.9F, target.posZ);
             snowball.motionX = d2;
             snowball.motionY = d3;
             snowball.motionZ = d4;
 
-            player.playSound(SoundEvents.ENTITY_SNOWMAN_SHOOT, 1.0F, 1.0F / (player.getRNG().nextFloat() * 0.4F + 0.8F));
-            player.worldObj.spawnEntityInWorld(snowball);
+            target.playSound(SoundEvents.ENTITY_SNOWMAN_SHOOT, 1.0F, 1.0F / (target.getRNG().nextFloat() * 0.4F + 0.8F));
+            target.worldObj.spawnEntityInWorld(snowball);
         }
     }
 }

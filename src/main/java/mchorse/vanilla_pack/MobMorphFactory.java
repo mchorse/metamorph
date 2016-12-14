@@ -59,7 +59,7 @@ public class MobMorphFactory implements IMorphFactory
     {
         if (name.equals("metamorph.Morph"))
         {
-            return false;
+            // return false;
         }
 
         Class<? extends Entity> clazz = EntityList.NAME_TO_CLASS.get(name);

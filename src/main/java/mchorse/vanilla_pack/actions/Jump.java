@@ -1,7 +1,7 @@
 package mchorse.vanilla_pack.actions;
 
 import mchorse.metamorph.api.abilities.IAction;
-import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.entity.EntityLivingBase;
 
 /**
  * Jump action
@@ -12,13 +12,13 @@ import net.minecraft.entity.player.EntityPlayer;
 public class Jump implements IAction
 {
     @Override
-    public void execute(EntityPlayer player)
+    public void execute(EntityLivingBase target)
     {
-        if (player.onGround)
+        if (target.onGround)
         {
-            player.motionX *= 4.0;
-            player.motionY = 0.75;
-            player.motionZ *= 4.0;
+            target.motionX *= 4.0;
+            target.motionY = 0.75;
+            target.motionZ *= 4.0;
         }
     }
 }

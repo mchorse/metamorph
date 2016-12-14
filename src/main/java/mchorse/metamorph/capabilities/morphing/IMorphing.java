@@ -14,7 +14,7 @@ import net.minecraft.entity.player.EntityPlayer;
 public interface IMorphing
 {
     /**
-     * Add a morphing 
+     * Add a morph
      */
     public boolean acquireMorph(AbstractMorph morph);
 
@@ -24,12 +24,12 @@ public interface IMorphing
     public boolean acquiredMorph(AbstractMorph morph);
 
     /**
-     * Get all acquired morphings
+     * Get all acquired morph
      */
     public List<AbstractMorph> getAcquiredMorphs();
 
     /**
-     * Set acquired morphings
+     * Set acquired morph
      */
     public void setAcquiredMorphs(List<AbstractMorph> morphs);
 
