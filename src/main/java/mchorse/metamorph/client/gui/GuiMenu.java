@@ -23,7 +23,6 @@ import net.minecraft.client.renderer.OpenGlHelper;
 import net.minecraft.client.renderer.RenderHelper;
 import net.minecraft.client.renderer.entity.RenderLivingBase;
 import net.minecraft.client.renderer.entity.RenderManager;
-import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.MathHelper;
@@ -201,16 +200,7 @@ public class GuiMenu extends Gui
         }
         else if (morph instanceof EntityMorph)
         {
-            EntityMorph entityMorph = (EntityMorph) morph;
-            EntityLivingBase entity = entityMorph.getEntity();
-
-            if (entity == null)
-            {
-                entityMorph.setupEntity(player.worldObj);
-                entity = entityMorph.getEntity();
-            }
-
-            GuiUtils.drawEntityOnScreen(x, y, scale, entity);
+            GuiUtils.drawEntityOnScreen(x, y, scale, ((EntityMorph) morph).getEntity(player.worldObj));
         }
     }
 

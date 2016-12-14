@@ -21,7 +21,7 @@ public class GuiUtils
     public static void drawEntityOnScreen(int posX, int posY, float scale, EntityLivingBase ent)
     {
         GlStateManager.enableDepth();
-        GlStateManager.enableBlend();
+        GlStateManager.disableBlend();
         GlStateManager.enableColorMaterial();
         GlStateManager.pushMatrix();
         GlStateManager.translate(posX, posY, 100.0F);
@@ -33,6 +33,7 @@ public class GuiUtils
         RenderHelper.enableStandardItemLighting();
 
         GlStateManager.enableRescaleNormal();
+        GlStateManager.color(1.0F, 1.0F, 1.0F, 1.0F);
 
         float f = ent.renderYawOffset;
         float f1 = ent.rotationYaw;

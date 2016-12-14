@@ -24,7 +24,9 @@ public class PacketMorph implements IMessage
     {
         if (buf.readBoolean())
         {
-            this.morph = MorphManager.INSTANCE.morphFromNBT(ByteBufUtils.readTag(buf));
+            NBTTagCompound tag = ByteBufUtils.readTag(buf);
+
+            this.morph = MorphManager.INSTANCE.morphFromNBT(tag);
         }
     }
 

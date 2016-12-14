@@ -7,6 +7,7 @@ import mchorse.metamorph.api.IMorphFactory;
 import mchorse.metamorph.api.MorphManager;
 import mchorse.metamorph.api.morphs.AbstractMorph;
 import mchorse.metamorph.api.morphs.EntityMorph;
+import net.minecraft.client.Minecraft;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityList;
 import net.minecraft.entity.EntityLivingBase;
@@ -43,7 +44,12 @@ public class MobMorphFactory implements IMorphFactory
         {
             if (this.hasMorph(name))
             {
-                // TODO: implement it
+                EntityMorph morph = new EntityMorph();
+                EntityLivingBase entity = (EntityLivingBase) EntityList.createEntityByName(name, Minecraft.getMinecraft().theWorld);
+
+                morph.name = name;
+                morph.setEntity(entity);
+                morphs.add(morph);
             }
         }
 
@@ -59,7 +65,7 @@ public class MobMorphFactory implements IMorphFactory
     {
         if (name.equals("metamorph.Morph"))
         {
-            // return false;
+            return false;
         }
 
         Class<? extends Entity> clazz = EntityList.NAME_TO_CLASS.get(name);

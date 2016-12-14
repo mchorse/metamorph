@@ -7,6 +7,8 @@ import net.minecraft.entity.EntityLiving;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.monster.EntityMob;
 import net.minecraft.entity.passive.EntityAnimal;
+import net.minecraft.inventory.EntityEquipmentSlot;
+import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTUtil;
 import net.minecraft.world.World;
@@ -64,6 +66,8 @@ public class EntityMorph extends AbstractMorph
         {
             this.category = "hostile";
         }
+
+        this.entityData = entity.serializeNBT();
     }
 
     /**
@@ -71,6 +75,20 @@ public class EntityMorph extends AbstractMorph
      */
     public EntityLivingBase getEntity()
     {
+        return this.entity;
+    }
+
+    /**
+     * Get used entity of this morph, if there's no entity, just create it with 
+     * provided world.
+     */
+    public EntityLivingBase getEntity(World world)
+    {
+        if (this.entity == null)
+        {
+            this.setupEntity(world);
+        }
+
         return this.entity;
     }
 
@@ -91,6 +109,40 @@ public class EntityMorph extends AbstractMorph
         this.updateSize(target, entity.width, entity.height);
 
         super.update(target, cap);
+
+        /* Update entity's inventory */
+        if (target.worldObj.isRemote)
+        {
+            int i = 0;
+
+            for (ItemStack stack : target.getEquipmentAndArmor())
+            {
+                EntityEquipmentSlot slot = EntityEquipmentSlot.MAINHAND;
+
+                switch (i)
+                {
+                    case 1:
+                        slot = EntityEquipmentSlot.OFFHAND;
+                        break;
+                    case 2:
+                        slot = EntityEquipmentSlot.FEET;
+                        break;
+                    case 3:
+                        slot = EntityEquipmentSlot.LEGS;
+                        break;
+                    case 4:
+                        slot = EntityEquipmentSlot.CHEST;
+                        break;
+                    case 5:
+                        slot = EntityEquipmentSlot.HEAD;
+                        break;
+                }
+
+                entity.setItemStackToSlot(slot, stack);
+
+                i++;
+            }
+        }
 
         /* Injecting player's properties */
         entity.posX = target.posX;

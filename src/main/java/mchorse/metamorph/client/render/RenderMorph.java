@@ -57,7 +57,6 @@ public class RenderMorph extends RenderLivingBase<EntityMorph>
         {
             mchorse.metamorph.api.morphs.EntityMorph morph = (mchorse.metamorph.api.morphs.EntityMorph) entity.morph;
             morph.update(entity, null);
-
             Render render = morph.renderer;
 
             if (render != null)

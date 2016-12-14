@@ -70,13 +70,15 @@ public class GuiMorphs extends GuiScreen
         {
             this.morphs.add(new MorphCell(morph.name, morph, index));
 
-            if (morphing.isMorphed() && morph.name.equals(morphing.getCurrentMorph().name))
+            if (morphing.isMorphed() && morph.equals(morphing.getCurrentMorph()))
             {
                 this.selected = index;
             }
 
             index++;
         }
+
+        System.out.println(this.morphs);
     }
 
     /* GUI stuff and input */
@@ -337,7 +339,14 @@ public class GuiMorphs extends GuiScreen
         }
         else if (cell.morph instanceof EntityMorph)
         {
-            GuiUtils.drawEntityOnScreen(x, y, scale, ((EntityMorph) cell.morph).getEntity());
+            EntityLivingBase entity = ((EntityMorph) cell.morph).getEntity();
+
+            if (entity.height > 3.5)
+            {
+                scale = entity.height / 2;
+            }
+
+            GuiUtils.drawEntityOnScreen(x, y, scale, entity);
         }
     }
 
@@ -408,13 +417,7 @@ public class GuiMorphs extends GuiScreen
             }
             else if (morph instanceof EntityMorph)
             {
-                this.entity = ((EntityMorph) morph).getEntity();
-
-                if (this.entity == null)
-                {
-                    ((EntityMorph) morph).setupEntity(Minecraft.getMinecraft().theWorld);
-                    this.entity = ((EntityMorph) morph).getEntity();
-                }
+                this.entity = ((EntityMorph) morph).getEntity(Minecraft.getMinecraft().theWorld);
             }
         }
     }
