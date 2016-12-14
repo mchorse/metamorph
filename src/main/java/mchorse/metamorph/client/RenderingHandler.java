@@ -7,8 +7,10 @@ import mchorse.metamorph.capabilities.morphing.IMorphing;
 import mchorse.metamorph.capabilities.morphing.Morphing;
 import mchorse.metamorph.client.gui.GuiMenu;
 import mchorse.metamorph.client.gui.GuiOverlay;
+import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.ScaledResolution;
 import net.minecraft.client.renderer.entity.Render;
+import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraftforge.client.event.RenderGameOverlayEvent;
 import net.minecraftforge.client.event.RenderPlayerEvent;
@@ -68,6 +70,24 @@ public class RenderingHandler
         }
 
         AbstractMorph morph = capability.getCurrentMorph();
+        EntityLivingBase entity = null;
+
+        if (morph instanceof EntityMorph)
+        {
+            entity = ((EntityMorph) morph).getEntity(Minecraft.getMinecraft().theWorld);
+
+            /* Make transformation seamless... */
+            entity.rotationYaw = player.rotationYaw;
+            entity.rotationPitch = player.rotationPitch;
+            entity.rotationYawHead = player.rotationYawHead;
+            entity.renderYawOffset = player.renderYawOffset;
+
+            entity.prevRotationYaw = player.prevRotationYaw;
+            entity.prevRotationPitch = player.prevRotationPitch;
+            entity.prevRotationYawHead = player.prevRotationYawHead;
+            entity.prevRenderYawOffset = player.prevRenderYawOffset;
+        }
+
         Render render = morph.renderer;
 
         if (render != null)
@@ -80,7 +100,7 @@ public class RenderingHandler
             }
             else if (morph instanceof EntityMorph)
             {
-                render.doRender(((EntityMorph) morph).getEntity(), event.getX(), event.getY(), event.getZ(), player.rotationYaw, event.getPartialRenderTick());
+                render.doRender(entity, event.getX(), event.getY(), event.getZ(), player.rotationYaw, event.getPartialRenderTick());
             }
         }
     }

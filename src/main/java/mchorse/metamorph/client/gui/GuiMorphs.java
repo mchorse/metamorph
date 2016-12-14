@@ -77,8 +77,6 @@ public class GuiMorphs extends GuiScreen
 
             index++;
         }
-
-        System.out.println(this.morphs);
     }
 
     /* GUI stuff and input */

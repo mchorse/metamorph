@@ -56,7 +56,7 @@ public class MorphingStorage implements IStorage<IMorphing>
         if (nbt instanceof NBTTagCompound)
         {
             NBTTagCompound tag = (NBTTagCompound) nbt;
-            NBTTagList list = tag.getTagList("Morphs", 9);
+            NBTTagList list = tag.getTagList("Morphs", 10);
             NBTTagCompound morphTag = tag.getCompoundTag("Morph");
 
             if (!tag.hasNoTags())
