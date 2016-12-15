@@ -5,6 +5,9 @@ import java.util.Iterator;
 import java.util.List;
 
 import mchorse.metamorph.api.Model;
+import mchorse.metamorph.api.morphs.AbstractMorph;
+import mchorse.metamorph.api.morphs.CustomMorph;
+import mchorse.metamorph.api.morphs.EntityMorph;
 import mchorse.metamorph.client.model.ModelCustom;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.FontRenderer;
@@ -54,17 +57,26 @@ public class GuiOverlay extends Gui
             int y = height - 10 + (disappear ? (int) (40 * (float) progress / this.cap) : 0);
             int color = disappear ? 0x00ffffff + (alpha << 24) : 0xffffffff;
 
-            /* Prepare the model */
-            ModelCustom model = ModelCustom.MODELS.get(morph.morph);
-            Model data = model.model;
             String string = "Acquired";
 
-            model.pose = model.model.poses.get("standing");
-            model.swingProgress = 0;
+            /* Prepare the model */
+            if (morph.morph instanceof CustomMorph)
+            {
+                ModelCustom model = ModelCustom.MODELS.get(morph.morph.name);
+                Model data = model.model;
+
+                model.pose = model.model.poses.get("standing");
+                model.swingProgress = 0;
+
+                mc.renderEngine.bindTexture(data.defaultTexture);
+                GuiMenu.drawModel(model, mc.thePlayer, 15, y, 15, (float) alpha / 255);
+            }
+            else if (morph.morph instanceof EntityMorph)
+            {
+                GuiUtils.drawEntityOnScreen(15, y, 15, ((EntityMorph) morph.morph).getEntity(mc.theWorld));
+            }
 
             /* Render overlay */
-            mc.renderEngine.bindTexture(data.defaultTexture);
-            GuiMenu.drawModel(model, mc.thePlayer, 15, y, 15, (float) alpha / 255);
             font.drawString(string, 30, y - 7, color);
 
             morph.timer--;
@@ -80,7 +92,7 @@ public class GuiOverlay extends Gui
     /**
      * Add an acquired morph to this overlay. 
      */
-    public void add(String name)
+    public void add(AbstractMorph acquired)
     {
         for (AcquiredMorph morph : this.morphs)
         {
@@ -90,7 +102,7 @@ public class GuiOverlay extends Gui
             }
         }
 
-        this.morphs.add(new AcquiredMorph(name));
+        this.morphs.add(new AcquiredMorph(acquired));
     }
 
     /**
@@ -101,10 +113,10 @@ public class GuiOverlay extends Gui
      */
     public static class AcquiredMorph
     {
-        public String morph;
+        public AbstractMorph morph;
         public int timer = 240;
 
-        public AcquiredMorph(String morph)
+        public AcquiredMorph(AbstractMorph morph)
         {
             this.morph = morph;
         }

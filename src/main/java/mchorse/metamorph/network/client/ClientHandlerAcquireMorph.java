@@ -1,5 +1,6 @@
 package mchorse.metamorph.network.client;
 
+import mchorse.metamorph.ClientProxy;
 import mchorse.metamorph.capabilities.morphing.IMorphing;
 import mchorse.metamorph.capabilities.morphing.Morphing;
 import mchorse.metamorph.network.common.PacketAcquireMorph;
@@ -16,7 +17,6 @@ public class ClientHandlerAcquireMorph extends ClientMessageHandler<PacketAcquir
         IMorphing capability = Morphing.get(player);
 
         capability.acquireMorph(message.morph);
-
-        // ClientProxy.morphOverlay.add(message.morph.name);
+        ClientProxy.morphOverlay.add(message.morph);
     }
 }
