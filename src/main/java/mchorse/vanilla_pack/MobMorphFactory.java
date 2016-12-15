@@ -12,6 +12,7 @@ import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityList;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.world.World;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
@@ -23,17 +24,25 @@ import net.minecraftforge.fml.relauncher.SideOnly;
  */
 public class MobMorphFactory implements IMorphFactory
 {
+    /**
+     * Nothing to register here, since all of the morphs are generated on 
+     * runtime 
+     */
     @Override
     public void register(MorphManager manager)
     {}
 
+    /**
+     * What should I write here?
+     */
     @Override
     @SideOnly(Side.CLIENT)
     public void registerClient(MorphManager manager)
     {}
 
     /**
-     * Get available vanilla morphs
+     * Get all available variation of vanilla mobs and default types of custom 
+     * mobs
      */
     @Override
     public List<AbstractMorph> getMorphs()
@@ -44,8 +53,9 @@ public class MobMorphFactory implements IMorphFactory
         {
             if (this.hasMorph(name))
             {
+                World world = Minecraft.getMinecraft().theWorld;
                 EntityMorph morph = new EntityMorph();
-                EntityLivingBase entity = (EntityLivingBase) EntityList.createEntityByName(name, Minecraft.getMinecraft().theWorld);
+                EntityLivingBase entity = (EntityLivingBase) EntityList.createEntityByName(name, world);
 
                 morph.name = name;
                 morph.setEntity(entity);
@@ -63,6 +73,7 @@ public class MobMorphFactory implements IMorphFactory
     @Override
     public boolean hasMorph(String name)
     {
+        /* Nope! */
         if (name.equals("metamorph.Morph"))
         {
             return false;

@@ -3,6 +3,7 @@ package mchorse.metamorph.api.morphs;
 import mchorse.metamorph.api.Model;
 import mchorse.metamorph.capabilities.morphing.IMorphing;
 import net.minecraft.entity.EntityLivingBase;
+import net.minecraft.util.ResourceLocation;
 
 /**
  * Custom morph class
@@ -15,6 +16,11 @@ public class CustomMorph extends AbstractMorph
      * Morph's model
      */
     public Model model;
+
+    /**
+     * Alternative skin for this morph
+     */
+    public ResourceLocation skin;
 
     /**
      * Update the player based on its morph abilities and properties. This 

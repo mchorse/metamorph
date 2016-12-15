@@ -106,11 +106,11 @@ public class MorphHandler
         NBTTagCompound tag = new NBTTagCompound();
 
         tag.setString("Name", name);
-        tag.setTag("EntityData", target.serializeNBT());
+        tag.setTag("EntityData", EntityUtils.stripEntityNBT(target.serializeNBT()));
 
         AbstractMorph morph = MorphManager.INSTANCE.morphFromNBT(tag);
 
-        if (!Metamorph.proxy.config.prevent_ghosts || !capability.getAcquiredMorphs().contains(name))
+        if (!Metamorph.proxy.config.prevent_ghosts || !capability.acquiredMorph(morph))
         {
             EntityMorph morphEntity = new EntityMorph(player.worldObj, player.getUniqueID(), morph);
 

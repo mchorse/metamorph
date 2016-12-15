@@ -11,7 +11,6 @@ import net.minecraft.entity.SharedMonsterAttributes;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.SoundEvents;
 import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
@@ -70,11 +69,6 @@ public abstract class AbstractMorph
      * Morph's category
      */
     public String category = "";
-
-    /**
-     * Alternative skin for this morph
-     */
-    public ResourceLocation skin;
 
     /* Rendering */
 
@@ -247,9 +241,8 @@ public abstract class AbstractMorph
         if (obj instanceof AbstractMorph)
         {
             AbstractMorph morph = (AbstractMorph) obj;
-            boolean skinsSame = morph.skin != null && this.skin != null && morph.skin.equals(this.skin);
 
-            return morph.name.equals(this.name) && morph.category.equals(this.category) && skinsSame;
+            return morph.name.equals(this.name);
         }
 
         return super.equals(obj);
@@ -263,12 +256,6 @@ public abstract class AbstractMorph
     public void toNBT(NBTTagCompound tag)
     {
         tag.setString("Name", this.name);
-        tag.setString("Category", this.category);
-
-        if (this.skin != null)
-        {
-            tag.setString("Skin", this.skin.toString());
-        }
     }
 
     /**
@@ -277,11 +264,5 @@ public abstract class AbstractMorph
     public void fromNBT(NBTTagCompound tag)
     {
         this.name = tag.getString("Name");
-        this.category = tag.getString("Category");
-
-        if (tag.hasKey("Skin"))
-        {
-            this.skin = new ResourceLocation(tag.getString("Skin"));
-        }
     }
 }

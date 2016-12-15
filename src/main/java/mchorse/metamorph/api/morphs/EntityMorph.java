@@ -1,5 +1,6 @@
 package mchorse.metamorph.api.morphs;
 
+import mchorse.metamorph.api.EntityUtils;
 import mchorse.metamorph.capabilities.morphing.IMorphing;
 import net.minecraft.client.Minecraft;
 import net.minecraft.entity.EntityList;
@@ -10,7 +11,6 @@ import net.minecraft.entity.passive.EntityAnimal;
 import net.minecraft.inventory.EntityEquipmentSlot;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.nbt.NBTUtil;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
@@ -67,7 +67,10 @@ public class EntityMorph extends AbstractMorph
             this.category = "hostile";
         }
 
-        this.entityData = entity.serializeNBT();
+        if (this.entityData == null)
+        {
+            this.entityData = EntityUtils.stripEntityNBT(this.entity.serializeNBT());
+        }
     }
 
     /**
@@ -241,7 +244,9 @@ public class EntityMorph extends AbstractMorph
 
         if (obj instanceof EntityMorph)
         {
-            return result && NBTUtil.areNBTEquals(((EntityMorph) obj).entityData, this.entityData, false);
+            boolean theSame = EntityUtils.compareData(((EntityMorph) obj).entityData, this.entityData);
+
+            return result && theSame;
         }
 
         return result;

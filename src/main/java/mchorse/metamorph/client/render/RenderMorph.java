@@ -105,9 +105,6 @@ public class RenderMorph extends RenderLivingBase<EntityMorph>
     @Override
     protected void preRenderCallback(EntityMorph entity, float partialTickTime)
     {
-        // TODO: implement scaling for EntityMorph
-        Model data = ((ModelCustom) this.mainModel).model;
-
         /* Interpolate scale */
         float scale = 1.0F - ((float) entity.timer / 30);
 
@@ -116,9 +113,18 @@ public class RenderMorph extends RenderLivingBase<EntityMorph>
             scale = 1.0F;
         }
 
-        float x = MathHelper.clamp_float(data.scale[0], 0.0F, 1.5F);
-        float y = MathHelper.clamp_float(data.scale[1], 0.0F, 1.5F);
-        float z = MathHelper.clamp_float(data.scale[2], 0.0F, 1.5F);
+        float x = 1.0F;
+        float y = 1.0F;
+        float z = 1.0F;
+
+        if (entity.morph instanceof CustomMorph)
+        {
+            Model data = ((ModelCustom) this.mainModel).model;
+
+            x = MathHelper.clamp_float(data.scale[0], 0.0F, 1.5F);
+            y = MathHelper.clamp_float(data.scale[1], 0.0F, 1.5F);
+            z = MathHelper.clamp_float(data.scale[2], 0.0F, 1.5F);
+        }
 
         GlStateManager.scale(x * scale, y * scale, z * scale);
     }
