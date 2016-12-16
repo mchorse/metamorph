@@ -2,12 +2,14 @@ package mchorse.metamorph.api.morphs;
 
 import mchorse.metamorph.api.EntityUtils;
 import mchorse.metamorph.capabilities.morphing.IMorphing;
+import mchorse.metamorph.client.gui.GuiUtils;
 import net.minecraft.client.Minecraft;
 import net.minecraft.entity.EntityList;
 import net.minecraft.entity.EntityLiving;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.monster.EntityMob;
 import net.minecraft.entity.passive.EntityAnimal;
+import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.EntityEquipmentSlot;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
@@ -31,6 +33,20 @@ public class EntityMorph extends AbstractMorph
      * Used for constructing an entity during loop 
      */
     protected NBTTagCompound entityData;
+
+    @Override
+    @SideOnly(Side.CLIENT)
+    public void renderOnScreen(EntityPlayer player, int x, int y, float scale, float alpha)
+    {
+        GuiUtils.drawEntityOnScreen(x, y, scale, this.getEntity(player.worldObj));
+
+        this.entity.ticksExisted++;
+
+        if (entity.ticksExisted > 10000)
+        {
+            entity.ticksExisted = 0;
+        }
+    }
 
     /**
      * Set entity for this morph
@@ -228,7 +244,6 @@ public class EntityMorph extends AbstractMorph
      * This method is going to be used for saving entity state to morph 
      * capability. 
      */
-    @Override
     public NBTTagCompound getEntityData()
     {
         return this.entityData;

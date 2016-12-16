@@ -10,11 +10,8 @@ import org.lwjgl.opengl.GL11;
 
 import mchorse.metamorph.api.MorphManager;
 import mchorse.metamorph.api.morphs.AbstractMorph;
-import mchorse.metamorph.api.morphs.CustomMorph;
-import mchorse.metamorph.api.morphs.EntityMorph;
 import mchorse.metamorph.capabilities.morphing.IMorphing;
 import mchorse.metamorph.capabilities.morphing.Morphing;
-import mchorse.metamorph.client.model.ModelCustom;
 import mchorse.metamorph.network.Dispatcher;
 import mchorse.metamorph.network.common.PacketMorph;
 import net.minecraft.client.Minecraft;
@@ -22,7 +19,6 @@ import net.minecraft.client.gui.Gui;
 import net.minecraft.client.gui.GuiButton;
 import net.minecraft.client.gui.GuiScreen;
 import net.minecraft.client.resources.I18n;
-import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.util.math.MathHelper;
 
@@ -289,7 +285,7 @@ public class GuiMorphs extends GuiScreen
         this.drawCenteredString(fontRendererObj, selected, width / 2, height - 18, 0xffffff);
 
         /* Don't run with scissor, or you might get clipped */
-        GuiMenu.scissor(0, 30, width, height - 60, width, height);
+        GuiUtils.scissor(0, 30, width, height - 60, width, height);
         EntityPlayer player = Minecraft.getMinecraft().thePlayer;
 
         int w = (width - 40);
@@ -327,25 +323,7 @@ public class GuiMorphs extends GuiScreen
     private void renderMorph(MorphCell cell, EntityPlayer player, int x, int y, float scale)
     {
         /* Render the model */
-        if (cell.morph instanceof CustomMorph)
-        {
-            cell.model.pose = cell.model.model.poses.get("standing");
-            cell.model.swingProgress = 0;
-
-            Minecraft.getMinecraft().renderEngine.bindTexture(cell.model.model.defaultTexture);
-            GuiMenu.drawModel(cell.model, player, x, y, scale);
-        }
-        else if (cell.morph instanceof EntityMorph)
-        {
-            EntityLivingBase entity = ((EntityMorph) cell.morph).getEntity();
-
-            if (entity.height > 3.5)
-            {
-                scale = entity.height / 2;
-            }
-
-            GuiUtils.drawEntityOnScreen(x, y, scale, entity);
-        }
+        cell.morph.renderOnScreen(player, x, y, scale, 1.0F);
     }
 
     /**
@@ -400,23 +378,11 @@ public class GuiMorphs extends GuiScreen
         public AbstractMorph morph;
         public int index;
 
-        public ModelCustom model;
-        public EntityLivingBase entity;
-
         public MorphCell(String name, AbstractMorph morph, int index)
         {
             this.name = name;
             this.morph = morph;
             this.index = index;
-
-            if (morph instanceof CustomMorph)
-            {
-                this.model = ModelCustom.MODELS.get(name);
-            }
-            else if (morph instanceof EntityMorph)
-            {
-                this.entity = ((EntityMorph) morph).getEntity(Minecraft.getMinecraft().theWorld);
-            }
         }
     }
 }

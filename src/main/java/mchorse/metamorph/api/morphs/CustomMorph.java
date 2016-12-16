@@ -2,8 +2,15 @@ package mchorse.metamorph.api.morphs;
 
 import mchorse.metamorph.api.Model;
 import mchorse.metamorph.capabilities.morphing.IMorphing;
+import mchorse.metamorph.client.gui.GuiUtils;
+import mchorse.metamorph.client.model.ModelCustom;
+import net.minecraft.client.Minecraft;
 import net.minecraft.entity.EntityLivingBase;
+import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.ResourceLocation;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 
 /**
  * Custom morph class
@@ -21,6 +28,20 @@ public class CustomMorph extends AbstractMorph
      * Alternative skin for this morph
      */
     public ResourceLocation skin;
+
+    @Override
+    @SideOnly(Side.CLIENT)
+    public void renderOnScreen(EntityPlayer player, int x, int y, float scale, float alpha)
+    {
+        ModelCustom model = ModelCustom.MODELS.get(this.name);
+        Model data = model.model;
+
+        model.pose = model.model.poses.get("standing");
+        model.swingProgress = 0;
+
+        Minecraft.getMinecraft().renderEngine.bindTexture(data.defaultTexture);
+        GuiUtils.drawModel(model, player, x, y, scale, alpha);
+    }
 
     /**
      * Update the player based on its morph abilities and properties. This 
@@ -43,5 +64,33 @@ public class CustomMorph extends AbstractMorph
         float[] pose = model.poses.get(key).size;
 
         this.updateSize(target, pose[0], pose[1]);
+    }
+
+    /**
+     * Add skin field to NBT when persisting 
+     */
+    @Override
+    public void toNBT(NBTTagCompound tag)
+    {
+        super.toNBT(tag);
+
+        if (this.skin != null)
+        {
+            tag.setString("Skin", this.skin.toString());
+        }
+    }
+
+    /**
+     * Read skin field from NBT 
+     */
+    @Override
+    public void fromNBT(NBTTagCompound tag)
+    {
+        super.fromNBT(tag);
+
+        if (tag.hasKey("Skin"))
+        {
+            this.skin = new ResourceLocation(tag.getString("Skin"));
+        }
     }
 }

@@ -78,18 +78,11 @@ public abstract class AbstractMorph
     @SideOnly(Side.CLIENT)
     public Render<? extends Entity> renderer;
 
-    /* Some getters */
-
     /**
-     * Get morph's entity data
-     * 
-     * This method is used for getting any NBT data that can be extracted from 
-     * the entity. Used primarily by EntityMorphs.
+     * Render this morph on 2D screen (used in GUIs)
      */
-    public NBTTagCompound getEntityData()
-    {
-        return null;
-    }
+    @SideOnly(Side.CLIENT)
+    public abstract void renderOnScreen(EntityPlayer player, int x, int y, float scale, float alpha);
 
     /* Update loop */
 
@@ -256,6 +249,7 @@ public abstract class AbstractMorph
     public void toNBT(NBTTagCompound tag)
     {
         tag.setString("Name", this.name);
+        tag.setString("Category", this.category);
     }
 
     /**
@@ -264,5 +258,6 @@ public abstract class AbstractMorph
     public void fromNBT(NBTTagCompound tag)
     {
         this.name = tag.getString("Name");
+        this.category = tag.getString("Category");
     }
 }

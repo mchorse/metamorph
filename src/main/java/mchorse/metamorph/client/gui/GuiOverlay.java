@@ -4,11 +4,7 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
-import mchorse.metamorph.api.Model;
 import mchorse.metamorph.api.morphs.AbstractMorph;
-import mchorse.metamorph.api.morphs.CustomMorph;
-import mchorse.metamorph.api.morphs.EntityMorph;
-import mchorse.metamorph.client.model.ModelCustom;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.FontRenderer;
 import net.minecraft.client.gui.Gui;
@@ -60,21 +56,7 @@ public class GuiOverlay extends Gui
             String string = "Acquired";
 
             /* Prepare the model */
-            if (morph.morph instanceof CustomMorph)
-            {
-                ModelCustom model = ModelCustom.MODELS.get(morph.morph.name);
-                Model data = model.model;
-
-                model.pose = model.model.poses.get("standing");
-                model.swingProgress = 0;
-
-                mc.renderEngine.bindTexture(data.defaultTexture);
-                GuiMenu.drawModel(model, mc.thePlayer, 15, y, 15, (float) alpha / 255);
-            }
-            else if (morph.morph instanceof EntityMorph)
-            {
-                GuiUtils.drawEntityOnScreen(15, y, 15, ((EntityMorph) morph.morph).getEntity(mc.theWorld));
-            }
+            morph.morph.renderOnScreen(mc.thePlayer, 15, y, 15, (float) alpha / 255);
 
             /* Render overlay */
             font.drawString(string, 30, y - 7, color);
