@@ -226,6 +226,11 @@ public abstract class AbstractMorph
     }
 
     /**
+     * Clone a morph
+     */
+    public abstract AbstractMorph clone();
+
+    /**
      * Check either if given object is the same as this morph 
      */
     @Override

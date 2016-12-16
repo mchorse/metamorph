@@ -4,6 +4,9 @@ import java.util.List;
 
 import com.google.common.collect.Lists;
 
+import mchorse.metamorph.api.morphs.EntityMorph;
+import net.minecraft.entity.Entity;
+import net.minecraft.inventory.EntityEquipmentSlot;
 import net.minecraft.nbt.NBTBase;
 import net.minecraft.nbt.NBTPrimitive;
 import net.minecraft.nbt.NBTTagCompound;
@@ -13,12 +16,29 @@ import net.minecraft.nbt.NBTTagString;
 /**
  * Entity utilities methods
  * 
- * Methods that are related to entities are going here.
+ * Methods that are related to {@link EntityMorph} are going here.
  */
 public class EntityUtils
 {
+    private static List<String> removeAttributes = Lists.newArrayList("generic.followRange");
+
+    /**
+     * Strip some common {@link Entity} related tags, so there won't be 
+     * interference with comparing two tags on  
+     */
     public static NBTTagCompound stripEntityNBT(NBTTagCompound tag)
     {
+        /* Custom displayed name */
+        if (tag.hasKey("CustomName", 8))
+        {
+            String name = tag.getString("CustomName");
+
+            if (!name.equals("jeb_") && !name.equals("Grumm") && !name.equals("Dinnerbone"))
+            {
+                tag.removeTag("CustomName");
+            }
+        }
+
         /* Meta stuff */
         tag.removeTag("Dimension");
         tag.removeTag("HurtTime");
@@ -53,9 +73,9 @@ public class EntityUtils
         tag.removeTag("UUIDLeast");
         tag.removeTag("UUIDMost");
 
+        /* Attributes */
         if (tag.hasKey("Attributes"))
         {
-            List<String> removeAttributes = Lists.newArrayList("generic.followRange");
             NBTTagList attributes = tag.getTagList("Attributes", 10);
 
             for (int i = attributes.tagCount() - 1; i >= 0; i--)
@@ -92,5 +112,36 @@ public class EntityUtils
         }
 
         return true;
+    }
+
+    /**
+     * Get slot for given index of {@link Entity#getEquipmentAndArmor()}. I 
+     * assume that it would be the same all the time, across all of the 
+     * subclasses of {@link Entity}.
+     */
+    public static EntityEquipmentSlot slotForIndex(int index)
+    {
+        EntityEquipmentSlot slot = EntityEquipmentSlot.MAINHAND;
+
+        switch (index)
+        {
+            case 1:
+                slot = EntityEquipmentSlot.OFFHAND;
+                break;
+            case 2:
+                slot = EntityEquipmentSlot.FEET;
+                break;
+            case 3:
+                slot = EntityEquipmentSlot.LEGS;
+                break;
+            case 4:
+                slot = EntityEquipmentSlot.CHEST;
+                break;
+            case 5:
+                slot = EntityEquipmentSlot.HEAD;
+                break;
+        }
+
+        return slot;
     }
 }

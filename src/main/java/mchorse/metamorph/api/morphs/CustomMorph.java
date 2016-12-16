@@ -67,6 +67,27 @@ public class CustomMorph extends AbstractMorph
     }
 
     /**
+     * Clone this {@link CustomMorph} 
+     */
+    @Override
+    public AbstractMorph clone()
+    {
+        CustomMorph morph = new CustomMorph();
+
+        morph.name = this.name;
+        morph.category = this.category;
+
+        morph.abilities = this.abilities;
+        morph.attack = this.attack;
+        morph.action = this.action;
+
+        morph.model = this.model;
+        morph.skin = this.skin;
+
+        return morph;
+    }
+
+    /**
      * Add skin field to NBT when persisting 
      */
     @Override

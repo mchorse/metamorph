@@ -30,6 +30,9 @@ public class MetamorphConfig
      */
     public boolean hide_username;
 
+    /**
+     * Forge-provided configuration object class instance stuff...
+     */
     private Configuration config;
 
     public MetamorphConfig(Configuration config)

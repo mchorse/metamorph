@@ -142,16 +142,9 @@ public class VanillaMorphFactory implements IMorphFactory
     @Override
     public AbstractMorph getMorphFromNBT(NBTTagCompound tag)
     {
-        String name = tag.getString("Name");
-        CustomMorph morph = this.morphs.get(morphs);
+        CustomMorph morph = this.morphs.get(tag.getString("Name"));
 
-        if (morph != null)
-        {
-            /* TODO: add clone */
-            return morph;
-        }
-
-        return null;
+        return morph == null ? null : morph.clone();
     }
 
     /* Custom Models */

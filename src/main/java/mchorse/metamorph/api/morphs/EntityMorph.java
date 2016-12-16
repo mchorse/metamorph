@@ -10,7 +10,6 @@ import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.monster.EntityMob;
 import net.minecraft.entity.passive.EntityAnimal;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.inventory.EntityEquipmentSlot;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.world.World;
@@ -136,28 +135,7 @@ public class EntityMorph extends AbstractMorph
 
             for (ItemStack stack : target.getEquipmentAndArmor())
             {
-                EntityEquipmentSlot slot = EntityEquipmentSlot.MAINHAND;
-
-                switch (i)
-                {
-                    case 1:
-                        slot = EntityEquipmentSlot.OFFHAND;
-                        break;
-                    case 2:
-                        slot = EntityEquipmentSlot.FEET;
-                        break;
-                    case 3:
-                        slot = EntityEquipmentSlot.LEGS;
-                        break;
-                    case 4:
-                        slot = EntityEquipmentSlot.CHEST;
-                        break;
-                    case 5:
-                        slot = EntityEquipmentSlot.HEAD;
-                        break;
-                }
-
-                entity.setItemStackToSlot(slot, stack);
+                entity.setItemStackToSlot(EntityUtils.slotForIndex(i), stack);
 
                 i++;
             }
@@ -265,6 +243,26 @@ public class EntityMorph extends AbstractMorph
         }
 
         return result;
+    }
+
+    /**
+     * Clone this {@link EntityMorph} 
+     */
+    @Override
+    public AbstractMorph clone()
+    {
+        EntityMorph morph = new EntityMorph();
+
+        morph.name = this.name;
+        morph.category = this.category;
+
+        morph.abilities = this.abilities;
+        morph.attack = this.attack;
+        morph.action = this.action;
+
+        morph.entityData = this.entityData.copy();
+
+        return morph;
     }
 
     @Override
