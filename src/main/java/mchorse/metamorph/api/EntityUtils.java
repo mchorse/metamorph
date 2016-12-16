@@ -20,6 +20,9 @@ import net.minecraft.nbt.NBTTagString;
  */
 public class EntityUtils
 {
+    /**
+     * List of attributes to remove
+     */
     private static List<String> removeAttributes = Lists.newArrayList("generic.followRange");
 
     /**
@@ -91,15 +94,29 @@ public class EntityUtils
     }
 
     /**
-     * Compare two {@link NBTTagCompound}s for morphing acquiring 
+     * Compare two {@link NBTTagCompound}s for morphing acquiring
      */
     public static boolean compareData(NBTTagCompound a, NBTTagCompound b)
     {
+        /* Different amount of tags? They're different */
+        if (a.getSize() != b.getSize())
+        {
+            return false;
+        }
+
         for (String key : a.getKeySet())
         {
             NBTBase aTag = a.getTag(key);
             NBTBase bTag = b.getTag(key);
 
+            /* Supporting condition for size check above, in case if the size 
+             * the same, but different keys are missing */
+            if (bTag == null)
+            {
+                return false;
+            }
+
+            /* We check only strings and primitives, lists and compounds aren't mine concern */
             if (!(aTag instanceof NBTPrimitive) && !(aTag instanceof NBTTagString))
             {
                 continue;
