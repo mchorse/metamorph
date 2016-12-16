@@ -127,13 +127,13 @@ public class MorphManager
     /**
      * Get all morphs that factories provide
      */
-    public List<AbstractMorph> getMorphs()
+    public MorphList getMorphs()
     {
-        List<AbstractMorph> morphs = new ArrayList<AbstractMorph>();
+        MorphList morphs = new MorphList();
 
         for (int i = this.factories.size() - 1; i >= 0; i--)
         {
-            morphs.addAll(this.factories.get(i).getMorphs());
+            this.factories.get(i).getMorphs(morphs);
         }
 
         return morphs;

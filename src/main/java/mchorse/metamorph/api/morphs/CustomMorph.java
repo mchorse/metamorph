@@ -83,6 +83,7 @@ public class CustomMorph extends AbstractMorph
 
         morph.model = this.model;
         morph.skin = this.skin;
+        morph.renderer = this.renderer;
 
         return morph;
     }
@@ -102,7 +103,7 @@ public class CustomMorph extends AbstractMorph
     }
 
     /**
-     * Read skin field from NBT 
+     * Read skin field from NBT
      */
     @Override
     public void fromNBT(NBTTagCompound tag)

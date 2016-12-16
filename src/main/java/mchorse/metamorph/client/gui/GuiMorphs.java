@@ -62,16 +62,19 @@ public class GuiMorphs extends GuiScreen
 
         int index = 0;
 
-        for (AbstractMorph morph : MorphManager.INSTANCE.getMorphs())
+        for (List<AbstractMorph> morphs : MorphManager.INSTANCE.getMorphs().morphs.values())
         {
-            this.morphs.add(new MorphCell(morph.name, morph, index));
-
-            if (morphing.isMorphed() && morph.equals(morphing.getCurrentMorph()))
+            for (AbstractMorph morph : morphs)
             {
-                this.selected = index;
-            }
+                this.morphs.add(new MorphCell(morph.name, morph, index));
 
-            index++;
+                if (morphing.isMorphed() && morph.equals(morphing.getCurrentMorph()))
+                {
+                    this.selected = index;
+                }
+
+                index++;
+            }
         }
     }
 

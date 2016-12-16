@@ -2,9 +2,7 @@ package mchorse.vanilla_pack;
 
 import java.io.InputStream;
 import java.lang.reflect.Type;
-import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 import java.util.Scanner;
 
@@ -17,6 +15,7 @@ import mchorse.metamorph.Metamorph;
 import mchorse.metamorph.api.IMorphFactory;
 import mchorse.metamorph.api.Model;
 import mchorse.metamorph.api.ModelManager;
+import mchorse.metamorph.api.MorphList;
 import mchorse.metamorph.api.MorphManager;
 import mchorse.metamorph.api.abilities.IAbility;
 import mchorse.metamorph.api.abilities.IAction;
@@ -128,9 +127,12 @@ public class VanillaMorphFactory implements IMorphFactory
     }
 
     @Override
-    public List<AbstractMorph> getMorphs()
+    public void getMorphs(MorphList morphs)
     {
-        return new ArrayList<AbstractMorph>(this.morphs.values());
+        for (CustomMorph morph : this.morphs.values())
+        {
+            morphs.addMorph(morph.name, morph.clone());
+        }
     }
 
     @Override

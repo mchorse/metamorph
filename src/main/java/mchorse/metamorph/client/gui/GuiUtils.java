@@ -71,7 +71,7 @@ public class GuiUtils
         GlStateManager.enableAlpha();
 
         model.setLivingAnimations(player, 0, 0, 0);
-        model.setRotationAngles(0, 0, 0, 0, 0, factor, player);
+        model.setRotationAngles(0, 0, player.ticksExisted, 0, 0, factor, player);
 
         GlStateManager.enableDepth();
         GlStateManager.color(1.0F, 1.0F, 1.0F, alpha);

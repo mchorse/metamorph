@@ -1,9 +1,7 @@
 package mchorse.vanilla_pack;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import mchorse.metamorph.api.IMorphFactory;
+import mchorse.metamorph.api.MorphList;
 import mchorse.metamorph.api.MorphManager;
 import mchorse.metamorph.api.morphs.AbstractMorph;
 import mchorse.metamorph.api.morphs.EntityMorph;
@@ -45,13 +43,11 @@ public class MobMorphFactory implements IMorphFactory
      * mobs
      */
     @Override
-    public List<AbstractMorph> getMorphs()
+    public void getMorphs(MorphList morphs)
     {
-        List<AbstractMorph> morphs = new ArrayList<AbstractMorph>();
-
         for (String name : EntityList.getEntityNameList())
         {
-            if (this.hasMorph(name))
+            if (this.hasMorph(name) && !morphs.hasMorph(name))
             {
                 World world = Minecraft.getMinecraft().theWorld;
                 EntityMorph morph = new EntityMorph();
@@ -59,11 +55,9 @@ public class MobMorphFactory implements IMorphFactory
 
                 morph.name = name;
                 morph.setEntity(entity);
-                morphs.add(morph);
+                morphs.addMorph(name, morph);
             }
         }
-
-        return morphs;
     }
 
     /**

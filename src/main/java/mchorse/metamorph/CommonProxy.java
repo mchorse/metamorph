@@ -13,6 +13,7 @@ import mchorse.metamorph.config.MetamorphConfig;
 import mchorse.metamorph.entity.EntityMorph;
 import mchorse.metamorph.network.Dispatcher;
 import mchorse.vanilla_pack.MobMorphFactory;
+import mchorse.vanilla_pack.VanillaMorphFactory;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.common.capabilities.CapabilityManager;
 import net.minecraftforge.common.config.Configuration;
@@ -51,8 +52,7 @@ public class CommonProxy
         /* Attaching model manager to morph manager */
         MorphManager.INSTANCE.models = this.models;
         MorphManager.INSTANCE.factories.add(new MobMorphFactory());
-        // TODO: turn on back when finished with testing MobMorphFactory
-        // MorphManager.INSTANCE.factories.add(new VanillaMorphFactory());
+        MorphManager.INSTANCE.factories.add(new VanillaMorphFactory());
 
         /* Configuration */
         File config = new File(event.getModConfigurationDirectory(), "metamorph/config.cfg");

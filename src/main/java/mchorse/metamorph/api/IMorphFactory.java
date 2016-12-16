@@ -1,7 +1,5 @@
 package mchorse.metamorph.api;
 
-import java.util.List;
-
 import mchorse.metamorph.api.morphs.AbstractMorph;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraftforge.fml.relauncher.Side;
@@ -33,7 +31,7 @@ public interface IMorphFactory
     /**
      * Get all available morphs for this morphing factory
      */
-    public List<AbstractMorph> getMorphs();
+    public void getMorphs(MorphList morphs);
 
     /**
      * Does this factory has morph by given name? 
