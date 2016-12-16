@@ -81,7 +81,7 @@ public class MorphHandler
         Entity source = event.getSource().getEntity();
         Entity target = event.getEntity();
 
-        if (target.worldObj.isRemote || !(source instanceof EntityPlayer) || target instanceof EntityPlayer)
+        if (target.worldObj.isRemote || !(source instanceof EntityPlayer) || target instanceof EntityPlayer || Metamorph.proxy.config.prevent_kill_acquire)
         {
             return;
         }
