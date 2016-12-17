@@ -37,7 +37,10 @@ public class EntityMorph extends AbstractMorph
     @SideOnly(Side.CLIENT)
     public void renderOnScreen(EntityPlayer player, int x, int y, float scale, float alpha)
     {
-        GuiUtils.drawEntityOnScreen(x, y, scale, this.getEntity(player.worldObj));
+        EntityLivingBase entity = this.getEntity(player.worldObj);
+        scale *= 1 / entity.height;
+
+        GuiUtils.drawEntityOnScreen(x, y, scale, entity);
 
         this.entity.ticksExisted++;
 
