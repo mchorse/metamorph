@@ -3,15 +3,16 @@ package mchorse.metamorph.entity;
 import java.util.UUID;
 
 import io.netty.buffer.ByteBuf;
-import mchorse.metamorph.Metamorph;
 import mchorse.metamorph.api.Model;
 import mchorse.metamorph.api.MorphManager;
 import mchorse.metamorph.api.morphs.AbstractMorph;
+import mchorse.metamorph.api.morphs.CustomMorph;
 import mchorse.metamorph.capabilities.morphing.IMorphing;
 import mchorse.metamorph.capabilities.morphing.Morphing;
 import mchorse.metamorph.network.Dispatcher;
 import mchorse.metamorph.network.common.PacketAcquireMorph;
 import net.minecraft.entity.EntityLiving;
+import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.item.EntityItem;
 import net.minecraft.entity.item.EntityXPOrb;
 import net.minecraft.entity.player.EntityPlayer;
@@ -81,18 +82,26 @@ public class EntityMorph extends EntityLiving implements IEntityAdditionalSpawnD
     }
 
     /**
-     * Set size based on the morph's model
+     * Set size based on the morph's characteristics
      */
     private void setSize(AbstractMorph morph)
     {
-        // TODO: well, guess what?
-        Model data = Metamorph.proxy.models.models.get(morph);
-
-        if (data != null)
+        if (morph instanceof CustomMorph)
         {
-            float[] size = data.poses.get("standing").size;
+            Model data = ((CustomMorph) morph).model;
 
-            this.setSize(MathHelper.clamp_float(size[0], 0, 1.5F), MathHelper.clamp_float(size[1], 0, 2.0F));
+            if (data != null)
+            {
+                float[] size = data.poses.get("standing").size;
+
+                this.setSize(MathHelper.clamp_float(size[0], 0, 1.5F), MathHelper.clamp_float(size[1], 0, 2.0F));
+            }
+        }
+        else if (morph instanceof mchorse.metamorph.api.morphs.EntityMorph)
+        {
+            EntityLivingBase entity = ((mchorse.metamorph.api.morphs.EntityMorph) morph).getEntity(this.worldObj);
+
+            this.setSize(MathHelper.clamp_float(entity.width, 0, 1.5F), MathHelper.clamp_float(entity.height, 0, 2.0F));
         }
     }
 
