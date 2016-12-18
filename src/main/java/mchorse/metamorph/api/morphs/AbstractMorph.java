@@ -122,19 +122,20 @@ public abstract class AbstractMorph
         /* Pop! */
         target.playSound(SoundEvents.ENTITY_ITEM_PICKUP, 1.0F, 1.0F);
 
-        int per = (int) (target.width * 12);
-        int total = per * (int) Math.ceil(target.height);
-
         float width = this.getWidth(target);
         float height = this.getHeight(target);
+
+        /* Spawn explosion particles to cover the player */
+        int per = (int) (width * 12);
+        int total = per * (int) Math.ceil(height);
 
         for (int i = 0; i < total; i++)
         {
             double angle = ((double) i / per) * Math.PI * 2;
 
-            double x = target.posX + Math.cos(angle) * width;
+            double x = target.posX + Math.cos(angle) * width * 0.75;
             double y = target.posY + i / per;
-            double z = target.posZ + Math.sin(angle) * height;
+            double z = target.posZ + Math.sin(angle) * height * 0.75;
 
             target.worldObj.spawnParticle(EnumParticleTypes.EXPLOSION_LARGE, x, y, z, target.motionX, target.motionY, target.motionZ);
         }

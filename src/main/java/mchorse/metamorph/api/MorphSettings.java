@@ -1,5 +1,8 @@
 package mchorse.metamorph.api;
 
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import mchorse.metamorph.api.abilities.IAbility;
@@ -32,7 +35,7 @@ public class MorphSettings
      * provide more options that aren't hardcoded in this class. 
      */
     @SuppressWarnings("rawtypes")
-    public Map<String, Object> customData;
+    public Map<String, Object> customData = new HashMap<String, Object>();
 
     /**
      * Apply this morph settings on an abstract morph.
@@ -48,5 +51,54 @@ public class MorphSettings
         morph.health = this.health;
         morph.speed = this.speed;
         morph.hostile = this.hostile;
+    }
+
+    /**
+     * Merge given morph settings with this settings 
+     */
+    public void merge(MorphSettings setting)
+    {
+        if (setting.abilities.length != 0)
+        {
+            List<IAbility> abilities = new ArrayList<IAbility>();
+
+            for (IAbility ability : this.abilities)
+            {
+                abilities.add(ability);
+            }
+
+            for (IAbility ability : setting.abilities)
+            {
+                if (!abilities.contains(ability))
+                {
+                    abilities.add(ability);
+                }
+            }
+
+            this.abilities = abilities.toArray(new IAbility[abilities.size()]);
+        }
+
+        if (setting.action != null)
+        {
+            this.action = setting.action;
+        }
+
+        if (setting.attack != null)
+        {
+            this.attack = setting.attack;
+        }
+
+        if (setting.health != 20)
+        {
+            this.health = setting.health;
+        }
+
+        if (setting.speed != 0.1)
+        {
+            this.speed = setting.speed;
+        }
+
+        this.hostile = setting.hostile;
+        this.customData.putAll(setting.customData);
     }
 }

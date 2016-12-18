@@ -1,6 +1,10 @@
 package mchorse.metamorph.api;
 
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.io.InputStream;
+import java.io.PrintWriter;
 import java.lang.reflect.Type;
 import java.util.Map;
 import java.util.Scanner;
@@ -32,6 +36,55 @@ public class MorphUtils
         Map<String, MorphSettings> data = gson.fromJson(scanner.useDelimiter("\\A").next(), type);
 
         scanner.close();
-        manager.settings.putAll(data);
+
+        for (Map.Entry<String, MorphSettings> entry : data.entrySet())
+        {
+            String key = entry.getKey();
+            MorphSettings settings = entry.getValue();
+
+            if (manager.settings.containsKey(key))
+            {
+                manager.settings.get(key).merge(settings);
+            }
+            else
+            {
+                manager.settings.put(key, settings);
+            }
+        }
+    }
+
+    /**
+     * Load morph settings into {@link MorphManager} with given {@link File} and 
+     * with a try-catch which logs out an error in case of failure 
+     */
+    public static void loadMorphSettings(MorphManager manager, File config)
+    {
+        try
+        {
+            loadMorphSettings(manager, new FileInputStream(config));
+        }
+        catch (Exception e)
+        {
+            e.printStackTrace();
+        }
+    }
+
+    /**
+     * Generate an empty JSON object for user ready-to-use
+     */
+    public static void generateEmptyMorphs(File config)
+    {
+        config.getParentFile().mkdirs();
+
+        try
+        {
+            PrintWriter writer = new PrintWriter(config);
+            writer.print("{}");
+            writer.close();
+        }
+        catch (FileNotFoundException e)
+        {
+            e.printStackTrace();
+        }
     }
 }

@@ -5,6 +5,7 @@ import java.io.File;
 import mchorse.metamorph.api.ModelManager;
 import mchorse.metamorph.api.MorphHandler;
 import mchorse.metamorph.api.MorphManager;
+import mchorse.metamorph.api.MorphUtils;
 import mchorse.metamorph.capabilities.CapabilityHandler;
 import mchorse.metamorph.capabilities.morphing.IMorphing;
 import mchorse.metamorph.capabilities.morphing.Morphing;
@@ -44,6 +45,11 @@ public class CommonProxy
      */
     public Configuration forge;
 
+    /**
+     * Location of a user morph settings
+     */
+    public File morphs;
+
     public void preLoad(FMLPreInitializationEvent event)
     {
         /* Network messages */
@@ -56,9 +62,11 @@ public class CommonProxy
 
         /* Configuration */
         File config = new File(event.getModConfigurationDirectory(), "metamorph/config.cfg");
+        File morphs = new File(event.getModConfigurationDirectory(), "metamorph/morphs.json");
 
         this.forge = new Configuration(config);
         this.config = new MetamorphConfig(this.forge);
+        this.morphs = morphs;
 
         MinecraftForge.EVENT_BUS.register(this.config);
 
@@ -77,5 +85,14 @@ public class CommonProxy
 
         /* Register  */
         MorphManager.INSTANCE.register();
+
+        if (morphs.exists())
+        {
+            MorphUtils.loadMorphSettings(MorphManager.INSTANCE, morphs);
+        }
+        else
+        {
+            MorphUtils.generateEmptyMorphs(morphs);
+        }
     }
 }
