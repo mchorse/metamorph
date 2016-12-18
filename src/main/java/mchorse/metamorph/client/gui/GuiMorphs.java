@@ -157,7 +157,7 @@ public class GuiMorphs extends GuiScreen
     protected void clampScroll()
     {
         float max = MathHelper.ceiling_float_int((float) this.morphs.size() / (float) this.perRow) * 60;
-        float maxScroll = max - (height - 60);
+        float maxScroll = max - (height - 45);
 
         this.scroll = MathHelper.clamp_float(this.scroll, 0.0F, maxScroll);
     }
@@ -210,11 +210,11 @@ public class GuiMorphs extends GuiScreen
         }
 
         /* Compute the selection index */
-        int w = (width - this.margin * 2);
+        int w = width - 160;
         int m = w / this.perRow;
 
-        int x = ((mouseX - (width - w) / 2) / m);
-        int y = ((mouseY - 30 + (int) this.scroll) / 60);
+        int x = (mouseX - 145) / m;
+        int y = (mouseY - 30 + (int) this.scroll) / 60;
 
         int index = x + this.perRow * y;
 
@@ -305,7 +305,7 @@ public class GuiMorphs extends GuiScreen
         GuiUtils.scissor(0, 30, width, height, width, height);
         EntityPlayer player = Minecraft.getMinecraft().thePlayer;
 
-        int w = width - 140;
+        int w = width - 160;
         int m = w / this.perRow;
 
         this.drawScrollbar(mouseX, mouseY);
@@ -315,7 +315,7 @@ public class GuiMorphs extends GuiScreen
         {
             int i = cell.index;
 
-            int x = i % this.perRow * m + 130;
+            int x = i % this.perRow * m + 145;
             int y = i / this.perRow * 60 + 20 - (int) this.scroll;
             float scale = 21.5F;
 
@@ -353,7 +353,7 @@ public class GuiMorphs extends GuiScreen
      */
     private void drawScrollbar(int mouseX, int mouseY)
     {
-        int trimmedHeight = (height - 60);
+        int trimmedHeight = (height - 33);
 
         float max = MathHelper.ceiling_float_int((float) this.morphs.size() / (float) this.perRow) * 60;
         float maxScroll = max - trimmedHeight;
