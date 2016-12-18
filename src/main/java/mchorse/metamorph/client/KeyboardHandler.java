@@ -2,7 +2,6 @@ package mchorse.metamorph.client;
 
 import org.lwjgl.input.Keyboard;
 
-import mchorse.metamorph.api.morphs.AbstractMorph;
 import mchorse.metamorph.capabilities.morphing.IMorphing;
 import mchorse.metamorph.capabilities.morphing.Morphing;
 import mchorse.metamorph.client.gui.GuiMenu;
@@ -119,15 +118,19 @@ public class KeyboardHandler
         if (keySelectMorph.isPressed())
         {
             IMorphing morphing = Morphing.get(mc.thePlayer);
-            AbstractMorph current = morphing.getCurrentMorph();
 
-            /* If overlay's thing is at index -1, then we don't need to compare
-             * current morph with "selected" morph (that's basically a player) */
-            boolean isSame = !morphing.isMorphed();
+            /* Checking if we're morphing in the same thing */
+            boolean isSame = false;
+            boolean morphed = morphing.isMorphed();
 
-            if (this.overlay.index >= 0)
+            if (this.overlay.index == -1)
             {
-                isSame = current.equals(morphing.getAcquiredMorphs().get(this.overlay.index));
+                isSame = !morphed;
+            }
+
+            if (this.overlay.index >= 0 && morphed)
+            {
+                isSame = morphing.getCurrentMorph().equals(morphing.getAcquiredMorphs().get(this.overlay.index));
             }
 
             /* No need to send packet if it's the same */
