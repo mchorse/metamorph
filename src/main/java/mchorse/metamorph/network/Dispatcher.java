@@ -11,6 +11,7 @@ import mchorse.metamorph.network.common.PacketAction;
 import mchorse.metamorph.network.common.PacketMorph;
 import mchorse.metamorph.network.common.PacketMorphPlayer;
 import mchorse.metamorph.network.common.PacketSelectMorph;
+import mchorse.metamorph.network.server.ServerHandlerAcquireMorph;
 import mchorse.metamorph.network.server.ServerHandlerAction;
 import mchorse.metamorph.network.server.ServerHandlerMorph;
 import mchorse.metamorph.network.server.ServerHandlerSelectMorph;
@@ -74,6 +75,7 @@ public class Dispatcher
         register(PacketMorphPlayer.class, ClientHandlerMorphPlayer.class, Side.CLIENT);
 
         register(PacketAcquireMorph.class, ClientHandlerAcquireMorph.class, Side.CLIENT);
+        register(PacketAcquireMorph.class, ServerHandlerAcquireMorph.class, Side.SERVER);
         register(PacketAcquiredMorphs.class, ClientHandlerAcquiredMorphs.class, Side.CLIENT);
 
         register(PacketSelectMorph.class, ServerHandlerSelectMorph.class, Side.SERVER);

@@ -55,7 +55,9 @@ public class MorphUtils
 
     /**
      * Load morph settings into {@link MorphManager} with given {@link File} and 
-     * with a try-catch which logs out an error in case of failure 
+     * with a try-catch which logs out an error in case of failure.
+     * 
+     * You can use it freely.
      */
     public static void loadMorphSettings(MorphManager manager, File config)
     {

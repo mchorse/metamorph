@@ -16,6 +16,7 @@ key.metamorph.morph.demorph=Demorph (turn back to player)
 # GUI
 metamorph.gui.title=Creative Morphs Menu
 metamorph.gui.morph=Morph
+metamorph.gui.acquire=Acquire
 metamorph.gui.close=Close
 metamorph.gui.no_morph=No Morph Selected
 

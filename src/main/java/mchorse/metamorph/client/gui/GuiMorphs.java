@@ -13,6 +13,7 @@ import mchorse.metamorph.api.morphs.AbstractMorph;
 import mchorse.metamorph.capabilities.morphing.IMorphing;
 import mchorse.metamorph.capabilities.morphing.Morphing;
 import mchorse.metamorph.network.Dispatcher;
+import mchorse.metamorph.network.common.PacketAcquireMorph;
 import mchorse.metamorph.network.common.PacketMorph;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.Gui;
@@ -38,6 +39,7 @@ public class GuiMorphs extends GuiScreen
 {
     /* GUI stuff */
     private GuiButton morph;
+    private GuiButton acquire;
     private GuiButton close;
 
     /* Data stuff */
@@ -93,10 +95,12 @@ public class GuiMorphs extends GuiScreen
         int y = height - 25;
         int x = (width - w) / 2;
 
-        morph = new GuiButton(0, x, y, 100, 20, I18n.format("metamorph.gui.morph"));
-        close = new GuiButton(1, x + w - 100, y, 100, 20, I18n.format("metamorph.gui.close"));
+        morph = new GuiButton(0, x, y, 80, 20, I18n.format("metamorph.gui.morph"));
+        acquire = new GuiButton(1, x + 100, y, 80, 20, I18n.format("metamorph.gui.acquire"));
+        close = new GuiButton(2, x + w - 80, y, 80, 20, I18n.format("metamorph.gui.close"));
 
         this.buttonList.add(morph);
+        this.buttonList.add(acquire);
         this.buttonList.add(close);
     }
 
@@ -119,6 +123,14 @@ public class GuiMorphs extends GuiScreen
             {
                 MorphCell morph = this.morphs.get(this.selected);
                 Dispatcher.sendToServer(new PacketMorph(morph.morph));
+            }
+        }
+        else if (button.id == 1)
+        {
+            if (this.selected != -1)
+            {
+                MorphCell morph = this.morphs.get(this.selected);
+                Dispatcher.sendToServer(new PacketAcquireMorph(morph.morph));
             }
         }
 

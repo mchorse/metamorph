@@ -33,6 +33,10 @@ public class EntityMorph extends AbstractMorph
      */
     protected NBTTagCompound entityData;
 
+    public float width;
+
+    public float height;
+
     @Override
     @SideOnly(Side.CLIENT)
     public void renderOnScreen(EntityPlayer player, int x, int y, float scale, float alpha)
@@ -69,6 +73,8 @@ public class EntityMorph extends AbstractMorph
         }
 
         this.hostile = entity instanceof EntityMob;
+        this.width = entity.width;
+        this.height = entity.height;
 
         if (entity instanceof EntityLiving)
         {
@@ -134,7 +140,7 @@ public class EntityMorph extends AbstractMorph
         entity.hurtTime = target.hurtTime;
 
         /* Update player */
-        this.updateSize(target, entity.width, entity.height);
+        this.updateSize(target, this.width, this.height);
 
         super.update(target, cap);
 
@@ -285,7 +291,7 @@ public class EntityMorph extends AbstractMorph
             this.setupEntity(target.worldObj);
         }
 
-        return this.entity.width;
+        return this.width;
     }
 
     @Override
@@ -296,7 +302,7 @@ public class EntityMorph extends AbstractMorph
             this.setupEntity(target.worldObj);
         }
 
-        return this.entity.height;
+        return this.height;
     }
 
     @Override

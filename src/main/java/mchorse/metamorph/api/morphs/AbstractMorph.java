@@ -129,13 +129,15 @@ public abstract class AbstractMorph
         int per = (int) (width * 12);
         int total = per * (int) Math.ceil(height);
 
+        System.out.println(height + " ");
+
         for (int i = 0; i < total; i++)
         {
             double angle = ((double) i / per) * Math.PI * 2;
 
             double x = target.posX + Math.cos(angle) * width * 0.75;
             double y = target.posY + i / per;
-            double z = target.posZ + Math.sin(angle) * height * 0.75;
+            double z = target.posZ + Math.sin(angle) * width * 0.75;
 
             target.worldObj.spawnParticle(EnumParticleTypes.EXPLOSION_LARGE, x, y, z, target.motionX, target.motionY, target.motionZ);
         }
@@ -181,17 +183,11 @@ public abstract class AbstractMorph
         /* This is a total rip-off of EntityPlayer#setSize method */
         if (width != target.width || height != target.height)
         {
-            float f = target.width;
-            AxisAlignedBB axisalignedbb = target.getEntityBoundingBox();
+            AxisAlignedBB aabb = target.getEntityBoundingBox();
 
             target.width = width;
             target.height = height;
-            target.setEntityBoundingBox(new AxisAlignedBB(axisalignedbb.minX, axisalignedbb.minY, axisalignedbb.minZ, axisalignedbb.minX + width, axisalignedbb.minY + height, axisalignedbb.minZ + width));
-
-            if (target.width > f && !target.worldObj.isRemote)
-            {
-                target.moveEntity(f - target.width, 0.0D, f - target.width);
-            }
+            target.setEntityBoundingBox(new AxisAlignedBB(target.posX - width / 2, aabb.minY, target.posZ - width / 2, target.posX + width / 2, aabb.minY + height, target.posZ + width / 2));
         }
     }
 
