@@ -278,6 +278,28 @@ public class EntityMorph extends AbstractMorph
     }
 
     @Override
+    public float getWidth(EntityLivingBase target)
+    {
+        if (this.entity == null)
+        {
+            this.setupEntity(target.worldObj);
+        }
+
+        return this.entity.width;
+    }
+
+    @Override
+    public float getHeight(EntityLivingBase target)
+    {
+        if (this.entity == null)
+        {
+            this.setupEntity(target.worldObj);
+        }
+
+        return this.entity.height;
+    }
+
+    @Override
     public void toNBT(NBTTagCompound tag)
     {
         super.toNBT(tag);

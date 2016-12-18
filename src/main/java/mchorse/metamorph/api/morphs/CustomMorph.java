@@ -88,6 +88,18 @@ public class CustomMorph extends AbstractMorph
         return morph;
     }
 
+    @Override
+    public float getWidth(EntityLivingBase target)
+    {
+        return model.poses.get("standing").size[0];
+    }
+
+    @Override
+    public float getHeight(EntityLivingBase target)
+    {
+        return model.poses.get("standing").size[1];
+    }
+
     /**
      * Add skin field to NBT when persisting 
      */

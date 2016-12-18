@@ -125,13 +125,16 @@ public abstract class AbstractMorph
         int per = (int) (target.width * 12);
         int total = per * (int) Math.ceil(target.height);
 
+        float width = this.getWidth(target);
+        float height = this.getHeight(target);
+
         for (int i = 0; i < total; i++)
         {
             double angle = ((double) i / per) * Math.PI * 2;
 
-            double x = target.posX + Math.cos(angle) * target.width;
+            double x = target.posX + Math.cos(angle) * width;
             double y = target.posY + i / per;
-            double z = target.posZ + Math.sin(angle) * target.width;
+            double z = target.posZ + Math.sin(angle) * height;
 
             target.worldObj.spawnParticle(EnumParticleTypes.EXPLOSION_LARGE, x, y, z, target.motionX, target.motionY, target.motionZ);
         }
@@ -245,6 +248,16 @@ public abstract class AbstractMorph
      * Clone a morph
      */
     public abstract AbstractMorph clone();
+
+    /**
+     * Get width of this morph 
+     */
+    public abstract float getWidth(EntityLivingBase target);
+
+    /**
+     * Get height of this morph 
+     */
+    public abstract float getHeight(EntityLivingBase target);
 
     /**
      * Check either if given object is the same as this morph 
