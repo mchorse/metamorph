@@ -9,6 +9,7 @@ import mchorse.metamorph.client.gui.GuiMenu;
 import mchorse.metamorph.client.gui.GuiOverlay;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.ScaledResolution;
+import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.renderer.entity.Render;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
@@ -93,6 +94,21 @@ public class RenderingHandler
         if (render != null)
         {
             event.setCanceled(true);
+            boolean inGUI = Minecraft.getMinecraft().currentScreen != null;
+
+            if (inGUI)
+            {
+                float scale = 1;
+                float height = morph.getHeight(player);
+
+                if (height > 2F)
+                {
+                    scale = 1.3F / height;
+                }
+
+                GlStateManager.pushMatrix();
+                GlStateManager.scale(scale, scale, scale);
+            }
 
             if (morph instanceof CustomMorph)
             {
@@ -101,6 +117,11 @@ public class RenderingHandler
             else if (morph instanceof EntityMorph)
             {
                 render.doRender(entity, event.getX(), event.getY(), event.getZ(), player.rotationYaw, event.getPartialRenderTick());
+            }
+
+            if (inGUI)
+            {
+                GlStateManager.popMatrix();
             }
         }
     }

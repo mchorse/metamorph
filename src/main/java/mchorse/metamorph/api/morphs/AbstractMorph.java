@@ -135,9 +135,9 @@ public abstract class AbstractMorph
         {
             double angle = ((double) i / per) * Math.PI * 2;
 
-            double x = target.posX + Math.cos(angle) * width * 0.75;
+            double x = target.posX + Math.cos(angle) * width * 1.5;
             double y = target.posY + i / per;
-            double z = target.posZ + Math.sin(angle) * width * 0.75;
+            double z = target.posZ + Math.sin(angle) * width * 1.5;
 
             target.worldObj.spawnParticle(EnumParticleTypes.EXPLOSION_LARGE, x, y, z, target.motionX, target.motionY, target.motionZ);
         }
