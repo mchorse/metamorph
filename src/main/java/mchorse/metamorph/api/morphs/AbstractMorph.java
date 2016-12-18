@@ -11,6 +11,7 @@ import net.minecraft.entity.SharedMonsterAttributes;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.SoundEvents;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.util.EnumParticleTypes;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
@@ -73,7 +74,8 @@ public abstract class AbstractMorph
     /* Rendering */
 
     /**
-     * Client morph renderer
+     * Client morph renderer. It's for {@link EntityPlayer} only, don't try 
+     * using it with other types of entities.
      */
     @SideOnly(Side.CLIENT)
     public Render<? extends Entity> renderer;
@@ -119,6 +121,20 @@ public abstract class AbstractMorph
 
         /* Pop! */
         target.playSound(SoundEvents.ENTITY_ITEM_PICKUP, 1.0F, 1.0F);
+
+        int per = (int) (target.width * 12);
+        int total = per * (int) Math.ceil(target.height);
+
+        for (int i = 0; i < total; i++)
+        {
+            double angle = ((double) i / per) * Math.PI * 2;
+
+            double x = target.posX + Math.cos(angle) * target.width;
+            double y = target.posY + i / per;
+            double z = target.posZ + Math.sin(angle) * target.width;
+
+            target.worldObj.spawnParticle(EnumParticleTypes.EXPLOSION_LARGE, x, y, z, target.motionX, target.motionY, target.motionZ);
+        }
 
         for (IAbility ability : this.abilities)
         {

@@ -59,7 +59,7 @@
     },
     
     "Enderman": {
-        "abilities": ["water_allergy", "ender"],
+        "abilities": ["water_allergy"],
         "action": "teleport",
         "health": 40,
         "hostile": true
@@ -84,7 +84,7 @@
     },
     
     "Blaze": {
-        "abilities": ["fly", "fire_proof", "smoke", "water_allergy"],
+        "abilities": ["fly", "fire_proof", "water_allergy"],
         "action": "fireball",
         "health": 20,
         "hostile": true

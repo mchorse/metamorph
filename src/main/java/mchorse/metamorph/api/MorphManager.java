@@ -46,6 +46,11 @@ public class MorphManager
     public Map<String, IAttackAbility> attacks = new HashMap<String, IAttackAbility>();
 
     /**
+     * Settings for morphs 
+     */
+    public Map<String, MorphSettings> settings = new HashMap<String, MorphSettings>();
+
+    /**
      * Registered morph factories
      */
     public List<IMorphFactory> factories = new ArrayList<IMorphFactory>();
@@ -117,7 +122,14 @@ public class MorphManager
         {
             if (this.factories.get(i).hasMorph(name))
             {
-                return this.factories.get(i).getMorphFromNBT(tag);
+                AbstractMorph morph = this.factories.get(i).getMorphFromNBT(tag);
+
+                if (this.settings.containsKey(morph.name))
+                {
+                    this.settings.get(morph.name).apply(morph);
+                }
+
+                return morph;
             }
         }
 

@@ -25,7 +25,7 @@ public class Explode implements IAction
 
         target.worldObj.createExplosion(target, target.posX, target.posY, target.posZ, 3, true);
 
-        if (target instanceof EntityPlayer && !((EntityPlayer) target).isCreative())
+        if (!(target instanceof EntityPlayer) || (target instanceof EntityPlayer && !((EntityPlayer) target).isCreative()))
         {
             target.attackEntityFrom(DamageSource.outOfWorld, target.getMaxHealth());
         }

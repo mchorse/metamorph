@@ -2,6 +2,7 @@ package mchorse.metamorph.client;
 
 import org.lwjgl.input.Keyboard;
 
+import mchorse.metamorph.api.morphs.AbstractMorph;
 import mchorse.metamorph.capabilities.morphing.IMorphing;
 import mchorse.metamorph.capabilities.morphing.Morphing;
 import mchorse.metamorph.client.gui.GuiMenu;
@@ -117,8 +118,24 @@ public class KeyboardHandler
         /* Apply selected morph */
         if (keySelectMorph.isPressed())
         {
-            Dispatcher.sendToServer(new PacketSelectMorph(this.overlay.index));
-            this.overlay.timer = 0;
+            IMorphing morphing = Morphing.get(mc.thePlayer);
+            AbstractMorph current = morphing.getCurrentMorph();
+
+            /* If overlay's thing is at index -1, then we don't need to compare
+             * current morph with "selected" morph (that's basically a player) */
+            boolean isSame = !morphing.isMorphed();
+
+            if (this.overlay.index >= 0)
+            {
+                isSame = current.equals(morphing.getAcquiredMorphs().get(this.overlay.index));
+            }
+
+            /* No need to send packet if it's the same */
+            if (!isSame)
+            {
+                Dispatcher.sendToServer(new PacketSelectMorph(this.overlay.index));
+                this.overlay.timer = 0;
+            }
         }
 
         /* Demorph from current morph */

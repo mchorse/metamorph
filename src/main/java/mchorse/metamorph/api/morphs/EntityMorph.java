@@ -38,7 +38,11 @@ public class EntityMorph extends AbstractMorph
     public void renderOnScreen(EntityPlayer player, int x, int y, float scale, float alpha)
     {
         EntityLivingBase entity = this.getEntity(player.worldObj);
-        scale *= 1 / entity.height;
+
+        if (entity.height > 2.5)
+        {
+            scale *= 2 / entity.height;
+        }
 
         GuiUtils.drawEntityOnScreen(x, y, scale, entity);
 
@@ -59,8 +63,11 @@ public class EntityMorph extends AbstractMorph
 
         entity.setHealth(entity.getMaxHealth());
 
-        this.health = (int) entity.getMaxHealth();
-        this.speed = 0.15F;
+        if (this.health == 20)
+        {
+            this.health = (int) entity.getMaxHealth();
+        }
+
         this.hostile = entity instanceof EntityMob;
 
         if (entity instanceof EntityLiving)
@@ -142,6 +149,8 @@ public class EntityMorph extends AbstractMorph
 
                 i++;
             }
+
+            entity.setInvisible(target.isInvisible());
         }
 
         /* Injecting player's properties */

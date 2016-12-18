@@ -1,14 +1,7 @@
 package mchorse.vanilla_pack;
 
-import java.io.InputStream;
-import java.lang.reflect.Type;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.Scanner;
-
-import com.google.common.reflect.TypeToken;
-import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
 
 import mchorse.metamorph.ClientProxy;
 import mchorse.metamorph.Metamorph;
@@ -17,17 +10,15 @@ import mchorse.metamorph.api.Model;
 import mchorse.metamorph.api.ModelManager;
 import mchorse.metamorph.api.MorphList;
 import mchorse.metamorph.api.MorphManager;
+import mchorse.metamorph.api.MorphUtils;
 import mchorse.metamorph.api.abilities.IAbility;
 import mchorse.metamorph.api.abilities.IAction;
 import mchorse.metamorph.api.abilities.IAttackAbility;
-import mchorse.metamorph.api.json.MorphAdapter;
 import mchorse.metamorph.api.morphs.AbstractMorph;
 import mchorse.metamorph.api.morphs.CustomMorph;
 import mchorse.metamorph.client.model.ModelCustom;
 import mchorse.metamorph.client.model.parsing.ModelParser;
-import mchorse.vanilla_pack.abilities.BlazeSmoke;
 import mchorse.vanilla_pack.abilities.Climb;
-import mchorse.vanilla_pack.abilities.Ender;
 import mchorse.vanilla_pack.abilities.FireProof;
 import mchorse.vanilla_pack.abilities.Fly;
 import mchorse.vanilla_pack.abilities.Glide;
@@ -49,6 +40,7 @@ import mchorse.vanilla_pack.actions.Teleport;
 import mchorse.vanilla_pack.attacks.KnockbackAttack;
 import mchorse.vanilla_pack.attacks.PoisonAttack;
 import mchorse.vanilla_pack.attacks.WitherAttack;
+import net.minecraft.client.model.ModelBase;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
@@ -82,7 +74,6 @@ public class VanillaMorphFactory implements IMorphFactory
 
         /* Register default abilities */
         abilities.put("climb", new Climb());
-        abilities.put("ender", new Ender());
         abilities.put("fire_proof", new FireProof());
         abilities.put("fly", new Fly());
         abilities.put("glide", new Glide());
@@ -90,7 +81,6 @@ public class VanillaMorphFactory implements IMorphFactory
         abilities.put("jumping", new Jumping());
         abilities.put("night_vision", new NightVision());
         abilities.put("prevent_fall", new PreventFall());
-        abilities.put("smoke", new BlazeSmoke());
         abilities.put("snow_walk", new SnowWalk());
         abilities.put("sun_allergy", new SunAllergy());
         abilities.put("swim", new Swim());
@@ -111,7 +101,7 @@ public class VanillaMorphFactory implements IMorphFactory
         attacks.put("knockback", new KnockbackAttack());
 
         this.registerModels(manager.models);
-        this.registerMorphs(manager.models);
+        this.registerMorphsSettings(manager);
     }
 
     @Override
@@ -152,36 +142,14 @@ public class VanillaMorphFactory implements IMorphFactory
     /* Custom Models */
 
     /**
-     * Register morphs from JSON file
+     * Register morph settings from JSON file
      * 
-     * This method is responsible for registering all JSON 
+     * This method is responsible for registering all JSON settings for vanilla 
+     * patched morphs
      */
-    protected void registerMorphs(ModelManager manager)
+    protected void registerMorphsSettings(MorphManager manager)
     {
-        GsonBuilder builder = new GsonBuilder().registerTypeAdapter(CustomMorph.class, new MorphAdapter());
-        Gson gson = builder.create();
-
-        ClassLoader loader = this.getClass().getClassLoader();
-        InputStream stream = loader.getResourceAsStream("assets/metamorph/morphs.json");
-        Scanner scanner = new Scanner(stream, "UTF-8");
-
-        @SuppressWarnings("serial")
-        Type type = new TypeToken<Map<String, CustomMorph>>()
-        {}.getType();
-
-        Map<String, CustomMorph> data = gson.fromJson(scanner.useDelimiter("\\A").next(), type);
-
-        scanner.close();
-
-        for (Map.Entry<String, CustomMorph> entry : data.entrySet())
-        {
-            String key = entry.getKey();
-            CustomMorph morph = entry.getValue();
-
-            morph.name = key;
-            morph.model = manager.models.get(entry.getKey());
-            this.morphs.put(key, morph);
-        }
+        MorphUtils.loadMorphSettings(manager, this.getClass().getClassLoader().getResourceAsStream("assets/metamorph/morphs.json"));
     }
 
     /**
@@ -190,24 +158,11 @@ public class VanillaMorphFactory implements IMorphFactory
     private void registerModels(ModelManager models)
     {
         /* Animals */
-        this.loadModel(models, "Bat");
-        this.loadModel(models, "Chicken");
-        this.loadModel(models, "Cow");
-        this.loadModel(models, "EntityHorse", "horse");
-        this.loadModel(models, "MushroomCow", "mooshroom");
-        this.loadModel(models, "Ozelot", "ocelot");
-        this.loadModel(models, "Pig");
-        this.loadModel(models, "PolarBear", "polar_bear");
         this.loadModel(models, "Rabbit");
-        this.loadModel(models, "Sheep");
         this.loadModel(models, "Squid");
         this.loadModel(models, "Wolf");
 
         /* Neutral mobs */
-        this.loadModel(models, "Enderman");
-        this.loadModel(models, "PigZombie", "zombie_pigman");
-        this.loadModel(models, "SnowMan", "snow_man");
-        this.loadModel(models, "Villager");
         this.loadModel(models, "VillagerGolem", "iron_golem");
 
         /* Hostile mobs */
@@ -215,15 +170,8 @@ public class VanillaMorphFactory implements IMorphFactory
         this.loadModel(models, "CaveSpider", "cave_spider");
         this.loadModel(models, "Creeper");
         this.loadModel(models, "Ghast");
-        this.loadModel(models, "Guardian");
-        this.loadModel(models, "LavaSlime", "magma_cube");
-        this.loadModel(models, "Silverfish");
-        this.loadModel(models, "Skeleton");
-        this.loadModel(models, "Slime");
         this.loadModel(models, "Spider");
         this.loadModel(models, "Witch");
-        this.loadModel(models, "WitherSkeleton", "wither_skeleton");
-        this.loadModel(models, "Zombie");
     }
 
     /**
@@ -242,6 +190,13 @@ public class VanillaMorphFactory implements IMorphFactory
         try
         {
             models.load(model, filename);
+
+            CustomMorph morph = new CustomMorph();
+
+            morph.name = model;
+            morph.model = models.models.get(model);
+
+            this.morphs.put(model, morph);
         }
         catch (Exception e)
         {
@@ -250,44 +205,16 @@ public class VanillaMorphFactory implements IMorphFactory
         }
     }
 
+    /**
+     * Turn all registered custom models into client {@link ModelBase}d models. 
+     */
     @SideOnly(Side.CLIENT)
     private void registerClientModels(ModelManager models)
     {
-        /* Animals */
-        this.loadClientModel(models, "Bat");
-        this.loadClientModel(models, "Chicken");
-        this.loadClientModel(models, "Cow");
-        this.loadClientModel(models, "EntityHorse");
-        this.loadClientModel(models, "MushroomCow");
-        this.loadClientModel(models, "Ozelot");
-        this.loadClientModel(models, "Pig");
-        this.loadClientModel(models, "PolarBear");
-        this.loadClientModel(models, "Rabbit");
-        this.loadClientModel(models, "Sheep");
-        this.loadClientModel(models, "Squid");
-        this.loadClientModel(models, "Wolf");
-
-        /* Neutral mobs */
-        this.loadClientModel(models, "Enderman");
-        this.loadClientModel(models, "PigZombie");
-        this.loadClientModel(models, "SnowMan");
-        this.loadClientModel(models, "Villager");
-        this.loadClientModel(models, "VillagerGolem");
-
-        /* Hostile mobs */
-        this.loadClientModel(models, "Blaze");
-        this.loadClientModel(models, "CaveSpider");
-        this.loadClientModel(models, "Creeper");
-        this.loadClientModel(models, "Ghast");
-        this.loadClientModel(models, "Guardian");
-        this.loadClientModel(models, "LavaSlime");
-        this.loadClientModel(models, "Silverfish");
-        this.loadClientModel(models, "Skeleton");
-        this.loadClientModel(models, "Slime");
-        this.loadClientModel(models, "Spider");
-        this.loadClientModel(models, "Witch");
-        this.loadClientModel(models, "WitherSkeleton");
-        this.loadClientModel(models, "Zombie");
+        for (String model : this.morphs.keySet())
+        {
+            this.loadClientModel(models, model);
+        }
     }
 
     /**

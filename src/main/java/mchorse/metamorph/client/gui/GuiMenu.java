@@ -99,7 +99,7 @@ public class GuiMenu extends Gui
         scale -= scale % 2;
         margin -= margin % 2;
 
-        /* And comput the offset */
+        /* And compute the offset */
         int offset = this.index * margin;
         int maxScroll = this.getMorphCount() * margin - w / 2 - margin / 2 + 2;
 
@@ -108,15 +108,15 @@ public class GuiMenu extends Gui
         /* Render morphs */
         for (int i = 0; i <= morphs.size(); i++)
         {
+            int x = width / 2 - w / 2 + i * margin + margin / 2 + 1;
+            int y = height / 2 + h / 5;
+
             String name = Metamorph.proxy.config.hide_username ? "Demorph" : player.getName();
 
             if (i != 0)
             {
                 name = MorphManager.INSTANCE.morphDisplayNameFromMorph(morphs.get(i - 1).name);
             }
-
-            int x = width / 2 - w / 2 + i * margin + margin / 2 + 1;
-            int y = height / 2 + h / 5;
 
             /* Scroll the position */
             if (offset > w / 2 - margin * 1.5)
