@@ -1,4 +1,4 @@
-package mchorse.metamorph.client.gui;
+package mchorse.metamorph.client.gui.utils;
 
 import java.io.IOException;
 
@@ -50,6 +50,11 @@ public abstract class GuiScrollPane extends GuiScreen
     {
         this.scrollY = 0;
         this.scrollHeight = height;
+    }
+
+    public int getHeight()
+    {
+        return this.scrollHeight;
     }
 
     public boolean isInside(int x, int y)

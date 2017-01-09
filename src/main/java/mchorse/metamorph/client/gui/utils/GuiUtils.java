@@ -1,4 +1,4 @@
-package mchorse.metamorph.client.gui;
+package mchorse.metamorph.client.gui.utils;
 
 import org.lwjgl.opengl.GL11;
 

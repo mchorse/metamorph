@@ -2,7 +2,7 @@ package mchorse.metamorph.api.morphs;
 
 import mchorse.metamorph.api.models.Model;
 import mchorse.metamorph.capabilities.morphing.IMorphing;
-import mchorse.metamorph.client.gui.GuiUtils;
+import mchorse.metamorph.client.gui.utils.GuiUtils;
 import mchorse.metamorph.client.model.ModelCustom;
 import net.minecraft.client.Minecraft;
 import net.minecraft.entity.EntityLivingBase;

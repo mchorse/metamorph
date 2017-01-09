@@ -7,6 +7,7 @@ import org.lwjgl.opengl.GL11;
 
 import mchorse.metamorph.api.MorphManager;
 import mchorse.metamorph.api.morphs.AbstractMorph;
+import mchorse.metamorph.client.gui.elements.GuiMorphs;
 import mchorse.metamorph.network.Dispatcher;
 import mchorse.metamorph.network.common.PacketAcquireMorph;
 import mchorse.metamorph.network.common.PacketMorph;
@@ -72,10 +73,7 @@ public class GuiCreativeMenu extends GuiScreen
         this.buttonList.add(close);
 
         this.pane.setHidden(false);
-        this.pane.x = 145;
-        this.pane.y = 30;
-        this.pane.w = this.width - 10 - 145;
-        this.pane.h = this.height - 30;
+        this.pane.updateRect(145, 30, this.width - 155, this.height - 30);
     }
 
     /**
@@ -149,7 +147,7 @@ public class GuiCreativeMenu extends GuiScreen
         }
         else if (keyCode == Keyboard.KEY_RIGHT)
         {
-            this.pane.scrollTo(this.pane.scrollHeight);
+            this.pane.scrollTo(this.pane.getHeight());
         }
     }
 

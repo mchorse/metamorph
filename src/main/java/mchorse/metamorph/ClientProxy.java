@@ -7,7 +7,7 @@ import mchorse.metamorph.api.MorphManager;
 import mchorse.metamorph.client.KeyboardHandler;
 import mchorse.metamorph.client.RenderingHandler;
 import mchorse.metamorph.client.gui.GuiSurvivalMenu;
-import mchorse.metamorph.client.gui.GuiOverlay;
+import mchorse.metamorph.client.gui.elements.GuiOverlay;
 import mchorse.metamorph.client.render.RenderMorph;
 import mchorse.metamorph.client.render.RenderPlayer;
 import mchorse.metamorph.client.render.RenderSubPlayer;
