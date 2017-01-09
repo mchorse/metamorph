@@ -2,7 +2,7 @@ package mchorse.metamorph.client.render;
 
 import java.util.Map;
 
-import mchorse.metamorph.api.Model;
+import mchorse.metamorph.api.models.Model;
 import mchorse.metamorph.capabilities.morphing.IMorphing;
 import mchorse.metamorph.capabilities.morphing.Morphing;
 import mchorse.metamorph.client.model.ModelCustom;

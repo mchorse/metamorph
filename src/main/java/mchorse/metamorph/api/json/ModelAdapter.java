@@ -9,7 +9,7 @@ import com.google.gson.JsonDeserializer;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonParseException;
 
-import mchorse.metamorph.api.Model;
+import mchorse.metamorph.api.models.Model;
 import net.minecraft.util.ResourceLocation;
 
 /**

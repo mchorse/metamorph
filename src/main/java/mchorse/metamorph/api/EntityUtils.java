@@ -98,7 +98,7 @@ public class EntityUtils
      */
     public static boolean compareData(NBTTagCompound a, NBTTagCompound b)
     {
-        /* Different amount of tags? They're different */
+        /* Different count of tags? They're different */
         if (a.getSize() != b.getSize())
         {
             return false;
@@ -116,7 +116,8 @@ public class EntityUtils
                 return false;
             }
 
-            /* We check only strings and primitives, lists and compounds aren't mine concern */
+            /* We check only strings and primitives, lists and compounds aren't 
+             * concern of mine */
             if (!(aTag instanceof NBTPrimitive) && !(aTag instanceof NBTTagString))
             {
                 continue;

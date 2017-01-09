@@ -1,6 +1,6 @@
 package mchorse.metamorph.api.morphs;
 
-import mchorse.metamorph.api.Model;
+import mchorse.metamorph.api.models.Model;
 import mchorse.metamorph.capabilities.morphing.IMorphing;
 import mchorse.metamorph.client.gui.GuiUtils;
 import mchorse.metamorph.client.model.ModelCustom;

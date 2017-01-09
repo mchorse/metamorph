@@ -1,4 +1,4 @@
-package mchorse.metamorph.api;
+package mchorse.metamorph.api.models;
 
 import java.io.InputStream;
 import java.util.HashMap;

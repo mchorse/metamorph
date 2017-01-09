@@ -18,23 +18,40 @@ import mchorse.metamorph.api.morphs.AbstractMorph;
  */
 public class MorphSettings
 {
+    /**
+     * Abilities that are going to be applied on a morph 
+     */
     public IAbility[] abilities = new IAbility[] {};
 
+    /**
+     * Attack that is going to be used on a morph
+     */
     public IAttackAbility attack;
 
+    /**
+     * Action that is going to be used on a morph
+     */
     public IAction action;
 
+    /**
+     * Health units which are going to be applied
+     */
     public int health = 20;
 
+    /**
+     * Speed which is going to be applied 
+     */
     public float speed = 0.1F;
 
+    /**
+     * Hostile flag which is going to be applied
+     */
     public boolean hostile;
 
     /**
      * This field is responsible for storing custom data for people who want to 
      * provide more options that aren't hardcoded in this class. 
      */
-    @SuppressWarnings("rawtypes")
     public Map<String, Object> customData = new HashMap<String, Object>();
 
     /**

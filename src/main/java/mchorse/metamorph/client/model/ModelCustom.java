@@ -3,7 +3,7 @@ package mchorse.metamorph.client.model;
 import java.util.HashMap;
 import java.util.Map;
 
-import mchorse.metamorph.api.Model;
+import mchorse.metamorph.api.models.Model;
 import net.minecraft.client.model.ModelBase;
 import net.minecraft.client.model.ModelRenderer;
 import net.minecraft.entity.Entity;

@@ -8,6 +8,7 @@ import java.util.Map;
 import mchorse.metamorph.api.abilities.IAbility;
 import mchorse.metamorph.api.abilities.IAction;
 import mchorse.metamorph.api.abilities.IAttackAbility;
+import mchorse.metamorph.api.models.ModelManager;
 import mchorse.metamorph.api.morphs.AbstractMorph;
 import net.minecraft.client.resources.I18n;
 import net.minecraft.entity.Entity;

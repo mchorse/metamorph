@@ -6,14 +6,13 @@ import java.util.List;
 import java.util.Map;
 
 import mchorse.metamorph.api.morphs.AbstractMorph;
-import mchorse.metamorph.client.gui.GuiSurvivalMenu;
 import mchorse.metamorph.client.gui.GuiCreativeMenu;
 
 /**
  * Morph list
  * 
- * This class is going to be used in {@link GuiSurvivalMenu} and in {@link GuiCreativeMenu} 
- * for displaying morphs in GUIs. It's generated in {@link MorphManager}. 
+ * This class is used in {@link GuiCreativeMenu} for displaying morphs in GUIs. 
+ * It's generated in {@link MorphManager}. 
  */
 public class MorphList
 {

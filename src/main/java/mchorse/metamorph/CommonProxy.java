@@ -2,10 +2,10 @@ package mchorse.metamorph;
 
 import java.io.File;
 
-import mchorse.metamorph.api.ModelManager;
 import mchorse.metamorph.api.MorphHandler;
 import mchorse.metamorph.api.MorphManager;
 import mchorse.metamorph.api.MorphUtils;
+import mchorse.metamorph.api.models.ModelManager;
 import mchorse.metamorph.capabilities.CapabilityHandler;
 import mchorse.metamorph.capabilities.morphing.IMorphing;
 import mchorse.metamorph.capabilities.morphing.Morphing;
@@ -74,6 +74,13 @@ public class CommonProxy
         EntityRegistry.registerModEntity(EntityMorph.class, "Morph", 0, Metamorph.instance, 64, 3, false);
     }
 
+    /**
+     * Load stuff
+     * 
+     * Add event listeners, register morphing capability and also load user 
+     * configuration. I don't know how it's going to work in multiplayer, 
+     * probably won't lol
+     */
     public void load()
     {
         /* Event listeners */

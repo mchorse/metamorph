@@ -7,7 +7,7 @@ import java.util.List;
 import java.util.Map;
 
 import mchorse.metamorph.Metamorph;
-import mchorse.metamorph.api.Model;
+import mchorse.metamorph.api.models.Model;
 import mchorse.metamorph.client.model.ModelCustom;
 import mchorse.metamorph.client.model.ModelCustomRenderer;
 import net.minecraft.client.model.ModelRenderer;
