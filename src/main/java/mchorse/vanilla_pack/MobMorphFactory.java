@@ -163,7 +163,7 @@ public class MobMorphFactory implements IMorphFactory
         if (index >= 0)
         {
             /* Category for third party mod mobs */
-            morph.category = name.substring(index);
+            morph.category = name.substring(0, index);
         }
         else if (entity instanceof EntityAnimal)
         {

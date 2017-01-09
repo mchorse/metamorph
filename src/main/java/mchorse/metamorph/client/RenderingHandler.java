@@ -8,7 +8,10 @@ import mchorse.metamorph.capabilities.morphing.Morphing;
 import mchorse.metamorph.client.gui.GuiOverlay;
 import mchorse.metamorph.client.gui.GuiSurvivalMenu;
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.gui.GuiScreen;
 import net.minecraft.client.gui.ScaledResolution;
+import net.minecraft.client.gui.inventory.GuiContainerCreative;
+import net.minecraft.client.gui.inventory.GuiInventory;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.renderer.entity.Render;
 import net.minecraft.entity.EntityLivingBase;
@@ -90,12 +93,13 @@ public class RenderingHandler
             entity.prevRenderYawOffset = player.prevRenderYawOffset;
         }
 
+        GuiScreen screen = Minecraft.getMinecraft().currentScreen;
         Render render = morph.renderer;
 
         if (render != null)
         {
             event.setCanceled(true);
-            boolean inGUI = Minecraft.getMinecraft().currentScreen != null;
+            boolean inGUI = screen != null && (screen instanceof GuiInventory || screen instanceof GuiContainerCreative);
 
             if (inGUI)
             {

@@ -129,8 +129,6 @@ public abstract class AbstractMorph
         int per = (int) (width * 12);
         int total = per * (int) Math.ceil(height);
 
-        System.out.println(height + " ");
-
         for (int i = 0; i < total; i++)
         {
             double angle = ((double) i / per) * Math.PI * 2;

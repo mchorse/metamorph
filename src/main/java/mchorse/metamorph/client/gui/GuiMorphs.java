@@ -8,6 +8,8 @@ import java.util.Map;
 
 import mchorse.metamorph.api.MorphManager;
 import mchorse.metamorph.api.morphs.AbstractMorph;
+import mchorse.metamorph.capabilities.morphing.IMorphing;
+import mchorse.metamorph.capabilities.morphing.Morphing;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.resources.I18n;
 import net.minecraft.entity.player.EntityPlayer;
@@ -41,6 +43,8 @@ public class GuiMorphs extends GuiScrollPane
      */
     public GuiMorphs(int perRow)
     {
+        EntityPlayer player = Minecraft.getMinecraft().thePlayer;
+        IMorphing morphing = Morphing.get(player);
         Map<String, MorphCategory> categories = new HashMap<String, MorphCategory>();
 
         for (List<AbstractMorph> morphs : MorphManager.INSTANCE.getMorphs().morphs.values())
@@ -63,6 +67,8 @@ public class GuiMorphs extends GuiScrollPane
         this.scrollHeight = 20;
         this.categories.addAll(categories.values());
 
+        int i = 0;
+
         /* Calculate the scroll height and per category height */
         for (MorphCategory category : categories.values())
         {
@@ -70,6 +76,23 @@ public class GuiMorphs extends GuiScrollPane
             category.y = this.scrollHeight + 20;
 
             this.scrollHeight += category.height * cellH + 20;
+            int j = 0;
+
+            if (this.selected == -1)
+            {
+                for (MorphCell cell : category.cells)
+                {
+                    if (morphing.isMorphed() && cell.morph.equals(morphing.getCurrentMorph()))
+                    {
+                        this.selected = i;
+                        this.selectedMorph = j;
+                    }
+
+                    j++;
+                }
+            }
+
+            i++;
         }
 
         this.scrollHeight -= 20;
@@ -94,7 +117,10 @@ public class GuiMorphs extends GuiScrollPane
     }
 
     /**
+     * Mouse clicked event
      * 
+     * This method is responsible for selecting a morph. Very much code for such 
+     * simple feature.
      */
     @Override
     protected void mouseClicked(int mouseX, int mouseY, int mouseButton) throws IOException
@@ -212,8 +238,12 @@ public class GuiMorphs extends GuiScrollPane
         public static final String KEY = "morph.category.";
 
         public List<MorphCell> cells = new ArrayList<MorphCell>();
+
+        /* Meta information */
         public String title;
         public String key;
+
+        /* Cached space information */
         public int height;
         public int y;
 
