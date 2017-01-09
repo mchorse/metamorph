@@ -4,8 +4,8 @@ import org.lwjgl.input.Keyboard;
 
 import mchorse.metamorph.capabilities.morphing.IMorphing;
 import mchorse.metamorph.capabilities.morphing.Morphing;
-import mchorse.metamorph.client.gui.GuiMenu;
-import mchorse.metamorph.client.gui.GuiMorphs;
+import mchorse.metamorph.client.gui.GuiSurvivalMenu;
+import mchorse.metamorph.client.gui.GuiCreativeMenu;
 import mchorse.metamorph.network.Dispatcher;
 import mchorse.metamorph.network.common.PacketAction;
 import mchorse.metamorph.network.common.PacketSelectMorph;
@@ -37,7 +37,7 @@ public class KeyboardHandler
     private KeyBinding keyDemorph;
 
     /* Survival morphing menu */
-    private GuiMenu overlay;
+    private GuiSurvivalMenu overlay;
 
     public KeyboardHandler()
     {
@@ -62,7 +62,7 @@ public class KeyboardHandler
         ClientRegistry.registerKeyBinding(keyDemorph);
     }
 
-    public KeyboardHandler(GuiMenu overlay)
+    public KeyboardHandler(GuiSurvivalMenu overlay)
     {
         this();
         this.overlay = overlay;
@@ -89,7 +89,7 @@ public class KeyboardHandler
 
         if (keyMenu.isPressed() && mc.thePlayer.isCreative())
         {
-            mc.displayGuiScreen(new GuiMorphs());
+            mc.displayGuiScreen(new GuiCreativeMenu());
         }
 
         boolean prev = keyPrevMorph.isPressed();

@@ -6,7 +6,7 @@ import java.util.Map;
 import mchorse.metamorph.api.MorphManager;
 import mchorse.metamorph.client.KeyboardHandler;
 import mchorse.metamorph.client.RenderingHandler;
-import mchorse.metamorph.client.gui.GuiMenu;
+import mchorse.metamorph.client.gui.GuiSurvivalMenu;
 import mchorse.metamorph.client.gui.GuiOverlay;
 import mchorse.metamorph.client.render.RenderMorph;
 import mchorse.metamorph.client.render.RenderPlayer;
@@ -33,7 +33,7 @@ public class ClientProxy extends CommonProxy
     /**
      * GUI menu which is responsible for choosing morphs 
      */
-    public static GuiMenu overlay = new GuiMenu();
+    public static GuiSurvivalMenu overlay = new GuiSurvivalMenu();
 
     /**
      * GUI overlay which is responsible for showing up acquired morphs

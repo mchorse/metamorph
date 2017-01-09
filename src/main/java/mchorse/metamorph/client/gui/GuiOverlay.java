@@ -78,9 +78,9 @@ public class GuiOverlay extends Gui
     {
         for (AcquiredMorph morph : this.morphs)
         {
-            if (morph.timer > 60)
+            if (morph.timer > this.cap)
             {
-                morph.timer = 60;
+                morph.timer = this.cap;
             }
         }
 

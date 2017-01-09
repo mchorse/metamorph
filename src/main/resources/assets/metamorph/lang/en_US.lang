@@ -26,3 +26,11 @@ metamorph.config.keep_morphs=Retain morphs on death
 metamorph.config.prevent_ghosts=Prevent ghost
 metamorph.config.hide_username=Hide username
 metamorph.config.prevent_kill_acquire=Prevent acquiring by killing
+
+# Morph categories
+morph.category.unknown=Unknown morphs
+morph.category.unsorted=Unsorted morphs
+morph.category.patched_vanilla=Vanilla patched morphs
+morph.category.animal=Animal morphs
+morph.category.hostile=Hostile morphs
+morph.category.modded=Morphs from %s

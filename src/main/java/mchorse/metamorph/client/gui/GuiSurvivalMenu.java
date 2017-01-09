@@ -29,7 +29,7 @@ import net.minecraft.util.math.MathHelper;
  * This menu looks pretty similar to (alt / cmd) + tab menu like in most 
  * GUI based Operating Systems.
  */
-public class GuiMenu extends Gui
+public class GuiSurvivalMenu extends Gui
 {
     public Minecraft mc = Minecraft.getMinecraft();
 

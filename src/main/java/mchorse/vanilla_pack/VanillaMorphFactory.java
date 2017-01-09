@@ -195,6 +195,7 @@ public class VanillaMorphFactory implements IMorphFactory
 
             morph.name = model;
             morph.model = models.models.get(model);
+            morph.category = "patched_vanilla";
 
             this.morphs.put(model, morph);
         }

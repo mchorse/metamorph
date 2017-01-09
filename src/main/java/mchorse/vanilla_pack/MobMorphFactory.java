@@ -10,6 +10,8 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityList;
 import net.minecraft.entity.EntityLivingBase;
+import net.minecraft.entity.monster.EntityMob;
+import net.minecraft.entity.passive.EntityAnimal;
 import net.minecraft.nbt.JsonToNBT;
 import net.minecraft.nbt.NBTException;
 import net.minecraft.nbt.NBTTagCompound;
@@ -74,6 +76,7 @@ public class MobMorphFactory implements IMorphFactory
         }
 
         this.addMorph(morphs, "Sheep", "{CustomName:\"jeb_\"}");
+        this.addMorph(morphs, "Sheep", "{Age:-1,CustomName:\"jeb_\"}");
 
         /* Slime and magma cube variants */
         this.addMorph(morphs, "Slime", "{Size:1}");
@@ -90,6 +93,18 @@ public class MobMorphFactory implements IMorphFactory
             this.addMorph(morphs, "Ozelot", "{CatType:" + i + "}");
             this.addMorph(morphs, "Ozelot", "{CatType:" + i + ",Age:-1}");
         }
+
+        /* Adding horse variants */
+        this.addMorph(morphs, "EntityHorse", "{Type:0,Variant:1}");
+        this.addMorph(morphs, "EntityHorse", "{Type:0,Variant:2}");
+        this.addMorph(morphs, "EntityHorse", "{Type:0,Variant:3}");
+        this.addMorph(morphs, "EntityHorse", "{Type:0,Variant:4}");
+        this.addMorph(morphs, "EntityHorse", "{Type:0,Variant:5}");
+        this.addMorph(morphs, "EntityHorse", "{Type:0,Variant:6}");
+        this.addMorph(morphs, "EntityHorse", "{Type:1,Variant:0}");
+        this.addMorph(morphs, "EntityHorse", "{Type:2,Variant:0}");
+        this.addMorph(morphs, "EntityHorse", "{Type:3,Variant:0}");
+        this.addMorph(morphs, "EntityHorse", "{Type:4,Variant:0}");
 
         /* Adding villager variants */
         this.addMorph(morphs, "Villager", "{ProfessionName:\"minecraft:librarian\"}");
@@ -141,6 +156,23 @@ public class MobMorphFactory implements IMorphFactory
         EntityUtils.stripEntityNBT(data);
         morph.setEntityData(data);
         morphs.addMorphVariant(name, morph);
+
+        /* Setting up a category */
+        int index = name.indexOf(".");
+
+        if (index >= 0)
+        {
+            /* Category for third party mod mobs */
+            morph.category = name.substring(index);
+        }
+        else if (entity instanceof EntityAnimal)
+        {
+            morph.category = "animal";
+        }
+        else if (entity instanceof EntityMob)
+        {
+            morph.category = "hostile";
+        }
     }
 
     /**

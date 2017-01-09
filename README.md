@@ -65,6 +65,7 @@ This project is licensed under MIT. See `LICENSE.md` file.
 
 When reposting my mod on your own website, please do following (if you want to support me and this mod):
 
+* Don't distort the mod name, it's not *MetaMorph* or *METAMORPH*. It's *Metamorph*.
 * Make sure that information and description of my mod is legit. Misleading information, like Minecraft version support, is your responsibility.
 * By uploading a custom build of this mod, the build becomes your responsibility.
 * Provide the source link, please. Either it's GitHub page, Planet Minecraft or Minecraft Forum post.
@@ -74,5 +75,6 @@ When reposting my mod on your own website, please do following (if you want to s
 
 When reviewing my mod on your YT channel, please do following (if you want to support me and this mod):
 
+* Don't distort the mod name, it's not *MetaMorph* or *METAMORPH*. It's *Metamorph*.
 * Provide a link to my [YouTube channel](https://www.youtube.com/channel/UCWVDjAcecHHa8UrEWMRGI8w), please. This will be really appreciated! 
-* Provide the source link instead of reposter's page, please. Either it's GitHub page, Planet Minecraft or Minecraft forum post. However, if you have a website where you post some notes or instructions along with link to source link, it's also fine. AdFly link will be really appreciated!
+* Provide the source link instead of reposter's page, please. Either it's GitHub page, Planet Minecraft or Minecraft forum post. However, if you have a website where you post some notes or instructions along with link to source link, it's also fine. AdFly link will be really appreciated!§
