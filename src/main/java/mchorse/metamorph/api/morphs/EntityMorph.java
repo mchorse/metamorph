@@ -7,8 +7,8 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.entity.EntityList;
 import net.minecraft.entity.EntityLiving;
 import net.minecraft.entity.EntityLivingBase;
+import net.minecraft.entity.boss.EntityDragon;
 import net.minecraft.entity.monster.EntityMob;
-import net.minecraft.entity.passive.EntityAnimal;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
@@ -49,13 +49,6 @@ public class EntityMorph extends AbstractMorph
         }
 
         GuiUtils.drawEntityOnScreen(x, y, scale, entity);
-
-        this.entity.ticksExisted++;
-
-        if (entity.ticksExisted > 10000)
-        {
-            entity.ticksExisted = 0;
-        }
     }
 
     /**
@@ -76,26 +69,9 @@ public class EntityMorph extends AbstractMorph
         this.width = entity.width;
         this.height = entity.height;
 
-        if (entity instanceof EntityLiving)
+        if (entity instanceof EntityLiving && !(entity instanceof EntityDragon))
         {
             ((EntityLiving) entity).setNoAI(true);
-        }
-
-        String name = EntityList.getEntityString(entity);
-        int index = name.indexOf(".");
-
-        if (index >= 0)
-        {
-            /* Category for third party mod mobs */
-            this.category = name.substring(index);
-        }
-        else if (entity instanceof EntityAnimal)
-        {
-            this.category = "animal";
-        }
-        else if (entity instanceof EntityMob)
-        {
-            this.category = "hostile";
         }
 
         if (this.entityData == null)

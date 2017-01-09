@@ -5,13 +5,14 @@ import mchorse.metamorph.api.morphs.CustomMorph;
 import mchorse.metamorph.api.morphs.EntityMorph;
 import mchorse.metamorph.capabilities.morphing.IMorphing;
 import mchorse.metamorph.capabilities.morphing.Morphing;
-import mchorse.metamorph.client.gui.GuiMenu;
 import mchorse.metamorph.client.gui.GuiOverlay;
+import mchorse.metamorph.client.gui.GuiSurvivalMenu;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.ScaledResolution;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.renderer.entity.Render;
 import net.minecraft.entity.EntityLivingBase;
+import net.minecraft.entity.boss.EntityDragon;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraftforge.client.event.RenderGameOverlayEvent;
 import net.minecraftforge.client.event.RenderPlayerEvent;
@@ -30,10 +31,10 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 @SideOnly(Side.CLIENT)
 public class RenderingHandler
 {
-    private GuiMenu overlay;
+    private GuiSurvivalMenu overlay;
     private GuiOverlay morphOverlay;
 
-    public RenderingHandler(GuiMenu overlay, GuiOverlay morphOverlay)
+    public RenderingHandler(GuiSurvivalMenu overlay, GuiOverlay morphOverlay)
     {
         this.overlay = overlay;
         this.morphOverlay = morphOverlay;
@@ -116,7 +117,20 @@ public class RenderingHandler
             }
             else if (morph instanceof EntityMorph)
             {
+                boolean isDragon = ((EntityMorph) morph).getEntity() instanceof EntityDragon;
+
+                if (isDragon)
+                {
+                    GlStateManager.pushMatrix();
+                    GlStateManager.rotate(180, 0.0F, 1.0F, 0.0F);
+                }
+
                 render.doRender(entity, event.getX(), event.getY(), event.getZ(), player.rotationYaw, event.getPartialRenderTick());
+
+                if (isDragon)
+                {
+                    GlStateManager.popMatrix();
+                }
             }
 
             if (inGUI)
