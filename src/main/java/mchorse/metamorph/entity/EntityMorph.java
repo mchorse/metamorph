@@ -67,15 +67,11 @@ public class EntityMorph extends EntityLiving implements IEntityAdditionalSpawnD
 
     /**
      * Get display name
-     * 
-     * I'm using proxies to get name for the correct side correctly. Server 
-     * side should display "Morph" in aqua. Whether client should display it 
-     * as the real name of morph in aqua (based on morph property).
      */
     @Override
     public ITextComponent getDisplayName()
     {
-        return new TextComponentTranslation("entity." + this.morph + ".name");
+        return new TextComponentTranslation("entity." + this.morph.name + ".name");
     }
 
     /**
@@ -121,13 +117,7 @@ public class EntityMorph extends EntityLiving implements IEntityAdditionalSpawnD
 
         if (this.player != null && !this.player.isDead)
         {
-            double dx = this.posX - this.player.posX;
-            double dy = this.posY - this.player.posY;
-            double dz = this.posZ - this.player.posZ;
-
-            double dist = Math.sqrt(dx * dx + dy * dy + dz * dz);
-
-            if (dist < this.width / 2 * 1.4 + this.player.width / 2 * 1.4)
+            if (this.getEntityBoundingBox().intersectsWith(this.player.getEntityBoundingBox()))
             {
                 this.setDead();
                 this.grantMorph();

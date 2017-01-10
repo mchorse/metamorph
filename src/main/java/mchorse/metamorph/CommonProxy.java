@@ -55,7 +55,7 @@ public class CommonProxy
         /* Network messages */
         Dispatcher.register();
 
-        /* Attaching model manager to morph manager */
+        /* Attaching model manager and morph factories to the morph manager */
         MorphManager.INSTANCE.models = this.models;
         MorphManager.INSTANCE.factories.add(new MobMorphFactory());
         MorphManager.INSTANCE.factories.add(new VanillaMorphFactory());
@@ -67,8 +67,6 @@ public class CommonProxy
         this.forge = new Configuration(config);
         this.config = new MetamorphConfig(this.forge);
         this.morphs = morphs;
-
-        MinecraftForge.EVENT_BUS.register(this.config);
 
         /* Entities */
         EntityRegistry.registerModEntity(EntityMorph.class, "Morph", 0, Metamorph.instance, 64, 3, false);
@@ -84,6 +82,7 @@ public class CommonProxy
     public void load()
     {
         /* Event listeners */
+        MinecraftForge.EVENT_BUS.register(this.config);
         MinecraftForge.EVENT_BUS.register(new MorphHandler());
         MinecraftForge.EVENT_BUS.register(new CapabilityHandler());
 

@@ -24,6 +24,9 @@ public class MorphUtils
 
     /**
      * Load morph settings into {@link MorphManager}. 
+     * 
+     * I've got no idea how to handle different morph settings between client 
+     * and a server.
      */
     public static void loadMorphSettings(MorphManager manager, InputStream input)
     {

@@ -1,4 +1,4 @@
-package mchorse.metamorph.events;
+package mchorse.metamorph.api.events;
 
 import mchorse.metamorph.api.morphs.AbstractMorph;
 import net.minecraft.entity.player.EntityPlayer;
