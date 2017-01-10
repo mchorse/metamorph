@@ -90,6 +90,13 @@ public class EntityUtils
             }
         }
 
+        /* Shulker tags stripping */
+        tag.removeTag("Peek");
+        tag.removeTag("AttachFace");
+        tag.removeTag("APX");
+        tag.removeTag("APY");
+        tag.removeTag("APZ");
+
         return tag;
     }
 

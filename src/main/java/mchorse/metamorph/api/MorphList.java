@@ -66,4 +66,21 @@ public class MorphList
             this.addMorph(name, morph);
         }
     }
+
+    /**
+     * Remove a morph variant from the morph list 
+     */
+    public void removeVariant(String name, int index)
+    {
+        if (this.hasMorph(name))
+        {
+            List<AbstractMorph> list = this.morphs.get(name);
+
+            /* Safe removing technique, avoiding exception basically */
+            if (!list.isEmpty() && index >= 0 && index < list.size())
+            {
+                list.remove(index);
+            }
+        }
+    }
 }

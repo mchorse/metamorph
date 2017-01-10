@@ -120,6 +120,7 @@ public class GuiMorphs extends GuiScrollPane
         IMorphing morphing = Morphing.get(player);
 
         int i = 0;
+        int y = 0;
 
         for (MorphCategory category : this.categories)
         {
@@ -148,7 +149,7 @@ public class GuiMorphs extends GuiScrollPane
                     this.selected = i;
                     this.selectedMorph = j;
 
-                    this.scrollTo(category.y + j / this.perRow * cellH);
+                    y = category.y + j / this.perRow * cellH;
                 }
 
                 cell.index = j;
@@ -160,6 +161,7 @@ public class GuiMorphs extends GuiScrollPane
         }
 
         this.scrollHeight += 10;
+        this.scrollTo(y);
     }
 
     /**

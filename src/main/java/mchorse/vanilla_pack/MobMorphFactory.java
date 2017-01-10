@@ -126,6 +126,9 @@ public class MobMorphFactory implements IMorphFactory
         {
             this.addMorph(morphs, "Zombie", "{ZombieType:" + i + "}");
         }
+
+        /* Adding elder guardian */
+        this.addMorph(morphs, "Guardian", "{Elder:1b}");
     }
 
     /**
@@ -148,7 +151,7 @@ public class MobMorphFactory implements IMorphFactory
             }
             catch (NBTException e)
             {
-                System.out.println("Failed to merge provided JSON data");
+                System.out.println("Failed to merge provided JSON data for '" + name + "' morph!");
                 e.printStackTrace();
             }
         }

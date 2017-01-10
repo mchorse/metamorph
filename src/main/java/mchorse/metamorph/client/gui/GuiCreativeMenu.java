@@ -78,6 +78,7 @@ public class GuiCreativeMenu extends GuiScreen
 
         this.pane.setHidden(false);
         this.pane.updateRect(145, 55, this.width - 155, this.height - 60);
+        this.pane.scrollBy(0);
     }
 
     /**
