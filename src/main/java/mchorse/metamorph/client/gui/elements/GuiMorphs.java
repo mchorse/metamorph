@@ -2,6 +2,8 @@ package mchorse.metamorph.client.gui.elements;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -25,14 +27,30 @@ import net.minecraft.util.math.MathHelper;
  */
 public class GuiMorphs extends GuiScrollPane
 {
+    /**
+     * Morph cell's height 
+     */
     private static final int cellH = 60;
 
+    /**
+     * How many morphs visible per row 
+     */
     private int perRow;
 
+    /**
+     * Index of selected category 
+     */
     private int selected = -1;
+
+    /**
+     * Index of selected moprh 
+     */
     private int selectedMorph = -1;
 
-    private String filter = "";
+    /**
+     * Cached previous filter. Used for avoiding double recalculations 
+     */
+    private String previousFilter = "";
 
     /**
      * This field stores categories, which store available morphs 
@@ -46,8 +64,19 @@ public class GuiMorphs extends GuiScrollPane
      */
     public GuiMorphs(int perRow)
     {
-        EntityPlayer player = Minecraft.getMinecraft().thePlayer;
-        IMorphing morphing = Morphing.get(player);
+        this.perRow = perRow;
+        this.compileCategories();
+        this.initiateCategories();
+    }
+
+    /**
+     * Compile morph categories
+     * 
+     * This method is responsible for compiling all morph categories into 
+     * {@link #categories} list and then sorting it by its titles.
+     */
+    private void compileCategories()
+    {
         Map<String, MorphCategory> categories = new HashMap<String, MorphCategory>();
 
         for (List<AbstractMorph> morphs : MorphManager.INSTANCE.getMorphs().morphs.values())
@@ -62,37 +91,69 @@ public class GuiMorphs extends GuiScrollPane
                     categories.put(morph.category, category);
                 }
 
-                category.cells.add(new MorphCell(morph.name, morph, category.cells.size()));
+                category.cells.add(new MorphCell(morph.name, morph, 0));
             }
         }
 
-        this.perRow = perRow;
         this.categories.addAll(categories.values());
+
+        Collections.sort(this.categories, new Comparator<MorphCategory>()
+        {
+            @Override
+            public int compare(MorphCategory a, MorphCategory b)
+            {
+                return a.title.compareTo(b.title);
+            }
+        });
+    }
+
+    /**
+     * Initiate morph categories
+     * 
+     * This method is responsible for sorting for each category cells by 
+     * alphabet, computing space attributes (height and y-coord) and selecting 
+     * most similar morph that player might have.
+     */
+    private void initiateCategories()
+    {
+        EntityPlayer player = Minecraft.getMinecraft().thePlayer;
+        IMorphing morphing = Morphing.get(player);
 
         int i = 0;
 
-        /* Calculate the scroll height and per category height */
-        for (MorphCategory category : categories.values())
+        for (MorphCategory category : this.categories)
         {
+            int j = 0;
+
+            Collections.sort(category.cells, new Comparator<MorphCell>()
+            {
+                @Override
+                public int compare(MorphCell a, MorphCell b)
+                {
+                    return a.name.compareTo(b.name);
+                }
+            });
+
+            /* Calculate the scroll height and per category height */
             category.height = MathHelper.ceiling_float_int((float) category.cells.size() / (float) this.perRow);
             category.y = this.scrollHeight + 20;
 
             this.scrollHeight += category.height * cellH + 20;
-            int j = 0;
 
             /* Select current morph */
-            if (this.selected == -1)
+            for (MorphCell cell : category.cells)
             {
-                for (MorphCell cell : category.cells)
+                if (this.selected == -1 && morphing.isMorphed() && cell.morph.equals(morphing.getCurrentMorph()))
                 {
-                    if (morphing.isMorphed() && cell.morph.equals(morphing.getCurrentMorph()))
-                    {
-                        this.selected = i;
-                        this.selectedMorph = j;
-                    }
+                    this.selected = i;
+                    this.selectedMorph = j;
 
-                    j++;
+                    this.scrollTo(category.y + j / this.perRow * cellH);
                 }
+
+                cell.index = j;
+
+                j++;
             }
 
             i++;
@@ -102,12 +163,21 @@ public class GuiMorphs extends GuiScrollPane
     }
 
     /**
-     * Set filtering 
+     * Set filter for search
+     * 
+     * This method is responsible for recalculating the hidden flag of the 
+     * individual cells and changing heights and y position of each category.
      */
-    public void setFilter(String text)
+    public void setFilter(String filter)
     {
-        this.filter = text;
+        if (filter.equals(this.previousFilter))
+        {
+            return;
+        }
+
+        this.scrollY = 0;
         this.scrollHeight = 0;
+        this.previousFilter = filter;
 
         for (MorphCategory cat : this.categories)
         {
@@ -115,14 +185,7 @@ public class GuiMorphs extends GuiScrollPane
 
             for (MorphCell cell : cat.cells)
             {
-                if (text.isEmpty())
-                {
-                    cell.hidden = false;
-                }
-                else
-                {
-                    cell.hidden = cell.name.toLowerCase().indexOf(text.toLowerCase()) == -1;
-                }
+                cell.hidden = filter.isEmpty() ? false : cell.name.toLowerCase().indexOf(filter.toLowerCase()) == -1;
 
                 if (!cell.hidden)
                 {
@@ -135,8 +198,6 @@ public class GuiMorphs extends GuiScrollPane
 
             this.scrollHeight += i == 0 ? 0 : cat.height * cellH + 20;
         }
-
-        this.scrollY = 0;
     }
 
     /**
@@ -168,55 +229,63 @@ public class GuiMorphs extends GuiScrollPane
     {
         super.mouseClicked(mouseX, mouseY, mouseButton);
 
-        if (this.isInside(mouseX, mouseY) && !this.dragging)
+        if (!this.isInside(mouseX, mouseY) || this.dragging)
         {
-            int y = mouseY - this.y + this.scrollY - 10;
-            int x = (mouseX - this.x) / (this.w / this.perRow);
-            int i = 0;
+            return;
+        }
 
-            MorphCategory cat = null;
+        /* Computing x and y. X is horizontal index, and y is simply shifted 
+         * mouseY relative to the scroll pane's top edge*/
+        int y = mouseY - this.y + this.scrollY - 10;
+        int x = (mouseX - this.x) / (this.w / this.perRow);
+        int i = 0;
 
-            for (MorphCategory category : this.categories)
+        /* Searching for a category which is in shifted y's range */
+        MorphCategory cat = null;
+
+        for (MorphCategory category : this.categories)
+        {
+            if (y >= category.y && y < category.y + category.height * cellH)
             {
-                if (y >= category.y && y < category.y + category.height * cellH)
-                {
-                    cat = category;
-                    break;
-                }
-
-                i++;
+                cat = category;
+                break;
             }
 
-            if (cat != null)
+            i++;
+        }
+
+        /* If we found a category, we'll need to select the category and also 
+         * a morph in the category. This requires some logic and looping, 
+         * because some of the cells might be hidden */
+        if (cat != null)
+        {
+            y = (y - cat.y) / cellH;
+
+            this.selected = i;
+            this.selectedMorph = -1;
+
+            int j = 0;
+            int index = x + y * this.perRow;
+
+            for (MorphCell cell : cat.cells)
             {
-                y = (y - cat.y) / cellH;
-
-                this.selected = i;
-                this.selectedMorph = -1;
-
-                int j = 0;
-                int index = x + y * this.perRow;
-
-                for (MorphCell cell : cat.cells)
+                if (!cell.hidden)
                 {
-                    if (!cell.hidden)
+                    if (j == index)
                     {
-                        if (j == index)
-                        {
-                            this.selectedMorph = cell.index;
+                        this.selectedMorph = cell.index;
 
-                            break;
-                        }
-
-                        j++;
+                        break;
                     }
+
+                    j++;
                 }
             }
-            else
-            {
-                this.selected = -1;
-                this.selectedMorph = -1;
-            }
+        }
+        else
+        {
+            this.selected = -1;
+            this.selectedMorph = -1;
         }
     }
 

@@ -39,7 +39,8 @@ public class GuiCreativeMenu extends GuiScreen
     private GuiTextField search;
     private GuiMorphs pane;
 
-    private final int margin = 20;
+    /* Horizontal margin */
+    private static final int MARGIN = 20;
 
     /**
      * Default constructor
@@ -63,7 +64,7 @@ public class GuiCreativeMenu extends GuiScreen
     @Override
     public void initGui()
     {
-        int x = width - this.margin;
+        int x = width - MARGIN;
         int y = 5;
 
         morph = new GuiButton(0, x - 190, y, 60, 20, I18n.format("metamorph.gui.morph"));
@@ -197,7 +198,7 @@ public class GuiCreativeMenu extends GuiScreen
         /* Draw panel backgrounds */
         this.drawDefaultBackground();
         drawRect(0, 0, width, 30, 0x88000000);
-        this.fontRendererObj.drawStringWithShadow("Search", 146, 41, 0xffffffff);
+        this.fontRendererObj.drawStringWithShadow(I18n.format("metamorph.gui.search"), 146, 41, 0xffffffff);
 
         /* Draw labels */
         this.drawString(fontRendererObj, I18n.format("metamorph.gui.title"), 20, 11, 0xffffff);
