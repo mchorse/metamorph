@@ -14,6 +14,7 @@ import mchorse.metamorph.network.common.PacketMorph;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiButton;
 import net.minecraft.client.gui.GuiScreen;
+import net.minecraft.client.gui.GuiTextField;
 import net.minecraft.client.resources.I18n;
 import net.minecraft.entity.player.EntityPlayer;
 
@@ -35,6 +36,7 @@ public class GuiCreativeMenu extends GuiScreen
     private GuiButton morph;
     private GuiButton acquire;
     private GuiButton close;
+    private GuiTextField search;
     private GuiMorphs pane;
 
     private final int margin = 20;
@@ -67,13 +69,14 @@ public class GuiCreativeMenu extends GuiScreen
         morph = new GuiButton(0, x - 190, y, 60, 20, I18n.format("metamorph.gui.morph"));
         acquire = new GuiButton(1, x - 125, y, 60, 20, I18n.format("metamorph.gui.acquire"));
         close = new GuiButton(2, x - 60, y, 60, 20, I18n.format("metamorph.gui.close"));
+        search = new GuiTextField(-1, fontRendererObj, 195 + 1, 35 + 1, this.width - 205 - 2, 20 - 2);
 
         this.buttonList.add(morph);
         this.buttonList.add(acquire);
         this.buttonList.add(close);
 
         this.pane.setHidden(false);
-        this.pane.updateRect(145, 30, this.width - 155, this.height - 30);
+        this.pane.updateRect(145, 55, this.width - 155, this.height - 60);
     }
 
     /**
@@ -122,6 +125,14 @@ public class GuiCreativeMenu extends GuiScreen
         this.pane.setWorldAndResolution(mc, width, height);
     }
 
+    @Override
+    protected void mouseClicked(int mouseX, int mouseY, int mouseButton) throws IOException
+    {
+        super.mouseClicked(mouseX, mouseY, mouseButton);
+
+        this.search.mouseClicked(mouseX, mouseY, mouseButton);
+    }
+
     /**
      * Shortcuts for scrolling the morph menu up and down with arrow keys. 
      * 
@@ -148,6 +159,13 @@ public class GuiCreativeMenu extends GuiScreen
         else if (keyCode == Keyboard.KEY_RIGHT)
         {
             this.pane.scrollTo(this.pane.getHeight());
+        }
+
+        this.search.textboxKeyTyped(typedChar, keyCode);
+
+        if (this.search.isFocused())
+        {
+            this.pane.setFilter(this.search.getText());
         }
     }
 
@@ -179,12 +197,14 @@ public class GuiCreativeMenu extends GuiScreen
         /* Draw panel backgrounds */
         this.drawDefaultBackground();
         drawRect(0, 0, width, 30, 0x88000000);
+        this.fontRendererObj.drawStringWithShadow("Search", 146, 41, 0xffffffff);
 
         /* Draw labels */
         this.drawString(fontRendererObj, I18n.format("metamorph.gui.title"), 20, 11, 0xffffff);
         this.drawCenteredString(fontRendererObj, selected, 70, height - 20, 0xffffff);
 
         this.pane.drawScreen(mouseX, mouseY, partialTicks);
+        this.search.drawTextBox();
 
         if (morph != null)
         {

@@ -32,6 +32,8 @@ public class GuiMorphs extends GuiScrollPane
     private int selected = -1;
     private int selectedMorph = -1;
 
+    private String filter = "";
+
     /**
      * This field stores categories, which store available morphs 
      */
@@ -65,7 +67,6 @@ public class GuiMorphs extends GuiScrollPane
         }
 
         this.perRow = perRow;
-        this.scrollHeight = 20;
         this.categories.addAll(categories.values());
 
         int i = 0;
@@ -79,6 +80,7 @@ public class GuiMorphs extends GuiScrollPane
             this.scrollHeight += category.height * cellH + 20;
             int j = 0;
 
+            /* Select current morph */
             if (this.selected == -1)
             {
                 for (MorphCell cell : category.cells)
@@ -96,7 +98,45 @@ public class GuiMorphs extends GuiScrollPane
             i++;
         }
 
-        this.scrollHeight -= 20;
+        this.scrollHeight += 10;
+    }
+
+    /**
+     * Set filtering 
+     */
+    public void setFilter(String text)
+    {
+        this.filter = text;
+        this.scrollHeight = 0;
+
+        for (MorphCategory cat : this.categories)
+        {
+            int i = 0;
+
+            for (MorphCell cell : cat.cells)
+            {
+                if (text.isEmpty())
+                {
+                    cell.hidden = false;
+                }
+                else
+                {
+                    cell.hidden = cell.name.toLowerCase().indexOf(text.toLowerCase()) == -1;
+                }
+
+                if (!cell.hidden)
+                {
+                    i++;
+                }
+            }
+
+            cat.height = MathHelper.ceiling_float_int((float) i / (float) this.perRow);
+            cat.y = this.scrollHeight + 20;
+
+            this.scrollHeight += i == 0 ? 0 : cat.height * cellH + 20;
+        }
+
+        this.scrollY = 0;
     }
 
     /**
@@ -130,7 +170,7 @@ public class GuiMorphs extends GuiScrollPane
 
         if (this.isInside(mouseX, mouseY) && !this.dragging)
         {
-            int y = mouseY - this.y + this.scrollY + 10;
+            int y = mouseY - this.y + this.scrollY - 10;
             int x = (mouseX - this.x) / (this.w / this.perRow);
             int i = 0;
 
@@ -152,7 +192,25 @@ public class GuiMorphs extends GuiScrollPane
                 y = (y - cat.y) / cellH;
 
                 this.selected = i;
-                this.selectedMorph = x + y * this.perRow;
+                this.selectedMorph = -1;
+
+                int j = 0;
+                int index = x + y * this.perRow;
+
+                for (MorphCell cell : cat.cells)
+                {
+                    if (!cell.hidden)
+                    {
+                        if (j == index)
+                        {
+                            this.selectedMorph = cell.index;
+
+                            break;
+                        }
+
+                        j++;
+                    }
+                }
             }
             else
             {
@@ -178,22 +236,36 @@ public class GuiMorphs extends GuiScrollPane
         /* Render morphs */
         for (MorphCategory category : this.categories)
         {
-            this.drawString(fontRendererObj, category.title, this.x + 1, category.y, 0xFFFFFFFF);
+            if (category.height == 0)
+            {
+                j++;
+
+                continue;
+            }
+
+            int k = 0;
+            this.drawString(fontRendererObj, category.title, this.x + 1, category.y + this.y, 0xFFFFFFFF);
 
             for (MorphCell cell : category.cells)
             {
-                int i = cell.index;
+                int x = k % this.perRow * m + this.x;
+                int y = k / this.perRow * cellH + category.y + this.y;
 
-                int x = i % this.perRow * m + this.x;
-                int y = i / this.perRow * cellH + category.y;
+                if (cell.hidden)
+                {
+                    continue;
+                }
+
                 float scale = 21.5F;
 
                 this.renderMorph(cell, Minecraft.getMinecraft().thePlayer, x + m / 2, y + 50, scale);
 
-                if (j == this.selected && i == this.selectedMorph)
+                if (j == this.selected && cell.index == this.selectedMorph)
                 {
                     this.renderSelected(x + 1, y + 10, m - 2, cellH);
                 }
+
+                k++;
             }
 
             j++;
@@ -277,6 +349,7 @@ public class GuiMorphs extends GuiScrollPane
         public String name;
         public AbstractMorph morph;
         public int index;
+        public boolean hidden = false;
 
         public MorphCell(String name, AbstractMorph morph, int index)
         {
