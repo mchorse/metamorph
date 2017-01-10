@@ -4,6 +4,9 @@ import java.util.Random;
 
 import mchorse.metamorph.api.abilities.Ability;
 import net.minecraft.entity.EntityLivingBase;
+import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.inventory.EntityEquipmentSlot;
+import net.minecraft.item.ItemStack;
 import net.minecraft.util.math.BlockPos.MutableBlockPos;
 
 /**
@@ -31,9 +34,36 @@ public class SunAllergy extends Ability
         boolean random = this.random.nextFloat() * 30.0F < (brightness - 0.4F) * 2.0F;
         this.pos.setPos(target.posX, target.posY, target.posZ);
 
+        /* Taken from EntityZombie class and slightly modified */
         if (brightness > 0.5 && random && target.worldObj.canSeeSky(pos))
         {
-            target.setFire(8);
+            boolean flag = true;
+            ItemStack itemstack = target.getItemStackFromSlot(EntityEquipmentSlot.HEAD);
+
+            /* If target has a head slot on the head, then damage it */
+            if (itemstack != null)
+            {
+                boolean isCreativePlayer = target instanceof EntityPlayer && ((EntityPlayer) target).isCreative();
+
+                /* Unless it's damagable or creative player wears it */
+                if (itemstack.isItemStackDamageable() && !isCreativePlayer)
+                {
+                    itemstack.setItemDamage(itemstack.getItemDamage() + this.random.nextInt(2));
+
+                    if (itemstack.getItemDamage() >= itemstack.getMaxDamage())
+                    {
+                        target.renderBrokenItemStack(itemstack);
+                        target.setItemStackToSlot(EntityEquipmentSlot.HEAD, (ItemStack) null);
+                    }
+                }
+
+                flag = false;
+            }
+
+            if (flag)
+            {
+                target.setFire(8);
+            }
         }
     }
 }
