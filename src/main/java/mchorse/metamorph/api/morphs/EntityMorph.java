@@ -4,11 +4,13 @@ import mchorse.metamorph.api.EntityUtils;
 import mchorse.metamorph.capabilities.morphing.IMorphing;
 import mchorse.metamorph.client.gui.utils.GuiUtils;
 import net.minecraft.client.Minecraft;
+import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityList;
 import net.minecraft.entity.EntityLiving;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.boss.EntityDragon;
 import net.minecraft.entity.monster.EntityMob;
+import net.minecraft.entity.passive.EntityPig;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
@@ -171,6 +173,46 @@ public class EntityMorph extends AbstractMorph
         entity.onGround = target.onGround;
         entity.isAirBorne = target.isAirBorne;
         entity.ticksExisted = target.ticksExisted;
+
+        /* Now goes the code responsible for achieving somewhat riding 
+         * support. This is ridiculous... */
+        boolean targetRiding = target.isRiding();
+        boolean entityRiding = entity.isRiding();
+
+        if (targetRiding && !entityRiding)
+        {
+            entity.startRiding(new EntityPig(entity.worldObj));
+        }
+        else if (!targetRiding && entityRiding)
+        {
+            entity.dismountRidingEntity();
+        }
+
+        if (targetRiding)
+        {
+            EntityPig ride = (EntityPig) entity.getRidingEntity();
+            Entity targetRide = target.getRidingEntity();
+
+            if (ride == null || targetRide == null)
+            {
+                return;
+            }
+
+            ride.rotationYaw = targetRide.rotationYaw;
+            ride.rotationPitch = targetRide.rotationPitch;
+
+            ride.prevRotationYaw = targetRide.prevRotationYaw;
+            ride.prevRotationPitch = targetRide.prevRotationPitch;
+
+            if (targetRide instanceof EntityLivingBase)
+            {
+                ride.rotationYawHead = ((EntityLivingBase) targetRide).rotationYawHead;
+                ride.renderYawOffset = ((EntityLivingBase) targetRide).renderYawOffset;
+
+                ride.prevRotationYawHead = ((EntityLivingBase) targetRide).prevRotationYawHead;
+                ride.prevRenderYawOffset = ((EntityLivingBase) targetRide).prevRenderYawOffset;
+            }
+        }
     }
 
     /**

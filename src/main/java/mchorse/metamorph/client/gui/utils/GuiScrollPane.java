@@ -83,11 +83,7 @@ public abstract class GuiScrollPane extends GuiScreen
 
     public void scrollTo(int y)
     {
-        System.out.println(y);
-
         this.scrollY = MathHelper.clamp_int(y, 0, this.scrollHeight - this.h + 2);
-
-        System.out.println(this.scrollHeight);
     }
 
     /* Remapping buttons coordinates */

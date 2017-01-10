@@ -12,8 +12,11 @@ import net.minecraft.client.gui.GuiScreen;
 import net.minecraft.client.gui.ScaledResolution;
 import net.minecraft.client.gui.inventory.GuiContainerCreative;
 import net.minecraft.client.gui.inventory.GuiInventory;
+import net.minecraft.client.model.ModelBase;
+import net.minecraft.client.model.ModelBiped;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.renderer.entity.Render;
+import net.minecraft.client.renderer.entity.RenderLivingBase;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.boss.EntityDragon;
 import net.minecraft.entity.player.EntityPlayer;
@@ -127,6 +130,16 @@ public class RenderingHandler
                 {
                     GlStateManager.pushMatrix();
                     GlStateManager.rotate(180, 0.0F, 1.0F, 0.0F);
+                }
+
+                if (render instanceof RenderLivingBase)
+                {
+                    ModelBase model = ((RenderLivingBase) render).getMainModel();
+
+                    if (model instanceof ModelBiped)
+                    {
+                        ((ModelBiped) model).isSneak = player.isSneaking();
+                    }
                 }
 
                 render.doRender(entity, event.getX(), event.getY(), event.getZ(), player.rotationYaw, event.getPartialRenderTick());
