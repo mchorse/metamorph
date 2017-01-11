@@ -289,20 +289,23 @@ public class GuiSurvivalMenu extends GuiScreen
                 boolean renderUp = type.index < type.morphs.size() - 1;
                 boolean renderDown = type.index > 0;
 
-                if (renderUp)
+                if (selected)
                 {
-                    this.renderMorph(player, type.morphs.get(type.index + 1).morph, x, y - scale * 2, scale);
+                    if (renderUp)
+                    {
+                        this.renderMorph(player, type.morphs.get(type.index + 1).morph, x, y - scale * 2, scale);
+                    }
                 }
 
                 this.renderMorph(player, morph, x, y - 2, scale);
 
-                if (renderDown)
-                {
-                    this.renderMorph(player, type.morphs.get(type.index - 1).morph, x, y + scale * 2, scale);
-                }
-
                 if (selected)
                 {
+                    if (renderDown)
+                    {
+                        this.renderMorph(player, type.morphs.get(type.index - 1).morph, x, y + scale * 2, scale);
+                    }
+
                     if (renderUp)
                     {
                         int ay = height / 2 - h / 2 + 4;
