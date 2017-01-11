@@ -92,19 +92,19 @@ public class GuiCreativeMenu extends GuiScreen
     {
         AbstractMorph morph = this.pane.getSelected();
 
-        if (button.id == 0)
+        if (button.id != 1)
         {
-            Dispatcher.sendToServer(new PacketMorph(morph));
-        }
-        else if (button.id == 1)
-        {
-            if (morph != null)
+            if (button.id == 0)
             {
-                Dispatcher.sendToServer(new PacketAcquireMorph(morph));
+                Dispatcher.sendToServer(new PacketMorph(morph));
             }
-        }
 
-        Minecraft.getMinecraft().displayGuiScreen(null);
+            Minecraft.getMinecraft().displayGuiScreen(null);
+        }
+        else if (morph != null)
+        {
+            Dispatcher.sendToServer(new PacketAcquireMorph(morph));
+        }
     }
 
     /**

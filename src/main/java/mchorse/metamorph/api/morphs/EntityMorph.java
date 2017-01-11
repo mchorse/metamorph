@@ -49,6 +49,10 @@ public class EntityMorph extends AbstractMorph
         {
             scale *= 2 / entity.height;
         }
+        else if (this.name.equals("Guardian") && entity.height > 1.8)
+        {
+            scale *= 1 / entity.height;
+        }
 
         GuiUtils.drawEntityOnScreen(x, y, scale, entity);
     }
@@ -190,6 +194,7 @@ public class EntityMorph extends AbstractMorph
 
         if (targetRiding)
         {
+            /* One day, this cast is going to backfire, I'll wait for it... */
             EntityPig ride = (EntityPig) entity.getRidingEntity();
             Entity targetRide = target.getRidingEntity();
 

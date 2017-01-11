@@ -2,10 +2,11 @@ package mchorse.metamorph.client;
 
 import org.lwjgl.input.Keyboard;
 
+import mchorse.metamorph.ClientProxy;
 import mchorse.metamorph.capabilities.morphing.IMorphing;
 import mchorse.metamorph.capabilities.morphing.Morphing;
-import mchorse.metamorph.client.gui.GuiSurvivalMenu;
 import mchorse.metamorph.client.gui.GuiCreativeMenu;
+import mchorse.metamorph.client.gui.GuiSurvivalMenu;
 import mchorse.metamorph.network.Dispatcher;
 import mchorse.metamorph.network.common.PacketAction;
 import mchorse.metamorph.network.common.PacketSelectMorph;
@@ -28,11 +29,14 @@ public class KeyboardHandler
 {
     /* Action key */
     private KeyBinding keyAction;
-    private KeyBinding keyMenu;
+    private KeyBinding keyCreativeMenu;
+    private KeyBinding keySurvivalMenu;
 
     /* Morph related keys */
     private KeyBinding keyNextMorph;
     private KeyBinding keyPrevMorph;
+    private KeyBinding keyNextVarMorph;
+    private KeyBinding keyPrevVarMorph;
     private KeyBinding keySelectMorph;
     private KeyBinding keyDemorph;
 
@@ -45,19 +49,25 @@ public class KeyboardHandler
 
         /* Create key bindings */
         keyAction = new KeyBinding("key.metamorph.action", Keyboard.KEY_V, category);
-        keyMenu = new KeyBinding("key.metamorph.menu", Keyboard.KEY_B, category);
+        keyCreativeMenu = new KeyBinding("key.metamorph.creative_menu", Keyboard.KEY_B, category);
+        keySurvivalMenu = new KeyBinding("key.metamorph.survival_menu", Keyboard.KEY_N, category);
 
         keyNextMorph = new KeyBinding("key.metamorph.morph.next", Keyboard.KEY_RBRACKET, category);
         keyPrevMorph = new KeyBinding("key.metamorph.morph.prev", Keyboard.KEY_LBRACKET, category);
+        keyNextVarMorph = new KeyBinding("key.metamorph.morph.next_var", Keyboard.KEY_BACKSLASH, category);
+        keyPrevVarMorph = new KeyBinding("key.metamorph.morph.prev_var", Keyboard.KEY_APOSTROPHE, category);
         keySelectMorph = new KeyBinding("key.metamorph.morph.select", Keyboard.KEY_RETURN, category);
         keyDemorph = new KeyBinding("key.metamorph.morph.demorph", Keyboard.KEY_PERIOD, category);
 
         /* Register them in the client registry */
         ClientRegistry.registerKeyBinding(keyAction);
-        ClientRegistry.registerKeyBinding(keyMenu);
+        ClientRegistry.registerKeyBinding(keyCreativeMenu);
+        ClientRegistry.registerKeyBinding(keySurvivalMenu);
 
         ClientRegistry.registerKeyBinding(keyNextMorph);
         ClientRegistry.registerKeyBinding(keyPrevMorph);
+        ClientRegistry.registerKeyBinding(keyNextVarMorph);
+        ClientRegistry.registerKeyBinding(keyPrevVarMorph);
         ClientRegistry.registerKeyBinding(keySelectMorph);
         ClientRegistry.registerKeyBinding(keyDemorph);
     }
@@ -87,9 +97,14 @@ public class KeyboardHandler
             }
         }
 
-        if (keyMenu.isPressed() && mc.thePlayer.isCreative())
+        if (keyCreativeMenu.isPressed() && mc.thePlayer.isCreative())
         {
             mc.displayGuiScreen(new GuiCreativeMenu());
+        }
+
+        if (keySurvivalMenu.isPressed())
+        {
+            mc.displayGuiScreen(ClientProxy.overlay);
         }
 
         boolean prev = keyPrevMorph.isPressed();
@@ -114,6 +129,15 @@ public class KeyboardHandler
             }
         }
 
+        if (keyNextVarMorph.isPressed())
+        {
+            this.overlay.up();
+        }
+        else if (keyPrevVarMorph.isPressed())
+        {
+            this.overlay.down();
+        }
+
         /* Apply selected morph */
         if (keySelectMorph.isPressed())
         {
@@ -122,21 +146,22 @@ public class KeyboardHandler
             /* Checking if we're morphing in the same thing */
             boolean isSame = false;
             boolean morphed = morphing.isMorphed();
+            int index = this.overlay.getSelected();
 
-            if (this.overlay.index == -1)
+            if (index == -1)
             {
                 isSame = !morphed;
             }
 
-            if (this.overlay.index >= 0 && morphed)
+            if (index >= 0 && morphed)
             {
-                isSame = morphing.getCurrentMorph().equals(morphing.getAcquiredMorphs().get(this.overlay.index));
+                isSame = morphing.getCurrentMorph().equals(morphing.getAcquiredMorphs().get(index));
             }
 
             /* No need to send packet if it's the same */
             if (!isSame)
             {
-                Dispatcher.sendToServer(new PacketSelectMorph(this.overlay.index));
+                Dispatcher.sendToServer(new PacketSelectMorph(index));
                 this.overlay.timer = 0;
             }
         }

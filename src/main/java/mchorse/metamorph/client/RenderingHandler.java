@@ -56,7 +56,11 @@ public class RenderingHandler
 
         if (event.getType() == RenderGameOverlayEvent.ElementType.ALL)
         {
-            this.overlay.render(resolution.getScaledWidth(), resolution.getScaledHeight());
+            if (this.overlay.mc.currentScreen != this.overlay)
+            {
+                this.overlay.render(resolution.getScaledWidth(), resolution.getScaledHeight());
+            }
+
             this.morphOverlay.render(resolution.getScaledWidth(), resolution.getScaledHeight());
         }
     }

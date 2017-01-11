@@ -14,9 +14,11 @@ public class ClientHandlerAcquireMorph extends ClientMessageHandler<PacketAcquir
     @SideOnly(Side.CLIENT)
     public void run(EntityPlayerSP player, PacketAcquireMorph message)
     {
-        IMorphing capability = Morphing.get(player);
+        IMorphing morphing = Morphing.get(player);
 
-        capability.acquireMorph(message.morph);
+        morphing.acquireMorph(message.morph);
+
         ClientProxy.morphOverlay.add(message.morph);
+        ClientProxy.overlay.setupMorphs(morphing.getAcquiredMorphs());
     }
 }
