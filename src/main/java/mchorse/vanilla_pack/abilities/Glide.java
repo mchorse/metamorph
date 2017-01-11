@@ -14,7 +14,7 @@ public class Glide extends Ability
     @Override
     public void update(EntityLivingBase target)
     {
-        boolean isFlying = (target instanceof EntityPlayer && !((EntityPlayer) target).capabilities.isFlying);
+        boolean isFlying = target instanceof EntityPlayer && ((EntityPlayer) target).capabilities.isFlying;
 
         if (!target.onGround && target.motionY < 0.0D && !isFlying && !target.isElytraFlying() && !target.isSneaking())
         {
