@@ -21,6 +21,7 @@ import mchorse.metamorph.client.gui.utils.GuiUtils;
 import mchorse.metamorph.network.Dispatcher;
 import mchorse.metamorph.network.common.PacketFavoriteMorph;
 import mchorse.metamorph.network.common.PacketRemoveMorph;
+import mchorse.metamorph.network.common.PacketSelectMorph;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.entity.EntityPlayerSP;
 import net.minecraft.client.gui.Gui;
@@ -49,6 +50,12 @@ public class GuiSurvivalMenu extends GuiScreen
     private GuiButton close;
     private GuiButton favorite;
     private GuiButton remove;
+    private GuiButton onlyFavorites;
+
+    /**
+     * Show favorites only 
+     */
+    private boolean showFavorites = false;
 
     /**
      * This variable is responsible for indication of inGUI mode 
@@ -115,6 +122,44 @@ public class GuiSurvivalMenu extends GuiScreen
         this.morphs.clear();
         this.morphs.addAll(separated.values());
 
+        if (this.showFavorites)
+        {
+            Iterator<MorphType> it = this.morphs.iterator();
+
+            while (it.hasNext())
+            {
+                MorphType type = it.next();
+
+                if (!type.hasFavorites())
+                {
+                    it.remove();
+                    continue;
+                }
+
+                Iterator<MorphCell> cellIt = type.morphs.iterator();
+
+                while (cellIt.hasNext())
+                {
+                    if (!cellIt.next().favorite)
+                    {
+                        cellIt.remove();
+                    }
+                }
+            }
+        }
+
+        int j = 0;
+
+        for (MorphType type : this.morphs)
+        {
+            for (MorphCell cell : type.morphs)
+            {
+                cell.typeIndex = j;
+            }
+
+            j++;
+        }
+
         /* Sort those morphs alphabetically */
         Collections.sort(this.morphs, new Comparator<MorphType>()
         {
@@ -124,6 +169,8 @@ public class GuiSurvivalMenu extends GuiScreen
                 return a.morphs.get(0).morph.name.compareTo(b.morphs.get(0).morph.name);
             }
         });
+
+        this.index = MathHelper.clamp_int(this.index, -1, this.getMorphCount() - 1);
     }
 
     /**
@@ -203,6 +250,13 @@ public class GuiSurvivalMenu extends GuiScreen
         if (latest != null && latest.index == index)
         {
             latest.favorite = !latest.favorite;
+
+            if (this.showFavorites && !latest.favorite)
+            {
+                this.toRemove.put(index, new MorphRemove(index, latest.typeIndex));
+                this.remove(index);
+            }
+
             latest = null;
         }
     }
@@ -306,6 +360,13 @@ public class GuiSurvivalMenu extends GuiScreen
         {
             this.skip(-1);
         }
+        else if (ClientProxy.keys.keySelectMorph.getKeyCode() == keyCode)
+        {
+            Dispatcher.sendToServer(new PacketSelectMorph(this.getSelected()));
+
+            this.timer = 0;
+            this.mc.displayGuiScreen(null);
+        }
     }
 
     @Override
@@ -327,6 +388,12 @@ public class GuiSurvivalMenu extends GuiScreen
         {
             this.timer = 0;
             this.mc.displayGuiScreen(null);
+        }
+        else if (button.id == 3)
+        {
+            this.showFavorites = !this.showFavorites;
+            this.updateFavorites();
+            this.setupMorphs(Morphing.get(this.mc.thePlayer));
         }
     }
 
@@ -369,13 +436,22 @@ public class GuiSurvivalMenu extends GuiScreen
         int x = width - 20;
         int y = 5;
 
-        remove = new GuiButton(0, x - 190, y, 60, 20, I18n.format("metamorph.gui.remove"));
-        favorite = new GuiButton(1, x - 125, y, 60, 20, I18n.format("metamorph.gui.favorite"));
+        remove = new GuiButton(0, 20, this.height - 30, 60, 20, I18n.format("metamorph.gui.remove"));
+        favorite = new GuiButton(1, this.width - 80, this.height - 30, 60, 20, I18n.format("metamorph.gui.favorite"));
         close = new GuiButton(2, x - 60, y, 60, 20, I18n.format("metamorph.gui.close"));
+        onlyFavorites = new GuiButton(3, x - 160, y, 90, 20, "");
 
         this.buttonList.add(remove);
         this.buttonList.add(favorite);
         this.buttonList.add(close);
+        this.buttonList.add(onlyFavorites);
+
+        this.updateFavorites();
+    }
+
+    private void updateFavorites()
+    {
+        this.onlyFavorites.displayString = this.showFavorites ? I18n.format("metamorph.gui.all_morphs") : I18n.format("metamorph.gui.only_favorites");
     }
 
     /* Drawing code */
@@ -546,7 +622,9 @@ public class GuiSurvivalMenu extends GuiScreen
         GL11.glDisable(GL11.GL_SCISSOR_TEST);
 
         /* Draw the title */
-        this.drawCenteredString(this.mc.fontRendererObj, label, width / 2, height / 2 + h / 2 + 4, 0xffffffff);
+        int labelY = this.inGUI ? height - 24 : height / 2 + h / 2 + 4;
+
+        this.drawCenteredString(this.mc.fontRendererObj, label, width / 2, labelY, 0xffffffff);
     }
 
     /**
@@ -629,6 +707,19 @@ public class GuiSurvivalMenu extends GuiScreen
             return this.morphs.get(this.index);
         }
 
+        public boolean hasFavorites()
+        {
+            for (MorphCell cell : this.morphs)
+            {
+                if (cell.favorite)
+                {
+                    return true;
+                }
+            }
+
+            return false;
+        }
+
         /**
          * Remove currently selected morph cell 
          */
@@ -665,6 +756,7 @@ public class GuiSurvivalMenu extends GuiScreen
     public static class MorphCell
     {
         public int index;
+        public int typeIndex;
         public boolean favorite;
         public AbstractMorph morph;
 

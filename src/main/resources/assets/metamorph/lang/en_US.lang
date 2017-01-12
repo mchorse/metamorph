@@ -25,6 +25,8 @@ metamorph.gui.remove=Remove
 metamorph.gui.favorite=Favorite
 metamorph.gui.unfavorite=Unfavorite
 metamorph.gui.search=Search
+metamorph.gui.only_favorites=Show favorites
+metamorph.gui.all_morphs=Show all
 metamorph.gui.no_morph=No Morph Selected
 
 # Config
