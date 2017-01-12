@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
@@ -15,9 +16,11 @@ import mchorse.metamorph.Metamorph;
 import mchorse.metamorph.api.MorphManager;
 import mchorse.metamorph.api.morphs.AbstractMorph;
 import mchorse.metamorph.capabilities.morphing.IMorphing;
+import mchorse.metamorph.capabilities.morphing.Morphing;
 import mchorse.metamorph.client.gui.utils.GuiUtils;
 import mchorse.metamorph.network.Dispatcher;
 import mchorse.metamorph.network.common.PacketFavoriteMorph;
+import mchorse.metamorph.network.common.PacketRemoveMorph;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.entity.EntityPlayerSP;
 import net.minecraft.client.gui.Gui;
@@ -56,6 +59,11 @@ public class GuiSurvivalMenu extends GuiScreen
      * Latest used morph cell. Used for optimizing and stuff 
      */
     private MorphCell latest;
+
+    /**
+     * Index of a morph needed to be removed 
+     */
+    private Map<Integer, MorphRemove> toRemove = new HashMap<Integer, MorphRemove>();
 
     /**
      * Cached Minecraft instance 
@@ -192,12 +200,46 @@ public class GuiSurvivalMenu extends GuiScreen
      */
     public void favorite(int index)
     {
-        System.out.println(index);
-
         if (latest != null && latest.index == index)
         {
             latest.favorite = !latest.favorite;
             latest = null;
+        }
+    }
+
+    /**
+     * Remove latest morph cell 
+     */
+    public void remove(int index)
+    {
+        MorphRemove toRemove = this.toRemove.get(index);
+
+        if (toRemove != null)
+        {
+            MorphType type = this.morphs.get(toRemove.typeIndex);
+            Iterator<MorphCell> it = type.morphs.iterator();
+
+            while (it.hasNext())
+            {
+                if (it.next().index == index)
+                {
+                    it.remove();
+                    break;
+                }
+            }
+
+            if (type.morphs.isEmpty())
+            {
+                this.morphs.remove(toRemove.typeIndex);
+            }
+            else
+            {
+                type.clamp();
+            }
+
+            this.toRemove.remove(index);
+            this.setupMorphs(Morphing.get(this.mc.thePlayer));
+            this.index = MathHelper.clamp_int(this.index, -1, this.getMorphCount() - 1);
         }
     }
 
@@ -288,20 +330,28 @@ public class GuiSurvivalMenu extends GuiScreen
         }
     }
 
+    /**
+     * Remove action. This is triggered by the actionPerformed method. 
+     */
     private void remove()
     {
-        /* TODO: Remove current */
-        MorphType type = this.morphs.get(this.index);
-
-        type.remove();
-
-        if (type.morphs.isEmpty())
+        if (this.index == -1)
         {
-            this.morphs.remove(this.index);
-            this.index = MathHelper.clamp_int(this.index, -1, this.morphs.size() - 1);
+            return;
+        }
+
+        int index = this.getSelected();
+
+        if (!this.toRemove.containsKey(index))
+        {
+            this.toRemove.put(index, new MorphRemove(index, this.index));
+            Dispatcher.sendToServer(new PacketRemoveMorph(index));
         }
     }
 
+    /**
+     * Favorite action. This is triggered by the actionPerformed method. 
+     */
     private void favorite(MorphCell cell)
     {
         if (latest == null)
@@ -453,7 +503,7 @@ public class GuiSurvivalMenu extends GuiScreen
             {
                 boolean renderUp = type.index < type.morphs.size() - 1;
                 boolean renderDown = type.index > 0;
-                int shift = this.inGUI ? h : scale * 2;
+                int shift = this.inGUI ? h : (int) (scale * 2.5);
 
                 this.renderMorph(player, type.current(), x, y - 2, margin, h, scale);
 
@@ -530,10 +580,18 @@ public class GuiSurvivalMenu extends GuiScreen
     {
         morph.morph.renderOnScreen(player, x, y, scale, 1.0F);
 
-        if (this.inGUI && morph.favorite)
+        if (morph.favorite)
         {
             this.mc.renderEngine.bindTexture(new ResourceLocation("metamorph", "textures/gui/icons.png"));
-            this.drawTexturedModalRect(x + w / 2 - 16, y - h / 1.5F, 0, 0, 16, 16);
+
+            if (this.inGUI)
+            {
+                this.drawTexturedModalRect(x + w / 2 - 16, y - h / 1.5F, 0, 0, 16, 16);
+            }
+            else
+            {
+                this.drawTexturedModalRect(x - w / 2, y - 16, 0, 0, 16, 16);
+            }
         }
     }
 
@@ -592,7 +650,7 @@ public class GuiSurvivalMenu extends GuiScreen
             this.clamp();
         }
 
-        private void clamp()
+        public void clamp()
         {
             this.index = MathHelper.clamp_int(this.index, 0, this.morphs.size() - 1);
         }
@@ -615,6 +673,24 @@ public class GuiSurvivalMenu extends GuiScreen
             this.index = index;
             this.morph = morph;
             this.favorite = favorite;
+        }
+    }
+
+    /**
+     * Morph removal information
+     * 
+     * This class is responsible for containing information about morph 
+     * removal.
+     */
+    public static class MorphRemove
+    {
+        public int index;
+        public int typeIndex;
+
+        public MorphRemove(int index, int typeIndex)
+        {
+            this.index = index;
+            this.typeIndex = typeIndex;
         }
     }
 }

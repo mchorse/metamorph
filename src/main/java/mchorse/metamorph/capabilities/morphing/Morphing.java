@@ -160,7 +160,7 @@ public class Morphing implements IMorphing
     @Override
     public boolean remove(int index)
     {
-        if (this.acquiredMorphs.isEmpty() && index >= 0 && index < this.acquiredMorphs.size())
+        if (!this.acquiredMorphs.isEmpty() && index >= 0 && index < this.acquiredMorphs.size())
         {
             int favorite = this.favorites.indexOf(index);
 
