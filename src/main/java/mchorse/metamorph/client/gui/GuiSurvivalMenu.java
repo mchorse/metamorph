@@ -29,6 +29,7 @@ import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.renderer.entity.RenderLivingBase;
 import net.minecraft.client.resources.I18n;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.MathHelper;
 
 /**
@@ -374,7 +375,7 @@ public class GuiSurvivalMenu extends GuiScreen
         {
             GuiUtils.scissor(0, 30, this.width, this.height - 30, width, height);
             w = width - 20;
-            h = (int) (height * 0.45F);
+            h = (int) (height * 0.375F);
         }
         else
         {
@@ -452,14 +453,15 @@ public class GuiSurvivalMenu extends GuiScreen
             {
                 boolean renderUp = type.index < type.morphs.size() - 1;
                 boolean renderDown = type.index > 0;
+                int shift = this.inGUI ? h : scale * 2;
 
-                this.renderMorph(player, morph, x, y - 2, scale);
+                this.renderMorph(player, type.current(), x, y - 2, margin, h, scale);
 
                 if (selected)
                 {
                     if (renderUp)
                     {
-                        this.renderMorph(player, type.morphs.get(type.index + 1).morph, x, y - scale * 2, scale);
+                        this.renderMorph(player, type.morphs.get(type.index + 1), x, y - shift, margin, h, scale);
 
                         int ay = height / 2 - h / 2 + 4;
 
@@ -470,7 +472,7 @@ public class GuiSurvivalMenu extends GuiScreen
 
                     if (renderDown)
                     {
-                        this.renderMorph(player, type.morphs.get(type.index - 1).morph, x, y + scale * 2, scale);
+                        this.renderMorph(player, type.morphs.get(type.index - 1), x, y + shift, margin, h, scale);
 
                         int ay = height / 2 + h / 2 - 7;
 
@@ -484,7 +486,7 @@ public class GuiSurvivalMenu extends GuiScreen
             /* Render border around the selected morph */
             if (selected)
             {
-                this.renderSelected(x - margin / 2, height / 2 - h / 2 + 1, margin, h - 2, type == null ? true : type.current().favorite);
+                this.renderSelected(x - margin / 2, height / 2 - h / 2 + 1, margin, h - 2);
 
                 label = name;
             }
@@ -502,9 +504,9 @@ public class GuiSurvivalMenu extends GuiScreen
      * 
      * Basically, this method renders selection.
      */
-    public void renderSelected(int x, int y, int width, int height, boolean favorite)
+    public void renderSelected(int x, int y, int width, int height)
     {
-        int color = favorite ? 0xff0088ff : 0xffcccccc;
+        int color = 0xffcccccc;
 
         this.drawHorizontalLine(x, x + width - 1, y, color);
         this.drawHorizontalLine(x, x + width - 1, y + height - 1, color);
@@ -524,9 +526,15 @@ public class GuiSurvivalMenu extends GuiScreen
      * {@link RenderLivingBase#doRender(net.minecraft.entity.EntityLivingBase, double, double, double, float, float)} 
      * and {@link GuiInventory#drawEntityOnScreen(int, int, int, float, float, net.minecraft.entity.EntityLivingBase)}.
      */
-    public void renderMorph(EntityPlayer player, AbstractMorph morph, int x, int y, float scale)
+    public void renderMorph(EntityPlayer player, MorphCell morph, int x, int y, int w, int h, float scale)
     {
-        morph.renderOnScreen(player, x, y, scale, 1.0F);
+        morph.morph.renderOnScreen(player, x, y, scale, 1.0F);
+
+        if (this.inGUI && morph.favorite)
+        {
+            this.mc.renderEngine.bindTexture(new ResourceLocation("metamorph", "textures/gui/icons.png"));
+            this.drawTexturedModalRect(x + w / 2 - 16, y - h / 1.5F, 0, 0, 16, 16);
+        }
     }
 
     /**
