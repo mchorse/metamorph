@@ -4,7 +4,10 @@ import mchorse.metamorph.api.events.MorphEvent;
 import mchorse.metamorph.api.morphs.AbstractMorph;
 import mchorse.metamorph.capabilities.morphing.IMorphing;
 import mchorse.metamorph.capabilities.morphing.Morphing;
+import mchorse.metamorph.network.Dispatcher;
+import mchorse.metamorph.network.common.PacketAcquireMorph;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraftforge.common.MinecraftForge;
 
 /**
@@ -12,6 +15,10 @@ import net.minecraftforge.common.MinecraftForge;
  * 
  * This class provides public API for morphing the player. Let me know which 
  * methods I may add to simplify your life :D
+ * 
+ * Acquired morphs and favorites are sent only to the owner players. So you 
+ * can't access this information from the client side. However, you can hit me 
+ * up, and prove me why I should send that information to the other players :D
  * 
  * Use this API on the server side, please. Thanks!
  */
@@ -52,13 +59,20 @@ public class MorphAPI
     }
 
     /**
-     * Make given player acquire a given morph
+     * Make given player acquire a given morph. Usable on both sides, but it's 
+     * better to use it on the server.
      * 
      * @return true if player has acquired a morph
      */
     public static boolean acquire(EntityPlayer player, AbstractMorph morph)
     {
-        // TODO: Actually implement
-        return false;
+        boolean acquired = Morphing.get(player).acquireMorph(morph);
+
+        if (!player.worldObj.isRemote && acquired)
+        {
+            Dispatcher.sendTo(new PacketAcquireMorph(morph), (EntityPlayerMP) player);
+        }
+
+        return acquired;
     }
 }

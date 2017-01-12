@@ -3,17 +3,13 @@ package mchorse.metamorph.entity;
 import java.util.UUID;
 
 import io.netty.buffer.ByteBuf;
+import mchorse.metamorph.api.MorphAPI;
 import mchorse.metamorph.api.MorphManager;
 import mchorse.metamorph.api.morphs.AbstractMorph;
-import mchorse.metamorph.capabilities.morphing.IMorphing;
-import mchorse.metamorph.capabilities.morphing.Morphing;
-import mchorse.metamorph.network.Dispatcher;
-import mchorse.metamorph.network.common.PacketAcquireMorph;
 import net.minecraft.entity.EntityLiving;
 import net.minecraft.entity.item.EntityItem;
 import net.minecraft.entity.item.EntityXPOrb;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.init.SoundEvents;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.SoundCategory;
@@ -137,13 +133,9 @@ public class EntityMorph extends EntityLiving implements IEntityAdditionalSpawnD
             return;
         }
 
-        IMorphing capability = Morphing.get(this.player);
-
-        if (capability.acquireMorph(morph))
+        if (MorphAPI.acquire(this.player, this.morph))
         {
-            Dispatcher.sendTo(new PacketAcquireMorph(morph), (EntityPlayerMP) player);
-
-            this.worldObj.playSound(null, this.posX, this.posY, this.posZ, SoundEvents.ENTITY_ITEM_PICKUP, SoundCategory.AMBIENT, 1.0F, 1.0F);
+            this.worldObj.playSound(this.player, this.posX, this.posY, this.posZ, SoundEvents.ENTITY_ITEM_PICKUP, SoundCategory.AMBIENT, 1.0F, 1.0F);
         }
     }
 
