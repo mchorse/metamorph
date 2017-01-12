@@ -21,6 +21,9 @@ metamorph.gui.title=Creative Morphs Menu
 metamorph.gui.morph=Morph
 metamorph.gui.acquire=Acquire
 metamorph.gui.close=Close
+metamorph.gui.remove=Remove
+metamorph.gui.favorite=Favorite
+metamorph.gui.unfavorite=Unfavorite
 metamorph.gui.search=Search
 metamorph.gui.no_morph=No Morph Selected
 

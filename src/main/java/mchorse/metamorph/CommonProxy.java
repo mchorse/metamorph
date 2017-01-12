@@ -89,7 +89,7 @@ public class CommonProxy
         /* Morphing manager and capabilities */
         CapabilityManager.INSTANCE.register(IMorphing.class, new MorphingStorage(), Morphing.class);
 
-        /* Register  */
+        /* Register morph factories */
         MorphManager.INSTANCE.register();
 
         if (morphs.exists())

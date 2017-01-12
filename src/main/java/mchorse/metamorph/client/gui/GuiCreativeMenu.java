@@ -12,6 +12,7 @@ import mchorse.metamorph.network.Dispatcher;
 import mchorse.metamorph.network.common.PacketAcquireMorph;
 import mchorse.metamorph.network.common.PacketMorph;
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.gui.Gui;
 import net.minecraft.client.gui.GuiButton;
 import net.minecraft.client.gui.GuiScreen;
 import net.minecraft.client.gui.GuiTextField;
@@ -198,7 +199,7 @@ public class GuiCreativeMenu extends GuiScreen
 
         /* Draw panel backgrounds */
         this.drawDefaultBackground();
-        drawRect(0, 0, width, 30, 0x88000000);
+        Gui.drawRect(0, 0, width, 30, 0x88000000);
         this.fontRendererObj.drawStringWithShadow(I18n.format("metamorph.gui.search"), 146, 41, 0xffffffff);
 
         /* Draw labels */

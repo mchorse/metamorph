@@ -1,5 +1,6 @@
 package mchorse.metamorph.client.gui;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
@@ -9,18 +10,24 @@ import java.util.Map;
 
 import org.lwjgl.opengl.GL11;
 
+import mchorse.metamorph.ClientProxy;
 import mchorse.metamorph.Metamorph;
 import mchorse.metamorph.api.MorphManager;
 import mchorse.metamorph.api.morphs.AbstractMorph;
+import mchorse.metamorph.capabilities.morphing.IMorphing;
 import mchorse.metamorph.client.gui.utils.GuiUtils;
+import mchorse.metamorph.network.Dispatcher;
+import mchorse.metamorph.network.common.PacketFavoriteMorph;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.entity.EntityPlayerSP;
 import net.minecraft.client.gui.Gui;
+import net.minecraft.client.gui.GuiButton;
 import net.minecraft.client.gui.GuiScreen;
 import net.minecraft.client.gui.inventory.GuiInventory;
 import net.minecraft.client.model.ModelBase;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.renderer.entity.RenderLivingBase;
+import net.minecraft.client.resources.I18n;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.util.math.MathHelper;
 
@@ -35,6 +42,20 @@ import net.minecraft.util.math.MathHelper;
  */
 public class GuiSurvivalMenu extends GuiScreen
 {
+    private GuiButton close;
+    private GuiButton favorite;
+    private GuiButton remove;
+
+    /**
+     * This variable is responsible for indication of inGUI mode 
+     */
+    private boolean inGUI = false;
+
+    /**
+     * Latest used morph cell. Used for optimizing and stuff 
+     */
+    private MorphCell latest;
+
     /**
      * Cached Minecraft instance 
      */
@@ -60,13 +81,14 @@ public class GuiSurvivalMenu extends GuiScreen
      * 
      * This method should be called every time client receives 
      */
-    public void setupMorphs(List<AbstractMorph> morphs)
+    public void setupMorphs(IMorphing morphing)
     {
         /* Collect all variations into one cells */
         Map<String, MorphType> separated = new HashMap<String, MorphType>();
+        List<Integer> favorites = morphing.getFavorites();
         int i = 0;
 
-        for (AbstractMorph morph : morphs)
+        for (AbstractMorph morph : morphing.getAcquiredMorphs())
         {
             MorphType list = separated.get(morph.name);
 
@@ -76,7 +98,7 @@ public class GuiSurvivalMenu extends GuiScreen
                 separated.put(morph.name, list);
             }
 
-            list.morphs.add(new MorphCell(i, morph));
+            list.morphs.add(new MorphCell(i, morph, favorites.indexOf(i) >= 0));
             i++;
         }
 
@@ -144,7 +166,11 @@ public class GuiSurvivalMenu extends GuiScreen
     public void up()
     {
         this.timer = this.getDelay();
-        this.morphs.get(this.index).up();
+
+        if (this.index >= 0)
+        {
+            this.morphs.get(this.index).up();
+        }
     }
 
     /**
@@ -153,7 +179,25 @@ public class GuiSurvivalMenu extends GuiScreen
     public void down()
     {
         this.timer = this.getDelay();
-        this.morphs.get(this.index).down();
+
+        if (this.index >= 0)
+        {
+            this.morphs.get(this.index).down();
+        }
+    }
+
+    /**
+     * Favorite latest morph cell 
+     */
+    public void favorite(int index)
+    {
+        System.out.println(index);
+
+        if (latest != null && latest.index == index)
+        {
+            latest.favorite = !latest.favorite;
+            latest = null;
+        }
     }
 
     /**
@@ -187,13 +231,116 @@ public class GuiSurvivalMenu extends GuiScreen
         return this.index == -1 ? -1 : this.morphs.get(this.index).current().index;
     }
 
+    /* Input handling */
+
+    @Override
+    protected void keyTyped(char typedChar, int keyCode) throws IOException
+    {
+        if (keyCode == 1)
+        {
+            this.timer = 0;
+        }
+
+        super.keyTyped(typedChar, keyCode);
+
+        if (ClientProxy.keys.keyPrevVarMorph.getKeyCode() == keyCode)
+        {
+            this.down();
+        }
+        else if (ClientProxy.keys.keyNextVarMorph.getKeyCode() == keyCode)
+        {
+            this.up();
+        }
+        else if (ClientProxy.keys.keyPrevMorph.getKeyCode() == keyCode)
+        {
+            this.advance(-1);
+        }
+        else if (ClientProxy.keys.keyNextMorph.getKeyCode() == keyCode)
+        {
+            this.advance(1);
+        }
+        else if (ClientProxy.keys.keyDemorph.getKeyCode() == keyCode)
+        {
+            this.skip(-1);
+        }
+    }
+
+    @Override
+    protected void actionPerformed(GuiButton button) throws IOException
+    {
+        if (this.index != -1)
+        {
+            if (button.id == 0)
+            {
+                this.remove();
+            }
+            else if (button.id == 1)
+            {
+                this.favorite(this.morphs.get(this.index).current());
+            }
+        }
+
+        if (button.id == 2)
+        {
+            this.timer = 0;
+            this.mc.displayGuiScreen(null);
+        }
+    }
+
+    private void remove()
+    {
+        /* TODO: Remove current */
+        MorphType type = this.morphs.get(this.index);
+
+        type.remove();
+
+        if (type.morphs.isEmpty())
+        {
+            this.morphs.remove(this.index);
+            this.index = MathHelper.clamp_int(this.index, -1, this.morphs.size() - 1);
+        }
+    }
+
+    private void favorite(MorphCell cell)
+    {
+        if (latest == null)
+        {
+            latest = cell;
+            Dispatcher.sendToServer(new PacketFavoriteMorph(cell.index));
+        }
+    }
+
+    /* Initiate GUI */
+
+    @Override
+    public void initGui()
+    {
+        int x = width - 20;
+        int y = 5;
+
+        remove = new GuiButton(0, x - 190, y, 60, 20, I18n.format("metamorph.gui.remove"));
+        favorite = new GuiButton(1, x - 125, y, 60, 20, I18n.format("metamorph.gui.favorite"));
+        close = new GuiButton(2, x - 60, y, 60, 20, I18n.format("metamorph.gui.close"));
+
+        this.buttonList.add(remove);
+        this.buttonList.add(favorite);
+        this.buttonList.add(close);
+    }
+
     /* Drawing code */
 
     @Override
     public void drawScreen(int mouseX, int mouseY, float partialTicks)
     {
         this.timer = this.getDelay();
-        this.render(width, height);
+        this.inGUI = true;
+
+        /* Background and stuff */
+        this.drawDefaultBackground();
+        Gui.drawRect(0, 0, width, 30, 0x88000000);
+        this.drawString(fontRendererObj, I18n.format("metamorph.gui.title"), 20, 11, 0xffffff);
+
+        this.render(this.width, this.height);
 
         super.drawScreen(mouseX, mouseY, partialTicks);
     }
@@ -223,12 +370,23 @@ public class GuiSurvivalMenu extends GuiScreen
         int x2 = width / 2 + w / 2;
         int y2 = height / 2 + h / 2;
 
-        Gui.drawRect(x1, y1, x2, y2, 0x99000000);
-        GuiUtils.scissor(x1, y1, w, h, width, height);
+        if (this.inGUI)
+        {
+            GuiUtils.scissor(0, 30, this.width, this.height - 30, width, height);
+            w = width - 20;
+            h = (int) (height * 0.45F);
+        }
+        else
+        {
+            Gui.drawRect(x1, y1, x2, y2, 0x99000000);
+            GuiUtils.scissor(x1, y1, w, h, width, height);
+        }
 
         this.renderMenu(width, height, w, h);
 
         GlStateManager.enableDepth();
+
+        this.inGUI = false;
     }
 
     /**
@@ -249,6 +407,12 @@ public class GuiSurvivalMenu extends GuiScreen
         /* Make sure that margin and scale are divided even */
         scale -= scale % 2;
         margin -= margin % 2;
+
+        if (this.inGUI)
+        {
+            margin = width / 7;
+            scale = (int) (height * 0.17F / 1.4);
+        }
 
         /* And compute the offset */
         int offset = this.index * margin;
@@ -289,25 +453,14 @@ public class GuiSurvivalMenu extends GuiScreen
                 boolean renderUp = type.index < type.morphs.size() - 1;
                 boolean renderDown = type.index > 0;
 
+                this.renderMorph(player, morph, x, y - 2, scale);
+
                 if (selected)
                 {
                     if (renderUp)
                     {
                         this.renderMorph(player, type.morphs.get(type.index + 1).morph, x, y - scale * 2, scale);
-                    }
-                }
 
-                this.renderMorph(player, morph, x, y - 2, scale);
-
-                if (selected)
-                {
-                    if (renderDown)
-                    {
-                        this.renderMorph(player, type.morphs.get(type.index - 1).morph, x, y + scale * 2, scale);
-                    }
-
-                    if (renderUp)
-                    {
                         int ay = height / 2 - h / 2 + 4;
 
                         Gui.drawRect(x - 1, ay, x + 1, ay + 1, 0xffffffff);
@@ -317,6 +470,8 @@ public class GuiSurvivalMenu extends GuiScreen
 
                     if (renderDown)
                     {
+                        this.renderMorph(player, type.morphs.get(type.index - 1).morph, x, y + scale * 2, scale);
+
                         int ay = height / 2 + h / 2 - 7;
 
                         Gui.drawRect(x - 3, ay, x + 3, ay + 1, 0xffffffff);
@@ -329,7 +484,7 @@ public class GuiSurvivalMenu extends GuiScreen
             /* Render border around the selected morph */
             if (selected)
             {
-                this.renderSelected(x - margin / 2, height / 2 - h / 2 + 1, margin, h - 2);
+                this.renderSelected(x - margin / 2, height / 2 - h / 2 + 1, margin, h - 2, type == null ? true : type.current().favorite);
 
                 label = name;
             }
@@ -347,9 +502,9 @@ public class GuiSurvivalMenu extends GuiScreen
      * 
      * Basically, this method renders selection.
      */
-    public void renderSelected(int x, int y, int width, int height)
+    public void renderSelected(int x, int y, int width, int height, boolean favorite)
     {
-        int color = 0xffcccccc;
+        int color = favorite ? 0xff0088ff : 0xffcccccc;
 
         this.drawHorizontalLine(x, x + width - 1, y, color);
         this.drawHorizontalLine(x, x + width - 1, y + height - 1, color);
@@ -400,19 +555,38 @@ public class GuiSurvivalMenu extends GuiScreen
         public List<MorphCell> morphs = new ArrayList<MorphCell>();
         public int index;
 
+        /**
+         * Get currently selected morph cell
+         */
         public MorphCell current()
         {
             return this.morphs.get(this.index);
         }
 
+        /**
+         * Remove currently selected morph cell 
+         */
+        public void remove()
+        {
+            this.morphs.remove(this.index);
+            this.clamp();
+        }
+
         public void up()
         {
-            this.index = MathHelper.clamp_int(index + 1, 0, this.morphs.size() - 1);
+            this.index++;
+            this.clamp();
         }
 
         public void down()
         {
-            this.index = MathHelper.clamp_int(index - 1, 0, this.morphs.size() - 1);
+            this.index--;
+            this.clamp();
+        }
+
+        private void clamp()
+        {
+            this.index = MathHelper.clamp_int(this.index, 0, this.morphs.size() - 1);
         }
     }
 
@@ -425,12 +599,14 @@ public class GuiSurvivalMenu extends GuiScreen
     public static class MorphCell
     {
         public int index;
+        public boolean favorite;
         public AbstractMorph morph;
 
-        public MorphCell(int index, AbstractMorph morph)
+        public MorphCell(int index, AbstractMorph morph, boolean favorite)
         {
             this.index = index;
             this.morph = morph;
+            this.favorite = favorite;
         }
     }
 }

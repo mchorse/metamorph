@@ -45,6 +45,11 @@ public class ClientProxy extends CommonProxy
      */
     public static RenderPlayer playerRenderer;
 
+    /**
+     * Keyboard handler 
+     */
+    public static KeyboardHandler keys;
+
     @Override
     public void preLoad(FMLPreInitializationEvent event)
     {
@@ -69,7 +74,7 @@ public class ClientProxy extends CommonProxy
 
         /* Register client event handlers */
         MinecraftForge.EVENT_BUS.register(new RenderingHandler(overlay, morphOverlay));
-        MinecraftForge.EVENT_BUS.register(new KeyboardHandler(overlay));
+        MinecraftForge.EVENT_BUS.register(keys = new KeyboardHandler(overlay));
 
         /* Register client morph manager */
         MorphManager.INSTANCE.registerClient();

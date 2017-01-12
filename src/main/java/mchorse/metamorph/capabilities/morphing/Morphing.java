@@ -20,6 +20,11 @@ public class Morphing implements IMorphing
     private List<AbstractMorph> acquiredMorphs = new ArrayList<AbstractMorph>();
 
     /**
+     * List of favorite morphs 
+     */
+    private List<Integer> favorites = new ArrayList<Integer>();
+
+    /**
      * Current used morph
      */
     private AbstractMorph morph;
@@ -121,9 +126,62 @@ public class Morphing implements IMorphing
     }
 
     @Override
+    public boolean favorite(int index)
+    {
+        int favorite = this.favorites.indexOf(index);
+
+        if (favorite == -1)
+        {
+            this.favorites.add(index);
+
+            return true;
+        }
+        else
+        {
+            this.favorites.remove(favorite);
+        }
+
+        return false;
+    }
+
+    @Override
+    public List<Integer> getFavorites()
+    {
+        return this.favorites;
+    }
+
+    @Override
+    public void setFavorites(List<Integer> favorites)
+    {
+        this.favorites.clear();
+        this.favorites.addAll(favorites);
+    }
+
+    @Override
+    public boolean remove(int index)
+    {
+        if (this.acquiredMorphs.isEmpty() && index >= 0 && index < this.acquiredMorphs.size())
+        {
+            int favorite = this.favorites.indexOf(index);
+
+            this.acquiredMorphs.remove(index);
+
+            if (favorite >= 0)
+            {
+                this.favorites.remove(favorite);
+            }
+
+            return true;
+        }
+
+        return false;
+    }
+
+    @Override
     public void copy(IMorphing morphing, EntityPlayer player)
     {
         this.acquiredMorphs = morphing.getAcquiredMorphs();
         this.setCurrentMorph(morphing.getCurrentMorph(), player, true);
+        this.setFavorites(morphing.getFavorites());
     }
 }

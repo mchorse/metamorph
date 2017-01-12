@@ -33,12 +33,12 @@ public class KeyboardHandler
     private KeyBinding keySurvivalMenu;
 
     /* Morph related keys */
-    private KeyBinding keyNextMorph;
-    private KeyBinding keyPrevMorph;
-    private KeyBinding keyNextVarMorph;
-    private KeyBinding keyPrevVarMorph;
-    private KeyBinding keySelectMorph;
-    private KeyBinding keyDemorph;
+    public KeyBinding keyNextMorph;
+    public KeyBinding keyPrevMorph;
+    public KeyBinding keyNextVarMorph;
+    public KeyBinding keyPrevVarMorph;
+    public KeyBinding keySelectMorph;
+    public KeyBinding keyDemorph;
 
     /* Survival morphing menu */
     private GuiSurvivalMenu overlay;

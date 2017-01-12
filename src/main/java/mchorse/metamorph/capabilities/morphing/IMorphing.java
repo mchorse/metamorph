@@ -54,6 +54,29 @@ public interface IMorphing
     public boolean isMorphed();
 
     /**
+     * Favorite or unfavorite a morph by given index
+     * 
+     * @return if true then given favorite was added, or false if it was 
+     *         removed
+     */
+    public boolean favorite(int index);
+
+    /**
+     * Get indices of all favorite morphs 
+     */
+    public List<Integer> getFavorites();
+
+    /**
+     * Set list of integer indices 
+     */
+    public void setFavorites(List<Integer> favorites);
+
+    /**
+     * Remove a morph at given index
+     */
+    public boolean remove(int index);
+
+    /**
      * Copy data from other morph 
      */
     public void copy(IMorphing morphing, EntityPlayer player);
