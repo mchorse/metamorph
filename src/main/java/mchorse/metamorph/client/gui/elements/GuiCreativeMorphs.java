@@ -25,7 +25,7 @@ import net.minecraft.util.math.MathHelper;
  * it's impossible to list all variation of those morphs. iChun probably knows 
  * it, that's why he doesn't bother with a GUI of all available morphs.
  */
-public class GuiMorphs extends GuiScrollPane
+public class GuiCreativeMorphs extends GuiScrollPane
 {
     /**
      * Morph cell's height 
@@ -62,7 +62,7 @@ public class GuiMorphs extends GuiScrollPane
      * 
      * Compile the categories list and compute the scroll height of this scroll pane 
      */
-    public GuiMorphs(int perRow)
+    public GuiCreativeMorphs(int perRow)
     {
         this.perRow = perRow;
         this.compileCategories();

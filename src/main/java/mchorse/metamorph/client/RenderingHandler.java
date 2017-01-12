@@ -5,8 +5,8 @@ import mchorse.metamorph.api.morphs.CustomMorph;
 import mchorse.metamorph.api.morphs.EntityMorph;
 import mchorse.metamorph.capabilities.morphing.IMorphing;
 import mchorse.metamorph.capabilities.morphing.Morphing;
-import mchorse.metamorph.client.gui.GuiSurvivalMenu;
 import mchorse.metamorph.client.gui.elements.GuiOverlay;
+import mchorse.metamorph.client.gui.elements.GuiSurvivalMorphs;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiScreen;
 import net.minecraft.client.gui.ScaledResolution;
@@ -37,10 +37,10 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 @SideOnly(Side.CLIENT)
 public class RenderingHandler
 {
-    private GuiSurvivalMenu overlay;
+    private GuiSurvivalMorphs overlay;
     private GuiOverlay morphOverlay;
 
-    public RenderingHandler(GuiSurvivalMenu overlay, GuiOverlay morphOverlay)
+    public RenderingHandler(GuiSurvivalMorphs overlay, GuiOverlay morphOverlay)
     {
         this.overlay = overlay;
         this.morphOverlay = morphOverlay;
@@ -56,7 +56,7 @@ public class RenderingHandler
 
         if (event.getType() == RenderGameOverlayEvent.ElementType.ALL)
         {
-            if (this.overlay.mc.currentScreen != this.overlay)
+            if (this.overlay.inGUI == false)
             {
                 this.overlay.render(resolution.getScaledWidth(), resolution.getScaledHeight());
             }

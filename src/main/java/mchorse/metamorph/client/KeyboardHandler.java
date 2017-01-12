@@ -2,11 +2,11 @@ package mchorse.metamorph.client;
 
 import org.lwjgl.input.Keyboard;
 
-import mchorse.metamorph.ClientProxy;
 import mchorse.metamorph.capabilities.morphing.IMorphing;
 import mchorse.metamorph.capabilities.morphing.Morphing;
 import mchorse.metamorph.client.gui.GuiCreativeMenu;
 import mchorse.metamorph.client.gui.GuiSurvivalMenu;
+import mchorse.metamorph.client.gui.elements.GuiSurvivalMorphs;
 import mchorse.metamorph.network.Dispatcher;
 import mchorse.metamorph.network.common.PacketAction;
 import mchorse.metamorph.network.common.PacketSelectMorph;
@@ -41,7 +41,7 @@ public class KeyboardHandler
     public KeyBinding keyDemorph;
 
     /* Survival morphing menu */
-    private GuiSurvivalMenu overlay;
+    private GuiSurvivalMorphs overlay;
 
     public KeyboardHandler()
     {
@@ -72,7 +72,7 @@ public class KeyboardHandler
         ClientRegistry.registerKeyBinding(keyDemorph);
     }
 
-    public KeyboardHandler(GuiSurvivalMenu overlay)
+    public KeyboardHandler(GuiSurvivalMorphs overlay)
     {
         this();
         this.overlay = overlay;
@@ -104,7 +104,7 @@ public class KeyboardHandler
 
         if (keySurvivalMenu.isPressed())
         {
-            mc.displayGuiScreen(ClientProxy.overlay);
+            mc.displayGuiScreen(new GuiSurvivalMenu(this.overlay));
         }
 
         boolean prev = keyPrevMorph.isPressed();
@@ -141,29 +141,7 @@ public class KeyboardHandler
         /* Apply selected morph */
         if (keySelectMorph.isPressed())
         {
-            IMorphing morphing = Morphing.get(mc.thePlayer);
-
-            /* Checking if we're morphing in the same thing */
-            boolean isSame = false;
-            boolean morphed = morphing.isMorphed();
-            int index = this.overlay.getSelected();
-
-            if (index == -1)
-            {
-                isSame = !morphed;
-            }
-
-            if (index >= 0 && morphed)
-            {
-                isSame = morphing.getCurrentMorph().equals(morphing.getAcquiredMorphs().get(index));
-            }
-
-            /* No need to send packet if it's the same */
-            if (!isSame)
-            {
-                Dispatcher.sendToServer(new PacketSelectMorph(index));
-                this.overlay.timer = 0;
-            }
+            this.overlay.selectCurrent();
         }
 
         /* Demorph from current morph */

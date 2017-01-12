@@ -6,8 +6,8 @@ import java.util.Map;
 import mchorse.metamorph.api.MorphManager;
 import mchorse.metamorph.client.KeyboardHandler;
 import mchorse.metamorph.client.RenderingHandler;
-import mchorse.metamorph.client.gui.GuiSurvivalMenu;
 import mchorse.metamorph.client.gui.elements.GuiOverlay;
+import mchorse.metamorph.client.gui.elements.GuiSurvivalMorphs;
 import mchorse.metamorph.client.render.RenderMorph;
 import mchorse.metamorph.client.render.RenderPlayer;
 import mchorse.metamorph.client.render.RenderSubPlayer;
@@ -33,7 +33,7 @@ public class ClientProxy extends CommonProxy
     /**
      * GUI menu which is responsible for choosing morphs 
      */
-    public static GuiSurvivalMenu overlay = new GuiSurvivalMenu();
+    public static GuiSurvivalMorphs overlay = new GuiSurvivalMorphs();
 
     /**
      * GUI overlay which is responsible for showing up acquired morphs

@@ -7,7 +7,7 @@ import org.lwjgl.opengl.GL11;
 
 import mchorse.metamorph.api.MorphManager;
 import mchorse.metamorph.api.morphs.AbstractMorph;
-import mchorse.metamorph.client.gui.elements.GuiMorphs;
+import mchorse.metamorph.client.gui.elements.GuiCreativeMorphs;
 import mchorse.metamorph.network.Dispatcher;
 import mchorse.metamorph.network.common.PacketAcquireMorph;
 import mchorse.metamorph.network.common.PacketMorph;
@@ -38,7 +38,7 @@ public class GuiCreativeMenu extends GuiScreen
     private GuiButton acquire;
     private GuiButton close;
     private GuiTextField search;
-    private GuiMorphs pane;
+    private GuiCreativeMorphs pane;
 
     /* Horizontal margin */
     private static final int MARGIN = 20;
@@ -51,7 +51,7 @@ public class GuiCreativeMenu extends GuiScreen
      */
     public GuiCreativeMenu()
     {
-        this.pane = new GuiMorphs(6);
+        this.pane = new GuiCreativeMorphs(6);
     }
 
     /* GUI stuff and input */
