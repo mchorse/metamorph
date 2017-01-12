@@ -56,6 +56,8 @@ public class RenderingHandler
 
         if (event.getType() == RenderGameOverlayEvent.ElementType.ALL)
         {
+            System.out.println(this.overlay.inGUI + " " + this.overlay.timer);
+
             if (this.overlay.inGUI == false)
             {
                 this.overlay.render(resolution.getScaledWidth(), resolution.getScaledHeight());

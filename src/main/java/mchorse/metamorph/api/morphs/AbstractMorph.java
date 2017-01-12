@@ -11,6 +11,7 @@ import net.minecraft.entity.SharedMonsterAttributes;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.SoundEvents;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.util.EnumHand;
 import net.minecraft.util.EnumParticleTypes;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraftforge.fml.relauncher.Side;
@@ -85,6 +86,15 @@ public abstract class AbstractMorph
      */
     @SideOnly(Side.CLIENT)
     public abstract void renderOnScreen(EntityPlayer player, int x, int y, float scale, float alpha);
+
+    /**
+     * Render the arm for given hand 
+     */
+    @SideOnly(Side.CLIENT)
+    public boolean renderHand(EntityPlayer player, EnumHand hand)
+    {
+        return false;
+    }
 
     /* Update loop */
 

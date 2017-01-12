@@ -5,6 +5,7 @@ import mchorse.metamorph.capabilities.morphing.Morphing;
 import net.minecraft.client.entity.AbstractClientPlayer;
 import net.minecraft.client.renderer.entity.RenderManager;
 import net.minecraft.client.renderer.entity.RenderPlayer;
+import net.minecraft.util.EnumHand;
 
 /**
  * Render sub player renderer
@@ -16,16 +17,12 @@ import net.minecraft.client.renderer.entity.RenderPlayer;
  */
 public class RenderSubPlayer extends RenderPlayer
 {
-    private mchorse.metamorph.client.render.RenderPlayer render;
-
     /**
      * Initiate with render manager, player renderer and smallArms flag.
      */
-    public RenderSubPlayer(RenderManager renderManager, mchorse.metamorph.client.render.RenderPlayer render, boolean smallArms)
+    public RenderSubPlayer(RenderManager renderManager, boolean smallArms)
     {
         super(renderManager, smallArms);
-
-        this.render = render;
     }
 
     /**
@@ -38,12 +35,8 @@ public class RenderSubPlayer extends RenderPlayer
 
         if (morph != null && morph.isMorphed())
         {
-            this.render.setupModel(clientPlayer);
-
-            if (this.render.getMainModel() != null)
+            if (morph.getCurrentMorph().renderHand(clientPlayer, EnumHand.OFF_HAND))
             {
-                this.render.renderLeftArm(clientPlayer);
-
                 return;
             }
         }
@@ -61,12 +54,8 @@ public class RenderSubPlayer extends RenderPlayer
 
         if (morph != null && morph.isMorphed())
         {
-            this.render.setupModel(clientPlayer);
-
-            if (this.render.getMainModel() != null)
+            if (morph.getCurrentMorph().renderHand(clientPlayer, EnumHand.MAIN_HAND))
             {
-                this.render.renderRightArm(clientPlayer);
-
                 return;
             }
         }

@@ -122,8 +122,8 @@ public class ClientProxy extends CommonProxy
         /* Replace player renderers with Blockbuster substitutes */
         if (skins != null)
         {
-            skins.put("slim", new RenderSubPlayer(manager, render, true));
-            skins.put("default", new RenderSubPlayer(manager, render, false));
+            skins.put("slim", new RenderSubPlayer(manager, true));
+            skins.put("default", new RenderSubPlayer(manager, false));
 
             Metamorph.log("Skin map renderers were successfully replaced with Metamorph substitutes!");
         }

@@ -2,6 +2,8 @@ package mchorse.metamorph.client.gui;
 
 import java.io.IOException;
 
+import org.lwjgl.input.Keyboard;
+
 import mchorse.metamorph.ClientProxy;
 import mchorse.metamorph.client.gui.elements.GuiSurvivalMorphs;
 import mchorse.metamorph.client.gui.elements.GuiSurvivalMorphs.MorphCell;
@@ -60,7 +62,7 @@ public class GuiSurvivalMenu extends GuiScreen
     @Override
     protected void keyTyped(char typedChar, int keyCode) throws IOException
     {
-        if (keyCode == 0)
+        if (keyCode == Keyboard.KEY_ESCAPE)
         {
             this.exit();
         }

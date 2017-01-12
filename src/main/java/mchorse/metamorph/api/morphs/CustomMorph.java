@@ -4,10 +4,12 @@ import mchorse.metamorph.api.models.Model;
 import mchorse.metamorph.capabilities.morphing.IMorphing;
 import mchorse.metamorph.client.gui.utils.GuiUtils;
 import mchorse.metamorph.client.model.ModelCustom;
+import mchorse.metamorph.client.render.RenderPlayer;
 import net.minecraft.client.Minecraft;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.util.EnumHand;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
@@ -29,6 +31,8 @@ public class CustomMorph extends AbstractMorph
      */
     public ResourceLocation skin;
 
+    /* Rendering */
+
     @Override
     @SideOnly(Side.CLIENT)
     public void renderOnScreen(EntityPlayer player, int x, int y, float scale, float alpha)
@@ -42,6 +46,38 @@ public class CustomMorph extends AbstractMorph
         Minecraft.getMinecraft().renderEngine.bindTexture(data.defaultTexture);
         GuiUtils.drawModel(model, player, x, y, scale, alpha);
     }
+
+    @Override
+    @SideOnly(Side.CLIENT)
+    public boolean renderHand(EntityPlayer player, EnumHand hand)
+    {
+        if (this.renderer == null || !(this.renderer instanceof RenderPlayer))
+        {
+            return false;
+        }
+
+        RenderPlayer renderer = (RenderPlayer) this.renderer;
+
+        renderer.setupModel(player);
+
+        if (renderer.getMainModel() == null)
+        {
+            return false;
+        }
+
+        if (hand.equals(EnumHand.MAIN_HAND))
+        {
+            renderer.renderRightArm(player);
+        }
+        else
+        {
+            renderer.renderLeftArm(player);
+        }
+
+        return true;
+    }
+
+    /* Updating and stuff */
 
     /**
      * Update the player based on its morph abilities and properties. This 
