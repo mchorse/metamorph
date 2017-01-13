@@ -1,10 +1,7 @@
 package mchorse.metamorph.client.render;
 
-import java.util.Map;
-
 import mchorse.metamorph.api.models.Model;
 import mchorse.metamorph.api.morphs.CustomMorph;
-import mchorse.metamorph.client.model.ModelCustom;
 import mchorse.metamorph.entity.EntityMorph;
 import net.minecraft.client.model.ModelBase;
 import net.minecraft.client.renderer.GlStateManager;
@@ -14,7 +11,10 @@ import net.minecraft.client.renderer.entity.RenderManager;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.MathHelper;
 import net.minecraftforge.fml.client.registry.IRenderFactory;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 
+@SideOnly(Side.CLIENT)
 public class RenderMorph extends RenderLivingBase<EntityMorph>
 {
     public RenderMorph(RenderManager manager, ModelBase model, float shadowSize)
@@ -32,75 +32,44 @@ public class RenderMorph extends RenderLivingBase<EntityMorph>
     }
 
     /**
+     * Get entity texture
+     * 
+     * Returns null, because this method isn't used
+     */
+    @Override
+    protected ResourceLocation getEntityTexture(EntityMorph entity)
+    {
+        return null;
+    }
+
+    /**
      * Render the morph entity with some blending going on and blue-ish 
      * coloring. 
      */
     @Override
-    @SuppressWarnings({"rawtypes", "unchecked"})
     public void doRender(EntityMorph entity, double x, double y, double z, float entityYaw, float partialTicks)
     {
+        GlStateManager.pushMatrix();
         GlStateManager.color(0.1F, 0.9F, 1.0F, 0.7F);
+
+        this.preRenderCallback(entity, partialTicks);
 
         GlStateManager.enableNormalize();
         GlStateManager.enableBlend();
         GlStateManager.blendFunc(GlStateManager.SourceFactor.SRC_ALPHA, GlStateManager.DestFactor.ONE_MINUS_SRC_ALPHA);
 
-        if (entity.morph instanceof CustomMorph)
-        {
-            this.setupModel(entity);
-
-            if (this.mainModel == null) return;
-
-            super.doRender(entity, x, y, z, entityYaw, partialTicks);
-        }
-        else if (entity.morph instanceof mchorse.metamorph.api.morphs.EntityMorph)
-        {
-            mchorse.metamorph.api.morphs.EntityMorph morph = (mchorse.metamorph.api.morphs.EntityMorph) entity.morph;
-            morph.update(entity, null);
-            Render render = morph.renderer;
-
-            if (render != null)
-            {
-                render.doRender(morph.getEntity(), x, y, z, entityYaw, partialTicks);
-            }
-        }
+        entity.morph.render(entity, x, y, z, entityYaw, partialTicks);
 
         GlStateManager.disableBlend();
         GlStateManager.disableNormalize();
+        GlStateManager.popMatrix();
     }
 
     /**
-     * Get default texture for entity 
-     */
-    @Override
-    protected ResourceLocation getEntityTexture(EntityMorph entity)
-    {
-        return this.mainModel == null ? null : ((ModelCustom) this.mainModel).model.defaultTexture;
-    }
-
-    /**
-     * Setup the model for player instance.
-     *
-     * This method is responsible for picking the right model and pose based
-     * on player properties.
-     */
-    public void setupModel(EntityMorph entity)
-    {
-        Map<String, ModelCustom> models = ModelCustom.MODELS;
-
-        String pose = entity.isSneaking() ? "sneaking" : (entity.isElytraFlying() ? "flying" : "standing");
-        ModelCustom model = models.get(entity.morph);
-
-        if (model != null)
-        {
-            model.pose = model.model.poses.get(pose);
-            this.mainModel = model;
-        }
-    }
-
-    /**
-     * Make player a little bit smaller (so he looked like steve, and not like an 
-     * overgrown rodent).
+     * Scale shit out of this morph
+     * 
+     * This method is responsible for scaling the model. This suppose to make 
+     * a very cool effect of entity appearing.
      */
     @Override
     protected void preRenderCallback(EntityMorph entity, float partialTickTime)
@@ -119,7 +88,7 @@ public class RenderMorph extends RenderLivingBase<EntityMorph>
 
         if (entity.morph instanceof CustomMorph)
         {
-            Model data = ((ModelCustom) this.mainModel).model;
+            Model data = ((CustomMorph) entity.morph).model;
 
             x = MathHelper.clamp_float(data.scale[0], 0.0F, 1.5F);
             y = MathHelper.clamp_float(data.scale[1], 0.0F, 1.5F);

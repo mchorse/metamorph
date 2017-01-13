@@ -111,7 +111,7 @@ public class VanillaMorphFactory implements IMorphFactory
     {
         for (AbstractMorph morph : this.morphs.values())
         {
-            morph.renderer = ClientProxy.playerRenderer;
+            morph.renderer = ClientProxy.modelRenderer;
         }
 
         this.registerClientModels(manager.models);

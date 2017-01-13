@@ -2,46 +2,41 @@ package mchorse.metamorph.client.render;
 
 import java.util.Map;
 
+import mchorse.metamorph.api.models.IMorphProvider;
 import mchorse.metamorph.api.models.Model;
 import mchorse.metamorph.capabilities.morphing.IMorphing;
-import mchorse.metamorph.capabilities.morphing.Morphing;
+import mchorse.metamorph.capabilities.morphing.MorphingProvider;
 import mchorse.metamorph.client.model.ModelCustom;
 import mchorse.metamorph.client.model.ModelCustomRenderer;
-import mchorse.metamorph.client.render.layers.LayerHeldItem;
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.model.ModelBase;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.renderer.entity.RenderLivingBase;
 import net.minecraft.client.renderer.entity.RenderManager;
+import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.Vec3d;
-import net.minecraftforge.fml.relauncher.Side;
-import net.minecraftforge.fml.relauncher.SideOnly;
 
-/**
- * Player renderer
- *
- * Renders player entities with swag
- */
-@SideOnly(Side.CLIENT)
-public class RenderPlayer extends RenderLivingBase<EntityPlayer>
+public class RenderCustomModel extends RenderLivingBase<EntityLivingBase>
 {
-    public RenderPlayer(RenderManager renderManagerIn, float shadowSize)
+    public RenderCustomModel(RenderManager renderManagerIn, ModelBase modelBaseIn, float shadowSizeIn)
     {
-        super(renderManagerIn, null, shadowSize);
-
-        this.addLayer(new LayerHeldItem(this));
+        super(renderManagerIn, null, shadowSizeIn);
     }
 
+    /**
+     * Get default texture for entity 
+     */
     @Override
-    protected ResourceLocation getEntityTexture(EntityPlayer entity)
+    protected ResourceLocation getEntityTexture(EntityLivingBase entity)
     {
         return this.mainModel == null ? null : ((ModelCustom) this.mainModel).model.defaultTexture;
     }
 
     @Override
-    public void doRender(EntityPlayer entity, double x, double y, double z, float entityYaw, float partialTicks)
+    public void doRender(EntityLivingBase entity, double x, double y, double z, float entityYaw, float partialTicks)
     {
         this.setupModel(entity);
 
@@ -56,15 +51,25 @@ public class RenderPlayer extends RenderLivingBase<EntityPlayer>
      * This method is responsible for picking the right model and pose based
      * on player properties.
      */
-    public void setupModel(EntityPlayer entity)
+    public void setupModel(EntityLivingBase entity)
     {
         Map<String, ModelCustom> models = ModelCustom.MODELS;
-        IMorphing capability = Morphing.get(entity);
-
-        String key = capability.getCurrentMorph().name;
         String pose = entity.isSneaking() ? "sneaking" : (entity.isElytraFlying() ? "flying" : "standing");
+        ModelCustom model = null;
 
-        ModelCustom model = models.get(key);
+        if (entity instanceof IMorphProvider)
+        {
+            model = models.get(((IMorphProvider) entity).getMorph());
+        }
+        else
+        {
+            IMorphing cap = entity.getCapability(MorphingProvider.MORPHING_CAP, null);
+
+            if (cap != null && cap.isMorphed())
+            {
+                model = models.get(cap.getCurrentMorph().name);
+            }
+        }
 
         if (model != null)
         {
@@ -78,7 +83,7 @@ public class RenderPlayer extends RenderLivingBase<EntityPlayer>
      * overgrown rodent).
      */
     @Override
-    protected void preRenderCallback(EntityPlayer entitylivingbaseIn, float partialTickTime)
+    protected void preRenderCallback(EntityLivingBase entity, float partialTickTime)
     {
         Model model = ((ModelCustom) this.mainModel).model;
 
@@ -92,41 +97,41 @@ public class RenderPlayer extends RenderLivingBase<EntityPlayer>
      * an elytra. You know,
      */
     @Override
-    protected void rotateCorpse(EntityPlayer player, float pitch, float yaw, float partialTicks)
+    protected void rotateCorpse(EntityLivingBase entity, float pitch, float yaw, float partialTicks)
     {
-        if (player.isEntityAlive() && player.isPlayerSleeping())
+        if (entity.isEntityAlive() && entity.isPlayerSleeping())
         {
             /* Nap time! */
-            GlStateManager.rotate(player.getBedOrientationInDegrees(), 0.0F, 1.0F, 0.0F);
-            GlStateManager.rotate(this.getDeathMaxRotation(player), 0.0F, 0.0F, 1.0F);
+            GlStateManager.rotate(((EntityPlayer) entity).getBedOrientationInDegrees(), 0.0F, 1.0F, 0.0F);
+            GlStateManager.rotate(this.getDeathMaxRotation(entity), 0.0F, 0.0F, 1.0F);
             GlStateManager.rotate(270.0F, 0.0F, 1.0F, 0.0F);
         }
-        else if (player.isElytraFlying())
+        else if (entity.isElytraFlying())
         {
             /* Elytra rotation */
-            super.rotateCorpse(player, pitch, yaw, partialTicks);
+            super.rotateCorpse(entity, pitch, yaw, partialTicks);
 
-            float f = player.getTicksElytraFlying() + partialTicks;
+            float f = entity.getTicksElytraFlying() + partialTicks;
             float f1 = MathHelper.clamp_float(f * f / 100.0F, 0.0F, 1.0F);
 
-            Vec3d vec3d = player.getLook(partialTicks);
+            Vec3d vec3d = entity.getLook(partialTicks);
 
-            double d0 = player.motionX * player.motionX + player.motionZ * player.motionZ;
+            double d0 = entity.motionX * entity.motionX + entity.motionZ * entity.motionZ;
             double d1 = vec3d.xCoord * vec3d.xCoord + vec3d.zCoord * vec3d.zCoord;
 
-            GlStateManager.rotate(f1 * (-90.0F - player.rotationPitch), 1.0F, 0.0F, 0.0F);
+            GlStateManager.rotate(f1 * (-90.0F - entity.rotationPitch), 1.0F, 0.0F, 0.0F);
 
             if (d0 > 0.0D && d1 > 0.0D)
             {
-                double d2 = (player.motionX * vec3d.xCoord + player.motionZ * vec3d.zCoord) / (Math.sqrt(d0) * Math.sqrt(d1));
-                double d3 = player.motionX * vec3d.zCoord - player.motionZ * vec3d.xCoord;
+                double d2 = (entity.motionX * vec3d.xCoord + entity.motionZ * vec3d.zCoord) / (Math.sqrt(d0) * Math.sqrt(d1));
+                double d3 = entity.motionX * vec3d.zCoord - entity.motionZ * vec3d.xCoord;
 
                 GlStateManager.rotate((float) (Math.signum(d3) * Math.acos(d2)) * 180.0F / (float) Math.PI, 0.0F, 1.0F, 0.0F);
             }
         }
         else
         {
-            super.rotateCorpse(player, pitch, yaw, partialTicks);
+            super.rotateCorpse(entity, pitch, yaw, partialTicks);
         }
     }
 

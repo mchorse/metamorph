@@ -5,6 +5,7 @@ import java.util.UUID;
 import io.netty.buffer.ByteBuf;
 import mchorse.metamorph.api.MorphAPI;
 import mchorse.metamorph.api.MorphManager;
+import mchorse.metamorph.api.models.IMorphProvider;
 import mchorse.metamorph.api.morphs.AbstractMorph;
 import net.minecraft.entity.EntityLiving;
 import net.minecraft.entity.item.EntityItem;
@@ -29,7 +30,7 @@ import net.minecraftforge.fml.common.registry.IEntityAdditionalSpawnData;
  * This entity is similar to {@link EntityXPOrb} or {@link EntityItem}, in terms 
  * of picking up.
  */
-public class EntityMorph extends EntityLiving implements IEntityAdditionalSpawnData
+public class EntityMorph extends EntityLiving implements IEntityAdditionalSpawnData, IMorphProvider
 {
     private UUID owner;
     private EntityPlayer player;
@@ -59,6 +60,12 @@ public class EntityMorph extends EntityLiving implements IEntityAdditionalSpawnD
         this.morph = morph;
 
         this.setSize(morph);
+    }
+
+    @Override
+    public AbstractMorph getMorph()
+    {
+        return this.morph;
     }
 
     /**

@@ -8,8 +8,8 @@ import mchorse.metamorph.client.KeyboardHandler;
 import mchorse.metamorph.client.RenderingHandler;
 import mchorse.metamorph.client.gui.elements.GuiOverlay;
 import mchorse.metamorph.client.gui.elements.GuiSurvivalMorphs;
+import mchorse.metamorph.client.render.RenderCustomModel;
 import mchorse.metamorph.client.render.RenderMorph;
-import mchorse.metamorph.client.render.RenderPlayer;
 import mchorse.metamorph.client.render.RenderSubPlayer;
 import mchorse.metamorph.entity.EntityMorph;
 import net.minecraft.client.Minecraft;
@@ -41,9 +41,9 @@ public class ClientProxy extends CommonProxy
     public static GuiOverlay morphOverlay = new GuiOverlay();
 
     /**
-     * Player renderer 
+     * Custom model renderer 
      */
-    public static RenderPlayer playerRenderer;
+    public static RenderCustomModel modelRenderer;
 
     /**
      * Keyboard handler 
@@ -63,11 +63,9 @@ public class ClientProxy extends CommonProxy
     {
         /* Rendering stuff */
         RenderManager manager = Minecraft.getMinecraft().getRenderManager();
-        RenderPlayer render = new RenderPlayer(manager, 0.5F);
+        modelRenderer = new RenderCustomModel(manager, null, 0.5F);
 
-        this.substitutePlayerRenderers(render, manager);
-
-        playerRenderer = render;
+        this.substitutePlayerRenderers(manager);
 
         /* Continue loading process */
         super.load();
@@ -90,7 +88,7 @@ public class ClientProxy extends CommonProxy
      * using Metamorph and Blockbuster together).
      */
     @SuppressWarnings({"rawtypes", "unchecked"})
-    private void substitutePlayerRenderers(RenderPlayer render, RenderManager manager)
+    private void substitutePlayerRenderers(RenderManager manager)
     {
         Map<String, net.minecraft.client.renderer.entity.RenderPlayer> skins = null;
 

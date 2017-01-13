@@ -96,7 +96,7 @@ public class EntityMorph extends AbstractMorph
     @SuppressWarnings("rawtypes")
     public boolean renderHand(EntityPlayer player, EnumHand hand)
     {
-        if (!this.triedHands)
+        if (!this.triedHands && this.renderer != null)
         {
             this.setupTexture();
             this.setupHands();
@@ -154,6 +154,60 @@ public class EntityMorph extends AbstractMorph
         }
 
         return true;
+    }
+
+    @Override
+    @SideOnly(Side.CLIENT)
+    @SuppressWarnings({"unchecked", "rawtypes"})
+    public void render(EntityLivingBase entity, double x, double y, double z, float entityYaw, float partialTicks)
+    {
+        Render render = this.renderer;
+
+        if (render == null)
+        {
+            this.getEntity(entity.worldObj);
+
+            /* Make transformation seamless... */
+            this.entity.rotationYaw = entity.rotationYaw;
+            this.entity.rotationPitch = entity.rotationPitch;
+            this.entity.rotationYawHead = entity.rotationYawHead;
+            this.entity.renderYawOffset = entity.renderYawOffset;
+
+            this.entity.prevRotationYaw = entity.prevRotationYaw;
+            this.entity.prevRotationPitch = entity.prevRotationPitch;
+            this.entity.prevRotationYawHead = entity.prevRotationYawHead;
+            this.entity.prevRenderYawOffset = entity.prevRenderYawOffset;
+
+            render = this.renderer;
+        }
+
+        if (render != null)
+        {
+            boolean isDragon = this.entity instanceof EntityDragon;
+
+            if (isDragon)
+            {
+                GlStateManager.pushMatrix();
+                GlStateManager.rotate(180, 0.0F, 1.0F, 0.0F);
+            }
+
+            if (render instanceof RenderLivingBase)
+            {
+                ModelBase model = ((RenderLivingBase) render).getMainModel();
+
+                if (model instanceof ModelBiped)
+                {
+                    ((ModelBiped) model).isSneak = entity.isSneaking();
+                }
+            }
+
+            render.doRender(this.entity, x, y, z, entityYaw, partialTicks);
+
+            if (isDragon)
+            {
+                GlStateManager.popMatrix();
+            }
+        }
     }
 
     /* Other stuff */

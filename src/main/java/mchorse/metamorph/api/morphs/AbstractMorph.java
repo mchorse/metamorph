@@ -12,7 +12,6 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.SoundEvents;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.EnumHand;
-import net.minecraft.util.EnumParticleTypes;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
@@ -22,6 +21,9 @@ import net.minecraftforge.fml.relauncher.SideOnly;
  * 
  * This is an abstract morph. It contains all needed properties for a basic 
  * morph such as abilities, action, attack, health, speed and hotstyle flag.
+ * 
+ * This class is also responsible for rendering operations. Oh boy, this class 
+ * is so huge. I'll have to decompose this thing onto rendering and logic code.
  */
 public abstract class AbstractMorph
 {
@@ -88,6 +90,12 @@ public abstract class AbstractMorph
     public abstract void renderOnScreen(EntityPlayer player, int x, int y, float scale, float alpha);
 
     /**
+     * Render the entity (in the world) 
+     */
+    @SideOnly(Side.CLIENT)
+    public abstract void render(EntityLivingBase entity, double x, double y, double z, float entityYaw, float partialTicks);
+
+    /**
      * Render the arm for given hand 
      */
     @SideOnly(Side.CLIENT)
@@ -131,24 +139,6 @@ public abstract class AbstractMorph
 
         /* Pop! */
         target.playSound(SoundEvents.ENTITY_ITEM_PICKUP, 1.0F, 1.0F);
-
-        float width = this.getWidth(target);
-        float height = this.getHeight(target);
-
-        /* Spawn explosion particles to cover the player */
-        int per = (int) (width * 12);
-        int total = per * (int) Math.ceil(height);
-
-        for (int i = 0; i < total; i++)
-        {
-            double angle = ((double) i / per) * Math.PI * 2;
-
-            double x = target.posX + Math.cos(angle) * width * 1.5;
-            double y = target.posY + i / per;
-            double z = target.posZ + Math.sin(angle) * width * 1.5;
-
-            target.worldObj.spawnParticle(EnumParticleTypes.EXPLOSION_LARGE, x, y, z, target.motionX, target.motionY, target.motionZ);
-        }
 
         for (IAbility ability : this.abilities)
         {

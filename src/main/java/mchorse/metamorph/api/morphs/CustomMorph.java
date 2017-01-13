@@ -4,7 +4,7 @@ import mchorse.metamorph.api.models.Model;
 import mchorse.metamorph.capabilities.morphing.IMorphing;
 import mchorse.metamorph.client.gui.utils.GuiUtils;
 import mchorse.metamorph.client.model.ModelCustom;
-import mchorse.metamorph.client.render.RenderPlayer;
+import mchorse.metamorph.client.render.RenderCustomModel;
 import net.minecraft.client.Minecraft;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
@@ -44,12 +44,12 @@ public class CustomMorph extends AbstractMorph
     @SideOnly(Side.CLIENT)
     public boolean renderHand(EntityPlayer player, EnumHand hand)
     {
-        if (this.renderer == null || !(this.renderer instanceof RenderPlayer))
+        if (this.renderer == null || !(this.renderer instanceof RenderCustomModel))
         {
             return false;
         }
 
-        RenderPlayer renderer = (RenderPlayer) this.renderer;
+        RenderCustomModel renderer = (RenderCustomModel) this.renderer;
 
         renderer.setupModel(player);
 
@@ -68,6 +68,15 @@ public class CustomMorph extends AbstractMorph
         }
 
         return true;
+    }
+
+    @Override
+    @SideOnly(Side.CLIENT)
+    public void render(EntityLivingBase entity, double x, double y, double z, float entityYaw, float partialTicks)
+    {
+        RenderCustomModel render = (RenderCustomModel) this.renderer;
+
+        render.doRender(entity, x, y, z, entityYaw, partialTicks);
     }
 
     /* Updating and stuff */
