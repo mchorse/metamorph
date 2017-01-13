@@ -4,8 +4,13 @@ import java.util.List;
 
 import com.google.common.collect.Lists;
 
+import mchorse.metamorph.api.models.IMorphProvider;
+import mchorse.metamorph.api.morphs.AbstractMorph;
 import mchorse.metamorph.api.morphs.EntityMorph;
+import mchorse.metamorph.capabilities.morphing.IMorphing;
+import mchorse.metamorph.capabilities.morphing.MorphingProvider;
 import net.minecraft.entity.Entity;
+import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.inventory.EntityEquipmentSlot;
 import net.minecraft.nbt.NBTBase;
 import net.minecraft.nbt.NBTPrimitive;
@@ -168,5 +173,27 @@ public class EntityUtils
         }
 
         return slot;
+    }
+
+    /**
+     * Get morph from an entity 
+     */
+    public static AbstractMorph getMorph(EntityLivingBase entity)
+    {
+        if (entity instanceof IMorphProvider)
+        {
+            return ((IMorphProvider) entity).getMorph();
+        }
+        else
+        {
+            IMorphing cap = entity.getCapability(MorphingProvider.MORPHING_CAP, null);
+
+            if (cap != null)
+            {
+                return cap.getCurrentMorph();
+            }
+        }
+
+        return null;
     }
 }
