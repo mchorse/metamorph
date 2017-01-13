@@ -41,7 +41,7 @@ public interface IMorphing
     /**
      * Set current morph
      */
-    public void setCurrentMorph(AbstractMorph morph, EntityPlayer player, boolean force);
+    public boolean setCurrentMorph(AbstractMorph morph, EntityPlayer player, boolean force);
 
     /**
      * Demorph this capability 

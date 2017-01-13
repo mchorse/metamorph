@@ -34,6 +34,9 @@ public class MorphEvent extends Event
         this.force = force;
     }
 
+    /**
+     * Whether given player is about to demorph
+     */
     public boolean isDemorphing()
     {
         return this.morph == null;

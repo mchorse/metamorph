@@ -8,9 +8,7 @@ import mchorse.metamorph.client.render.RenderPlayer;
 import net.minecraft.client.Minecraft;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.EnumHand;
-import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
@@ -25,11 +23,6 @@ public class CustomMorph extends AbstractMorph
      * Morph's model
      */
     public Model model;
-
-    /**
-     * Alternative skin for this morph
-     */
-    public ResourceLocation skin;
 
     /* Rendering */
 
@@ -118,7 +111,6 @@ public class CustomMorph extends AbstractMorph
         morph.action = this.action;
 
         morph.model = this.model;
-        morph.skin = this.skin;
         morph.renderer = this.renderer;
 
         return morph;
@@ -134,33 +126,5 @@ public class CustomMorph extends AbstractMorph
     public float getHeight(EntityLivingBase target)
     {
         return model.poses.get("standing").size[1];
-    }
-
-    /**
-     * Add skin field to NBT when persisting 
-     */
-    @Override
-    public void toNBT(NBTTagCompound tag)
-    {
-        super.toNBT(tag);
-
-        if (this.skin != null)
-        {
-            tag.setString("Skin", this.skin.toString());
-        }
-    }
-
-    /**
-     * Read skin field from NBT
-     */
-    @Override
-    public void fromNBT(NBTTagCompound tag)
-    {
-        super.fromNBT(tag);
-
-        if (tag.hasKey("Skin"))
-        {
-            this.skin = new ResourceLocation(tag.getString("Skin"));
-        }
     }
 }

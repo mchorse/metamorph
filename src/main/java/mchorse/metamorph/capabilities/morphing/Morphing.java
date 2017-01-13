@@ -81,13 +81,13 @@ public class Morphing implements IMorphing
     }
 
     @Override
-    public void setCurrentMorph(AbstractMorph morph, EntityPlayer player, boolean force)
+    public boolean setCurrentMorph(AbstractMorph morph, EntityPlayer player, boolean force)
     {
         if (morph == null)
         {
             this.demorph(player);
 
-            return;
+            return true;
         }
 
         boolean creative = player != null ? player.isCreative() : false;
@@ -105,7 +105,11 @@ public class Morphing implements IMorphing
             {
                 this.morph.morph(player);
             }
+
+            return true;
         }
+
+        return false;
     }
 
     @Override

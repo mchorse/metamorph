@@ -40,6 +40,7 @@ import mchorse.vanilla_pack.actions.Teleport;
 import mchorse.vanilla_pack.attacks.KnockbackAttack;
 import mchorse.vanilla_pack.attacks.PoisonAttack;
 import mchorse.vanilla_pack.attacks.WitherAttack;
+import mchorse.vanilla_pack.morphs.BlazeMorph;
 import net.minecraft.client.model.ModelBase;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraftforge.fml.relauncher.Side;
@@ -191,7 +192,7 @@ public class VanillaMorphFactory implements IMorphFactory
         {
             models.load(model, filename);
 
-            CustomMorph morph = new CustomMorph();
+            CustomMorph morph = model.equals("Blaze") ? new BlazeMorph() : new CustomMorph();
 
             morph.name = model;
             morph.model = models.models.get(model);
