@@ -49,10 +49,10 @@ public class RenderMorph extends RenderLivingBase<EntityMorph>
     @Override
     public void doRender(EntityMorph entity, double x, double y, double z, float entityYaw, float partialTicks)
     {
-        GlStateManager.pushMatrix();
-        GlStateManager.color(0.1F, 0.9F, 1.0F, 0.7F);
+        float alpha = 0.7F - (float) entity.timer / 30 * 0.7F;
 
-        this.preRenderCallback(entity, partialTicks);
+        GlStateManager.pushMatrix();
+        GlStateManager.color(0.1F, 0.9F, 1.0F, alpha > 0.7F ? 0.7F : alpha);
 
         GlStateManager.enableNormalize();
         GlStateManager.enableBlend();
@@ -90,10 +90,14 @@ public class RenderMorph extends RenderLivingBase<EntityMorph>
         {
             Model data = ((CustomMorph) entity.morph).model;
 
-            x = MathHelper.clamp_float(data.scale[0], 0.0F, 1.5F);
-            y = MathHelper.clamp_float(data.scale[1], 0.0F, 1.5F);
-            z = MathHelper.clamp_float(data.scale[2], 0.0F, 1.5F);
+            x = data.scale[0];
+            y = data.scale[1];
+            z = data.scale[2];
         }
+
+        x = MathHelper.clamp_float(x, 0.0F, 1.5F);
+        y = MathHelper.clamp_float(y, 0.0F, 1.5F);
+        z = MathHelper.clamp_float(z, 0.0F, 1.5F);
 
         GlStateManager.scale(x * scale, y * scale, z * scale);
     }
