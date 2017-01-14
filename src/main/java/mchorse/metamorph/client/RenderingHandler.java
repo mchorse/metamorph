@@ -5,8 +5,6 @@ import mchorse.metamorph.capabilities.morphing.IMorphing;
 import mchorse.metamorph.capabilities.morphing.Morphing;
 import mchorse.metamorph.client.gui.elements.GuiOverlay;
 import mchorse.metamorph.client.gui.elements.GuiSurvivalMorphs;
-import net.minecraft.client.Minecraft;
-import net.minecraft.client.gui.GuiScreen;
 import net.minecraft.client.gui.ScaledResolution;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraftforge.client.event.RenderGameOverlayEvent;
@@ -77,7 +75,6 @@ public class RenderingHandler
         }
 
         AbstractMorph morph = capability.getCurrentMorph();
-        GuiScreen screen = Minecraft.getMinecraft().currentScreen;
 
         event.setCanceled(true);
 
