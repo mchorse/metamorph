@@ -12,8 +12,8 @@ import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLiving;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraftforge.common.util.FakePlayer;
 import net.minecraftforge.event.entity.living.LivingAttackEvent;
 import net.minecraftforge.event.entity.living.LivingDeathEvent;
 import net.minecraftforge.event.entity.living.LivingSetAttackTargetEvent;
@@ -82,7 +82,12 @@ public class MorphHandler
         Entity source = event.getSource().getEntity();
         Entity target = event.getEntity();
 
-        if (target.worldObj.isRemote || !(source instanceof EntityPlayerMP) || target instanceof EntityPlayer || Metamorph.proxy.config.prevent_kill_acquire)
+        if (target.worldObj.isRemote || source instanceof FakePlayer)
+        {
+            return;
+        }
+
+        if (!(source instanceof EntityPlayer) || target instanceof EntityPlayer || Metamorph.proxy.config.prevent_kill_acquire)
         {
             return;
         }
