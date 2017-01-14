@@ -194,7 +194,7 @@ public class GuiCreativeMenu extends GuiScreen
         this.fontRendererObj.drawStringWithShadow(I18n.format("metamorph.gui.search"), 146, 41, 0xffffffff);
 
         /* Draw labels */
-        this.drawString(fontRendererObj, I18n.format("metamorph.gui.title"), 20, 11, 0xffffff);
+        this.drawString(fontRendererObj, I18n.format("metamorph.gui.creative_title"), 20, 11, 0xffffff);
         this.drawCenteredString(fontRendererObj, selected, 70, height - 20, 0xffffff);
 
         this.pane.drawScreen(mouseX, mouseY, partialTicks);
