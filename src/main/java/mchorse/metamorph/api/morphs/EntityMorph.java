@@ -16,6 +16,7 @@ import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.renderer.entity.Render;
 import net.minecraft.client.renderer.entity.RenderLivingBase;
 import net.minecraft.entity.Entity;
+import net.minecraft.entity.EntityAgeable;
 import net.minecraft.entity.EntityList;
 import net.minecraft.entity.EntityLiving;
 import net.minecraft.entity.EntityLivingBase;
@@ -233,6 +234,11 @@ public class EntityMorph extends AbstractMorph
             ((EntityLiving) entity).setNoAI(true);
         }
 
+        if (entity instanceof EntityAgeable && !entity.worldObj.isRemote)
+        {
+            ((EntityAgeable) entity).setScaleForAge(entity.isChild());
+        }
+
         if (this.entityData == null)
         {
             this.entityData = EntityUtils.stripEntityNBT(this.entity.serializeNBT());
@@ -371,6 +377,26 @@ public class EntityMorph extends AbstractMorph
                 ride.prevRenderYawOffset = ((EntityLivingBase) targetRide).prevRenderYawOffset;
             }
         }
+    }
+
+    @Override
+    protected void updateSize(EntityLivingBase target, float width, float height)
+    {
+        boolean isAnimalChild = this.entity instanceof EntityAgeable && this.entityData.getInteger("Age") < 0;
+
+        /* Because Minecraft is shit at syncing data!
+         * 
+         * The problem is that Minecraft changes to correct size of baby 
+         * animals on the client, but on the server it doesn't change anything 
+         * thus I have to rely on proivded NBT data for figuring out if an 
+         * animal entity is being a baby */
+        if (!target.worldObj.isRemote && isAnimalChild)
+        {
+            width *= 0.5;
+            height *= 0.5;
+        }
+
+        super.updateSize(target, width, height);
     }
 
     /**

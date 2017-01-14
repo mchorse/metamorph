@@ -173,6 +173,8 @@ public abstract class AbstractMorph
             ((EntityPlayer) target).eyeHeight = height * 0.9F;
         }
 
+        System.out.println(width + " " + height);
+
         /* This is a total rip-off of EntityPlayer#setSize method */
         if (width != target.width || height != target.height)
         {
