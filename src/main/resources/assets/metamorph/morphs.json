@@ -78,9 +78,8 @@
         "health": 20
     },
     "VillagerGolem": {
-        "attack": "knockback",
         "health": 100,
-        "speed": 0.09
+        "speed": 0.04
     },
     
     "Blaze": {

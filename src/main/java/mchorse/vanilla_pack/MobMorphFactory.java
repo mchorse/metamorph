@@ -6,6 +6,7 @@ import mchorse.metamorph.api.MorphList;
 import mchorse.metamorph.api.MorphManager;
 import mchorse.metamorph.api.morphs.AbstractMorph;
 import mchorse.metamorph.api.morphs.EntityMorph;
+import mchorse.vanilla_pack.morphs.IronGolemMorph;
 import net.minecraft.client.Minecraft;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityList;
@@ -145,7 +146,7 @@ public class MobMorphFactory implements IMorphFactory
     private void addMorph(MorphList morphs, String name, String variant, String json)
     {
         World world = Minecraft.getMinecraft().theWorld;
-        EntityMorph morph = new EntityMorph();
+        EntityMorph morph = name.equals("VillagerGolem") ? new IronGolemMorph() : new EntityMorph();
         EntityLivingBase entity = (EntityLivingBase) EntityList.createEntityByName(name, world);
         NBTTagCompound data = entity.serializeNBT();
 
@@ -220,7 +221,7 @@ public class MobMorphFactory implements IMorphFactory
 
         if (this.hasMorph(name))
         {
-            EntityMorph morph = new EntityMorph();
+            EntityMorph morph = name.equals("VillagerGolem") ? new IronGolemMorph() : new EntityMorph();
 
             morph.fromNBT(tag);
 

@@ -158,21 +158,9 @@ public class VanillaMorphFactory implements IMorphFactory
      */
     private void registerModels(ModelManager models)
     {
-        /* Animals */
-        this.loadModel(models, "Rabbit");
-        this.loadModel(models, "Squid");
-        this.loadModel(models, "Wolf");
-
-        /* Neutral mobs */
-        this.loadModel(models, "VillagerGolem", "iron_golem");
-
         /* Hostile mobs */
         this.loadModel(models, "Blaze");
-        this.loadModel(models, "CaveSpider", "cave_spider");
         this.loadModel(models, "Creeper");
-        this.loadModel(models, "Ghast");
-        this.loadModel(models, "Spider");
-        this.loadModel(models, "Witch");
     }
 
     /**

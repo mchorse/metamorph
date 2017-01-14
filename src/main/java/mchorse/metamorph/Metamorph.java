@@ -61,7 +61,7 @@ public class Metamorph
 
     /* Logging */
 
-    // TODO: Set to false when publishing
+    // TODO: Set to false when publishing and remove all unnecessary printlns
     public static boolean DEBUG = true;
     public static Logger LOGGER;
 
