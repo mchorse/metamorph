@@ -69,11 +69,6 @@ public abstract class AbstractMorph
      */
     public String name = "";
 
-    /**
-     * Morph's category
-     */
-    public String category = "";
-
     /* Rendering */
 
     /**
@@ -240,7 +235,14 @@ public abstract class AbstractMorph
     }
 
     /**
-     * Clone a morph
+     * <p>Clone a morph.</p>
+     * 
+     * <p>
+     * <b>IMPORTANT</b>: when you subclass other morphs, don't forget to override 
+     * their method with your own, because otherwise its going to create 
+     * another {@link CustomMorph} instance, for example, instead of 
+     * MyCustomMorph instance.
+     * </p>
      */
     public abstract AbstractMorph clone();
 
@@ -278,7 +280,6 @@ public abstract class AbstractMorph
     public void toNBT(NBTTagCompound tag)
     {
         tag.setString("Name", this.name);
-        tag.setString("Category", this.category);
     }
 
     /**
@@ -287,6 +288,5 @@ public abstract class AbstractMorph
     public void fromNBT(NBTTagCompound tag)
     {
         this.name = tag.getString("Name");
-        this.category = tag.getString("Category");
     }
 }

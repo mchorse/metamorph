@@ -75,8 +75,8 @@ public class MobMorphFactory implements IMorphFactory
             this.addMorph(morphs, "Sheep", "{Color:" + i + "}");
         }
 
-        this.addMorph(morphs, "Sheep", "{CustomName:\"jeb_\"}");
-        this.addMorph(morphs, "Sheep", "{Age:-1,CustomName:\"jeb_\"}");
+        this.addMorph(morphs, "Sheep", "Jeb", "{CustomName:\"jeb_\"}");
+        this.addMorph(morphs, "Sheep", "Baby Jeb", "{Age:-1,CustomName:\"jeb_\"}");
 
         /* Slime and magma cube variants */
         this.addMorph(morphs, "Slime", "{Size:1}");
@@ -101,10 +101,10 @@ public class MobMorphFactory implements IMorphFactory
         this.addMorph(morphs, "EntityHorse", "{Type:0,Variant:4}");
         this.addMorph(morphs, "EntityHorse", "{Type:0,Variant:5}");
         this.addMorph(morphs, "EntityHorse", "{Type:0,Variant:6}");
-        this.addMorph(morphs, "EntityHorse", "{Type:1,Variant:0}");
-        this.addMorph(morphs, "EntityHorse", "{Type:2,Variant:0}");
-        this.addMorph(morphs, "EntityHorse", "{Type:3,Variant:0}");
-        this.addMorph(morphs, "EntityHorse", "{Type:4,Variant:0}");
+        this.addMorph(morphs, "EntityHorse", "Donkey", "{Type:1,Variant:0}");
+        this.addMorph(morphs, "EntityHorse", "Mule", "{Type:2,Variant:0}");
+        this.addMorph(morphs, "EntityHorse", "Skeleton", "{Type:3,Variant:0}");
+        this.addMorph(morphs, "EntityHorse", "Zombie", "{Type:4,Variant:0}");
 
         /* Adding villager variants */
         this.addMorph(morphs, "Villager", "{ProfessionName:\"minecraft:librarian\"}");
@@ -116,11 +116,11 @@ public class MobMorphFactory implements IMorphFactory
         this.addMorph(morphs, "Bat", "{BatFlags:2}");
 
         /* Skeleton variants */
-        this.addMorph(morphs, "Skeleton", "{SkeletonType:1}");
-        this.addMorph(morphs, "Skeleton", "{SkeletonType:2}");
+        this.addMorph(morphs, "Skeleton", "Wither", "{SkeletonType:1}");
+        this.addMorph(morphs, "Skeleton", "Stray", "{SkeletonType:2}");
 
         /* Adding Zombie variants */
-        this.addMorph(morphs, "Zombie", "{IsBaby:1b}");
+        this.addMorph(morphs, "Zombie", "Baby", "{IsBaby:1b}");
 
         for (int i = 1; i < 7; i++)
         {
@@ -128,13 +128,21 @@ public class MobMorphFactory implements IMorphFactory
         }
 
         /* Adding elder guardian */
-        this.addMorph(morphs, "Guardian", "{Elder:1b}");
+        this.addMorph(morphs, "Guardian", "Elder", "{Elder:1b}");
     }
 
     /**
      * Add an entity morph to the morph list
      */
     private void addMorph(MorphList morphs, String name, String json)
+    {
+        this.addMorph(morphs, name, "", json);
+    }
+
+    /**
+     * Add an entity morph to the morph list
+     */
+    private void addMorph(MorphList morphs, String name, String variant, String json)
     {
         World world = Minecraft.getMinecraft().theWorld;
         EntityMorph morph = new EntityMorph();
@@ -156,26 +164,27 @@ public class MobMorphFactory implements IMorphFactory
             }
         }
 
-        EntityUtils.stripEntityNBT(data);
-        morph.setEntityData(data);
-        morphs.addMorphVariant(name, morph);
-
         /* Setting up a category */
         int index = name.indexOf(".");
+        String category = "";
 
         if (index >= 0)
         {
             /* Category for third party mod mobs */
-            morph.category = name.substring(0, index);
+            category = name.substring(0, index);
         }
         else if (entity instanceof EntityAnimal)
         {
-            morph.category = "animal";
+            category = "animal";
         }
         else if (entity instanceof EntityMob)
         {
-            morph.category = "hostile";
+            category = "hostile";
         }
+
+        EntityUtils.stripEntityNBT(data);
+        morph.setEntityData(data);
+        morphs.addMorphVariant(name, category, variant, morph);
     }
 
     /**

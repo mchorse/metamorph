@@ -20,7 +20,7 @@ public class MorphList
      * This field is going to be responsible storing morphs. Feel free to use 
      * this field directly, but don't abuse this privilege.  
      */
-    public Map<String, List<AbstractMorph>> morphs = new HashMap<String, List<AbstractMorph>>();
+    public Map<String, List<MorphCell>> morphs = new HashMap<String, List<MorphCell>>();
 
     /**
      * Checks if this list has a morph by given name 
@@ -31,21 +31,36 @@ public class MorphList
     }
 
     /**
-     * Add a morph to this morph list. 
-     * 
-     * If this list already has a morph by this name, the operation is 
-     * cancelled.  
+     * Add a morph to this list with name   
      */
     public void addMorph(String name, AbstractMorph morph)
+    {
+        this.addMorph(name, "", "", morph);
+    }
+
+    /**
+     * Add a morph to this list with name and category
+     */
+    public void addMorph(String name, String category, AbstractMorph morph)
+    {
+        this.addMorph(name, category, "", morph);
+    }
+
+    /**
+     * Add a morph to this list with name, category and variant name
+     * 
+     * This method is responsible for adding a morph variant
+     */
+    public void addMorph(String name, String category, String variant, AbstractMorph morph)
     {
         if (this.hasMorph(name))
         {
             return;
         }
 
-        List<AbstractMorph> list = new ArrayList<AbstractMorph>();
+        List<MorphCell> list = new ArrayList<MorphCell>();
 
-        list.add(morph);
+        list.add(new MorphCell(morph, category, variant));
         this.morphs.put(name, list);
     }
 
@@ -55,15 +70,15 @@ public class MorphList
      * This is like {@link #addMorph(String, AbstractMorph)}, but it appends 
      * another morph. Basically, it adds a morph variant.
      */
-    public void addMorphVariant(String name, AbstractMorph morph)
+    public void addMorphVariant(String name, String category, String variant, AbstractMorph morph)
     {
         if (this.hasMorph(name))
         {
-            this.morphs.get(name).add(morph);
+            this.morphs.get(name).add(new MorphCell(morph, category, variant));
         }
         else
         {
-            this.addMorph(name, morph);
+            this.addMorph(name, category, variant, morph);
         }
     }
 
@@ -74,13 +89,33 @@ public class MorphList
     {
         if (this.hasMorph(name))
         {
-            List<AbstractMorph> list = this.morphs.get(name);
+            List<MorphCell> list = this.morphs.get(name);
 
             /* Safe removing technique, avoiding exception basically */
             if (!list.isEmpty() && index >= 0 && index < list.size())
             {
                 list.remove(index);
             }
+        }
+    }
+
+    /**
+     * Morph cell
+     * 
+     * This class is responsible for containing additional information about 
+     * morphs such as its category and variant.
+     */
+    public static class MorphCell
+    {
+        public AbstractMorph morph;
+        public String category;
+        public String variant;
+
+        public MorphCell(AbstractMorph morph, String category, String variant)
+        {
+            this.morph = morph;
+            this.category = category;
+            this.variant = variant;
         }
     }
 }

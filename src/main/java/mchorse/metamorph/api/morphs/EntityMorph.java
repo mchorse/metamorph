@@ -525,7 +525,6 @@ public class EntityMorph extends AbstractMorph
         EntityMorph morph = new EntityMorph();
 
         morph.name = this.name;
-        morph.category = this.category;
 
         morph.abilities = this.abilities;
         morph.attack = this.attack;

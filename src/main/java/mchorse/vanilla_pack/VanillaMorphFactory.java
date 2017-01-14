@@ -122,7 +122,7 @@ public class VanillaMorphFactory implements IMorphFactory
     {
         for (CustomMorph morph : this.morphs.values())
         {
-            morphs.addMorph(morph.name, morph.clone());
+            morphs.addMorph(morph.name, "patched_vanilla", morph.clone());
         }
     }
 
@@ -196,7 +196,6 @@ public class VanillaMorphFactory implements IMorphFactory
 
             morph.name = model;
             morph.model = models.models.get(model);
-            morph.category = "patched_vanilla";
 
             this.morphs.put(model, morph);
         }

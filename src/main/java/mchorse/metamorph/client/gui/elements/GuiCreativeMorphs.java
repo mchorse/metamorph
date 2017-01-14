@@ -8,6 +8,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import mchorse.metamorph.api.MorphList;
 import mchorse.metamorph.api.MorphManager;
 import mchorse.metamorph.api.morphs.AbstractMorph;
 import mchorse.metamorph.capabilities.morphing.IMorphing;
@@ -79,9 +80,9 @@ public class GuiCreativeMorphs extends GuiScrollPane
     {
         Map<String, MorphCategory> categories = new HashMap<String, MorphCategory>();
 
-        for (List<AbstractMorph> morphs : MorphManager.INSTANCE.getMorphs().morphs.values())
+        for (List<MorphList.MorphCell> morphs : MorphManager.INSTANCE.getMorphs().morphs.values())
         {
-            for (AbstractMorph morph : morphs)
+            for (MorphList.MorphCell morph : morphs)
             {
                 MorphCategory category = categories.get(morph.category);
 
@@ -91,7 +92,10 @@ public class GuiCreativeMorphs extends GuiScrollPane
                     categories.put(morph.category, category);
                 }
 
-                category.cells.add(new MorphCell(morph.name, morph, 0));
+                String variant = morph.variant.isEmpty() ? morph.variant : " (" + morph.variant + ")";
+                String title = MorphManager.INSTANCE.morphDisplayNameFromMorph(morph.morph.name) + variant;
+
+                category.cells.add(new MorphCell(title, morph.morph, 0));
             }
         }
 
@@ -205,7 +209,7 @@ public class GuiCreativeMorphs extends GuiScrollPane
     /**
      * Get currently selected morph 
      */
-    public AbstractMorph getSelected()
+    public MorphCell getSelected()
     {
         if (this.selected >= 0 && this.selected < this.categories.size())
         {
@@ -213,7 +217,7 @@ public class GuiCreativeMorphs extends GuiScrollPane
 
             if (this.selectedMorph >= 0 && this.selectedMorph < category.cells.size())
             {
-                return category.cells.get(this.selectedMorph).morph;
+                return category.cells.get(this.selectedMorph);
             }
         }
 

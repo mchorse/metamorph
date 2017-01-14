@@ -5,9 +5,9 @@ import java.io.IOException;
 import org.lwjgl.input.Keyboard;
 import org.lwjgl.opengl.GL11;
 
-import mchorse.metamorph.api.MorphManager;
 import mchorse.metamorph.api.morphs.AbstractMorph;
 import mchorse.metamorph.client.gui.elements.GuiCreativeMorphs;
+import mchorse.metamorph.client.gui.elements.GuiCreativeMorphs.MorphCell;
 import mchorse.metamorph.network.Dispatcher;
 import mchorse.metamorph.network.common.PacketAcquireMorph;
 import mchorse.metamorph.network.common.PacketMorph;
@@ -91,20 +91,20 @@ public class GuiCreativeMenu extends GuiScreen
     @Override
     protected void actionPerformed(GuiButton button) throws IOException
     {
-        AbstractMorph morph = this.pane.getSelected();
+        MorphCell morph = this.pane.getSelected();
 
         if (button.id != 1)
         {
             if (button.id == 0)
             {
-                Dispatcher.sendToServer(new PacketMorph(morph));
+                Dispatcher.sendToServer(new PacketMorph(morph.morph));
             }
 
             Minecraft.getMinecraft().displayGuiScreen(null);
         }
         else if (morph != null)
         {
-            Dispatcher.sendToServer(new PacketAcquireMorph(morph));
+            Dispatcher.sendToServer(new PacketAcquireMorph(morph.morph));
         }
     }
 
@@ -185,17 +185,8 @@ public class GuiCreativeMenu extends GuiScreen
     public void drawScreen(int mouseX, int mouseY, float partialTicks)
     {
         /* Label variables */
-        AbstractMorph morph = this.pane.getSelected();
-        String selected = null;
-
-        if (morph != null)
-        {
-            selected = MorphManager.INSTANCE.morphDisplayNameFromMorph(morph.name);
-        }
-        else
-        {
-            selected = I18n.format("metamorph.gui.no_morph");
-        }
+        MorphCell morph = this.pane.getSelected();
+        String selected = morph != null ? morph.name : I18n.format("metamorph.gui.no_morph");
 
         /* Draw panel backgrounds */
         this.drawDefaultBackground();
@@ -211,7 +202,7 @@ public class GuiCreativeMenu extends GuiScreen
 
         if (morph != null)
         {
-            this.renderMorph(morph, Minecraft.getMinecraft().thePlayer, 70, height - (int) ((float) height / 2.6), 43);
+            this.renderMorph(morph.morph, Minecraft.getMinecraft().thePlayer, 70, height - (int) ((float) height / 2.6), 43);
         }
 
         /* Disable scissors */

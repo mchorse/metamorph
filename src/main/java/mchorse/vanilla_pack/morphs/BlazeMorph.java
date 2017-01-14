@@ -45,7 +45,6 @@ public class BlazeMorph extends CustomMorph
         BlazeMorph morph = new BlazeMorph();
 
         morph.name = this.name;
-        morph.category = this.category;
 
         morph.abilities = this.abilities;
         morph.attack = this.attack;

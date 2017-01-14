@@ -13,8 +13,6 @@ import mchorse.metamorph.api.morphs.AbstractMorph;
 import net.minecraft.client.resources.I18n;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityList;
-import net.minecraft.entity.monster.EntitySkeleton;
-import net.minecraft.entity.monster.SkeletonType;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
@@ -161,16 +159,6 @@ public class MorphManager
      */
     public String morphNameFromEntity(Entity entity)
     {
-        if (entity instanceof EntitySkeleton)
-        {
-            SkeletonType skeleton = ((EntitySkeleton) entity).func_189771_df();
-
-            if (skeleton.equals(SkeletonType.WITHER))
-            {
-                return "WitherSkeleton";
-            }
-        }
-
         return EntityList.getEntityString(entity);
     }
 
@@ -180,11 +168,6 @@ public class MorphManager
     @SideOnly(Side.CLIENT)
     public String morphDisplayNameFromMorph(String morph)
     {
-        if (morph.equals("WitherSkeleton"))
-        {
-            morph = "Skeleton";
-        }
-
         String key = "entity." + morph + ".name";
         String result = I18n.format(key);
 
