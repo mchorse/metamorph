@@ -130,6 +130,14 @@ public class MobMorphFactory implements IMorphFactory
 
         /* Adding elder guardian */
         this.addMorph(morphs, "Guardian", "Elder", "{Elder:1b}");
+
+        /* Adding rabbit variants */
+        for (int i = 1; i < 6; i++)
+        {
+            this.addMorph(morphs, "Rabbit", "{RabbitType:" + i + "}");
+        }
+
+        this.addMorph(morphs, "Rabbit", "Toast", "{CustomName:\"Toast\"}");
     }
 
     /**

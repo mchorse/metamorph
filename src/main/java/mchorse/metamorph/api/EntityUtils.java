@@ -41,7 +41,7 @@ public class EntityUtils
         {
             String name = tag.getString("CustomName");
 
-            if (!name.equals("jeb_") && !name.equals("Grumm") && !name.equals("Dinnerbone"))
+            if (!name.equals("jeb_") && !name.equals("Grumm") && !name.equals("Dinnerbone") && !name.equals("Toast"))
             {
                 tag.removeTag("CustomName");
             }

@@ -1,6 +1,10 @@
 package mchorse.metamorph.api.morphs;
 
 import java.lang.reflect.Method;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.List;
 
 import mchorse.metamorph.Metamorph;
 import mchorse.metamorph.api.EntityUtils;
@@ -23,6 +27,7 @@ import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.boss.EntityDragon;
 import net.minecraft.entity.monster.EntityMob;
 import net.minecraft.entity.passive.EntityPig;
+import net.minecraft.entity.passive.EntityRabbit;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
@@ -80,9 +85,18 @@ public class EntityMorph extends AbstractMorph
     {
         EntityLivingBase entity = this.getEntity(player.worldObj);
 
-        if (entity.height > 2.5)
+        if (entity.height > 2)
         {
             scale *= 2 / entity.height;
+        }
+        else if (entity.height < 0.6)
+        {
+            scale *= 0.5 / entity.height;
+        }
+
+        if (this.name.equals("Ghast"))
+        {
+            scale = 5F;
         }
         else if (this.name.equals("Guardian") && entity.height > 1.8)
         {
@@ -120,17 +134,23 @@ public class EntityMorph extends AbstractMorph
         if (hand.equals(EnumHand.MAIN_HAND))
         {
             float rax = this.rightHand.rotateAngleX;
+            float ray = this.rightHand.rotateAngleY;
+            float raz = this.rightHand.rotateAngleZ;
             float rpx = this.rightHand.rotationPointX;
             float rpy = this.rightHand.rotationPointY;
             float rpz = this.rightHand.rotationPointZ;
 
             this.rightHand.rotateAngleX = 0;
+            this.rightHand.rotateAngleY = 0;
+            this.rightHand.rotateAngleZ = 0;
             this.rightHand.rotationPointX = -6;
             this.rightHand.rotationPointY = 4;
             this.rightHand.rotationPointZ = 0;
             this.rightHand.render(0.0625F);
 
             this.rightHand.rotateAngleX = rax;
+            this.rightHand.rotateAngleY = ray;
+            this.rightHand.rotateAngleZ = raz;
             this.rightHand.rotationPointX = rpx;
             this.rightHand.rotationPointY = rpy;
             this.rightHand.rotationPointZ = rpz;
@@ -279,6 +299,16 @@ public class EntityMorph extends AbstractMorph
         entity.onUpdate();
         entity.deathTime = target.deathTime;
         entity.hurtTime = target.hurtTime;
+
+        if (this.entity instanceof EntityRabbit)
+        {
+            System.out.println(target.limbSwingAmount + " ");
+
+            if (target.ticksExisted % 10 == 0 && target.limbSwingAmount > 0.4)
+            {
+                ((EntityRabbit) this.entity).startJumping();
+            }
+        }
 
         /* Update player */
         this.updateSize(target, this.entity.width, this.entity.height);
@@ -502,6 +532,36 @@ public class EntityMorph extends AbstractMorph
         {
             this.leftHand = ((ModelQuadruped) model).leg2;
             this.rightHand = ((ModelQuadruped) model).leg3;
+        }
+        else
+        {
+            /* For anything else */
+            List<ModelRenderer> left = new ArrayList<ModelRenderer>();
+            List<ModelRenderer> right = new ArrayList<ModelRenderer>();
+
+            left.addAll(model.boxList);
+            right.addAll(model.boxList);
+
+            Collections.sort(left, new Comparator<ModelRenderer>()
+            {
+                @Override
+                public int compare(ModelRenderer a, ModelRenderer b)
+                {
+                    return (int) Math.ceil(a.rotationPointX - b.rotationPointX);
+                }
+            });
+
+            Collections.sort(right, new Comparator<ModelRenderer>()
+            {
+                @Override
+                public int compare(ModelRenderer a, ModelRenderer b)
+                {
+                    return (int) Math.ceil(b.rotationPointX - a.rotationPointX);
+                }
+            });
+
+            this.leftHand = left.isEmpty() ? null : left.get(0);
+            this.rightHand = right.isEmpty() ? null : right.get(0);
         }
     }
 

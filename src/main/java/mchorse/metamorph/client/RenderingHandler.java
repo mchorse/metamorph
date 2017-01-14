@@ -8,9 +8,6 @@ import mchorse.metamorph.client.gui.elements.GuiSurvivalMorphs;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiScreen;
 import net.minecraft.client.gui.ScaledResolution;
-import net.minecraft.client.gui.inventory.GuiContainerCreative;
-import net.minecraft.client.gui.inventory.GuiInventory;
-import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraftforge.client.event.RenderGameOverlayEvent;
 import net.minecraftforge.client.event.RenderPlayerEvent;
@@ -82,32 +79,9 @@ public class RenderingHandler
         AbstractMorph morph = capability.getCurrentMorph();
         GuiScreen screen = Minecraft.getMinecraft().currentScreen;
 
-        boolean inGUI = screen instanceof GuiInventory || screen instanceof GuiContainerCreative;
-
         event.setCanceled(true);
-
-        /* Downscaling the player in GUIs */
-        if (inGUI)
-        {
-            float scale = 1;
-            float height = morph.getHeight(player);
-
-            if (height > 2F)
-            {
-                // TODO: make a method for the setting up render scale
-                scale = 1.3F / height;
-            }
-
-            GlStateManager.pushMatrix();
-            GlStateManager.scale(scale, scale, scale);
-        }
 
         /* Render the morph itself */
         morph.render(player, event.getX(), event.getY(), event.getZ(), player.rotationYaw, event.getPartialRenderTick());
-
-        if (inGUI)
-        {
-            GlStateManager.popMatrix();
-        }
     }
 }
