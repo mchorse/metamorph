@@ -1,5 +1,39 @@
 # Metamorph Change Log
 
+## Metamorph 1.1
+
+A big update of Metamorph mod. This update introduces third-party morph support and public API. A lot of code was rewritten, and 
+
+* Added Public API (technical)
+    * `mchorse.metamorph.api.MorphAPI` class provides API static methods
+    * `IMorphProvider` – for entities that want to be rendered
+    * `IHandProvider` – for `ModelBase`s who want to provide `ModelRenderer`s for first-person hand rendering
+    * Multiple Forge events posted on `MinecraftForge.EVENT_BUS`:
+        * `MorphEvent` – when player is about to morph or to demorph
+        * `AcquireMorphEvent` – when player is about to acquire a morph
+        * `MorphActionEvent` – when player is about to use morph's action
+    * `IMorphFactory` – for adding and registering morphs, abilities, attacks and actions.
+* Added support for third-party living base mobs (Entities which derive from `EntityLivingBase` and have `RenderLivingBase<?>` renderers)
+* Added morphs user configuration (`morphs.json` in config folder)
+* Added much more morphs to **Creative Morph Menu**
+* Added favoriting of acquired morphs (thanks to NlL5)
+* Added removal of acquired morphs (thanks to LeKoopa and NlL5)
+* Enhanced **Creative Morph Menu** GUI:
+    * Added "Acquire" a morph button
+    * Added "Search" text field filter
+    * Added sorting by category and ABC
+    * Changed layout
+* Enhanced **Survival Morph Menu** GUI:
+    * Added a key binding to make survival menu focusable
+    * Added two key bindings for switching between merged variants
+    * Added "Remove" and "Favorite" buttons
+    * Added filtering by favorites
+    * Added sorting by ABC
+    * Merged morphs by same name into one cell with vertical scrolling
+* Improved `swim` ability (suffocation on the air and better mobility)
+* Improved `VillagerGolem` morph (it's strong, slow and very heavy)
+* Improved `sun_allergy` ability – if player wears a helmet, player doesn't burn, but helmet gets damage (thanks to @The-Fireplace)
+
 ## Metamorph 1.0.2
 
 Small patch update that makes this mod work on Forge modded server (I thought it was working, but apparently I forgot to test it out).
