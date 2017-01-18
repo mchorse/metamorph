@@ -8,13 +8,19 @@ import mchorse.metamorph.capabilities.morphing.IMorphing;
 import mchorse.metamorph.capabilities.morphing.MorphingProvider;
 import mchorse.metamorph.client.model.ModelCustom;
 import mchorse.metamorph.client.model.ModelCustomRenderer;
+import mchorse.metamorph.client.render.layers.LayerActorArmor;
+import mchorse.metamorph.client.render.layers.LayerElytra;
+import mchorse.metamorph.client.render.layers.LayerHeldItem;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.model.ModelBase;
+import net.minecraft.client.model.ModelBiped;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.renderer.entity.RenderLivingBase;
 import net.minecraft.client.renderer.entity.RenderManager;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.item.EnumAction;
+import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.Vec3d;
@@ -24,6 +30,10 @@ public class RenderCustomModel extends RenderLivingBase<EntityLivingBase>
     public RenderCustomModel(RenderManager renderManagerIn, ModelBase modelBaseIn, float shadowSizeIn)
     {
         super(renderManagerIn, null, shadowSizeIn);
+
+        this.addLayer(new LayerActorArmor(this));
+        this.addLayer(new LayerHeldItem(this));
+        this.addLayer(new LayerElytra(this));
     }
 
     /**
@@ -40,9 +50,61 @@ public class RenderCustomModel extends RenderLivingBase<EntityLivingBase>
     {
         this.setupModel(entity);
 
-        if (this.mainModel == null) return;
+        if (this.mainModel != null)
+        {
+            this.setHands(entity);
+            super.doRender(entity, x, y, z, entityYaw, partialTicks);
+        }
+    }
 
-        super.doRender(entity, x, y, z, entityYaw, partialTicks);
+    /**
+     * Set hands postures
+     */
+    private void setHands(EntityLivingBase entity)
+    {
+        ItemStack rightItem = entity.getHeldItemMainhand();
+        ItemStack leftItem = entity.getHeldItemOffhand();
+
+        ModelBiped.ArmPose right = ModelBiped.ArmPose.EMPTY;
+        ModelBiped.ArmPose left = ModelBiped.ArmPose.EMPTY;
+        ModelCustom model = (ModelCustom) this.mainModel;
+
+        if (rightItem != null)
+        {
+            right = ModelBiped.ArmPose.ITEM;
+
+            if (entity.getItemInUseCount() > 0)
+            {
+                EnumAction enumaction = rightItem.getItemUseAction();
+
+                if (enumaction == EnumAction.BLOCK)
+                {
+                    right = ModelBiped.ArmPose.BLOCK;
+                }
+                else if (enumaction == EnumAction.BOW)
+                {
+                    right = ModelBiped.ArmPose.BOW_AND_ARROW;
+                }
+            }
+        }
+
+        if (leftItem != null)
+        {
+            left = ModelBiped.ArmPose.ITEM;
+
+            if (entity.getItemInUseCount() > 0)
+            {
+                EnumAction enumaction1 = leftItem.getItemUseAction();
+
+                if (enumaction1 == EnumAction.BLOCK)
+                {
+                    left = ModelBiped.ArmPose.BLOCK;
+                }
+            }
+        }
+
+        model.rightPose = right;
+        model.leftPose = left;
     }
 
     /**
