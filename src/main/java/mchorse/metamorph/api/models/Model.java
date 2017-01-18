@@ -118,6 +118,16 @@ public class Model
         }
     }
 
+    /**
+     * Get pose, or return default pose (which is the "standing" pose)
+     */
+    public Pose getPose(String key)
+    {
+        Pose pose = this.poses.get(key);
+
+        return pose == null ? this.poses.get("standing") : pose;
+    }
+
     @Override
     public String toString()
     {
