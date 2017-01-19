@@ -2,6 +2,7 @@ package mchorse.metamorph.api;
 
 import mchorse.metamorph.api.morphs.AbstractMorph;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.world.World;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
@@ -31,7 +32,7 @@ public interface IMorphFactory
     /**
      * Get all available morphs for this morphing factory
      */
-    public void getMorphs(MorphList morphs);
+    public void getMorphs(MorphList morphs, World world);
 
     /**
      * Does this factory has morph by given name? 

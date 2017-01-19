@@ -31,13 +31,20 @@ public class CustomMorph extends AbstractMorph
     public void renderOnScreen(EntityPlayer player, int x, int y, float scale, float alpha)
     {
         ModelCustom model = ModelCustom.MODELS.get(this.name);
-        Model data = model.model;
 
-        model.pose = model.model.poses.get("standing");
-        model.swingProgress = 0;
+        if (model != null)
+        {
+            Model data = model.model;
 
-        Minecraft.getMinecraft().renderEngine.bindTexture(data.defaultTexture);
-        GuiUtils.drawModel(model, player, x, y, scale, alpha);
+            if (data != null && data.defaultTexture != null)
+            {
+                model.pose = model.model.poses.get("standing");
+                model.swingProgress = 0;
+
+                Minecraft.getMinecraft().renderEngine.bindTexture(data.defaultTexture);
+                GuiUtils.drawModel(model, player, x, y, scale, alpha);
+            }
+        }
     }
 
     @Override

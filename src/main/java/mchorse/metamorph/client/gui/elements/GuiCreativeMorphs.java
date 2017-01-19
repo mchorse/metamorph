@@ -18,6 +18,7 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.client.resources.I18n;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.util.math.MathHelper;
+import net.minecraft.world.World;
 
 /**
  * Scroll list of available morphs
@@ -79,8 +80,9 @@ public class GuiCreativeMorphs extends GuiScrollPane
     private void compileCategories()
     {
         Map<String, MorphCategory> categories = new HashMap<String, MorphCategory>();
+        World world = Minecraft.getMinecraft().theWorld;
 
-        for (List<MorphList.MorphCell> morphs : MorphManager.INSTANCE.getMorphs().morphs.values())
+        for (List<MorphList.MorphCell> morphs : MorphManager.INSTANCE.getMorphs(world).morphs.values())
         {
             for (MorphList.MorphCell morph : morphs)
             {

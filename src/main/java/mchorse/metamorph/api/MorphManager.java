@@ -14,6 +14,7 @@ import net.minecraft.client.resources.I18n;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityList;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.world.World;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
@@ -138,13 +139,13 @@ public class MorphManager
     /**
      * Get all morphs that factories provide
      */
-    public MorphList getMorphs()
+    public MorphList getMorphs(World world)
     {
         MorphList morphs = new MorphList();
 
         for (int i = this.factories.size() - 1; i >= 0; i--)
         {
-            this.factories.get(i).getMorphs(morphs);
+            this.factories.get(i).getMorphs(morphs, world);
         }
 
         return morphs;

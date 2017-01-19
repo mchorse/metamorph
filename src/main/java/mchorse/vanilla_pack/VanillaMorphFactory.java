@@ -43,6 +43,7 @@ import mchorse.vanilla_pack.attacks.WitherAttack;
 import mchorse.vanilla_pack.morphs.BlazeMorph;
 import net.minecraft.client.model.ModelBase;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.world.World;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
@@ -118,7 +119,7 @@ public class VanillaMorphFactory implements IMorphFactory
     }
 
     @Override
-    public void getMorphs(MorphList morphs)
+    public void getMorphs(MorphList morphs, World world)
     {
         for (CustomMorph morph : this.morphs.values())
         {
