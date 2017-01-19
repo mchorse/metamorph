@@ -6,6 +6,8 @@ import org.lwjgl.input.Keyboard;
 import org.lwjgl.opengl.GL11;
 
 import mchorse.metamorph.api.morphs.AbstractMorph;
+import mchorse.metamorph.capabilities.morphing.IMorphing;
+import mchorse.metamorph.capabilities.morphing.Morphing;
 import mchorse.metamorph.client.gui.elements.GuiCreativeMorphs;
 import mchorse.metamorph.client.gui.elements.GuiCreativeMorphs.MorphCell;
 import mchorse.metamorph.network.Dispatcher;
@@ -51,7 +53,10 @@ public class GuiCreativeMenu extends GuiScreen
      */
     public GuiCreativeMenu()
     {
-        this.pane = new GuiCreativeMorphs(6);
+        EntityPlayer player = Minecraft.getMinecraft().thePlayer;
+        IMorphing morphing = Morphing.get(player);
+
+        this.pane = new GuiCreativeMorphs(6, morphing.getCurrentMorph());
     }
 
     /* GUI stuff and input */

@@ -11,8 +11,6 @@ import java.util.Map;
 import mchorse.metamorph.api.MorphList;
 import mchorse.metamorph.api.MorphManager;
 import mchorse.metamorph.api.morphs.AbstractMorph;
-import mchorse.metamorph.capabilities.morphing.IMorphing;
-import mchorse.metamorph.capabilities.morphing.Morphing;
 import mchorse.metamorph.client.gui.utils.GuiScrollPane;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.resources.I18n;
@@ -64,11 +62,11 @@ public class GuiCreativeMorphs extends GuiScrollPane
      * 
      * Compile the categories list and compute the scroll height of this scroll pane 
      */
-    public GuiCreativeMorphs(int perRow)
+    public GuiCreativeMorphs(int perRow, AbstractMorph selected)
     {
         this.perRow = perRow;
         this.compileCategories();
-        this.initiateCategories();
+        this.initiateCategories(selected);
     }
 
     /**
@@ -77,7 +75,7 @@ public class GuiCreativeMorphs extends GuiScrollPane
      * This method is responsible for compiling all morph categories into 
      * {@link #categories} list and then sorting it by its titles.
      */
-    private void compileCategories()
+    protected void compileCategories()
     {
         Map<String, MorphCategory> categories = new HashMap<String, MorphCategory>();
         World world = Minecraft.getMinecraft().theWorld;
@@ -120,11 +118,8 @@ public class GuiCreativeMorphs extends GuiScrollPane
      * alphabet, computing space attributes (height and y-coord) and selecting 
      * most similar morph that player might have.
      */
-    private void initiateCategories()
+    protected void initiateCategories(AbstractMorph morph)
     {
-        EntityPlayer player = Minecraft.getMinecraft().thePlayer;
-        IMorphing morphing = Morphing.get(player);
-
         int i = 0;
         int y = 0;
 
@@ -150,7 +145,7 @@ public class GuiCreativeMorphs extends GuiScrollPane
             /* Select current morph */
             for (MorphCell cell : category.cells)
             {
-                if (this.selected == -1 && morphing.isMorphed() && cell.morph.equals(morphing.getCurrentMorph()))
+                if (this.selected == -1 && morph != null && cell.morph.equals(morph))
                 {
                     this.selected = i;
                     this.selectedMorph = j;
