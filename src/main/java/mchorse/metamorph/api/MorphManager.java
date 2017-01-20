@@ -194,6 +194,17 @@ public class MorphManager
     @SideOnly(Side.CLIENT)
     public String morphDisplayNameFromMorph(String morph)
     {
+        for (int i = this.factories.size() - 1; i >= 0; i--)
+        {
+            String name = this.factories.get(i).displayNameForMorph(morph);
+
+            if (name != null)
+            {
+                return name;
+            }
+        }
+
+        /* Falling back to default method */
         String key = "entity." + morph + ".name";
         String result = I18n.format(key);
 

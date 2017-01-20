@@ -30,6 +30,15 @@ public interface IMorphFactory
     public void registerClient(MorphManager manager);
 
     /**
+     * Get display name for morph
+     * 
+     * IMPORTANT: If your factory doesn't override any of the names, please 
+     * return null.
+     */
+    @SideOnly(Side.CLIENT)
+    public String displayNameForMorph(String morphName);
+
+    /**
      * Get all available morphs for this morphing factory
      */
     public void getMorphs(MorphList morphs, World world);

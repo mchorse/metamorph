@@ -43,6 +43,13 @@ public class MobMorphFactory implements IMorphFactory
     public void registerClient(MorphManager manager)
     {}
 
+    @Override
+    @SideOnly(Side.CLIENT)
+    public String displayNameForMorph(String morphName)
+    {
+        return null;
+    }
+
     /**
      * Get all available variation of vanilla mobs and default types of custom 
      * mobs

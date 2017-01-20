@@ -122,6 +122,13 @@ public class VanillaMorphFactory implements IMorphFactory
     }
 
     @Override
+    @SideOnly(Side.CLIENT)
+    public String displayNameForMorph(String morphName)
+    {
+        return null;
+    }
+
+    @Override
     public void getMorphs(MorphList morphs, World world)
     {
         for (CustomMorph morph : this.morphs.values())
