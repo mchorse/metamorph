@@ -26,6 +26,7 @@ import net.minecraft.entity.EntityLiving;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.boss.EntityDragon;
 import net.minecraft.entity.monster.EntityMob;
+import net.minecraft.entity.passive.EntityAnimal;
 import net.minecraft.entity.passive.EntityPig;
 import net.minecraft.entity.passive.EntityRabbit;
 import net.minecraft.entity.player.EntityPlayer;
@@ -247,7 +248,7 @@ public class EntityMorph extends AbstractMorph
             this.health = (int) entity.getMaxHealth();
         }
 
-        this.hostile = entity instanceof EntityMob;
+        this.hostile = entity instanceof EntityMob || entity instanceof EntityAnimal;
 
         if (entity instanceof EntityLiving && !(entity instanceof EntityDragon))
         {
