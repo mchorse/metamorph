@@ -303,8 +303,6 @@ public class EntityMorph extends AbstractMorph
 
         if (this.entity instanceof EntityRabbit)
         {
-            System.out.println(target.limbSwingAmount + " ");
-
             if (target.ticksExisted % 10 == 0 && target.limbSwingAmount > 0.4)
             {
                 ((EntityRabbit) this.entity).startJumping();
