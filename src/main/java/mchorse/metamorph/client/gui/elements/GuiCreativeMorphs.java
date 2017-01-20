@@ -123,6 +123,9 @@ public class GuiCreativeMorphs extends GuiScrollPane
         int i = 0;
         int y = 0;
 
+        int selectedCat = -1;
+        int selectedMorph = -1;
+
         for (MorphCategory category : this.categories)
         {
             int j = 0;
@@ -145,10 +148,10 @@ public class GuiCreativeMorphs extends GuiScrollPane
             /* Select current morph */
             for (MorphCell cell : category.cells)
             {
-                if (this.selected == -1 && morph != null && cell.morph.equals(morph))
+                if (selectedCat == -1 && morph != null && cell.morph.equals(morph))
                 {
-                    this.selected = i;
-                    this.selectedMorph = j;
+                    selectedCat = i;
+                    selectedMorph = j;
 
                     y = category.y + j / this.perRow * cellH;
                 }
@@ -163,6 +166,9 @@ public class GuiCreativeMorphs extends GuiScrollPane
 
         this.scrollHeight += 10;
         this.scrollTo(y);
+
+        this.selected = selectedCat;
+        this.selectedMorph = selectedMorph;
     }
 
     /**
@@ -201,6 +207,14 @@ public class GuiCreativeMorphs extends GuiScrollPane
 
             this.scrollHeight += i == 0 ? 0 : cat.height * cellH + 20;
         }
+    }
+
+    /**
+     * Set selected morph 
+     */
+    public void setSelected(AbstractMorph morph)
+    {
+        this.initiateCategories(morph);
     }
 
     /**
