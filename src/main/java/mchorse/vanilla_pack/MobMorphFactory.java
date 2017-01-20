@@ -201,12 +201,6 @@ public class MobMorphFactory implements IMorphFactory
     @Override
     public boolean hasMorph(String name)
     {
-        /* Nope! */
-        if (name.equals("metamorph.Morph"))
-        {
-            return false;
-        }
-
         Class<? extends Entity> clazz = EntityList.NAME_TO_CLASS.get(name);
 
         if (clazz != null)

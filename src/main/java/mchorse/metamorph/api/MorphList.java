@@ -53,7 +53,7 @@ public class MorphList
      */
     public void addMorph(String name, String category, String variant, AbstractMorph morph)
     {
-        if (this.hasMorph(name))
+        if (MorphManager.isBlacklisted(name) || this.hasMorph(name))
         {
             return;
         }
@@ -72,6 +72,11 @@ public class MorphList
      */
     public void addMorphVariant(String name, String category, String variant, AbstractMorph morph)
     {
+        if (MorphManager.isBlacklisted(name))
+        {
+            return;
+        }
+
         if (this.hasMorph(name))
         {
             this.morphs.get(name).add(new MorphCell(morph, category, variant));

@@ -4,6 +4,8 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
+import java.util.TreeSet;
 
 import mchorse.metamorph.api.abilities.IAbility;
 import mchorse.metamorph.api.abilities.IAction;
@@ -56,9 +58,22 @@ public class MorphManager
     public List<IMorphFactory> factories = new ArrayList<IMorphFactory>();
 
     /**
+     * Blacklisted entities 
+     */
+    public Set<String> blacklist = new TreeSet<String>();
+
+    /**
      * Model manager
      */
     public ModelManager models;
+
+    /**
+     * Check whether morph by the given name is blacklisted 
+     */
+    public static boolean isBlacklisted(String name)
+    {
+        return INSTANCE.blacklist.contains(name);
+    }
 
     /**
      * That's a singleton, boy! 
@@ -97,6 +112,11 @@ public class MorphManager
      */
     public boolean hasMorph(String name)
     {
+        if (isBlacklisted(name))
+        {
+            return false;
+        }
+
         for (int i = this.factories.size() - 1; i >= 0; i--)
         {
             if (this.factories.get(i).hasMorph(name))
@@ -117,6 +137,11 @@ public class MorphManager
     public AbstractMorph morphFromNBT(NBTTagCompound tag)
     {
         String name = tag.getString("Name");
+
+        if (isBlacklisted(name))
+        {
+            return null;
+        }
 
         for (int i = this.factories.size() - 1; i >= 0; i--)
         {
