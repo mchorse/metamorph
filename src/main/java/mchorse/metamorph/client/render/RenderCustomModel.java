@@ -45,6 +45,15 @@ public class RenderCustomModel extends RenderLivingBase<EntityLivingBase>
         return this.mainModel == null ? null : ((ModelCustom) this.mainModel).model.defaultTexture;
     }
 
+    /**
+     * Render morph's name only if the player is pointed at the entity
+     */
+    @Override
+    protected boolean canRenderName(EntityLivingBase entity)
+    {
+        return super.canRenderName(entity) && entity.hasCustomName() && entity == this.renderManager.pointedEntity;
+    }
+
     @Override
     public void doRender(EntityLivingBase entity, double x, double y, double z, float entityYaw, float partialTicks)
     {
