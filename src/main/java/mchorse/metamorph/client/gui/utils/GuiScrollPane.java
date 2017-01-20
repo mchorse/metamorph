@@ -34,6 +34,7 @@ public abstract class GuiScrollPane extends GuiScreen
 
     protected int scrollY = 0;
     protected int scrollHeight = 0;
+    protected int scrollSpeed = 2;
 
     protected boolean dragging = false;
     protected boolean hidden = false;
@@ -48,8 +49,8 @@ public abstract class GuiScrollPane extends GuiScreen
 
     public void setHeight(int height)
     {
-        this.scrollY = 0;
         this.scrollHeight = height;
+        this.scrollBy(0);
     }
 
     public int getHeight()
@@ -75,6 +76,11 @@ public abstract class GuiScrollPane extends GuiScreen
     }
 
     /* Scroll content methods */
+
+    public void setScrollSpeed(int speed)
+    {
+        this.scrollSpeed = speed;
+    }
 
     public void scrollBy(int y)
     {
@@ -103,7 +109,7 @@ public abstract class GuiScrollPane extends GuiScreen
 
         if (i != 0 && this.scrollHeight > this.h)
         {
-            this.scrollBy((int) Math.copySign(2, i));
+            this.scrollBy((int) Math.copySign(this.scrollSpeed, i));
         }
     }
 

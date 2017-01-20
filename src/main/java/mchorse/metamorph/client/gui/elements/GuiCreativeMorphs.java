@@ -126,6 +126,8 @@ public class GuiCreativeMorphs extends GuiScrollPane
         int selectedCat = -1;
         int selectedMorph = -1;
 
+        this.scrollHeight = 0;
+
         for (MorphCategory category : this.categories)
         {
             int j = 0;
