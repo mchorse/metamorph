@@ -80,8 +80,12 @@ public class MorphingStorage implements IStorage<IMorphing>
                 for (int i = 0; i < acquired.tagCount(); i++)
                 {
                     NBTTagCompound acquiredTag = acquired.getCompoundTagAt(i);
+                    AbstractMorph morph = MorphManager.INSTANCE.morphFromNBT(acquiredTag);
 
-                    acquiredMorphs.add(MorphManager.INSTANCE.morphFromNBT(acquiredTag));
+                    if (morph != null)
+                    {
+                        acquiredMorphs.add(morph);
+                    }
                 }
 
                 instance.setAcquiredMorphs(acquiredMorphs);
