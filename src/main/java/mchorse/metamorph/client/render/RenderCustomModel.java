@@ -2,14 +2,13 @@ package mchorse.metamorph.client.render;
 
 import java.util.Map;
 
+import mchorse.metamorph.api.EntityUtils;
 import mchorse.metamorph.api.models.IMorphProvider;
 import mchorse.metamorph.api.models.Model;
 import mchorse.metamorph.capabilities.morphing.IMorphing;
 import mchorse.metamorph.capabilities.morphing.MorphingProvider;
 import mchorse.metamorph.client.model.ModelCustom;
 import mchorse.metamorph.client.model.ModelCustomRenderer;
-import mchorse.metamorph.client.render.layers.LayerActorArmor;
-import mchorse.metamorph.client.render.layers.LayerElytra;
 import mchorse.metamorph.client.render.layers.LayerHeldItem;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.model.ModelBase;
@@ -31,9 +30,7 @@ public class RenderCustomModel extends RenderLivingBase<EntityLivingBase>
     {
         super(renderManagerIn, null, shadowSizeIn);
 
-        this.addLayer(new LayerActorArmor(this));
         this.addLayer(new LayerHeldItem(this));
-        this.addLayer(new LayerElytra(this));
     }
 
     /**
@@ -125,7 +122,7 @@ public class RenderCustomModel extends RenderLivingBase<EntityLivingBase>
     public void setupModel(EntityLivingBase entity)
     {
         Map<String, ModelCustom> models = ModelCustom.MODELS;
-        String pose = entity.isSneaking() ? "sneaking" : (entity.isElytraFlying() ? "flying" : "standing");
+        String pose = EntityUtils.getPose(entity);
         ModelCustom model = null;
 
         if (entity instanceof IMorphProvider)
@@ -144,7 +141,7 @@ public class RenderCustomModel extends RenderLivingBase<EntityLivingBase>
 
         if (model != null)
         {
-            model.pose = model.model.poses.get(pose);
+            model.pose = model.model.getPose(pose);
             this.mainModel = model;
         }
     }
