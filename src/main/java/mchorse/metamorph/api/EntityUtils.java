@@ -196,4 +196,25 @@ public class EntityUtils
 
         return null;
     }
+
+    /**
+     * Get string pose for entity based on his attributes
+     */
+    public static String getPose(EntityLivingBase entity)
+    {
+        if (entity.isElytraFlying())
+        {
+            return "flying";
+        }
+        else if (entity.isRiding())
+        {
+            return "riding";
+        }
+        else if (entity.isSneaking())
+        {
+            return "sneaking";
+        }
+
+        return "standing";
+    }
 }

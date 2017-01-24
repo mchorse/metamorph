@@ -1,6 +1,8 @@
 package mchorse.metamorph.api.morphs;
 
+import mchorse.metamorph.api.EntityUtils;
 import mchorse.metamorph.api.models.Model;
+import mchorse.metamorph.api.models.Model.Pose;
 import mchorse.metamorph.capabilities.morphing.IMorphing;
 import mchorse.metamorph.client.gui.utils.GuiUtils;
 import mchorse.metamorph.client.model.ModelCustom;
@@ -23,6 +25,11 @@ public class CustomMorph extends AbstractMorph
      * Morph's model
      */
     public Model model;
+
+    /**
+     * Current pose 
+     */
+    public Pose pose;
 
     /* Rendering */
 
@@ -105,8 +112,8 @@ public class CustomMorph extends AbstractMorph
      */
     public void updateSize(EntityLivingBase target, IMorphing cap)
     {
-        String key = target.isElytraFlying() ? "flying" : (target.isSneaking() ? "sneaking" : "standing");
-        float[] pose = model.poses.get(key).size;
+        this.pose = model.poses.get(EntityUtils.getPose(target));
+        float[] pose = this.pose.size;
 
         this.updateSize(target, pose[0], pose[1]);
     }
@@ -134,12 +141,12 @@ public class CustomMorph extends AbstractMorph
     @Override
     public float getWidth(EntityLivingBase target)
     {
-        return model.poses.get("standing").size[0];
+        return this.pose != null ? this.pose.size[0] : 0.6F;
     }
 
     @Override
     public float getHeight(EntityLivingBase target)
     {
-        return model.poses.get("standing").size[1];
+        return this.pose != null ? this.pose.size[1] : 1.8F;
     }
 }
