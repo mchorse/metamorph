@@ -62,7 +62,7 @@ public abstract class GuiScrollPane extends GuiScreen
 
     public boolean isInside(int x, int y)
     {
-        return !this.hidden && x >= this.x && this.x <= this.x + this.w && y >= this.y && y <= this.y + this.h;
+        return !this.hidden && x >= this.x && x <= this.x + this.w && y >= this.y && y <= this.y + this.h;
     }
 
     /* Visibility */
