@@ -39,6 +39,8 @@ public abstract class GuiScrollPane extends GuiScreen
     protected boolean dragging = false;
     protected boolean hidden = false;
 
+    public boolean scrollOutside = false;
+
     public void updateRect(int x, int y, int w, int h)
     {
         this.x = x;
@@ -105,11 +107,18 @@ public abstract class GuiScrollPane extends GuiScreen
     public void handleMouseInput() throws IOException
     {
         super.handleMouseInput();
-        int i = -Mouse.getEventDWheel();
 
-        if (i != 0 && this.scrollHeight > this.h)
+        int x = Mouse.getEventX() * this.width / this.mc.displayWidth;
+        int y = this.height - Mouse.getEventY() * this.height / this.mc.displayHeight - 1;
+
+        if (this.scrollOutside || this.isInside(x, y))
         {
-            this.scrollBy((int) Math.copySign(this.scrollSpeed, i));
+            int scroll = -Mouse.getEventDWheel();
+
+            if (scroll != 0 && this.scrollHeight > this.h)
+            {
+                this.scrollBy((int) Math.copySign(this.scrollSpeed, scroll));
+            }
         }
     }
 
