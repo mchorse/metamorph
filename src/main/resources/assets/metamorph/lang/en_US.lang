@@ -42,5 +42,6 @@ morph.category.unknown=Unknown morphs
 morph.category.unsorted=Unsorted morphs
 morph.category.patched_vanilla=Vanilla patched morphs
 morph.category.animal=Animal morphs
+morph.category.acquired=Your morphs
 morph.category.hostile=Hostile morphs
 morph.category.modded=Morphs from %s

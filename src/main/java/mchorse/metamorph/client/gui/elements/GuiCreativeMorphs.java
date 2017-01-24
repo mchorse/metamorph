@@ -11,6 +11,7 @@ import java.util.Map;
 import mchorse.metamorph.api.MorphList;
 import mchorse.metamorph.api.MorphManager;
 import mchorse.metamorph.api.morphs.AbstractMorph;
+import mchorse.metamorph.capabilities.morphing.IMorphing;
 import mchorse.metamorph.client.gui.utils.GuiScrollPane;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.resources.I18n;
@@ -62,11 +63,16 @@ public class GuiCreativeMorphs extends GuiScrollPane
      * 
      * Compile the categories list and compute the scroll height of this scroll pane 
      */
-    public GuiCreativeMorphs(int perRow, AbstractMorph selected)
+    public GuiCreativeMorphs(int perRow, AbstractMorph selected, IMorphing morphing)
     {
         this.perRow = perRow;
-        this.compileCategories();
+        this.compileCategories(morphing);
         this.initiateCategories(selected);
+    }
+
+    public GuiCreativeMorphs(int perRow, AbstractMorph selected)
+    {
+        this(perRow, selected, null);
     }
 
     /**
@@ -75,7 +81,7 @@ public class GuiCreativeMorphs extends GuiScrollPane
      * This method is responsible for compiling all morph categories into 
      * {@link #categories} list and then sorting it by its titles.
      */
-    protected void compileCategories()
+    protected void compileCategories(IMorphing morphing)
     {
         Map<String, MorphCategory> categories = new HashMap<String, MorphCategory>();
         World world = Minecraft.getMinecraft().theWorld;
@@ -109,6 +115,18 @@ public class GuiCreativeMorphs extends GuiScrollPane
                 return a.title.compareTo(b.title);
             }
         });
+
+        if (morphing != null)
+        {
+            MorphCategory category = new MorphCategory("acquired", "acquired");
+
+            this.categories.add(0, category);
+
+            for (AbstractMorph morph : morphing.getAcquiredMorphs())
+            {
+                category.cells.add(new MorphCell(MorphManager.INSTANCE.morphDisplayNameFromMorph(morph.name), morph, 0));
+            }
+        }
     }
 
     /**
