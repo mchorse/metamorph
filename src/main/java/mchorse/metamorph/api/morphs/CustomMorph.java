@@ -112,10 +112,14 @@ public class CustomMorph extends AbstractMorph
      */
     public void updateSize(EntityLivingBase target, IMorphing cap)
     {
-        this.pose = model.poses.get(EntityUtils.getPose(target));
-        float[] pose = this.pose.size;
+        this.pose = model.getPose(EntityUtils.getPose(target));
 
-        this.updateSize(target, pose[0], pose[1]);
+        if (this.pose != null)
+        {
+            float[] pose = this.pose.size;
+
+            this.updateSize(target, pose[0], pose[1]);
+        }
     }
 
     /**
