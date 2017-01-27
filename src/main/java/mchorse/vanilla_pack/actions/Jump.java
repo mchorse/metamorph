@@ -14,7 +14,7 @@ public class Jump implements IAction
     @Override
     public void execute(EntityLivingBase target)
     {
-        if (target.onGround)
+        if (target.onGround && !target.isWet())
         {
             target.motionX *= 4.0;
             target.motionY = 0.75;

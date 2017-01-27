@@ -546,7 +546,7 @@ public class EntityMorph extends AbstractMorph
                 @Override
                 public int compare(ModelRenderer a, ModelRenderer b)
                 {
-                    return (int) Math.ceil(a.rotationPointX - b.rotationPointX);
+                    return (int) (a.rotationPointX - b.rotationPointX < 0 ? Math.floor(a.rotationPointX - b.rotationPointX) : Math.ceil(a.rotationPointX - b.rotationPointX));
                 }
             });
 
@@ -555,9 +555,14 @@ public class EntityMorph extends AbstractMorph
                 @Override
                 public int compare(ModelRenderer a, ModelRenderer b)
                 {
-                    return (int) Math.ceil(b.rotationPointX - a.rotationPointX);
+                    return (int) (b.rotationPointX - a.rotationPointX < 0 ? Math.floor(b.rotationPointX - a.rotationPointX) : Math.ceil(b.rotationPointX - a.rotationPointX));
                 }
             });
+
+            for (ModelRenderer render : right)
+            {
+                System.out.println(render.rotationPointX + " " + render.rotationPointY + " " + render.rotationPointZ);
+            }
 
             this.leftHand = left.isEmpty() ? null : left.get(0);
             this.rightHand = right.isEmpty() ? null : right.get(0);
