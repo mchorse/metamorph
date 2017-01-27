@@ -14,11 +14,11 @@ buildscript {
 apply plugin: 'net.minecraftforge.gradle.forge'
 
 version = "1.1"
-version += "-" + project.minecraft.version
-group= "mchorse.metamorph" // http://maven.apache.org/guides/mini/guide-naming-conventions.html
+group = "mchorse.metamorph"
 archivesBaseName = "metamorph"
 
 sourceCompatibility = targetCompatibility = "1.6" // Need this here so eclipse task generates correctly.
+
 compileJava {
     sourceCompatibility = targetCompatibility = "1.6"
 }
@@ -72,7 +72,6 @@ dependencies {
     // for more info...
     // http://www.gradle.org/docs/current/userguide/artifact_dependencies_tutorial.html
     // http://www.gradle.org/docs/current/userguide/dependency_management.html
-
 }
 
 processResources
@@ -80,6 +79,9 @@ processResources
     // this will ensure that this task is redone when the versions change.
     inputs.property "version", project.version
     inputs.property "mcversion", project.minecraft.version
+    
+    // Append minecraft version to the build
+    project.version += "-" + project.minecraft.version
 
     // replace stuff in mcmod.info, nothing else
     from(sourceSets.main.resources.srcDirs) {
