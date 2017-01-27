@@ -559,11 +559,6 @@ public class EntityMorph extends AbstractMorph
                 }
             });
 
-            for (ModelRenderer render : right)
-            {
-                System.out.println(render.rotationPointX + " " + render.rotationPointY + " " + render.rotationPointZ);
-            }
-
             this.leftHand = left.isEmpty() ? null : left.get(0);
             this.rightHand = right.isEmpty() ? null : right.get(0);
         }
