@@ -59,6 +59,11 @@ public class GuiCreativeMorphs extends GuiScrollPane
     private List<MorphCategory> categories = new ArrayList<MorphCategory>();
 
     /**
+     * Category label shift
+     */
+    public int shiftX = 0;
+
+    /**
      * Initiate this GUI.
      * 
      * Compile the categories list and compute the scroll height of this scroll pane 
@@ -350,7 +355,7 @@ public class GuiCreativeMorphs extends GuiScrollPane
             }
 
             int k = 0;
-            this.drawString(fontRendererObj, category.title, this.x + 1, category.y + this.y, 0xFFFFFFFF);
+            this.drawString(fontRendererObj, category.title, this.x + this.shiftX + 1, category.y + this.y, 0xFFFFFFFF);
 
             for (MorphCell cell : category.cells)
             {
