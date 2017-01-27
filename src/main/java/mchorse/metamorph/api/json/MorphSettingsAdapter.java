@@ -13,7 +13,6 @@ import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParseException;
 
-import mchorse.metamorph.Metamorph;
 import mchorse.metamorph.api.MorphManager;
 import mchorse.metamorph.api.MorphSettings;
 import mchorse.metamorph.api.abilities.IAbility;
@@ -61,10 +60,6 @@ public class MorphSettingsAdapter implements JsonDeserializer<MorphSettings>
                 if (iability != null)
                 {
                     abilities.add(iability);
-                }
-                else
-                {
-                    Metamorph.log("Ability '" + ability.getAsString() + "' couldn't be found!");
                 }
             }
 
