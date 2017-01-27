@@ -1,6 +1,7 @@
 package mchorse.metamorph.capabilities.morphing;
 
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 
 import mchorse.metamorph.api.morphs.AbstractMorph;
@@ -166,13 +167,27 @@ public class Morphing implements IMorphing
     {
         if (!this.acquiredMorphs.isEmpty() && index >= 0 && index < this.acquiredMorphs.size())
         {
-            int favorite = this.favorites.indexOf(index);
+            Iterator<Integer> favorites = this.favorites.iterator();
+            int i = 0;
 
             this.acquiredMorphs.remove(index);
 
-            if (favorite >= 0)
+            while (favorites.hasNext())
             {
-                this.favorites.remove(favorite);
+                int favorite = favorites.next().intValue();
+
+                if (favorite == index)
+                {
+                    favorites.remove();
+
+                    i--;
+                }
+                else if (favorite > index)
+                {
+                    this.favorites.set(i, favorite - 1);
+                }
+
+                i++;
             }
 
             return true;
