@@ -1,6 +1,7 @@
 package mchorse.vanilla_pack.abilities;
 
 import mchorse.metamorph.api.abilities.Ability;
+import net.minecraft.client.Minecraft;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraftforge.client.GuiIngameForge;
 import net.minecraftforge.fml.relauncher.Side;
@@ -32,7 +33,7 @@ public class WaterBreath extends Ability
     @SideOnly(Side.CLIENT)
     public void onMorph(EntityLivingBase target)
     {
-        if (target.worldObj.isRemote)
+        if (target.worldObj.isRemote && target == Minecraft.getMinecraft().thePlayer)
         {
             GuiIngameForge.renderAir = false;
         }
@@ -48,7 +49,7 @@ public class WaterBreath extends Ability
     @SideOnly(Side.CLIENT)
     public void onDemorph(EntityLivingBase target)
     {
-        if (target.worldObj.isRemote)
+        if (target.worldObj.isRemote && target == Minecraft.getMinecraft().thePlayer)
         {
             GuiIngameForge.renderAir = true;
         }

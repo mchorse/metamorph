@@ -599,6 +599,7 @@ public class GuiSurvivalMorphs extends Gui
 
         if (morph.favorite)
         {
+            GlStateManager.enableAlpha();
             this.mc.renderEngine.bindTexture(new ResourceLocation("metamorph", "textures/gui/icons.png"));
 
             if (this.inGUI)
