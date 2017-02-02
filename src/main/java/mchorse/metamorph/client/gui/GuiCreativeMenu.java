@@ -102,7 +102,7 @@ public class GuiCreativeMenu extends GuiScreen
         {
             if (button.id == 0)
             {
-                Dispatcher.sendToServer(new PacketMorph(morph.morph));
+                Dispatcher.sendToServer(new PacketMorph(morph == null ? null : morph.morph));
             }
 
             Minecraft.getMinecraft().displayGuiScreen(null);

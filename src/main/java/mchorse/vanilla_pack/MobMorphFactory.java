@@ -182,9 +182,9 @@ public class MobMorphFactory implements IMorphFactory
         int index = name.indexOf(".");
         String category = "";
 
+        /* Category for third-party mod mobs */
         if (index >= 0)
         {
-            /* Category for third party mod mobs */
             category = name.substring(0, index);
         }
         else if (entity instanceof EntityAnimal)
