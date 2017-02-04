@@ -20,8 +20,8 @@ public class ModelCustomBiped extends ModelBiped
         {
             ModelCustom custom = (ModelCustom) model;
 
-            this.leftArmPose = custom.leftPose;
-            this.rightArmPose = custom.rightPose;
+            this.leftArmPose = custom.leftArmPose;
+            this.rightArmPose = custom.rightArmPose;
             this.isSneak = custom.pose.equals(custom.model.poses.get("sneaking"));
         }
     }

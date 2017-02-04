@@ -4,9 +4,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 import mchorse.metamorph.api.models.Model;
-import net.minecraft.client.model.ModelBase;
 import net.minecraft.client.model.ModelBiped;
-import net.minecraft.client.model.ModelBiped.ArmPose;
 import net.minecraft.client.model.ModelRenderer;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
@@ -30,7 +28,7 @@ import net.minecraftforge.fml.relauncher.SideOnly;
  * itself.
  */
 @SideOnly(Side.CLIENT)
-public class ModelCustom extends ModelBase
+public class ModelCustom extends ModelBiped
 {
     /**
      * Repository of custom models that are available for usage
@@ -60,10 +58,6 @@ public class ModelCustom extends ModelBase
 
     public ModelCustomRenderer[] left;
     public ModelCustomRenderer[] right;
-
-    /* Model biped poses */
-    public ModelBiped.ArmPose leftPose = ArmPose.EMPTY;
-    public ModelBiped.ArmPose rightPose = ArmPose.EMPTY;
 
     /**
      * Initiate the model with the size of the texture
@@ -166,8 +160,8 @@ public class ModelCustom extends ModelBase
             if (!limb.limb.holding.isEmpty() && limb.limb.parent.isEmpty())
             {
                 boolean right = limb.limb.holding.equals("right");
-                ModelBiped.ArmPose pose = right ? this.rightPose : this.leftPose;
-                ModelBiped.ArmPose opposite = right ? this.leftPose : this.rightPose;
+                ModelBiped.ArmPose pose = right ? this.rightArmPose : this.leftArmPose;
+                ModelBiped.ArmPose opposite = right ? this.leftArmPose : this.rightArmPose;
 
                 switch (pose)
                 {

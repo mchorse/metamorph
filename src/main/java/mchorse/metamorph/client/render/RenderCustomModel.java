@@ -109,8 +109,8 @@ public class RenderCustomModel extends RenderLivingBase<EntityLivingBase>
             }
         }
 
-        model.rightPose = right;
-        model.leftPose = left;
+        model.rightArmPose = right;
+        model.leftArmPose = left;
     }
 
     /**
