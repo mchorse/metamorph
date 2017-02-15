@@ -365,6 +365,8 @@ public class EntityMorph extends AbstractMorph
         entity.onGround = target.onGround;
         entity.isAirBorne = target.isAirBorne;
         entity.ticksExisted = target.ticksExisted;
+        /* Fighting with death of entities like zombies */
+        entity.setHealth(target.getHealth());
 
         /* Now goes the code responsible for achieving somewhat riding 
          * support. This is ridiculous... */

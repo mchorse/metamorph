@@ -463,6 +463,8 @@ public class GuiSurvivalMorphs extends Gui
      */
     public void renderMenu(int width, int height, int w, int h)
     {
+        boolean renderDemorph = Metamorph.proxy.config.show_demorph;
+
         EntityPlayer player = this.mc.thePlayer;
         String label = "Demorph";
 
@@ -489,7 +491,7 @@ public class GuiSurvivalMorphs extends Gui
         /* Render morphs */
         for (int i = 0, c = this.morphs.size(); i <= c; i++)
         {
-            int x = width / 2 - w / 2 + i * margin + margin / 2 + 1;
+            int x = width / 2 - w / 2 + (renderDemorph ? i : i - 1) * margin + margin / 2 + 1;
             int y = height / 2 + h / 5;
             boolean selected = this.index + 1 == i;
 
@@ -512,7 +514,10 @@ public class GuiSurvivalMorphs extends Gui
             /* Render morph itself */
             if (i == 0)
             {
-                this.renderPlayer(player, x, y - 2, scale);
+                if (renderDemorph)
+                {
+                    this.renderPlayer(player, x, y - 2, scale);
+                }
             }
             else
             {
@@ -551,7 +556,10 @@ public class GuiSurvivalMorphs extends Gui
             /* Render border around the selected morph */
             if (selected)
             {
-                this.renderSelected(x - margin / 2, height / 2 - h / 2 + 1, margin, h - 2);
+                if (i != 0 || (i == 0 && renderDemorph))
+                {
+                    this.renderSelected(x - margin / 2, height / 2 - h / 2 + 1, margin, h - 2);
+                }
 
                 label = name;
             }

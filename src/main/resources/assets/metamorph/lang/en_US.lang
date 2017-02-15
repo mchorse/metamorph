@@ -36,6 +36,7 @@ metamorph.config.keep_morphs=Retain morphs on death
 metamorph.config.prevent_ghosts=Prevent ghost
 metamorph.config.hide_username=Hide username
 metamorph.config.prevent_kill_acquire=Prevent acquiring by killing
+metamorph.config.show_demorph=Show demorph
 
 # Morph categories
 morph.category.unknown=Unknown morphs

@@ -37,6 +37,11 @@ public class MetamorphConfig
      */
     public boolean prevent_kill_acquire;
 
+    /**
+     * Show demorph as an option in survival morph menu 
+     */
+    public boolean show_demorph;
+
     /* End of config options */
 
     /**
@@ -62,6 +67,7 @@ public class MetamorphConfig
         this.keep_morphs = this.config.getBoolean("keep_morphs", cat, true, "Retain morphs when player dies?", lang + "keep_morphs");
         this.hide_username = this.config.getBoolean("hide_username", cat, false, "Hide username in survival morphing menu", lang + "hide_username");
         this.prevent_kill_acquire = this.config.getBoolean("prevent_kill_acquire", cat, false, "Prevent morph acquiring by killing a mob (or specifically prevent ghost spawning in any case)?", lang + "prevent_kill_acquire");
+        this.show_demorph = this.config.getBoolean("show_demorph", cat, true, "Show demorph as an option in survival morph menu", lang + "show_demorph");
 
         this.config.getCategory(cat).setComment("General configuration of Metamorph mod");
 
