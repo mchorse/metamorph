@@ -88,7 +88,7 @@ public class KeyboardHandler
         {
             Dispatcher.sendToServer(new PacketAction());
 
-            EntityPlayer player = Minecraft.getMinecraft().thePlayer;
+            EntityPlayer player = Minecraft.getMinecraft().player;
             IMorphing capability = Morphing.get(player);
 
             if (capability != null & capability.isMorphed())
@@ -97,7 +97,7 @@ public class KeyboardHandler
             }
         }
 
-        if (keyCreativeMenu.isPressed() && mc.thePlayer.isCreative())
+        if (keyCreativeMenu.isPressed() && mc.player.isCreative())
         {
             mc.displayGuiScreen(new GuiCreativeMenu());
         }
@@ -147,7 +147,7 @@ public class KeyboardHandler
         /* Demorph from current morph */
         if (keyDemorph.isPressed())
         {
-            IMorphing morph = Morphing.get(mc.thePlayer);
+            IMorphing morph = Morphing.get(mc.player);
 
             if (morph != null && morph.isMorphed())
             {

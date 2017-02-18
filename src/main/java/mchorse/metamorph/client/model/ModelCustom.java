@@ -134,7 +134,7 @@ public class ModelCustom extends ModelBiped
             if (limb.limb.swiping && this.swingProgress > 0.0F)
             {
                 float swing = this.swingProgress;
-                float bodyY = MathHelper.sin(MathHelper.sqrt_float(swing) * PI * 2F) * 0.2F * factor;
+                float bodyY = MathHelper.sin(MathHelper.sqrt(swing) * PI * 2F) * 0.2F * factor;
 
                 swing = 1.0F - swing;
                 swing = swing * swing * swing;

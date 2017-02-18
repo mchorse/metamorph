@@ -95,9 +95,9 @@ public class RenderMorph extends RenderLivingBase<EntityMorph>
             z = data.scale[2];
         }
 
-        x = MathHelper.clamp_float(x, 0.0F, 1.5F);
-        y = MathHelper.clamp_float(y, 0.0F, 1.5F);
-        z = MathHelper.clamp_float(z, 0.0F, 1.5F);
+        x = MathHelper.clamp(x, 0.0F, 1.5F);
+        y = MathHelper.clamp(y, 0.0F, 1.5F);
+        z = MathHelper.clamp(z, 0.0F, 1.5F);
 
         GlStateManager.scale(x * scale, y * scale, z * scale);
     }

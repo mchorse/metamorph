@@ -93,7 +93,7 @@ public abstract class GuiScrollPane extends GuiScreen
     {
         if (this.scrollHeight > this.h)
         {
-            this.scrollY = MathHelper.clamp_int(y, 0, this.scrollHeight - this.h + 2);
+            this.scrollY = MathHelper.clamp(y, 0, this.scrollHeight - this.h + 2);
         }
         else
         {

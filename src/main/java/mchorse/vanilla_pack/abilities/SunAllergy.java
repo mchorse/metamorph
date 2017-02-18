@@ -25,7 +25,7 @@ public class SunAllergy extends Ability
     @Override
     public void update(EntityLivingBase target)
     {
-        if (!target.worldObj.isDaytime() || target.worldObj.isRemote)
+        if (!target.world.isDaytime() || target.world.isRemote)
         {
             return;
         }
@@ -35,7 +35,7 @@ public class SunAllergy extends Ability
         this.pos.setPos(target.posX, target.posY, target.posZ);
 
         /* Taken from EntityZombie class and slightly modified */
-        if (brightness > 0.5 && random && target.worldObj.canSeeSky(pos))
+        if (brightness > 0.5 && random && target.world.canSeeSky(pos))
         {
             boolean flag = true;
             ItemStack itemstack = target.getItemStackFromSlot(EntityEquipmentSlot.HEAD);

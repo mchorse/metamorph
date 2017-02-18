@@ -31,7 +31,7 @@ public class Potions implements IAction
     @Override
     public void execute(EntityLivingBase target)
     {
-        World world = target.worldObj;
+        World world = target.world;
 
         if (world.isRemote)
         {
@@ -65,7 +65,7 @@ public class Potions implements IAction
         potion.rotationPitch += 20.0F;
         potion.setThrowableHeading(look.xCoord, look.yCoord, look.zCoord, 0.85F, 2.0F);
 
-        world.spawnEntityInWorld(potion);
+        world.spawnEntity(potion);
 
         if (target instanceof EntityPlayer)
         {

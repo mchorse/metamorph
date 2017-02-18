@@ -53,7 +53,7 @@ public class GuiCreativeMenu extends GuiScreen
      */
     public GuiCreativeMenu()
     {
-        EntityPlayer player = Minecraft.getMinecraft().thePlayer;
+        EntityPlayer player = Minecraft.getMinecraft().player;
         IMorphing morphing = Morphing.get(player);
 
         this.pane = new GuiCreativeMorphs(6, morphing.getCurrentMorph());
@@ -207,7 +207,7 @@ public class GuiCreativeMenu extends GuiScreen
 
         if (morph != null)
         {
-            this.renderMorph(morph.morph, Minecraft.getMinecraft().thePlayer, 70, height - (int) ((float) height / 2.6), 43);
+            this.renderMorph(morph.morph, Minecraft.getMinecraft().player, 70, height - (int) ((float) height / 2.6), 43);
         }
 
         /* Disable scissors */

@@ -89,7 +89,7 @@ public class GuiCreativeMorphs extends GuiScrollPane
     protected void compileCategories(IMorphing morphing)
     {
         Map<String, MorphCategory> categories = new HashMap<String, MorphCategory>();
-        World world = Minecraft.getMinecraft().theWorld;
+        World world = Minecraft.getMinecraft().world;
 
         for (List<MorphList.MorphCell> morphs : MorphManager.INSTANCE.getMorphs(world).morphs.values())
         {
@@ -104,7 +104,7 @@ public class GuiCreativeMorphs extends GuiScrollPane
                 }
 
                 String variant = morph.variant.isEmpty() ? morph.variant : " (" + morph.variant + ")";
-                String title = MorphManager.INSTANCE.morphDisplayNameFromMorph(morph.morph.name) + variant;
+                String title = MorphManager.INSTANCE.morphDisplayNameFromMorph(morph.morph) + variant;
 
                 category.cells.add(new MorphCell(title, morph.morph, 0));
             }
@@ -129,7 +129,7 @@ public class GuiCreativeMorphs extends GuiScrollPane
 
             for (AbstractMorph morph : morphing.getAcquiredMorphs())
             {
-                category.cells.add(new MorphCell(MorphManager.INSTANCE.morphDisplayNameFromMorph(morph.name), morph, 0));
+                category.cells.add(new MorphCell(MorphManager.INSTANCE.morphDisplayNameFromMorph(morph), morph, 0));
             }
         }
     }
@@ -165,7 +165,7 @@ public class GuiCreativeMorphs extends GuiScrollPane
             });
 
             /* Calculate the scroll height and per category height */
-            category.height = MathHelper.ceiling_float_int((float) category.cells.size() / (float) this.perRow);
+            category.height = MathHelper.ceil((float) category.cells.size() / (float) this.perRow);
             category.y = this.scrollHeight + 20;
 
             this.scrollHeight += category.height * cellH + 20;
@@ -227,7 +227,7 @@ public class GuiCreativeMorphs extends GuiScrollPane
                 }
             }
 
-            cat.height = MathHelper.ceiling_float_int((float) i / (float) this.perRow);
+            cat.height = MathHelper.ceil((float) i / (float) this.perRow);
             cat.y = this.scrollHeight + 20;
 
             this.scrollHeight += i == 0 ? 0 : cat.height * cellH + 20;
@@ -369,7 +369,7 @@ public class GuiCreativeMorphs extends GuiScrollPane
 
                 float scale = 21.5F;
 
-                this.renderMorph(cell, Minecraft.getMinecraft().thePlayer, x + m / 2, y + 50, scale);
+                this.renderMorph(cell, Minecraft.getMinecraft().player, x + m / 2, y + 50, scale);
 
                 if (j == this.selected && cell.index == this.selectedMorph)
                 {

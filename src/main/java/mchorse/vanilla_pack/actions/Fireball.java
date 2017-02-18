@@ -19,7 +19,7 @@ public class Fireball implements IAction
     @Override
     public void execute(EntityLivingBase target)
     {
-        World world = target.worldObj;
+        World world = target.world;
 
         if (world.isRemote)
         {
@@ -47,7 +47,7 @@ public class Fireball implements IAction
         entitylargefireball.posY = target.posY + target.height * 0.9;
         entitylargefireball.posZ = target.posZ;
 
-        world.spawnEntityInWorld(entitylargefireball);
+        world.spawnEntity(entitylargefireball);
 
         if (target instanceof EntityPlayer)
         {

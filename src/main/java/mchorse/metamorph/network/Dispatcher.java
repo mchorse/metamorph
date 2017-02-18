@@ -49,7 +49,7 @@ public class Dispatcher
 
     public static void updateTrackers(Entity entity, IMessage message)
     {
-        EntityTracker et = ((WorldServer) entity.worldObj).getEntityTracker();
+        EntityTracker et = ((WorldServer) entity.world).getEntityTracker();
 
         for (EntityPlayer player : et.getTrackingPlayers(entity))
         {

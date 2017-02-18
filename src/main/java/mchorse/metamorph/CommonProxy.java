@@ -15,6 +15,7 @@ import mchorse.metamorph.entity.EntityMorph;
 import mchorse.metamorph.network.Dispatcher;
 import mchorse.vanilla_pack.MobMorphFactory;
 import mchorse.vanilla_pack.VanillaMorphFactory;
+import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.common.capabilities.CapabilityManager;
 import net.minecraftforge.common.config.Configuration;
@@ -69,7 +70,7 @@ public class CommonProxy
         this.morphs = morphs;
 
         /* Entities */
-        EntityRegistry.registerModEntity(EntityMorph.class, "Morph", 0, Metamorph.instance, 64, 3, false);
+        EntityRegistry.registerModEntity(new ResourceLocation("metamorph:morph"), EntityMorph.class, "Morph", 0, Metamorph.instance, 64, 3, false);
     }
 
     /**

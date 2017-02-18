@@ -25,16 +25,16 @@ public class BlazeMorph extends CustomMorph
 
         Random rand = target.getRNG();
 
-        if (target.worldObj.isRemote && !target.isWet())
+        if (target.world.isRemote && !target.isWet())
         {
             if (rand.nextInt(24) == 0 && !target.isSilent())
             {
-                target.worldObj.playSound(target.posX + 0.5D, target.posY + 0.5D, target.posZ + 0.5D, SoundEvents.ENTITY_BLAZE_BURN, target.getSoundCategory(), 1.0F + rand.nextFloat(), rand.nextFloat() * 0.7F + 0.3F, false);
+                target.world.playSound(target.posX + 0.5D, target.posY + 0.5D, target.posZ + 0.5D, SoundEvents.ENTITY_BLAZE_BURN, target.getSoundCategory(), 1.0F + rand.nextFloat(), rand.nextFloat() * 0.7F + 0.3F, false);
             }
 
             for (int i = 0; i < 2; ++i)
             {
-                target.worldObj.spawnParticle(EnumParticleTypes.SMOKE_LARGE, target.posX + (rand.nextDouble() - 0.5D) * (double) target.width, target.posY + rand.nextDouble() * (double) target.height, target.posZ + (rand.nextDouble() - 0.5D) * (double) target.width, 0.0D, 0.0D, 0.0D);
+                target.world.spawnParticle(EnumParticleTypes.SMOKE_LARGE, target.posX + (rand.nextDouble() - 0.5D) * (double) target.width, target.posY + rand.nextDouble() * (double) target.height, target.posZ + (rand.nextDouble() - 0.5D) * (double) target.width, 0.0D, 0.0D, 0.0D);
             }
         }
     }

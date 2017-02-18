@@ -91,7 +91,7 @@ public class CapabilityHandler
         {
             EntityPlayer player = (EntityPlayer) event.getEntity();
 
-            if (!player.worldObj.isRemote)
+            if (!player.world.isRemote)
             {
                 IMorphing morphing = Morphing.get(player);
 

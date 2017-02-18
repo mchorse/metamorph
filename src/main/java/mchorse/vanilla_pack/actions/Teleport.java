@@ -35,7 +35,7 @@ public class Teleport implements IAction
         Vec3d look = target.getLook(1.0F);
         Vec3d vec = pos.addVector(look.xCoord * reachDistance, look.yCoord * reachDistance, look.zCoord * reachDistance);
 
-        RayTraceResult result = target.worldObj.rayTraceBlocks(pos, vec, false, false, true);
+        RayTraceResult result = target.world.rayTraceBlocks(pos, vec, false, false, true);
 
         if (result != null && result.typeOfHit == Type.BLOCK)
         {
@@ -46,7 +46,7 @@ public class Teleport implements IAction
                 return;
             }
 
-            if (target.isSneaking() || !target.worldObj.getBlockState(block.offset(EnumFacing.UP)).getBlock().equals(Blocks.AIR))
+            if (target.isSneaking() || !target.world.getBlockState(block.offset(EnumFacing.UP)).getBlock().equals(Blocks.AIR))
             {
                 block = block.offset(result.sideHit);
             }
@@ -55,7 +55,7 @@ public class Teleport implements IAction
             double y = block.getY() + 1.0F;
             double z = block.getZ() + 0.5F;
 
-            target.worldObj.playSound(null, target.prevPosX, target.prevPosY, target.prevPosZ, SoundEvents.ENTITY_ENDERMEN_TELEPORT, SoundCategory.HOSTILE, 1.0F, 1.0F);
+            target.world.playSound(null, target.prevPosX, target.prevPosY, target.prevPosZ, SoundEvents.ENTITY_ENDERMEN_TELEPORT, SoundCategory.HOSTILE, 1.0F, 1.0F);
             target.setPositionAndUpdate(x, y, z);
 
             if (target instanceof EntityPlayer)
@@ -63,7 +63,7 @@ public class Teleport implements IAction
                 ((EntityPlayer) target).resetCooldown();
             }
 
-            target.worldObj.playSound(null, target.posX, target.posY, target.posZ, SoundEvents.ENTITY_ENDERMEN_TELEPORT, SoundCategory.HOSTILE, 1.0F, 1.0F);
+            target.world.playSound(null, target.posX, target.posY, target.posZ, SoundEvents.ENTITY_ENDERMEN_TELEPORT, SoundCategory.HOSTILE, 1.0F, 1.0F);
         }
     }
 }

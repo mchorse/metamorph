@@ -56,7 +56,7 @@ public class GuiOverlay extends Gui
             String string = "Acquired";
 
             /* Prepare the model */
-            morph.morph.renderOnScreen(mc.thePlayer, 15, y, 15, (float) alpha / 255);
+            morph.morph.renderOnScreen(mc.player, 15, y, 15, (float) alpha / 255);
 
             /* Render overlay */
             font.drawString(string, 30, y - 7, color);

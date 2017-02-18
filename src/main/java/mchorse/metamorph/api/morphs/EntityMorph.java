@@ -84,7 +84,7 @@ public class EntityMorph extends AbstractMorph
     @SideOnly(Side.CLIENT)
     public void renderOnScreen(EntityPlayer player, int x, int y, float scale, float alpha)
     {
-        EntityLivingBase entity = this.getEntity(player.worldObj);
+        EntityLivingBase entity = this.getEntity(player.world);
 
         if (entity.height > 2)
         {
@@ -192,7 +192,7 @@ public class EntityMorph extends AbstractMorph
 
         if (render == null)
         {
-            this.getEntity(entity.worldObj);
+            this.getEntity(entity.world);
 
             /* Make transformation seamless... */
             this.entity.rotationYaw = entity.rotationYaw;
@@ -261,7 +261,7 @@ public class EntityMorph extends AbstractMorph
             ((EntityLiving) entity).setNoAI(true);
         }
 
-        if (entity instanceof EntityAgeable && !entity.worldObj.isRemote)
+        if (entity instanceof EntityAgeable && !entity.world.isRemote)
         {
             ((EntityAgeable) entity).setScaleForAge(entity.isChild());
         }
@@ -299,7 +299,7 @@ public class EntityMorph extends AbstractMorph
     {
         if (entity == null)
         {
-            this.setupEntity(target.worldObj);
+            this.setupEntity(target.world);
         }
 
         /* Update entity */
@@ -321,7 +321,7 @@ public class EntityMorph extends AbstractMorph
         super.update(target, cap);
 
         /* Update entity's inventory */
-        if (target.worldObj.isRemote)
+        if (target.world.isRemote)
         {
             int i = 0;
 
@@ -396,7 +396,7 @@ public class EntityMorph extends AbstractMorph
 
         if (targetRiding && !entityRiding)
         {
-            entity.startRiding(new EntityPig(entity.worldObj));
+            entity.startRiding(new EntityPig(entity.world));
         }
         else if (!targetRiding && entityRiding)
         {
@@ -442,7 +442,7 @@ public class EntityMorph extends AbstractMorph
          * animals on the client, but on the server it doesn't change anything 
          * thus I have to rely on proivded NBT data for figuring out if an 
          * animal entity is being a baby */
-        if (!target.worldObj.isRemote && isAnimalChild)
+        if (!target.world.isRemote && isAnimalChild)
         {
             width *= 0.5;
             height *= 0.5;
@@ -458,7 +458,7 @@ public class EntityMorph extends AbstractMorph
      */
     public void setupEntity(World world)
     {
-        EntityLivingBase created = (EntityLivingBase) EntityList.createEntityByIDFromName(name, world);
+        EntityLivingBase created = (EntityLivingBase) EntityList.createEntityByIDFromName(new ResourceLocation(name), world);
 
         created.deserializeNBT(this.entityData);
         created.deathTime = 0;
@@ -648,7 +648,7 @@ public class EntityMorph extends AbstractMorph
     {
         if (this.entity == null)
         {
-            this.setupEntity(target.worldObj);
+            this.setupEntity(target.world);
         }
 
         return this.entity.width;
@@ -659,7 +659,7 @@ public class EntityMorph extends AbstractMorph
     {
         if (this.entity == null)
         {
-            this.setupEntity(target.worldObj);
+            this.setupEntity(target.world);
         }
 
         return this.entity.height;

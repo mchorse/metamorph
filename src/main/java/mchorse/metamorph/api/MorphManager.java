@@ -12,9 +12,12 @@ import mchorse.metamorph.api.abilities.IAction;
 import mchorse.metamorph.api.abilities.IAttackAbility;
 import mchorse.metamorph.api.models.ModelManager;
 import mchorse.metamorph.api.morphs.AbstractMorph;
+import mchorse.metamorph.api.morphs.EntityMorph;
+import net.minecraft.client.Minecraft;
 import net.minecraft.client.resources.I18n;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityList;
+import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.relauncher.Side;
@@ -192,7 +195,7 @@ public class MorphManager
      * Get display name for morph (only client)
      */
     @SideOnly(Side.CLIENT)
-    public String morphDisplayNameFromMorph(String morph)
+    public String morphDisplayNameFromMorph(AbstractMorph morph)
     {
         for (int i = this.factories.size() - 1; i >= 0; i--)
         {
@@ -205,9 +208,22 @@ public class MorphManager
         }
 
         /* Falling back to default method */
-        String key = "entity." + morph + ".name";
+        String name = morph.name;
+
+        /* In case if it's an EntityMorph, we're going to check its name */
+        if (morph instanceof EntityMorph)
+        {
+            EntityLivingBase entity = ((EntityMorph) morph).getEntity(Minecraft.getMinecraft().world);
+
+            if (entity != null)
+            {
+                name = EntityList.getEntityString(entity);
+            }
+        }
+
+        String key = "entity." + name + ".name";
         String result = I18n.format(key);
 
-        return key.equals(result) ? morph : result;
+        return key.equals(result) ? name : result;
     }
 }

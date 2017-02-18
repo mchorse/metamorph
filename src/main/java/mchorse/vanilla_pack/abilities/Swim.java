@@ -46,7 +46,7 @@ public class Swim extends Ability
         }
         else
         {
-            target.attackEntityFrom(DamageSource.drown, target.worldObj.getDifficulty().equals(EnumDifficulty.PEACEFUL) ? 1.0F : 0.5F);
+            target.attackEntityFrom(DamageSource.drown, target.world.getDifficulty().equals(EnumDifficulty.PEACEFUL) ? 1.0F : 0.5F);
         }
     }
 }

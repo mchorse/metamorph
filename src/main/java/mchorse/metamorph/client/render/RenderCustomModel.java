@@ -165,7 +165,7 @@ public class RenderCustomModel extends RenderLivingBase<EntityLivingBase>
      * an elytra. You know,
      */
     @Override
-    protected void rotateCorpse(EntityLivingBase entity, float pitch, float yaw, float partialTicks)
+    protected void applyRotations(EntityLivingBase entity, float pitch, float yaw, float partialTicks)
     {
         if (entity.isEntityAlive() && entity.isPlayerSleeping())
         {
@@ -177,10 +177,10 @@ public class RenderCustomModel extends RenderLivingBase<EntityLivingBase>
         else if (entity.isElytraFlying())
         {
             /* Elytra rotation */
-            super.rotateCorpse(entity, pitch, yaw, partialTicks);
+            super.applyRotations(entity, pitch, yaw, partialTicks);
 
             float f = entity.getTicksElytraFlying() + partialTicks;
-            float f1 = MathHelper.clamp_float(f * f / 100.0F, 0.0F, 1.0F);
+            float f1 = MathHelper.clamp(f * f / 100.0F, 0.0F, 1.0F);
 
             Vec3d vec3d = entity.getLook(partialTicks);
 
@@ -199,7 +199,7 @@ public class RenderCustomModel extends RenderLivingBase<EntityLivingBase>
         }
         else
         {
-            super.rotateCorpse(entity, pitch, yaw, partialTicks);
+            super.applyRotations(entity, pitch, yaw, partialTicks);
         }
     }
 

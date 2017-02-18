@@ -33,7 +33,7 @@ public class WaterBreath extends Ability
     @SideOnly(Side.CLIENT)
     public void onMorph(EntityLivingBase target)
     {
-        if (target.worldObj.isRemote && target == Minecraft.getMinecraft().thePlayer)
+        if (target.world.isRemote && target == Minecraft.getMinecraft().player)
         {
             GuiIngameForge.renderAir = false;
         }
@@ -49,7 +49,7 @@ public class WaterBreath extends Ability
     @SideOnly(Side.CLIENT)
     public void onDemorph(EntityLivingBase target)
     {
-        if (target.worldObj.isRemote && target == Minecraft.getMinecraft().thePlayer)
+        if (target.world.isRemote && target == Minecraft.getMinecraft().player)
         {
             GuiIngameForge.renderAir = true;
         }

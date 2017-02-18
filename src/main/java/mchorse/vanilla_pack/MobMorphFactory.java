@@ -15,7 +15,10 @@ import net.minecraft.entity.passive.EntityAnimal;
 import net.minecraft.nbt.JsonToNBT;
 import net.minecraft.nbt.NBTException;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.util.ResourceLocation;
 import net.minecraft.world.World;
+import net.minecraftforge.fml.common.registry.EntityEntry;
+import net.minecraftforge.fml.common.registry.ForgeRegistries;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
@@ -45,7 +48,7 @@ public class MobMorphFactory implements IMorphFactory
 
     @Override
     @SideOnly(Side.CLIENT)
-    public String displayNameForMorph(String morphName)
+    public String displayNameForMorph(AbstractMorph morph)
     {
         return null;
     }
@@ -57,8 +60,10 @@ public class MobMorphFactory implements IMorphFactory
     @Override
     public void getMorphs(MorphList morphs, World world)
     {
-        for (String name : EntityList.getEntityNameList())
+        for (ResourceLocation rl : EntityList.getEntityNameList())
         {
+            String name = rl.toString();
+
             if (this.hasMorph(name) && !morphs.hasMorph(name))
             {
                 this.addMorph(morphs, world, name, null);
@@ -66,84 +71,81 @@ public class MobMorphFactory implements IMorphFactory
         }
 
         /* Adding baby animal variants */
-        this.addMorph(morphs, world, "Pig", "{Age:-1}");
-        this.addMorph(morphs, world, "Chicken", "{Age:-1}");
-        this.addMorph(morphs, world, "Cow", "{Age:-1}");
-        this.addMorph(morphs, world, "MushroomCow", "{Age:-1}");
-        this.addMorph(morphs, world, "PolarBear", "{Age:-1}");
+        this.addMorph(morphs, world, "minecraft:pig", "{Age:-1}");
+        this.addMorph(morphs, world, "minecraft:chicken", "{Age:-1}");
+        this.addMorph(morphs, world, "minecraft:cow", "{Age:-1}");
+        this.addMorph(morphs, world, "minecraft:mooshroom", "{Age:-1}");
+        this.addMorph(morphs, world, "minecraft:polar_bear", "{Age:-1}");
 
         /* Sheep variants */
-        this.addMorph(morphs, world, "Sheep", "{Sheared:1b}");
-        this.addMorph(morphs, world, "Sheep", "{Age:-1}");
-        this.addMorph(morphs, world, "Sheep", "{Age:-1,Sheared:1b}");
+        this.addMorph(morphs, world, "minecraft:sheep", "{Sheared:1b}");
+        this.addMorph(morphs, world, "minecraft:sheep", "{Age:-1}");
+        this.addMorph(morphs, world, "minecraft:sheep", "{Age:-1,Sheared:1b}");
 
         for (int i = 1; i < 16; i++)
         {
-            this.addMorph(morphs, world, "Sheep", "{Color:" + i + "}");
+            this.addMorph(morphs, world, "minecraft:sheep", "{Color:" + i + "}");
         }
 
-        this.addMorph(morphs, world, "Sheep", "Jeb", "{CustomName:\"jeb_\"}");
-        this.addMorph(morphs, world, "Sheep", "Baby Jeb", "{Age:-1,CustomName:\"jeb_\"}");
+        this.addMorph(morphs, world, "minecraft:sheep", "Jeb", "{CustomName:\"jeb_\"}");
+        this.addMorph(morphs, world, "minecraft:sheep", "Baby Jeb", "{Age:-1,CustomName:\"jeb_\"}");
 
         /* Slime and magma cube variants */
-        this.addMorph(morphs, world, "Slime", "{Size:1}");
-        this.addMorph(morphs, world, "Slime", "{Size:2}");
+        this.addMorph(morphs, world, "minecraft:slime", "{Size:1}");
+        this.addMorph(morphs, world, "minecraft:slime", "{Size:2}");
 
-        this.addMorph(morphs, world, "LavaSlime", "{Size:1}");
-        this.addMorph(morphs, world, "LavaSlime", "{Size:2}");
+        this.addMorph(morphs, world, "minecraft:magma_cube", "{Size:1}");
+        this.addMorph(morphs, world, "minecraft:magma_cube", "{Size:2}");
 
         /* Adding cat variants */
-        this.addMorph(morphs, world, "Ozelot", "{Age:-1}");
+        this.addMorph(morphs, world, "minecraft:ocelot", "{Age:-1}");
 
         for (int i = 1; i < 4; i++)
         {
-            this.addMorph(morphs, world, "Ozelot", "{CatType:" + i + "}");
-            this.addMorph(morphs, world, "Ozelot", "{CatType:" + i + ",Age:-1}");
+            this.addMorph(morphs, world, "minecraft:ocelot", "{CatType:" + i + "}");
+            this.addMorph(morphs, world, "minecraft:ocelot", "{CatType:" + i + ",Age:-1}");
         }
 
         /* Adding horse variants */
-        this.addMorph(morphs, world, "EntityHorse", "{Type:0,Variant:1}");
-        this.addMorph(morphs, world, "EntityHorse", "{Type:0,Variant:2}");
-        this.addMorph(morphs, world, "EntityHorse", "{Type:0,Variant:3}");
-        this.addMorph(morphs, world, "EntityHorse", "{Type:0,Variant:4}");
-        this.addMorph(morphs, world, "EntityHorse", "{Type:0,Variant:5}");
-        this.addMorph(morphs, world, "EntityHorse", "{Type:0,Variant:6}");
-        this.addMorph(morphs, world, "EntityHorse", "Donkey", "{Type:1,Variant:0}");
-        this.addMorph(morphs, world, "EntityHorse", "Mule", "{Type:2,Variant:0}");
-        this.addMorph(morphs, world, "EntityHorse", "Skeleton", "{Type:3,Variant:0}");
-        this.addMorph(morphs, world, "EntityHorse", "Zombie", "{Type:4,Variant:0}");
+        this.addMorph(morphs, world, "minecraft:horse", "{Variant:1}");
+        this.addMorph(morphs, world, "minecraft:horse", "{Variant:2}");
+        this.addMorph(morphs, world, "minecraft:horse", "{Variant:3}");
+        this.addMorph(morphs, world, "minecraft:horse", "{Variant:4}");
+        this.addMorph(morphs, world, "minecraft:horse", "{Variant:5}");
+        this.addMorph(morphs, world, "minecraft:horse", "{Variant:6}");
 
         /* Adding villager variants */
-        this.addMorph(morphs, world, "Villager", "{ProfessionName:\"minecraft:librarian\"}");
-        this.addMorph(morphs, world, "Villager", "{ProfessionName:\"minecraft:priest\"}");
-        this.addMorph(morphs, world, "Villager", "{ProfessionName:\"minecraft:smith\"}");
-        this.addMorph(morphs, world, "Villager", "{ProfessionName:\"minecraft:butcher\"}");
+        this.addMorph(morphs, world, "minecraft:villager", "{ProfessionName:\"minecraft:librarian\"}");
+        this.addMorph(morphs, world, "minecraft:villager", "{ProfessionName:\"minecraft:priest\"}");
+        this.addMorph(morphs, world, "minecraft:villager", "{ProfessionName:\"minecraft:smith\"}");
+        this.addMorph(morphs, world, "minecraft:villager", "{ProfessionName:\"minecraft:butcher\"}");
+        this.addMorph(morphs, world, "minecraft:villager", "{ProfessionName:\"minecraft:nitwit\"}");
 
-        /* Adding normal bat */
-        this.addMorph(morphs, world, "Bat", "{BatFlags:2}");
-
-        /* Skeleton variants */
-        this.addMorph(morphs, world, "Skeleton", "Wither", "{SkeletonType:1}");
-        this.addMorph(morphs, world, "Skeleton", "Stray", "{SkeletonType:2}");
-
-        /* Adding Zombie variants */
-        this.addMorph(morphs, world, "Zombie", "Baby", "{IsBaby:1b}");
-
-        for (int i = 1; i < 7; i++)
+        /* Adding zombie villagers */
+        for (int i = 1; i < 6; i++)
         {
-            this.addMorph(morphs, world, "Zombie", "{ZombieType:" + i + "}");
+            this.addMorph(morphs, world, "minecraft:zombie_villager", "{Profession:" + i + "}");
         }
 
-        /* Adding elder guardian */
-        this.addMorph(morphs, world, "Guardian", "Elder", "{Elder:1b}");
+        /* Adding normal bat */
+        this.addMorph(morphs, world, "minecraft:bar", "{BatFlags:2}");
+
+        /* Adding Zombie variants */
+        this.addMorph(morphs, world, "minecraft:zombie", "Baby", "{IsBaby:1b}");
+
+        /* Adding llama variants */
+        for (int i = 1; i < 4; i++)
+        {
+            this.addMorph(morphs, world, "minecraft:llama", "{Variant:" + i + "}");
+        }
 
         /* Adding rabbit variants */
         for (int i = 1; i < 6; i++)
         {
-            this.addMorph(morphs, world, "Rabbit", "{RabbitType:" + i + "}");
+            this.addMorph(morphs, world, "minecraft:rabbit", "{RabbitType:" + i + "}");
         }
 
-        this.addMorph(morphs, world, "Rabbit", "Toast", "{CustomName:\"Toast\"}");
+        this.addMorph(morphs, world, "minecraft:rabbit", "Toast", "{CustomName:\"Toast\"}");
     }
 
     /**
@@ -159,8 +161,15 @@ public class MobMorphFactory implements IMorphFactory
      */
     private void addMorph(MorphList morphs, World world, String name, String variant, String json)
     {
-        EntityMorph morph = name.equals("VillagerGolem") ? new IronGolemMorph() : new EntityMorph();
-        EntityLivingBase entity = (EntityLivingBase) EntityList.createEntityByName(name, world);
+        EntityMorph morph = name.equals("minecraft:villager_golem") ? new IronGolemMorph() : new EntityMorph();
+        EntityLivingBase entity = (EntityLivingBase) EntityList.createEntityByIDFromName(new ResourceLocation(name), world);
+
+        if (entity == null)
+        {
+            System.out.println("Couldn't add morph " + name + "!");
+            return;
+        }
+
         NBTTagCompound data = entity.serializeNBT();
 
         morph.name = name;
@@ -208,7 +217,15 @@ public class MobMorphFactory implements IMorphFactory
     @Override
     public boolean hasMorph(String name)
     {
-        Class<? extends Entity> clazz = EntityList.NAME_TO_CLASS.get(name);
+        Class<? extends Entity> clazz = null;
+
+        for (EntityEntry entity : ForgeRegistries.ENTITIES)
+        {
+            if (entity.getRegistryName().equals(new ResourceLocation(name)))
+            {
+                clazz = entity.getEntityClass();
+            }
+        }
 
         if (clazz != null)
         {
@@ -228,7 +245,7 @@ public class MobMorphFactory implements IMorphFactory
 
         if (this.hasMorph(name))
         {
-            EntityMorph morph = name.equals("VillagerGolem") ? new IronGolemMorph() : new EntityMorph();
+            EntityMorph morph = name.equals("minecraft:villager_golem") ? new IronGolemMorph() : new EntityMorph();
 
             morph.fromNBT(tag);
 
