@@ -183,6 +183,11 @@ public class EntityMorph extends AbstractMorph
     @SuppressWarnings({"unchecked", "rawtypes"})
     public void render(EntityLivingBase entity, double x, double y, double z, float entityYaw, float partialTicks)
     {
+        if (entity == null)
+        {
+            return;
+        }
+
         Render render = this.renderer;
 
         if (render == null)
@@ -242,6 +247,7 @@ public class EntityMorph extends AbstractMorph
         this.entity = entity;
 
         entity.setHealth(entity.getMaxHealth());
+        entity.noClip = true;
 
         if (this.health == 20)
         {
@@ -330,9 +336,15 @@ public class EntityMorph extends AbstractMorph
         }
 
         /* Injecting player's properties */
-        entity.posX = target.posX;
-        entity.posY = target.posY;
-        entity.posZ = target.posZ;
+        entity.setPosition(target.posX, target.posY, target.posZ);
+
+        entity.lastTickPosX = target.lastTickPosX;
+        entity.lastTickPosY = target.lastTickPosY;
+        entity.lastTickPosZ = target.lastTickPosZ;
+
+        entity.prevPosX = target.prevPosX;
+        entity.prevPosY = target.prevPosY;
+        entity.prevPosZ = target.prevPosZ;
 
         entity.rotationYaw = target.rotationYaw;
         entity.rotationPitch = target.rotationPitch;
@@ -359,6 +371,15 @@ public class EntityMorph extends AbstractMorph
 
         entity.prevSwingProgress = target.prevSwingProgress;
         entity.prevLimbSwingAmount = target.prevLimbSwingAmount;
+
+        if (target instanceof EntityPlayer && ((EntityPlayer) target).isCreative())
+        {
+            entity.fallDistance = 0;
+        }
+        else
+        {
+            entity.fallDistance = target.fallDistance;
+        }
 
         entity.setSneaking(target.isSneaking());
         entity.setSprinting(target.isSprinting());

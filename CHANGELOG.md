@@ -2,7 +2,7 @@
 
 ## Metamorph 1.1
 
-A big update of Metamorph mod. This update introduces third-party morph support and public API. A lot of code was rewritten, and 
+A big update of Metamorph mod. This update introduces third-party morph support, improved GUIs and public API. A lot of code was rewritten, and there close to no morphs which use custom models (as in the first version).
 
 * Added Public API (technical)
     * `mchorse.metamorph.api.MorphAPI` class provides API static methods
