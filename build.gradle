@@ -57,6 +57,21 @@ dependencies {
 
 }
 
+task deobfJar(type: Jar) {
+    from sourceSets.main.output
+    classifier = 'dev'
+}
+
+task sourcesJar(type: Jar) {
+    from sourceSets.main.allJava
+    classifier = 'sources'
+}
+
+artifacts {
+    archives deobfJar
+    archives sourcesJar
+}
+
 processResources
 {
     // this will ensure that this task is redone when the versions change.
