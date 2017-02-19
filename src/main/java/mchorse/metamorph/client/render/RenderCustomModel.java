@@ -75,7 +75,7 @@ public class RenderCustomModel extends RenderLivingBase<EntityLivingBase>
         ModelBiped.ArmPose left = ModelBiped.ArmPose.EMPTY;
         ModelCustom model = (ModelCustom) this.mainModel;
 
-        if (rightItem != null)
+        if (!rightItem.isEmpty())
         {
             right = ModelBiped.ArmPose.ITEM;
 
@@ -94,7 +94,7 @@ public class RenderCustomModel extends RenderLivingBase<EntityLivingBase>
             }
         }
 
-        if (leftItem != null)
+        if (!leftItem.isEmpty())
         {
             left = ModelBiped.ArmPose.ITEM;
 

@@ -170,16 +170,8 @@ public class VanillaMorphFactory implements IMorphFactory
     private void registerModels(ModelManager models)
     {
         /* Hostile mobs */
-        this.loadModel(models, "Blaze");
-        this.loadModel(models, "Creeper");
-    }
-
-    /**
-     * Load model with name and lowercase'd model name
-     */
-    private void loadModel(ModelManager models, String model)
-    {
-        loadModel(models, model, model.toLowerCase());
+        this.loadModel(models, "minecraft:blaze", "blaze");
+        this.loadModel(models, "minecraft:creeper", "creeper");
     }
 
     /**
@@ -191,7 +183,7 @@ public class VanillaMorphFactory implements IMorphFactory
         {
             models.load(model, filename);
 
-            CustomMorph morph = model.equals("Blaze") ? new BlazeMorph() : new CustomMorph();
+            CustomMorph morph = model.equals("minecraft:blaze") ? new BlazeMorph() : new CustomMorph();
 
             morph.name = model;
             morph.model = models.models.get(model);
