@@ -3,11 +3,13 @@ package mchorse.metamorph;
 import org.apache.logging.log4j.Level;
 import org.apache.logging.log4j.Logger;
 
+import mchorse.metamorph.commands.CommandMorph;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.Mod.EventHandler;
 import net.minecraftforge.fml.common.SidedProxy;
 import net.minecraftforge.fml.common.event.FMLInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
+import net.minecraftforge.fml.common.event.FMLServerStartingEvent;
 
 /**
  * Metamorph mod
@@ -57,6 +59,12 @@ public class Metamorph
     public void load(FMLInitializationEvent event)
     {
         proxy.load();
+    }
+
+    @EventHandler
+    public void serverStarting(FMLServerStartingEvent event)
+    {
+        event.registerServerCommand(new CommandMorph());
     }
 
     /* Logging */
