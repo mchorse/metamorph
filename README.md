@@ -73,5 +73,3 @@ If you're interested in this project, you might as well follow me on any of soci
 * On my [YouTube](https://www.youtube.com/channel/UCWVDjAcecHHa8UrEWMRGI8w) channel, I post update, tutorial and testing videos of my mods and machinimas. 
 * On [Twitter](https://twitter.com/McHorsy), I post mod updates, WIP screenshots, mod announcements and any video that I publish on YouTube. I'm quite active on twitter.
 * On [GitHub](https://github.com/mchorse), I store source code of all my mods and projects.
-
-I LIKE SICK GUITAR SOLOS!!!
