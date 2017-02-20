@@ -8,6 +8,7 @@ import net.minecraft.command.CommandBase;
 import net.minecraft.command.CommandException;
 import net.minecraft.command.ICommandSender;
 import net.minecraft.command.WrongUsageException;
+import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.nbt.JsonToNBT;
 import net.minecraft.nbt.NBTTagCompound;
@@ -41,13 +42,14 @@ public class CommandMorph extends CommandBase
             throw new WrongUsageException(this.getCommandUsage(sender));
         }
 
-        EntityPlayer player = server.getPlayerList().getPlayerByUsername(args[0]);
+        Entity entity = getEntity(server, sender, args[0]);
 
-        if (player == null)
+        if (!(entity instanceof EntityPlayer))
         {
-            throw new CommandException("metamorph.error.morph.no_player", args[0]);
+            throw new CommandException("metamorph.error.morph.not_player", entity.getDisplayName());
         }
 
+        EntityPlayer player = (EntityPlayer) entity;
         NBTTagCompound tag = null;
 
         if (args.length >= 3)
@@ -57,7 +59,9 @@ public class CommandMorph extends CommandBase
                 tag = JsonToNBT.getTagFromJson(args[2]);
             }
             catch (Exception e)
-            {}
+            {
+                throw new CommandException("metamorph.error.morph.nbt", e.getMessage());
+            }
         }
 
         if (tag == null)
@@ -66,8 +70,6 @@ public class CommandMorph extends CommandBase
         }
 
         tag.setString("Name", args[1]);
-
-        System.out.println(tag.toString());
 
         MorphAPI.morph(player, MorphManager.INSTANCE.morphFromNBT(tag), true);
     }

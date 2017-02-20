@@ -40,7 +40,9 @@ metamorph.config.show_demorph=Show demorph
 
 # Commands
 metamorph.commands.morph=Morph command. This command is responsible for morphing player into specified morph.\n\n/morph <username> <morph_name> [data_tag]
-metamorph.error.morph.no_player=Player by username "%s" cannot be found!
+
+metamorph.error.morph.not_player=Entity %s isn't not a player!
+metamorph.error.morph.nbt=Error occurred during data tag parsing:\n%s
 
 # Morph categories
 morph.category.unknown=Unknown morphs
