@@ -36,7 +36,7 @@ public interface IMorphFactory
      * return null.
      */
     @SideOnly(Side.CLIENT)
-    public String displayNameForMorph(String morphName);
+    public String displayNameForMorph(AbstractMorph morph);
 
     /**
      * Get all available morphs for this morphing factory

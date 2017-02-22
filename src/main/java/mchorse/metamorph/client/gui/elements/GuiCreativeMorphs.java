@@ -104,7 +104,7 @@ public class GuiCreativeMorphs extends GuiScrollPane
                 }
 
                 String variant = morph.variant.isEmpty() ? morph.variant : " (" + morph.variant + ")";
-                String title = MorphManager.INSTANCE.morphDisplayNameFromMorph(morph.morph.name) + variant;
+                String title = MorphManager.INSTANCE.morphDisplayNameFromMorph(morph.morph) + variant;
 
                 category.cells.add(new MorphCell(title, morph.morph, 0));
             }
@@ -129,7 +129,7 @@ public class GuiCreativeMorphs extends GuiScrollPane
 
             for (AbstractMorph morph : morphing.getAcquiredMorphs())
             {
-                category.cells.add(new MorphCell(MorphManager.INSTANCE.morphDisplayNameFromMorph(morph.name), morph, 0));
+                category.cells.add(new MorphCell(MorphManager.INSTANCE.morphDisplayNameFromMorph(morph), morph, 0));
             }
         }
     }

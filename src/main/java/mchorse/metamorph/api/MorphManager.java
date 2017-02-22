@@ -12,6 +12,8 @@ import mchorse.metamorph.api.abilities.IAction;
 import mchorse.metamorph.api.abilities.IAttackAbility;
 import mchorse.metamorph.api.models.ModelManager;
 import mchorse.metamorph.api.morphs.AbstractMorph;
+import mchorse.metamorph.api.morphs.EntityMorph;
+import net.minecraft.client.Minecraft;
 import net.minecraft.client.resources.I18n;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityList;
@@ -192,7 +194,7 @@ public class MorphManager
      * Get display name for morph (only client)
      */
     @SideOnly(Side.CLIENT)
-    public String morphDisplayNameFromMorph(String morph)
+    public String morphDisplayNameFromMorph(AbstractMorph morph)
     {
         for (int i = this.factories.size() - 1; i >= 0; i--)
         {
@@ -205,9 +207,16 @@ public class MorphManager
         }
 
         /* Falling back to default method */
-        String key = "entity." + morph + ".name";
+        String name = morph.name;
+
+        if (morph instanceof EntityMorph)
+        {
+            name = EntityList.getEntityString(((EntityMorph) morph).getEntity(Minecraft.getMinecraft().theWorld));
+        }
+
+        String key = "entity." + name + ".name";
         String result = I18n.format(key);
 
-        return key.equals(result) ? morph : result;
+        return key.equals(result) ? name : result;
     }
 }

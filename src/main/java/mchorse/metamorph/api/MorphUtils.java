@@ -6,6 +6,7 @@ import java.io.FileNotFoundException;
 import java.io.InputStream;
 import java.io.PrintWriter;
 import java.lang.reflect.Type;
+import java.util.List;
 import java.util.Map;
 import java.util.Scanner;
 
@@ -75,21 +76,53 @@ public class MorphUtils
     }
 
     /**
-     * Generate an empty JSON object for user ready-to-use
+     * Generate an empty file
      */
-    public static void generateEmptyMorphs(File config)
+    public static void generateFile(File config, String content)
     {
         config.getParentFile().mkdirs();
 
         try
         {
             PrintWriter writer = new PrintWriter(config);
-            writer.print("{}");
+            writer.print(content);
             writer.close();
         }
         catch (FileNotFoundException e)
         {
             e.printStackTrace();
         }
+    }
+
+    /**
+     * Load user provided blacklist using the safe way.
+     */
+    public static void loadBlacklist(MorphManager instance, File blacklist)
+    {
+        try
+        {
+            loadBlacklist(instance, new FileInputStream(blacklist));
+        }
+        catch (Exception e)
+        {
+            e.printStackTrace();
+        }
+    }
+
+    /**
+     * Load user provided blacklist. Using this method, you're responsible for 
+     * catching exceptions yourself.  
+     */
+    public static void loadBlacklist(MorphManager instance, FileInputStream input)
+    {
+        Scanner scanner = new Scanner(input, "UTF-8");
+
+        @SuppressWarnings("serial")
+        Type type = new TypeToken<List<String>>()
+        {}.getType();
+        List<String> data = gson.fromJson(scanner.useDelimiter("\\A").next(), type);
+
+        instance.blacklist.addAll(data);
+        scanner.close();
     }
 }

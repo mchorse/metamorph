@@ -45,7 +45,7 @@ public class MobMorphFactory implements IMorphFactory
 
     @Override
     @SideOnly(Side.CLIENT)
-    public String displayNameForMorph(String morphName)
+    public String displayNameForMorph(AbstractMorph morphName)
     {
         return null;
     }
@@ -161,13 +161,13 @@ public class MobMorphFactory implements IMorphFactory
     {
         EntityMorph morph = name.equals("VillagerGolem") ? new IronGolemMorph() : new EntityMorph();
         EntityLivingBase entity = (EntityLivingBase) EntityList.createEntityByName(name, world);
-        
+
         if (entity == null)
         {
             System.out.println("Couldn't add morph " + name + "!");
             return;
         }
-        
+
         NBTTagCompound data = entity.serializeNBT();
 
         morph.name = name;

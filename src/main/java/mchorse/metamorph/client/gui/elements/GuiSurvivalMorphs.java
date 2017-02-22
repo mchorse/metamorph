@@ -502,7 +502,7 @@ public class GuiSurvivalMorphs extends Gui
 
             if (i != 0)
             {
-                name = MorphManager.INSTANCE.morphDisplayNameFromMorph(morph.name);
+                name = MorphManager.INSTANCE.morphDisplayNameFromMorph(morph);
             }
 
             /* Scroll the position */

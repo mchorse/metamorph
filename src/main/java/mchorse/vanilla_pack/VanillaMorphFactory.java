@@ -57,7 +57,7 @@ public class VanillaMorphFactory implements IMorphFactory
     public void register(MorphManager manager)
     {
         /* Blacklist morph */
-        manager.blacklist.add("metamorph.Morph");
+        manager.blacklist.add("metamorph:morph");
 
         /* Define shortcuts */
         Map<String, IAbility> abilities = manager.abilities;
@@ -104,7 +104,7 @@ public class VanillaMorphFactory implements IMorphFactory
 
     @Override
     @SideOnly(Side.CLIENT)
-    public String displayNameForMorph(String morphName)
+    public String displayNameForMorph(AbstractMorph morph)
     {
         return null;
     }

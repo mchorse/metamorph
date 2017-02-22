@@ -66,7 +66,19 @@ public class MorphHandler
             return;
         }
 
-        capability.getCurrentMorph().update(player, capability);
+        try
+        {
+            capability.getCurrentMorph().update(player, capability);
+        }
+        catch (Exception e)
+        {
+            e.printStackTrace();
+
+            if (!player.worldObj.isRemote)
+            {
+                MorphAPI.demorph(player);
+            }
+        }
     }
 
     /**

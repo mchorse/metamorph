@@ -82,7 +82,10 @@ public class EntityMorph extends EntityLiving implements IEntityAdditionalSpawnD
      */
     private void setSize(AbstractMorph morph)
     {
-        this.setSize(MathHelper.clamp_float(morph.getWidth(this), 0, 1.5F), MathHelper.clamp_float(morph.getHeight(this), 0, 2.0F));
+        if (morph != null)
+        {
+            this.setSize(MathHelper.clamp_float(morph.getWidth(this), 0, 1.5F), MathHelper.clamp_float(morph.getHeight(this), 0, 2.0F));
+        }
     }
 
     /**
