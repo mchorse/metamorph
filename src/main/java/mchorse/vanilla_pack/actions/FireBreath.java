@@ -3,25 +3,19 @@ package mchorse.vanilla_pack.actions;
 import mchorse.metamorph.api.abilities.IAction;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.entity.projectile.EntityLargeFireball;
+import net.minecraft.entity.projectile.EntityDragonFireball;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Vec3d;
-import net.minecraft.world.World;
 
 /**
- * Fireball action
- * 
- * This action is responsible for shooting a fireball from player's face. Used 
- * by ghast morph.
+ * Ender dragon's fire breath 
  */
-public class Fireball implements IAction
+public class FireBreath implements IAction
 {
     @Override
     public void execute(EntityLivingBase target)
     {
-        World world = target.worldObj;
-
-        if (world.isRemote)
+        if (target.worldObj.isRemote)
         {
             return;
         }
@@ -38,16 +32,15 @@ public class Fireball implements IAction
         double d3 = vec3d.yCoord * d1;
         double d4 = vec3d.zCoord * d1;
 
-        world.playEvent((EntityPlayer) null, 1016, new BlockPos(target), 0);
+        target.worldObj.playEvent((EntityPlayer) null, 1017, new BlockPos(target), 0);
 
-        EntityLargeFireball fireball = new EntityLargeFireball(world, target, d2, d3, d4);
+        EntityDragonFireball fireball = new EntityDragonFireball(target.worldObj, target, d2, d3, d4);
 
-        fireball.explosionPower = 1;
-        fireball.posX = target.posX;
+        fireball.posX = target.posX + d2 / d1;
         fireball.posY = target.posY + target.height * 0.9;
-        fireball.posZ = target.posZ;
+        fireball.posZ = target.posZ + d4 / d1;
 
-        world.spawnEntityInWorld(fireball);
+        target.worldObj.spawnEntityInWorld(fireball);
 
         if (target instanceof EntityPlayer)
         {

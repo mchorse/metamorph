@@ -78,13 +78,14 @@
         "health": 20
     },
     "VillagerGolem": {
+    	"attack": "knockback",
         "health": 100,
         "speed": 0.04
     },
     
     "Blaze": {
         "abilities": ["fly", "fire_proof", "water_allergy"],
-        "action": "fireball",
+        "action": "small_fireball",
         "health": 20,
         "hostile": true
     },
@@ -138,5 +139,12 @@
         "abilities": ["sun_allergy", "hungerless"],
         "health": 20,
         "hostile": true
+    },
+    
+    "EnderDragon": {
+    	"abilities": ["fly", "no_clip"],
+    	"action": "fire_breath",
+    	"health": 200,
+    	"hostile": true
     }
 }
