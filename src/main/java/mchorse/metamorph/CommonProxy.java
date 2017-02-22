@@ -100,19 +100,23 @@ public class CommonProxy
         /* Register morph factories */
         MorphManager.INSTANCE.register();
 
+        /* User configuration */
         if (morphs.exists())
         {
             MorphUtils.loadMorphSettings(MorphManager.INSTANCE, morphs);
         }
         else
         {
-            MorphUtils.generateEmptyMorphs(morphs);
+            MorphUtils.generateFile(morphs, "{}");
         }
 
-        // TODO: implement blacklist
         if (blacklist.exists())
         {
-
+            MorphUtils.loadBlacklist(MorphManager.INSTANCE, blacklist);
+        }
+        else
+        {
+            MorphUtils.generateFile(blacklist, "[]");
         }
     }
 }
