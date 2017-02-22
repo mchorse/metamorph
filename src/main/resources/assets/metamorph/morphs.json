@@ -1,46 +1,23 @@
+
 {
-    "minecraft:bat": {
+    "Bat": {
         "abilities": ["fly", "night_vision", "prevent_fall"],
         "health": 6
     },
-    "minecraft:cave_spider": {
+    "CaveSpider": {
         "abilities": ["climb"],
         "attack": "poison",
         "health": 12,
         "hostile": true
     },
-    "minecraft:chicken": {
+    "Chicken": {
         "abilities": ["glide"],
         "health": 4
     },
-    "minecraft:cow": {
+    "Cow": {
         "health": 10
     },
-    "minecraft:horse": {
-        "abilities": ["prevent_fall"],
-        "action": "jump",
-        "health": 24,
-        "speed": 0.15
-    },
-    "minecraft:donkey": {
-        "abilities": ["prevent_fall"],
-        "action": "jump",
-        "health": 24,
-        "speed": 0.15
-    },
-    "minecraft:mule": {
-        "abilities": ["prevent_fall"],
-        "action": "jump",
-        "health": 24,
-        "speed": 0.15
-    },
-    "minecraft:skeleton_horse": {
-        "abilities": ["prevent_fall"],
-        "action": "jump",
-        "health": 24,
-        "speed": 0.15
-    },
-    "minecraft:zombie_horse": {
+    "EntityHorse": {
         "abilities": ["prevent_fall"],
         "action": "jump",
         "health": 24,
@@ -49,115 +26,106 @@
     "MushroomCow": {
         "health": 10
     },
-    "minecraft:ocelot": {
+    "Ozelot": {
         "health": 10,
         "speed": 0.15
     },
-    "minecraft:pig": {
+    "Pig": {
         "health": 10
     },
-    "minecraft:polar_bear": {
+    "PolarBear": {
         "health": 30
     },
-    "minecraft:rabbit": {
+    "Rabbit": {
         "abilities": ["prevent_fall"],
         "action": "jump",
         "health": 3,
         "speed": 0.13
     },
-    "minecraft:sheep": {
+    "Sheep": {
         "health": 8
     },
-    "minecraft:spider": {
+    "Spider": {
         "abilities": ["climb"],
         "health": 16,
         "hostile": true
     },
-    "minecraft:squid": {
+    "Squid": {
         "abilities": ["water_breath", "swim", "night_vision"],
         "health": 10
     },
-    "minecraft:wolf": {
+    "Wolf": {
     	"health": 8,
     	"hostile": true
     },
     
-    "minecraft:enderman": {
+    "Enderman": {
         "abilities": ["water_allergy"],
         "action": "teleport",
         "health": 40,
         "hostile": true
     },
-    "minecraft:zombie_pigman": {
+    "PigZombie": {
         "abilities": ["fire_proof", "hungerless"],
         "health": 20,
         "hostile": true
     },
-    "minecraft:snowman": {
+    "SnowMan": {
         "abilities": ["snow_walk"],
         "action": "snowball",
         "health": 4
     },
-    "minecraft:villager": {
+    "Villager": {
         "health": 20
     },
-    "minecraft:villager_golem": {
+    "VillagerGolem": {
     	"attack": "knockback",
-        "health": 100
+        "health": 100,
+        "speed": 0.04
     },
     
-    "minecraft:blaze": {
+    "Blaze": {
         "abilities": ["fly", "fire_proof", "water_allergy"],
         "action": "small_fireball",
         "health": 20,
         "hostile": true
     },
-    "minecraft:creeper": {
+    "Creeper": {
         "action": "explode",
         "health": 20,
         "hostile": true
     },
-    "minecraft:ghast": {
+    "Ghast": {
         "abilities": ["fly", "fire_proof"],
         "action": "fireball",
         "health": 10,
         "hostile": true
     },
-    "minecraft:guardian": {
+    "Guardian": {
         "abilities": ["water_breath", "night_vision", "swim", "jumping"],
         "health": 30,
         "hostile": true
     },
-    "minecraft:elder_guardian": {
-        "abilities": ["water_breath", "night_vision", "swim", "jumping"],
-        "health": 30,
-        "hostile": true
-    },
-    "minecraft:magma_cube": {
+    "LavaSlime": {
         "abilities": ["jumping", "fire_proof"],
         "health": 4,
         "hostile": true
     },
-    "minecraft:silverfish": {
+    "Silverfish": {
         "health": 8,
         "hostile": true
     },
-    "minecraft:slime": {
+    "Slime": {
         "abilities": ["jumping"],
         "health": 4,
         "hostile": true
     },
-    "minecraft:skeleton": {
+    "Skeleton": {
         "abilities": ["sun_allergy"],
         "health": 20,
         "hostile": true
     },
-    "minecraft:stray": {
-        "abilities": ["sun_allergy"],
-        "health": 20,
-        "hostile": true
-    },
-    "minecraft:wither_skeleton": {
+    "WitherSkeleton": {
         "abilities": ["fire_proof"],
         "attack": "wither",
         "health": 20,
@@ -168,24 +136,14 @@
         "health": 26,
         "hostile": true
     },
-    "minecraft:zombie": {
-        "abilities": ["sun_allergy", "hungerless"],
-        "health": 20,
-        "hostile": true
-    },
-    "minecraft:husk": {
-        "abilities": ["sun_allergy", "hungerless"],
-        "health": 20,
-        "hostile": true
-    },
-    "minecraft:zombie_villager": {
+    "Zombie": {
         "abilities": ["sun_allergy", "hungerless"],
         "health": 20,
         "hostile": true
     },
     
-    "minecraft:ender_dragon": {
-    	"abilities": ["fly", "no_clip"],
+    "EnderDragon": {
+    	"abilities": ["fly"],
     	"action": "fire_breath",
     	"health": 200,
     	"hostile": true

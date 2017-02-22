@@ -57,7 +57,7 @@ public class VanillaMorphFactory implements IMorphFactory
     public void register(MorphManager manager)
     {
         /* Blacklist morph */
-        manager.blacklist.add("metamorph:morph");
+        manager.blacklist.add("metamorph.Morph");
 
         /* Define shortcuts */
         Map<String, IAbility> abilities = manager.abilities;
