@@ -218,21 +218,17 @@ public class MobMorphFactory implements IMorphFactory
     public boolean hasMorph(String name)
     {
         Class<? extends Entity> clazz = null;
+        ResourceLocation key = new ResourceLocation(name);
 
         for (EntityEntry entity : ForgeRegistries.ENTITIES)
         {
-            if (entity.getRegistryName().equals(new ResourceLocation(name)))
+            if (entity.getRegistryName().equals(key))
             {
                 clazz = entity.getEntityClass();
             }
         }
 
-        if (clazz != null)
-        {
-            return EntityLivingBase.class.isAssignableFrom(clazz);
-        }
-
-        return false;
+        return clazz == null ? false : EntityLivingBase.class.isAssignableFrom(clazz);
     }
 
     /**
@@ -242,6 +238,11 @@ public class MobMorphFactory implements IMorphFactory
     public AbstractMorph getMorphFromNBT(NBTTagCompound tag)
     {
         String name = tag.getString("Name");
+
+        if (MorphManager.NAME_TO_RL.containsKey(name))
+        {
+            name = MorphManager.NAME_TO_RL.get(name).toString();
+        }
 
         if (this.hasMorph(name))
         {

@@ -17,9 +17,11 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.client.resources.I18n;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityList;
-import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.util.ResourceLocation;
 import net.minecraft.world.World;
+import net.minecraftforge.fml.common.registry.EntityEntry;
+import net.minecraftforge.fml.common.registry.ForgeRegistries;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
@@ -34,6 +36,11 @@ public class MorphManager
      * Default <s>football</s> morph manager 
      */
     public static final MorphManager INSTANCE = new MorphManager();
+
+    /**
+     * Because FUCK 1.11!
+     */
+    public static final Map<String, ResourceLocation> NAME_TO_RL = new HashMap<String, ResourceLocation>();
 
     /**
      * Registered abilities 
@@ -69,6 +76,17 @@ public class MorphManager
      * Model manager
      */
     public ModelManager models;
+
+    /**
+     * Initiate a map of string entity name to its registry name  
+     */
+    public static void initiateMap()
+    {
+        for (EntityEntry entity : ForgeRegistries.ENTITIES.getValues())
+        {
+            NAME_TO_RL.put(entity.getName(), entity.getRegistryName());
+        }
+    }
 
     /**
      * Check whether morph by the given name is blacklisted 
@@ -188,7 +206,7 @@ public class MorphManager
      */
     public String morphNameFromEntity(Entity entity)
     {
-        return EntityList.getEntityString(entity);
+        return EntityList.getKey(entity).toString();
     }
 
     /**
@@ -210,15 +228,9 @@ public class MorphManager
         /* Falling back to default method */
         String name = morph.name;
 
-        /* In case if it's an EntityMorph, we're going to check its name */
         if (morph instanceof EntityMorph)
         {
-            EntityLivingBase entity = ((EntityMorph) morph).getEntity(Minecraft.getMinecraft().world);
-
-            if (entity != null)
-            {
-                name = EntityList.getEntityString(entity);
-            }
+            name = EntityList.getEntityString(((EntityMorph) morph).getEntity(Minecraft.getMinecraft().world));
         }
 
         String key = "entity." + name + ".name";

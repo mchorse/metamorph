@@ -22,19 +22,13 @@
         "health": 24,
         "speed": 0.15
     },
-    "minecraft:mule": {
-        "abilities": ["prevent_fall"],
-        "action": "jump",
-        "health": 24,
-        "speed": 0.15
-    },
     "minecraft:donkey": {
         "abilities": ["prevent_fall"],
         "action": "jump",
         "health": 24,
         "speed": 0.15
     },
-    "minecraft:zombie_horse": {
+    "minecraft:mule": {
         "abilities": ["prevent_fall"],
         "action": "jump",
         "health": 24,
@@ -46,7 +40,13 @@
         "health": 24,
         "speed": 0.15
     },
-    "minecraft:mooshroom": {
+    "minecraft:zombie_horse": {
+        "abilities": ["prevent_fall"],
+        "action": "jump",
+        "health": 24,
+        "speed": 0.15
+    },
+    "MushroomCow": {
         "health": 10
     },
     "minecraft:ocelot": {
@@ -102,13 +102,13 @@
         "health": 20
     },
     "minecraft:villager_golem": {
-        "health": 100,
-        "speed": 0.04
+    	"attack": "knockback",
+        "health": 100
     },
     
     "minecraft:blaze": {
         "abilities": ["fly", "fire_proof", "water_allergy"],
-        "action": "fireball",
+        "action": "small_fireball",
         "health": 20,
         "hostile": true
     },
@@ -152,13 +152,18 @@
         "health": 20,
         "hostile": true
     },
+    "minecraft:stray": {
+        "abilities": ["sun_allergy"],
+        "health": 20,
+        "hostile": true
+    },
     "minecraft:wither_skeleton": {
         "abilities": ["fire_proof"],
         "attack": "wither",
         "health": 20,
         "hostile": true
     },
-    "minecraft:witch": {
+    "Witch": {
         "action": "potions",
         "health": 26,
         "hostile": true
@@ -168,9 +173,21 @@
         "health": 20,
         "hostile": true
     },
+    "minecraft:husk": {
+        "abilities": ["sun_allergy", "hungerless"],
+        "health": 20,
+        "hostile": true
+    },
     "minecraft:zombie_villager": {
         "abilities": ["sun_allergy", "hungerless"],
         "health": 20,
         "hostile": true
+    },
+    
+    "minecraft:ender_dragon": {
+    	"abilities": ["fly", "no_clip"],
+    	"action": "fire_breath",
+    	"health": 200,
+    	"hostile": true
     }
 }

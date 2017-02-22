@@ -11,8 +11,6 @@ import net.minecraft.entity.EntityLivingBase;
  * 
  * This morph is responsible for making IronGolem morph great again! This morph 
  * is very powerful. I should make him much slower.
- * 
- * Well, I found out that without restricting his motion 
  */
 public class IronGolemMorph extends EntityMorph
 {
@@ -21,15 +19,15 @@ public class IronGolemMorph extends EntityMorph
     {
         if (target.motionY > 0)
         {
-            if (Math.abs(target.motionX) > 0.3) target.motionX *= target.isSprinting() ? 0.3 : 0.7;
-            if (Math.abs(target.motionZ) > 0.3) target.motionZ *= target.isSprinting() ? 0.3 : 0.7;
-
             target.motionY *= 0.9;
         }
         else
         {
             target.motionY *= 1.3;
         }
+
+        target.motionX *= 0.5;
+        target.motionZ *= 0.5;
 
         super.update(target, cap);
     }

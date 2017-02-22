@@ -458,7 +458,7 @@ public class EntityMorph extends AbstractMorph
      */
     public void setupEntity(World world)
     {
-        EntityLivingBase created = (EntityLivingBase) EntityList.createEntityByIDFromName(new ResourceLocation(name), world);
+        EntityLivingBase created = (EntityLivingBase) EntityList.createEntityByIDFromName(new ResourceLocation(this.name), world);
 
         created.deserializeNBT(this.entityData);
         created.deathTime = 0;

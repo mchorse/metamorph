@@ -51,6 +51,11 @@ public class CommonProxy
      */
     public File morphs;
 
+    /**
+     * Location of a user morph blacklist 
+     */
+    public File blacklist;
+
     public void preLoad(FMLPreInitializationEvent event)
     {
         /* Network messages */
@@ -64,10 +69,12 @@ public class CommonProxy
         /* Configuration */
         File config = new File(event.getModConfigurationDirectory(), "metamorph/config.cfg");
         File morphs = new File(event.getModConfigurationDirectory(), "metamorph/morphs.json");
+        File blacklist = new File(event.getModConfigurationDirectory(), "metamorph/blacklist.json");
 
         this.forge = new Configuration(config);
         this.config = new MetamorphConfig(this.forge);
         this.morphs = morphs;
+        this.blacklist = blacklist;
 
         /* Entities */
         EntityRegistry.registerModEntity(new ResourceLocation("metamorph:morph"), EntityMorph.class, "Morph", 0, Metamorph.instance, 64, 3, false);
@@ -100,6 +107,12 @@ public class CommonProxy
         else
         {
             MorphUtils.generateEmptyMorphs(morphs);
+        }
+
+        // TODO: implement blacklist
+        if (blacklist.exists())
+        {
+
         }
     }
 }

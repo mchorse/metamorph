@@ -3,18 +3,18 @@ package mchorse.vanilla_pack.actions;
 import mchorse.metamorph.api.abilities.IAction;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.entity.projectile.EntityLargeFireball;
+import net.minecraft.entity.projectile.EntitySmallFireball;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
 
 /**
- * Fireball action
+ * Small fireball action
  * 
  * This action is responsible for shooting a fireball from player's face. Used 
- * by ghast morph.
+ * by blaze morph.
  */
-public class Fireball implements IAction
+public class SmallFireball implements IAction
 {
     @Override
     public void execute(EntityLivingBase target)
@@ -40,9 +40,8 @@ public class Fireball implements IAction
 
         world.playEvent((EntityPlayer) null, 1016, new BlockPos(target), 0);
 
-        EntityLargeFireball fireball = new EntityLargeFireball(world, target, d2, d3, d4);
+        EntitySmallFireball fireball = new EntitySmallFireball(world, target, d2, d3, d4);
 
-        fireball.explosionPower = 1;
         fireball.posX = target.posX;
         fireball.posY = target.posY + target.height * 0.9;
         fireball.posZ = target.posZ;

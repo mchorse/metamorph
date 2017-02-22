@@ -3,11 +3,15 @@ package mchorse.metamorph;
 import org.apache.logging.log4j.Level;
 import org.apache.logging.log4j.Logger;
 
+import mchorse.metamorph.api.MorphManager;
+import mchorse.metamorph.commands.CommandMorph;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.Mod.EventHandler;
 import net.minecraftforge.fml.common.SidedProxy;
 import net.minecraftforge.fml.common.event.FMLInitializationEvent;
+import net.minecraftforge.fml.common.event.FMLPostInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
+import net.minecraftforge.fml.common.event.FMLServerStartingEvent;
 
 /**
  * Metamorph mod
@@ -30,7 +34,7 @@ public class Metamorph
     /* Metadata fields */
     public static final String MODID = "metamorph";
     public static final String MODNAME = "Metamorph";
-    public static final String VERSION = "1.1";
+    public static final String VERSION = "1.1.1";
 
     public static final String CLIENT_PROXY = "mchorse.metamorph.ClientProxy";
     public static final String SERVER_PROXY = "mchorse.metamorph.CommonProxy";
@@ -57,6 +61,19 @@ public class Metamorph
     public void load(FMLInitializationEvent event)
     {
         proxy.load();
+    }
+
+    @EventHandler
+    public void postLoad(FMLPostInitializationEvent event)
+    {
+        /* I hope all entities are going to be loaded */
+        MorphManager.initiateMap();
+    }
+
+    @EventHandler
+    public void serverStarting(FMLServerStartingEvent event)
+    {
+        event.registerServerCommand(new CommandMorph());
     }
 
     /* Logging */

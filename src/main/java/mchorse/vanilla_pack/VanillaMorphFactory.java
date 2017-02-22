@@ -1,10 +1,7 @@
 package mchorse.vanilla_pack;
 
-import java.util.HashMap;
 import java.util.Map;
 
-import mchorse.metamorph.ClientProxy;
-import mchorse.metamorph.Metamorph;
 import mchorse.metamorph.api.IMorphFactory;
 import mchorse.metamorph.api.MorphList;
 import mchorse.metamorph.api.MorphManager;
@@ -12,12 +9,7 @@ import mchorse.metamorph.api.MorphUtils;
 import mchorse.metamorph.api.abilities.IAbility;
 import mchorse.metamorph.api.abilities.IAction;
 import mchorse.metamorph.api.abilities.IAttackAbility;
-import mchorse.metamorph.api.models.Model;
-import mchorse.metamorph.api.models.ModelManager;
 import mchorse.metamorph.api.morphs.AbstractMorph;
-import mchorse.metamorph.api.morphs.CustomMorph;
-import mchorse.metamorph.client.model.ModelCustom;
-import mchorse.metamorph.client.model.parsing.ModelParser;
 import mchorse.vanilla_pack.abilities.Climb;
 import mchorse.vanilla_pack.abilities.FireProof;
 import mchorse.vanilla_pack.abilities.Fly;
@@ -32,16 +24,16 @@ import mchorse.vanilla_pack.abilities.Swim;
 import mchorse.vanilla_pack.abilities.WaterAllergy;
 import mchorse.vanilla_pack.abilities.WaterBreath;
 import mchorse.vanilla_pack.actions.Explode;
+import mchorse.vanilla_pack.actions.FireBreath;
 import mchorse.vanilla_pack.actions.Fireball;
 import mchorse.vanilla_pack.actions.Jump;
 import mchorse.vanilla_pack.actions.Potions;
+import mchorse.vanilla_pack.actions.SmallFireball;
 import mchorse.vanilla_pack.actions.Snowball;
 import mchorse.vanilla_pack.actions.Teleport;
 import mchorse.vanilla_pack.attacks.KnockbackAttack;
 import mchorse.vanilla_pack.attacks.PoisonAttack;
 import mchorse.vanilla_pack.attacks.WitherAttack;
-import mchorse.vanilla_pack.morphs.BlazeMorph;
-import net.minecraft.client.model.ModelBase;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.relauncher.Side;
@@ -55,11 +47,6 @@ import net.minecraftforge.fml.relauncher.SideOnly;
  */
 public class VanillaMorphFactory implements IMorphFactory
 {
-    /**
-     * Factory'r registered morphs 
-     */
-    private Map<String, CustomMorph> morphs = new HashMap<String, CustomMorph>();
-
     /**
      * Register method
      * 
@@ -95,8 +82,10 @@ public class VanillaMorphFactory implements IMorphFactory
         /* Register default actions */
         actions.put("explode", new Explode());
         actions.put("fireball", new Fireball());
+        actions.put("fire_breath", new FireBreath());
         actions.put("jump", new Jump());
         actions.put("potions", new Potions());
+        actions.put("small_fireball", new SmallFireball());
         actions.put("snowball", new Snowball());
         actions.put("teleport", new Teleport());
 
@@ -105,21 +94,13 @@ public class VanillaMorphFactory implements IMorphFactory
         attacks.put("wither", new WitherAttack());
         attacks.put("knockback", new KnockbackAttack());
 
-        this.registerModels(manager.models);
         this.registerMorphsSettings(manager);
     }
 
     @Override
     @SideOnly(Side.CLIENT)
     public void registerClient(MorphManager manager)
-    {
-        for (AbstractMorph morph : this.morphs.values())
-        {
-            morph.renderer = ClientProxy.modelRenderer;
-        }
-
-        this.registerClientModels(manager.models);
-    }
+    {}
 
     @Override
     @SideOnly(Side.CLIENT)
@@ -130,25 +111,18 @@ public class VanillaMorphFactory implements IMorphFactory
 
     @Override
     public void getMorphs(MorphList morphs, World world)
-    {
-        for (CustomMorph morph : this.morphs.values())
-        {
-            morphs.addMorph(morph.name, "patched_vanilla", morph.clone());
-        }
-    }
+    {}
 
     @Override
     public boolean hasMorph(String name)
     {
-        return this.morphs.containsKey(name);
+        return false;
     }
 
     @Override
     public AbstractMorph getMorphFromNBT(NBTTagCompound tag)
     {
-        CustomMorph morph = this.morphs.get(tag.getString("Name"));
-
-        return morph == null ? null : morph.clone();
+        return null;
     }
 
     /* Custom Models */
@@ -162,95 +136,5 @@ public class VanillaMorphFactory implements IMorphFactory
     protected void registerMorphsSettings(MorphManager manager)
     {
         MorphUtils.loadMorphSettings(manager, this.getClass().getClassLoader().getResourceAsStream("assets/metamorph/morphs.json"));
-    }
-
-    /**
-     * Load served based custom models
-     */
-    private void registerModels(ModelManager models)
-    {
-        /* Hostile mobs */
-        this.loadModel(models, "minecraft:blaze", "blaze");
-        this.loadModel(models, "minecraft:creeper", "creeper");
-    }
-
-    /**
-     * Load model with name and filename
-     */
-    private void loadModel(ModelManager models, String model, String filename)
-    {
-        try
-        {
-            models.load(model, filename);
-
-            CustomMorph morph = model.equals("minecraft:blaze") ? new BlazeMorph() : new CustomMorph();
-
-            morph.name = model;
-            morph.model = models.models.get(model);
-
-            this.morphs.put(model, morph);
-        }
-        catch (Exception e)
-        {
-            System.out.println("An exception was raised when loading '" + model + "' model!");
-            e.printStackTrace();
-        }
-    }
-
-    /**
-     * Turn all registered custom models into client {@link ModelBase}d models. 
-     */
-    @SideOnly(Side.CLIENT)
-    private void registerClientModels(ModelManager models)
-    {
-        for (String model : this.morphs.keySet())
-        {
-            this.loadClientModel(models, model);
-        }
-    }
-
-    /**
-     * Load a client model with given name and given data custom model from 
-     * models registry 
-     */
-    @SideOnly(Side.CLIENT)
-    private void loadClientModel(ModelManager models, String name)
-    {
-        loadClientModel(name, models.models.get(name));
-    }
-
-    /**
-     * Load a client model for given name with given data custom model
-     */
-    @SideOnly(Side.CLIENT)
-    private void loadClientModel(String name, Model data)
-    {
-        if (data == null)
-        {
-            Metamorph.log("Client custom model by name " + name + " couldn't be loaded!");
-
-            return;
-        }
-
-        if (data.model.isEmpty())
-        {
-            /* Parse default type of model */
-            ModelParser.parse(name, data);
-        }
-        else
-        {
-            try
-            {
-                @SuppressWarnings("unchecked")
-                Class<? extends ModelCustom> clazz = (Class<? extends ModelCustom>) Class.forName(data.model);
-
-                /* Parse custom custom (overcustomized) model */
-                ModelParser.parse(name, data, clazz);
-            }
-            catch (ClassNotFoundException e)
-            {
-                e.printStackTrace();
-            }
-        }
     }
 }
