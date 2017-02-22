@@ -110,8 +110,8 @@ public class MobMorphFactory implements IMorphFactory
         this.addMorph(morphs, world, "EntityHorse", "{Type:0,Variant:6}");
         this.addMorph(morphs, world, "EntityHorse", "Donkey", "{Type:1,Variant:0}");
         this.addMorph(morphs, world, "EntityHorse", "Mule", "{Type:2,Variant:0}");
-        this.addMorph(morphs, world, "EntityHorse", "Skeleton", "{Type:3,Variant:0}");
-        this.addMorph(morphs, world, "EntityHorse", "Zombie", "{Type:4,Variant:0}");
+        this.addMorph(morphs, world, "EntityHorse", "Zombie", "{Type:3,Variant:0}");
+        this.addMorph(morphs, world, "EntityHorse", "Skeleton", "{Type:4,Variant:0}");
 
         /* Adding villager variants */
         this.addMorph(morphs, world, "Villager", "{ProfessionName:\"minecraft:librarian\"}");
