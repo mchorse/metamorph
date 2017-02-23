@@ -35,6 +35,13 @@ public class CommandMorph extends CommandBase
     }
 
     @Override
+    public int getRequiredPermissionLevel()
+    {
+        /* Because /op command has the same level, and I trust it */
+        return 3;
+    }
+
+    @Override
     public void execute(MinecraftServer server, ICommandSender sender, String[] args) throws CommandException
     {
         if (args.length < 2)
