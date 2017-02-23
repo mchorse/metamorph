@@ -3,6 +3,7 @@ package mchorse.metamorph;
 import org.apache.logging.log4j.Level;
 import org.apache.logging.log4j.Logger;
 
+import mchorse.metamorph.api.MorphManager;
 import mchorse.metamorph.commands.CommandMorph;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.Mod.EventHandler;
@@ -64,6 +65,11 @@ public class Metamorph
     @EventHandler
     public void serverStarting(FMLServerStartingEvent event)
     {
+        /* Setting up the blacklist */
+        MorphManager.INSTANCE.setActiveBlacklist(MorphManager.INSTANCE.blacklist);
+        MorphManager.INSTANCE.setActiveSettings(MorphManager.INSTANCE.settings);
+
+        /* Register commands */
         event.registerServerCommand(new CommandMorph());
     }
 

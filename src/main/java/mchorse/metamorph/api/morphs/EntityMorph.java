@@ -112,6 +112,11 @@ public class EntityMorph extends AbstractMorph
     @SuppressWarnings("rawtypes")
     public boolean renderHand(EntityPlayer player, EnumHand hand)
     {
+        if (!this.hands)
+        {
+            return true;
+        }
+
         if (!this.triedHands && this.renderer != null)
         {
             this.setupTexture();

@@ -12,38 +12,47 @@
     },
     "Chicken": {
         "abilities": ["glide"],
-        "health": 4
+        "health": 4,
+        "hands": true
     },
     "Cow": {
-        "health": 10
+        "health": 10,
+        "hands": true
     },
     "EntityHorse": {
         "abilities": ["prevent_fall"],
         "action": "jump",
         "health": 24,
-        "speed": 0.15
+        "speed": 0.15,
+        "hands": true
     },
     "MushroomCow": {
-        "health": 10
+        "health": 10,
+        "hands": true
     },
     "Ozelot": {
         "health": 10,
-        "speed": 0.15
+        "speed": 0.15,
+        "hands": true
     },
     "Pig": {
-        "health": 10
+        "health": 10,
+        "hands": true
     },
     "PolarBear": {
-        "health": 30
+        "health": 30,
+        "hands": true
     },
     "Rabbit": {
         "abilities": ["prevent_fall"],
         "action": "jump",
         "health": 3,
-        "speed": 0.13
+        "speed": 0.13,
+        "hands": true
     },
     "Sheep": {
-        "health": 8
+        "health": 8,
+        "hands": true
     },
     "Spider": {
         "abilities": ["climb"],
@@ -52,23 +61,27 @@
     },
     "Squid": {
         "abilities": ["water_breath", "swim", "night_vision"],
-        "health": 10
+        "health": 10,
+        "hands": true
     },
     "Wolf": {
     	"health": 8,
-    	"hostile": true
+    	"hostile": true,
+    	"hands": true
     },
     
     "Enderman": {
         "abilities": ["water_allergy"],
         "action": "teleport",
         "health": 40,
-        "hostile": true
+        "hostile": true,
+        "hands": true
     },
     "PigZombie": {
         "abilities": ["fire_proof", "hungerless"],
         "health": 20,
-        "hostile": true
+        "hostile": true,
+        "hands": true
     },
     "SnowMan": {
         "abilities": ["snow_walk"],
@@ -76,30 +89,35 @@
         "health": 4
     },
     "Villager": {
-        "health": 20
+        "health": 20,
+        "hands": true
     },
     "VillagerGolem": {
     	"attack": "knockback",
         "health": 100,
-        "speed": 0.04
+        "speed": 0.04,
+        "hands": true
     },
     
     "Blaze": {
         "abilities": ["fly", "fire_proof", "water_allergy"],
         "action": "small_fireball",
         "health": 20,
-        "hostile": true
+        "hostile": true,
+        "hands": true
     },
     "Creeper": {
         "action": "explode",
         "health": 20,
-        "hostile": true
+        "hostile": true,
+        "hands": true
     },
     "Ghast": {
         "abilities": ["fly", "fire_proof"],
         "action": "fireball",
         "health": 10,
-        "hostile": true
+        "hostile": true,
+        "hands": true
     },
     "Guardian": {
         "abilities": ["water_breath", "night_vision", "swim", "jumping"],
@@ -123,23 +141,27 @@
     "Skeleton": {
         "abilities": ["sun_allergy"],
         "health": 20,
-        "hostile": true
+        "hostile": true,
+        "hands": true
     },
     "WitherSkeleton": {
         "abilities": ["fire_proof"],
         "attack": "wither",
         "health": 20,
-        "hostile": true
+        "hostile": true,
+        "hands": true
     },
     "Witch": {
         "action": "potions",
         "health": 26,
-        "hostile": true
+        "hostile": true,
+        "hands": true
     },
     "Zombie": {
         "abilities": ["sun_allergy", "hungerless"],
         "health": 20,
-        "hostile": true
+        "hostile": true,
+        "hands": true
     },
     
     "EnderDragon": {

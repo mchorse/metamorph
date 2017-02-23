@@ -62,6 +62,11 @@ public abstract class AbstractMorph
      */
     public boolean hostile = false;
 
+    /**
+     * Render hands, some morphs might not use this property
+     */
+    public boolean hands = false;
+
     /* Meta information */
 
     /**

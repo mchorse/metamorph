@@ -1,13 +1,16 @@
 package mchorse.metamorph.capabilities;
 
 import mchorse.metamorph.Metamorph;
+import mchorse.metamorph.api.MorphManager;
 import mchorse.metamorph.capabilities.morphing.IMorphing;
 import mchorse.metamorph.capabilities.morphing.Morphing;
 import mchorse.metamorph.capabilities.morphing.MorphingProvider;
 import mchorse.metamorph.network.Dispatcher;
 import mchorse.metamorph.network.common.PacketAcquiredMorphs;
+import mchorse.metamorph.network.common.PacketBlacklist;
 import mchorse.metamorph.network.common.PacketMorph;
 import mchorse.metamorph.network.common.PacketMorphPlayer;
+import mchorse.metamorph.network.common.PacketSettings;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
@@ -58,6 +61,10 @@ public class CapabilityHandler
             {
                 cap.getCurrentMorph().morph(player);
             }
+
+            /* Send data */
+            Dispatcher.sendTo(new PacketBlacklist(MorphManager.INSTANCE.blacklist), (EntityPlayerMP) player);
+            Dispatcher.sendTo(new PacketSettings(MorphManager.INSTANCE.settings), (EntityPlayerMP) player);
         }
     }
 
