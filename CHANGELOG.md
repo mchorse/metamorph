@@ -1,5 +1,18 @@
 # Metamorph Change Log
 
+## Metamorph 1.1.1
+
+Patch 
+
+* Added `/morph` command for making player(s) morph into given morph
+* Added fire breathing ability for ender dragon
+* Added entity blacklist (`blacklist.json` in config folder)
+* Attempt to fix Zoology mod crash in creative menu
+* Fixed survival morphs in `1.11.2`
+* Nerfed `blaze` morph, it now shoots non explosive fireballs
+* Removed patched morphs category
+* Swapped horse variants names (zombie and skeleton)
+
 ## Metamorph 1.1
 
 A big update of Metamorph mod. This update introduces third-party morph support, improved GUIs and public API. A lot of code was rewritten, and there close to no morphs which use custom models (as in the first version).
