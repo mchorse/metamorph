@@ -15,14 +15,9 @@
         "health": 4,
         "hands": true
     },
-<<<<<<< HEAD
     "minecraft:cow": {
-        "health": 10
-=======
-    "Cow": {
         "health": 10,
-        "hands": true
->>>>>>> master
+		"hands": true
     },
     "minecraft:horse": {
         "abilities": ["prevent_fall"],
@@ -52,8 +47,7 @@
         "abilities": ["prevent_fall"],
         "action": "jump",
         "health": 24,
-        "speed": 0.15,
-        "hands": true
+        "speed": 0.15
     },
     "MushroomCow": {
         "health": 10,
@@ -64,21 +58,13 @@
         "speed": 0.15,
         "hands": true
     },
-<<<<<<< HEAD
     "minecraft:pig": {
-        "health": 10
-    },
-    "minecraft:polar_bear": {
-        "health": 30
-=======
-    "Pig": {
         "health": 10,
         "hands": true
     },
-    "PolarBear": {
+    "minecraft:polar_bear": {
         "health": 30,
-        "hands": true
->>>>>>> master
+		"hands": true
     },
     "minecraft:rabbit": {
         "abilities": ["prevent_fall"],
@@ -86,14 +72,9 @@
         "health": 3,
         "speed": 0.13
     },
-<<<<<<< HEAD
     "minecraft:sheep": {
-        "health": 8
-=======
-    "Sheep": {
         "health": 8,
-        "hands": true
->>>>>>> master
+    	"hands": true
     },
     "minecraft:spider": {
         "abilities": ["climb"],
@@ -129,24 +110,14 @@
         "action": "snowball",
         "health": 4
     },
-<<<<<<< HEAD
-    "minecraft:villager": {
-        "health": 20
-=======
-    "Villager": {
+	"minecraft:villager": {
         "health": 20,
         "hands": true
->>>>>>> master
     },
     "minecraft:villager_golem": {
     	"attack": "knockback",
-<<<<<<< HEAD
-        "health": 100
-=======
         "health": 100,
-        "speed": 0.04,
-        "hands": true
->>>>>>> master
+		"hands": true
     },
     
     "minecraft:blaze": {
@@ -196,7 +167,8 @@
     "minecraft:skeleton": {
         "abilities": ["sun_allergy"],
         "health": 20,
-        "hostile": true
+        "hostile": true,
+        "hands": true
     },
     "minecraft:stray": {
         "abilities": ["sun_allergy"],
@@ -211,7 +183,7 @@
         "hostile": true,
         "hands": true
     },
-    "Witch": {
+    "minecraft:witch": {
         "action": "potions",
         "health": 26,
         "hostile": true,
@@ -225,7 +197,8 @@
     "minecraft:husk": {
         "abilities": ["sun_allergy", "hungerless"],
         "health": 20,
-        "hostile": true
+        "hostile": true,
+        "hands": true
     },
     "minecraft:zombie_villager": {
         "abilities": ["sun_allergy", "hungerless"],
@@ -234,13 +207,8 @@
         "hands": true
     },
     
-<<<<<<< HEAD
     "minecraft:ender_dragon": {
-    	"abilities": ["fly", "no_clip"],
-=======
-    "EnderDragon": {
     	"abilities": ["fly"],
->>>>>>> master
     	"action": "fire_breath",
     	"health": 200,
     	"hostile": true
