@@ -27,7 +27,7 @@ public class Explode implements IAction
 
         if (!(target instanceof EntityPlayer) || (target instanceof EntityPlayer && !((EntityPlayer) target).isCreative()))
         {
-            target.attackEntityFrom(DamageSource.outOfWorld, target.getMaxHealth());
+            target.attackEntityFrom(DamageSource.OUT_OF_WORLD, target.getMaxHealth());
         }
     }
 }

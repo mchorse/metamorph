@@ -58,19 +58,32 @@ public class MorphManager
     public Map<String, IAttackAbility> attacks = new HashMap<String, IAttackAbility>();
 
     /**
-     * Settings for morphs 
-     */
-    public Map<String, MorphSettings> settings = new HashMap<String, MorphSettings>();
-
-    /**
      * Registered morph factories
      */
     public List<IMorphFactory> factories = new ArrayList<IMorphFactory>();
 
     /**
-     * Blacklisted entities 
+     * Settings for morphs for this server, this is not used for populating 
+     * morph abilities and properties. See active morph settings.
+     */
+    public Map<String, MorphSettings> settings = new HashMap<String, MorphSettings>();
+
+    /**
+     * Active morph settings 
+     */
+    public Map<String, MorphSettings> activeSettings = new HashMap<String, MorphSettings>();
+
+    /**
+     * Blacklisted entities for this server, not used for actual checking, 
+     * only for populating.
      */
     public Set<String> blacklist = new TreeSet<String>();
+
+    /**
+     * Active blacklist. Sent either from server, or getting assigned on 
+     * server start. Don't modify this, please. 
+     */
+    public Set<String> activeBlacklist = new TreeSet<String>();
 
     /**
      * Model manager
@@ -93,7 +106,27 @@ public class MorphManager
      */
     public static boolean isBlacklisted(String name)
     {
-        return INSTANCE.blacklist.contains(name);
+        return INSTANCE.activeBlacklist.contains(name);
+    }
+
+    /**
+     * Set currently blacklist for usage 
+     */
+    public void setActiveBlacklist(Set<String> blacklist)
+    {
+        INSTANCE.activeBlacklist.clear();
+        INSTANCE.activeBlacklist.addAll(blacklist);
+    }
+
+    /**
+     * Set currently blacklist for usage 
+     */
+    public void setActiveSettings(Map<String, MorphSettings> settings)
+    {
+        System.out.println(settings);
+
+        INSTANCE.activeSettings.clear();
+        INSTANCE.activeSettings.putAll(settings);
     }
 
     /**
@@ -170,10 +203,7 @@ public class MorphManager
             {
                 AbstractMorph morph = this.factories.get(i).getMorphFromNBT(tag);
 
-                if (this.settings.containsKey(morph.name))
-                {
-                    this.settings.get(morph.name).apply(morph);
-                }
+                this.applySettings(morph);
 
                 return morph;
             }
@@ -183,7 +213,19 @@ public class MorphManager
     }
 
     /**
-     * Get all morphs that factories provide
+     * Apply morph settings on a given morph 
+     */
+    public void applySettings(AbstractMorph morph)
+    {
+        if (this.activeSettings.containsKey(morph.name))
+        {
+            this.activeSettings.get(morph.name).apply(morph);
+        }
+    }
+
+    /**
+     * Get all morphs that factories provide. Take in account that this code 
+     * don't apply morph settings.
      */
     public MorphList getMorphs(World world)
     {

@@ -5,10 +5,12 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import io.netty.buffer.ByteBuf;
 import mchorse.metamorph.api.abilities.IAbility;
 import mchorse.metamorph.api.abilities.IAction;
 import mchorse.metamorph.api.abilities.IAttackAbility;
 import mchorse.metamorph.api.morphs.AbstractMorph;
+import net.minecraftforge.fml.common.network.ByteBufUtils;
 
 /**
  * Morph settings
@@ -49,8 +51,15 @@ public class MorphSettings
     public boolean hostile;
 
     /**
+     * Does client tries render hands for this morph 
+     */
+    public boolean hands;
+
+    /**
      * This field is responsible for storing custom data for people who want to 
      * provide more options that aren't hardcoded in this class. 
+     * 
+     * I don't know how it's going to work, though.
      */
     public Map<String, Object> customData = new HashMap<String, Object>();
 
@@ -68,6 +77,7 @@ public class MorphSettings
         morph.health = this.health;
         morph.speed = this.speed;
         morph.hostile = this.hostile;
+        morph.hands = this.hands;
     }
 
     /**
@@ -116,6 +126,104 @@ public class MorphSettings
         }
 
         this.hostile = setting.hostile;
+        this.hands = setting.hands;
         this.customData.putAll(setting.customData);
+    }
+
+    /**
+     * Write morph settings to the network buffer
+     */
+    public void toBytes(ByteBuf buf)
+    {
+        buf.writeInt(this.abilities.length);
+
+        for (IAbility ability : this.abilities)
+        {
+            String string = this.getKey(MorphManager.INSTANCE.abilities, ability);
+
+            ByteBufUtils.writeUTF8String(buf, string == null ? "" : string);
+        }
+
+        String action = this.getKey(MorphManager.INSTANCE.actions, this.action);
+        String attack = this.getKey(MorphManager.INSTANCE.attacks, this.attack);
+
+        buf.writeBoolean(action != null);
+
+        if (action != null)
+        {
+            ByteBufUtils.writeUTF8String(buf, action);
+        }
+
+        buf.writeBoolean(attack != null);
+
+        if (attack != null)
+        {
+            ByteBufUtils.writeUTF8String(buf, attack);
+        }
+
+        buf.writeInt(this.health);
+        buf.writeFloat(this.speed);
+        buf.writeBoolean(this.hostile);
+        buf.writeBoolean(this.hands);
+    }
+
+    /**
+     * Read morph settings from the network buffer 
+     */
+    public void fromBytes(ByteBuf buf)
+    {
+        List<IAbility> abilities = new ArrayList<IAbility>();
+
+        for (int i = 0, c = buf.readInt(); i < c; i++)
+        {
+            IAbility ability = MorphManager.INSTANCE.abilities.get(ByteBufUtils.readUTF8String(buf));
+
+            if (ability != null)
+            {
+                abilities.add(ability);
+            }
+        }
+
+        this.abilities = abilities.toArray(new IAbility[abilities.size()]);
+
+        if (buf.readBoolean())
+        {
+            String action = ByteBufUtils.readUTF8String(buf);
+
+            this.action = MorphManager.INSTANCE.actions.get(action);
+        }
+
+        if (buf.readBoolean())
+        {
+            String attack = ByteBufUtils.readUTF8String(buf);
+
+            this.attack = MorphManager.INSTANCE.attacks.get(attack);
+        }
+
+        this.health = buf.readInt();
+        this.speed = buf.readFloat();
+        this.hostile = buf.readBoolean();
+        this.hands = buf.readBoolean();
+    }
+
+    /**
+     * Get key of given value in given map 
+     */
+    public <T> String getKey(Map<String, T> map, T value)
+    {
+        if (value == null)
+        {
+            return null;
+        }
+
+        for (Map.Entry<String, T> entry : map.entrySet())
+        {
+            if (entry.getValue() == value)
+            {
+                return entry.getKey();
+            }
+        }
+
+        return null;
     }
 }

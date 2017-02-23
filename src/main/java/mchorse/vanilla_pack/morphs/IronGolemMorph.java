@@ -23,6 +23,9 @@ public class IronGolemMorph extends EntityMorph
         }
         else
         {
+            target.motionX *= 0.5;
+            target.motionZ *= 0.5;
+
             target.motionY *= 1.3;
         }
 

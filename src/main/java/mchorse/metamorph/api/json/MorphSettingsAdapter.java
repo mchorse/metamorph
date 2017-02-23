@@ -51,6 +51,11 @@ public class MorphSettingsAdapter implements JsonDeserializer<MorphSettings>
             morph.hostile = object.get("hostile").getAsBoolean();
         }
 
+        if (object.has("hands"))
+        {
+            morph.hands = object.get("hands").getAsBoolean();
+        }
+
         if (object.has("abilities"))
         {
             for (JsonElement ability : object.get("abilities").getAsJsonArray())

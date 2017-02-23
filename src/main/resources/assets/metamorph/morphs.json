@@ -1,3 +1,4 @@
+
 {
     "minecraft:bat": {
         "abilities": ["fly", "night_vision", "prevent_fall"],
@@ -11,10 +12,17 @@
     },
     "minecraft:chicken": {
         "abilities": ["glide"],
-        "health": 4
+        "health": 4,
+        "hands": true
     },
+<<<<<<< HEAD
     "minecraft:cow": {
         "health": 10
+=======
+    "Cow": {
+        "health": 10,
+        "hands": true
+>>>>>>> master
     },
     "minecraft:horse": {
         "abilities": ["prevent_fall"],
@@ -44,20 +52,33 @@
         "abilities": ["prevent_fall"],
         "action": "jump",
         "health": 24,
-        "speed": 0.15
+        "speed": 0.15,
+        "hands": true
     },
     "MushroomCow": {
-        "health": 10
+        "health": 10,
+        "hands": true
     },
     "minecraft:ocelot": {
         "health": 10,
-        "speed": 0.15
+        "speed": 0.15,
+        "hands": true
     },
+<<<<<<< HEAD
     "minecraft:pig": {
         "health": 10
     },
     "minecraft:polar_bear": {
         "health": 30
+=======
+    "Pig": {
+        "health": 10,
+        "hands": true
+    },
+    "PolarBear": {
+        "health": 30,
+        "hands": true
+>>>>>>> master
     },
     "minecraft:rabbit": {
         "abilities": ["prevent_fall"],
@@ -65,8 +86,14 @@
         "health": 3,
         "speed": 0.13
     },
+<<<<<<< HEAD
     "minecraft:sheep": {
         "health": 8
+=======
+    "Sheep": {
+        "health": 8,
+        "hands": true
+>>>>>>> master
     },
     "minecraft:spider": {
         "abilities": ["climb"],
@@ -75,53 +102,72 @@
     },
     "minecraft:squid": {
         "abilities": ["water_breath", "swim", "night_vision"],
-        "health": 10
+        "health": 10,
+        "hands": true
     },
     "minecraft:wolf": {
     	"health": 8,
-    	"hostile": true
+    	"hostile": true,
+    	"hands": true
     },
     
     "minecraft:enderman": {
         "abilities": ["water_allergy"],
         "action": "teleport",
         "health": 40,
-        "hostile": true
+        "hostile": true,
+        "hands": true
     },
     "minecraft:zombie_pigman": {
         "abilities": ["fire_proof", "hungerless"],
         "health": 20,
-        "hostile": true
+        "hostile": true,
+        "hands": true
     },
     "minecraft:snowman": {
         "abilities": ["snow_walk"],
         "action": "snowball",
         "health": 4
     },
+<<<<<<< HEAD
     "minecraft:villager": {
         "health": 20
+=======
+    "Villager": {
+        "health": 20,
+        "hands": true
+>>>>>>> master
     },
     "minecraft:villager_golem": {
     	"attack": "knockback",
+<<<<<<< HEAD
         "health": 100
+=======
+        "health": 100,
+        "speed": 0.04,
+        "hands": true
+>>>>>>> master
     },
     
     "minecraft:blaze": {
         "abilities": ["fly", "fire_proof", "water_allergy"],
         "action": "small_fireball",
         "health": 20,
-        "hostile": true
+        "hostile": true,
+        "hands": true
     },
     "minecraft:creeper": {
         "action": "explode",
         "health": 20,
-        "hostile": true
+        "hostile": true,
+        "hands": true
     },
     "minecraft:ghast": {
         "abilities": ["fly", "fire_proof"],
         "action": "fireball",
         "health": 10,
-        "hostile": true
+        "hostile": true,
+        "hands": true
     },
     "minecraft:guardian": {
         "abilities": ["water_breath", "night_vision", "swim", "jumping"],
@@ -155,18 +201,21 @@
     "minecraft:stray": {
         "abilities": ["sun_allergy"],
         "health": 20,
-        "hostile": true
+        "hostile": true,
+        "hands": true
     },
     "minecraft:wither_skeleton": {
         "abilities": ["fire_proof"],
         "attack": "wither",
         "health": 20,
-        "hostile": true
+        "hostile": true,
+        "hands": true
     },
     "Witch": {
         "action": "potions",
         "health": 26,
-        "hostile": true
+        "hostile": true,
+        "hands": true
     },
     "minecraft:zombie": {
         "abilities": ["sun_allergy", "hungerless"],
@@ -181,11 +230,17 @@
     "minecraft:zombie_villager": {
         "abilities": ["sun_allergy", "hungerless"],
         "health": 20,
-        "hostile": true
+        "hostile": true,
+        "hands": true
     },
     
+<<<<<<< HEAD
     "minecraft:ender_dragon": {
     	"abilities": ["fly", "no_clip"],
+=======
+    "EnderDragon": {
+    	"abilities": ["fly"],
+>>>>>>> master
     	"action": "fire_breath",
     	"health": 200,
     	"hostile": true

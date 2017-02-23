@@ -47,7 +47,6 @@ metamorph.error.morph.nbt=Error occurred during data tag parsing:\n%s
 # Morph categories
 morph.category.unknown=Unknown morphs
 morph.category.unsorted=Unsorted morphs
-morph.category.patched_vanilla=Vanilla patched morphs
 morph.category.animal=Animal morphs
 morph.category.acquired=Your morphs
 morph.category.hostile=Hostile morphs

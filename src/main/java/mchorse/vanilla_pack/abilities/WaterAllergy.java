@@ -19,7 +19,7 @@ public class WaterAllergy extends Ability
     {
         if (target.isWet())
         {
-            target.attackEntityFrom(DamageSource.drown, 1.0F);
+            target.attackEntityFrom(DamageSource.DROWN, 1.0F);
         }
     }
 }
