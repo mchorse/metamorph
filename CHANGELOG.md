@@ -2,12 +2,12 @@
 
 ## Metamorph 1.1.1
 
-Patch 
+This patch fixes 1.11.2 problem with morphs not getting their abilities. This was caused by change in how names were changed in Minecraft 1.11. This patch also adds a command for morphing, adds abilities for ender dragon and morph blacklist for naughty morphs.
 
 * Added `/morph` command for making player(s) morph into given morph
 * Added fire breathing ability for ender dragon
 * Added entity blacklist (`blacklist.json` in config folder)
-* Attempt to fix Zoology mod crash in creative menu
+* Attempt to fix crash with Zoology mod in creative menu
 * Fixed survival morphs in `1.11.2`
 * Nerfed `blaze` morph, it now shoots non explosive fireballs
 * Removed patched morphs category
