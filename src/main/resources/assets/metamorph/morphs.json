@@ -47,8 +47,7 @@
         "abilities": ["prevent_fall"],
         "action": "jump",
         "health": 3,
-        "speed": 0.13,
-        "hands": true
+        "speed": 0.13
     },
     "Sheep": {
         "health": 8,
