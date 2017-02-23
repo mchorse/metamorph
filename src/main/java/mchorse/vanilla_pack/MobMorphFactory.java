@@ -168,6 +168,8 @@ public class MobMorphFactory implements IMorphFactory
             return;
         }
 
+        /* Attempt to fix Zoology */
+        entity.deserializeNBT(new NBTTagCompound());
         NBTTagCompound data = entity.serializeNBT();
 
         morph.name = name;
