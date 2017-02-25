@@ -102,6 +102,10 @@ public class EntityUtils
         tag.removeTag("APY");
         tag.removeTag("APZ");
 
+        /* Zombie pigmen stripping */
+        tag.removeTag("Anger");
+        tag.removeTag("HurtBy");
+
         return tag;
     }
 
