@@ -44,7 +44,7 @@ public class Metamorph
     @SidedProxy(clientSide = CLIENT_PROXY, serverSide = SERVER_PROXY)
     public static CommonProxy proxy;
 
-    @Mod.Instance
+    @Mod.Instance(MODID)
     public static Metamorph instance;
 
     /* Events */
