@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import mchorse.metamorph.Metamorph;
+import mchorse.metamorph.api.events.SpawnGhostEvent;
 import mchorse.metamorph.api.morphs.AbstractMorph;
 import mchorse.metamorph.capabilities.morphing.IMorphing;
 import mchorse.metamorph.capabilities.morphing.Morphing;
@@ -13,6 +14,7 @@ import net.minecraft.entity.EntityLiving;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.common.util.FakePlayer;
 import net.minecraftforge.event.entity.living.LivingAttackEvent;
 import net.minecraftforge.event.entity.living.LivingDeathEvent;
@@ -133,7 +135,14 @@ public class MorphHandler
 
         if (!Metamorph.proxy.config.prevent_ghosts || !capability.acquiredMorph(morph))
         {
-            EntityMorph morphEntity = new EntityMorph(player.worldObj, player.getUniqueID(), morph);
+            SpawnGhostEvent spawnGhostEvent = new SpawnGhostEvent(player, morph);
+            if (MinecraftForge.EVENT_BUS.post(spawnGhostEvent) || spawnGhostEvent.morph == null)
+            {
+            	return;
+            }
+            morph = spawnGhostEvent.morph;
+            
+        	EntityMorph morphEntity = new EntityMorph(player.worldObj, player.getUniqueID(), morph);
 
             morphEntity.setPositionAndRotation(target.posX, target.posY + target.height / 2, target.posZ, target.rotationYaw, target.rotationPitch);
             player.worldObj.spawnEntityInWorld(morphEntity);
