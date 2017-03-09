@@ -14,6 +14,7 @@ import net.minecraft.nbt.JsonToNBT;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.text.TextComponentTranslation;
 
 /**
  * Command /morph
@@ -44,7 +45,7 @@ public class CommandMorph extends CommandBase
     @Override
     public void execute(MinecraftServer server, ICommandSender sender, String[] args) throws CommandException
     {
-        if (args.length < 2)
+        if (args.length < 1)
         {
             throw new WrongUsageException(this.getCommandUsage(sender));
         }
@@ -57,28 +58,38 @@ public class CommandMorph extends CommandBase
         }
 
         EntityPlayer player = (EntityPlayer) entity;
-        NBTTagCompound tag = null;
 
-        if (args.length >= 3)
+        if (args.length < 2)
         {
-            try
-            {
-                tag = JsonToNBT.getTagFromJson(args[2]);
-            }
-            catch (Exception e)
-            {
-                throw new CommandException("metamorph.error.morph.nbt", e.getMessage());
-            }
+            MorphAPI.demorph(player);
+            sender.addChatMessage(new TextComponentTranslation("metamorph.success.demorph", args[0]));
         }
-
-        if (tag == null)
+        else
         {
-            tag = new NBTTagCompound();
+            NBTTagCompound tag = null;
+
+            if (args.length >= 3)
+            {
+                try
+                {
+                    tag = JsonToNBT.getTagFromJson(args[2]);
+                }
+                catch (Exception e)
+                {
+                    throw new CommandException("metamorph.error.morph.nbt", e.getMessage());
+                }
+            }
+
+            if (tag == null)
+            {
+                tag = new NBTTagCompound();
+            }
+
+            tag.setString("Name", args[1]);
+
+            MorphAPI.morph(player, MorphManager.INSTANCE.morphFromNBT(tag), true);
+            sender.addChatMessage(new TextComponentTranslation("metamorph.success.morph", args[0], args[1]));
         }
-
-        tag.setString("Name", args[1]);
-
-        MorphAPI.morph(player, MorphManager.INSTANCE.morphFromNBT(tag), true);
     }
 
     @Override
