@@ -159,55 +159,61 @@ public class MobMorphFactory implements IMorphFactory
      */
     private void addMorph(MorphList morphs, World world, String name, String variant, String json)
     {
-        EntityMorph morph = name.equals("VillagerGolem") ? new IronGolemMorph() : new EntityMorph();
-        EntityLivingBase entity = (EntityLivingBase) EntityList.createEntityByName(name, world);
-
-        if (entity == null)
+        try
         {
-            System.out.println("Couldn't add morph " + name + "!");
-            return;
-        }
+            EntityMorph morph = name.equals("VillagerGolem") ? new IronGolemMorph() : new EntityMorph();
+            EntityLivingBase entity = (EntityLivingBase) EntityList.createEntityByName(name, world);
 
-        /* Attempt to fix Zoology */
-        entity.deserializeNBT(new NBTTagCompound());
-        NBTTagCompound data = entity.serializeNBT();
-
-        morph.name = name;
-
-        if (json != null)
-        {
-            try
+            if (entity == null)
             {
-                data.merge(JsonToNBT.getTagFromJson(json));
+                System.out.println("Couldn't add morph " + name + ", because it's null!");
+                return;
             }
-            catch (NBTException e)
+
+            NBTTagCompound data = entity.serializeNBT();
+
+            morph.name = name;
+
+            if (json != null)
             {
-                System.out.println("Failed to merge provided JSON data for '" + name + "' morph!");
-                e.printStackTrace();
+                try
+                {
+                    data.merge(JsonToNBT.getTagFromJson(json));
+                }
+                catch (NBTException e)
+                {
+                    System.out.println("Failed to merge provided JSON data for '" + name + "' morph!");
+                    e.printStackTrace();
+                }
             }
-        }
 
-        /* Setting up a category */
-        int index = name.indexOf(".");
-        String category = "";
+            /* Setting up a category */
+            int index = name.indexOf(".");
+            String category = "";
 
-        /* Category for third-party mod mobs */
-        if (index >= 0)
-        {
-            category = name.substring(0, index);
-        }
-        else if (entity instanceof EntityAnimal)
-        {
-            category = "animal";
-        }
-        else if (entity instanceof EntityMob)
-        {
-            category = "hostile";
-        }
+            /* Category for third-party mod mobs */
+            if (index >= 0)
+            {
+                category = name.substring(0, index);
+            }
+            else if (entity instanceof EntityAnimal)
+            {
+                category = "animal";
+            }
+            else if (entity instanceof EntityMob)
+            {
+                category = "hostile";
+            }
 
-        EntityUtils.stripEntityNBT(data);
-        morph.setEntityData(data);
-        morphs.addMorphVariant(name, category, variant, morph);
+            EntityUtils.stripEntityNBT(data);
+            morph.setEntityData(data);
+            morphs.addMorphVariant(name, category, variant, morph);
+        }
+        catch (Exception e)
+        {
+            System.out.println("An error occured during insertion of " + name + " morph!");
+            e.printStackTrace();
+        }
     }
 
     /**

@@ -5,7 +5,6 @@ import java.io.IOException;
 import org.lwjgl.input.Keyboard;
 import org.lwjgl.opengl.GL11;
 
-import mchorse.metamorph.api.morphs.AbstractMorph;
 import mchorse.metamorph.capabilities.morphing.IMorphing;
 import mchorse.metamorph.capabilities.morphing.Morphing;
 import mchorse.metamorph.client.gui.elements.GuiCreativeMorphs;
@@ -210,9 +209,9 @@ public class GuiCreativeMenu extends GuiScreen
         this.pane.drawScreen(mouseX, mouseY, partialTicks);
         this.search.drawTextBox();
 
-        if (morph != null)
+        if (morph != null && !morph.error)
         {
-            this.renderMorph(morph.morph, Minecraft.getMinecraft().thePlayer, 70, height - (int) ((float) height / 2.6), 43);
+            morph.render(Minecraft.getMinecraft().thePlayer, 70, height - (int) ((float) height / 2.6), 43);
         }
 
         /* Disable scissors */
@@ -220,14 +219,5 @@ public class GuiCreativeMenu extends GuiScreen
 
         /* Render buttons */
         super.drawScreen(mouseX, mouseY, partialTicks);
-    }
-
-    /**
-     * Render a morph 
-     */
-    private void renderMorph(AbstractMorph morph, EntityPlayer player, int x, int y, float scale)
-    {
-        /* Render the model */
-        morph.renderOnScreen(player, x, y, scale, 1.0F);
     }
 }
