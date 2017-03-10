@@ -347,7 +347,9 @@ public class GuiCreativeMorphs extends GuiScrollPane
         /* Render morphs */
         for (MorphCategory category : this.categories)
         {
-            if (category.height == 0)
+            int h = (MathHelper.ceiling_float_int(category.cells.size() / this.perRow) + 1) * cellH;
+
+            if (category.height == 0 || category.y < this.scrollY - h || category.y > this.scrollY + this.h)
             {
                 j++;
 
@@ -364,6 +366,12 @@ public class GuiCreativeMorphs extends GuiScrollPane
 
                 if (cell.hidden)
                 {
+                    continue;
+                }
+
+                if (y < this.scrollY - cellH / 4)
+                {
+                    k++;
                     continue;
                 }
 
