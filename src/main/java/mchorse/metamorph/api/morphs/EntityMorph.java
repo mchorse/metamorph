@@ -494,14 +494,16 @@ public class EntityMorph extends AbstractMorph
     @SideOnly(Side.CLIENT)
     private void setupRenderer()
     {
-        RenderLivingBase<?> renderer = (RenderLivingBase<?>) Minecraft.getMinecraft().getRenderManager().getEntityRenderObject(this.entity);
-        ModelBase model = renderer.getMainModel();
+        this.renderer = Minecraft.getMinecraft().getRenderManager().getEntityRenderObject(this.entity);
 
-        this.renderer = renderer;
-
-        if (model instanceof ModelBiped || model instanceof ModelQuadruped)
+        if (this.renderer instanceof RenderLivingBase<?>)
         {
-            this.hands = true;
+            ModelBase model = ((RenderLivingBase<?>) renderer).getMainModel();
+
+            if (model instanceof ModelBiped || model instanceof ModelQuadruped)
+            {
+                this.hands = true;
+            }
         }
     }
 
