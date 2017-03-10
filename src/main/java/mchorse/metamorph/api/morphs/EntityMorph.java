@@ -253,6 +253,7 @@ public class EntityMorph extends AbstractMorph
 
         entity.setHealth(entity.getMaxHealth());
         entity.noClip = true;
+        entity.setAlwaysRenderNameTag(true);
 
         if (this.health == 20)
         {
@@ -488,7 +489,15 @@ public class EntityMorph extends AbstractMorph
     @SideOnly(Side.CLIENT)
     private void setupRenderer()
     {
-        this.renderer = Minecraft.getMinecraft().getRenderManager().getEntityRenderObject(this.entity);
+        RenderLivingBase<?> renderer = (RenderLivingBase<?>) Minecraft.getMinecraft().getRenderManager().getEntityRenderObject(this.entity);
+        ModelBase model = renderer.getMainModel();
+
+        this.renderer = renderer;
+
+        if (model instanceof ModelBiped || model instanceof ModelQuadruped)
+        {
+            this.hands = true;
+        }
     }
 
     /**
@@ -562,7 +571,7 @@ public class EntityMorph extends AbstractMorph
         }
         else
         {
-            /* For anything else */
+            /* For anything else, pretty bad algorithm */
             List<ModelRenderer> left = new ArrayList<ModelRenderer>();
             List<ModelRenderer> right = new ArrayList<ModelRenderer>();
 
