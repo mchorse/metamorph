@@ -308,6 +308,11 @@ public class EntityMorph extends AbstractMorph
             this.setupEntity(target.worldObj);
         }
 
+        if (!entity.hasCustomName())
+        {
+            entity.setCustomNameTag(target.getName());
+        }
+
         /* Update entity */
         entity.onUpdate();
         entity.deathTime = target.deathTime;
