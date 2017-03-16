@@ -1,6 +1,7 @@
 package mchorse.metamorph.api.models;
 
 import java.io.InputStream;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
@@ -98,6 +99,55 @@ public class Model
     }
 
     /**
+     * Add a limb into a model
+     */
+    public Model.Limb addLimb(String name)
+    {
+        Model.Limb limb = new Model.Limb();
+
+        limb.name = name;
+        this.limbs.put(name, limb);
+
+        for (Model.Pose pose : this.poses.values())
+        {
+            pose.limbs.put(name, new Model.Transform());
+        }
+
+        return limb;
+    }
+
+    /**
+     * Remove limb from a model
+     *
+     * If given any limb in the model is child of this limb, then they're
+     * also getting removed.
+     */
+    public void removeLimb(Model.Limb limb)
+    {
+        this.limbs.remove(limb.name);
+
+        List<Model.Limb> limbsToRemove = new ArrayList<Model.Limb>();
+
+        for (Model.Limb child : this.limbs.values())
+        {
+            if (child.parent.equals(limb.name))
+            {
+                limbsToRemove.add(child);
+            }
+        }
+
+        for (Model.Pose pose : this.poses.values())
+        {
+            pose.limbs.remove(limb.name);
+        }
+
+        for (Model.Limb limbToRemove : limbsToRemove)
+        {
+            this.removeLimb(limbToRemove);
+        }
+    }
+
+    /**
      * Fill in missing transforms and assign name to every limb
      */
     public void fillInMissing()
@@ -128,6 +178,35 @@ public class Model
         return pose == null ? this.poses.get("standing") : pose;
     }
 
+    /**
+     * Clone a model
+     */
+    public Model clone()
+    {
+        Model b = new Model();
+
+        b.texture = new int[] {this.texture[0], this.texture[1]};
+        b.scale = new float[] {this.scale[0], this.scale[1], this.scale[2]};
+
+        b.name = this.name;
+        b.scheme = this.scheme;
+        b.model = this.model;
+
+        b.defaultTexture = this.defaultTexture == null ? null : new ResourceLocation(this.defaultTexture.toString());
+
+        for (Map.Entry<String, Model.Limb> entry : this.limbs.entrySet())
+        {
+            b.limbs.put(entry.getKey(), entry.getValue().clone());
+        }
+
+        for (Map.Entry<String, Model.Pose> entry : this.poses.entrySet())
+        {
+            b.poses.put(entry.getKey(), entry.getValue().clone());
+        }
+
+        return b;
+    }
+
     @Override
     public String toString()
     {
@@ -156,6 +235,8 @@ public class Model
         public int[] size = new int[] {4, 4, 4};
         public int[] texture = new int[] {0, 0};
         public float[] anchor = new float[] {0.5F, 0.5F, 0.5F};
+        public float[] color = new float[] {1.0F, 1.0F, 1.0F};
+        public float opacity = 1.0F;
         public boolean mirror;
 
         /* Game play */
@@ -165,6 +246,31 @@ public class Model
         public boolean swinging;
         public boolean idle;
         public boolean invert;
+
+        /**
+         * Clone a model limb
+         */
+        public Model.Limb clone()
+        {
+            Model.Limb b = new Model.Limb();
+
+            b.anchor = new float[] {this.anchor[0], this.anchor[1], this.anchor[2]};
+            b.size = new int[] {this.size[0], this.size[1], this.size[2]};
+            b.texture = new int[] {this.texture[0], this.texture[1]};
+
+            b.idle = this.idle;
+            b.invert = this.invert;
+            b.looking = this.looking;
+            b.mirror = this.mirror;
+            b.swinging = this.swinging;
+            b.swiping = this.swiping;
+
+            b.name = this.name;
+            b.parent = this.parent;
+            b.holding = this.holding;
+
+            return b;
+        }
 
         @Override
         public String toString()
@@ -185,6 +291,23 @@ public class Model
         public float[] size = new float[] {1, 1, 1};
         public Map<String, Transform> limbs = new HashMap<String, Transform>();
 
+        /**
+         * Clone a model pose
+         */
+        public Model.Pose clone()
+        {
+            Model.Pose b = new Model.Pose();
+
+            b.size = new float[] {this.size[0], this.size[1], this.size[2]};
+
+            for (Map.Entry<String, Model.Transform> entry : this.limbs.entrySet())
+            {
+                b.limbs.put(entry.getKey(), entry.getValue().clone());
+            }
+
+            return b;
+        }
+
         @Override
         public String toString()
         {
@@ -202,6 +325,20 @@ public class Model
         public float[] translate = new float[] {0, 0, 0};
         public float[] scale = new float[] {1, 1, 1};
         public float[] rotate = new float[] {0, 0, 0};
+
+        /**
+         * Clone a model transform
+         */
+        public Model.Transform clone()
+        {
+            Model.Transform b = new Model.Transform();
+
+            b.translate = new float[] {this.translate[0], this.translate[1], this.translate[2]};
+            b.rotate = new float[] {this.rotate[0], this.rotate[1], this.rotate[2]};
+            b.scale = new float[] {this.scale[0], this.scale[1], this.scale[2]};
+
+            return b;
+        }
 
         @Override
         public String toString()

@@ -5,7 +5,6 @@ import java.io.IOException;
 import org.lwjgl.input.Keyboard;
 import org.lwjgl.opengl.GL11;
 
-import mchorse.metamorph.api.morphs.AbstractMorph;
 import mchorse.metamorph.capabilities.morphing.IMorphing;
 import mchorse.metamorph.capabilities.morphing.Morphing;
 import mchorse.metamorph.client.gui.elements.GuiCreativeMorphs;
@@ -45,20 +44,6 @@ public class GuiCreativeMenu extends GuiScreen
     /* Horizontal margin */
     private static final int MARGIN = 20;
 
-    /**
-     * Default constructor
-     * 
-     * This method is responsible for constructing the morphs for rendering and 
-     * also selecting the morph that player uses right now.
-     */
-    public GuiCreativeMenu()
-    {
-        EntityPlayer player = Minecraft.getMinecraft().player;
-        IMorphing morphing = Morphing.get(player);
-
-        this.pane = new GuiCreativeMorphs(6, morphing.getCurrentMorph());
-    }
-
     /* GUI stuff and input */
 
     /**
@@ -70,6 +55,14 @@ public class GuiCreativeMenu extends GuiScreen
     @Override
     public void initGui()
     {
+        if (this.pane == null)
+        {
+            EntityPlayer player = Minecraft.getMinecraft().player;
+            IMorphing morphing = Morphing.get(player);
+
+            this.pane = new GuiCreativeMorphs(6, morphing.getCurrentMorph());
+        }
+
         int x = width - MARGIN;
         int y = 5;
 
@@ -210,9 +203,9 @@ public class GuiCreativeMenu extends GuiScreen
         this.pane.drawScreen(mouseX, mouseY, partialTicks);
         this.search.drawTextBox();
 
-        if (morph != null)
+        if (morph != null && !morph.error)
         {
-            this.renderMorph(morph.morph, Minecraft.getMinecraft().player, 70, height - (int) ((float) height / 2.6), 43);
+            morph.render(Minecraft.getMinecraft().player, 70, height - (int) ((float) height / 2.6), 43);
         }
 
         /* Disable scissors */
@@ -220,14 +213,5 @@ public class GuiCreativeMenu extends GuiScreen
 
         /* Render buttons */
         super.drawScreen(mouseX, mouseY, partialTicks);
-    }
-
-    /**
-     * Render a morph 
-     */
-    private void renderMorph(AbstractMorph morph, EntityPlayer player, int x, int y, float scale)
-    {
-        /* Render the model */
-        morph.renderOnScreen(player, x, y, scale, 1.0F);
     }
 }

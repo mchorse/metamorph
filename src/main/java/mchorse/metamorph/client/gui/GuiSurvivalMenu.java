@@ -23,6 +23,7 @@ public class GuiSurvivalMenu extends GuiScreen
     private GuiButton favorite;
     private GuiButton remove;
     private GuiButton onlyFavorites;
+    private GuiButton morph;
 
     private GuiSurvivalMorphs morphs;
 
@@ -41,14 +42,16 @@ public class GuiSurvivalMenu extends GuiScreen
         int y = 5;
 
         remove = new GuiButton(0, 20, this.height - 30, 60, 20, I18n.format("metamorph.gui.remove"));
-        favorite = new GuiButton(1, this.width - 80, this.height - 30, 60, 20, "");
+        favorite = new GuiButton(1, this.width - 145, this.height - 30, 60, 20, "");
         close = new GuiButton(2, x - 60, y, 60, 20, I18n.format("metamorph.gui.close"));
-        onlyFavorites = new GuiButton(3, x - 160, y, 90, 20, "");
+        onlyFavorites = new GuiButton(3, x - 155, y, 90, 20, "");
+        morph = new GuiButton(4, this.width - 80, this.height - 30, 60, 20, I18n.format("metamorph.gui.morph"));
 
         this.buttonList.add(remove);
         this.buttonList.add(favorite);
         this.buttonList.add(close);
         this.buttonList.add(onlyFavorites);
+        this.buttonList.add(morph);
 
         this.updateFavorites();
         this.updateFavoriteButton();
@@ -57,6 +60,13 @@ public class GuiSurvivalMenu extends GuiScreen
     private void updateFavorites()
     {
         this.onlyFavorites.displayString = this.morphs.showFavorites ? I18n.format("metamorph.gui.all_morphs") : I18n.format("metamorph.gui.only_favorites");
+    }
+
+    @Override
+    protected void mouseClicked(int mouseX, int mouseY, int mouseButton) throws IOException
+    {
+        super.mouseClicked(mouseX, mouseY, mouseButton);
+        this.morphs.clickMorph(mouseX, mouseY, this.width, this.height);
     }
 
     @Override
@@ -127,8 +137,16 @@ public class GuiSurvivalMenu extends GuiScreen
             this.morphs.toggleFavorites();
             this.updateFavorites();
         }
+        else if (button.id == 4)
+        {
+            this.morphs.selectCurrent();
+            this.exit();
+        }
     }
 
+    /**
+     * Exit from this GUI 
+     */
     private void exit()
     {
         this.morphs.exitGUI();

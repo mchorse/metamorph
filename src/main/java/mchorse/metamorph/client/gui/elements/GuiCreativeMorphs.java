@@ -347,7 +347,9 @@ public class GuiCreativeMorphs extends GuiScrollPane
         /* Render morphs */
         for (MorphCategory category : this.categories)
         {
-            if (category.height == 0)
+            int h = (MathHelper.ceil(category.cells.size() / this.perRow) + 1) * cellH;
+
+            if (category.height == 0 || category.y < this.scrollY - h || category.y > this.scrollY + this.h)
             {
                 j++;
 
@@ -367,13 +369,19 @@ public class GuiCreativeMorphs extends GuiScrollPane
                     continue;
                 }
 
+                if (y < this.scrollY - cellH / 4)
+                {
+                    k++;
+                    continue;
+                }
+
                 float scale = 21.5F;
 
-                this.renderMorph(cell, Minecraft.getMinecraft().player, x + m / 2, y + 50, scale);
+                cell.render(Minecraft.getMinecraft().player, x + m / 2, y + 50, scale);
 
                 if (j == this.selected && cell.index == this.selectedMorph)
                 {
-                    this.renderSelected(x + 1, y + 10, m - 2, cellH);
+                    this.renderSelected(x + 1, y + 10, m - 2, cellH, cell.error);
                 }
 
                 k++;
@@ -384,22 +392,13 @@ public class GuiCreativeMorphs extends GuiScrollPane
     }
 
     /**
-     * Render a morph 
-     */
-    private void renderMorph(MorphCell cell, EntityPlayer player, int x, int y, float scale)
-    {
-        /* Render the model */
-        cell.morph.renderOnScreen(player, x, y, scale, 1.0F);
-    }
-
-    /**
      * Render a grey outline around the given area.
      * 
      * Basically, this method renders selection.
      */
-    private void renderSelected(int x, int y, int width, int height)
+    private void renderSelected(int x, int y, int width, int height, boolean error)
     {
-        int color = 0xffcccccc;
+        int color = error ? 0xffff0000 : 0xffcccccc;
 
         this.drawHorizontalLine(x, x + width - 1, y, color);
         this.drawHorizontalLine(x, x + width - 1, y + height - 1, color);
@@ -462,11 +461,40 @@ public class GuiCreativeMorphs extends GuiScrollPane
         public int index;
         public boolean hidden = false;
 
+        public boolean first = true;
+        public boolean error = false;
+
         public MorphCell(String name, AbstractMorph morph, int index)
         {
             this.name = name;
             this.morph = morph;
             this.index = index;
+        }
+
+        public void render(EntityPlayer player, int x, int y, float scale)
+        {
+            if (this.first)
+            {
+                try
+                {
+                    this.morph.renderOnScreen(player, x, y, scale, 1.0F);
+                }
+                catch (Exception e)
+                {
+                    String name = this.morph != null ? this.morph.name : "unknown";
+
+                    System.out.println("Failed to render morph by name " + name + "!");
+                    e.printStackTrace();
+
+                    this.error = true;
+                }
+
+                this.first = false;
+            }
+            else if (!this.error)
+            {
+                this.morph.renderOnScreen(player, x, y, scale, 1.0F);
+            }
         }
     }
 }

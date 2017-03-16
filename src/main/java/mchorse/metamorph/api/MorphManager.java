@@ -123,8 +123,6 @@ public class MorphManager
      */
     public void setActiveSettings(Map<String, MorphSettings> settings)
     {
-        System.out.println(settings);
-
         INSTANCE.activeSettings.clear();
         INSTANCE.activeSettings.putAll(settings);
     }

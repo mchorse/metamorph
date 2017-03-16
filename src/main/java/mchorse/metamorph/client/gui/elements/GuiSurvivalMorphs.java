@@ -484,7 +484,7 @@ public class GuiSurvivalMorphs extends Gui
 
         /* And compute the offset */
         int offset = this.index * margin;
-        int maxScroll = this.getMorphCount() * margin - w / 2 - margin / 2 + 2;
+        int maxScroll = this.getMorphCount() * margin - w / 2 - margin / 2 + 2 - (renderDemorph ? 0 : margin);
 
         offset = (int) MathHelper.clamp(offset, 0, maxScroll);
 
@@ -495,6 +495,12 @@ public class GuiSurvivalMorphs extends Gui
             int y = height / 2 + h / 5;
             boolean selected = this.index + 1 == i;
 
+            /* Scroll the position */
+            if (offset > w / 2 - margin * 1.5)
+            {
+                x -= offset - (w / 2 - margin * 1.5);
+            }
+
             MorphType type = i != 0 ? this.morphs.get(i - 1) : null;
             AbstractMorph morph = i != 0 ? type.current().morph : null;
 
@@ -503,12 +509,6 @@ public class GuiSurvivalMorphs extends Gui
             if (i != 0)
             {
                 name = MorphManager.INSTANCE.morphDisplayNameFromMorph(morph);
-            }
-
-            /* Scroll the position */
-            if (offset > w / 2 - margin * 1.5)
-            {
-                x -= offset - (w / 2 - margin * 1.5);
             }
 
             /* Render morph itself */
@@ -635,6 +635,80 @@ public class GuiSurvivalMorphs extends Gui
 
         this.mc.renderEngine.bindTexture(entity.getLocationSkin());
         GuiUtils.drawModel(model, player, x, y, scale);
+    }
+
+    /**
+     * Click morph on the screen
+     * 
+     * This is a very complex method to make morphs "clickable" in the focused 
+     * version of survival morph menu. This is kind of mathematically 
+     * perverted method allows users to click on the morphs to select them. 
+     * Vertical selection of morph variants is also available.
+     */
+    public void clickMorph(int mouseX, int mouseY, int width, int height)
+    {
+        /* GUI size */
+        int w = width - 20;
+        int h = (int) (height * 0.375F);
+
+        boolean renderDemorph = Metamorph.proxy.config.show_demorph;
+
+        /* Setup scale and margin */
+        int scale = (int) (height * 0.17F / 2);
+        int margin = width / 10;
+
+        /* Make sure that margin and scale are divided even */
+        scale -= scale % 2;
+        margin -= margin % 2;
+
+        if (this.inGUI)
+        {
+            margin = width / 7;
+            scale = (int) (height * 0.17F / 1.4);
+        }
+
+        /* And compute the offset */
+        int offset = this.index * margin;
+        int maxScroll = this.getMorphCount() * margin - w / 2 - margin / 2 + 2;
+
+        offset = (int) MathHelper.clamp(offset, 0, maxScroll);
+
+        int x = mouseX - 10;
+        int y = mouseY - (height / 2 - h / 2);
+
+        if (!renderDemorph)
+        {
+            x += margin;
+        }
+
+        if (offset > w / 2 - margin * 1.5)
+        {
+            x += offset - (w / 2 - margin * 1.5);
+        }
+
+        /* Peforming final stage: switching the morph */
+        int index = x / margin - 1;
+
+        if (y >= 0 && y < h)
+        {
+            if (index < this.getMorphCount() && index >= -1)
+            {
+                this.index = index;
+            }
+        }
+        else if (this.index == index)
+        {
+            MorphType morph = this.morphs.get(index);
+
+            if (y < 0)
+            {
+                morph.up();
+            }
+            else if (y > h)
+            {
+                morph.down();
+            }
+        }
     }
 
     /* Data types */
