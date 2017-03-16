@@ -44,20 +44,6 @@ public class GuiCreativeMenu extends GuiScreen
     /* Horizontal margin */
     private static final int MARGIN = 20;
 
-    /**
-     * Default constructor
-     * 
-     * This method is responsible for constructing the morphs for rendering and 
-     * also selecting the morph that player uses right now.
-     */
-    public GuiCreativeMenu()
-    {
-        EntityPlayer player = Minecraft.getMinecraft().thePlayer;
-        IMorphing morphing = Morphing.get(player);
-
-        this.pane = new GuiCreativeMorphs(6, morphing.getCurrentMorph());
-    }
-
     /* GUI stuff and input */
 
     /**
@@ -69,6 +55,14 @@ public class GuiCreativeMenu extends GuiScreen
     @Override
     public void initGui()
     {
+        if (this.pane == null)
+        {
+            EntityPlayer player = Minecraft.getMinecraft().thePlayer;
+            IMorphing morphing = Morphing.get(player);
+
+            this.pane = new GuiCreativeMorphs(6, morphing.getCurrentMorph());
+        }
+
         int x = width - MARGIN;
         int y = 5;
 
