@@ -134,7 +134,7 @@ public class ModelCustom extends ModelBiped
             if (limb.limb.swiping && this.swingProgress > 0.0F)
             {
                 float swing = this.swingProgress;
-                float bodyY = MathHelper.sin(MathHelper.sqrt_float(swing) * PI * 2F) * 0.2F * factor;
+                float bodyY = MathHelper.sin(MathHelper.sqrt_float(swing) * PI * 2F) * 0.2F;
 
                 swing = 1.0F - swing;
                 swing = swing * swing * swing;
@@ -152,8 +152,8 @@ public class ModelCustom extends ModelBiped
                 else
                 {
                     limb.rotateAngleX = limb.rotateAngleX - (sinSwing * 1.2F + sinSwing2);
-                    limb.rotateAngleY += bodyY * 2.0F;
-                    limb.rotateAngleZ += MathHelper.sin(this.swingProgress * PI) * -0.4F;
+                    limb.rotateAngleY += bodyY * 2.0F * factor;
+                    limb.rotateAngleZ += MathHelper.sin(this.swingProgress * PI) * -0.4F * factor;
                 }
             }
 
