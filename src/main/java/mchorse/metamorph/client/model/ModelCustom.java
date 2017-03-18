@@ -152,8 +152,8 @@ public class ModelCustom extends ModelBiped
                 else
                 {
                     limb.rotateAngleX = limb.rotateAngleX - (sinSwing * 1.2F + sinSwing2);
-                    limb.rotateAngleY += bodyY * 2.0F;
-                    limb.rotateAngleZ += MathHelper.sin(this.swingProgress * PI) * -0.4F;
+                    limb.rotateAngleY += bodyY * 2.0F * factor;
+                    limb.rotateAngleZ += MathHelper.sin(this.swingProgress * PI) * -0.4F * factor;
                 }
             }
 
