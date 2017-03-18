@@ -143,18 +143,9 @@ public class ModelCustom extends ModelBiped
                 float sinSwing = MathHelper.sin(swing * PI);
                 float sinSwing2 = MathHelper.sin(this.swingProgress * PI) * -(0.0F - 0.7F) * 0.75F;
 
-                if (limb.limb.size[0] > limb.limb.size[1])
-                {
-                    limb.rotateAngleY = limb.rotateAngleX - (sinSwing * 1.2F + sinSwing2);
-                    limb.rotateAngleX += bodyY * 2.0F;
-                    limb.rotateAngleZ += MathHelper.sin(this.swingProgress * PI) * -0.4F;
-                }
-                else
-                {
-                    limb.rotateAngleX = limb.rotateAngleX - (sinSwing * 1.2F + sinSwing2);
-                    limb.rotateAngleY += bodyY * 2.0F * factor;
-                    limb.rotateAngleZ += MathHelper.sin(this.swingProgress * PI) * -0.4F * factor;
-                }
+                limb.rotateAngleX = limb.rotateAngleX - (sinSwing * 1.2F + sinSwing2);
+                limb.rotateAngleY += bodyY * 2.0F * factor;
+                limb.rotateAngleZ += MathHelper.sin(this.swingProgress * PI) * -0.4F * factor;
             }
 
             if (!limb.limb.holding.isEmpty() && limb.limb.parent.isEmpty())
