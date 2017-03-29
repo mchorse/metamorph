@@ -10,6 +10,7 @@ import mchorse.metamorph.client.render.RenderCustomModel;
 import net.minecraft.client.Minecraft;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.EnumHand;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
@@ -30,6 +31,11 @@ public class CustomMorph extends AbstractMorph
      * Current pose 
      */
     public Pose pose;
+
+    /**
+     * Current custom pose
+     */
+    public String currentPose = "";
 
     /* Rendering */
 
@@ -112,7 +118,7 @@ public class CustomMorph extends AbstractMorph
      */
     public void updateSize(EntityLivingBase target, IMorphing cap)
     {
-        this.pose = model.getPose(EntityUtils.getPose(target));
+        this.pose = model.getPose(EntityUtils.getPose(target, this.currentPose));
 
         if (this.pose != null)
         {
@@ -152,5 +158,24 @@ public class CustomMorph extends AbstractMorph
     public float getHeight(EntityLivingBase target)
     {
         return this.pose != null ? this.pose.size[1] : 1.8F;
+    }
+
+    @Override
+    public void toNBT(NBTTagCompound tag)
+    {
+        super.toNBT(tag);
+
+        if (!this.currentPose.isEmpty())
+        {
+            tag.setString("Pose", this.currentPose);
+        }
+    }
+
+    @Override
+    public void fromNBT(NBTTagCompound tag)
+    {
+        super.fromNBT(tag);
+
+        this.currentPose = tag.getString("Pose");
     }
 }
