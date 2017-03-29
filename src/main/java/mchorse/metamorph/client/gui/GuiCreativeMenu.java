@@ -61,7 +61,6 @@ public class GuiCreativeMenu extends GuiScreen
             IMorphing morphing = Morphing.get(player);
 
             this.pane = new GuiCreativeMorphs(6, morphing.getCurrentMorph());
-            this.pane.setScrollSpeed(4);
         }
 
         int x = width - MARGIN;
