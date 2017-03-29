@@ -37,6 +37,11 @@ public class CustomMorph extends AbstractMorph
      */
     public String currentPose = "";
 
+    /**
+     * Apply current pose on sneaking
+     */
+    public boolean currentPoseOnSneak = false;
+
     /* Rendering */
 
     @Override
@@ -118,7 +123,7 @@ public class CustomMorph extends AbstractMorph
      */
     public void updateSize(EntityLivingBase target, IMorphing cap)
     {
-        this.pose = model.getPose(EntityUtils.getPose(target, this.currentPose));
+        this.pose = model.getPose(EntityUtils.getPose(target, this.currentPose, this.currentPoseOnSneak));
 
         if (this.pose != null)
         {
@@ -182,6 +187,11 @@ public class CustomMorph extends AbstractMorph
         {
             tag.setString("Pose", this.currentPose);
         }
+
+        if (!this.currentPoseOnSneak)
+        {
+            tag.setBoolean("Sneak", this.currentPoseOnSneak);
+        }
     }
 
     @Override
@@ -190,5 +200,6 @@ public class CustomMorph extends AbstractMorph
         super.fromNBT(tag);
 
         this.currentPose = tag.getString("Pose");
+        this.currentPoseOnSneak = tag.getBoolean("Sneak");
     }
 }
