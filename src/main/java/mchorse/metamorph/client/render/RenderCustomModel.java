@@ -127,7 +127,10 @@ public class RenderCustomModel extends RenderLivingBase<EntityLivingBase>
 
         if (entity instanceof IMorphProvider)
         {
-            model = models.get(((IMorphProvider) entity).getMorph().name);
+            CustomMorph morph = (CustomMorph) ((IMorphProvider) entity).getMorph();
+
+            model = models.get(morph.name);
+            pose = morph.pose;
         }
         else
         {
