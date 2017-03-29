@@ -27,7 +27,7 @@ public class Model
     /**
      * Poses that are required by custom models
      */
-    protected static final List<String> REQUIRED_POSES = Arrays.<String> asList("standing", "sneaking", "sleeping", "flying");
+    public static final List<String> REQUIRED_POSES = Arrays.<String> asList("standing", "sneaking", "sleeping", "flying");
 
     /**
      * Scheme version. Would be used in future versions for extracting and
