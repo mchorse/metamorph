@@ -202,10 +202,16 @@ public class EntityUtils
     }
 
     /**
-     * Get string pose for entity based on his attributes
+     * Get string pose for entity based on its attributes or based on given 
+     * custom pose
      */
-    public static String getPose(EntityLivingBase entity)
+    public static String getPose(EntityLivingBase entity, String custom)
     {
+        if (!custom.isEmpty())
+        {
+            return custom;
+        }
+
         if (entity.isElytraFlying())
         {
             return "flying";

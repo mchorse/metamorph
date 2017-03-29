@@ -2,9 +2,9 @@ package mchorse.metamorph.client.render;
 
 import java.util.Map;
 
-import mchorse.metamorph.api.EntityUtils;
 import mchorse.metamorph.api.models.IMorphProvider;
 import mchorse.metamorph.api.models.Model;
+import mchorse.metamorph.api.morphs.CustomMorph;
 import mchorse.metamorph.capabilities.morphing.IMorphing;
 import mchorse.metamorph.capabilities.morphing.MorphingProvider;
 import mchorse.metamorph.client.model.ModelCustom;
@@ -122,8 +122,8 @@ public class RenderCustomModel extends RenderLivingBase<EntityLivingBase>
     public void setupModel(EntityLivingBase entity)
     {
         Map<String, ModelCustom> models = ModelCustom.MODELS;
-        String pose = EntityUtils.getPose(entity);
         ModelCustom model = null;
+        Model.Pose pose = null;
 
         if (entity instanceof IMorphProvider)
         {
@@ -135,13 +135,21 @@ public class RenderCustomModel extends RenderLivingBase<EntityLivingBase>
 
             if (cap != null && cap.isMorphed())
             {
-                model = models.get(cap.getCurrentMorph().name);
+                CustomMorph morph = (CustomMorph) cap.getCurrentMorph();
+
+                model = models.get(morph.name);
+                pose = morph.pose;
             }
         }
 
         if (model != null)
         {
-            model.pose = model.model.getPose(pose);
+            if (pose == null)
+            {
+                pose = model.model.getPose("standing");
+            }
+
+            model.pose = pose;
             this.mainModel = model;
         }
     }
@@ -162,7 +170,7 @@ public class RenderCustomModel extends RenderLivingBase<EntityLivingBase>
      * Taken from RenderPlayer
      *
      * This code is primarily changes the angle of the player while it's flying
-     * an elytra. You know,
+     * an elytra. You know?
      */
     @Override
     protected void applyRotations(EntityLivingBase entity, float pitch, float yaw, float partialTicks)
