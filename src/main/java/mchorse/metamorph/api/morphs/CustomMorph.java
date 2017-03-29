@@ -51,7 +51,7 @@ public class CustomMorph extends AbstractMorph
 
             if (data != null && data.defaultTexture != null)
             {
-                model.pose = model.model.poses.get("standing");
+                model.pose = this.pose == null ? model.model.poses.get("standing") : this.pose;
                 model.swingProgress = 0;
 
                 Minecraft.getMinecraft().renderEngine.bindTexture(data.defaultTexture);
@@ -158,6 +158,19 @@ public class CustomMorph extends AbstractMorph
     public float getHeight(EntityLivingBase target)
     {
         return this.pose != null ? this.pose.size[1] : 1.8F;
+    }
+
+    @Override
+    public boolean equals(Object obj)
+    {
+        boolean equals = super.equals(obj);
+
+        if (obj instanceof CustomMorph)
+        {
+            return equals && this.currentPose.equals(((CustomMorph) obj).currentPose);
+        }
+
+        return equals;
     }
 
     @Override
