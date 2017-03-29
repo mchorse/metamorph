@@ -123,7 +123,9 @@ public class CustomMorph extends AbstractMorph
      */
     public void updateSize(EntityLivingBase target, IMorphing cap)
     {
-        this.pose = model.getPose(EntityUtils.getPose(target, this.currentPose, this.currentPoseOnSneak));
+        String poseName = EntityUtils.getPose(target, this.currentPose, this.currentPoseOnSneak);
+
+        this.pose = model.getPose(poseName);
 
         if (this.pose != null)
         {
@@ -183,15 +185,8 @@ public class CustomMorph extends AbstractMorph
     {
         super.toNBT(tag);
 
-        if (!this.currentPose.isEmpty())
-        {
-            tag.setString("Pose", this.currentPose);
-        }
-
-        if (!this.currentPoseOnSneak)
-        {
-            tag.setBoolean("Sneak", this.currentPoseOnSneak);
-        }
+        tag.setString("Pose", this.currentPose);
+        tag.setBoolean("Sneak", this.currentPoseOnSneak);
     }
 
     @Override
