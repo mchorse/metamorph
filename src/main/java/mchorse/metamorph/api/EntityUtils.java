@@ -205,9 +205,11 @@ public class EntityUtils
      * Get string pose for entity based on its attributes or based on given 
      * custom pose
      */
-    public static String getPose(EntityLivingBase entity, String custom)
+    public static String getPose(EntityLivingBase entity, String custom, boolean sneak)
     {
-        if (!custom.isEmpty())
+        boolean empty = custom.isEmpty();
+
+        if (!empty && !sneak)
         {
             return custom;
         }
@@ -222,7 +224,7 @@ public class EntityUtils
         }
         else if (entity.isSneaking())
         {
-            return "sneaking";
+            return sneak && !empty ? custom : "sneaking";
         }
 
         return "standing";

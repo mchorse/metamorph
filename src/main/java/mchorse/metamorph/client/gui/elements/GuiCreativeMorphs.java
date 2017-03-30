@@ -73,6 +73,7 @@ public class GuiCreativeMorphs extends GuiScrollPane
         this.perRow = perRow;
         this.compileCategories(morphing);
         this.initiateCategories(selected);
+        this.setScrollSpeed(4);
     }
 
     public GuiCreativeMorphs(int perRow, AbstractMorph selected)
