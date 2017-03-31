@@ -33,15 +33,15 @@ public class ModelPoseAdapter implements JsonSerializer<Model.Pose>
             JsonObject transform = new JsonObject();
             boolean empty = true;
 
-            if (!this.isDefault(trans.translate, 0))
+            if (!isDefault(trans.translate, 0))
             {
-                this.addFloatArray(transform, "translate", trans.translate);
+                addFloatArray(transform, "translate", trans.translate);
                 empty = false;
             }
 
-            if (!this.isDefault(trans.rotate, 0))
+            if (!isDefault(trans.rotate, 0))
             {
-                this.addFloatArray(transform, "rotate", trans.rotate);
+                addFloatArray(transform, "rotate", trans.rotate);
                 empty = false;
             }
 
