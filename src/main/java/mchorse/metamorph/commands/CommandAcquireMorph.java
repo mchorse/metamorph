@@ -17,22 +17,23 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.text.TextComponentTranslation;
 
 /**
- * Command /morph
+ * Command /acquire_morph
  * 
- * This command is responsible for morphing a player into given morph.
+ * This command is responsible for sending a morph to given player as an 
+ * acquired morph.
  */
-public class CommandMorph extends CommandBase
+public class CommandAcquireMorph extends CommandBase
 {
     @Override
     public String getCommandName()
     {
-        return "morph";
+        return "acquire_morph";
     }
 
     @Override
     public String getCommandUsage(ICommandSender sender)
     {
-        return "metamorph.commands.morph";
+        return "metamorph.commands.acquire_morph";
     }
 
     @Override
@@ -45,7 +46,7 @@ public class CommandMorph extends CommandBase
     @Override
     public void execute(MinecraftServer server, ICommandSender sender, String[] args) throws CommandException
     {
-        if (args.length < 1)
+        if (args.length < 2)
         {
             throw new WrongUsageException(this.getCommandUsage(sender));
         }
@@ -59,37 +60,33 @@ public class CommandMorph extends CommandBase
 
         EntityPlayer player = (EntityPlayer) entity;
 
-        if (args.length < 2)
+        NBTTagCompound tag = null;
+
+        if (args.length >= 3)
         {
-            MorphAPI.demorph(player);
-            sender.addChatMessage(new TextComponentTranslation("metamorph.success.demorph", args[0]));
+            try
+            {
+                tag = JsonToNBT.getTagFromJson(CommandMorph.mergeArgs(args, 2));
+            }
+            catch (Exception e)
+            {
+                throw new CommandException("metamorph.error.morph.nbt", e.getMessage());
+            }
         }
-        else
+
+        if (tag == null)
         {
-            NBTTagCompound tag = null;
-
-            if (args.length >= 3)
-            {
-                try
-                {
-                    tag = JsonToNBT.getTagFromJson(mergeArgs(args, 2));
-                }
-                catch (Exception e)
-                {
-                    throw new CommandException("metamorph.error.morph.nbt", e.getMessage());
-                }
-            }
-
-            if (tag == null)
-            {
-                tag = new NBTTagCompound();
-            }
-
-            tag.setString("Name", args[1]);
-
-            MorphAPI.morph(player, MorphManager.INSTANCE.morphFromNBT(tag), true);
-            sender.addChatMessage(new TextComponentTranslation("metamorph.success.morph", args[0], args[1]));
+            tag = new NBTTagCompound();
         }
+
+        tag.setString("Name", args[1]);
+
+        if (!MorphAPI.acquire(player, MorphManager.INSTANCE.morphFromNBT(tag)))
+        {
+            throw new CommandException("metamorph.error.acquire", args[1]);
+        }
+
+        sender.addChatMessage(new TextComponentTranslation("metamorph.success.acquire", args[0], args[1]));
     }
 
     /**
@@ -104,23 +101,5 @@ public class CommandMorph extends CommandBase
         }
 
         return super.getTabCompletionOptions(server, sender, args, pos);
-    }
-
-    /**
-     * Merge given args from given index
-     * 
-     * Basically fold back string array argument back into string from given 
-     * index.
-     */
-    public static String mergeArgs(String[] args, int i)
-    {
-        String dataTag = "";
-
-        for (; i < args.length; i++)
-        {
-            dataTag += args[i] + (i == args.length - 1 ? "" : " ");
-        }
-
-        return dataTag;
     }
 }
