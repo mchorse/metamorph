@@ -72,7 +72,7 @@ public class CommandMorph extends CommandBase
             {
                 try
                 {
-                    tag = JsonToNBT.getTagFromJson(args[2]);
+                    tag = JsonToNBT.getTagFromJson(mergeArgs(args, 2));
                 }
                 catch (Exception e)
                 {
@@ -92,6 +92,9 @@ public class CommandMorph extends CommandBase
         }
     }
 
+    /**
+     * Provide completion for player usernames for first argument
+     */
     @Override
     public List<String> getTabCompletions(MinecraftServer server, ICommandSender sender, String[] args, BlockPos pos)
     {
@@ -101,5 +104,23 @@ public class CommandMorph extends CommandBase
         }
 
         return super.getTabCompletions(server, sender, args, pos);
+    }
+
+    /**
+     * Merge given args from given index
+     * 
+     * Basically fold back string array argument back into string from given 
+     * index.
+     */
+    public static String mergeArgs(String[] args, int i)
+    {
+        String dataTag = "";
+
+        for (; i < args.length; i++)
+        {
+            dataTag += args[i] + (i == args.length - 1 ? "" : " ");
+        }
+
+        return dataTag;
     }
 }

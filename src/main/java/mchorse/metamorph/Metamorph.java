@@ -4,6 +4,7 @@ import org.apache.logging.log4j.Level;
 import org.apache.logging.log4j.Logger;
 
 import mchorse.metamorph.api.MorphManager;
+import mchorse.metamorph.commands.CommandAcquireMorph;
 import mchorse.metamorph.commands.CommandMorph;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.Mod.EventHandler;
@@ -79,6 +80,7 @@ public class Metamorph
 
         /* Register commands */
         event.registerServerCommand(new CommandMorph());
+        event.registerServerCommand(new CommandAcquireMorph());
     }
 
     /* Logging */
