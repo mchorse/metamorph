@@ -25,13 +25,13 @@ import net.minecraft.util.text.TextComponentTranslation;
 public class CommandAcquireMorph extends CommandBase
 {
     @Override
-    public String getCommandName()
+    public String getName()
     {
         return "acquire_morph";
     }
 
     @Override
-    public String getCommandUsage(ICommandSender sender)
+    public String getUsage(ICommandSender sender)
     {
         return "metamorph.commands.acquire_morph";
     }
@@ -48,7 +48,7 @@ public class CommandAcquireMorph extends CommandBase
     {
         if (args.length < 2)
         {
-            throw new WrongUsageException(this.getCommandUsage(sender));
+            throw new WrongUsageException(this.getUsage(sender));
         }
 
         Entity entity = getEntity(server, sender, args[0]);
@@ -86,20 +86,20 @@ public class CommandAcquireMorph extends CommandBase
             throw new CommandException("metamorph.error.acquire", args[1]);
         }
 
-        sender.addChatMessage(new TextComponentTranslation("metamorph.success.acquire", args[0], args[1]));
+        sender.sendMessage(new TextComponentTranslation("metamorph.success.acquire", args[0], args[1]));
     }
 
     /**
      * Provide completion for player usernames for first argument
      */
     @Override
-    public List<String> getTabCompletionOptions(MinecraftServer server, ICommandSender sender, String[] args, BlockPos pos)
+    public List<String> getTabCompletions(MinecraftServer server, ICommandSender sender, String[] args, BlockPos pos)
     {
         if (args.length == 1)
         {
-            return getListOfStringsMatchingLastWord(args, server.getAllUsernames());
+            return getListOfStringsMatchingLastWord(args, server.getOnlinePlayerNames());
         }
 
-        return super.getTabCompletionOptions(server, sender, args, pos);
+        return super.getTabCompletions(server, sender, args, pos);
     }
 }
