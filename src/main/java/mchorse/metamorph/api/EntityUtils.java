@@ -36,17 +36,6 @@ public class EntityUtils
      */
     public static NBTTagCompound stripEntityNBT(NBTTagCompound tag)
     {
-        /* Custom displayed name */
-        if (tag.hasKey("CustomName", 8))
-        {
-            String name = tag.getString("CustomName");
-
-            if (!name.equals("jeb_") && !name.equals("Grumm") && !name.equals("Dinnerbone") && !name.equals("Toast"))
-            {
-                tag.removeTag("CustomName");
-            }
-        }
-
         /* Meta stuff */
         tag.removeTag("Dimension");
         tag.removeTag("HurtTime");

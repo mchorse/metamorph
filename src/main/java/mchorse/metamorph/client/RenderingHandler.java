@@ -1,13 +1,21 @@
 package mchorse.metamorph.client;
 
 import mchorse.metamorph.api.morphs.AbstractMorph;
+import mchorse.metamorph.api.morphs.EntityMorph;
 import mchorse.metamorph.capabilities.morphing.IMorphing;
 import mchorse.metamorph.capabilities.morphing.Morphing;
 import mchorse.metamorph.client.gui.elements.GuiOverlay;
 import mchorse.metamorph.client.gui.elements.GuiSurvivalMorphs;
+import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.ScaledResolution;
+import net.minecraft.client.renderer.EntityRenderer;
+import net.minecraft.client.renderer.GlStateManager;
+import net.minecraft.client.renderer.entity.RenderLivingBase;
+import net.minecraft.client.renderer.entity.RenderManager;
+import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraftforge.client.event.RenderGameOverlayEvent;
+import net.minecraftforge.client.event.RenderLivingEvent;
 import net.minecraftforge.client.event.RenderPlayerEvent;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.relauncher.Side;
@@ -26,11 +34,13 @@ public class RenderingHandler
 {
     private GuiSurvivalMorphs overlay;
     private GuiOverlay morphOverlay;
+    private RenderManager manager;
 
     public RenderingHandler(GuiSurvivalMorphs overlay, GuiOverlay morphOverlay)
     {
         this.overlay = overlay;
         this.morphOverlay = morphOverlay;
+        this.manager = Minecraft.getMinecraft().getRenderManager();
     }
 
     /**
@@ -80,5 +90,68 @@ public class RenderingHandler
 
         /* Render the morph itself */
         morph.render(player, event.getX(), event.getY(), event.getZ(), player.rotationYaw, event.getPartialRenderTick());
+    }
+
+    /**
+     * On name render, simply render the name of the user, instead of the name of 
+     * the entity.  
+     */
+    @SubscribeEvent
+    public void onNameRender(RenderLivingEvent.Specials.Pre<EntityLivingBase> event)
+    {
+        EntityLivingBase render = EntityMorph.renderEntity;
+
+        if (render == null)
+        {
+            return;
+        }
+
+        event.setCanceled(true);
+
+        EntityLivingBase entity = event.getEntity();
+        boolean canRenderName = Minecraft.isGuiEnabled() && entity != this.manager.renderViewEntity && !entity.isBeingRidden();
+
+        if (!canRenderName)
+        {
+            return;
+        }
+
+        double dist = entity.getDistanceSqToEntity(this.manager.renderViewEntity);
+        float factor = entity.isSneaking() ? 32.0F : 64.0F;
+
+        if (dist < (double) (factor * factor))
+        {
+            GlStateManager.alphaFunc(516, 0.1F);
+            this.renderEntityName(entity, render.getDisplayName().getFormattedText(), event.getX(), event.getY(), event.getZ());
+        }
+    }
+
+    /**
+     * Renders an entity's name above its head (copied and modified from 
+     * {@link RenderLivingBase})
+     */
+    protected void renderEntityName(EntityLivingBase entity, String name, double x, double y, double z)
+    {
+        if (name.isEmpty())
+        {
+            return;
+        }
+        
+        int maxDistance = 64;
+        double dist = entity.getDistanceSqToEntity(this.manager.renderViewEntity);
+
+        if (dist <= (double) (maxDistance * maxDistance))
+        {
+            boolean sneaking = entity.isSneaking();
+            boolean thirdFrontal = this.manager.options.thirdPersonView == 2;
+
+            float px = this.manager.playerViewY;
+            float py = this.manager.playerViewX;
+            float pz = entity.height + 0.5F - (sneaking ? 0.25F : 0.0F);
+
+            int i = "deadmau5".equals(name) ? -10 : 0;
+
+            EntityRenderer.drawNameplate(this.manager.getFontRenderer(), name, (float) x, (float) y + pz, (float) z, i, px, py, thirdFrontal, sneaking);
+        }
     }
 }
