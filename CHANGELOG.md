@@ -1,5 +1,24 @@
 # Metamorph Change Log
 
+## Metamorph 1.1.2
+
+Metamorph 1.1.2 is a patch fix which aims at fixing some issues related to other mods, improving some stuff, and adding new code for custom models (because of Blockbuster mod).
+
+- [x] Added `/acquire_morph` command 
+- [x] Added mechanism for spotting errored entities in creative and survival morph menu
+- [x] Add some Blockbuster sensitive code for custom models
+    - [x] JSON deserializers
+    - [x] Custom model utilities
+    - [x] Custom poses
+    - [x] Fixed scale
+    - [x] Added limb color and opacity  
+- [x] Command `/morph` can demorph player
+- [x] Disable stripping of custom name tag (#22)
+- [x] Increase scrolling in creative morph menu in two times
+- [x] Mouse control in survival morph menu (#18)
+- [x] MorePlayerModels POV fix (#24)
+- [x] Optimized rendering in creative morph menu
+
 ## Metamorph 1.1.1
 
 This patch fixes 1.11.2 problem with morphs not getting their abilities. This was caused by change in how names were changed in Minecraft 1.11. This patch also adds a command for morphing, adds abilities for ender dragon and morph blacklist for naughty morphs.
