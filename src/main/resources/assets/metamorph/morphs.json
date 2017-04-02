@@ -2,7 +2,8 @@
 {
     "Bat": {
         "abilities": ["fly", "night_vision", "prevent_fall"],
-        "health": 6
+        "health": 6,
+        "hostile": true
     },
     "CaveSpider": {
         "abilities": ["climb"],
