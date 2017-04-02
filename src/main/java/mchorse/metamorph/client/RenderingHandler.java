@@ -109,7 +109,7 @@ public class RenderingHandler
         event.setCanceled(true);
 
         EntityLivingBase entity = event.getEntity();
-        boolean canRenderName = Minecraft.isGuiEnabled() && entity != this.manager.renderViewEntity && !entity.isBeingRidden();
+        boolean canRenderName = Minecraft.isGuiEnabled() && render != this.manager.renderViewEntity && !entity.isBeingRidden();
 
         if (!canRenderName)
         {
@@ -136,7 +136,7 @@ public class RenderingHandler
         {
             return;
         }
-        
+
         int maxDistance = 64;
         double dist = entity.getDistanceSqToEntity(this.manager.renderViewEntity);
 
