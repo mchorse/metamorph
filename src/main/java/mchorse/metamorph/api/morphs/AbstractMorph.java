@@ -249,7 +249,7 @@ public abstract class AbstractMorph
      * MyCustomMorph instance.
      * </p>
      */
-    public abstract AbstractMorph clone();
+    public abstract AbstractMorph clone(boolean isRemote);
 
     /**
      * Get width of this morph 

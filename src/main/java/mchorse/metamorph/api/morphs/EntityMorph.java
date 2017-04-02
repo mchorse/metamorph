@@ -651,7 +651,7 @@ public class EntityMorph extends AbstractMorph
      * Clone this {@link EntityMorph} 
      */
     @Override
-    public AbstractMorph clone()
+    public AbstractMorph clone(boolean isRemote)
     {
         EntityMorph morph = new EntityMorph();
 
