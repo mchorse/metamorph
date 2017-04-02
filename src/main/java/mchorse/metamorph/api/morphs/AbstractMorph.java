@@ -1,5 +1,6 @@
 package mchorse.metamorph.api.morphs;
 
+import mchorse.metamorph.Metamorph;
 import mchorse.metamorph.api.abilities.IAbility;
 import mchorse.metamorph.api.abilities.IAction;
 import mchorse.metamorph.api.abilities.IAttackAbility;
@@ -173,7 +174,7 @@ public abstract class AbstractMorph
      */
     protected void updateSize(EntityLivingBase target, float width, float height)
     {
-        if (target instanceof EntityPlayer)
+        if (target instanceof EntityPlayer && !Metamorph.proxy.config.disable_pov)
         {
             ((EntityPlayer) target).eyeHeight = height * 0.9F;
         }

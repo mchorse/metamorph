@@ -61,7 +61,10 @@ public class MorphHandler
         if (capability == null || !capability.isMorphed())
         {
             /* Restore default eye height */
-            player.eyeHeight = player.getDefaultEyeHeight();
+            if (!Metamorph.proxy.config.disable_pov)
+            {
+                player.eyeHeight = player.getDefaultEyeHeight();
+            }
 
             return;
         }
