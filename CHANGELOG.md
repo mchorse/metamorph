@@ -4,6 +4,8 @@
 
 Metamorph 1.1.2 is a patch fix which aims at fixing some issues related to other mods, improving some stuff, and adding new code for custom models (because of Blockbuster mod).
 
+Numbers in the parenthesis following by a hash is the number of issue in Metamorph's GitHub issue tracker. 
+
 - [x] Added `/acquire_morph` command 
 - [x] Added mechanism for spotting errored entities in creative and survival morph menu
 - [x] Add some Blockbuster sensitive code for custom models
@@ -16,8 +18,9 @@ Metamorph 1.1.2 is a patch fix which aims at fixing some issues related to other
 - [x] Disable stripping of custom name tag (#22)
 - [x] Increase scrolling in creative morph menu in two times
 - [x] Mouse control in survival morph menu (#18)
-- [x] MorePlayerModels POV fix (#24)
+- [x] MorePlayerModels POV option fix (#24)
 - [x] Optimized rendering in creative morph menu
+- [x] Tough-as-Nails temporary option fix (#28)
 
 ## Metamorph 1.1.1
 
