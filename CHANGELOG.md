@@ -6,21 +6,21 @@ Metamorph 1.1.2 is a patch fix which aims at fixing some issues related to other
 
 Numbers in the parenthesis following by a hash is the number of issue in Metamorph's GitHub issue tracker. 
 
-- [x] Added `/acquire_morph` command 
-- [x] Added mechanism for spotting errored entities in creative and survival morph menu
-- [x] Add some Blockbuster sensitive code for custom models
-    - [x] JSON deserializers
-    - [x] Custom model utilities
-    - [x] Custom poses
-    - [x] Fixed scale
-    - [x] Added limb color and opacity  
-- [x] Command `/morph` can demorph player
-- [x] Disable stripping of custom name tag (#22)
-- [x] Increase scrolling in creative morph menu in two times
-- [x] Mouse control in survival morph menu (#18)
-- [x] MorePlayerModels POV option fix (#24)
-- [x] Optimized rendering in creative morph menu
-- [x] Tough-as-Nails temporary option fix (#28)
+* Added `/acquire_morph` command 
+* Added mechanism for spotting errored entities in creative and survival morph menu
+* Add some Blockbuster sensitive code for custom models
+    * JSON deserializers
+    * Custom model utilities
+    * Custom poses
+    * Fixed scale
+    * Added limb color and opacity  
+* Command `/morph` can demorph player
+* Disable stripping of custom name tag (#22)
+* Increase scrolling in creative morph menu in two times
+* Mouse control in survival morph menu (#18)
+* MorePlayerModels POV option fix (#24)
+* Optimized rendering in creative morph menu
+* Tough-as-Nails temporary option fix (#28)
 
 ## Metamorph 1.1.1
 
