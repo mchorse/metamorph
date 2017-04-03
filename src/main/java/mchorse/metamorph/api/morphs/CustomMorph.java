@@ -139,7 +139,7 @@ public class CustomMorph extends AbstractMorph
      * Clone this {@link CustomMorph} 
      */
     @Override
-    public AbstractMorph clone()
+    public AbstractMorph clone(boolean isRemote)
     {
         CustomMorph morph = new CustomMorph();
 
@@ -150,7 +150,11 @@ public class CustomMorph extends AbstractMorph
         morph.action = this.action;
 
         morph.model = this.model;
-        morph.renderer = this.renderer;
+
+        if (isRemote)
+        {
+            morph.renderer = this.renderer;
+        }
 
         return morph;
     }

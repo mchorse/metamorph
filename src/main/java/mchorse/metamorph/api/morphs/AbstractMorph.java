@@ -1,5 +1,6 @@
 package mchorse.metamorph.api.morphs;
 
+import mchorse.metamorph.Metamorph;
 import mchorse.metamorph.api.abilities.IAbility;
 import mchorse.metamorph.api.abilities.IAction;
 import mchorse.metamorph.api.abilities.IAttackAbility;
@@ -112,7 +113,10 @@ public abstract class AbstractMorph
      */
     public void update(EntityLivingBase target, IMorphing cap)
     {
-        this.setMaxHealth(target, this.health);
+        if (!Metamorph.proxy.config.disable_health)
+        {
+            this.setMaxHealth(target, this.health);
+        }
 
         if (speed != 0.1F)
         {
@@ -173,7 +177,7 @@ public abstract class AbstractMorph
      */
     protected void updateSize(EntityLivingBase target, float width, float height)
     {
-        if (target instanceof EntityPlayer)
+        if (target instanceof EntityPlayer && !Metamorph.proxy.config.disable_pov)
         {
             ((EntityPlayer) target).eyeHeight = height * 0.9F;
         }
@@ -192,11 +196,16 @@ public abstract class AbstractMorph
     /* Adjusting health */
 
     /**
-     * Set player's health proprotional to the current health with given max 
+     * Set player's health proportional to the current health with given max 
      * health. 
      */
     protected void setHealth(EntityLivingBase target, int health)
     {
+        if (Metamorph.proxy.config.disable_health)
+        {
+            return;
+        }
+
         float ratio = target.getHealth() / target.getMaxHealth();
         float proportionalHealth = Math.round(health * ratio);
 
@@ -249,7 +258,7 @@ public abstract class AbstractMorph
      * MyCustomMorph instance.
      * </p>
      */
-    public abstract AbstractMorph clone();
+    public abstract AbstractMorph clone(boolean isRemote);
 
     /**
      * Get width of this morph 

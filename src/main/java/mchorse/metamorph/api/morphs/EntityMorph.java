@@ -46,6 +46,11 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 public class EntityMorph extends AbstractMorph
 {
     /**
+     * Target entity which is going to be used for nametag rendering
+     */
+    public static EntityLivingBase renderEntity = null;
+
+    /**
      * Entity used by this morph to power morphing
      */
     protected EntityLivingBase entity;
@@ -233,7 +238,9 @@ public class EntityMorph extends AbstractMorph
                 }
             }
 
+            renderEntity = entity;
             render.doRender(this.entity, x, y, z, entityYaw, partialTicks);
+            renderEntity = null;
 
             if (isDragon)
             {
@@ -306,11 +313,6 @@ public class EntityMorph extends AbstractMorph
         if (entity == null)
         {
             this.setupEntity(target.world);
-        }
-
-        if (!entity.hasCustomName())
-        {
-            entity.setCustomNameTag(target.getName());
         }
 
         /* Update entity */
@@ -649,7 +651,7 @@ public class EntityMorph extends AbstractMorph
      * Clone this {@link EntityMorph} 
      */
     @Override
-    public AbstractMorph clone()
+    public AbstractMorph clone(boolean isRemote)
     {
         EntityMorph morph = new EntityMorph();
 
