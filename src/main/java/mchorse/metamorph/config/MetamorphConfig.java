@@ -47,6 +47,11 @@ public class MetamorphConfig
      */
     public boolean disable_pov;
 
+    /**
+     * Disable modifying health. Requested because of Tough as Nails 
+     */
+    public boolean disable_health;
+
     /* End of config options */
 
     /**
@@ -74,6 +79,7 @@ public class MetamorphConfig
         this.prevent_kill_acquire = this.config.getBoolean("prevent_kill_acquire", cat, false, "Prevent morph acquiring by killing a mob (or specifically prevent ghost spawning in any case)?", lang + "prevent_kill_acquire");
         this.show_demorph = this.config.getBoolean("show_demorph", cat, true, "Show demorph as an option in survival morph menu", lang + "show_demorph");
         this.disable_pov = this.config.getBoolean("disable_pov", cat, false, "Disable modifying Point-of-View. Requested to fix MorePlayerModels vertical jittering", lang + "disable_pov");
+        this.disable_health = this.config.getBoolean("disable_health", cat, false, "Disable modifying health. Requested to fix dying all the time with Tough as Nails", lang + "disable_health");
 
         this.config.getCategory(cat).setComment("General configuration of Metamorph mod");
 

@@ -38,6 +38,7 @@ metamorph.config.hide_username=Hide username
 metamorph.config.prevent_kill_acquire=Prevent acquiring by killing
 metamorph.config.show_demorph=Show demorph
 metamorph.config.disable_pov=Disable POV
+metamorph.config.disable_health=Disable health scaling
 
 # Commands
 metamorph.commands.morph=Morph command. This command is responsible for morphing player into specified morph.\n\n/morph <username> [morph_name] [data_tag]

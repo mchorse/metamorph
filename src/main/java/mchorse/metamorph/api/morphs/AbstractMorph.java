@@ -113,7 +113,10 @@ public abstract class AbstractMorph
      */
     public void update(EntityLivingBase target, IMorphing cap)
     {
-        this.setMaxHealth(target, this.health);
+        if (!Metamorph.proxy.config.disable_health)
+        {
+            this.setMaxHealth(target, this.health);
+        }
 
         if (speed != 0.1F)
         {
@@ -193,11 +196,16 @@ public abstract class AbstractMorph
     /* Adjusting health */
 
     /**
-     * Set player's health proprotional to the current health with given max 
+     * Set player's health proportional to the current health with given max 
      * health. 
      */
     protected void setHealth(EntityLivingBase target, int health)
     {
+        if (Metamorph.proxy.config.disable_health)
+        {
+            return;
+        }
+
         float ratio = target.getHealth() / target.getMaxHealth();
         float proportionalHealth = Math.round(health * ratio);
 
