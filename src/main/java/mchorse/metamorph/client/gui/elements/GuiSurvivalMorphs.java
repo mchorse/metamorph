@@ -696,7 +696,7 @@ public class GuiSurvivalMorphs extends Gui
                 this.index = index;
             }
         }
-        else if (this.index == index)
+        else if (index != -1 && this.index == index)
         {
             MorphType morph = this.morphs.get(index);
 
