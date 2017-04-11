@@ -54,7 +54,7 @@ public class GuiSurvivalMenu extends GuiScreen
         this.buttonList.add(morph);
 
         this.updateFavorites();
-        this.updateFavoriteButton();
+        this.updateButtons();
     }
 
     private void updateFavorites()
@@ -82,27 +82,27 @@ public class GuiSurvivalMenu extends GuiScreen
         if (ClientProxy.keys.keyPrevVarMorph.getKeyCode() == keyCode)
         {
             this.morphs.down();
-            this.updateFavoriteButton();
+            this.updateButtons();
         }
         else if (ClientProxy.keys.keyNextVarMorph.getKeyCode() == keyCode)
         {
             this.morphs.up();
-            this.updateFavoriteButton();
+            this.updateButtons();
         }
         else if (ClientProxy.keys.keyPrevMorph.getKeyCode() == keyCode)
         {
             this.morphs.advance(-1);
-            this.updateFavoriteButton();
+            this.updateButtons();
         }
         else if (ClientProxy.keys.keyNextMorph.getKeyCode() == keyCode)
         {
             this.morphs.advance(1);
-            this.updateFavoriteButton();
+            this.updateButtons();
         }
         else if (ClientProxy.keys.keyDemorph.getKeyCode() == keyCode)
         {
             this.morphs.skip(-1);
-            this.updateFavoriteButton();
+            this.updateButtons();
         }
         else if (ClientProxy.keys.keySelectMorph.getKeyCode() == keyCode)
         {
@@ -119,12 +119,12 @@ public class GuiSurvivalMenu extends GuiScreen
             if (button.id == 0)
             {
                 this.morphs.remove();
-                this.updateFavoriteButton();
+                this.updateButtons();
             }
             else if (button.id == 1)
             {
                 this.morphs.favorite(this.morphs.morphs.get(this.morphs.index).current());
-                this.updateFavoriteButton();
+                this.updateButtons();
             }
         }
 
@@ -153,11 +153,12 @@ public class GuiSurvivalMenu extends GuiScreen
         this.mc.displayGuiScreen(null);
     }
 
-    private void updateFavoriteButton()
+    private void updateButtons()
     {
         int index = this.morphs.index;
 
         this.favorite.enabled = index >= 0;
+        this.remove.enabled = index >= 0;
 
         if (this.favorite.enabled)
         {
