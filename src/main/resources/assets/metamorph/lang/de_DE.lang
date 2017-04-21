@@ -1,0 +1,60 @@
+#PARSE_ESCAPES
+
+entity.metamorph.Morph.name=Morph
+
+# Keyboard bindings strings
+key.metamorph=Metamorph
+
+key.metamorph.action=Aktion verwenden
+key.metamorph.creative_menu=Kreativ-Morphmenü öffnen
+key.metamorph.survival_menu=Überlebens-Morphmenü öffnen
+
+key.metamorph.morph.next=Nächster Morph
+key.metamorph.morph.prev=Vorheriger Morph
+key.metamorph.morph.next_var=Nächste Morph-Abweichung
+key.metamorph.morph.prev_var=Vorherige Morph-Abweichung
+key.metamorph.morph.select=Aktuellen Morph auswählen
+key.metamorph.morph.demorph=Demorphen (zurück zum Spieler verwandeln)
+
+# GUI
+metamorph.gui.creative_title=Kreativ-Morphmenü
+metamorph.gui.survival_title=Überlebens-Morphmenü
+metamorph.gui.morph=Morphen
+metamorph.gui.acquire=Erwerben
+metamorph.gui.close=Schließen
+metamorph.gui.remove=Entfernen
+metamorph.gui.favorite=Favorisieren
+metamorph.gui.unfavorite=Entfavorisieren
+metamorph.gui.search=Suchen
+metamorph.gui.only_favorites=Favoriten anzeigen
+metamorph.gui.all_morphs=Alle zeigen
+metamorph.gui.no_morph=Kein Morph ausgewählt
+
+# Config
+metamorph.config.general.title=Allgemein
+metamorph.config.keep_morphs=Morphs nach dem Tod behalten
+metamorph.config.prevent_ghosts=Geister vermeiden
+metamorph.config.hide_username=Benutzernamen verstecken
+metamorph.config.prevent_kill_acquire=Erwerben durch Töten vermeiden
+metamorph.config.show_demorph=Demorph zeigen
+metamorph.config.disable_pov=POV deaktivieren
+metamorph.config.disable_health=Gesundheitsskalierung deaktivieren
+
+# Commands
+metamorph.commands.morph=Morph-Befehl. Dieser Befehl ist für die Verwandlung eines Spielers in den angegebenen Morph verantwortlich.\n\n/morph <username> [morph_name] [data_tag]
+metamorph.commands.acquire_morph=Morph-Erwerben-Befehl. Dieser Befehl ist für das Senden eines Morphs an einen Spieler verantwortlich.\n\n/morph <username> <morph_name> [data_tag]
+
+metamorph.error.morph.not_player=Lebewesen %s ist kein Spieler!
+metamorph.error.morph.nbt=Beim Daten-Tag-Parsing ist ein Fehler aufgetreten:\n%s
+metamorph.error.acquire=Konnte keinen Morph namens %s erwerben!
+metamorph.success.morph=Spieler namens %s wurde erfolgreich in %s gemorpht!
+metamorph.success.demorph=Spieler namens %s wurde erfolgreich gedemorpht!
+metamorph.success.acquire=Spieler namens %s hat erfolgreich den Morph %s erworben!
+
+# Morph categories
+morph.category.unknown=Unbekannte Morphs
+morph.category.unsorted=Unsortierte Morphs
+morph.category.animal=Tiermorphs
+morph.category.acquired=Deine Morphs
+morph.category.hostile=Feindliche Morphs
+morph.category.modded=Morphs von %s
