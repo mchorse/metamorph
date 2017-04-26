@@ -13,6 +13,7 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.nbt.JsonToNBT;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.server.MinecraftServer;
+import net.minecraft.tileentity.CommandBlockBaseLogic;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.text.TextComponentTranslation;
 
@@ -41,6 +42,12 @@ public class CommandAcquireMorph extends CommandBase
     {
         /* Because /op command has the same level, and I trust it */
         return 3;
+    }
+
+    @Override
+    public boolean checkPermission(MinecraftServer server, ICommandSender sender)
+    {
+        return sender instanceof CommandBlockBaseLogic || super.checkPermission(server, sender);
     }
 
     @Override
