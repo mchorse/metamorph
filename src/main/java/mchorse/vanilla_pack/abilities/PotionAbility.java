@@ -23,6 +23,7 @@ public abstract class PotionAbility extends Ability
 
         if (effect.getDuration() < 5)
         {
+            this.onDemorph(target);
             this.onMorph(target);
         }
     }
