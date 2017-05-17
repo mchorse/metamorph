@@ -4,7 +4,6 @@ import mchorse.metamorph.api.abilities.Ability;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.potion.Potion;
 import net.minecraft.potion.PotionEffect;
-import net.minecraft.util.IntegerCache;
 
 /**
  * Abstract potion ability
