@@ -4,6 +4,7 @@ import mchorse.metamorph.api.abilities.Ability;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.potion.Potion;
 import net.minecraft.potion.PotionEffect;
+import net.minecraft.util.IntegerCache;
 
 /**
  * Abstract potion ability
@@ -14,7 +15,7 @@ import net.minecraft.potion.PotionEffect;
 public abstract class PotionAbility extends Ability
 {
     protected Potion potion;
-    protected int duration = 1200;
+    protected int duration = Integer.MAX_VALUE;
 
     @Override
     public void update(EntityLivingBase target)
