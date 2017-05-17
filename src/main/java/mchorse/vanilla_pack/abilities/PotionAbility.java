@@ -15,14 +15,14 @@ import net.minecraft.util.IntegerCache;
 public abstract class PotionAbility extends Ability
 {
     protected Potion potion;
-    protected int duration = Integer.MAX_VALUE;
+    protected int duration = 1200;
 
     @Override
     public void update(EntityLivingBase target)
     {
         PotionEffect effect = target.getActivePotionEffect(this.potion);
 
-        if (effect.getDuration() < 5)
+        if (effect == null || effect.getDuration() < 300)
         {
             this.onDemorph(target);
             this.onMorph(target);
