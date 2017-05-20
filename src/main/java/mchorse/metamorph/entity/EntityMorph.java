@@ -74,7 +74,12 @@ public class EntityMorph extends EntityLiving implements IEntityAdditionalSpawnD
     @Override
     public ITextComponent getDisplayName()
     {
-        return new TextComponentTranslation("entity." + this.morph.name + ".name");
+        if (this.morph != null)
+        {
+            return new TextComponentTranslation("entity." + this.morph.name + ".name");
+        }
+
+        return super.getDisplayName();
     }
 
     /**
@@ -194,16 +199,20 @@ public class EntityMorph extends EntityLiving implements IEntityAdditionalSpawnD
     {
         ByteBufUtils.writeUTF8String(buffer, this.owner != null ? this.owner.toString() : "");
 
-        NBTTagCompound tag = new NBTTagCompound();
-        this.morph.toNBT(tag);
-
-        boolean hasData = tag != null && !tag.hasNoTags();
-
-        buffer.writeBoolean(hasData);
-
-        if (hasData)
+        if (this.morph != null)
         {
-            ByteBufUtils.writeTag(buffer, tag);
+            NBTTagCompound tag = new NBTTagCompound();
+
+            this.morph.toNBT(tag);
+
+            boolean hasData = tag != null && !tag.hasNoTags();
+
+            buffer.writeBoolean(hasData);
+
+            if (hasData)
+            {
+                ByteBufUtils.writeTag(buffer, tag);
+            }
         }
     }
 
