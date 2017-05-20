@@ -21,7 +21,7 @@ public abstract class PotionAbility extends Ability
     {
         PotionEffect effect = target.getActivePotionEffect(this.potion);
 
-        if (effect.getDuration() < 5)
+        if (effect == null || effect.getDuration() < 300)
         {
             this.onDemorph(target);
             this.onMorph(target);
