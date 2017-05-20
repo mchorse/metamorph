@@ -12,6 +12,5 @@ public class NightVision extends PotionAbility
     public NightVision()
     {
         this.potion = MobEffects.NIGHT_VISION;
-        this.duration = 2400;
     }
 }

@@ -19,8 +19,11 @@ public abstract class PotionAbility extends Ability
     @Override
     public void update(EntityLivingBase target)
     {
-        if (!target.isPotionActive(this.potion))
+        PotionEffect effect = target.getActivePotionEffect(this.potion);
+
+        if (effect == null || effect.getDuration() < 300)
         {
+            this.onDemorph(target);
             this.onMorph(target);
         }
     }

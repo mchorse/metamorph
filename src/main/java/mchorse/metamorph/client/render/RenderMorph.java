@@ -49,6 +49,11 @@ public class RenderMorph extends RenderLivingBase<EntityMorph>
     @Override
     public void doRender(EntityMorph entity, double x, double y, double z, float entityYaw, float partialTicks)
     {
+        if (entity.morph == null)
+        {
+            return;
+        }
+
         float alpha = 0.7F - (float) entity.timer / 30 * 0.7F;
 
         GlStateManager.pushMatrix();

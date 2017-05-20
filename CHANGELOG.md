@@ -1,5 +1,15 @@
 # Metamorph Change Log
 
+## Metamorph 1.1.3
+
+This is a small patch fix which aims at fixing more issues (reported by mod users).
+
+* Added German translation (thanks to ACGaming)
+* Fixes crash when you click on top or lower parts when demorph (default player morph) is selected
+* Fixed potion ability causing flashing before expiration for 15 seconds (thanks to code from mallrat208), now it's continious
+* Fixed crahs NoSuchMethodException on server side when teleporting in enderman morph (thanks to code from mallrat208)
+* Fixed crash NullPointerException when ghosts from older versions are spawned
+
 ## Metamorph 1.1.2
 
 Metamorph 1.1.2 is a patch fix which aims at fixing some issues related to other mods, improving some stuff, and adding new code for custom models (because of Blockbuster mod).
@@ -38,6 +48,8 @@ This patch fixes 1.11.2 problem with morphs not getting their abilities. This wa
 ## Metamorph 1.1
 
 A big update of Metamorph mod. This update introduces third-party morph support, improved GUIs and public API. A lot of code was rewritten, and there close to no morphs which use custom models (as in the first version).
+
+<a href="https://youtu.be/4BrvdKbVAHo"><img src="https://img.youtube.com/vi/4BrvdKbVAHo/0.jpg"></a> 
 
 * Added Public API (technical)
     * `mchorse.metamorph.api.MorphAPI` class provides API static methods
@@ -87,10 +99,7 @@ This patch doesn't really add stuff, rather it improves `1.0` release based on s
 
 This patch adds few configuration options, improves GUIs, fixes some bugs and improves some morphs and rendering of the hand (thanks to [Blockbuster's mod](https://github.com/mchorse/blockbuster/) hands code).
 
-**Review video**:  
-<a href="https://youtu.be/4ZD8vV5Zyuw"> 
-    <img src="https://img.youtube.com/vi/4ZD8vV5Zyuw/0.jpg">
-</a>
+<a href="https://youtu.be/4ZD8vV5Zyuw"><img src="https://img.youtube.com/vi/4ZD8vV5Zyuw/0.jpg"></a> 
 
 * Added acquiring **morph** overlay (replaced chat messages).
 * Improved first-person hand rendering (will work even with shaders).

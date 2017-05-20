@@ -31,7 +31,7 @@ public class Teleport implements IAction
     {
         float reachDistance = 32;
 
-        Vec3d pos = target.getPositionEyes(1.0F);
+        Vec3d pos = new Vec3d(target.posX, target.posY + target.getEyeHeight(), target.posZ);
         Vec3d look = target.getLook(1.0F);
         Vec3d vec = pos.addVector(look.xCoord * reachDistance, look.yCoord * reachDistance, look.zCoord * reachDistance);
 
