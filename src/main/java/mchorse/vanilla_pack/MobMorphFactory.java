@@ -127,11 +127,12 @@ public class MobMorphFactory implements IMorphFactory
         this.addMorph(morphs, world, "minecraft:villager", "{ProfessionName:\"minecraft:nitwit\"}");
 
         /* Adding zombie villagers */
-        for (int i = 1; i < 6; i++)
-        {
-            this.addMorph(morphs, world, "minecraft:zombie_villager", "{Profession:" + i + "}");
-        }
-
+        this.addMorph(morphs, world, "minecraft:zombie_villager", "{ProfessionName:\"minecraft:librarian\"}");
+        this.addMorph(morphs, world, "minecraft:zombie_villager", "{ProfessionName:\"minecraft:priest\"}");
+        this.addMorph(morphs, world, "minecraft:zombie_villager", "{ProfessionName:\"minecraft:smith\"}");
+        this.addMorph(morphs, world, "minecraft:zombie_villager", "{ProfessionName:\"minecraft:butcher\"}");
+        this.addMorph(morphs, world, "minecraft:zombie_villager", "{ProfessionName:\"minecraft:nitwit\"}");
+        
         /* Adding normal bat */
         this.addMorph(morphs, world, "minecraft:bar", "{BatFlags:2}");
 

@@ -38,6 +38,11 @@
         "health": 24,
         "speed": 0.15
     },
+    "minecraft:parrot": {
+    	"abilities": ["fly", "prevent_fall"],
+    	"health": 6,
+    	"hostile": true
+    },
     "minecraft:skeleton_horse": {
         "abilities": ["prevent_fall"],
         "action": "jump",
