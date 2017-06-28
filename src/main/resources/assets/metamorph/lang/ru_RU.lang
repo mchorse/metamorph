@@ -1,0 +1,60 @@
+#PARSE_ESCAPES
+
+entity.metamorph.Morph.name=Превращение
+
+# Keyboard bindings strings
+key.metamorph=Метаморфизм
+
+key.metamorph.action=Использовать действие
+key.metamorph.creative_menu=Открыть творческое меню превращений
+key.metamorph.survival_menu=Открыть меню превращений выживания
+
+key.metamorph.morph.next=Следущее превращение
+key.metamorph.morph.prev=Предыдущее превращение
+key.metamorph.morph.next_var=Следущая вариация превращения
+key.metamorph.morph.prev_var=Предыдущая вариация превращения
+key.metamorph.morph.select=Выбрать текущее превращение
+key.metamorph.morph.demorph=Восстановиться (стать обратно игроком)
+
+# GUI
+metamorph.gui.creative_title=Творческое меню превращений
+metamorph.gui.survival_title=Меню превращений выживания
+metamorph.gui.morph=Превратиться
+metamorph.gui.acquire=Приобрести
+metamorph.gui.close=Закрыть
+metamorph.gui.remove=Удалить
+metamorph.gui.favorite=Фаворит
+metamorph.gui.unfavorite=Не фаворит
+metamorph.gui.search=Найти
+metamorph.gui.only_favorites=Показать фаворитов
+metamorph.gui.all_morphs=Показать всех
+metamorph.gui.no_morph=Превращение не выбрано
+
+# Config
+metamorph.config.general.title=Основные
+metamorph.config.keep_morphs=Сохранять превращения после смерти
+metamorph.config.prevent_ghosts=Мешающий призрак
+metamorph.config.hide_username=Спрятать имя игрока
+metamorph.config.prevent_kill_acquire=Не приобретать превращения путем убийства
+metamorph.config.show_demorph=Показывать восстановление
+metamorph.config.disable_pov=Выключить POV
+metamorph.config.disable_health=Выключить масштабирование здоровья
+
+# Commands
+metamorph.commands.morph=Команда превращения. эта команда служит для превращения игрока во что-то.\n\n/morph <username> [morph_name] [data_tag]
+metamorph.commands.acquire_morph=Команда приобретения превращения. Эта команда служит для приобретения превращения игроком.\n\n/morph <username> <morph_name> [data_tag]
+
+metamorph.error.morph.not_player=Сущность %s не игрок!
+metamorph.error.morph.nbt=Ошибка при разборе тегов данных:\n%s
+metamorph.error.acquire=Не удалось получить превращение в %s!
+metamorph.success.morph=Игрок username %s успешно превратился в %s !
+metamorph.success.demorph=Игрок username %s успешно восстановился!
+metamorph.success.acquire=Игрок username %s успешно приобрел превращение в %s !
+
+# Morph categories
+morph.category.unknown=Неизвестные превращения
+morph.category.unsorted=Неотсортированные превращения
+morph.category.animal=Превращения в животных
+morph.category.acquired=Ваши превращения
+morph.category.hostile=Превращения в монстров
+morph.category.modded=Превращение из %s
