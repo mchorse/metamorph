@@ -183,7 +183,7 @@ public class GuiSurvivalMenu extends GuiScreen
         /* Background and stuff */
         this.drawDefaultBackground();
         Gui.drawRect(0, 0, width, 30, 0x88000000);
-        this.drawString(fontRendererObj, I18n.format("metamorph.gui.survival_title"), 20, 11, 0xffffff);
+        this.drawString(fontRenderer, I18n.format("metamorph.gui.survival_title"), 20, 11, 0xffffff);
 
         this.morphs.render(this.width, this.height);
 

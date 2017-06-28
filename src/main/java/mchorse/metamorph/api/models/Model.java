@@ -8,7 +8,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Scanner;
 
-import com.google.common.base.Objects;
+import com.google.common.base.MoreObjects;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 
@@ -210,7 +210,7 @@ public class Model
     @Override
     public String toString()
     {
-        return Objects.toStringHelper(this).add("scheme", this.scheme).add("name", this.name).add("texture", Arrays.toString(this.texture)).add("limbs", this.limbs).add("poses", this.poses).toString();
+        return MoreObjects.toStringHelper(this).add("scheme", this.scheme).add("name", this.name).add("texture", Arrays.toString(this.texture)).add("limbs", this.limbs).add("poses", this.poses).toString();
     }
 
     /**
@@ -277,7 +277,7 @@ public class Model
         @Override
         public String toString()
         {
-            return Objects.toStringHelper(this).add("parent", this.parent).add("size", Arrays.toString(this.size)).add("texture", Arrays.toString(this.texture)).add("anchor", Arrays.toString(this.anchor)).add("mirror", this.mirror).toString();
+            return MoreObjects.toStringHelper(this).add("parent", this.parent).add("size", Arrays.toString(this.size)).add("texture", Arrays.toString(this.texture)).add("anchor", Arrays.toString(this.anchor)).add("mirror", this.mirror).toString();
         }
     }
 
@@ -313,7 +313,7 @@ public class Model
         @Override
         public String toString()
         {
-            return Objects.toStringHelper(this).add("size", this.size).add("limbs", this.limbs).toString();
+            return MoreObjects.toStringHelper(this).add("size", this.size).add("limbs", this.limbs).toString();
         }
     }
 
@@ -345,7 +345,7 @@ public class Model
         @Override
         public String toString()
         {
-            return Objects.toStringHelper(this).add("translate", this.translate).add("scale", this.scale).add("rotate", this.rotate).toString();
+            return MoreObjects.toStringHelper(this).add("translate", this.translate).add("scale", this.scale).add("rotate", this.rotate).toString();
         }
     }
 }

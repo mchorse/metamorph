@@ -128,7 +128,7 @@ public class EntityMorph extends EntityLiving implements IEntityAdditionalSpawnD
 
         if (this.player != null && !this.player.isDead)
         {
-            if (this.getEntityBoundingBox().intersectsWith(this.player.getEntityBoundingBox()))
+            if (this.getEntityBoundingBox().intersects(this.player.getEntityBoundingBox()))
             {
                 this.setDead();
                 this.grantMorph();

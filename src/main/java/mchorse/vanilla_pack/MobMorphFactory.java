@@ -100,6 +100,11 @@ public class MobMorphFactory implements IMorphFactory
         /* Adding cat variants */
         this.addMorph(morphs, world, "minecraft:ocelot", "{Age:-1}");
 
+        for (int i = 1; i <= 4; i++)
+        {
+            this.addMorph(morphs, world, "minecraft:parrot", "{Variant:" + i + "}");
+        }
+
         for (int i = 1; i < 4; i++)
         {
             this.addMorph(morphs, world, "minecraft:ocelot", "{CatType:" + i + "}");

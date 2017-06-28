@@ -26,7 +26,9 @@ import net.minecraft.client.gui.Gui;
 import net.minecraft.client.gui.inventory.GuiInventory;
 import net.minecraft.client.model.ModelBase;
 import net.minecraft.client.renderer.GlStateManager;
+import net.minecraft.client.renderer.entity.Render;
 import net.minecraft.client.renderer.entity.RenderLivingBase;
+import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.MathHelper;
@@ -571,7 +573,7 @@ public class GuiSurvivalMorphs extends Gui
         /* Draw the title */
         int labelY = this.inGUI ? height - 24 : height / 2 + h / 2 + 4;
 
-        this.drawCenteredString(this.mc.fontRendererObj, label, width / 2, labelY, 0xffffffff);
+        this.drawCenteredString(this.mc.fontRenderer, label, width / 2, labelY, 0xffffffff);
     }
 
     /**
@@ -627,8 +629,8 @@ public class GuiSurvivalMorphs extends Gui
     public void renderPlayer(EntityPlayer player, int x, int y, int scale)
     {
         EntityPlayerSP entity = (EntityPlayerSP) player;
-        RenderLivingBase<EntityPlayerSP> render = (RenderLivingBase<EntityPlayerSP>) this.mc.getRenderManager().getEntityRenderObject(entity);
-        ModelBase model = render.getMainModel();
+        Render<Entity> render = this.mc.getRenderManager().getEntityRenderObject(entity);
+        ModelBase model = ((RenderLivingBase<?>) render).getMainModel();
 
         model.isChild = false;
         model.swingProgress = 0;

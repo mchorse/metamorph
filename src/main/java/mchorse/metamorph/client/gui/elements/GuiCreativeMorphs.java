@@ -358,7 +358,7 @@ public class GuiCreativeMorphs extends GuiScrollPane
             }
 
             int k = 0;
-            this.drawString(fontRendererObj, category.title, this.x + this.shiftX + 1, category.y + this.y, 0xFFFFFFFF);
+            this.drawString(fontRenderer, category.title, this.x + this.shiftX + 1, category.y + this.y, 0xFFFFFFFF);
 
             for (MorphCell cell : category.cells)
             {

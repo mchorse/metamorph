@@ -69,7 +69,7 @@ public class GuiCreativeMenu extends GuiScreen
         morph = new GuiButton(0, x - 190, y, 60, 20, I18n.format("metamorph.gui.morph"));
         acquire = new GuiButton(1, x - 125, y, 60, 20, I18n.format("metamorph.gui.acquire"));
         close = new GuiButton(2, x - 60, y, 60, 20, I18n.format("metamorph.gui.close"));
-        search = new GuiTextField(-1, fontRendererObj, 195 + 1, 35 + 1, this.width - 205 - 2, 20 - 2);
+        search = new GuiTextField(-1, fontRenderer, 195 + 1, 35 + 1, this.width - 205 - 2, 20 - 2);
 
         this.buttonList.add(morph);
         this.buttonList.add(acquire);
@@ -189,15 +189,15 @@ public class GuiCreativeMenu extends GuiScreen
         /* Draw panel backgrounds */
         this.drawDefaultBackground();
         Gui.drawRect(0, 0, width, 30, 0x88000000);
-        this.fontRendererObj.drawStringWithShadow(I18n.format("metamorph.gui.search"), 146, 41, 0xffffff);
+        this.fontRenderer.drawStringWithShadow(I18n.format("metamorph.gui.search"), 146, 41, 0xffffff);
 
         /* Draw labels */
-        this.drawString(fontRendererObj, I18n.format("metamorph.gui.creative_title"), 20, 11, 0xffffff);
-        this.drawCenteredString(fontRendererObj, selected, 70, height - 28, 0xffffffff);
+        this.drawString(fontRenderer, I18n.format("metamorph.gui.creative_title"), 20, 11, 0xffffff);
+        this.drawCenteredString(fontRenderer, selected, 70, height - 28, 0xffffffff);
 
         if (morph != null)
         {
-            this.drawCenteredString(fontRendererObj, morph.morph.name, 70, height - 16, 0x888888);
+            this.drawCenteredString(fontRenderer, morph.morph.name, 70, height - 16, 0x888888);
         }
 
         this.pane.drawScreen(mouseX, mouseY, partialTicks);

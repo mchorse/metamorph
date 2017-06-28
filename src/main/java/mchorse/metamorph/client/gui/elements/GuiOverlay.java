@@ -38,7 +38,7 @@ public class GuiOverlay extends Gui
         }
 
         Minecraft mc = Minecraft.getMinecraft();
-        FontRenderer font = mc.fontRendererObj;
+        FontRenderer font = mc.fontRenderer;
         Iterator<AcquiredMorph> iterator = this.morphs.iterator();
 
         while (iterator.hasNext())

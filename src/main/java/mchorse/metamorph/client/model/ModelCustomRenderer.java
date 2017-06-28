@@ -4,10 +4,10 @@ import mchorse.metamorph.api.models.Model;
 import net.minecraft.client.model.ModelBase;
 import net.minecraft.client.model.ModelBox;
 import net.minecraft.client.model.ModelRenderer;
+import net.minecraft.client.renderer.BufferBuilder;
 import net.minecraft.client.renderer.GLAllocation;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.renderer.Tessellator;
-import net.minecraft.client.renderer.VertexBuffer;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
@@ -284,7 +284,7 @@ public class ModelCustomRenderer extends ModelRenderer
     {
         this.displayList = GLAllocation.generateDisplayLists(1);
         GlStateManager.glNewList(this.displayList, 4864);
-        VertexBuffer vertexbuffer = Tessellator.getInstance().getBuffer();
+        BufferBuilder vertexbuffer = Tessellator.getInstance().getBuffer();
 
         for (int i = 0; i < this.cubeList.size(); ++i)
         {

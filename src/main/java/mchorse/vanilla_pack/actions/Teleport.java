@@ -33,7 +33,7 @@ public class Teleport implements IAction
 
         Vec3d pos = new Vec3d(target.posX, target.posY + target.getEyeHeight(), target.posZ);
         Vec3d look = target.getLook(1.0F);
-        Vec3d vec = pos.addVector(look.xCoord * reachDistance, look.yCoord * reachDistance, look.zCoord * reachDistance);
+        Vec3d vec = pos.addVector(look.x * reachDistance, look.y * reachDistance, look.z * reachDistance);
 
         RayTraceResult result = target.world.rayTraceBlocks(pos, vec, false, false, true);
 

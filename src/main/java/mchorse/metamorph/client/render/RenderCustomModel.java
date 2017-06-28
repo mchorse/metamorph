@@ -196,14 +196,14 @@ public class RenderCustomModel extends RenderLivingBase<EntityLivingBase>
             Vec3d vec3d = entity.getLook(partialTicks);
 
             double d0 = entity.motionX * entity.motionX + entity.motionZ * entity.motionZ;
-            double d1 = vec3d.xCoord * vec3d.xCoord + vec3d.zCoord * vec3d.zCoord;
+            double d1 = vec3d.x * vec3d.x + vec3d.z * vec3d.z;
 
             GlStateManager.rotate(f1 * (-90.0F - entity.rotationPitch), 1.0F, 0.0F, 0.0F);
 
             if (d0 > 0.0D && d1 > 0.0D)
             {
-                double d2 = (entity.motionX * vec3d.xCoord + entity.motionZ * vec3d.zCoord) / (Math.sqrt(d0) * Math.sqrt(d1));
-                double d3 = entity.motionX * vec3d.zCoord - entity.motionZ * vec3d.xCoord;
+                double d2 = (entity.motionX * vec3d.x + entity.motionZ * vec3d.z) / (Math.sqrt(d0) * Math.sqrt(d1));
+                double d3 = entity.motionX * vec3d.z - entity.motionZ * vec3d.x;
 
                 GlStateManager.rotate((float) (Math.signum(d3) * Math.acos(d2)) * 180.0F / (float) Math.PI, 0.0F, 1.0F, 0.0F);
             }

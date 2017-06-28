@@ -24,9 +24,9 @@ public class KnockbackAttack implements IAttackAbility
             @Override
             public void run()
             {
-                target.motionX = look.xCoord * d;
+                target.motionX = look.x * d;
                 target.motionY = 1;
-                target.motionZ = look.zCoord * d;
+                target.motionZ = look.z * d;
             }
         };
 

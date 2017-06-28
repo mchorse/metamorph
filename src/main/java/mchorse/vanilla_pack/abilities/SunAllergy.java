@@ -30,7 +30,7 @@ public class SunAllergy extends Ability
             return;
         }
 
-        float brightness = target.getBrightness(1.0F);
+        float brightness = target.getBrightness();
         boolean random = this.random.nextFloat() * 30.0F < (brightness - 0.4F) * 2.0F;
         this.pos.setPos(target.posX, target.posY, target.posZ);
 

@@ -34,9 +34,9 @@ public class Fireball implements IAction
         Vec3d vec3d = target.getLook(1.0F);
 
         double d1 = 4.0D;
-        double d2 = vec3d.xCoord * d1;
-        double d3 = vec3d.yCoord * d1;
-        double d4 = vec3d.zCoord * d1;
+        double d2 = vec3d.x * d1;
+        double d3 = vec3d.y * d1;
+        double d4 = vec3d.z * d1;
 
         world.playEvent((EntityPlayer) null, 1016, new BlockPos(target), 0);
 

@@ -94,7 +94,7 @@ public class MorphHandler
     @SubscribeEvent
     public void onPlayerKillEntity(LivingDeathEvent event)
     {
-        Entity source = event.getSource().getEntity();
+        Entity source = event.getSource().getTrueSource();
         Entity target = event.getEntity();
 
         if (target.world.isRemote || source instanceof FakePlayer)
@@ -150,7 +150,7 @@ public class MorphHandler
     @SubscribeEvent
     public void onPlayerAttack(LivingAttackEvent event)
     {
-        Entity source = event.getSource().getEntity();
+        Entity source = event.getSource().getTrueSource();
         Entity target = event.getEntity();
 
         if (source instanceof EntityPlayer)

@@ -36,9 +36,12 @@ public class CapabilityHandler
      * Attach capabilities (well, only one, right now)
      */
     @SubscribeEvent
-    public void attachCapability(AttachCapabilitiesEvent.Entity event)
+    public void attachCapability(AttachCapabilitiesEvent<Entity> event)
     {
-        if (!(event.getEntity() instanceof EntityPlayer)) return;
+        if (!(event.getObject() instanceof EntityPlayer))
+        {
+            return;
+        }
 
         event.addCapability(MORPHING_CAP, new MorphingProvider());
     }
