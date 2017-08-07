@@ -2,11 +2,10 @@ package mchorse.metamorph.client.render;
 
 import java.util.Map;
 
-import mchorse.metamorph.api.models.IMorphProvider;
+import mchorse.metamorph.api.EntityUtils;
 import mchorse.metamorph.api.models.Model;
+import mchorse.metamorph.api.morphs.AbstractMorph;
 import mchorse.metamorph.api.morphs.CustomMorph;
-import mchorse.metamorph.capabilities.morphing.IMorphing;
-import mchorse.metamorph.capabilities.morphing.MorphingProvider;
 import mchorse.metamorph.client.model.ModelCustom;
 import mchorse.metamorph.client.model.ModelCustomRenderer;
 import mchorse.metamorph.client.render.layers.LayerHeldItem;
@@ -124,25 +123,14 @@ public class RenderCustomModel extends RenderLivingBase<EntityLivingBase>
         Map<String, ModelCustom> models = ModelCustom.MODELS;
         ModelCustom model = null;
         Model.Pose pose = null;
+        AbstractMorph morph = EntityUtils.getMorph(entity);
 
-        if (entity instanceof IMorphProvider)
+        if (morph != null)
         {
-            CustomMorph morph = (CustomMorph) ((IMorphProvider) entity).getMorph();
+            CustomMorph custom = (CustomMorph) morph;
 
-            model = models.get(morph.name);
-            pose = morph.pose;
-        }
-        else
-        {
-            IMorphing cap = entity.getCapability(MorphingProvider.MORPHING_CAP, null);
-
-            if (cap != null && cap.isMorphed())
-            {
-                CustomMorph morph = (CustomMorph) cap.getCurrentMorph();
-
-                model = models.get(morph.name);
-                pose = morph.pose;
-            }
+            model = models.get(custom.name);
+            pose = custom.getPose(entity);
         }
 
         if (model != null)
