@@ -30,7 +30,7 @@ public class CustomMorph extends AbstractMorph
     /**
      * Current pose 
      */
-    private Pose pose;
+    protected Pose pose;
 
     /**
      * Current custom pose
@@ -114,6 +114,11 @@ public class CustomMorph extends AbstractMorph
         String poseName = EntityUtils.getPose(target, this.currentPose, this.currentPoseOnSneak);
 
         return model.getPose(poseName);
+    }
+
+    public void setPose(Pose pose)
+    {
+        this.pose = pose;
     }
 
     /**
