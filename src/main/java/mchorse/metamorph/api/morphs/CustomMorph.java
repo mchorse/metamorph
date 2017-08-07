@@ -30,7 +30,7 @@ public class CustomMorph extends AbstractMorph
     /**
      * Current pose 
      */
-    public Pose pose;
+    private Pose pose;
 
     /**
      * Current custom pose
@@ -105,6 +105,16 @@ public class CustomMorph extends AbstractMorph
     }
 
     /* Updating and stuff */
+
+    /**
+     * Get a pose for rendering
+     */
+    public Pose getPose(EntityLivingBase target)
+    {
+        String poseName = EntityUtils.getPose(target, this.currentPose, this.currentPoseOnSneak);
+
+        return model.getPose(poseName);
+    }
 
     /**
      * Update the player based on its morph abilities and properties. This 

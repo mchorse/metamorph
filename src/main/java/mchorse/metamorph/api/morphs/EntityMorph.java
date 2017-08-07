@@ -316,7 +316,7 @@ public class EntityMorph extends AbstractMorph
         }
 
         /* Update entity */
-        entity.onUpdate();
+        this.updateEntity();
         entity.deathTime = target.deathTime;
         entity.hurtTime = target.hurtTime;
 
@@ -444,6 +444,11 @@ public class EntityMorph extends AbstractMorph
         }
     }
 
+    protected void updateEntity()
+    {
+        this.entity.onUpdate();
+    }
+
     @Override
     protected void updateSize(EntityLivingBase target, float width, float height)
     {
@@ -494,7 +499,7 @@ public class EntityMorph extends AbstractMorph
      * the renderer, texture of the entity and the "hands"
      */
     @SideOnly(Side.CLIENT)
-    private void setupRenderer()
+    protected void setupRenderer()
     {
         this.renderer = Minecraft.getMinecraft().getRenderManager().getEntityRenderObject(this.entity);
 
@@ -516,7 +521,7 @@ public class EntityMorph extends AbstractMorph
      */
     @SideOnly(Side.CLIENT)
     @SuppressWarnings({"unchecked", "rawtypes"})
-    private void setupTexture()
+    protected void setupTexture()
     {
         Class<Render> clazz = (Class<Render>) this.renderer.getClass();
 
@@ -557,7 +562,7 @@ public class EntityMorph extends AbstractMorph
      */
     @SideOnly(Side.CLIENT)
     @SuppressWarnings("rawtypes")
-    private void setupHands()
+    protected void setupHands()
     {
         ModelBase model = ((RenderLivingBase) this.renderer).getMainModel();
 

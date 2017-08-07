@@ -14,6 +14,7 @@ import mchorse.metamorph.config.MetamorphConfig;
 import mchorse.metamorph.entity.EntityMorph;
 import mchorse.metamorph.network.Dispatcher;
 import mchorse.vanilla_pack.MobMorphFactory;
+import mchorse.vanilla_pack.PlayerMorphFactory;
 import mchorse.vanilla_pack.VanillaMorphFactory;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.common.MinecraftForge;
@@ -65,6 +66,7 @@ public class CommonProxy
         MorphManager.INSTANCE.models = this.models;
         MorphManager.INSTANCE.factories.add(new MobMorphFactory());
         MorphManager.INSTANCE.factories.add(new VanillaMorphFactory());
+        MorphManager.INSTANCE.factories.add(new PlayerMorphFactory());
 
         /* Configuration */
         File config = new File(event.getModConfigurationDirectory(), "metamorph/config.cfg");
