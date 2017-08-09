@@ -22,6 +22,7 @@ import net.minecraftforge.event.entity.living.LivingSetAttackTargetEvent;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.common.gameevent.TickEvent.Phase;
 import net.minecraftforge.fml.common.gameevent.TickEvent.PlayerTickEvent;
+import net.minecraftforge.fml.relauncher.Side;
 
 /**
  * Server event handler
@@ -59,6 +60,19 @@ public class MorphHandler
         IMorphing capability = Morphing.get(player);
 
         this.runFutureTasks(player);
+        
+        // A sanity check to prevent "healing" health when morphing to and from a mob with essentially zero health
+        // We have to do it every tick because you never know when another mod could change the max health
+        if (capability != null)
+        {
+            // If the current health ratio makes sense, store that ratio in the capability
+            float maxHealth = player.getMaxHealth();
+            if (maxHealth > IMorphing.REASONABLE_HEALTH_VALUE) {
+                float healthRatio = player.getHealth() / maxHealth;
+                capability.setLastHealthRatio(healthRatio);
+            }
+            
+        }
 
         if (capability == null || !capability.isMorphed())
         {

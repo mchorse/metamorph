@@ -29,6 +29,12 @@ public class Morphing implements IMorphing
      * Current used morph
      */
     private AbstractMorph morph;
+    
+    /**
+     * (health / max health) is stored here when the new max health ends up
+     * very close to zero, and retrieved when the fraction is meaningful again
+     */
+    private float lastHealthRatio;
 
     public static IMorphing get(EntityPlayer player)
     {
@@ -202,5 +208,17 @@ public class Morphing implements IMorphing
         this.acquiredMorphs = morphing.getAcquiredMorphs();
         this.setCurrentMorph(morphing.getCurrentMorph(), player, true);
         this.setFavorites(morphing.getFavorites());
+    }
+
+    @Override
+    public float getLastHealthRatio()
+    {
+        return lastHealthRatio;
+    }
+
+    @Override
+    public void setLastHealthRatio(float lastHealthRatio)
+    {
+        this.lastHealthRatio = lastHealthRatio;
     }
 }
