@@ -5,6 +5,7 @@ import mchorse.metamorph.api.abilities.IAbility;
 import mchorse.metamorph.api.abilities.IAction;
 import mchorse.metamorph.api.abilities.IAttackAbility;
 import mchorse.metamorph.capabilities.morphing.IMorphing;
+import mchorse.metamorph.capabilities.morphing.Morphing;
 import net.minecraft.client.renderer.entity.Render;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
@@ -205,11 +206,34 @@ public abstract class AbstractMorph
         {
             return;
         }
-
-        float ratio = target.getHealth() / target.getMaxHealth();
-        float proportionalHealth = Math.round(health * ratio);
+        
+        float maxHealth = target.getMaxHealth();
+        float currentHealth = target.getHealth();
+        float ratio = currentHealth / maxHealth;
+        
+        // A sanity check to prevent "healing" health when morphing to and from a mob with essentially zero health
+        if (target instanceof EntityPlayer)
+        {
+            IMorphing capability = Morphing.get((EntityPlayer)target);
+            if (capability != null)
+            {
+                // Check if a health ratio makes sense for the old health value
+                if (maxHealth > IMorphing.REASONABLE_HEALTH_VALUE)
+                {
+                    // If it makes sense, store that ratio in the capability
+                    capability.setLastHealthRatio(ratio);
+                }
+                else if (health > IMorphing.REASONABLE_HEALTH_VALUE)
+                {
+                    // If it doesn't make sense, BUT the new max health makes sense, retrieve the ratio from the capability and use that instead
+                    ratio = capability.getLastHealthRatio();
+                }
+            }
+        }
 
         this.setMaxHealth(target, health);
+        // We need to retrieve the max health of the target after modifiers are applied to get a sensible value
+        float proportionalHealth = Math.round(target.getMaxHealth() * ratio);
         target.setHealth(proportionalHealth <= 0 ? 1 : proportionalHealth);
     }
 

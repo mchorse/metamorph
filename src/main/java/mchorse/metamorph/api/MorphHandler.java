@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import mchorse.metamorph.Metamorph;
+import mchorse.metamorph.api.events.SpawnGhostEvent;
 import mchorse.metamorph.api.morphs.AbstractMorph;
 import mchorse.metamorph.capabilities.morphing.IMorphing;
 import mchorse.metamorph.capabilities.morphing.Morphing;
@@ -13,6 +14,7 @@ import net.minecraft.entity.EntityLiving;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.common.util.FakePlayer;
 import net.minecraftforge.event.entity.living.LivingAttackEvent;
 import net.minecraftforge.event.entity.living.LivingDeathEvent;
@@ -20,6 +22,7 @@ import net.minecraftforge.event.entity.living.LivingSetAttackTargetEvent;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.common.gameevent.TickEvent.Phase;
 import net.minecraftforge.fml.common.gameevent.TickEvent.PlayerTickEvent;
+import net.minecraftforge.fml.relauncher.Side;
 
 /**
  * Server event handler
@@ -57,6 +60,19 @@ public class MorphHandler
         IMorphing capability = Morphing.get(player);
 
         this.runFutureTasks(player);
+        
+        // A sanity check to prevent "healing" health when morphing to and from a mob with essentially zero health
+        // We have to do it every tick because you never know when another mod could change the max health
+        if (capability != null)
+        {
+            // If the current health ratio makes sense, store that ratio in the capability
+            float maxHealth = player.getMaxHealth();
+            if (maxHealth > IMorphing.REASONABLE_HEALTH_VALUE) {
+                float healthRatio = player.getHealth() / maxHealth;
+                capability.setLastHealthRatio(healthRatio);
+            }
+            
+        }
 
         if (capability == null || !capability.isMorphed())
         {
@@ -133,10 +149,19 @@ public class MorphHandler
 
         if (!Metamorph.proxy.config.prevent_ghosts || !capability.acquiredMorph(morph))
         {
-            EntityMorph morphEntity = new EntityMorph(player.worldObj, player.getUniqueID(), morph);
+            SpawnGhostEvent spawnGhostEvent = new SpawnGhostEvent.Pre(player, morph);
+            if (MinecraftForge.EVENT_BUS.post(spawnGhostEvent) || spawnGhostEvent.morph == null)
+            {
+            	return;
+            }
+            morph = spawnGhostEvent.morph;
+            
+        	EntityMorph morphEntity = new EntityMorph(player.worldObj, player.getUniqueID(), morph);
 
             morphEntity.setPositionAndRotation(target.posX, target.posY + target.height / 2, target.posZ, target.rotationYaw, target.rotationPitch);
             player.worldObj.spawnEntityInWorld(morphEntity);
+            
+            MinecraftForge.EVENT_BUS.post(new SpawnGhostEvent.Post(player, morph));
         }
     }
 

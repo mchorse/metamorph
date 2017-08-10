@@ -8,7 +8,7 @@ import net.minecraftforge.fml.common.eventhandler.Event;
 /**
  * Morph event
  * 
- * This event occurs when player gets morphed or demorphed. If player gets 
+ * {@link MorphEvent.Pre} occurs when player gets morphed or demorphed. If player gets 
  * demorphed then {@link #morph} is null. Check for player's worldObj property 
  * to get on which side this event is triggered.
  * 
@@ -19,8 +19,9 @@ import net.minecraftforge.fml.common.eventhandler.Event;
  * You can also modify {@link #force} parameter which is responsible for 
  * forcing morphing (if not forced, player will morph only in case if he has 
  * acquired morph like given).
+ * 
+ * {@link MorphEvent.Post} is fired after a player successfully morphs or demorphs.
  */
-@Cancelable
 public class MorphEvent extends Event
 {
     public EntityPlayer player;
@@ -40,5 +41,20 @@ public class MorphEvent extends Event
     public boolean isDemorphing()
     {
         return this.morph == null;
+    }
+    
+    @Cancelable
+    public static class Pre extends MorphEvent
+    {
+        public Pre(EntityPlayer player, AbstractMorph morph, boolean force) {
+            super(player, morph, force);
+        }
+    }
+    
+    public static class Post extends MorphEvent
+    {
+        public Post(EntityPlayer player, AbstractMorph morph, boolean force) {
+            super(player, morph, force);
+        }
     }
 }
