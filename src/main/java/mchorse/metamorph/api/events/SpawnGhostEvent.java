@@ -23,30 +23,34 @@ import net.minecraftforge.fml.common.eventhandler.Event;
  * Canceling the event will prevent the ghost from spawning.
  * 
  * {@link SpawnGhostEvent.Post} is fired after the ghost successfully spawns.
+ * 
+ * @author asanetargoss
  */
-public class SpawnGhostEvent extends Event
+public abstract class SpawnGhostEvent extends Event
 {
-	public EntityPlayer player;
-	public AbstractMorph morph;
-	
-	public SpawnGhostEvent(EntityPlayer player, AbstractMorph morph)
-	{
-		this.player = player;
-		this.morph = morph;
-	}
-	
-	@Cancelable
-	public static class Pre extends SpawnGhostEvent
-	{
-        public Pre(EntityPlayer player, AbstractMorph morph) {
+    public EntityPlayer player;
+    public AbstractMorph morph;
+
+    public SpawnGhostEvent(EntityPlayer player, AbstractMorph morph)
+    {
+        this.player = player;
+        this.morph = morph;
+    }
+
+    @Cancelable
+    public static class Pre extends SpawnGhostEvent
+    {
+        public Pre(EntityPlayer player, AbstractMorph morph)
+        {
             super(player, morph);
         }
-	}
-	
-	public static class Post extends SpawnGhostEvent
-	{
-        public Post(EntityPlayer player, AbstractMorph morph) {
+    }
+
+    public static class Post extends SpawnGhostEvent
+    {
+        public Post(EntityPlayer player, AbstractMorph morph)
+        {
             super(player, morph);
         }
-	}
+    }
 }

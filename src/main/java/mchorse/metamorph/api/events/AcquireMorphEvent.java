@@ -21,7 +21,7 @@ import net.minecraftforge.fml.common.eventhandler.Event;
  * 
  * {@link AcquireMorphEvent.Post} is fired after a player successfully acquires a new morph.
  */
-public class AcquireMorphEvent extends Event
+public abstract class AcquireMorphEvent extends Event
 {
     public EntityPlayer player;
     public AbstractMorph morph;
@@ -39,18 +39,28 @@ public class AcquireMorphEvent extends Event
     {
         return Morphing.get(this.player).acquiredMorph(this.morph);
     }
-    
+
+    /**
+     * Fires before player acquires a morph. This event is {@link Cancelable}.
+     * 
+     * @author asanetargoss
+     */
     @Cancelable
     public static class Pre extends AcquireMorphEvent
     {
-        public Pre(EntityPlayer player, AbstractMorph morph) {
+        public Pre(EntityPlayer player, AbstractMorph morph)
+        {
             super(player, morph);
         }
     }
-    
+
+    /**
+     * Fires after player successfully acquires a morph. 
+     */
     public static class Post extends AcquireMorphEvent
     {
-        public Post(EntityPlayer player, AbstractMorph morph) {
+        public Post(EntityPlayer player, AbstractMorph morph)
+        {
             super(player, morph);
         }
     }

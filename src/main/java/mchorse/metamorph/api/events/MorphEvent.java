@@ -21,8 +21,9 @@ import net.minecraftforge.fml.common.eventhandler.Event;
  * acquired morph like given).
  * 
  * {@link MorphEvent.Post} is fired after a player successfully morphs or demorphs.
+ * 
  */
-public class MorphEvent extends Event
+public abstract class MorphEvent extends Event
 {
     public EntityPlayer player;
     public AbstractMorph morph;
@@ -42,18 +43,30 @@ public class MorphEvent extends Event
     {
         return this.morph == null;
     }
-    
+
+    /**
+     * Fires before player morphs. This event is {@link Cancelable}.
+     * 
+     * @author asanetargoss 
+     */
     @Cancelable
     public static class Pre extends MorphEvent
     {
-        public Pre(EntityPlayer player, AbstractMorph morph, boolean force) {
+        public Pre(EntityPlayer player, AbstractMorph morph, boolean force)
+        {
             super(player, morph, force);
         }
     }
-    
+
+    /**
+     * Fires after a player successfully morphed
+     * 
+     * @author asanetargoss 
+     */
     public static class Post extends MorphEvent
     {
-        public Post(EntityPlayer player, AbstractMorph morph, boolean force) {
+        public Post(EntityPlayer player, AbstractMorph morph, boolean force)
+        {
             super(player, morph, force);
         }
     }

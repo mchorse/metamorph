@@ -63,8 +63,9 @@ public class MorphAPI
             Dispatcher.sendTo(new PacketMorph(morph), (EntityPlayerMP) player);
             Dispatcher.updateTrackers(player, new PacketMorphPlayer(player.getEntityId(), morph));
         }
-        
-        if (morphed) {
+
+        if (morphed)
+        {
             MinecraftForge.EVENT_BUS.post(new MorphEvent.Post(player, event.morph, force));
         }
 
@@ -92,12 +93,12 @@ public class MorphAPI
         }
 
         boolean acquired = Morphing.get(player).acquireMorph(event.morph);
-        
+
         if (!player.worldObj.isRemote && acquired)
         {
             Dispatcher.sendTo(new PacketAcquireMorph(event.morph), (EntityPlayerMP) player);
         }
-        
+
         if (acquired)
         {
             MinecraftForge.EVENT_BUS.post(new AcquireMorphEvent.Post(player, event.morph));

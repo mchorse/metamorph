@@ -29,7 +29,7 @@ public class Morphing implements IMorphing
      * Current used morph
      */
     private AbstractMorph morph;
-    
+
     /**
      * (health / max health) is stored here when the new max health ends up
      * very close to zero, and retrieved when the fraction is meaningful again

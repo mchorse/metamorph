@@ -198,7 +198,9 @@ public abstract class AbstractMorph
 
     /**
      * Set player's health proportional to the current health with given max 
-     * health. 
+     * health.
+     * 
+     * @author asanetargoss
      */
     protected void setHealth(EntityLivingBase target, int health)
     {
@@ -206,15 +208,16 @@ public abstract class AbstractMorph
         {
             return;
         }
-        
+
         float maxHealth = target.getMaxHealth();
         float currentHealth = target.getHealth();
         float ratio = currentHealth / maxHealth;
-        
-        // A sanity check to prevent "healing" health when morphing to and from a mob with essentially zero health
+
+        // A sanity check to prevent "healing" health when morphing to and from a mob
+        // with essentially zero health
         if (target instanceof EntityPlayer)
         {
-            IMorphing capability = Morphing.get((EntityPlayer)target);
+            IMorphing capability = Morphing.get((EntityPlayer) target);
             if (capability != null)
             {
                 // Check if a health ratio makes sense for the old health value
@@ -225,14 +228,16 @@ public abstract class AbstractMorph
                 }
                 else if (health > IMorphing.REASONABLE_HEALTH_VALUE)
                 {
-                    // If it doesn't make sense, BUT the new max health makes sense, retrieve the ratio from the capability and use that instead
+                    // If it doesn't make sense, BUT the new max health makes sense, retrieve the
+                    // ratio from the capability and use that instead
                     ratio = capability.getLastHealthRatio();
                 }
             }
         }
 
         this.setMaxHealth(target, health);
-        // We need to retrieve the max health of the target after modifiers are applied to get a sensible value
+        // We need to retrieve the max health of the target after modifiers are applied
+        // to get a sensible value
         float proportionalHealth = Math.round(target.getMaxHealth() * ratio);
         target.setHealth(proportionalHealth <= 0 ? 1 : proportionalHealth);
     }

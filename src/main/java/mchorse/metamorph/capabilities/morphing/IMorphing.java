@@ -13,8 +13,8 @@ import net.minecraft.entity.player.EntityPlayer;
  */
 public interface IMorphing
 {
-    public static final float REASONABLE_HEALTH_VALUE = Float.MIN_VALUE*100;
-    
+    public static final float REASONABLE_HEALTH_VALUE = Float.MIN_VALUE * 100;
+
     /**
      * Add a morph
      */
@@ -82,12 +82,12 @@ public interface IMorphing
      * Copy data from other morph 
      */
     public void copy(IMorphing morphing, EntityPlayer player);
-    
+
     /**
      * Get the last recorded finite health fraction of the player
      */
     public float getLastHealthRatio();
-    
+
     /**
      * Determines what the player's new health will be if the player morphs out of a morph with very low health
      */
