@@ -149,7 +149,7 @@ public class MorphHandler
 
         if (!Metamorph.proxy.config.prevent_ghosts || !capability.acquiredMorph(morph))
         {
-            SpawnGhostEvent spawnGhostEvent = new SpawnGhostEvent(player, morph);
+            SpawnGhostEvent spawnGhostEvent = new SpawnGhostEvent.Pre(player, morph);
             if (MinecraftForge.EVENT_BUS.post(spawnGhostEvent) || spawnGhostEvent.morph == null)
             {
             	return;
@@ -160,6 +160,8 @@ public class MorphHandler
 
             morphEntity.setPositionAndRotation(target.posX, target.posY + target.height / 2, target.posZ, target.rotationYaw, target.rotationPitch);
             player.worldObj.spawnEntityInWorld(morphEntity);
+            
+            MinecraftForge.EVENT_BUS.post(new SpawnGhostEvent.Post(player, morph));
         }
     }
 

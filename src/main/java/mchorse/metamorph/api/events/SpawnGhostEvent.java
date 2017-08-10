@@ -8,7 +8,7 @@ import net.minecraftforge.fml.common.eventhandler.Event;
 /**
  * Morph spawn event
  * 
- * This event occurs when a player kills a monster and a ghost is
+ * {@link SpawnGhostEvent.Pre} occurs when a player kills a monster and a ghost is
  * about to spawn from it. The event will not occur if the config option
  * prevent_kill_acquire is set to true, nor will it occur if the config option
  * prevent_ghosts is set to true while the player already has the morph.
@@ -20,9 +20,10 @@ import net.minecraftforge.fml.common.eventhandler.Event;
  * monster that was just killed. If you change this, a different morph ghost will
  * spawn. If you set this to null, no morph will spawn.
  * 
- * Canceling this event will prevent the ghost from spawning.
+ * Canceling the event will prevent the ghost from spawning.
+ * 
+ * {@link SpawnGhostEvent.Post} is fired after the ghost successfully spawns.
  */
-@Cancelable
 public class SpawnGhostEvent extends Event
 {
 	public EntityPlayer player;
@@ -32,5 +33,20 @@ public class SpawnGhostEvent extends Event
 	{
 		this.player = player;
 		this.morph = morph;
+	}
+	
+	@Cancelable
+	public static class Pre extends SpawnGhostEvent
+	{
+        public Pre(EntityPlayer player, AbstractMorph morph) {
+            super(player, morph);
+        }
+	}
+	
+	public static class Post extends SpawnGhostEvent
+	{
+        public Post(EntityPlayer player, AbstractMorph morph) {
+            super(player, morph);
+        }
 	}
 }
