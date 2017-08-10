@@ -316,7 +316,7 @@ public class EntityMorph extends AbstractMorph
         }
 
         /* Update entity */
-        this.updateEntity();
+        this.updateEntity(target);
         entity.deathTime = target.deathTime;
         entity.hurtTime = target.hurtTime;
 
@@ -444,7 +444,7 @@ public class EntityMorph extends AbstractMorph
         }
     }
 
-    protected void updateEntity()
+    protected void updateEntity(EntityLivingBase target)
     {
         this.entity.onUpdate();
     }

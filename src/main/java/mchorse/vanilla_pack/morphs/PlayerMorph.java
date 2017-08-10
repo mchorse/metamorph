@@ -68,7 +68,7 @@ public class PlayerMorph extends EntityMorph
     }
 
     @Override
-    protected void updateEntity()
+    protected void updateEntity(EntityLivingBase target)
     {
         EntityPlayer entity = (EntityPlayer) this.entity;
 

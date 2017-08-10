@@ -7,6 +7,7 @@ import mchorse.metamorph.api.MorphManager;
 import mchorse.metamorph.api.morphs.AbstractMorph;
 import mchorse.metamorph.api.morphs.EntityMorph;
 import mchorse.vanilla_pack.morphs.IronGolemMorph;
+import mchorse.vanilla_pack.morphs.UndeadMorph;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityList;
 import net.minecraft.entity.EntityLivingBase;
@@ -161,7 +162,7 @@ public class MobMorphFactory implements IMorphFactory
     {
         try
         {
-            EntityMorph morph = name.equals("VillagerGolem") ? new IronGolemMorph() : new EntityMorph();
+            EntityMorph morph = this.morphFromName(name);
             EntityLivingBase entity = (EntityLivingBase) EntityList.createEntityByName(name, world);
 
             if (entity == null)
@@ -243,7 +244,7 @@ public class MobMorphFactory implements IMorphFactory
 
         if (this.hasMorph(name))
         {
-            EntityMorph morph = name.equals("VillagerGolem") ? new IronGolemMorph() : new EntityMorph();
+            EntityMorph morph = morphFromName(name);
 
             morph.fromNBT(tag);
 
@@ -251,5 +252,22 @@ public class MobMorphFactory implements IMorphFactory
         }
 
         return null;
+    }
+
+    /**
+     * Get a morph from a name 
+     */
+    public EntityMorph morphFromName(String name)
+    {
+        if (name.equals("Zombie") || name.equals("Skeleton"))
+        {
+            return new UndeadMorph();
+        }
+        else if (name.equals("VillagerGolem"))
+        {
+            return new IronGolemMorph();
+        }
+
+        return new EntityMorph();
     }
 }
