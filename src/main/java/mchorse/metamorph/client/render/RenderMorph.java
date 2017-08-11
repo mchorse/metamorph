@@ -54,7 +54,10 @@ public class RenderMorph extends RenderLivingBase<EntityMorph>
             return;
         }
 
-        float alpha = 0.7F - (float) entity.timer / 30 * 0.7F;
+        this.shadowSize = 0.35F;
+
+        float range = (entity.timer - partialTicks) / 30.0F;
+        float alpha = 0.7F - (range <= 0 ? 0.0F : range) * 0.7F;
 
         GlStateManager.pushMatrix();
         GlStateManager.color(0.1F, 0.9F, 1.0F, alpha > 0.7F ? 0.7F : alpha);
@@ -63,7 +66,14 @@ public class RenderMorph extends RenderLivingBase<EntityMorph>
         GlStateManager.enableBlend();
         GlStateManager.blendFunc(GlStateManager.SourceFactor.SRC_ALPHA, GlStateManager.DestFactor.ONE_MINUS_SRC_ALPHA);
 
-        entity.morph.render(entity, x, y, z, entityYaw, partialTicks);
+        float ticks = entity.ticksExisted + partialTicks;
+        float rotation = (ticks) * 5.0F;
+
+        GlStateManager.translate(x, y + Math.sin(ticks / 5.0F) * 0.1F + 0.2F, z);
+        GlStateManager.rotate(rotation, 0, 1, 0);
+        GlStateManager.scale(alpha, alpha, alpha);
+
+        entity.morph.render(entity, 0, 0, 0, entityYaw, partialTicks);
 
         GlStateManager.disableBlend();
         GlStateManager.disableNormalize();
