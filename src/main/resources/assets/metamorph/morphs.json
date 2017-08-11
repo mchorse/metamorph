@@ -1,4 +1,3 @@
-
 {
     "Bat": {
         "abilities": ["fly", "night_vision", "prevent_fall"],
@@ -163,11 +162,10 @@
         "hostile": true,
         "hands": true
     },
-    
     "EnderDragon": {
-    	"abilities": ["fly"],
-    	"action": "fire_breath",
-    	"health": 200,
-    	"hostile": true
+        "abilities": ["fly"],
+        "action": "fire_breath",
+        "health": 200,
+        "hostile": true
     }
 }
