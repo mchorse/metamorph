@@ -90,7 +90,7 @@ public class RenderingHandler
         {
             event.setCanceled(true);
         }
-        else if (animation != -1)
+        else if (capability.isAnimating())
         {
             float partialTick = event.getPartialRenderTick();
 
@@ -150,9 +150,7 @@ public class RenderingHandler
             return;
         }
 
-        int animation = capability.getAnimation();
-
-        if (animation != -1)
+        if (capability.isAnimating())
         {
             GlStateManager.popMatrix();
         }

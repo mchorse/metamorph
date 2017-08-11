@@ -122,6 +122,8 @@ public class MorphUtils
         {}.getType();
         List<String> data = gson.fromJson(scanner.useDelimiter("\\A").next(), type);
 
+        /* TODO: reloading needs polishing */
+        instance.blacklist.clear();
         instance.blacklist.addAll(data);
         scanner.close();
     }

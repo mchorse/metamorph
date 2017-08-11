@@ -88,12 +88,17 @@ public class Morphing implements IMorphing
     @SideOnly(Side.CLIENT)
     public boolean renderPlayer(EntityPlayer player, double x, double y, double z, float yaw, float partialTick)
     {
+        if (this.morph == null && !this.isAnimating())
+        {
+            return false;
+        }
+
         if (this.morph == null && this.animation <= 10 || this.previousMorph == null && this.animation > 10)
         {
             return false;
         }
 
-        if (this.isAnimating())
+        if (!this.isAnimating())
         {
             this.morph.render(player, x, y, z, yaw, partialTick);
 
