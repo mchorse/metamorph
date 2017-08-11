@@ -9,7 +9,6 @@ import mchorse.metamorph.api.MorphManager;
 import mchorse.metamorph.api.models.IMorphProvider;
 import mchorse.metamorph.api.morphs.AbstractMorph;
 import net.minecraft.entity.EntityLivingBase;
-import net.minecraft.entity.EntityTracker;
 import net.minecraft.entity.item.EntityItem;
 import net.minecraft.entity.item.EntityXPOrb;
 import net.minecraft.entity.player.EntityPlayer;
@@ -212,9 +211,8 @@ public class EntityMorph extends EntityLivingBase implements IEntityAdditionalSp
             this.setDead();
             this.worldObj.playSound(player, this.posX, this.posY, this.posZ, SoundEvents.ENTITY_ITEM_PICKUP, SoundCategory.AMBIENT, 1.0F, 1.0F);
 
-            EntityTracker entitytracker = ((WorldServer) this.worldObj).getEntityTracker();
-
-            entitytracker.sendToAllTrackingEntity(this, new SPacketCollectItem(this.getEntityId(), player.getEntityId()));
+            /* Make the pickup animation */
+            ((WorldServer) this.worldObj).getEntityTracker().sendToAllTrackingEntity(this, new SPacketCollectItem(this.getEntityId(), player.getEntityId()));
         }
     }
 
