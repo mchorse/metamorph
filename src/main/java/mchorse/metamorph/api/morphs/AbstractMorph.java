@@ -1,9 +1,8 @@
 package mchorse.metamorph.api.morphs;
 
 import mchorse.metamorph.Metamorph;
+import mchorse.metamorph.api.MorphSettings;
 import mchorse.metamorph.api.abilities.IAbility;
-import mchorse.metamorph.api.abilities.IAction;
-import mchorse.metamorph.api.abilities.IAttackAbility;
 import mchorse.metamorph.capabilities.morphing.IMorphing;
 import mchorse.metamorph.capabilities.morphing.Morphing;
 import net.minecraft.client.renderer.entity.Render;
@@ -11,7 +10,6 @@ import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.SharedMonsterAttributes;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.init.SoundEvents;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.EnumHand;
 import net.minecraft.util.math.AxisAlignedBB;
@@ -32,42 +30,9 @@ public abstract class AbstractMorph
     /* Abilities */
 
     /**
-     * Morph's abilities 
+     * Morph settings 
      */
-    public IAbility[] abilities = new IAbility[] {};
-
-    /**
-     * Morph's action
-     */
-    public IAction action;
-
-    /**
-     * Morph's attack
-     */
-    public IAttackAbility attack;
-
-    /* Properties */
-
-    /**
-     * Morph's health 
-     */
-    public int health = 20;
-
-    /**
-     * Morph's speed 
-     */
-    public float speed = 0.1F;
-
-    /**
-     * Whether this morph is "hostile" (meaning that morphed player with hostile 
-     * property won't be targeted by other hostile entities). 
-     */
-    public boolean hostile = false;
-
-    /**
-     * Render hands, some morphs might not use this property
-     */
-    public boolean hands = false;
+    public MorphSettings settings = MorphSettings.DEFAULT;
 
     /* Meta information */
 
@@ -116,15 +81,15 @@ public abstract class AbstractMorph
     {
         if (!Metamorph.proxy.config.disable_health)
         {
-            this.setMaxHealth(target, this.health);
+            this.setMaxHealth(target, this.settings.health);
         }
 
-        if (speed != 0.1F)
+        if (this.settings.speed != 0.1F)
         {
-            target.getEntityAttribute(SharedMonsterAttributes.MOVEMENT_SPEED).setBaseValue(this.speed);
+            target.getEntityAttribute(SharedMonsterAttributes.MOVEMENT_SPEED).setBaseValue(this.settings.speed);
         }
 
-        for (IAbility ability : abilities)
+        for (IAbility ability : this.settings.abilities)
         {
             ability.update(target);
         }
@@ -140,12 +105,9 @@ public abstract class AbstractMorph
      */
     public void morph(EntityLivingBase target)
     {
-        this.setHealth(target, this.health);
+        this.setHealth(target, this.settings.health);
 
-        /* Pop! */
-        target.playSound(SoundEvents.ENTITY_ITEM_PICKUP, 1.0F, 1.0F);
-
-        for (IAbility ability : this.abilities)
+        for (IAbility ability : this.settings.abilities)
         {
             ability.onMorph(target);
         }
@@ -162,7 +124,7 @@ public abstract class AbstractMorph
         /* 20 is default player's health */
         this.setHealth(target, 20);
 
-        for (IAbility ability : this.abilities)
+        for (IAbility ability : this.settings.abilities)
         {
             ability.onDemorph(target);
         }
@@ -260,9 +222,9 @@ public abstract class AbstractMorph
      */
     public void action(EntityLivingBase target)
     {
-        if (action != null)
+        if (this.settings.action != null)
         {
-            action.execute(target);
+            this.settings.action.execute(target);
         }
     }
 
@@ -271,9 +233,9 @@ public abstract class AbstractMorph
      */
     public void attack(Entity target, EntityLivingBase source)
     {
-        if (attack != null)
+        if (this.settings.attack != null)
         {
-            attack.attack(target, source);
+            this.settings.attack.attack(target, source);
         }
     }
 

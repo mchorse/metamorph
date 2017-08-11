@@ -1,5 +1,6 @@
 package mchorse.vanilla_pack.morphs;
 
+import mchorse.metamorph.api.morphs.AbstractMorph;
 import mchorse.metamorph.api.morphs.EntityMorph;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.init.Items;
@@ -42,5 +43,17 @@ public class UndeadMorph extends EntityMorph
         {
             this.entity.setItemStackToSlot(EntityEquipmentSlot.HEAD, null);
         }
+    }
+
+    @Override
+    public AbstractMorph clone(boolean isRemote)
+    {
+        UndeadMorph morph = new UndeadMorph();
+
+        morph.name = this.name;
+        morph.settings = this.settings;
+        morph.entityData = this.entityData.copy();
+
+        return morph;
     }
 }

@@ -159,10 +159,7 @@ public class CustomMorph extends AbstractMorph
         CustomMorph morph = new CustomMorph();
 
         morph.name = this.name;
-
-        morph.abilities = this.abilities;
-        morph.attack = this.attack;
-        morph.action = this.action;
+        morph.settings = settings;
 
         morph.model = this.model;
 

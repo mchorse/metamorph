@@ -1,7 +1,6 @@
 package mchorse.metamorph.api;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -9,7 +8,6 @@ import io.netty.buffer.ByteBuf;
 import mchorse.metamorph.api.abilities.IAbility;
 import mchorse.metamorph.api.abilities.IAction;
 import mchorse.metamorph.api.abilities.IAttackAbility;
-import mchorse.metamorph.api.morphs.AbstractMorph;
 import net.minecraftforge.fml.common.network.ByteBufUtils;
 
 /**
@@ -20,6 +18,11 @@ import net.minecraftforge.fml.common.network.ByteBufUtils;
  */
 public class MorphSettings
 {
+    /**
+     * Empty morph settings which doesn't have any attributes 
+     */
+    public static final MorphSettings DEFAULT = new MorphSettings();
+
     /**
      * Abilities that are going to be applied on a morph 
      */
@@ -56,31 +59,6 @@ public class MorphSettings
     public boolean hands;
 
     /**
-     * This field is responsible for storing custom data for people who want to 
-     * provide more options that aren't hardcoded in this class. 
-     * 
-     * I don't know how it's going to work, though.
-     */
-    public Map<String, Object> customData = new HashMap<String, Object>();
-
-    /**
-     * Apply this morph settings on an abstract morph.
-     * 
-     * Another option would be place this method in 
-     */
-    public void apply(AbstractMorph morph)
-    {
-        morph.abilities = this.abilities;
-        morph.attack = this.attack;
-        morph.action = this.action;
-
-        morph.health = this.health;
-        morph.speed = this.speed;
-        morph.hostile = this.hostile;
-        morph.hands = this.hands;
-    }
-
-    /**
      * Merge given morph settings with this settings 
      */
     public void merge(MorphSettings setting)
@@ -89,45 +67,30 @@ public class MorphSettings
         {
             List<IAbility> abilities = new ArrayList<IAbility>();
 
-            for (IAbility ability : this.abilities)
-            {
-                abilities.add(ability);
-            }
-
             for (IAbility ability : setting.abilities)
             {
-                if (!abilities.contains(ability))
-                {
-                    abilities.add(ability);
-                }
+                abilities.add(ability);
             }
 
             this.abilities = abilities.toArray(new IAbility[abilities.size()]);
         }
 
-        if (setting.action != null)
-        {
-            this.action = setting.action;
-        }
+        this.action = setting.action;
+        this.attack = setting.attack;
 
-        if (setting.attack != null)
-        {
-            this.attack = setting.attack;
-        }
-
-        if (setting.health != 20)
-        {
-            this.health = setting.health;
-        }
-
-        if (setting.speed != 0.1)
-        {
-            this.speed = setting.speed;
-        }
-
+        this.health = setting.health;
+        this.speed = setting.speed;
         this.hostile = setting.hostile;
         this.hands = setting.hands;
-        this.customData.putAll(setting.customData);
+    }
+
+    public MorphSettings clone()
+    {
+        MorphSettings settings = new MorphSettings();
+
+        settings.merge(this);
+
+        return settings;
     }
 
     /**
@@ -139,13 +102,13 @@ public class MorphSettings
 
         for (IAbility ability : this.abilities)
         {
-            String string = this.getKey(MorphManager.INSTANCE.abilities, ability);
+            String string = getKey(MorphManager.INSTANCE.abilities, ability);
 
             ByteBufUtils.writeUTF8String(buf, string == null ? "" : string);
         }
 
-        String action = this.getKey(MorphManager.INSTANCE.actions, this.action);
-        String attack = this.getKey(MorphManager.INSTANCE.attacks, this.attack);
+        String action = getKey(MorphManager.INSTANCE.actions, this.action);
+        String attack = getKey(MorphManager.INSTANCE.attacks, this.attack);
 
         buf.writeBoolean(action != null);
 
@@ -209,7 +172,7 @@ public class MorphSettings
     /**
      * Get key of given value in given map 
      */
-    public <T> String getKey(Map<String, T> map, T value)
+    public static <T> String getKey(Map<String, T> map, T value)
     {
         if (value == null)
         {

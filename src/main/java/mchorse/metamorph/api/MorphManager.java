@@ -198,7 +198,7 @@ public class MorphManager
     {
         if (this.activeSettings.containsKey(morph.name))
         {
-            this.activeSettings.get(morph.name).apply(morph);
+            morph.settings = this.activeSettings.get(morph.name);
         }
     }
 

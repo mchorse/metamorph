@@ -8,6 +8,7 @@ import mchorse.metamorph.Metamorph;
 import mchorse.metamorph.api.morphs.AbstractMorph;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.init.SoundEvents;
 import net.minecraft.util.EnumParticleTypes;
 import net.minecraft.world.WorldServer;
 import net.minecraftforge.fml.relauncher.Side;
@@ -350,7 +351,10 @@ public class Morphing implements IMorphing
 
         if (this.animation == 16 && !player.worldObj.isRemote)
         {
+            /* Pop! */
             ((WorldServer) player.worldObj).spawnParticle(EnumParticleTypes.EXPLOSION_NORMAL, false, player.posX, player.posY + 0.5, player.posZ, 25, 0.5, 0.5, 0.5, 0.05);
+
+            player.playSound(SoundEvents.ENTITY_ITEM_PICKUP, 1.0F, 1.0F);
         }
 
         if (this.morph != null)

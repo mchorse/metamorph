@@ -49,10 +49,7 @@ public class IronGolemMorph extends EntityMorph
         IronGolemMorph morph = new IronGolemMorph();
 
         morph.name = this.name;
-
-        morph.abilities = this.abilities;
-        morph.attack = this.attack;
-        morph.action = this.action;
+        morph.settings = this.settings;
 
         morph.entityData = this.entityData.copy();
 

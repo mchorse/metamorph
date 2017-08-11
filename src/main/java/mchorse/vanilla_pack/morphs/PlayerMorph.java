@@ -7,6 +7,7 @@ import com.mojang.authlib.GameProfile;
 import com.mojang.authlib.minecraft.MinecraftProfileTexture;
 import com.mojang.authlib.minecraft.MinecraftProfileTexture.Type;
 
+import mchorse.metamorph.api.morphs.AbstractMorph;
 import mchorse.metamorph.api.morphs.EntityMorph;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.entity.EntityOtherPlayerMP;
@@ -123,6 +124,19 @@ public class PlayerMorph extends EntityMorph
         entity.chasingPosY += d1 * 0.25D;
 
         net.minecraftforge.fml.common.FMLCommonHandler.instance().onPlayerPostTick(entity);
+    }
+
+    @Override
+    public AbstractMorph clone(boolean isRemote)
+    {
+        PlayerMorph morph = new PlayerMorph();
+
+        morph.name = this.name;
+        morph.settings = this.settings;
+        morph.entityData = this.entityData.copy();
+        morph.profile = this.profile;
+
+        return morph;
     }
 
     @Override
