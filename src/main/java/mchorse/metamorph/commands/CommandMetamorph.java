@@ -19,6 +19,11 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraftforge.fml.common.FMLCommonHandler;
 import net.minecraftforge.fml.common.network.simpleimpl.IMessage;
 
+/**
+ * Command /metamorph
+ * 
+ * This command allows to manage
+ */
 public class CommandMetamorph extends CommandBase
 {
     @Override
