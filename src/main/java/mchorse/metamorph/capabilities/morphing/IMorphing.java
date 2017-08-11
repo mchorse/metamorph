@@ -4,6 +4,8 @@ import java.util.List;
 
 import mchorse.metamorph.api.morphs.AbstractMorph;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 
 /**
  * Morphing interface
@@ -14,6 +16,29 @@ import net.minecraft.entity.player.EntityPlayer;
 public interface IMorphing
 {
     public static final float REASONABLE_HEALTH_VALUE = Float.MIN_VALUE * 100;
+
+    /**
+     * Whether this morph is in the process of animation 
+     */
+    public boolean isAnimating();
+
+    /**
+     * Get animation tick
+     */
+    @SideOnly(Side.CLIENT)
+    public int getAnimation();
+
+    /**
+     * Get previous animation morph 
+     */
+    @SideOnly(Side.CLIENT)
+    public AbstractMorph getPreviousMorph();
+
+    /**
+     * Render player as a morph
+     */
+    @SideOnly(Side.CLIENT)
+    public boolean renderPlayer(EntityPlayer player, double x, double y, double z, float yaw, float partialTick);
 
     /**
      * Add a morph
@@ -92,4 +117,9 @@ public interface IMorphing
      * Determines what the player's new health will be if the player morphs out of a morph with very low health
      */
     public void setLastHealthRatio(float lastHealthRatio);
+
+    /**
+     * Update the player 
+     */
+    public void update(EntityPlayer player);
 }

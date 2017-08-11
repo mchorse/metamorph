@@ -83,13 +83,11 @@ public class MorphHandler
             {
                 player.eyeHeight = player.getDefaultEyeHeight();
             }
-
-            return;
         }
 
         try
         {
-            capability.getCurrentMorph().update(player, capability);
+            capability.update(player);
         }
         catch (Exception e)
         {

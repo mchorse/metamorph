@@ -52,6 +52,11 @@ public class MetamorphConfig
      */
     public boolean disable_health;
 
+    /**
+     * Disables morphing animation 
+     */
+    public boolean disable_morph_animation;
+
     /* End of config options */
 
     /**
@@ -80,6 +85,7 @@ public class MetamorphConfig
         this.show_demorph = this.config.getBoolean("show_demorph", cat, true, "Show demorph as an option in survival morph menu", lang + "show_demorph");
         this.disable_pov = this.config.getBoolean("disable_pov", cat, false, "Disable modifying Point-of-View. Requested to fix MorePlayerModels vertical jittering", lang + "disable_pov");
         this.disable_health = this.config.getBoolean("disable_health", cat, false, "Disable modifying health. Requested to fix dying all the time with Tough as Nails", lang + "disable_health");
+        this.disable_morph_animation = this.config.getBoolean("disable_morph_animation", cat, false, "Disables morphing animation", lang + "disable_morph_animation");
 
         this.config.getCategory(cat).setComment("General configuration of Metamorph mod");
 
