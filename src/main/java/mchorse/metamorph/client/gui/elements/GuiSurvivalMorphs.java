@@ -448,7 +448,7 @@ public class GuiSurvivalMorphs extends Gui
 
         if (this.inGUI)
         {
-            GuiUtils.scissor(0, 30, width, height - 30, width, height);
+            GuiUtils.scissor(0, 40, width, height - 40, width, height);
             w = width - 20;
             h = (int) (height * 0.375F);
         }

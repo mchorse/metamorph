@@ -63,21 +63,27 @@ public class GuiCreativeMenu extends GuiScreen
             this.pane = new GuiCreativeMorphs(6, morphing.getCurrentMorph());
         }
 
-        int x = width - MARGIN;
+        int x = width - 10;
         int y = 5;
 
-        morph = new GuiButton(0, x - 190, y, 60, 20, I18n.format("metamorph.gui.morph"));
-        acquire = new GuiButton(1, x - 125, y, 60, 20, I18n.format("metamorph.gui.acquire"));
-        close = new GuiButton(2, x - 60, y, 60, 20, I18n.format("metamorph.gui.close"));
-        search = new GuiTextField(-1, fontRendererObj, 195 + 1, 35 + 1, this.width - 205 - 2, 20 - 2);
+        this.morph = new GuiButton(0, x - 190, y, 60, 20, I18n.format("metamorph.gui.morph"));
+        this.acquire = new GuiButton(1, x - 125, y, 60, 20, I18n.format("metamorph.gui.acquire"));
+        this.close = new GuiButton(2, x - 60, y, 60, 20, I18n.format("metamorph.gui.close"));
+
+        this.search = new GuiTextField(-1, this.fontRendererObj, 195 + 1, 35 + 1, this.width - 205 - 2, 20 - 2);
+        this.search.setFocused(true);
 
         this.buttonList.add(morph);
         this.buttonList.add(acquire);
         this.buttonList.add(close);
 
         this.pane.setHidden(false);
-        this.pane.updateRect(145, 55, this.width - 155, this.height - 60);
+        this.pane.updateRect(145, 55, this.width - 155, this.height - 55);
         this.pane.scrollBy(0);
+
+        this.pane.setPerRow((int) Math.ceil((this.width - 155) / 54.0F));
+        this.pane.setFilter(this.search.getText());
+        this.pane.setScrollSpeed(15);
     }
 
     /**
@@ -192,7 +198,7 @@ public class GuiCreativeMenu extends GuiScreen
         this.fontRendererObj.drawStringWithShadow(I18n.format("metamorph.gui.search"), 146, 41, 0xffffff);
 
         /* Draw labels */
-        this.drawString(fontRendererObj, I18n.format("metamorph.gui.creative_title"), 20, 11, 0xffffff);
+        this.drawString(fontRendererObj, I18n.format("metamorph.gui.creative_title"), 10, 11, 0xffffff);
         this.drawCenteredString(fontRendererObj, selected, 70, height - 28, 0xffffffff);
 
         if (morph != null)

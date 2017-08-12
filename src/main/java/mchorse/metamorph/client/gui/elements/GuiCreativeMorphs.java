@@ -167,9 +167,9 @@ public class GuiCreativeMorphs extends GuiScrollPane
 
             /* Calculate the scroll height and per category height */
             category.height = MathHelper.ceiling_float_int((float) category.cells.size() / (float) this.perRow);
-            category.y = this.scrollHeight + 20;
+            category.y = this.scrollHeight + 10;
 
-            this.scrollHeight += category.height * cellH + 20;
+            this.scrollHeight += category.height * cellH + 40;
 
             /* Select current morph */
             for (MorphCell cell : category.cells)
@@ -190,11 +190,22 @@ public class GuiCreativeMorphs extends GuiScrollPane
             i++;
         }
 
-        this.scrollHeight += 10;
+        this.scrollHeight -= 10;
         this.scrollTo(y);
 
         this.selected = selectedCat;
         this.selectedMorph = selectedMorph;
+    }
+
+    /**
+     * Set amount of morphs per row 
+     */
+    public void setPerRow(int perRow)
+    {
+        MorphCell selected = this.getSelected();
+
+        this.perRow = perRow;
+        this.initiateCategories(selected != null ? selected.morph : null);
     }
 
     /**
@@ -229,9 +240,9 @@ public class GuiCreativeMorphs extends GuiScrollPane
             }
 
             cat.height = MathHelper.ceiling_float_int((float) i / (float) this.perRow);
-            cat.y = this.scrollHeight + 20;
+            cat.y = this.scrollHeight + 10;
 
-            this.scrollHeight += i == 0 ? 0 : cat.height * cellH + 20;
+            this.scrollHeight += i == 0 ? 0 : cat.height * cellH + 40;
         }
     }
 
