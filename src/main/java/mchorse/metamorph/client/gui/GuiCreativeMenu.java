@@ -83,7 +83,6 @@ public class GuiCreativeMenu extends GuiScreen
 
         this.pane.setPerRow((int) Math.ceil((this.width - 155) / 54.0F));
         this.pane.setFilter(this.search.getText());
-        this.pane.setScrollSpeed(15);
     }
 
     /**
@@ -101,14 +100,14 @@ public class GuiCreativeMenu extends GuiScreen
         {
             if (button.id == 0)
             {
-                Dispatcher.sendToServer(new PacketMorph(morph == null ? null : morph.morph));
+                Dispatcher.sendToServer(new PacketMorph(morph == null ? null : morph.current().morph));
             }
 
             Minecraft.getMinecraft().displayGuiScreen(null);
         }
         else if (morph != null)
         {
-            Dispatcher.sendToServer(new PacketAcquireMorph(morph.morph));
+            Dispatcher.sendToServer(new PacketAcquireMorph(morph.current().morph));
         }
     }
 
@@ -190,7 +189,7 @@ public class GuiCreativeMenu extends GuiScreen
     {
         /* Label variables */
         MorphCell morph = this.pane.getSelected();
-        String selected = morph != null ? morph.name : I18n.format("metamorph.gui.no_morph");
+        String selected = morph != null ? morph.current().name : I18n.format("metamorph.gui.no_morph");
 
         /* Draw panel backgrounds */
         this.drawDefaultBackground();
@@ -199,19 +198,19 @@ public class GuiCreativeMenu extends GuiScreen
 
         /* Draw labels */
         this.drawString(fontRendererObj, I18n.format("metamorph.gui.creative_title"), 10, 11, 0xffffff);
-        this.drawCenteredString(fontRendererObj, selected, 70, height - 28, 0xffffffff);
+        this.drawCenteredString(fontRendererObj, selected, 70, 41, 0xffffffff);
 
         if (morph != null)
         {
-            this.drawCenteredString(fontRendererObj, morph.morph.name, 70, height - 16, 0x888888);
+            this.drawCenteredString(fontRendererObj, morph.current().morph.name, 70, 53, 0x888888);
         }
 
         this.pane.drawScreen(mouseX, mouseY, partialTicks);
         this.search.drawTextBox();
 
-        if (morph != null && !morph.error)
+        if (morph != null && !morph.current().error)
         {
-            morph.render(Minecraft.getMinecraft().thePlayer, 70, height - (int) ((float) height / 2.6), 43);
+            morph.current().render(Minecraft.getMinecraft().thePlayer, 70, height - (int) ((float) height / 2.6), 43);
         }
 
         /* Disable scissors */

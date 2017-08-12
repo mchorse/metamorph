@@ -24,7 +24,7 @@
         "action": "jump",
         "health": 24,
         "speed": 0.15,
-        "hands": true
+        "hands": false
     },
     "MushroomCow": {
         "health": 10,

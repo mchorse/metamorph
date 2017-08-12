@@ -13,6 +13,7 @@ import net.minecraft.entity.EntityList;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.boss.EntityDragon;
 import net.minecraft.entity.boss.EntityWither;
+import net.minecraft.entity.monster.EntityGiantZombie;
 import net.minecraft.entity.monster.EntityMob;
 import net.minecraft.entity.passive.EntityAnimal;
 import net.minecraft.nbt.JsonToNBT;
@@ -199,7 +200,7 @@ public class MobMorphFactory implements IMorphFactory
             {
                 category = name.substring(0, index);
             }
-            else if (entity instanceof EntityDragon || entity instanceof EntityWither)
+            else if (entity instanceof EntityDragon || entity instanceof EntityWither || entity instanceof EntityGiantZombie)
             {
                 category = "boss";
             }
