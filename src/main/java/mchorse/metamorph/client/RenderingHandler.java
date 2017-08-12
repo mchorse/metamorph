@@ -176,7 +176,7 @@ public class RenderingHandler
 
         EntityLivingBase entity = event.getEntity();
 
-        if (this.canRenderName(entity, render))
+        if (!this.canRenderName(render, entity))
         {
             return;
         }
