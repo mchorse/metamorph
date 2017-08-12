@@ -113,6 +113,8 @@ public class GuiUtils
         GlStateManager.rotate(45.0F, 0.0F, -1.0F, 0.0F);
         GlStateManager.rotate(180.0F, 0.0F, 0.0F, 1.0F);
 
+        boolean render = ent.getAlwaysRenderNameTag();
+
         if (ent instanceof EntityDragon)
         {
             GlStateManager.rotate(180.0F, 0.0F, 1.0F, 0.0F);
@@ -134,6 +136,7 @@ public class GuiUtils
         ent.rotationPitch = 0;
         ent.rotationYawHead = ent.rotationYaw;
         ent.prevRotationYawHead = ent.rotationYaw;
+        ent.setAlwaysRenderNameTag(false);
 
         GlStateManager.translate(0.0F, 0.0F, 0.0F);
 
@@ -148,6 +151,8 @@ public class GuiUtils
         ent.rotationPitch = f2;
         ent.prevRotationYawHead = f3;
         ent.rotationYawHead = f4;
+
+        ent.setAlwaysRenderNameTag(render);
 
         GlStateManager.popMatrix();
 
