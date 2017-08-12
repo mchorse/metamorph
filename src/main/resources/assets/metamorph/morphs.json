@@ -44,7 +44,7 @@
         "hands": true
     },
     "Rabbit": {
-        "abilities": ["prevent_fall"],
+        "abilities": ["prevent_fall", "jumping"],
         "action": "jump",
         "health": 3,
         "speed": 0.13
@@ -64,9 +64,9 @@
         "hands": true
     },
     "Wolf": {
-    	"health": 8,
-    	"hostile": true,
-    	"hands": true
+        "health": 8,
+        "hostile": true,
+        "hands": true
     },
     
     "Enderman": {
@@ -92,7 +92,7 @@
         "hands": true
     },
     "VillagerGolem": {
-    	"attack": "knockback",
+        "attack": "knockback",
         "health": 100,
         "speed": 0.04,
         "hands": true

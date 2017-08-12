@@ -57,6 +57,7 @@ metamorph.success.acquire=Player by username %s was successfully acquired %s mor
 morph.category.unknown=Unknown morphs
 morph.category.unsorted=Unsorted morphs
 morph.category.animal=Animal morphs
+morph.category.boss=Boss morphs
 morph.category.acquired=Your morphs
 morph.category.hostile=Hostile morphs
 morph.category.modded=Morphs from %s

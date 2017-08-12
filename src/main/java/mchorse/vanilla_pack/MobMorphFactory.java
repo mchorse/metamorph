@@ -11,6 +11,8 @@ import mchorse.vanilla_pack.morphs.UndeadMorph;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityList;
 import net.minecraft.entity.EntityLivingBase;
+import net.minecraft.entity.boss.EntityDragon;
+import net.minecraft.entity.boss.EntityWither;
 import net.minecraft.entity.monster.EntityMob;
 import net.minecraft.entity.passive.EntityAnimal;
 import net.minecraft.nbt.JsonToNBT;
@@ -197,11 +199,15 @@ public class MobMorphFactory implements IMorphFactory
             {
                 category = name.substring(0, index);
             }
-            else if (entity instanceof EntityAnimal)
+            else if (entity instanceof EntityDragon || entity instanceof EntityWither)
+            {
+                category = "boss";
+            }
+            else if (entity instanceof EntityAnimal || name.equals("Bat") || name.equals("Squid"))
             {
                 category = "animal";
             }
-            else if (entity instanceof EntityMob)
+            else if (entity instanceof EntityMob || name.equals("Ghast") || name.equals("LavaSlime") || name.equals("Slime") || name.equals("Shulker"))
             {
                 category = "hostile";
             }
