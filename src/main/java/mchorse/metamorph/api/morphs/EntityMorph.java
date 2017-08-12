@@ -226,14 +226,6 @@ public class EntityMorph extends AbstractMorph
 
         if (render != null)
         {
-            boolean isDragon = this.entity instanceof EntityDragon;
-
-            if (isDragon)
-            {
-                GlStateManager.pushMatrix();
-                GlStateManager.rotate(180, 0.0F, 1.0F, 0.0F);
-            }
-
             if (render instanceof RenderLivingBase)
             {
                 ModelBase model = ((RenderLivingBase) render).getMainModel();
@@ -245,13 +237,23 @@ public class EntityMorph extends AbstractMorph
             }
 
             renderEntity = entity;
-            render.doRender(this.entity, x, y, z, entityYaw, partialTicks);
-            renderEntity = null;
 
-            if (isDragon)
+            if (this.entity instanceof EntityDragon)
             {
+                GlStateManager.pushMatrix();
+                GlStateManager.translate(x, y, z);
+                GlStateManager.rotate(180, 0.0F, 1.0F, 0.0F);
+
+                render.doRender(this.entity, 0, 0, 0, entityYaw, partialTicks);
+
                 GlStateManager.popMatrix();
             }
+            else
+            {
+                render.doRender(this.entity, x, y, z, entityYaw, partialTicks);
+            }
+
+            renderEntity = null;
         }
     }
 
