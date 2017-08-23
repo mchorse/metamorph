@@ -441,19 +441,19 @@ public class EntityMorph extends AbstractMorph
                 return;
             }
 
-            ride.rotationYaw = targetRide.rotationYaw;
-            ride.rotationPitch = targetRide.rotationPitch;
+            ride.rotationYaw = target.rotationYaw;
+            ride.rotationPitch = target.rotationPitch;
 
-            ride.prevRotationYaw = targetRide.prevRotationYaw;
-            ride.prevRotationPitch = targetRide.prevRotationPitch;
+            ride.prevRotationYaw = target.prevRotationYaw;
+            ride.prevRotationPitch = target.prevRotationPitch;
 
             if (targetRide instanceof EntityLivingBase)
             {
-                ride.rotationYawHead = ((EntityLivingBase) targetRide).rotationYawHead;
-                ride.renderYawOffset = ((EntityLivingBase) targetRide).renderYawOffset;
+                ride.rotationYawHead = target.rotationYawHead;
+                ride.renderYawOffset = target.renderYawOffset;
 
-                ride.prevRotationYawHead = ((EntityLivingBase) targetRide).prevRotationYawHead;
-                ride.prevRenderYawOffset = ((EntityLivingBase) targetRide).prevRenderYawOffset;
+                ride.prevRotationYawHead = target.prevRotationYawHead;
+                ride.prevRenderYawOffset = target.prevRenderYawOffset;
             }
         }
     }
