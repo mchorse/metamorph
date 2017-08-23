@@ -28,8 +28,8 @@ public class ModelCustomRenderer extends ModelRenderer
     public float scaleZ = 1;
 
     /* Compied code from the ModelRenderer */
-    private boolean compiled;
-    private int displayList;
+    protected boolean compiled;
+    protected int displayList;
 
     public ModelCustomRenderer(ModelBase model, int texOffX, int texOffY)
     {
@@ -280,7 +280,7 @@ public class ModelCustomRenderer extends ModelRenderer
      * Compiles a GL display list for this model
      */
     @SideOnly(Side.CLIENT)
-    private void compileDisplayList(float scale)
+    protected void compileDisplayList(float scale)
     {
         this.displayList = GLAllocation.generateDisplayLists(1);
         GlStateManager.glNewList(this.displayList, 4864);

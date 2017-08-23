@@ -27,7 +27,7 @@ public class Model
     /**
      * Poses that are required by custom models
      */
-    public static final List<String> REQUIRED_POSES = Arrays.<String> asList("standing", "sneaking", "sleeping", "flying");
+    public static final List<String> REQUIRED_POSES = Arrays.<String>asList("standing", "sneaking", "sleeping", "flying");
 
     /**
      * Scheme version. Would be used in future versions for extracting and
@@ -59,6 +59,11 @@ public class Model
      * Class for the custom model 
      */
     public String model = "";
+
+    /**
+     * Does this model provides OBJ model
+     */
+    public boolean providesObj = false;
 
     public Map<String, Limb> limbs = new HashMap<String, Limb>();
     public Map<String, Pose> poses = new HashMap<String, Pose>();
@@ -246,6 +251,9 @@ public class Model
         public boolean swinging;
         public boolean idle;
         public boolean invert;
+
+        /* OBJ */
+        public float[] origin = new float[] {0F, 0F, 0F};
 
         /**
          * Clone a model limb

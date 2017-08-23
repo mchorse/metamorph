@@ -54,6 +54,11 @@ public class ModelLimbAdapter implements JsonSerializer<Model.Limb>
         this.addBoolean(map, "swiping", src.swiping, false);
         this.addBoolean(map, "invert", src.invert, false);
 
+        if (!ModelPoseAdapter.isDefault(src.origin, 0F))
+        {
+            ModelPoseAdapter.addFloatArray(map, "origin", src.origin);
+        }
+
         return map;
     }
 
