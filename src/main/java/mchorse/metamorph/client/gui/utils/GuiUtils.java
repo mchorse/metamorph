@@ -100,8 +100,9 @@ public class GuiUtils
      *
      * Taken <s>stolen</s> from minecraft's class GuiInventory. I wonder what's
      * the license of minecraft's decompiled code?
+     * @param alpha 
      */
-    public static void drawEntityOnScreen(int posX, int posY, float scale, EntityLivingBase ent)
+    public static void drawEntityOnScreen(int posX, int posY, float scale, EntityLivingBase ent, float alpha)
     {
         GlStateManager.enableDepth();
         GlStateManager.disableBlend();
@@ -123,7 +124,7 @@ public class GuiUtils
         RenderHelper.enableStandardItemLighting();
 
         GlStateManager.enableRescaleNormal();
-        GlStateManager.color(1.0F, 1.0F, 1.0F, 1.0F);
+        GlStateManager.color(1.0F, 1.0F, 1.0F, alpha);
 
         float f = ent.renderYawOffset;
         float f1 = ent.rotationYaw;

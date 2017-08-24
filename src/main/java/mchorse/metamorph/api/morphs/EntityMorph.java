@@ -115,7 +115,7 @@ public class EntityMorph extends AbstractMorph
             scale *= 1 / entity.height;
         }
 
-        GuiUtils.drawEntityOnScreen(x, y, scale, entity);
+        GuiUtils.drawEntityOnScreen(x, y, scale, entity, alpha);
     }
 
     @Override

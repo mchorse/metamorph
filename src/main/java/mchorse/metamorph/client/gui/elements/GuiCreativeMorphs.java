@@ -31,7 +31,7 @@ public class GuiCreativeMorphs extends GuiScrollPane
     /**
      * Morph cell's height 
      */
-    private static final int CELL_HEIGHT = 60;
+    public static final int CELL_HEIGHT = 60;
 
     /**
      * How many morphs visible per row 
@@ -59,6 +59,11 @@ public class GuiCreativeMorphs extends GuiScrollPane
     private List<MorphCategory> categories = new ArrayList<MorphCategory>();
 
     /**
+     * Variant picker 
+     */
+    private GuiCreativeVariantPicker picker;
+
+    /**
      * Category label shift
      */
     public int shiftX = 0;
@@ -74,6 +79,7 @@ public class GuiCreativeMorphs extends GuiScrollPane
         this.compileCategories(morphing);
         this.initiateCategories(selected);
         this.setScrollSpeed(15);
+        this.picker = new GuiCreativeVariantPicker(this);
     }
 
     public GuiCreativeMorphs(int perRow, AbstractMorph selected)
@@ -303,6 +309,13 @@ public class GuiCreativeMorphs extends GuiScrollPane
             return;
         }
 
+        if (this.picker.isActive() && mouseY >= this.y + this.h - CELL_HEIGHT)
+        {
+            this.picker.mouseClicked(mouseX, mouseY, mouseButton);
+
+            return;
+        }
+
         /* Computing x and y. X is horizontal index, and y is simply shifted 
          * mouseY relative to the scroll pane's top edge*/
         int y = mouseY - this.y + this.scrollY - 10;
@@ -358,12 +371,34 @@ public class GuiCreativeMorphs extends GuiScrollPane
         }
     }
 
+    @Override
+    protected void mouseReleased(int mouseX, int mouseY, int state)
+    {
+        if (this.picker.isActive())
+        {
+            this.picker.mouseReleased(mouseX, mouseY, state);
+        }
+
+        super.mouseReleased(mouseX, mouseY, state);
+    }
+
     /**
      * Don't draw the background 
      */
     @Override
-    protected void drawBackground()
+    protected void drawBackground(int mouseX, int mouseY, float partialTicks)
     {}
+
+    @Override
+    protected void drawScrollBar(int mouseX, int mouseY, float partialTicks)
+    {
+        if (this.picker.isActive())
+        {
+            this.picker.drawPane(mouseX, mouseY, partialTicks);
+        }
+
+        super.drawScrollBar(mouseX, mouseY, partialTicks);
+    }
 
     @Override
     protected void drawPane(int mouseX, int mouseY, float partialTicks)
