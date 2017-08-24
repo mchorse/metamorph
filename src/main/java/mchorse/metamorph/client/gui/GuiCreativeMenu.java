@@ -3,10 +3,11 @@ package mchorse.metamorph.client.gui;
 import java.io.IOException;
 
 import org.lwjgl.input.Keyboard;
-import org.lwjgl.opengl.GL11;
 
+import mchorse.metamorph.api.morphs.AbstractMorph;
 import mchorse.metamorph.capabilities.morphing.IMorphing;
 import mchorse.metamorph.capabilities.morphing.Morphing;
+import mchorse.metamorph.client.gui.builder.GuiMorphBuilder;
 import mchorse.metamorph.client.gui.elements.GuiCreativeMorphs;
 import mchorse.metamorph.client.gui.elements.GuiCreativeMorphs.MorphCell;
 import mchorse.metamorph.network.Dispatcher;
@@ -39,8 +40,18 @@ public class GuiCreativeMenu extends GuiScreen
     private GuiButton acquire;
     private GuiButton close;
     private GuiButton top;
+    private GuiButton toggle;
     private GuiTextField search;
     private GuiCreativeMorphs pane;
+    private GuiMorphBuilder builder;
+
+    private boolean builderMode;
+
+    public GuiCreativeMenu()
+    {
+        this.builder = new GuiMorphBuilder(this);
+        this.builder.currentBuilder = GuiMorphBuilder.BUILDERS.get("nbt");
+    }
 
     /* GUI stuff and input */
 
@@ -64,18 +75,21 @@ public class GuiCreativeMenu extends GuiScreen
         int x = width - 10;
         int y = 5;
 
+        /* TODO: Extract strings */
         this.morph = new GuiButton(0, x - 190, y, 60, 20, I18n.format("metamorph.gui.morph"));
         this.acquire = new GuiButton(1, x - 125, y, 60, 20, I18n.format("metamorph.gui.acquire"));
         this.close = new GuiButton(2, x - 60, y, 60, 20, I18n.format("metamorph.gui.close"));
         this.top = new GuiButton(3, this.width - 30, 35, 20, 20, "^");
+        this.toggle = new GuiButton(4, x - 245, y, 50, 20, "Builder");
 
         this.search = new GuiTextField(-1, this.fontRendererObj, 195 + 1, 35 + 1, this.width - 230 - 2, 20 - 2);
         this.search.setFocused(true);
 
-        this.buttonList.add(morph);
-        this.buttonList.add(acquire);
-        this.buttonList.add(close);
-        this.buttonList.add(top);
+        this.buttonList.add(this.morph);
+        this.buttonList.add(this.acquire);
+        this.buttonList.add(this.close);
+        this.buttonList.add(this.top);
+        this.buttonList.add(this.toggle);
 
         this.pane.setHidden(false);
         this.pane.updateRect(145, 55, this.width - 155, this.height - 55);
@@ -83,6 +97,8 @@ public class GuiCreativeMenu extends GuiScreen
 
         this.pane.setPerRow((int) Math.ceil((this.width - 155) / 54.0F));
         this.pane.setFilter(this.search.getText());
+
+        this.builder.update(145, 55, this.width - 155, this.height - 55);
     }
 
     /**
@@ -94,25 +110,56 @@ public class GuiCreativeMenu extends GuiScreen
     @Override
     protected void actionPerformed(GuiButton button) throws IOException
     {
-        MorphCell morph = this.pane.getSelected();
-
-        if (button.id == 3)
+        if (button.id == 3 && !this.builderMode)
         {
             this.pane.scrollTo(0);
         }
-        else if (button.id != 1)
+        else if (button.id == 4)
         {
-            if (button.id == 0)
-            {
-                Dispatcher.sendToServer(new PacketMorph(morph == null ? null : morph.current().morph));
-            }
+            this.builderMode = !this.builderMode;
+            this.top.visible = !this.builderMode;
+            this.toggle.displayString = this.builderMode ? "List" : "Builder";
+        }
+        else if (button.id <= 2)
+        {
+            AbstractMorph morph = this.getMorph();
 
-            Minecraft.getMinecraft().displayGuiScreen(null);
+            if (button.id != 1)
+            {
+                if (button.id == 0)
+                {
+                    Dispatcher.sendToServer(new PacketMorph(morph));
+                }
+
+                Minecraft.getMinecraft().displayGuiScreen(null);
+            }
+            else if (morph != null)
+            {
+                Dispatcher.sendToServer(new PacketAcquireMorph(morph));
+            }
         }
-        else if (morph != null)
+    }
+
+    /**
+     * Get currently selected morph 
+     */
+    public AbstractMorph getMorph()
+    {
+        if (this.builderMode)
         {
-            Dispatcher.sendToServer(new PacketAcquireMorph(morph.current().morph));
+            return this.builder.currentBuilder.getMorph();
         }
+        else
+        {
+            MorphCell selected = this.pane.getSelected();
+
+            if (selected != null)
+            {
+                return selected.current().morph;
+            }
+        }
+
+        return null;
     }
 
     /**
@@ -140,7 +187,14 @@ public class GuiCreativeMenu extends GuiScreen
     {
         super.mouseClicked(mouseX, mouseY, mouseButton);
 
-        this.search.mouseClicked(mouseX, mouseY, mouseButton);
+        if (this.builderMode)
+        {
+            this.builder.mouseClicked(mouseX, mouseY, mouseButton);
+        }
+        else
+        {
+            this.search.mouseClicked(mouseX, mouseY, mouseButton);
+        }
     }
 
     /**
@@ -152,30 +206,50 @@ public class GuiCreativeMenu extends GuiScreen
     @Override
     protected void keyTyped(char typedChar, int keyCode) throws IOException
     {
-        super.keyTyped(typedChar, keyCode);
+        if (this.builderMode)
+        {
+            this.builder.keyTyped(typedChar, keyCode);
+        }
+        else
+        {
+            super.keyTyped(typedChar, keyCode);
 
-        if (keyCode == Keyboard.KEY_DOWN)
-        {
-            this.pane.scrollBy(30);
-        }
-        else if (keyCode == Keyboard.KEY_UP)
-        {
-            this.pane.scrollBy(-30);
-        }
-        else if (keyCode == Keyboard.KEY_LEFT)
-        {
-            this.pane.scrollTo(0);
-        }
-        else if (keyCode == Keyboard.KEY_RIGHT)
-        {
-            this.pane.scrollTo(this.pane.getHeight());
-        }
+            if (keyCode == Keyboard.KEY_DOWN)
+            {
+                this.pane.scrollBy(30);
+            }
+            else if (keyCode == Keyboard.KEY_UP)
+            {
+                this.pane.scrollBy(-30);
+            }
+            else if (keyCode == Keyboard.KEY_LEFT)
+            {
+                this.pane.scrollTo(0);
+            }
+            else if (keyCode == Keyboard.KEY_RIGHT)
+            {
+                this.pane.scrollTo(this.pane.getHeight());
+            }
 
-        this.search.textboxKeyTyped(typedChar, keyCode);
+            this.search.textboxKeyTyped(typedChar, keyCode);
 
-        if (this.search.isFocused())
+            if (this.search.isFocused())
+            {
+                this.pane.setFilter(this.search.getText());
+            }
+        }
+    }
+
+    @Override
+    protected void mouseReleased(int mouseX, int mouseY, int state)
+    {
+        if (this.builderMode)
         {
-            this.pane.setFilter(this.search.getText());
+            this.builder.mouseReleased(mouseX, mouseY, state);
+        }
+        else
+        {
+            super.mouseReleased(mouseX, mouseY, state);
         }
     }
 
@@ -191,34 +265,45 @@ public class GuiCreativeMenu extends GuiScreen
     @Override
     public void drawScreen(int mouseX, int mouseY, float partialTicks)
     {
-        /* Label variables */
-        MorphCell morph = this.pane.getSelected();
-        String selected = morph != null ? morph.current().name : I18n.format("metamorph.gui.no_morph");
-
         /* Draw panel backgrounds */
         this.drawDefaultBackground();
         Gui.drawRect(0, 0, width, 30, 0x88000000);
-        this.fontRendererObj.drawStringWithShadow(I18n.format("metamorph.gui.search"), 146, 41, 0xffffff);
-
-        /* Draw labels */
         this.drawString(fontRendererObj, I18n.format("metamorph.gui.creative_title"), 10, 11, 0xffffff);
-        this.drawCenteredString(fontRendererObj, selected, 70, 41, 0xffffffff);
 
-        if (morph != null)
+        /* Draw the builder */
+        if (this.builderMode)
         {
-            this.drawCenteredString(fontRendererObj, morph.current().morph.name, 70, 53, 0x888888);
+            this.builder.draw(mouseX, mouseY, partialTicks);
+
+            AbstractMorph morph = this.builder.currentBuilder.getMorph();
+
+            if (morph != null)
+            {
+                this.drawCenteredString(fontRendererObj, morph.name, 70, 53, 0x888888);
+
+                morph.renderOnScreen(Minecraft.getMinecraft().thePlayer, 70, height - (int) ((float) height / 2.6), 43, 1.0F);
+            }
         }
-
-        this.pane.drawScreen(mouseX, mouseY, partialTicks);
-        this.search.drawTextBox();
-
-        if (morph != null && !morph.current().error)
+        else
         {
-            morph.current().render(Minecraft.getMinecraft().thePlayer, 70, height - (int) ((float) height / 2.6), 43);
-        }
+            /* Draw creative morphs */
+            this.fontRendererObj.drawStringWithShadow(I18n.format("metamorph.gui.search"), 146, 41, 0xffffff);
+            this.search.drawTextBox();
+            this.pane.drawScreen(mouseX, mouseY, partialTicks);
 
-        /* Disable scissors */
-        GL11.glDisable(GL11.GL_SCISSOR_TEST);
+            /* Draw currently selected morph */
+            MorphCell morph = this.pane.getSelected();
+            String selected = morph != null ? morph.current().name : I18n.format("metamorph.gui.no_morph");
+
+            this.drawCenteredString(fontRendererObj, selected, 70, 41, 0xffffffff);
+
+            if (morph != null)
+            {
+                this.drawCenteredString(fontRendererObj, morph.current().morph.name, 70, 53, 0x888888);
+
+                morph.current().render(Minecraft.getMinecraft().thePlayer, 70, height - (int) ((float) height / 2.6), 43);
+            }
+        }
 
         /* Render buttons */
         super.drawScreen(mouseX, mouseY, partialTicks);
