@@ -29,6 +29,7 @@ import mchorse.vanilla_pack.actions.FireBreath;
 import mchorse.vanilla_pack.actions.Fireball;
 import mchorse.vanilla_pack.actions.Jump;
 import mchorse.vanilla_pack.actions.Potions;
+import mchorse.vanilla_pack.actions.ShulkerBullet;
 import mchorse.vanilla_pack.actions.SmallFireball;
 import mchorse.vanilla_pack.actions.Snowball;
 import mchorse.vanilla_pack.actions.Teleport;
@@ -87,6 +88,7 @@ public class VanillaMorphFactory implements IMorphFactory
         actions.put("fire_breath", new FireBreath());
         actions.put("jump", new Jump());
         actions.put("potions", new Potions());
+        actions.put("shulker_bullet", new ShulkerBullet());
         actions.put("small_fireball", new SmallFireball());
         actions.put("snowball", new Snowball());
         actions.put("teleport", new Teleport());

@@ -208,12 +208,13 @@ public class EntityMorph extends EntityLivingBase implements IEntityAdditionalSp
 
         if (MorphAPI.acquire(player, this.morph))
         {
-            this.setDead();
             this.worldObj.playSound(player, this.posX, this.posY, this.posZ, SoundEvents.ENTITY_ITEM_PICKUP, SoundCategory.AMBIENT, 1.0F, 1.0F);
 
             /* Make the pickup animation */
             ((WorldServer) this.worldObj).getEntityTracker().sendToAllTrackingEntity(this, new SPacketCollectItem(this.getEntityId(), player.getEntityId()));
         }
+
+        this.setDead();
     }
 
     /* Read / write */

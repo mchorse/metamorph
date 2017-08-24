@@ -79,8 +79,7 @@
     "Endermite": {
         "action": "endermite",
         "health": 8,
-        "hostile": true,
-        "hands": false
+        "hostile": true
     },
     "PigZombie": {
         "abilities": ["fire_proof", "hungerless"],
@@ -136,6 +135,11 @@
     },
     "Silverfish": {
         "health": 8,
+        "hostile": true
+    },
+    "Shulker": {
+        "action": "shulker_bullet",
+        "health": 15,
         "hostile": true
     },
     "Slime": {

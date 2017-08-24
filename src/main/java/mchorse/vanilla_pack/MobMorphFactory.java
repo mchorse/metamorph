@@ -7,6 +7,7 @@ import mchorse.metamorph.api.MorphManager;
 import mchorse.metamorph.api.morphs.AbstractMorph;
 import mchorse.metamorph.api.morphs.EntityMorph;
 import mchorse.vanilla_pack.morphs.IronGolemMorph;
+import mchorse.vanilla_pack.morphs.ShulkerMorph;
 import mchorse.vanilla_pack.morphs.UndeadMorph;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityList;
@@ -273,6 +274,10 @@ public class MobMorphFactory implements IMorphFactory
         else if (name.equals("VillagerGolem"))
         {
             return new IronGolemMorph();
+        }
+        else if (name.equals("Shulker"))
+        {
+            return new ShulkerMorph();
         }
 
         return new EntityMorph();
