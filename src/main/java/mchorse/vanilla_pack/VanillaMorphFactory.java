@@ -23,6 +23,7 @@ import mchorse.vanilla_pack.abilities.SunAllergy;
 import mchorse.vanilla_pack.abilities.Swim;
 import mchorse.vanilla_pack.abilities.WaterAllergy;
 import mchorse.vanilla_pack.abilities.WaterBreath;
+import mchorse.vanilla_pack.actions.Endermite;
 import mchorse.vanilla_pack.actions.Explode;
 import mchorse.vanilla_pack.actions.FireBreath;
 import mchorse.vanilla_pack.actions.Fireball;
@@ -80,6 +81,7 @@ public class VanillaMorphFactory implements IMorphFactory
         abilities.put("water_breath", new WaterBreath());
 
         /* Register default actions */
+        actions.put("endermite", new Endermite());
         actions.put("explode", new Explode());
         actions.put("fireball", new Fireball());
         actions.put("fire_breath", new FireBreath());

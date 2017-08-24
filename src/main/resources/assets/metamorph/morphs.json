@@ -76,6 +76,12 @@
         "hostile": true,
         "hands": true
     },
+    "Endermite": {
+        "action": "endermite",
+        "health": 8,
+        "hostile": true,
+        "hands": false
+    },
     "PigZombie": {
         "abilities": ["fire_proof", "hungerless"],
         "health": 20,
