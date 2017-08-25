@@ -7,7 +7,15 @@ import mchorse.metamorph.api.morphs.AbstractMorph;
 import mchorse.vanilla_pack.morphs.PlayerMorph;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.world.World;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 
+/**
+ * Player morph factory
+ * 
+ * This morph factory allows making a morph using player's username. 
+ * Basically player's disguising.
+ */
 public class PlayerMorphFactory implements IMorphFactory
 {
     @Override
@@ -18,7 +26,11 @@ public class PlayerMorphFactory implements IMorphFactory
     public void registerClient(MorphManager manager)
     {}
 
+    /**
+     * Return game profile's username as for player's name 
+     */
     @Override
+    @SideOnly(Side.CLIENT)
     public String displayNameForMorph(AbstractMorph morph)
     {
         if (morph instanceof PlayerMorph)
@@ -53,5 +65,4 @@ public class PlayerMorphFactory implements IMorphFactory
 
         return null;
     }
-
 }

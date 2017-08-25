@@ -23,10 +23,22 @@ import net.minecraft.world.World;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
+/**
+ * Player morph
+ * 
+ * This morph basically does nothing than providing some code for 
+ * bootstrapping a player isolated in this morph.
+ */
 public class PlayerMorph extends EntityMorph
 {
+    /**
+     * Player's profile 
+     */
     public GameProfile profile;
 
+    /**
+     * Create a player morph 
+     */
     @Override
     public void setupEntity(World world)
     {
@@ -68,6 +80,11 @@ public class PlayerMorph extends EntityMorph
         }
     }
 
+    /**
+     * Updates the player entity, but not using its update methods, but 
+     * rather some code that only updates player's cape and some other 
+     * stuff.
+     */
     @Override
     protected void updateEntity(EntityLivingBase target)
     {
@@ -126,6 +143,9 @@ public class PlayerMorph extends EntityMorph
         net.minecraftforge.fml.common.FMLCommonHandler.instance().onPlayerPostTick(entity);
     }
 
+    /**
+     * Clone the player morph 
+     */
     @Override
     public AbstractMorph clone(boolean isRemote)
     {
@@ -169,6 +189,14 @@ public class PlayerMorph extends EntityMorph
         }
     }
 
+    /**
+     * Placeholder player morph entity
+     * 
+     * This player entity is used for overriding some of its methods to 
+     * provide stable functionality of player morph in its isolated 
+     * environment.
+     */
+    @SideOnly(Side.CLIENT)
     public static class PlayerMorphClientEntity extends EntityOtherPlayerMP
     {
         public GameProfile profile;
@@ -187,6 +215,9 @@ public class PlayerMorph extends EntityMorph
             return this.isBaby;
         }
 
+        /**
+         * Get this player's skin 
+         */
         @Override
         public ResourceLocation getLocationSkin()
         {
@@ -211,6 +242,9 @@ public class PlayerMorph extends EntityMorph
             return resourcelocation;
         }
 
+        /**
+         * Get this player's custom cape skin 
+         */
         public ResourceLocation getLocationCape()
         {
             ResourceLocation resourcelocation = null;
@@ -229,6 +263,9 @@ public class PlayerMorph extends EntityMorph
             return resourcelocation;
         }
 
+        /**
+         * This player is always wearing every part of the body 
+         */
         @Override
         @SideOnly(Side.CLIENT)
         public boolean isWearing(EnumPlayerModelParts part)

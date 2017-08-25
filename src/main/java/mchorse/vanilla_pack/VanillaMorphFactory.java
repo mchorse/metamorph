@@ -44,16 +44,16 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 /**
  * Vanilla morph factory 
  * 
- * This morph factory is responsible for registering vanilla-based abilities, 
- * attacks and actions.
+ * This morph factory is responsible for registering vanilla-based 
+ * abilities, attacks and actions.
  */
 public class VanillaMorphFactory implements IMorphFactory
 {
     /**
      * Register method
      * 
-     * This method is responsible for registering abilities, actions, attacks, 
-     * models and morphs.
+     * This method is responsible for registering abilities, actions, 
+     * attacks, models and morphs.
      */
     @Override
     public void register(MorphManager manager)

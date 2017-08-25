@@ -1,4 +1,9 @@
 {
+    "Player": {
+        "health": 20,
+        "hands": true
+    },
+    
     "Bat": {
         "abilities": ["fly", "night_vision", "prevent_fall"],
         "health": 6,

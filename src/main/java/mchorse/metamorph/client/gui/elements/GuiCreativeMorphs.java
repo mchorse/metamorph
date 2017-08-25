@@ -193,7 +193,7 @@ public class GuiCreativeMorphs extends GuiScrollPane
             /* Select current morph */
             for (MorphCell cell : category.cells)
             {
-                if (selectedCat == -1 && morph != null && cell.current().equals(morph))
+                if (selectedCat == -1 && morph != null && cell.current().morph.equals(morph))
                 {
                     selectedCat = i;
                     selectedMorph = j;

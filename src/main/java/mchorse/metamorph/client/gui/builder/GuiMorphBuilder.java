@@ -83,6 +83,7 @@ public class GuiMorphBuilder implements IDropDownListener
     public void mouseReleased(int mouseX, int mouseY, int state)
     {
         this.currentBuilder.mouseReleased(mouseX, mouseY, state);
+        this.dropDown.mouseReleased(mouseX, mouseY, state);
     }
 
     public void keyTyped(char typedChar, int keyCode)
@@ -93,7 +94,7 @@ public class GuiMorphBuilder implements IDropDownListener
     public void draw(int mouseX, int mouseY, float partialTicks)
     {
         this.currentBuilder.draw(mouseX, mouseY, partialTicks);
-        this.dropDown.draw(mouseX, mouseY, partialTicks);
+        this.dropDown.draw(mouseX, mouseY, this.parent.width, this.parent.height, partialTicks);
 
         Minecraft.getMinecraft().fontRendererObj.drawStringWithShadow("Builder", this.x, this.y + 6, 0xffffff);
     }

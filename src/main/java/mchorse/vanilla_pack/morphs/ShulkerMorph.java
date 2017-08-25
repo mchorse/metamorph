@@ -6,6 +6,12 @@ import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.math.BlockPos;
 
+/**
+ * Shulker morph class
+ * 
+ * This method is responsible for freezing the player on the place where 
+ * s/he was morphed and also disabling the movement of the body (shell).
+ */
 public class ShulkerMorph extends EntityMorph
 {
     public BlockPos morphedPos;
@@ -18,6 +24,20 @@ public class ShulkerMorph extends EntityMorph
         this.morphedPos = new BlockPos(target);
     }
 
+    @Override
+    public void demorph(EntityLivingBase target)
+    {
+        super.demorph(target);
+
+        this.morphedPos = null;
+    }
+
+    /**
+     * Update the entity
+     * 
+     * This method is responsible holding the player in the player on 
+     * morphed block position, and also aligns the body to the north.
+     */
     @Override
     public void update(EntityLivingBase target, IMorphing cap)
     {

@@ -3,11 +3,14 @@ package mchorse.metamorph.client.gui.utils;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.lwjgl.opengl.GL11;
+
 import net.minecraft.client.gui.FontRenderer;
 import net.minecraft.client.gui.Gui;
+import net.minecraft.util.math.MathHelper;
 
 /**
- * Dropdown list
+ * Drop down list
  */
 public class GuiDropDownField
 {
@@ -42,7 +45,7 @@ public class GuiDropDownField
 
     public void mouseClicked(int mouseX, int mouseY, int mouseButton)
     {
-        if (!this.isInside(mouseX, mouseY))
+        if (!this.isInside(mouseX, mouseY) || (mouseX > this.x + this.w - 20 && mouseY < this.y + 20 && this.visible))
         {
             this.visible = false;
 
@@ -55,6 +58,13 @@ public class GuiDropDownField
         }
         else if (mouseY - this.y > 20)
         {
+            if (mouseX >= this.x + this.w - 10)
+            {
+                this.scrolling = true;
+
+                return;
+            }
+
             int index = (mouseY - this.y - 20 + this.scroll) / 20;
 
             if (index >= 0 && index < this.values.size())
@@ -66,7 +76,12 @@ public class GuiDropDownField
         }
     }
 
-    public void draw(int mouseX, int mouseY, float partialTicks)
+    public void mouseReleased(int mouseX, int mouseY, int state)
+    {
+        this.scrolling = false;
+    }
+
+    public void draw(int mouseX, int mouseY, int width, int height, float partialTicks)
     {
         int h = this.h + (this.visible ? this.maxHeight : 0);
 
@@ -102,14 +117,23 @@ public class GuiDropDownField
 
         if (this.visible)
         {
+            int max = this.values.size() * 20 - this.maxHeight;
+
+            if (this.scrolling)
+            {
+                this.scroll = (int) ((mouseY - (this.y + 20)) / (float) this.maxHeight * max);
+                this.scroll = MathHelper.clamp_int(this.scroll, 0, max);
+            }
+
             Gui.drawRect(this.x, this.y + 19, this.x + this.w, this.y + 20, 0xff888888);
+            GuiUtils.scissor(this.x + 1, this.y + 19, this.w, this.maxHeight, width, height);
 
             int y = this.y + 20;
             int i = 0;
 
             for (String value : this.values)
             {
-                int yy = y + i * 20;
+                int yy = y + i * 20 - this.scroll;
                 boolean hover = this.isInside(mouseX, mouseY) && mouseY >= yy && mouseY < yy + 20;
                 boolean current = this.selected == i;
 
@@ -123,6 +147,18 @@ public class GuiDropDownField
                 this.font.drawStringWithShadow(value, this.x + 6, yy + 6, hover ? 0xffffff : 0xcccccc);
 
                 i++;
+            }
+
+            GL11.glDisable(GL11.GL_SCISSOR_TEST);
+
+            /* Draw scrollbar */
+            if (max > 0)
+            {
+                float factor = this.scroll / (float) max;
+
+                int sy = this.y + 20 + (int) (factor * (this.maxHeight - 21));
+
+                Gui.drawRect(this.x + this.w - 10, sy, this.x + this.w - 1, sy + 20, 0xffffffff);
             }
         }
     }

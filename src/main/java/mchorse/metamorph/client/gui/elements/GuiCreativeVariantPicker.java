@@ -171,11 +171,7 @@ public class GuiCreativeVariantPicker
                 int sx = this.morphs.x + (int) (factor * (this.morphs.w - 20));
 
                 Gui.drawRect(this.morphs.x, y + 50, this.morphs.x + this.morphs.w, y + 60, 0xcc000000);
-                Gui.drawRect(sx, y + 50, sx + 20, y + 60, 0x88ffffff);
-
-                Gui.drawRect(sx + 5, y + 52, sx + 7, y + 58, 0x44ffffff);
-                Gui.drawRect(sx + 9, y + 52, sx + 11, y + 58, 0x44ffffff);
-                Gui.drawRect(sx + 13, y + 52, sx + 15, y + 58, 0x44ffffff);
+                Gui.drawRect(sx, y + 50, sx + 20, y + 60, 0xffffffff);
             }
         }
     }

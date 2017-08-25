@@ -11,7 +11,8 @@ import net.minecraft.nbt.NBTTagCompound;
 /**
  * Undead morph 
  * 
- * This morph is responsible for preventing hurt noises caused by sun allergy
+ * This morph is responsible for preventing hurt noises caused by sun 
+ * allergy.
  */
 public class UndeadMorph extends EntityMorph
 {
