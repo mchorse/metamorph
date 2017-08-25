@@ -50,7 +50,7 @@ public class GuiPlayerMorphBuilder extends GuiAbstractMorphBuilder
         super.update(x, y, w, h);
 
         this.username.xPosition = x + 60 + 1;
-        this.username.yPosition = y + 6;
+        this.username.yPosition = y + 31;
 
         this.username.width = w - 62;
         this.username.height = 20 - 2;
@@ -98,6 +98,6 @@ public class GuiPlayerMorphBuilder extends GuiAbstractMorphBuilder
         }
 
         this.username.drawTextBox();
-        this.font.drawStringWithShadow("Username", this.x, this.y + 11, 0xffffff);
+        this.font.drawStringWithShadow("Username", this.x, this.y + 37, 0xffffff);
     }
 }

@@ -60,8 +60,8 @@ public class GuiNBTMorphBuilder extends GuiAbstractMorphBuilder
         super.update(x, y, w, h);
 
         this.name.xPosition = this.nbt.xPosition = x + 60 + 1;
-        this.name.yPosition = y + 6;
-        this.nbt.yPosition = y + 36;
+        this.name.yPosition = y + 31;
+        this.nbt.yPosition = y + 61;
 
         this.name.width = this.nbt.width = w - 62;
         this.name.height = this.nbt.height = 20 - 2;
@@ -99,7 +99,7 @@ public class GuiNBTMorphBuilder extends GuiAbstractMorphBuilder
         this.name.drawTextBox();
         this.nbt.drawTextBox();
 
-        this.font.drawStringWithShadow("Name", this.x, this.y + 11, 0xffffff);
-        this.font.drawStringWithShadow("NBT data", this.x, this.y + 41, 0xffffff);
+        this.font.drawStringWithShadow("Name", this.x, this.y + 37, 0xffffff);
+        this.font.drawStringWithShadow("NBT data", this.x, this.y + 67, 0xffffff);
     }
 }

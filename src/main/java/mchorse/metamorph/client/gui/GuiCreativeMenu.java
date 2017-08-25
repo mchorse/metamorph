@@ -50,7 +50,6 @@ public class GuiCreativeMenu extends GuiScreen
     public GuiCreativeMenu()
     {
         this.builder = new GuiMorphBuilder(this);
-        this.builder.currentBuilder = GuiMorphBuilder.BUILDERS.get("nbt");
     }
 
     /* GUI stuff and input */
@@ -80,6 +79,7 @@ public class GuiCreativeMenu extends GuiScreen
         this.acquire = new GuiButton(1, x - 125, y, 60, 20, I18n.format("metamorph.gui.acquire"));
         this.close = new GuiButton(2, x - 60, y, 60, 20, I18n.format("metamorph.gui.close"));
         this.top = new GuiButton(3, this.width - 30, 35, 20, 20, "^");
+        this.top.visible = !this.builderMode;
         this.toggle = new GuiButton(4, x - 245, y, 50, 20, "Builder");
 
         this.search = new GuiTextField(-1, this.fontRendererObj, 195 + 1, 35 + 1, this.width - 230 - 2, 20 - 2);
@@ -98,7 +98,7 @@ public class GuiCreativeMenu extends GuiScreen
         this.pane.setPerRow((int) Math.ceil((this.width - 155) / 54.0F));
         this.pane.setFilter(this.search.getText());
 
-        this.builder.update(145, 55, this.width - 155, this.height - 55);
+        this.builder.update(145, 35, this.width - 155, this.height - 35);
     }
 
     /**
