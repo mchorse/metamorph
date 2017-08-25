@@ -201,7 +201,8 @@ public class MorphHandler
     @SubscribeEvent
     public void onLivingSetAttackTarget(LivingSetAttackTargetEvent event)
     {
-        if (Metamorph.proxy.config.disable_morph_disguise) {
+        if (Metamorph.proxy.config.disable_morph_disguise)
+        {
             return;
         }
         
