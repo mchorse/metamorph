@@ -4,6 +4,7 @@ import org.apache.logging.log4j.Level;
 import org.apache.logging.log4j.Logger;
 
 import mchorse.metamorph.api.MorphManager;
+import mchorse.metamorph.api.MorphUtils;
 import mchorse.metamorph.commands.CommandAcquireMorph;
 import mchorse.metamorph.commands.CommandMetamorph;
 import mchorse.metamorph.commands.CommandMorph;
@@ -68,8 +69,9 @@ public class Metamorph
     public void serverStarting(FMLServerStartingEvent event)
     {
         /* Setting up the blacklist */
-        MorphManager.INSTANCE.setActiveBlacklist(MorphManager.INSTANCE.blacklist);
-        MorphManager.INSTANCE.setActiveSettings(MorphManager.INSTANCE.settings);
+
+        MorphManager.INSTANCE.setActiveBlacklist(MorphUtils.reloadBlacklist());
+        MorphManager.INSTANCE.setActiveSettings(MorphUtils.reloadMorphSettings());
 
         /* Register commands */
         event.registerServerCommand(new CommandMorph());

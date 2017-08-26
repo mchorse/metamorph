@@ -425,7 +425,9 @@ public class GuiCreativeMorphs extends GuiScrollPane
             {
                 int x = k % this.perRow * m + this.x;
                 int y = k / this.perRow * CELL_HEIGHT + category.y + this.y;
-                boolean hover = mouseX >= x && mouseY + this.scrollY >= y && mouseX < x + m && mouseY + this.scrollY < y + CELL_HEIGHT;
+
+                boolean insidePicker = this.picker.isActive() && mouseY >= this.y + this.h - CELL_HEIGHT;
+                boolean hover = mouseX >= x && mouseY + this.scrollY >= y && mouseX < x + m && mouseY + this.scrollY < y + CELL_HEIGHT && !insidePicker;
 
                 MorphVariant variant = cell.current();
 

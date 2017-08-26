@@ -10,7 +10,7 @@ import net.minecraft.client.gui.Gui;
 import net.minecraft.util.math.MathHelper;
 
 /**
- * Drop down list
+ * Drop down list widget
  */
 public class GuiDropDownField
 {
@@ -20,15 +20,25 @@ public class GuiDropDownField
     public int w;
     public int h;
 
+    /**
+     * Maximum height of the drop down part itself 
+     */
     public int maxHeight = 80;
 
+    /**
+     * Values that can be chosen from this drop down
+     */
     public List<String> values = new ArrayList<String>();
+
+    /* State control */
     public int selected = -1;
     public boolean visible;
 
+    /* Scrolling stuff */
     public int scroll;
     public boolean scrolling;
 
+    /* Private stuff */
     private FontRenderer font;
     private IDropDownListener listener;
 
@@ -81,10 +91,14 @@ public class GuiDropDownField
         this.scrolling = false;
     }
 
+    /**
+     * Draw the drop down 
+     */
     public void draw(int mouseX, int mouseY, int width, int height, float partialTicks)
     {
         int h = this.h + (this.visible ? this.maxHeight : 0);
 
+        /* Draw the background */
         Gui.drawRect(this.x, this.y, this.x + this.w, this.y + h, 0xff888888);
         Gui.drawRect(this.x + 1, this.y + 1, this.x + this.w - 1, this.y + h - 1, 0xff000000);
 
@@ -117,6 +131,7 @@ public class GuiDropDownField
 
         if (this.visible)
         {
+            /* Scroll the view */
             int max = this.values.size() * 20 - this.maxHeight;
 
             if (this.scrolling)
@@ -125,6 +140,7 @@ public class GuiDropDownField
                 this.scroll = MathHelper.clamp_int(this.scroll, 0, max);
             }
 
+            /* Draw the dropdown items */
             Gui.drawRect(this.x, this.y + 19, this.x + this.w, this.y + 20, 0xff888888);
             GuiUtils.scissor(this.x + 1, this.y + 19, this.w, this.maxHeight, width, height);
 
@@ -163,6 +179,9 @@ public class GuiDropDownField
         }
     }
 
+    /**
+     * Callback interface 
+     */
     public static interface IDropDownListener
     {
         public void clickedDropDown(GuiDropDownField dropDown, String value);

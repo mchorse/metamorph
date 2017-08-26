@@ -1,9 +1,11 @@
 package mchorse.metamorph.commands;
 
 import java.util.List;
+import java.util.Map;
+import java.util.Set;
 
-import mchorse.metamorph.Metamorph;
 import mchorse.metamorph.api.MorphManager;
+import mchorse.metamorph.api.MorphSettings;
 import mchorse.metamorph.api.MorphUtils;
 import mchorse.metamorph.network.Dispatcher;
 import mchorse.metamorph.network.common.PacketBlacklist;
@@ -71,18 +73,18 @@ public class CommandMetamorph extends CommandBase
         /* Reload blacklist */
         if (string.equals("blacklist"))
         {
-            MorphUtils.loadBlacklist(MorphManager.INSTANCE, Metamorph.proxy.blacklist);
-            MorphManager.INSTANCE.setActiveBlacklist(MorphManager.INSTANCE.blacklist);
+            Set<String> blacklist = MorphUtils.reloadBlacklist();
 
-            this.broadcastPacket(new PacketBlacklist(MorphManager.INSTANCE.blacklist));
+            MorphManager.INSTANCE.setActiveBlacklist(blacklist);
+            this.broadcastPacket(new PacketBlacklist(blacklist));
         }
         else if (string.equals("morphs"))
         {
             /* Reload morph config */
-            MorphUtils.loadMorphSettings(MorphManager.INSTANCE, Metamorph.proxy.morphs);
-            MorphManager.INSTANCE.setActiveSettings(MorphManager.INSTANCE.settings);
+            Map<String, MorphSettings> settings = MorphUtils.reloadMorphSettings();
 
-            this.broadcastPacket(new PacketSettings(MorphManager.INSTANCE.settings));
+            MorphManager.INSTANCE.setActiveSettings(settings);
+            this.broadcastPacket(new PacketSettings(settings));
         }
     }
 

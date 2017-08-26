@@ -23,6 +23,7 @@ public class PlayerMorphFactory implements IMorphFactory
     {}
 
     @Override
+    @SideOnly(Side.CLIENT)
     public void registerClient(MorphManager manager)
     {}
 

@@ -15,7 +15,7 @@ import mchorse.metamorph.entity.EntityMorph;
 import mchorse.metamorph.network.Dispatcher;
 import mchorse.vanilla_pack.MobMorphFactory;
 import mchorse.vanilla_pack.PlayerMorphFactory;
-import mchorse.vanilla_pack.VanillaMorphFactory;
+import mchorse.vanilla_pack.RegisterHandler;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.common.capabilities.CapabilityManager;
 import net.minecraftforge.common.config.Configuration;
@@ -64,7 +64,6 @@ public class CommonProxy
         /* Attaching model manager and morph factories to the morph manager */
         MorphManager.INSTANCE.models = this.models;
         MorphManager.INSTANCE.factories.add(new MobMorphFactory());
-        MorphManager.INSTANCE.factories.add(new VanillaMorphFactory());
         MorphManager.INSTANCE.factories.add(new PlayerMorphFactory());
 
         /* Configuration */
@@ -94,28 +93,22 @@ public class CommonProxy
         MinecraftForge.EVENT_BUS.register(this.config);
         MinecraftForge.EVENT_BUS.register(new MorphHandler());
         MinecraftForge.EVENT_BUS.register(new CapabilityHandler());
+        MinecraftForge.EVENT_BUS.register(new RegisterHandler());
 
         /* Morphing manager and capabilities */
         CapabilityManager.INSTANCE.register(IMorphing.class, new MorphingStorage(), Morphing.class);
 
         /* Register morph factories */
+        RegisterHandler.registerAbilities(MorphManager.INSTANCE);
         MorphManager.INSTANCE.register();
 
         /* User configuration */
-        if (morphs.exists())
-        {
-            MorphUtils.loadMorphSettings(MorphManager.INSTANCE, morphs);
-        }
-        else
+        if (!morphs.exists())
         {
             MorphUtils.generateFile(morphs, "{}");
         }
 
-        if (blacklist.exists())
-        {
-            MorphUtils.loadBlacklist(MorphManager.INSTANCE, blacklist);
-        }
-        else
+        if (!blacklist.exists())
         {
             MorphUtils.generateFile(blacklist, "[]");
         }
