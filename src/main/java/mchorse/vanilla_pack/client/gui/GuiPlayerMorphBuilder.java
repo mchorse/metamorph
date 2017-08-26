@@ -94,7 +94,7 @@ public class GuiPlayerMorphBuilder extends GuiAbstractMorphBuilder
             String title = "Updating...";
             int width = this.font.getStringWidth(title);
 
-            this.font.drawStringWithShadow(title, this.x + this.w - width, this.username.yPosition - 20, 0xffffff);
+            this.font.drawStringWithShadow(title, this.x + this.w - width, this.username.yPosition - 24, 0xffffff);
         }
 
         this.username.drawTextBox();

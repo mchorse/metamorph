@@ -5,8 +5,10 @@ import java.util.Map;
 
 import mchorse.metamorph.client.gui.GuiCreativeMenu;
 import mchorse.metamorph.client.gui.utils.GuiDropDownField;
+import mchorse.metamorph.client.gui.utils.GuiDropDownField.DropDownItem;
 import mchorse.metamorph.client.gui.utils.GuiDropDownField.IDropDownListener;
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.resources.I18n;
 
 /**
  * Morph builder 
@@ -42,8 +44,20 @@ public class GuiMorphBuilder implements IDropDownListener
     {
         this.parent = parent;
         this.dropDown = new GuiDropDownField(Minecraft.getMinecraft().fontRendererObj, this);
-        this.dropDown.values.addAll(BUILDERS.keySet());
-        this.dropDown.selected = this.dropDown.values.indexOf("nbt");
+
+        for (String key : BUILDERS.keySet())
+        {
+            String title = I18n.format("morph.builder." + key);
+
+            if (title.equals("morph.builder." + key))
+            {
+                title = key;
+            }
+
+            this.dropDown.values.add(new DropDownItem(title, key));
+        }
+
+        this.dropDown.setSelected("nbt");
 
         this.currentBuilder = BUILDERS.get("nbt");
     }
@@ -64,7 +78,7 @@ public class GuiMorphBuilder implements IDropDownListener
 
         this.dropDown.x = x + 40;
         this.dropDown.y = y;
-        this.dropDown.w = 100;
+        this.dropDown.w = 135;
         this.dropDown.h = 20;
 
         this.currentBuilder.update(x, y, w, h);

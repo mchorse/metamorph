@@ -28,7 +28,7 @@ public class GuiDropDownField
     /**
      * Values that can be chosen from this drop down
      */
-    public List<String> values = new ArrayList<String>();
+    public List<DropDownItem> values = new ArrayList<DropDownItem>();
 
     /* State control */
     public int selected = -1;
@@ -51,6 +51,24 @@ public class GuiDropDownField
     public boolean isInside(int x, int y)
     {
         return x >= this.x && x <= this.x + this.w && y >= this.y && y <= this.y + this.h + (this.visible ? this.maxHeight : 0);
+    }
+
+    public void setSelected(String value)
+    {
+        int index = -1;
+        int i = 0;
+
+        for (DropDownItem item : this.values)
+        {
+            if (item.value.equals(value))
+            {
+                index = i;
+            }
+
+            i++;
+        }
+
+        this.selected = index;
     }
 
     public void mouseClicked(int mouseX, int mouseY, int mouseButton)
@@ -80,7 +98,7 @@ public class GuiDropDownField
             if (index >= 0 && index < this.values.size())
             {
                 this.selected = index;
-                this.listener.clickedDropDown(this, this.values.get(index));
+                this.listener.clickedDropDown(this, this.values.get(index).value);
                 this.visible = false;
             }
         }
@@ -102,7 +120,7 @@ public class GuiDropDownField
         Gui.drawRect(this.x, this.y, this.x + this.w, this.y + h, 0xff888888);
         Gui.drawRect(this.x + 1, this.y + 1, this.x + this.w - 1, this.y + h - 1, 0xff000000);
 
-        String selected = this.selected >= 0 ? this.values.get(this.selected) : "";
+        String selected = this.selected >= 0 ? this.values.get(this.selected).title : "";
 
         this.font.drawStringWithShadow(selected, this.x + 6, this.y + 6, 0xffffff);
 
@@ -142,12 +160,12 @@ public class GuiDropDownField
 
             /* Draw the dropdown items */
             Gui.drawRect(this.x, this.y + 19, this.x + this.w, this.y + 20, 0xff888888);
-            GuiUtils.scissor(this.x + 1, this.y + 19, this.w, this.maxHeight, width, height);
+            GuiUtils.scissor(this.x + 1, this.y + 19, this.w - 2, this.maxHeight, width, height);
 
             int y = this.y + 20;
             int i = 0;
 
-            for (String value : this.values)
+            for (DropDownItem item : this.values)
             {
                 int yy = y + i * 20 - this.scroll;
                 boolean hover = this.isInside(mouseX, mouseY) && mouseY >= yy && mouseY < yy + 20;
@@ -155,12 +173,7 @@ public class GuiDropDownField
 
                 Gui.drawRect(this.x, yy + 19, this.x + this.w, yy + 20, 0x88888888);
 
-                if (current)
-                {
-                    value = "> " + value;
-                }
-
-                this.font.drawStringWithShadow(value, this.x + 6, yy + 6, hover ? 0xffffff : 0xcccccc);
+                this.font.drawStringWithShadow(item.title, this.x + 6, yy + 6, hover ? 0xffffff : 0xcccccc);
 
                 i++;
             }
@@ -176,6 +189,21 @@ public class GuiDropDownField
 
                 Gui.drawRect(this.x + this.w - 10, sy, this.x + this.w - 1, sy + 20, 0xffffffff);
             }
+        }
+    }
+
+    /**
+     * Drop dpwn title 
+     */
+    public static class DropDownItem
+    {
+        public String title;
+        public String value;
+
+        public DropDownItem(String title, String value)
+        {
+            this.title = title;
+            this.value = value;
         }
     }
 
