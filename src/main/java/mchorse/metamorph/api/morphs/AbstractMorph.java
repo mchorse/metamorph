@@ -50,6 +50,8 @@ public abstract class AbstractMorph
     @SideOnly(Side.CLIENT)
     public Render<? extends Entity> renderer;
 
+    /* Render methods */
+
     /**
      * Render this morph on 2D screen (used in GUIs)
      */
@@ -175,7 +177,8 @@ public abstract class AbstractMorph
         float currentHealth = target.getHealth();
         float ratio = currentHealth / maxHealth;
 
-        // A sanity check to prevent "healing" health when morphing to and from a mob
+        // A sanity check to prevent "healing" health when morphing to and from
+        // a mob
         // with essentially zero health
         if (target instanceof EntityPlayer)
         {
@@ -190,7 +193,8 @@ public abstract class AbstractMorph
                 }
                 else if (health > IMorphing.REASONABLE_HEALTH_VALUE)
                 {
-                    // If it doesn't make sense, BUT the new max health makes sense, retrieve the
+                    // If it doesn't make sense, BUT the new max health makes
+                    // sense, retrieve the
                     // ratio from the capability and use that instead
                     ratio = capability.getLastHealthRatio();
                 }
@@ -198,7 +202,8 @@ public abstract class AbstractMorph
         }
 
         this.setMaxHealth(target, health);
-        // We need to retrieve the max health of the target after modifiers are applied
+        // We need to retrieve the max health of the target after modifiers are
+        // applied
         // to get a sensible value
         float proportionalHealth = Math.round(target.getMaxHealth() * ratio);
         target.setHealth(proportionalHealth <= 0 ? 1 : proportionalHealth);

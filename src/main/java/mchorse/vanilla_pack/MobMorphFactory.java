@@ -6,6 +6,7 @@ import mchorse.metamorph.api.MorphList;
 import mchorse.metamorph.api.MorphManager;
 import mchorse.metamorph.api.morphs.AbstractMorph;
 import mchorse.metamorph.api.morphs.EntityMorph;
+import mchorse.vanilla_pack.morphs.BlockMorph;
 import mchorse.vanilla_pack.morphs.IronGolemMorph;
 import mchorse.vanilla_pack.morphs.ShulkerMorph;
 import mchorse.vanilla_pack.morphs.UndeadMorph;
@@ -232,6 +233,11 @@ public class MobMorphFactory implements IMorphFactory
     @Override
     public boolean hasMorph(String name)
     {
+        if (name.equals("metamorph.Block"))
+        {
+            return true;
+        }
+
         Class<? extends Entity> clazz = EntityList.NAME_TO_CLASS.get(name);
 
         if (clazz != null)
@@ -249,6 +255,15 @@ public class MobMorphFactory implements IMorphFactory
     public AbstractMorph getMorphFromNBT(NBTTagCompound tag)
     {
         String name = tag.getString("Name");
+
+        if (name.equals("metamorph.Block"))
+        {
+            BlockMorph morph = new BlockMorph();
+
+            morph.fromNBT(tag);
+
+            return morph;
+        }
 
         if (this.hasMorph(name))
         {
