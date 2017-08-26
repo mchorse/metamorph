@@ -1,4 +1,8 @@
 {
+    "metamorph.Block": {
+        "hands": false,
+        "hostile": true
+    },
     "Player": {
         "health": 20,
         "hands": true
@@ -139,6 +143,7 @@
         "hostile": true
     },
     "Silverfish": {
+        "action": "silverfish",
         "health": 8,
         "hostile": true
     },

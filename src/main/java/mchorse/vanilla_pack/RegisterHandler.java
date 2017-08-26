@@ -42,6 +42,7 @@ import mchorse.vanilla_pack.actions.Fireball;
 import mchorse.vanilla_pack.actions.Jump;
 import mchorse.vanilla_pack.actions.Potions;
 import mchorse.vanilla_pack.actions.ShulkerBullet;
+import mchorse.vanilla_pack.actions.Sliverfish;
 import mchorse.vanilla_pack.actions.SmallFireball;
 import mchorse.vanilla_pack.actions.Snowball;
 import mchorse.vanilla_pack.actions.Teleport;
@@ -95,6 +96,7 @@ public class RegisterHandler
         actions.put("jump", new Jump());
         actions.put("potions", new Potions());
         actions.put("shulker_bullet", new ShulkerBullet());
+        actions.put("silverfish", new Sliverfish());
         actions.put("small_fireball", new SmallFireball());
         actions.put("snowball", new Snowball());
         actions.put("teleport", new Teleport());
