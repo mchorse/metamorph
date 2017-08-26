@@ -2,7 +2,10 @@ package mchorse.vanilla_pack.actions;
 
 import java.util.Random;
 
+import javax.annotation.Nullable;
+
 import mchorse.metamorph.api.abilities.IAction;
+import mchorse.metamorph.api.morphs.AbstractMorph;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.SoundEvents;
@@ -15,7 +18,7 @@ import net.minecraft.init.SoundEvents;
 public class Endermite implements IAction
 {
     @Override
-    public void execute(EntityLivingBase target)
+    public void execute(EntityLivingBase target, @Nullable AbstractMorph morph)
     {
         Random rand = target.getRNG();
 

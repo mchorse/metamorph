@@ -229,7 +229,7 @@ public abstract class AbstractMorph
     {
         if (this.settings.action != null)
         {
-            this.settings.action.execute(target);
+            this.settings.action.execute(target, this);
         }
     }
 

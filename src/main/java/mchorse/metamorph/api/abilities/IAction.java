@@ -1,5 +1,8 @@
 package mchorse.metamorph.api.abilities;
 
+import javax.annotation.Nullable;
+
+import mchorse.metamorph.api.morphs.AbstractMorph;
 import net.minecraft.entity.EntityLivingBase;
 
 /**
@@ -14,5 +17,5 @@ public interface IAction
      * Execute an action. Depends on action's description, it can teleport 
      * player, emit explosion, or something else.  
      */
-    public void execute(EntityLivingBase target);
+    public void execute(EntityLivingBase target, @Nullable AbstractMorph morph);
 }
