@@ -169,7 +169,6 @@ public class GuiDropDownField
             {
                 int yy = y + i * 20 - this.scroll;
                 boolean hover = this.isInside(mouseX, mouseY) && mouseY >= yy && mouseY < yy + 20;
-                boolean current = this.selected == i;
 
                 Gui.drawRect(this.x, yy + 19, this.x + this.w, yy + 20, 0x88888888);
 

@@ -9,7 +9,6 @@ public class ClientHandlerSettings extends ClientMessageHandler<PacketSettings>
     @Override
     public void run(EntityPlayerSP player, PacketSettings message)
     {
-        /* TODO: reload the settings carefully */
         MorphManager.INSTANCE.setActiveSettings(message.settings);
     }
 }

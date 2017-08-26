@@ -3,6 +3,7 @@ package mchorse.vanilla_pack.client.gui;
 import mchorse.metamorph.api.MorphManager;
 import mchorse.metamorph.client.gui.builder.GuiAbstractMorphBuilder;
 import net.minecraft.client.gui.GuiTextField;
+import net.minecraft.client.resources.I18n;
 import net.minecraft.nbt.NBTTagCompound;
 
 /**
@@ -91,13 +92,13 @@ public class GuiPlayerMorphBuilder extends GuiAbstractMorphBuilder
                 this.updateMorph();
             }
 
-            String title = "Updating...";
+            String title = I18n.format("metamorph.gui.panels.updating");
             int width = this.font.getStringWidth(title);
 
             this.font.drawStringWithShadow(title, this.x + this.w - width, this.username.yPosition - 24, 0xffffff);
         }
 
         this.username.drawTextBox();
-        this.font.drawStringWithShadow("Username", this.x, this.y + 37, 0xffffff);
+        this.font.drawStringWithShadow(I18n.format("metamorph.gui.panels.username"), this.x, this.y + 37, 0xffffff);
     }
 }

@@ -74,13 +74,12 @@ public class GuiCreativeMenu extends GuiScreen
         int x = width - 10;
         int y = 5;
 
-        /* TODO: Extract strings */
         this.morph = new GuiButton(0, x - 190, y, 60, 20, I18n.format("metamorph.gui.morph"));
         this.acquire = new GuiButton(1, x - 125, y, 60, 20, I18n.format("metamorph.gui.acquire"));
         this.close = new GuiButton(2, x - 60, y, 60, 20, I18n.format("metamorph.gui.close"));
         this.top = new GuiButton(3, this.width - 30, 35, 20, 20, "^");
         this.top.visible = !this.builderMode;
-        this.toggle = new GuiButton(4, x - 245, y, 50, 20, "Builder");
+        this.toggle = new GuiButton(4, 10, this.height - 30, 125, 20, I18n.format("metamorph.gui.builder"));
 
         this.search = new GuiTextField(-1, this.fontRendererObj, 195 + 1, 35 + 1, this.width - 230 - 2, 20 - 2);
         this.search.setFocused(true);
@@ -118,7 +117,7 @@ public class GuiCreativeMenu extends GuiScreen
         {
             this.builderMode = !this.builderMode;
             this.top.visible = !this.builderMode;
-            this.toggle.displayString = this.builderMode ? "List" : "Builder";
+            this.toggle.displayString = this.builderMode ? I18n.format("metamorph.gui.list") : I18n.format("metamorph.gui.builder");
         }
         else if (button.id <= 2)
         {

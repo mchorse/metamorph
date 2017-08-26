@@ -40,6 +40,8 @@ public class GuiMorphBuilder implements IDropDownListener
     public int w;
     public int h;
 
+    private String stringBuilder = I18n.format("metamorph.gui.builder");
+
     public GuiMorphBuilder(GuiCreativeMenu parent)
     {
         this.parent = parent;
@@ -47,7 +49,7 @@ public class GuiMorphBuilder implements IDropDownListener
 
         for (String key : BUILDERS.keySet())
         {
-            String title = I18n.format("morph.builder." + key);
+            String title = I18n.format("metamorph.builder." + key);
 
             if (title.equals("morph.builder." + key))
             {
@@ -58,7 +60,6 @@ public class GuiMorphBuilder implements IDropDownListener
         }
 
         this.dropDown.setSelected("nbt");
-
         this.currentBuilder = BUILDERS.get("nbt");
     }
 
@@ -110,6 +111,6 @@ public class GuiMorphBuilder implements IDropDownListener
         this.currentBuilder.draw(mouseX, mouseY, partialTicks);
         this.dropDown.draw(mouseX, mouseY, this.parent.width, this.parent.height, partialTicks);
 
-        Minecraft.getMinecraft().fontRendererObj.drawStringWithShadow("Builder", this.x, this.y + 6, 0xffffff);
+        Minecraft.getMinecraft().fontRendererObj.drawStringWithShadow(this.stringBuilder, this.x, this.y + 6, 0xffffff);
     }
 }

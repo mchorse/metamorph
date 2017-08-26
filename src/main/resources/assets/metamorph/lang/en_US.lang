@@ -30,6 +30,13 @@ metamorph.gui.only_favorites=Show favorites
 metamorph.gui.all_morphs=Show all
 metamorph.gui.no_morph=No Morph Selected
 
+metamorph.gui.list=List
+metamorph.gui.builder=Builder
+metamorph.gui.panels.nbt=NBT data
+metamorph.gui.panels.name=Name
+metamorph.gui.panels.username=Username
+metamorph.gui.panels.updating=Updating...
+
 # Config
 metamorph.config.general.title=General
 metamorph.config.keep_morphs=Retain morphs on death
@@ -64,5 +71,5 @@ morph.category.hostile=Hostile morphs
 morph.category.modded=Morphs from %s
 
 # Morph builders
-morph.builder.nbt=NBT data builder
-morph.builder.player=Player morph builder
+metamorph.builder.nbt=NBT data builder
+metamorph.builder.player=Player morph builder

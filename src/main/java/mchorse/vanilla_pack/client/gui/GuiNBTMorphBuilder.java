@@ -3,6 +3,7 @@ package mchorse.vanilla_pack.client.gui;
 import mchorse.metamorph.api.MorphManager;
 import mchorse.metamorph.client.gui.builder.GuiAbstractMorphBuilder;
 import net.minecraft.client.gui.GuiTextField;
+import net.minecraft.client.resources.I18n;
 import net.minecraft.nbt.JsonToNBT;
 import net.minecraft.nbt.NBTTagCompound;
 
@@ -99,7 +100,7 @@ public class GuiNBTMorphBuilder extends GuiAbstractMorphBuilder
         this.name.drawTextBox();
         this.nbt.drawTextBox();
 
-        this.font.drawStringWithShadow("Name", this.x, this.y + 37, 0xffffff);
-        this.font.drawStringWithShadow("NBT data", this.x, this.y + 67, 0xffffff);
+        this.font.drawStringWithShadow(I18n.format("metamorph.gui.panels.name"), this.x, this.y + 37, 0xffffff);
+        this.font.drawStringWithShadow(I18n.format("metamorph.gui.panels.nbt"), this.x, this.y + 67, 0xffffff);
     }
 }
