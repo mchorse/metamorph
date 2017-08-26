@@ -134,7 +134,7 @@ public class MobMorphFactory implements IMorphFactory
         }
 
         /* Adding normal bat */
-        this.addMorph(morphs, world, "minecraft:bar", "{BatFlags:2}");
+        this.addMorph(morphs, world, "minecraft:bat", "{BatFlags:2}");
 
         /* Adding Zombie variants */
         this.addMorph(morphs, world, "minecraft:zombie", "Baby", "{IsBaby:1b}");
@@ -208,11 +208,11 @@ public class MobMorphFactory implements IMorphFactory
             {
                 category = "boss";
             }
-            else if (entity instanceof EntityAnimal || name.equals("Bat") || name.equals("Squid"))
+            else if (entity instanceof EntityAnimal || name.equals("minecraft:bat") || name.equals("minecraft:squid"))
             {
                 category = "animal";
             }
-            else if (entity instanceof EntityMob || name.equals("Ghast") || name.equals("LavaSlime") || name.equals("Slime") || name.equals("Shulker"))
+            else if (entity instanceof EntityMob || name.equals("minecraft:ghast") || name.equals("minecraft:magma_cube") || name.equals("minecraft:slime") || name.equals("minecraft:shulker"))
             {
                 category = "hostile";
             }
@@ -262,10 +262,11 @@ public class MobMorphFactory implements IMorphFactory
     {
         String name = tag.getString("Name");
 
-        /* TODO: figure out what did this thing do */
+        /* Compatibility for 1.10.2 morph names */
         if (MorphManager.NAME_TO_RL.containsKey(name))
         {
             name = MorphManager.NAME_TO_RL.get(name).toString();
+            tag.setString("Name", name);
         }
 
         if (name.equals("metamorph.Block"))
@@ -294,15 +295,15 @@ public class MobMorphFactory implements IMorphFactory
      */
     public EntityMorph morphFromName(String name)
     {
-        if (name.equals("Zombie") || name.equals("Skeleton"))
+        if (name.equals("minecraft:zombie") || name.equals("minecraft:skeleton") || name.equals("minecraft:zombie_villager"))
         {
             return new UndeadMorph();
         }
-        else if (name.equals("VillagerGolem"))
+        else if (name.equals("minecraft:villager_golem"))
         {
             return new IronGolemMorph();
         }
-        else if (name.equals("Shulker"))
+        else if (name.equals("minecraft:shulker"))
         {
             return new ShulkerMorph();
         }

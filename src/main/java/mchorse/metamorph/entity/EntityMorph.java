@@ -320,7 +320,7 @@ public class EntityMorph extends EntityLivingBase implements IEntityAdditionalSp
     @Override
     public ItemStack getItemStackFromSlot(EntityEquipmentSlot slotIn)
     {
-        return null;
+        return ItemStack.EMPTY;
     }
 
     @Override

@@ -45,6 +45,7 @@ import mchorse.vanilla_pack.actions.ShulkerBullet;
 import mchorse.vanilla_pack.actions.Sliverfish;
 import mchorse.vanilla_pack.actions.SmallFireball;
 import mchorse.vanilla_pack.actions.Snowball;
+import mchorse.vanilla_pack.actions.Spit;
 import mchorse.vanilla_pack.actions.Teleport;
 import mchorse.vanilla_pack.attacks.KnockbackAttack;
 import mchorse.vanilla_pack.attacks.PoisonAttack;
@@ -99,6 +100,7 @@ public class RegisterHandler
         actions.put("silverfish", new Sliverfish());
         actions.put("small_fireball", new SmallFireball());
         actions.put("snowball", new Snowball());
+        actions.put("spit", new Spit());
         actions.put("teleport", new Teleport());
 
         /* Register default attacks */
@@ -171,7 +173,7 @@ public class RegisterHandler
     @SubscribeEvent
     public void onRegisterBlacklist(RegisterBlacklistEvent event)
     {
-        event.blacklist.add("metamorph.Morph");
+        event.blacklist.add("metamorph:morph");
 
         this.loadBlacklist(event.blacklist, Metamorph.proxy.blacklist);
     }

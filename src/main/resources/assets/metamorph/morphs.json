@@ -1,7 +1,4 @@
 {
-<<<<<<< HEAD
-    "minecraft:bat": {
-=======
     "metamorph.Block": {
         "hands": false,
         "hostile": true
@@ -11,8 +8,7 @@
         "hands": true
     },
     
-    "Bat": {
->>>>>>> master
+    "minecraft:bat": {
         "abilities": ["fly", "night_vision", "prevent_fall"],
         "health": 6,
         "hostile": true
@@ -32,11 +28,15 @@
         "health": 10,
 		"hands": true
     },
+    "minecraft:llama": {
+        "health": 20,
+        "action": "spit",
+        "hostile": true
+    },
     "minecraft:horse": {
         "abilities": ["prevent_fall"],
         "action": "jump",
         "health": 24,
-<<<<<<< HEAD
         "speed": 0.15
     },
     "minecraft:donkey": {
@@ -61,13 +61,10 @@
         "abilities": ["prevent_fall"],
         "action": "jump",
         "health": 24,
-        "speed": 0.15
-=======
         "speed": 0.15,
         "hands": false
->>>>>>> master
     },
-    "MushroomCow": {
+    "minecraft:mooshroom": {
         "health": 10,
         "hands": true
     },
@@ -84,20 +81,15 @@
         "health": 30,
 		"hands": true
     },
-<<<<<<< HEAD
     "minecraft:rabbit": {
-        "abilities": ["prevent_fall"],
-=======
-    "Rabbit": {
         "abilities": ["prevent_fall", "jumping"],
->>>>>>> master
         "action": "jump",
         "health": 3,
         "speed": 0.13
     },
     "minecraft:sheep": {
         "health": 8,
-    	"hands": true
+        "hands": true
     },
     "minecraft:spider": {
         "abilities": ["climb"],
@@ -109,17 +101,10 @@
         "health": 10,
         "hands": true
     },
-<<<<<<< HEAD
     "minecraft:wolf": {
-    	"health": 8,
-    	"hostile": true,
-    	"hands": true
-=======
-    "Wolf": {
         "health": 8,
         "hostile": true,
         "hands": true
->>>>>>> master
     },
     
     "minecraft:enderman": {
@@ -129,16 +114,12 @@
         "hostile": true,
         "hands": true
     },
-<<<<<<< HEAD
-    "minecraft:zombie_pigman": {
-=======
-    "Endermite": {
+    "minecraft:endermite": {
         "action": "endermite",
         "health": 8,
         "hostile": true
     },
-    "PigZombie": {
->>>>>>> master
+    "minecraft:zombie_pigman": {
         "abilities": ["fire_proof", "hungerless"],
         "health": 20,
         "hostile": true,
@@ -153,13 +134,8 @@
         "health": 20,
         "hands": true
     },
-<<<<<<< HEAD
     "minecraft:villager_golem": {
-    	"attack": "knockback",
-=======
-    "VillagerGolem": {
         "attack": "knockback",
->>>>>>> master
         "health": 100,
 		"hands": true
     },
@@ -199,25 +175,17 @@
         "health": 4,
         "hostile": true
     },
-<<<<<<< HEAD
     "minecraft:silverfish": {
-        "health": 8,
-        "hostile": true
-    },
-    "minecraft:slime": {
-=======
-    "Silverfish": {
         "action": "silverfish",
         "health": 8,
         "hostile": true
     },
-    "Shulker": {
+    "minecraft:shulker": {
         "action": "shulker_bullet",
         "health": 15,
         "hostile": true
     },
-    "Slime": {
->>>>>>> master
+    "minecraft:slime": {
         "abilities": ["jumping"],
         "health": 4,
         "hostile": true
@@ -264,19 +232,10 @@
         "hostile": true,
         "hands": true
     },
-<<<<<<< HEAD
-    
     "minecraft:ender_dragon": {
-    	"abilities": ["fly"],
-    	"action": "fire_breath",
-    	"health": 200,
-    	"hostile": true
-=======
-    "EnderDragon": {
         "abilities": ["fly"],
         "action": "fire_breath",
         "health": 200,
         "hostile": true
->>>>>>> master
     }
 }
