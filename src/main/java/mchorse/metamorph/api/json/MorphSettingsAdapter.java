@@ -3,7 +3,6 @@ package mchorse.metamorph.api.json;
 import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
@@ -79,11 +78,6 @@ public class MorphSettingsAdapter implements JsonDeserializer<MorphSettings>
         if (object.has("attack"))
         {
             morph.attack = manager.attacks.get(object.get("attack").getAsString());
-        }
-
-        if (object.has("customData"))
-        {
-            morph.customData = gson.fromJson(object.get("customData"), Map.class);
         }
 
         return morph;

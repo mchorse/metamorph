@@ -9,7 +9,7 @@ import net.minecraftforge.fml.common.eventhandler.Event;
 /**
  * Acquire morph event
  * 
- * This event is fired when a player is about to acquire a morph. This is not 
+ * {@link AcquireMorphEvent.Pre} is fired when a player is about to acquire a morph. This is not 
  * necessarily means that player already has this morph. Use {@link #hasMorph()} 
  * method to figure out whether player already has given morph.
  * 
@@ -18,9 +18,10 @@ import net.minecraftforge.fml.common.eventhandler.Event;
  * 
  * If you cancel this event, player won't acquire a morph, however, if player 
  * already has this morph, it will be completely useless.
+ * 
+ * {@link AcquireMorphEvent.Post} is fired after a player successfully acquires a new morph.
  */
-@Cancelable
-public class AcquireMorphEvent extends Event
+public abstract class AcquireMorphEvent extends Event
 {
     public EntityPlayer player;
     public AbstractMorph morph;
@@ -37,5 +38,30 @@ public class AcquireMorphEvent extends Event
     public boolean hasMorph()
     {
         return Morphing.get(this.player).acquiredMorph(this.morph);
+    }
+
+    /**
+     * Fires before player acquires a morph. This event is {@link Cancelable}.
+     * 
+     * @author asanetargoss
+     */
+    @Cancelable
+    public static class Pre extends AcquireMorphEvent
+    {
+        public Pre(EntityPlayer player, AbstractMorph morph)
+        {
+            super(player, morph);
+        }
+    }
+
+    /**
+     * Fires after player successfully acquires a morph. 
+     */
+    public static class Post extends AcquireMorphEvent
+    {
+        public Post(EntityPlayer player, AbstractMorph morph)
+        {
+            super(player, morph);
+        }
     }
 }

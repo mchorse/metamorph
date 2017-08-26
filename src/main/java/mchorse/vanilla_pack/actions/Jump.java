@@ -1,6 +1,9 @@
 package mchorse.vanilla_pack.actions;
 
+import javax.annotation.Nullable;
+
 import mchorse.metamorph.api.abilities.IAction;
+import mchorse.metamorph.api.morphs.AbstractMorph;
 import net.minecraft.entity.EntityLivingBase;
 
 /**
@@ -12,7 +15,7 @@ import net.minecraft.entity.EntityLivingBase;
 public class Jump implements IAction
 {
     @Override
-    public void execute(EntityLivingBase target)
+    public void execute(EntityLivingBase target, @Nullable AbstractMorph morph)
     {
         if (target.onGround && !target.isWet())
         {

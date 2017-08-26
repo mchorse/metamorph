@@ -9,6 +9,9 @@ public class ServerHandlerMorph extends ServerMessageHandler<PacketMorph>
     @Override
     public void run(EntityPlayerMP player, PacketMorph message)
     {
-        MorphAPI.morph(player, message.morph, false);
+        if (player.isCreative())
+        {
+            MorphAPI.morph(player, message.morph, false);
+        }
     }
 }

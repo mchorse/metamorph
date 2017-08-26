@@ -1,5 +1,7 @@
 package mchorse.metamorph.api.morphs;
 
+import com.google.common.base.Objects;
+
 import mchorse.metamorph.api.EntityUtils;
 import mchorse.metamorph.api.models.Model;
 import mchorse.metamorph.api.models.Model.Pose;
@@ -158,11 +160,11 @@ public class CustomMorph extends AbstractMorph
     {
         CustomMorph morph = new CustomMorph();
 
-        morph.name = this.name;
+        morph.currentPose = this.currentPose;
+        morph.currentPoseOnSneak = this.currentPoseOnSneak;
 
-        morph.abilities = this.abilities;
-        morph.attack = this.attack;
-        morph.action = this.action;
+        morph.name = this.name;
+        morph.settings = settings;
 
         morph.model = this.model;
 
@@ -189,14 +191,17 @@ public class CustomMorph extends AbstractMorph
     @Override
     public boolean equals(Object obj)
     {
-        boolean equals = super.equals(obj);
+        boolean result = super.equals(obj);
 
         if (obj instanceof CustomMorph)
         {
-            return equals && this.currentPose.equals(((CustomMorph) obj).currentPose);
+            CustomMorph morph = (CustomMorph) obj;
+
+            result = result && Objects.equal(this.currentPose, morph.currentPose);
+            result = result && this.currentPoseOnSneak == morph.currentPoseOnSneak;
         }
 
-        return equals;
+        return result;
     }
 
     @Override

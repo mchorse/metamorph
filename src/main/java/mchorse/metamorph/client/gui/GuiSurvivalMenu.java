@@ -39,7 +39,7 @@ public class GuiSurvivalMenu extends GuiScreen
     public void initGui()
     {
         int x = width - 20;
-        int y = 5;
+        int y = 10;
 
         remove = new GuiButton(0, 20, this.height - 30, 60, 20, I18n.format("metamorph.gui.remove"));
         favorite = new GuiButton(1, this.width - 145, this.height - 30, 60, 20, "");
@@ -182,8 +182,9 @@ public class GuiSurvivalMenu extends GuiScreen
     {
         /* Background and stuff */
         this.drawDefaultBackground();
-        Gui.drawRect(0, 0, width, 30, 0x88000000);
-        this.drawString(fontRenderer, I18n.format("metamorph.gui.survival_title"), 20, 11, 0xffffff);
+
+        Gui.drawRect(0, 0, width, 40, 0x88000000);
+        this.drawString(fontRenderer, I18n.format("metamorph.gui.survival_title"), 20, 16, 0xffffff);
 
         this.morphs.render(this.width, this.height);
 

@@ -1,16 +1,15 @@
 package mchorse.metamorph.api.morphs;
 
 import mchorse.metamorph.Metamorph;
+import mchorse.metamorph.api.MorphSettings;
 import mchorse.metamorph.api.abilities.IAbility;
-import mchorse.metamorph.api.abilities.IAction;
-import mchorse.metamorph.api.abilities.IAttackAbility;
 import mchorse.metamorph.capabilities.morphing.IMorphing;
+import mchorse.metamorph.capabilities.morphing.Morphing;
 import net.minecraft.client.renderer.entity.Render;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.SharedMonsterAttributes;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.init.SoundEvents;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.EnumHand;
 import net.minecraft.util.math.AxisAlignedBB;
@@ -31,42 +30,9 @@ public abstract class AbstractMorph
     /* Abilities */
 
     /**
-     * Morph's abilities 
+     * Morph settings 
      */
-    public IAbility[] abilities = new IAbility[] {};
-
-    /**
-     * Morph's action
-     */
-    public IAction action;
-
-    /**
-     * Morph's attack
-     */
-    public IAttackAbility attack;
-
-    /* Properties */
-
-    /**
-     * Morph's health 
-     */
-    public int health = 20;
-
-    /**
-     * Morph's speed 
-     */
-    public float speed = 0.1F;
-
-    /**
-     * Whether this morph is "hostile" (meaning that morphed player with hostile 
-     * property won't be targeted by other hostile entities). 
-     */
-    public boolean hostile = false;
-
-    /**
-     * Render hands, some morphs might not use this property
-     */
-    public boolean hands = false;
+    public MorphSettings settings = MorphSettings.DEFAULT;
 
     /* Meta information */
 
@@ -83,6 +49,8 @@ public abstract class AbstractMorph
      */
     @SideOnly(Side.CLIENT)
     public Render<? extends Entity> renderer;
+
+    /* Render methods */
 
     /**
      * Render this morph on 2D screen (used in GUIs)
@@ -115,15 +83,15 @@ public abstract class AbstractMorph
     {
         if (!Metamorph.proxy.config.disable_health)
         {
-            this.setMaxHealth(target, this.health);
+            this.setMaxHealth(target, this.settings.health);
         }
 
-        if (speed != 0.1F)
+        if (this.settings.speed != 0.1F)
         {
-            target.getEntityAttribute(SharedMonsterAttributes.MOVEMENT_SPEED).setBaseValue(this.speed);
+            target.getEntityAttribute(SharedMonsterAttributes.MOVEMENT_SPEED).setBaseValue(this.settings.speed);
         }
 
-        for (IAbility ability : abilities)
+        for (IAbility ability : this.settings.abilities)
         {
             ability.update(target);
         }
@@ -139,12 +107,9 @@ public abstract class AbstractMorph
      */
     public void morph(EntityLivingBase target)
     {
-        this.setHealth(target, this.health);
+        this.setHealth(target, this.settings.health);
 
-        /* Pop! */
-        target.playSound(SoundEvents.ENTITY_ITEM_PICKUP, 1.0F, 1.0F);
-
-        for (IAbility ability : this.abilities)
+        for (IAbility ability : this.settings.abilities)
         {
             ability.onMorph(target);
         }
@@ -161,7 +126,7 @@ public abstract class AbstractMorph
         /* 20 is default player's health */
         this.setHealth(target, 20);
 
-        for (IAbility ability : this.abilities)
+        for (IAbility ability : this.settings.abilities)
         {
             ability.onDemorph(target);
         }
@@ -197,7 +162,9 @@ public abstract class AbstractMorph
 
     /**
      * Set player's health proportional to the current health with given max 
-     * health. 
+     * health.
+     * 
+     * @author asanetargoss
      */
     protected void setHealth(EntityLivingBase target, int health)
     {
@@ -206,10 +173,39 @@ public abstract class AbstractMorph
             return;
         }
 
-        float ratio = target.getHealth() / target.getMaxHealth();
-        float proportionalHealth = Math.round(health * ratio);
+        float maxHealth = target.getMaxHealth();
+        float currentHealth = target.getHealth();
+        float ratio = currentHealth / maxHealth;
+
+        // A sanity check to prevent "healing" health when morphing to and from
+        // a mob
+        // with essentially zero health
+        if (target instanceof EntityPlayer)
+        {
+            IMorphing capability = Morphing.get((EntityPlayer) target);
+            if (capability != null)
+            {
+                // Check if a health ratio makes sense for the old health value
+                if (maxHealth > IMorphing.REASONABLE_HEALTH_VALUE)
+                {
+                    // If it makes sense, store that ratio in the capability
+                    capability.setLastHealthRatio(ratio);
+                }
+                else if (health > IMorphing.REASONABLE_HEALTH_VALUE)
+                {
+                    // If it doesn't make sense, BUT the new max health makes
+                    // sense, retrieve the
+                    // ratio from the capability and use that instead
+                    ratio = capability.getLastHealthRatio();
+                }
+            }
+        }
 
         this.setMaxHealth(target, health);
+        // We need to retrieve the max health of the target after modifiers are
+        // applied
+        // to get a sensible value
+        float proportionalHealth = Math.round(target.getMaxHealth() * ratio);
         target.setHealth(proportionalHealth <= 0 ? 1 : proportionalHealth);
     }
 
@@ -231,9 +227,9 @@ public abstract class AbstractMorph
      */
     public void action(EntityLivingBase target)
     {
-        if (action != null)
+        if (this.settings.action != null)
         {
-            action.execute(target);
+            this.settings.action.execute(target, this);
         }
     }
 
@@ -242,9 +238,9 @@ public abstract class AbstractMorph
      */
     public void attack(Entity target, EntityLivingBase source)
     {
-        if (attack != null)
+        if (this.settings.attack != null)
         {
-            attack.attack(target, source);
+            this.settings.attack.attack(target, source);
         }
     }
 

@@ -215,11 +215,15 @@ public class GuiSurvivalMorphs extends Gui
      */
     public void up()
     {
-        this.timer = this.getDelay();
-
         if (this.index >= 0)
         {
-            this.morphs.get(this.index).up();
+            MorphType type = this.morphs.get(this.index);
+
+            if (type.morphs.size() > 1)
+            {
+                type.up();
+                this.timer = this.getDelay();
+            }
         }
     }
 
@@ -228,11 +232,15 @@ public class GuiSurvivalMorphs extends Gui
      */
     public void down()
     {
-        this.timer = this.getDelay();
-
         if (this.index >= 0)
         {
-            this.morphs.get(this.index).down();
+            MorphType type = this.morphs.get(this.index);
+
+            if (type.morphs.size() > 1)
+            {
+                type.down();
+                this.timer = this.getDelay();
+            }
         }
     }
 
@@ -442,7 +450,7 @@ public class GuiSurvivalMorphs extends Gui
 
         if (this.inGUI)
         {
-            GuiUtils.scissor(0, 30, width, height - 30, width, height);
+            GuiUtils.scissor(0, 40, width, height - 40, width, height);
             w = width - 20;
             h = (int) (height * 0.375F);
         }

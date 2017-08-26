@@ -30,6 +30,13 @@ metamorph.gui.only_favorites=Show favorites
 metamorph.gui.all_morphs=Show all
 metamorph.gui.no_morph=No Morph Selected
 
+metamorph.gui.list=List
+metamorph.gui.builder=Builder
+metamorph.gui.panels.nbt=NBT data
+metamorph.gui.panels.name=Name
+metamorph.gui.panels.username=Username
+metamorph.gui.panels.updating=Updating...
+
 # Config
 metamorph.config.general.title=General
 metamorph.config.keep_morphs=Retain morphs on death
@@ -39,10 +46,13 @@ metamorph.config.prevent_kill_acquire=Prevent acquiring by killing
 metamorph.config.show_demorph=Show demorph
 metamorph.config.disable_pov=Disable POV
 metamorph.config.disable_health=Disable health scaling
+metamorph.config.disable_morph_animation=Disable morph animation
+metamorph.config.disable_morph_disguise=Disable morph hostility
 
 # Commands
 metamorph.commands.morph=Morph command. This command is responsible for morphing player into specified morph.\n\n/morph <username> [morph_name] [data_tag]
 metamorph.commands.acquire_morph=Acquire morph command. This command is responsible for sending a morph to a player in acquired morphs.\n\n/morph <username> <morph_name> [data_tag]
+metamorph.commands.metamorph=Metamorph server command. This command allows to manage Metamorph stuff on the server side.\n\n/metamorph reload <blacklist|morphs> - reloads Metamorph's blacklist or morph configuration
 
 metamorph.error.morph.not_player=Entity %s isn't not a player!
 metamorph.error.morph.nbt=Error occurred during data tag parsing:\n%s
@@ -55,6 +65,11 @@ metamorph.success.acquire=Player by username %s was successfully acquired %s mor
 morph.category.unknown=Unknown morphs
 morph.category.unsorted=Unsorted morphs
 morph.category.animal=Animal morphs
+morph.category.boss=Boss morphs
 morph.category.acquired=Your morphs
 morph.category.hostile=Hostile morphs
 morph.category.modded=Morphs from %s
+
+# Morph builders
+metamorph.builder.nbt=NBT data builder
+metamorph.builder.player=Player morph builder

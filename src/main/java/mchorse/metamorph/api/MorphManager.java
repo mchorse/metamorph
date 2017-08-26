@@ -63,25 +63,13 @@ public class MorphManager
     public List<IMorphFactory> factories = new ArrayList<IMorphFactory>();
 
     /**
-     * Settings for morphs for this server, this is not used for populating 
-     * morph abilities and properties. See active morph settings.
-     */
-    public Map<String, MorphSettings> settings = new HashMap<String, MorphSettings>();
-
-    /**
      * Active morph settings 
      */
     public Map<String, MorphSettings> activeSettings = new HashMap<String, MorphSettings>();
 
     /**
-     * Blacklisted entities for this server, not used for actual checking, 
-     * only for populating.
-     */
-    public Set<String> blacklist = new TreeSet<String>();
-
-    /**
      * Active blacklist. Sent either from server, or getting assigned on 
-     * server start. Don't modify this, please. 
+     * server start. Modifying this is a not a good idea 
      */
     public Set<String> activeBlacklist = new TreeSet<String>();
 
@@ -114,8 +102,8 @@ public class MorphManager
      */
     public void setActiveBlacklist(Set<String> blacklist)
     {
-        INSTANCE.activeBlacklist.clear();
-        INSTANCE.activeBlacklist.addAll(blacklist);
+        this.activeBlacklist.clear();
+        this.activeBlacklist.addAll(blacklist);
     }
 
     /**
@@ -123,8 +111,8 @@ public class MorphManager
      */
     public void setActiveSettings(Map<String, MorphSettings> settings)
     {
-        INSTANCE.activeSettings.clear();
-        INSTANCE.activeSettings.putAll(settings);
+        this.activeSettings.clear();
+        this.activeSettings.putAll(settings);
     }
 
     /**
@@ -217,7 +205,7 @@ public class MorphManager
     {
         if (this.activeSettings.containsKey(morph.name))
         {
-            this.activeSettings.get(morph.name).apply(morph);
+            morph.settings = this.activeSettings.get(morph.name);
         }
     }
 

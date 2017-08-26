@@ -27,10 +27,10 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 @SideOnly(Side.CLIENT)
 public abstract class GuiScrollPane extends GuiScreen
 {
-    protected int x;
-    protected int y;
-    protected int w;
-    protected int h;
+    public int x;
+    public int y;
+    public int w;
+    public int h;
 
     protected int scrollY = 0;
     protected int scrollHeight = 0;
@@ -155,7 +155,7 @@ public abstract class GuiScrollPane extends GuiScreen
     /**
      * Draw the background of the scroll pane
      */
-    protected void drawBackground()
+    protected void drawBackground(int mouseX, int mouseY, float partialTicks)
     {
         Gui.drawRect(this.x, this.y, this.x + this.w, this.y + this.h, -6250336);
         Gui.drawRect(this.x + 1, this.y + 1, this.x + this.w - 1, this.y + this.h - 1, -16777216);
@@ -164,7 +164,7 @@ public abstract class GuiScrollPane extends GuiScreen
     /**
      * Draw the scroll bar
      */
-    protected void drawScrollBar()
+    protected void drawScrollBar(int mouseX, int mouseY, float partialTicks)
     {
         if (this.scrollHeight < this.h) return;
 
@@ -199,7 +199,7 @@ public abstract class GuiScrollPane extends GuiScreen
         float rx = (float) this.mc.displayWidth / (float) this.width;
         float ry = (float) this.mc.displayHeight / (float) this.height;
 
-        this.drawBackground();
+        this.drawBackground(mouseX, mouseY + this.scrollY, partialTicks);
 
         GL11.glPushMatrix();
         GL11.glTranslatef(0, -this.scrollY, 0);
@@ -219,6 +219,6 @@ public abstract class GuiScrollPane extends GuiScreen
         GL11.glDisable(GL11.GL_SCISSOR_TEST);
         GL11.glPopMatrix();
 
-        this.drawScrollBar();
+        this.drawScrollBar(mouseX, mouseY, partialTicks);
     }
 }

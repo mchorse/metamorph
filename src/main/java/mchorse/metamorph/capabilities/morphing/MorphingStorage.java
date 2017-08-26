@@ -7,6 +7,7 @@ import mchorse.metamorph.api.MorphManager;
 import mchorse.metamorph.api.morphs.AbstractMorph;
 import net.minecraft.nbt.NBTBase;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.nbt.NBTTagFloat;
 import net.minecraft.nbt.NBTTagInt;
 import net.minecraft.nbt.NBTTagList;
 import net.minecraft.util.EnumFacing;
@@ -30,6 +31,7 @@ public class MorphingStorage implements IStorage<IMorphing>
         NBTTagCompound tag = new NBTTagCompound();
         NBTTagList acquired = new NBTTagList();
         NBTTagList favorites = new NBTTagList();
+        tag.setTag("lastHealthRatio", new NBTTagFloat(instance.getLastHealthRatio()));
 
         if (instance.getCurrentMorph() != null)
         {
@@ -67,6 +69,7 @@ public class MorphingStorage implements IStorage<IMorphing>
             NBTTagList acquired = tag.getTagList("Morphs", 10);
             NBTTagList favorites = tag.getTagList("Favorites", 3);
             NBTTagCompound morphTag = tag.getCompoundTag("Morph");
+            instance.setLastHealthRatio(tag.getFloat("lastHealthRatio"));
 
             if (!tag.hasNoTags())
             {

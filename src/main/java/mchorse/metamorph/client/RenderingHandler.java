@@ -1,12 +1,12 @@
 package mchorse.metamorph.client;
 
-import mchorse.metamorph.api.morphs.AbstractMorph;
 import mchorse.metamorph.api.morphs.EntityMorph;
 import mchorse.metamorph.capabilities.morphing.IMorphing;
 import mchorse.metamorph.capabilities.morphing.Morphing;
 import mchorse.metamorph.client.gui.elements.GuiOverlay;
 import mchorse.metamorph.client.gui.elements.GuiSurvivalMorphs;
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.entity.EntityPlayerSP;
 import net.minecraft.client.gui.ScaledResolution;
 import net.minecraft.client.renderer.EntityRenderer;
 import net.minecraft.client.renderer.GlStateManager;
@@ -14,6 +14,7 @@ import net.minecraft.client.renderer.entity.RenderLivingBase;
 import net.minecraft.client.renderer.entity.RenderManager;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.scoreboard.Team;
 import net.minecraftforge.client.event.RenderGameOverlayEvent;
 import net.minecraftforge.client.event.RenderLivingEvent;
 import net.minecraftforge.client.event.RenderPlayerEvent;
@@ -79,17 +80,82 @@ public class RenderingHandler
         IMorphing capability = Morphing.get(player);
 
         /* No morph, no problem */
-        if (capability == null || !capability.isMorphed())
+        if (capability == null)
         {
             return;
         }
 
-        AbstractMorph morph = capability.getCurrentMorph();
+        int animation = capability.getAnimation();
 
-        event.setCanceled(true);
+        /* Render the morph */
+        if (capability.renderPlayer(player, event.getX(), event.getY(), event.getZ(), player.rotationYaw, event.getPartialRenderTick()))
+        {
+            event.setCanceled(true);
+        }
+        else if (capability.isAnimating())
+        {
+            float partialTick = event.getPartialRenderTick();
 
-        /* Render the morph itself */
-        morph.render(player, event.getX(), event.getY(), event.getZ(), player.rotationYaw, event.getPartialRenderTick());
+            GlStateManager.pushMatrix();
+
+            if (capability.getCurrentMorph() == null && animation <= 10)
+            {
+                float anim = (animation - partialTick) / 10.0F;
+                float offset = 0;
+
+                if (anim >= 0)
+                {
+                    offset = -anim * anim * 2F;
+                }
+
+                GlStateManager.translate(0, offset, 0);
+
+                if (anim >= 0)
+                {
+                    GlStateManager.rotate(anim * -90.0F, 1, 0, 0);
+                    GlStateManager.scale(1 - anim, 1 - anim, 1 - anim);
+                }
+            }
+            else if (capability.getPreviousMorph() == null && animation > 10)
+            {
+                float anim = (animation - 10 - partialTick) / 10.0F;
+                float offset = 0;
+
+                if (anim >= 0)
+                {
+                    offset = (1 - anim);
+                }
+
+                GlStateManager.translate(0, offset, 0);
+
+                if (anim >= 0)
+                {
+                    GlStateManager.rotate((1 - anim) * 90.0F, 1, 0, 0);
+                    GlStateManager.scale(anim, anim, anim);
+                }
+            }
+        }
+    }
+
+    /**
+     * Pop the matrix if animation is running 
+     */
+    @SubscribeEvent
+    public void onPlayerPostRender(RenderPlayerEvent.Post event)
+    {
+        EntityPlayer player = event.getEntityPlayer();
+        IMorphing capability = Morphing.get(player);
+
+        /* No morph, no problem */
+        if (capability == null)
+        {
+            return;
+        }
+
+        if (capability.isAnimating())
+        {
+            GlStateManager.popMatrix();
+        }
     }
 
     /**
@@ -109,9 +175,8 @@ public class RenderingHandler
         event.setCanceled(true);
 
         EntityLivingBase entity = event.getEntity();
-        boolean canRenderName = Minecraft.isGuiEnabled() && render != this.manager.renderViewEntity && !entity.isBeingRidden();
 
-        if (!canRenderName)
+        if (!this.canRenderName(render, entity))
         {
             return;
         }
@@ -127,6 +192,42 @@ public class RenderingHandler
     }
 
     /**
+     * Can render the morph's name 
+     */
+    protected boolean canRenderName(EntityLivingBase entity, EntityLivingBase render)
+    {
+        EntityPlayerSP entityplayersp = Minecraft.getMinecraft().player;
+        boolean flag = !entity.isInvisibleToPlayer(entityplayersp);
+
+        if (entity != entityplayersp)
+        {
+            Team team = entity.getTeam();
+            Team team1 = entityplayersp.getTeam();
+
+            if (team != null)
+            {
+                Team.EnumVisible team$enumvisible = team.getNameTagVisibility();
+
+                switch (team$enumvisible)
+                {
+                    case ALWAYS:
+                        return flag;
+                    case NEVER:
+                        return false;
+                    case HIDE_FOR_OTHER_TEAMS:
+                        return team1 == null ? flag : team.isSameTeam(team1) && (team.getSeeFriendlyInvisiblesEnabled() || flag);
+                    case HIDE_FOR_OWN_TEAM:
+                        return team1 == null ? flag : !team.isSameTeam(team1) && flag;
+                    default:
+                        return true;
+                }
+            }
+        }
+
+        return Minecraft.isGuiEnabled() && entity != this.manager.renderViewEntity && flag && !entity.isBeingRidden();
+    }
+
+    /**
      * Renders an entity's name above its head (copied and modified from 
      * {@link RenderLivingBase})
      */
@@ -137,21 +238,15 @@ public class RenderingHandler
             return;
         }
 
-        int maxDistance = 64;
-        double dist = entity.getDistanceSqToEntity(this.manager.renderViewEntity);
+        boolean sneaking = entity.isSneaking();
+        boolean thirdFrontal = this.manager.options.thirdPersonView == 2;
 
-        if (dist <= (double) (maxDistance * maxDistance))
-        {
-            boolean sneaking = entity.isSneaking();
-            boolean thirdFrontal = this.manager.options.thirdPersonView == 2;
+        float px = this.manager.playerViewY;
+        float py = this.manager.playerViewX;
+        float pz = entity.height + 0.5F - (sneaking ? 0.25F : 0.0F);
 
-            float px = this.manager.playerViewY;
-            float py = this.manager.playerViewX;
-            float pz = entity.height + 0.5F - (sneaking ? 0.25F : 0.0F);
+        int i = "deadmau5".equals(name) ? -10 : 0;
 
-            int i = "deadmau5".equals(name) ? -10 : 0;
-
-            EntityRenderer.drawNameplate(this.manager.getFontRenderer(), name, (float) x, (float) y + pz, (float) z, i, px, py, thirdFrontal, sneaking);
-        }
+        EntityRenderer.drawNameplate(this.manager.getFontRenderer(), name, (float) x, (float) y + pz, (float) z, i, px, py, thirdFrontal, sneaking);
     }
 }

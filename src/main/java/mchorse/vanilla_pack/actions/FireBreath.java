@@ -1,6 +1,9 @@
 package mchorse.vanilla_pack.actions;
 
+import javax.annotation.Nullable;
+
 import mchorse.metamorph.api.abilities.IAction;
+import mchorse.metamorph.api.morphs.AbstractMorph;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.projectile.EntityDragonFireball;
@@ -13,7 +16,7 @@ import net.minecraft.util.math.Vec3d;
 public class FireBreath implements IAction
 {
     @Override
-    public void execute(EntityLivingBase target)
+    public void execute(EntityLivingBase target, @Nullable AbstractMorph morph)
     {
         if (target.world.isRemote)
         {

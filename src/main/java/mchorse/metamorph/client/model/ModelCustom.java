@@ -33,7 +33,7 @@ public class ModelCustom extends ModelBiped
     /**
      * Repository of custom models that are available for usage
      */
-    public static Map<String, ModelCustom> MODELS = new HashMap<String, ModelCustom>();
+    public static final Map<String, ModelCustom> MODELS = new HashMap<String, ModelCustom>();
 
     /**
      * Model data
@@ -159,11 +159,11 @@ public class ModelCustom extends ModelBiped
                     case BLOCK:
                         limb.rotateAngleX = limb.rotateAngleX * 0.5F - 0.9424779F;
                         limb.rotateAngleY = 0.5235988F * (right ? -1 : 1);
-                        break;
+                    break;
 
                     case ITEM:
                         limb.rotateAngleX = limb.rotateAngleX * 0.5F - PI / 10F;
-                        break;
+                    break;
                 }
 
                 float rotateAngleX = headPitch * 0.017453292F;
