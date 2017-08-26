@@ -49,7 +49,7 @@ public class MorphAPI
             return false;
         }
 
-        MorphEvent event = new MorphEvent(player, morph, force);
+        MorphEvent.Pre event = new MorphEvent.Pre(player, morph, force);
 
         if (MinecraftForge.EVENT_BUS.post(event))
         {
@@ -62,6 +62,11 @@ public class MorphAPI
         {
             Dispatcher.sendTo(new PacketMorph(morph), (EntityPlayerMP) player);
             Dispatcher.updateTrackers(player, new PacketMorphPlayer(player.getEntityId(), morph));
+        }
+
+        if (morphed)
+        {
+            MinecraftForge.EVENT_BUS.post(new MorphEvent.Post(player, event.morph, force));
         }
 
         return morphed;
@@ -80,7 +85,7 @@ public class MorphAPI
             return false;
         }
 
-        AcquireMorphEvent event = new AcquireMorphEvent(player, morph);
+        AcquireMorphEvent.Pre event = new AcquireMorphEvent.Pre(player, morph);
 
         if (MinecraftForge.EVENT_BUS.post(event))
         {
@@ -92,6 +97,11 @@ public class MorphAPI
         if (!player.world.isRemote && acquired)
         {
             Dispatcher.sendTo(new PacketAcquireMorph(event.morph), (EntityPlayerMP) player);
+        }
+
+        if (acquired)
+        {
+            MinecraftForge.EVENT_BUS.post(new AcquireMorphEvent.Post(player, event.morph));
         }
 
         return acquired;

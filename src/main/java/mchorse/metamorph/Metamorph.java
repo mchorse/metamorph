@@ -4,7 +4,9 @@ import org.apache.logging.log4j.Level;
 import org.apache.logging.log4j.Logger;
 
 import mchorse.metamorph.api.MorphManager;
+import mchorse.metamorph.api.MorphUtils;
 import mchorse.metamorph.commands.CommandAcquireMorph;
+import mchorse.metamorph.commands.CommandMetamorph;
 import mchorse.metamorph.commands.CommandMorph;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.Mod.EventHandler;
@@ -75,17 +77,19 @@ public class Metamorph
     public void serverStarting(FMLServerStartingEvent event)
     {
         /* Setting up the blacklist */
-        MorphManager.INSTANCE.setActiveBlacklist(MorphManager.INSTANCE.blacklist);
-        MorphManager.INSTANCE.setActiveSettings(MorphManager.INSTANCE.settings);
+
+        MorphManager.INSTANCE.setActiveBlacklist(MorphUtils.reloadBlacklist());
+        MorphManager.INSTANCE.setActiveSettings(MorphUtils.reloadMorphSettings());
 
         /* Register commands */
         event.registerServerCommand(new CommandMorph());
         event.registerServerCommand(new CommandAcquireMorph());
+        event.registerServerCommand(new CommandMetamorph());
     }
 
     /* Logging */
 
-    // TODO: Set to false when publishing and remove all unnecessary printlns
+    /* TODO: Set to false when publishing and remove all unnecessary printlns */
     public static boolean DEBUG = false;
     public static Logger LOGGER;
 

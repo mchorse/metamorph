@@ -65,6 +65,7 @@ public class ModelAdapter implements JsonDeserializer<Model>, JsonSerializer<Mod
         map.remove("scale");
         map.remove("limbs");
         map.remove("poses");
+        map.remove("providesObj");
 
         if (!src.model.isEmpty())
         {
@@ -85,6 +86,11 @@ public class ModelAdapter implements JsonDeserializer<Model>, JsonSerializer<Mod
             array.add(new JsonPrimitive(src.scale[2]));
 
             map.add("scale", array);
+        }
+
+        if (src.providesObj)
+        {
+            map.addProperty("providesObj", src.providesObj);
         }
 
         map.add("limbs", context.serialize(src.limbs));

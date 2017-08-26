@@ -6,12 +6,15 @@ import java.util.Map;
 import mchorse.metamorph.api.MorphManager;
 import mchorse.metamorph.client.KeyboardHandler;
 import mchorse.metamorph.client.RenderingHandler;
+import mchorse.metamorph.client.gui.builder.GuiMorphBuilder;
 import mchorse.metamorph.client.gui.elements.GuiOverlay;
 import mchorse.metamorph.client.gui.elements.GuiSurvivalMorphs;
 import mchorse.metamorph.client.render.RenderCustomModel;
 import mchorse.metamorph.client.render.RenderMorph;
 import mchorse.metamorph.client.render.RenderSubPlayer;
 import mchorse.metamorph.entity.EntityMorph;
+import mchorse.vanilla_pack.client.gui.GuiNBTMorphBuilder;
+import mchorse.vanilla_pack.client.gui.GuiPlayerMorphBuilder;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.entity.RenderManager;
 import net.minecraftforge.common.MinecraftForge;
@@ -76,6 +79,10 @@ public class ClientProxy extends CommonProxy
 
         /* Register client morph manager */
         MorphManager.INSTANCE.registerClient();
+
+        /* Register morph builders */
+        GuiMorphBuilder.BUILDERS.put("nbt", new GuiNBTMorphBuilder());
+        GuiMorphBuilder.BUILDERS.put("player", new GuiPlayerMorphBuilder());
     }
 
     /**

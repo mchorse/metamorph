@@ -1,6 +1,9 @@
 package mchorse.vanilla_pack.actions;
 
+import javax.annotation.Nullable;
+
 import mchorse.metamorph.api.abilities.IAction;
+import mchorse.metamorph.api.morphs.AbstractMorph;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.projectile.EntitySmallFireball;
@@ -17,7 +20,7 @@ import net.minecraft.world.World;
 public class SmallFireball implements IAction
 {
     @Override
-    public void execute(EntityLivingBase target)
+    public void execute(EntityLivingBase target, @Nullable AbstractMorph morph)
     {
         World world = target.world;
 

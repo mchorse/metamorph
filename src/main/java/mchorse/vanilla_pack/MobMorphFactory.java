@@ -6,10 +6,16 @@ import mchorse.metamorph.api.MorphList;
 import mchorse.metamorph.api.MorphManager;
 import mchorse.metamorph.api.morphs.AbstractMorph;
 import mchorse.metamorph.api.morphs.EntityMorph;
+import mchorse.vanilla_pack.morphs.BlockMorph;
 import mchorse.vanilla_pack.morphs.IronGolemMorph;
+import mchorse.vanilla_pack.morphs.ShulkerMorph;
+import mchorse.vanilla_pack.morphs.UndeadMorph;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityList;
 import net.minecraft.entity.EntityLivingBase;
+import net.minecraft.entity.boss.EntityDragon;
+import net.minecraft.entity.boss.EntityWither;
+import net.minecraft.entity.monster.EntityGiantZombie;
 import net.minecraft.entity.monster.EntityMob;
 import net.minecraft.entity.passive.EntityAnimal;
 import net.minecraft.nbt.JsonToNBT;
@@ -163,7 +169,7 @@ public class MobMorphFactory implements IMorphFactory
     {
         try
         {
-            EntityMorph morph = name.equals("VillagerGolem") ? new IronGolemMorph() : new EntityMorph();
+            EntityMorph morph = this.morphFromName(name);
             EntityLivingBase entity = (EntityLivingBase) EntityList.createEntityByIDFromName(new ResourceLocation(name), world);
 
             if (entity == null)
@@ -198,11 +204,15 @@ public class MobMorphFactory implements IMorphFactory
             {
                 category = name.substring(0, index);
             }
-            else if (entity instanceof EntityAnimal)
+            else if (entity instanceof EntityDragon || entity instanceof EntityWither || entity instanceof EntityGiantZombie)
+            {
+                category = "boss";
+            }
+            else if (entity instanceof EntityAnimal || name.equals("Bat") || name.equals("Squid"))
             {
                 category = "animal";
             }
-            else if (entity instanceof EntityMob)
+            else if (entity instanceof EntityMob || name.equals("Ghast") || name.equals("LavaSlime") || name.equals("Slime") || name.equals("Shulker"))
             {
                 category = "hostile";
             }
@@ -225,6 +235,11 @@ public class MobMorphFactory implements IMorphFactory
     @Override
     public boolean hasMorph(String name)
     {
+        if (name.equals("metamorph.Block"))
+        {
+            return true;
+        }
+
         Class<? extends Entity> clazz = null;
         ResourceLocation key = new ResourceLocation(name);
 
@@ -247,14 +262,24 @@ public class MobMorphFactory implements IMorphFactory
     {
         String name = tag.getString("Name");
 
+        /* TODO: figure out what did this thing do */
         if (MorphManager.NAME_TO_RL.containsKey(name))
         {
             name = MorphManager.NAME_TO_RL.get(name).toString();
         }
 
+        if (name.equals("metamorph.Block"))
+        {
+            BlockMorph morph = new BlockMorph();
+
+            morph.fromNBT(tag);
+
+            return morph;
+        }
+
         if (this.hasMorph(name))
         {
-            EntityMorph morph = name.equals("minecraft:villager_golem") ? new IronGolemMorph() : new EntityMorph();
+            EntityMorph morph = morphFromName(name);
 
             morph.fromNBT(tag);
 
@@ -262,5 +287,26 @@ public class MobMorphFactory implements IMorphFactory
         }
 
         return null;
+    }
+
+    /**
+     * Get a morph from a name 
+     */
+    public EntityMorph morphFromName(String name)
+    {
+        if (name.equals("Zombie") || name.equals("Skeleton"))
+        {
+            return new UndeadMorph();
+        }
+        else if (name.equals("VillagerGolem"))
+        {
+            return new IronGolemMorph();
+        }
+        else if (name.equals("Shulker"))
+        {
+            return new ShulkerMorph();
+        }
+
+        return new EntityMorph();
     }
 }

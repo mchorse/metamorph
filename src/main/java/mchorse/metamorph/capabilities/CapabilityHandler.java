@@ -63,8 +63,8 @@ public class CapabilityHandler
             }
 
             /* Send data */
-            Dispatcher.sendTo(new PacketBlacklist(MorphManager.INSTANCE.blacklist), (EntityPlayerMP) player);
-            Dispatcher.sendTo(new PacketSettings(MorphManager.INSTANCE.settings), (EntityPlayerMP) player);
+            Dispatcher.sendTo(new PacketBlacklist(MorphManager.INSTANCE.activeBlacklist), (EntityPlayerMP) player);
+            Dispatcher.sendTo(new PacketSettings(MorphManager.INSTANCE.activeSettings), (EntityPlayerMP) player);
         }
     }
 

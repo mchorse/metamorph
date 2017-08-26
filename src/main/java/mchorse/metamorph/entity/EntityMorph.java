@@ -1,5 +1,6 @@
 package mchorse.metamorph.entity;
 
+import java.util.Arrays;
 import java.util.UUID;
 
 import io.netty.buffer.ByteBuf;
@@ -7,17 +8,22 @@ import mchorse.metamorph.api.MorphAPI;
 import mchorse.metamorph.api.MorphManager;
 import mchorse.metamorph.api.models.IMorphProvider;
 import mchorse.metamorph.api.morphs.AbstractMorph;
-import net.minecraft.entity.EntityLiving;
+import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.item.EntityItem;
 import net.minecraft.entity.item.EntityXPOrb;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.SoundEvents;
+import net.minecraft.inventory.EntityEquipmentSlot;
+import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.network.play.server.SPacketCollectItem;
+import net.minecraft.util.EnumHandSide;
 import net.minecraft.util.SoundCategory;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.text.ITextComponent;
 import net.minecraft.util.text.TextComponentTranslation;
 import net.minecraft.world.World;
+import net.minecraft.world.WorldServer;
 import net.minecraftforge.fml.common.network.ByteBufUtils;
 import net.minecraftforge.fml.common.registry.IEntityAdditionalSpawnData;
 
@@ -30,9 +36,12 @@ import net.minecraftforge.fml.common.registry.IEntityAdditionalSpawnData;
  * This entity is similar to {@link EntityXPOrb} or {@link EntityItem}, in terms 
  * of picking up.
  */
-public class EntityMorph extends EntityLiving implements IEntityAdditionalSpawnData, IMorphProvider
+public class EntityMorph extends EntityLivingBase implements IEntityAdditionalSpawnData, IMorphProvider
 {
+    private String username;
     private UUID owner;
+    private boolean ownerless = true;
+
     private EntityPlayer player;
 
     public int timer = 30;
@@ -93,14 +102,30 @@ public class EntityMorph extends EntityLiving implements IEntityAdditionalSpawnD
         }
     }
 
-    /**
-     * No! Don't despawn morphs, they're like currency! 
-     */
     @Override
-    protected boolean canDespawn()
+    protected boolean canTriggerWalking()
     {
         return false;
     }
+
+    @Override
+    public boolean canBeCollidedWith()
+    {
+        return false;
+    }
+
+    @Override
+    public boolean canBePushed()
+    {
+        return false;
+    }
+
+    /**
+     * Can't collide with other entities 
+     */
+    @Override
+    protected void collideWithNearbyEntities()
+    {}
 
     /**
      * Update method
@@ -112,6 +137,9 @@ public class EntityMorph extends EntityLiving implements IEntityAdditionalSpawnD
     @Override
     public void onUpdate()
     {
+        /* Don't allow it move horizontally */
+        this.motionX = this.motionZ = 0;
+
         super.onUpdate();
 
         if (this.timer > 0)
@@ -121,17 +149,47 @@ public class EntityMorph extends EntityLiving implements IEntityAdditionalSpawnD
             return;
         }
 
-        if ((this.player == null || this.player.isDead) && !this.world.isRemote && this.owner != null)
+        /* Find an owner */
+        if (!this.world.isRemote && !this.isDead)
         {
-            this.player = this.world.getPlayerEntityByUUID(this.owner);
+            this.updateMorph();
         }
+    }
 
-        if (this.player != null && !this.player.isDead)
+    /**
+     * Do morph things which morphs should do on update. 
+     */
+    private void updateMorph()
+    {
+        /* Grant ownerless morph to the first collided player */
+        if (this.ownerless)
         {
-            if (this.getEntityBoundingBox().intersectsWith(this.player.getEntityBoundingBox()))
+            for (EntityPlayer player : this.world.getEntitiesWithinAABB(EntityPlayer.class, this.getEntityBoundingBox()))
             {
-                this.setDead();
-                this.grantMorph();
+                this.grantMorph(player);
+
+                break;
+            }
+        }
+        else
+        {
+            /* Find the owner */
+            if (this.player == null || this.player.isDead)
+            {
+                if (this.owner != null)
+                {
+                    this.player = this.world.getPlayerEntityByUUID(this.owner);
+                }
+                else if (this.username != null)
+                {
+                    this.player = this.world.getPlayerEntityByName(this.username);
+                }
+            }
+
+            /* Acquire morph when owner collides with a morph */
+            if (this.player != null && this.getEntityBoundingBox().intersectsWith(this.player.getEntityBoundingBox()))
+            {
+                this.grantMorph(this.player);
             }
         }
     }
@@ -141,17 +199,22 @@ public class EntityMorph extends EntityLiving implements IEntityAdditionalSpawnD
      * 
      * This method is responsible for giving this morph to the player. 
      */
-    private void grantMorph()
+    protected void grantMorph(EntityPlayer player)
     {
         if (this.world.isRemote)
         {
             return;
         }
 
-        if (MorphAPI.acquire(this.player, this.morph))
+        if (MorphAPI.acquire(player, this.morph))
         {
-            this.world.playSound(this.player, this.posX, this.posY, this.posZ, SoundEvents.ENTITY_ITEM_PICKUP, SoundCategory.AMBIENT, 1.0F, 1.0F);
+            this.world.playSound(player, this.posX, this.posY, this.posZ, SoundEvents.ENTITY_ITEM_PICKUP, SoundCategory.AMBIENT, 1.0F, 1.0F);
+
+            /* Make the pickup animation */
+            ((WorldServer) this.world).getEntityTracker().sendToTracking(this, new SPacketCollectItem(this.getEntityId(), player.getEntityId(), 1));
         }
+
+        this.setDead();
     }
 
     /* Read / write */
@@ -159,7 +222,12 @@ public class EntityMorph extends EntityLiving implements IEntityAdditionalSpawnD
     @Override
     public void writeEntityToNBT(NBTTagCompound compound)
     {
-        super.writeEntityToNBT(compound);
+        compound.setBoolean("Ownerless", this.ownerless);
+
+        if (this.username != null && !this.username.isEmpty())
+        {
+            compound.setString("Username", this.username);
+        }
 
         if (this.owner != null)
         {
@@ -176,13 +244,21 @@ public class EntityMorph extends EntityLiving implements IEntityAdditionalSpawnD
     }
 
     @Override
-    public void readFromNBT(NBTTagCompound compound)
+    public void readEntityFromNBT(NBTTagCompound compound)
     {
-        super.readFromNBT(compound);
-
         String owner = compound.getString("Owner");
 
         this.owner = owner.isEmpty() ? null : UUID.fromString(owner);
+
+        if (compound.hasKey("Ownerless"))
+        {
+            this.ownerless = compound.getBoolean("Ownerless");
+        }
+
+        if (compound.hasKey("Username", 8))
+        {
+            this.username = compound.getString("Username");
+        }
 
         if (compound.hasKey("Morph", 10))
         {
@@ -231,5 +307,29 @@ public class EntityMorph extends EntityLiving implements IEntityAdditionalSpawnD
         }
 
         this.setSize(morph);
+    }
+
+    /* Unused methods */
+
+    @Override
+    public Iterable<ItemStack> getArmorInventoryList()
+    {
+        return Arrays.<ItemStack>asList();
+    }
+
+    @Override
+    public ItemStack getItemStackFromSlot(EntityEquipmentSlot slotIn)
+    {
+        return null;
+    }
+
+    @Override
+    public void setItemStackToSlot(EntityEquipmentSlot slotIn, ItemStack stack)
+    {}
+
+    @Override
+    public EnumHandSide getPrimaryHand()
+    {
+        return EnumHandSide.RIGHT;
     }
 }
