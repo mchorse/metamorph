@@ -2,11 +2,11 @@
 
 [Planet Minecraft page](http://www.planetminecraft.com/mod/metamorph/) – [Minecraft Forum thread](http://www.minecraftforum.net/forums/mapping-and-modding/minecraft-mods/2753214-metamorph-morph-into-vanilla-mobs) – [CurseForge page](https://minecraft.curseforge.com/projects/metamorph) – [Source code](https://github.com/mchorse/blockbuster) – [AdFly support link](http://adf.ly/15268913/metamorph-curseforge) – [Wiki](https://github.com/mchorse/metamorph/wiki) 
 
-**Metamorph** (from *[Metamorphosis](https://en.wikipedia.org/wiki/Metamorphosis)*) – a Minecraft mod which allow you to morph into vanilla and modded mobs. 
+**Metamorph** (from *[Metamorphosis](https://en.wikipedia.org/wiki/Metamorphosis)*) – a Minecraft mod which allow you to morph into mobs. 
 
-Most of vanilla mob morphs have their vanilla abilities, meanwhile most of modded morphs only grant you appearance and some attributes like health, unless configured to have wished abilities. Morphs can be disabled and configured. See mod's wiki for more information.
+Most of vanilla mob morphs have their abilities (preconfigured), meanwhile most of modded morphs only grant you appearance and some attributes like health, unless configured. Morphs can be disabled and configured. See mod's wiki for more information.
 
-Works with Forge for Minecraft 1.9.4, 1.10.2, 1.11.2. Heavily inspired by iChun's Morph mod and zacuke's Shape Shifter Z mod. 
+Heavily inspired by iChun's Morph mod and zacuke's Shape Shifter Z mod, and works only with Forge for Minecraft 1.10.2, 1.11.2 and 1.12.
 
 ## Install
 
