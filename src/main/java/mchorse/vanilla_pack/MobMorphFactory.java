@@ -202,13 +202,12 @@ public class MobMorphFactory implements IMorphFactory
             }
 
             /* Setting up a category */
-            int index = name.indexOf(".");
             String category = "";
 
             /* Category for third-party mod mobs */
-            if (index >= 0)
+            if (!name.startsWith("minecraft:"))
             {
-                category = name.substring(0, index);
+                category = name.substring(0, name.indexOf(":"));
             }
             else if (entity instanceof EntityDragon || entity instanceof EntityWither || entity instanceof EntityGiantZombie)
             {
