@@ -1,5 +1,39 @@
 # Metamorph Change Log
 
+## Metamorph 1.1.4
+
+This is a patch update has no aim altogether. It's just has few fixes and lots of nice features being added like an ability to morph into players (and have their skins) and blocks, more mob actions and etc.
+
+* Added block morphs
+* Added command `/metamorph` which can be used for reloading morph blacklist and settings
+* Added configurable morphing animation 
+* Added morph builder GUI to creative morph menu
+    * `player` builder – allows to create a player morph based on player's username
+    * `nbt` builder – allows to create a morph based on NBT data
+* Add more vanilla morph features which resembles their vanilla mobs
+    * `shulker` – freeze on a place, and with action key fires anti-gravity missiles
+    * `llama` – spits on action key
+    * `silverfish` – can hide in a block when action key
+    * `endermite` – teleports randomly on action key
+* Added players morphs
+* Don't allow survival morph overlay to show up when using `;` and `\` keys when there are no variants
+* Improve creative morphs menu 
+    * Add "Scroll to top" button (suggested by ivandoesyt on Twitter)
+    * Increase scrolling speed
+    * Increase morphs per row according to pane's width
+    * Show only the first variant (other variant should be collapsed)
+    * Allow several variant groups to be shown in creative morph menu
+* Improve ghosts
+    * Add `Username` property to ghosts to allow spawn mobs for specific players
+    * Add `Ownerless` property to make ghost acquire-able by the first player to pick it up
+    * Make ghosts like items (unpushable and stuff)
+    * Make ghosts hover and rotate
+    * Make ghost item-like pickup animation 
+* Fixed the undead hurting sounds #59 
+* Fixed orientation of sitting for morphs
+* Fixed name tags – now it respects the team options #50 
+* Fixed Ender Dragon transformations/model visibility #62
+
 ## Metamorph 1.1.3
 
 This is a small patch fix which aims at fixing more issues (reported by mod users).
@@ -60,7 +94,7 @@ A big update of Metamorph mod. This update introduces third-party morph support,
         * `AcquireMorphEvent` – when player is about to acquire a morph
         * `MorphActionEvent` – when player is about to use morph's action
     * `IMorphFactory` – for adding and registering morphs, abilities, attacks and actions.
-* Added support for third-party living base mobs (Entities which derive from `EntityLivingBase` and have `RenderLivingBase<?>` renderers)
+* Added support for third-party living base mobs (Entities which derive from `EntityLivingBase` and have `RenderLivingBase&lt;?&gt;` renderers)
 * Added morphs user configuration (`morphs.json` in config folder)
 * Added much more morphs to **Creative Morph Menu**
 * Added favoriting of acquired morphs (thanks to NlL5)
