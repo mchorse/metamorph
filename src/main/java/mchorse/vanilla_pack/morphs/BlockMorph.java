@@ -1,5 +1,7 @@
 package mchorse.vanilla_pack.morphs;
 
+import com.google.common.base.Objects;
+
 import mchorse.metamorph.api.morphs.AbstractMorph;
 import mchorse.metamorph.capabilities.morphing.IMorphing;
 import net.minecraft.block.Block;
@@ -37,6 +39,14 @@ public class BlockMorph extends AbstractMorph
     public BlockPos blockPos;
 
     /**
+     * Set the name 
+     */
+    public BlockMorph()
+    {
+        this.name = "metamorph.Block";
+    }
+
+    /**
      * Render in GUIs just like any other entity, 45 degree rotate  by 
      * X and Y. 
      */
@@ -51,8 +61,8 @@ public class BlockMorph extends AbstractMorph
         GlStateManager.translate(x, y, 500);
         GlStateManager.scale((-scale), -scale, -scale);
         GlStateManager.rotate(45.0F, -1.0F, 0.0F, 0.0F);
-        GlStateManager.rotate(45.0F, 0.0F, -1.0F, 0.0F);
-        GlStateManager.translate(-1, 1, 0);
+        GlStateManager.rotate(45.0F, 0.0F, 1.0F, 0.0F);
+        GlStateManager.translate(0, 1, 0);
 
         mc.renderEngine.bindTexture(TextureMap.LOCATION_BLOCKS_TEXTURE);
         blockrendererdispatcher.renderBlockBrightness(this.block, 1.0F);
@@ -122,6 +132,22 @@ public class BlockMorph extends AbstractMorph
         morph.blockPos = this.blockPos;
 
         return null;
+    }
+
+    @Override
+    public boolean equals(Object obj)
+    {
+        boolean result = super.equals(obj);
+
+        if (obj instanceof BlockMorph)
+        {
+            BlockMorph morph = (BlockMorph) obj;
+
+            result = result && Objects.equal(morph.block, this.block);
+            result = result && Objects.equal(morph.blockPos, this.blockPos);
+        }
+
+        return result;
     }
 
     @Override

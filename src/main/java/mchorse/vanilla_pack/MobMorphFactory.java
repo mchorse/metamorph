@@ -8,6 +8,7 @@ import mchorse.metamorph.api.morphs.AbstractMorph;
 import mchorse.metamorph.api.morphs.EntityMorph;
 import mchorse.vanilla_pack.morphs.BlockMorph;
 import mchorse.vanilla_pack.morphs.IronGolemMorph;
+import mchorse.vanilla_pack.morphs.PlayerMorph;
 import mchorse.vanilla_pack.morphs.ShulkerMorph;
 import mchorse.vanilla_pack.morphs.UndeadMorph;
 import net.minecraft.entity.Entity;
@@ -150,6 +151,25 @@ public class MobMorphFactory implements IMorphFactory
         }
 
         this.addMorph(morphs, world, "Rabbit", "Toast", "{CustomName:\"Toast\"}");
+
+        /* Blocks */
+        this.addBlockMorph(morphs, world, "{Block:\"minecraft:stone\"}");
+        this.addBlockMorph(morphs, world, "{Block:\"minecraft:cobblestone\"}");
+        this.addBlockMorph(morphs, world, "{Block:\"minecraft:grass\"}");
+        this.addBlockMorph(morphs, world, "{Block:\"minecraft:dirt\"}");
+        this.addBlockMorph(morphs, world, "{Block:\"minecraft:log\"}");
+        this.addBlockMorph(morphs, world, "{Block:\"minecraft:diamond_block\"}");
+        this.addBlockMorph(morphs, world, "{Block:\"minecraft:sponge\"}");
+        this.addBlockMorph(morphs, world, "{Block:\"minecraft:deadbush\"}");
+
+        /* Players */
+        this.addPlayerMorph(morphs, world, "McHorseYT", "players.yt");
+        this.addPlayerMorph(morphs, world, "ExplodingTNT", "players.yt");
+        this.addPlayerMorph(morphs, world, "TheMineboxYT", "players.yt");
+        this.addPlayerMorph(morphs, world, "VignetteCoeff", "players.shaderdev");
+        this.addPlayerMorph(morphs, world, "Poslovitch", "players.moddev");
+        this.addPlayerMorph(morphs, world, "The_Fireplace", "players.moddev");
+        this.addPlayerMorph(morphs, world, "iChun", "players.moddev");
     }
 
     /**
@@ -222,6 +242,51 @@ public class MobMorphFactory implements IMorphFactory
         catch (Exception e)
         {
             System.out.println("An error occured during insertion of " + name + " morph!");
+            e.printStackTrace();
+        }
+    }
+
+    /**
+     * Add an entity morph to the morph list
+     */
+    private void addBlockMorph(MorphList morphs, World world, String json)
+    {
+        try
+        {
+            BlockMorph morph = new BlockMorph();
+            NBTTagCompound tag = JsonToNBT.getTagFromJson(json);
+
+            tag.setString("Name", morph.name);
+            morph.fromNBT(tag);
+
+            morphs.addMorphVariant("block", "blocks", morph.block.getBlock().getLocalizedName(), morph);
+        }
+        catch (Exception e)
+        {
+            System.out.println("Failed to create a block morph with the data! " + json);
+            e.printStackTrace();
+        }
+    }
+
+    /**
+     * Add an entity morph to the morph list
+     */
+    private void addPlayerMorph(MorphList morphs, World world, String username, String category)
+    {
+        try
+        {
+            PlayerMorph morph = new PlayerMorph();
+            NBTTagCompound tag = new NBTTagCompound();
+
+            tag.setString("Name", "Player");
+            tag.setString("PlayerName", username);
+            morph.fromNBT(tag);
+
+            morphs.addMorphVariant(category, "players", "", morph);
+        }
+        catch (Exception e)
+        {
+            System.out.println("Failed to create a player morph with the username " + username + "!");
             e.printStackTrace();
         }
     }
