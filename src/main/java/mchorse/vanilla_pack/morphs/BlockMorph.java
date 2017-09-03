@@ -56,6 +56,7 @@ public class BlockMorph extends AbstractMorph
     {
         Minecraft mc = Minecraft.getMinecraft();
 
+        GlStateManager.enableDepth();
         BlockRendererDispatcher blockrendererdispatcher = mc.getBlockRendererDispatcher();
         GlStateManager.pushMatrix();
         GlStateManager.translate(x, y, 500);
@@ -67,6 +68,7 @@ public class BlockMorph extends AbstractMorph
         mc.renderEngine.bindTexture(TextureMap.LOCATION_BLOCKS_TEXTURE);
         blockrendererdispatcher.renderBlockBrightness(this.block, 1.0F);
         GlStateManager.popMatrix();
+        GlStateManager.disableDepth();
     }
 
     /**

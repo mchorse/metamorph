@@ -92,6 +92,7 @@ public class GuiMorphBuilder implements IDropDownListener
 
         if (selected != null)
         {
+            this.dropDown.setSelected(selected);
             this.clickedDropDown(this.dropDown, selected);
         }
 
