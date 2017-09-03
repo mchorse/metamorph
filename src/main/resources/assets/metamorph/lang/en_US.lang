@@ -69,7 +69,6 @@ morph.category.animal=Animal morphs
 morph.category.blocks=Blocks morphs
 morph.category.boss=Boss morphs
 morph.category.acquired=Your morphs
-morph.category.players=Players
 morph.category.hostile=Hostile morphs
 morph.category.modded=Morphs from %s
 
