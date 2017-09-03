@@ -1,7 +1,9 @@
 package mchorse.vanilla_pack.client.gui;
 
 import mchorse.metamorph.api.MorphManager;
+import mchorse.metamorph.api.morphs.AbstractMorph;
 import mchorse.metamorph.client.gui.builder.GuiAbstractMorphBuilder;
+import mchorse.vanilla_pack.morphs.PlayerMorph;
 import net.minecraft.client.gui.GuiTextField;
 import net.minecraft.client.resources.I18n;
 import net.minecraft.nbt.NBTTagCompound;
@@ -21,6 +23,21 @@ public class GuiPlayerMorphBuilder extends GuiAbstractMorphBuilder
     {
         super();
         this.username = new GuiTextField(0, this.font, 0, 0, 0, 0);
+    }
+
+    @Override
+    public boolean fromMorph(AbstractMorph morph)
+    {
+        if (morph instanceof PlayerMorph)
+        {
+            this.username.setText(((PlayerMorph) morph).profile.getName());
+            this.username.setCursorPositionZero();
+            this.cached = morph;
+
+            return true;
+        }
+
+        return false;
     }
 
     private void updateMorph()

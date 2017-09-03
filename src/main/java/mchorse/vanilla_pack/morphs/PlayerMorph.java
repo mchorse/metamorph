@@ -36,6 +36,11 @@ public class PlayerMorph extends EntityMorph
      */
     public GameProfile profile;
 
+    public PlayerMorph()
+    {
+        this.name = "Player";
+    }
+
     /**
      * Create a player morph 
      */
@@ -156,7 +161,27 @@ public class PlayerMorph extends EntityMorph
         morph.entityData = this.entityData.copy();
         morph.profile = this.profile;
 
+        if (isRemote)
+        {
+            morph.renderer = this.renderer;
+        }
+
         return morph;
+    }
+
+    @Override
+    public boolean equals(Object obj)
+    {
+        boolean result = super.equals(obj);
+
+        if (obj instanceof PlayerMorph)
+        {
+            PlayerMorph morph = (PlayerMorph) obj;
+
+            result = result && morph.profile.equals(this.profile);
+        }
+
+        return result;
     }
 
     @Override

@@ -1,6 +1,7 @@
 package mchorse.vanilla_pack.client.gui;
 
 import mchorse.metamorph.api.MorphManager;
+import mchorse.metamorph.api.morphs.AbstractMorph;
 import mchorse.metamorph.client.gui.builder.GuiAbstractMorphBuilder;
 import net.minecraft.client.gui.GuiTextField;
 import net.minecraft.client.resources.I18n;
@@ -23,6 +24,29 @@ public class GuiNBTMorphBuilder extends GuiAbstractMorphBuilder
         super();
         this.name = new GuiTextField(0, this.font, 0, 0, 0, 0);
         this.nbt = new GuiTextField(0, this.font, 0, 0, 0, 0);
+    }
+
+    @Override
+    public boolean fromMorph(AbstractMorph morph)
+    {
+        if (morph == null)
+        {
+            return false;
+        }
+
+        NBTTagCompound tag = new NBTTagCompound();
+
+        morph.toNBT(tag);
+        tag.removeTag("Name");
+
+        this.name.setText(morph.name);
+        this.name.setCursorPositionZero();
+        this.nbt.setText(tag.toString());
+        this.nbt.setCursorPositionZero();
+
+        this.cached = morph;
+
+        return true;
     }
 
     /**

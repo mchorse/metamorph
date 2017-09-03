@@ -3,6 +3,7 @@ package mchorse.metamorph.client.gui.builder;
 import java.util.HashMap;
 import java.util.Map;
 
+import mchorse.metamorph.api.morphs.AbstractMorph;
 import mchorse.metamorph.client.gui.GuiCreativeMenu;
 import mchorse.metamorph.client.gui.utils.GuiDropDownField;
 import mchorse.metamorph.client.gui.utils.GuiDropDownField.DropDownItem;
@@ -61,6 +62,40 @@ public class GuiMorphBuilder implements IDropDownListener
 
         this.dropDown.setSelected("nbt");
         this.currentBuilder = BUILDERS.get("nbt");
+    }
+
+    public boolean fromBuilder(AbstractMorph morph)
+    {
+        String selected = null;
+
+        for (String key : BUILDERS.keySet())
+        {
+            if (key.equals("nbt"))
+            {
+                continue;
+            }
+
+            IGuiMorphBuilder builder = BUILDERS.get(key);
+
+            if (builder.fromMorph(morph))
+            {
+                selected = key;
+
+                break;
+            }
+        }
+
+        if (selected == null && BUILDERS.get("nbt").fromMorph(morph))
+        {
+            selected = "nbt";
+        }
+
+        if (selected != null)
+        {
+            this.clickedDropDown(this.dropDown, selected);
+        }
+
+        return selected != null;
     }
 
     @Override

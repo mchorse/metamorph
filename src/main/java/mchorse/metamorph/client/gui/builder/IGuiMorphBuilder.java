@@ -39,4 +39,9 @@ public interface IGuiMorphBuilder
      * Draw on the screen 
      */
     public void draw(int mouseX, int mouseY, float partialTicks);
+
+    /**
+     * Fill this morph builder with data from a morph 
+     */
+    public boolean fromMorph(AbstractMorph morph);
 }
