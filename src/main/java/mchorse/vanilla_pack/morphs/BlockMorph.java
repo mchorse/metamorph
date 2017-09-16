@@ -59,7 +59,7 @@ public class BlockMorph extends AbstractMorph
         GlStateManager.enableDepth();
         BlockRendererDispatcher blockrendererdispatcher = mc.getBlockRendererDispatcher();
         GlStateManager.pushMatrix();
-        GlStateManager.translate(x, y, 500);
+        GlStateManager.translate(x, y, 0);
         GlStateManager.scale((-scale), -scale, -scale);
         GlStateManager.rotate(45.0F, -1.0F, 0.0F, 0.0F);
         GlStateManager.rotate(45.0F, 0.0F, 1.0F, 0.0F);
