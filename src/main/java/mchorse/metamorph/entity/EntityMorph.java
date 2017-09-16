@@ -251,9 +251,15 @@ public class EntityMorph extends EntityLivingBase implements IEntityAdditionalSp
 
         this.owner = owner.isEmpty() ? null : UUID.fromString(owner);
 
+        if (this.owner != null)
+        {
+            this.ownerless = false;
+        }
+
         if (compound.hasKey("Username", 8))
         {
             this.username = compound.getString("Username");
+            this.ownerless = false;
         }
         else if (compound.hasKey("Ownerless"))
         {
