@@ -90,10 +90,24 @@ public class GuiCreativeVariantPicker
 
         MorphCell selected = this.morphs.getSelected();
         int index = (mouseX - this.morphs.x + this.scroll) / 40;
+        int i = 0;
+        int j = 0;
 
-        if (index >= 0 && index < selected.variants.size())
+        for (MorphVariant variant : selected.variants)
         {
-            selected.selected = index;
+            if (!variant.hidden)
+            {
+                if (i == index)
+                {
+                    selected.selected = j;
+
+                    break;
+                }
+
+                i++;
+            }
+
+            j++;
         }
     }
 
@@ -116,25 +130,15 @@ public class GuiCreativeVariantPicker
 
         if (selected != null)
         {
-            int maxWidth = selected.variants.size() * 40 - this.morphs.w;
-
-            /* Scroll the view */
-            if (this.scrolling)
-            {
-                float factor = (mouseX - (float) this.morphs.x) / this.morphs.w;
-
-                this.scroll = (int) (factor * maxWidth);
-                this.scroll = MathHelper.clamp_int(this.scroll, 0, maxWidth);
-            }
-
             int w = this.morphs.w;
             int h = this.morphs.h;
             int x = this.morphs.x;
             int y = this.morphs.y + h - GuiCreativeMorphs.CELL_HEIGHT;
             int i = 0;
+            int j = 0;
 
             GlStateManager.pushMatrix();
-            GlStateManager.translate(0, 0, 50);
+            GlStateManager.translate(0, 0, 200);
             Gui.drawRect(x, y, x + w, y + GuiCreativeMorphs.CELL_HEIGHT, 0xaa000000);
 
             GuiUtils.scissor(x, y, w, h, this.morphs.width, this.morphs.height);
@@ -142,9 +146,16 @@ public class GuiCreativeVariantPicker
             /* Draw morph variants within viewing range */
             for (MorphVariant variant : selected.variants)
             {
-                boolean variantSelected = i == selected.selected;
+                boolean variantSelected = j == selected.selected;
 
                 x = this.morphs.x + i * 40 - this.scroll;
+                j++;
+
+                if (variant.hidden)
+                {
+                    continue;
+                }
+
                 i++;
 
                 if (x < this.morphs.x - 40 || x >= this.morphs.x + this.morphs.w)
@@ -162,6 +173,18 @@ public class GuiCreativeVariantPicker
 
             GL11.glDisable(GL11.GL_SCISSOR_TEST);
             GlStateManager.popMatrix();
+
+            int maxWidth = i * 40 - this.morphs.w;
+
+            /* Scroll the view */
+            if (this.scrolling)
+            {
+                float factor = (mouseX - (float) this.morphs.x) / this.morphs.w;
+
+                this.scroll = (int) (factor * maxWidth);
+            }
+
+            this.scroll = MathHelper.clamp_int(this.scroll, 0, maxWidth < 0 ? 0 : maxWidth);
 
             /* Draw scrollbar */
             if (maxWidth > 0)
