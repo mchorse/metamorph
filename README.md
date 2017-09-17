@@ -16,13 +16,13 @@ After that, Metamorph mod should be installed and will appear in Minecraft's mod
 
 ## Videos
 
-Change log video for Metamorph 1.1 by me:
+Change log video for Metamorph 1.1.4 by me:
 
-<a href="https://youtu.be/4BrvdKbVAHo"><img src="https://img.youtube.com/vi/4BrvdKbVAHo/0.jpg"></a> 
+<a href="https://youtu.be/zAOq_VP-vuE"><img src="https://img.youtube.com/vi/zAOq_VP-vuE/0.jpg"></a> 
 
 Mod showcases of Metamorph by other people (including in other languages):
 
-<a href="https://youtu.be/dPkNN2ES5NA?list=PL6UPd2Tj65nHV_xy6zypT58IgZ73IH-2K"><img src="https://img.youtube.com/vi/dPkNN2ES5NA/0.jpg"></a> 
+<a href="https://youtu.be/D3oScOrqU1U?list=PL6UPd2Tj65nHV_xy6zypT58IgZ73IH-2K"><img src="https://img.youtube.com/vi/D3oScOrqU1U/0.jpg"></a> 
 
 ## How to play
 

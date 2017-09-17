@@ -4,7 +4,10 @@
 
 This is a patch update has no aim altogether. It's just has few fixes and lots of nice features being added like an ability to morph into players (and have their skins) and blocks, more mob actions and etc.
 
+<a href="https://youtu.be/zAOq_VP-vuE"><img src="https://img.youtube.com/vi/zAOq_VP-vuE/0.jpg"></a> 
+
 * Added block morphs
+* Added players morphs
 * Added command `/metamorph` which can be used for reloading morph blacklist and settings
 * Added configurable morphing animation 
 * Added morph builder GUI to creative morph menu
@@ -15,7 +18,7 @@ This is a patch update has no aim altogether. It's just has few fixes and lots o
     * `llama` – spits on action key
     * `silverfish` – can hide in a block when action key
     * `endermite` – teleports randomly on action key
-* Added players morphs
+* Added more event hooks #64 (thanks to asanetargoss)
 * Don't allow survival morph overlay to show up when using `;` and `\` keys when there are no variants
 * Improve creative morphs menu 
     * Add "Scroll to top" button (suggested by ivandoesyt on Twitter)
@@ -29,7 +32,9 @@ This is a patch update has no aim altogether. It's just has few fixes and lots o
     * Make ghosts like items (unpushable and stuff)
     * Make ghosts hover and rotate
     * Make ghost item-like pickup animation 
+* Fixed "healing" bug between morphings #64 (thanks to asanetargoss)
 * Fixed the undead hurting sounds #59 
+* Fixed left hand side
 * Fixed orientation of sitting for morphs
 * Fixed name tags – now it respects the team options #50 
 * Fixed Ender Dragon transformations/model visibility #62

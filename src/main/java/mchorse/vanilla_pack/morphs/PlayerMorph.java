@@ -237,6 +237,7 @@ public class PlayerMorph extends EntityMorph
     {
         public GameProfile profile;
         public boolean isBaby;
+        public String skinType = "steve";
 
         public PlayerMorphClientEntity(World world, GameProfile profile)
         {
@@ -249,6 +250,12 @@ public class PlayerMorph extends EntityMorph
         public boolean isChild()
         {
             return this.isBaby;
+        }
+
+        @Override
+        public String getSkinType()
+        {
+            return this.skinType.equals("alex") ? "alex" : "steve";
         }
 
         /**
@@ -320,6 +327,7 @@ public class PlayerMorph extends EntityMorph
             super.readEntityFromNBT(compound);
 
             this.isBaby = compound.getBoolean("IsBaby");
+            this.skinType = compound.getString("SkinType");
         }
 
         @Override
@@ -328,6 +336,7 @@ public class PlayerMorph extends EntityMorph
             super.writeEntityToNBT(compound);
 
             compound.setBoolean("IsBaby", this.isBaby);
+            compound.setString("SkinType", this.skinType);
         }
     }
 }
