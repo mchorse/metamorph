@@ -67,6 +67,7 @@ public class EntityMorph extends EntityLivingBase implements IEntityAdditionalSp
 
         this.owner = owner;
         this.morph = morph;
+        this.ownerless = false;
 
         this.setSize(morph);
     }
@@ -250,14 +251,19 @@ public class EntityMorph extends EntityLivingBase implements IEntityAdditionalSp
 
         this.owner = owner.isEmpty() ? null : UUID.fromString(owner);
 
-        if (compound.hasKey("Ownerless"))
+        if (this.owner != null)
         {
-            this.ownerless = compound.getBoolean("Ownerless");
+            this.ownerless = false;
         }
 
         if (compound.hasKey("Username", 8))
         {
             this.username = compound.getString("Username");
+            this.ownerless = false;
+        }
+        else if (compound.hasKey("Ownerless"))
+        {
+            this.ownerless = compound.getBoolean("Ownerless");
         }
 
         if (compound.hasKey("Morph", 10))

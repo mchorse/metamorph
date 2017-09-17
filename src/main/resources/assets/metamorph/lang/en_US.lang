@@ -30,6 +30,7 @@ metamorph.gui.only_favorites=Show favorites
 metamorph.gui.all_morphs=Show all
 metamorph.gui.no_morph=No Morph Selected
 
+metamorph.gui.from_morph=From morph
 metamorph.gui.list=List
 metamorph.gui.builder=Builder
 metamorph.gui.panels.nbt=NBT data
@@ -65,6 +66,7 @@ metamorph.success.acquire=Player by username %s was successfully acquired %s mor
 morph.category.unknown=Unknown morphs
 morph.category.unsorted=Unsorted morphs
 morph.category.animal=Animal morphs
+morph.category.blocks=Blocks morphs
 morph.category.boss=Boss morphs
 morph.category.acquired=Your morphs
 morph.category.hostile=Hostile morphs

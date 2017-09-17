@@ -41,6 +41,7 @@ public class GuiCreativeMenu extends GuiScreen
     private GuiButton close;
     private GuiButton top;
     private GuiButton toggle;
+    private GuiButton fromMorph;
     private GuiTextField search;
     private GuiCreativeMorphs pane;
     private GuiMorphBuilder builder;
@@ -79,7 +80,8 @@ public class GuiCreativeMenu extends GuiScreen
         this.close = new GuiButton(2, x - 60, y, 60, 20, I18n.format("metamorph.gui.close"));
         this.top = new GuiButton(3, this.width - 30, 35, 20, 20, "^");
         this.top.visible = !this.builderMode;
-        this.toggle = new GuiButton(4, 10, this.height - 30, 125, 20, I18n.format("metamorph.gui.builder"));
+        this.toggle = new GuiButton(4, 10, this.height - 30, 55, 20, I18n.format("metamorph.gui.builder"));
+        this.fromMorph = new GuiButton(5, 145 - 75, this.height - 30, 65, 20, I18n.format("metamorph.gui.from_morph"));
 
         this.search = new GuiTextField(-1, this.fontRenderer, 195 + 1, 35 + 1, this.width - 230 - 2, 20 - 2);
         this.search.setFocused(true);
@@ -89,6 +91,7 @@ public class GuiCreativeMenu extends GuiScreen
         this.buttonList.add(this.close);
         this.buttonList.add(this.top);
         this.buttonList.add(this.toggle);
+        this.buttonList.add(this.fromMorph);
 
         this.pane.setHidden(false);
         this.pane.updateRect(145, 55, this.width - 155, this.height - 55);
@@ -118,6 +121,15 @@ public class GuiCreativeMenu extends GuiScreen
             this.builderMode = !this.builderMode;
             this.top.visible = !this.builderMode;
             this.toggle.displayString = this.builderMode ? I18n.format("metamorph.gui.list") : I18n.format("metamorph.gui.builder");
+        }
+        else if (button.id == 5)
+        {
+            if (!this.builderMode && this.builder.fromBuilder(this.getMorph()))
+            {
+                this.builderMode = true;
+                this.top.visible = !this.builderMode;
+                this.toggle.displayString = this.builderMode ? I18n.format("metamorph.gui.list") : I18n.format("metamorph.gui.builder");
+            }
         }
         else if (button.id <= 2)
         {

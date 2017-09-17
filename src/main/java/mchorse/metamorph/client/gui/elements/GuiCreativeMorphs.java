@@ -193,7 +193,16 @@ public class GuiCreativeMorphs extends GuiScrollPane
             /* Select current morph */
             for (MorphCell cell : category.cells)
             {
-                if (selectedCat == -1 && morph != null && cell.current().morph.equals(morph))
+                Collections.sort(cell.variants, new Comparator<MorphVariant>()
+                {
+                    @Override
+                    public int compare(MorphVariant a, MorphVariant b)
+                    {
+                        return a.name.compareTo(b.name);
+                    }
+                });
+
+                if (selectedCat == -1 && morph != null && cell.hasMorph(morph))
                 {
                     selectedCat = i;
                     selectedMorph = j;
@@ -240,6 +249,8 @@ public class GuiCreativeMorphs extends GuiScrollPane
             return;
         }
 
+        String lcfilter = filter.toLowerCase();
+
         this.scrollY = 0;
         this.scrollHeight = 0;
         this.previousFilter = filter;
@@ -250,11 +261,30 @@ public class GuiCreativeMorphs extends GuiScrollPane
 
             for (MorphCell cell : cat.cells)
             {
-                MorphVariant variant = cell.current();
+                boolean selected = false;
+                int j = 0;
 
-                variant.hidden = filter.isEmpty() ? false : variant.name.toLowerCase().indexOf(filter.toLowerCase()) == -1;
+                cell.hasVisible = false;
 
-                if (!variant.hidden)
+                for (MorphVariant variant : cell.variants)
+                {
+                    variant.hidden = filter.isEmpty() ? false : variant.name.toLowerCase().indexOf(lcfilter) == -1 && variant.morph.name.toLowerCase().indexOf(lcfilter) == -1;
+
+                    if (!variant.hidden)
+                    {
+                        if (!selected)
+                        {
+                            cell.selected = j;
+                            selected = true;
+                        }
+
+                        cell.hasVisible = true;
+                    }
+
+                    j++;
+                }
+
+                if (cell.hasVisible)
                 {
                     i++;
                 }
@@ -351,7 +381,7 @@ public class GuiCreativeMorphs extends GuiScrollPane
 
             for (MorphCell cell : cat.cells)
             {
-                if (!cell.current().hidden)
+                if (cell.hasVisible)
                 {
                     if (j == index)
                     {
@@ -431,7 +461,7 @@ public class GuiCreativeMorphs extends GuiScrollPane
 
                 MorphVariant variant = cell.current();
 
-                if (variant.hidden)
+                if (!cell.hasVisible)
                 {
                     continue;
                 }
@@ -535,12 +565,40 @@ public class GuiCreativeMorphs extends GuiScrollPane
          */
         public int selected;
 
+        /**
+         * Whether this morph has visible
+         */
+        public boolean hasVisible;
+
         public MorphCell()
-        {}
+        {
+            this.hasVisible = true;
+        }
 
         public MorphCell(String name, AbstractMorph morph)
         {
+            this();
             this.variants.add(new MorphVariant(name, morph));
+        }
+
+        /**
+         * Checks whether this morph has similar  
+         */
+        public boolean hasMorph(AbstractMorph morph)
+        {
+            for (int i = 0, c = this.variants.size(); i < c; i++)
+            {
+                MorphVariant variant = this.variants.get(i);
+
+                if (variant.morph.equals(morph))
+                {
+                    this.selected = i;
+
+                    return true;
+                }
+            }
+
+            return false;
         }
 
         /**

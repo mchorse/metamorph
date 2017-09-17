@@ -158,6 +158,16 @@ public class MobMorphFactory implements IMorphFactory
         }
 
         this.addMorph(morphs, world, "minecraft:rabbit", "Toast", "{CustomName:\"Toast\"}");
+
+        /* Blocks */
+        this.addBlockMorph(morphs, world, "{Block:\"minecraft:stone\"}");
+        this.addBlockMorph(morphs, world, "{Block:\"minecraft:cobblestone\"}");
+        this.addBlockMorph(morphs, world, "{Block:\"minecraft:grass\"}");
+        this.addBlockMorph(morphs, world, "{Block:\"minecraft:dirt\"}");
+        this.addBlockMorph(morphs, world, "{Block:\"minecraft:log\"}");
+        this.addBlockMorph(morphs, world, "{Block:\"minecraft:diamond_block\"}");
+        this.addBlockMorph(morphs, world, "{Block:\"minecraft:sponge\"}");
+        this.addBlockMorph(morphs, world, "{Block:\"minecraft:deadbush\"}");
     }
 
     /**
@@ -229,6 +239,28 @@ public class MobMorphFactory implements IMorphFactory
         catch (Exception e)
         {
             System.out.println("An error occured during insertion of " + name + " morph!");
+            e.printStackTrace();
+        }
+    }
+
+    /**
+     * Add an entity morph to the morph list
+     */
+    private void addBlockMorph(MorphList morphs, World world, String json)
+    {
+        try
+        {
+            BlockMorph morph = new BlockMorph();
+            NBTTagCompound tag = JsonToNBT.getTagFromJson(json);
+
+            tag.setString("Name", morph.name);
+            morph.fromNBT(tag);
+
+            morphs.addMorphVariant("block", "blocks", morph.block.getBlock().getLocalizedName(), morph);
+        }
+        catch (Exception e)
+        {
+            System.out.println("Failed to create a block morph with the data! " + json);
             e.printStackTrace();
         }
     }

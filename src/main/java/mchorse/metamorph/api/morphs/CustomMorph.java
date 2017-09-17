@@ -103,6 +103,7 @@ public class CustomMorph extends AbstractMorph
     {
         RenderCustomModel render = (RenderCustomModel) this.renderer;
 
+        render.current = this;
         render.doRender(entity, x, y, z, entityYaw, partialTicks);
     }
 

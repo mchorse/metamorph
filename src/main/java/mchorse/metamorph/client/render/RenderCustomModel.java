@@ -2,9 +2,7 @@ package mchorse.metamorph.client.render;
 
 import java.util.Map;
 
-import mchorse.metamorph.api.EntityUtils;
 import mchorse.metamorph.api.models.Model;
-import mchorse.metamorph.api.morphs.AbstractMorph;
 import mchorse.metamorph.api.morphs.CustomMorph;
 import mchorse.metamorph.client.model.ModelCustom;
 import mchorse.metamorph.client.model.ModelCustomRenderer;
@@ -25,6 +23,11 @@ import net.minecraft.util.math.Vec3d;
 
 public class RenderCustomModel extends RenderLivingBase<EntityLivingBase>
 {
+    /**
+     * Currently used morph 
+     */
+    public CustomMorph current;
+
     public RenderCustomModel(RenderManager renderManagerIn, ModelBase modelBaseIn, float shadowSizeIn)
     {
         super(renderManagerIn, null, shadowSizeIn);
@@ -123,14 +126,11 @@ public class RenderCustomModel extends RenderLivingBase<EntityLivingBase>
         Map<String, ModelCustom> models = ModelCustom.MODELS;
         ModelCustom model = null;
         Model.Pose pose = null;
-        AbstractMorph morph = EntityUtils.getMorph(entity);
 
-        if (morph != null)
+        if (this.current != null)
         {
-            CustomMorph custom = (CustomMorph) morph;
-
-            model = models.get(custom.name);
-            pose = custom.getPose(entity);
+            model = models.get(this.current.name);
+            pose = this.current.getPose(entity);
         }
 
         if (model != null)
