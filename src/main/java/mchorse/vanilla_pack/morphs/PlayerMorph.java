@@ -51,7 +51,7 @@ public class PlayerMorph extends EntityMorph
 
         if (world.isRemote)
         {
-            created = new PlayerMorphClientEntity(world, this.profile);
+            created = this.getPlayerClient(world);
         }
         else
         {
@@ -83,6 +83,15 @@ public class PlayerMorph extends EntityMorph
         {
             this.setupRenderer();
         }
+    }
+
+    /**
+     * Encapsulate the code into removable (on client side) method 
+     */
+    @SideOnly(Side.CLIENT)
+    private EntityPlayer getPlayerClient(World world)
+    {
+        return new PlayerMorphClientEntity(world, this.profile);
     }
 
     /**
@@ -195,9 +204,9 @@ public class PlayerMorph extends EntityMorph
         {
             this.profile = NBTUtil.readGameProfileFromNBT(tag.getCompoundTag("PlayerProfile"));
         }
-        else if (tag.hasKey("PlayerName"))
+        else if (tag.hasKey("Username"))
         {
-            this.profile = new GameProfile(null, tag.getString("PlayerName"));
+            this.profile = new GameProfile(null, tag.getString("Username"));
             this.profile = TileEntitySkull.updateGameprofile(this.profile);
         }
     }

@@ -52,7 +52,7 @@ public class GuiPlayerMorphBuilder extends GuiAbstractMorphBuilder
             NBTTagCompound tag = new NBTTagCompound();
 
             tag.setString("Name", "Player");
-            tag.setString("PlayerName", this.username.getText());
+            tag.setString("Username", this.username.getText());
 
             this.cached = MorphManager.INSTANCE.morphFromNBT(tag);
         }
