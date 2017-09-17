@@ -16,7 +16,7 @@ After that, Metamorph mod should be installed and will appear in Minecraft's mod
 
 ## Videos
 
-Change log video for Metamorph 1.1 by me:
+Change log video for Metamorph 1.1.4 by me:
 
 <a href="https://youtu.be/zAOq_VP-vuE"><img src="https://img.youtube.com/vi/zAOq_VP-vuE/0.jpg"></a> 
 
