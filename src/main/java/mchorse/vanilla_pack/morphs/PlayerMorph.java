@@ -51,7 +51,7 @@ public class PlayerMorph extends EntityMorph
 
         if (world.isRemote)
         {
-            created = new PlayerMorphClientEntity(world, this.profile);
+            created = this.getPlayerClient(world);
         }
         else
         {
@@ -86,6 +86,15 @@ public class PlayerMorph extends EntityMorph
     }
 
     /**
+     * Encapsulate the code into removable (on client side) method 
+     */
+    @SideOnly(Side.CLIENT)
+    private EntityPlayer getPlayerClient(World world)
+    {
+        return new PlayerMorphClientEntity(world, this.profile);
+    }
+
+    /**
      * Updates the player entity, but not using its update methods, but 
      * rather some code that only updates player's cape and some other 
      * stuff.
@@ -96,6 +105,8 @@ public class PlayerMorph extends EntityMorph
         EntityPlayer entity = (EntityPlayer) this.entity;
 
         net.minecraftforge.fml.common.FMLCommonHandler.instance().onPlayerPreTick(entity);
+
+        entity.setPrimaryHand(target.getPrimaryHand());
 
         /* Update the cape */
         entity.prevChasingPosX = entity.chasingPosX;
@@ -193,9 +204,9 @@ public class PlayerMorph extends EntityMorph
         {
             this.profile = NBTUtil.readGameProfileFromNBT(tag.getCompoundTag("PlayerProfile"));
         }
-        else if (tag.hasKey("PlayerName"))
+        else if (tag.hasKey("Username"))
         {
-            this.profile = new GameProfile(null, tag.getString("PlayerName"));
+            this.profile = new GameProfile(null, tag.getString("Username"));
             this.profile = TileEntitySkull.updateGameprofile(this.profile);
         }
     }

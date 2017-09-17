@@ -270,6 +270,11 @@ public class EntityMorph extends AbstractMorph
         entity.noClip = true;
         entity.setAlwaysRenderNameTag(true);
 
+        if (entity instanceof EntityLiving)
+        {
+            ((EntityLiving) entity).setLeftHanded(false);
+        }
+
         if (this.settings == MorphSettings.DEFAULT)
         {
             this.customSettings = true;
