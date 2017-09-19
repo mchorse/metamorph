@@ -255,7 +255,7 @@ public class PlayerMorph extends EntityMorph
         @Override
         public String getSkinType()
         {
-            return this.skinType.equals("alex") ? "alex" : "steve";
+            return this.skinType.equals("alex") ? "slim" : "default";
         }
 
         /**
