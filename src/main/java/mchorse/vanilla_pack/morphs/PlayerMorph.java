@@ -106,7 +106,7 @@ public class PlayerMorph extends EntityMorph
 
         net.minecraftforge.fml.common.FMLCommonHandler.instance().onPlayerPreTick(entity);
 
-        entity.setPrimaryHand(target.getPrimaryHand());
+        entity.setPrimaryHand(target.getPrimaryHand().opposite());
 
         /* Update the cape */
         entity.prevChasingPosX = entity.chasingPosX;

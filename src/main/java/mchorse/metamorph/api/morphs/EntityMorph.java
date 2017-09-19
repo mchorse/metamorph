@@ -272,7 +272,7 @@ public class EntityMorph extends AbstractMorph
 
         if (entity instanceof EntityLiving)
         {
-            ((EntityLiving) entity).setLeftHanded(false);
+            ((EntityLiving) entity).setLeftHanded(true);
         }
 
         if (this.settings == MorphSettings.DEFAULT)
