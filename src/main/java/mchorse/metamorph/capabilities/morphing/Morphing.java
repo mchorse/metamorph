@@ -6,8 +6,11 @@ import java.util.List;
 
 import mchorse.metamorph.Metamorph;
 import mchorse.metamorph.api.morphs.AbstractMorph;
+import mchorse.metamorph.network.Dispatcher;
+import mchorse.metamorph.network.common.PacketMorphState;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.init.SoundEvents;
 import net.minecraft.util.EnumParticleTypes;
 import net.minecraft.world.WorldServer;
@@ -52,6 +55,18 @@ public class Morphing implements IMorphing
      * very close to zero, and retrieved when the fraction is meaningful again
      */
     private float lastHealthRatio;
+    
+    /**
+     * Whether or not the current player is in a morph which can drown on land
+     * due to having the Swim ability
+     */
+    private boolean hasSquidAir = false;
+    
+    /**
+     * The air value used for morphs with the Swim ability in place of regular
+     * player air
+     */
+    private int squidAir = 300;
 
     public static IMorphing get(EntityPlayer player)
     {
@@ -345,6 +360,26 @@ public class Morphing implements IMorphing
     {
         this.lastHealthRatio = lastHealthRatio;
     }
+    
+    @Override
+    public boolean getHasSquidAir() {
+        return hasSquidAir;
+    }
+
+    @Override
+    public void setHasSquidAir(boolean hasSquidAir) {
+        this.hasSquidAir = hasSquidAir;
+    }
+    
+    @Override
+    public int getSquidAir() {
+        return squidAir;
+    }
+
+    @Override
+    public void setSquidAir(int squidAir) {
+        this.squidAir = squidAir;
+    }
 
     @Override
     public void update(EntityPlayer player)
@@ -365,6 +400,15 @@ public class Morphing implements IMorphing
         if (this.morph != null)
         {
             this.morph.update(player, this);
+        }
+        
+        /* Keep morph state up-to-date by sending a packet once per second,
+         * currently only used to set the air state for morphs with the
+         * Swim ability. Air state is stored in morphing capability.
+         */
+        if (!player.worldObj.isRemote && player.ticksExisted % 20 == 0)
+        {
+            Dispatcher.sendTo(new PacketMorphState(this), (EntityPlayerMP)player);
         }
     }
 }

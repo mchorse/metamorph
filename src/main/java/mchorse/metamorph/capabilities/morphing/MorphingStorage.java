@@ -6,6 +6,7 @@ import java.util.List;
 import mchorse.metamorph.api.MorphManager;
 import mchorse.metamorph.api.morphs.AbstractMorph;
 import net.minecraft.nbt.NBTBase;
+import net.minecraft.nbt.NBTTagByte;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagFloat;
 import net.minecraft.nbt.NBTTagInt;
@@ -32,6 +33,8 @@ public class MorphingStorage implements IStorage<IMorphing>
         NBTTagList acquired = new NBTTagList();
         NBTTagList favorites = new NBTTagList();
         tag.setTag("lastHealthRatio", new NBTTagFloat(instance.getLastHealthRatio()));
+        tag.setTag("hasSquidAir", new NBTTagByte(instance.getHasSquidAir() ? (byte)1 : (byte)0));
+        tag.setTag("squidAir", new NBTTagInt(instance.getSquidAir()));
 
         if (instance.getCurrentMorph() != null)
         {
@@ -70,6 +73,8 @@ public class MorphingStorage implements IStorage<IMorphing>
             NBTTagList favorites = tag.getTagList("Favorites", 3);
             NBTTagCompound morphTag = tag.getCompoundTag("Morph");
             instance.setLastHealthRatio(tag.getFloat("lastHealthRatio"));
+            instance.setHasSquidAir(tag.getByte("hasSquidAir") == 1);
+            instance.setSquidAir(tag.getInteger("squidAir"));
 
             if (!tag.hasNoTags())
             {

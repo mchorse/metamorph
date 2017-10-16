@@ -3,6 +3,7 @@ package mchorse.metamorph.api;
 import java.util.ArrayList;
 import java.util.List;
 
+import mchorse.metamorph.ClientProxy;
 import mchorse.metamorph.Metamorph;
 import mchorse.metamorph.api.events.SpawnGhostEvent;
 import mchorse.metamorph.api.morphs.AbstractMorph;
@@ -14,6 +15,7 @@ import net.minecraft.entity.EntityLiving;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraftforge.client.GuiIngameForge;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.common.util.FakePlayer;
 import net.minecraftforge.event.entity.living.LivingAttackEvent;
@@ -83,6 +85,12 @@ public class MorphHandler
             {
                 player.eyeHeight = player.getDefaultEyeHeight();
             }
+        }
+        
+        if (player.worldObj.isRemote) {
+            // Assume no squid air unless set by the Swim ability each update
+            GuiIngameForge.renderAir = true;
+            ClientProxy.hud.renderSquidAir = false;
         }
 
         try

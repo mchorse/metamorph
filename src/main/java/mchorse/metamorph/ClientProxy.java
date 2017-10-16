@@ -7,6 +7,7 @@ import mchorse.metamorph.api.MorphManager;
 import mchorse.metamorph.client.KeyboardHandler;
 import mchorse.metamorph.client.RenderingHandler;
 import mchorse.metamorph.client.gui.builder.GuiMorphBuilder;
+import mchorse.metamorph.client.gui.elements.GuiHud;
 import mchorse.metamorph.client.gui.elements.GuiOverlay;
 import mchorse.metamorph.client.gui.elements.GuiSurvivalMorphs;
 import mchorse.metamorph.client.render.RenderCustomModel;
@@ -42,6 +43,8 @@ public class ClientProxy extends CommonProxy
      * GUI overlay which is responsible for showing up acquired morphs
      */
     public static GuiOverlay morphOverlay = new GuiOverlay();
+    
+    public static GuiHud hud = new GuiHud();
 
     /**
      * Custom model renderer 
@@ -74,7 +77,7 @@ public class ClientProxy extends CommonProxy
         super.load();
 
         /* Register client event handlers */
-        MinecraftForge.EVENT_BUS.register(new RenderingHandler(overlay, morphOverlay));
+        MinecraftForge.EVENT_BUS.register(new RenderingHandler(overlay, morphOverlay, hud));
         MinecraftForge.EVENT_BUS.register(keys = new KeyboardHandler(overlay));
 
         /* Register client morph manager */
