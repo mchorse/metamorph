@@ -27,15 +27,7 @@ public class TGuiIngameForge implements IClassTransformer
     {
         if (transformedName.equals(GUI_INGAME_FORGE))
         {
-            try
-            {
             return transformClass(basicClass);
-            }
-            catch (Exception e)
-            {
-                e.printStackTrace();
-                throw e;
-            }
         }
         return basicClass;
     }
