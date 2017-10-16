@@ -420,6 +420,8 @@ public class EntityMorph extends AbstractMorph
         entity.ticksExisted = target.ticksExisted;
         /* Fighting with death of entities like zombies */
         entity.setHealth(target.getHealth());
+        /* Prevent drowning sound of squids, guardians, etc... */
+        entity.setAir(300);
 
         /* Now goes the code responsible for achieving somewhat riding 
          * support. This is ridiculous... */
