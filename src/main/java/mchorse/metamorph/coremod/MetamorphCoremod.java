@@ -11,7 +11,6 @@ import org.objectweb.asm.ClassReader;
 import org.objectweb.asm.util.TraceClassVisitor;
 
 import mchorse.metamorph.Metamorph;
-import mchorse.metamorph.coremod.transform.TEntityPlayer;
 import mchorse.metamorph.coremod.transform.TGuiIngameForge;
 import net.minecraftforge.fml.common.DummyModContainer;
 import net.minecraftforge.fml.common.LoadController;
@@ -38,8 +37,7 @@ public class MetamorphCoremod implements IFMLLoadingPlugin
     {
         return new String[]
         {
-                TGuiIngameForge.class.getName(),
-                TEntityPlayer.class.getName()
+                TGuiIngameForge.class.getName()
         };
     }
 
