@@ -6,6 +6,8 @@ import mchorse.metamorph.api.morphs.AbstractMorph;
 import mchorse.metamorph.api.morphs.EntityMorph;
 import mchorse.metamorph.capabilities.morphing.IMorphing;
 import mchorse.metamorph.capabilities.morphing.Morphing;
+import mchorse.metamorph.coremod.MetamorphCoremod;
+import mchorse.metamorph.coremod.transform.TEntityPlayer;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
@@ -27,7 +29,8 @@ public class SoundHooks {
                 EntityLivingBase entity = ((EntityMorph)morph).getEntity();
                 try
                 {
-                    Method methodHurtSound = entity.getClass().getDeclaredMethod("getHurtSound");
+                    Method methodHurtSound = entity.getClass()
+                            .getDeclaredMethod(TEntityPlayer.GET_HURT_SOUND[MetamorphCoremod.obfuscated ? 1 : 0]);
                     methodHurtSound.setAccessible(true);
                     SoundEvent newSound = (SoundEvent)methodHurtSound.invoke(entity);
                     if (newSound != null)
@@ -60,7 +63,8 @@ public class SoundHooks {
                 EntityLivingBase entity = ((EntityMorph)morph).getEntity();
                 try
                 {
-                    Method methodDeathSound = entity.getClass().getDeclaredMethod("getDeathSound");
+                    Method methodDeathSound = entity.getClass()
+                            .getDeclaredMethod(TEntityPlayer.GET_DEATH_SOUND[MetamorphCoremod.obfuscated ? 1 : 0]);
                     methodDeathSound.setAccessible(true);
                     SoundEvent newSound = (SoundEvent)methodDeathSound.invoke(entity);
                     if (newSound != null)

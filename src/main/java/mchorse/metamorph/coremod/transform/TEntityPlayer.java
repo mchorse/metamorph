@@ -49,7 +49,7 @@ public class TEntityPlayer implements IClassTransformer {
             {
                 transformDeathSound(method);
             }
-            //TODO: step sounds (will require a more advanced coremod patch to store state)
+            //TODO: step sounds
         }
         
         ClassWriter writer = new ClassWriter(ClassWriter.COMPUTE_MAXS);
