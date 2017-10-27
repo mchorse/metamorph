@@ -8,9 +8,7 @@ import org.objectweb.asm.Opcodes;
 import org.objectweb.asm.tree.AbstractInsnNode;
 import org.objectweb.asm.tree.ClassNode;
 import org.objectweb.asm.tree.FieldInsnNode;
-import org.objectweb.asm.tree.FrameNode;
 import org.objectweb.asm.tree.InsnList;
-import org.objectweb.asm.tree.LabelNode;
 import org.objectweb.asm.tree.MethodInsnNode;
 import org.objectweb.asm.tree.MethodNode;
 import org.objectweb.asm.tree.VarInsnNode;
@@ -46,12 +44,13 @@ public class TGuiIngameForge implements IClassTransformer
                 InsnList instructions = method.instructions;
                 
                 AbstractInsnNode entryPoint = null;
+                AbstractInsnNode possibleEntryPoint = null;
                 ListIterator<AbstractInsnNode> iterator = instructions.iterator();
                 
                 int entryPointProgress = 0;
                 
                 /*
-                 * We want to patch after this line:
+                 * We want to patch before this line:
                  * if (renderAir)    renderAir(width, height);
                  */
                 while (iterator.hasNext() && entryPoint == null)
@@ -61,22 +60,17 @@ public class TGuiIngameForge implements IClassTransformer
                     switch (entryPointProgress)
                     {
                     case 0:
-                        if (insn.getOpcode() == Opcodes.INVOKEVIRTUAL &&
-                        ((MethodInsnNode)insn).name.equals("renderAir"))
+                        if (insn.getOpcode() == Opcodes.GETSTATIC &&
+                        ((FieldInsnNode)insn).name.equals("renderAir"))
                         {
+                            possibleEntryPoint = insn;
                             entryPointProgress++;
                         }
                     break;
                     case 1:
-                        if (insn instanceof LabelNode)
+                        if (insn.getOpcode() == Opcodes.IFEQ)
                         {
-                            entryPointProgress++;
-                        }
-                    break;
-                    case 2:
-                        if (insn instanceof FrameNode)
-                        {
-                            entryPoint = insn;
+                            entryPoint = possibleEntryPoint;
                         }
                     break;
                     }
@@ -108,7 +102,7 @@ public class TGuiIngameForge implements IClassTransformer
                             "FLnet/minecraft/client/gui/ScaledResolution;)V",
                             false));
                     
-                    instructions.insert(entryPoint, patch);
+                    instructions.insertBefore(entryPoint, patch);
                 }
             }
         }
