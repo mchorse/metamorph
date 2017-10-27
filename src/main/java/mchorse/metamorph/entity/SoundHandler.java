@@ -20,10 +20,63 @@ import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 /**
  * Replaces the sounds that players usually make when they are in morphs
  */
-public class SoundHandler {
+public class SoundHandler
+{
     private static final String[] GET_HURT_SOUND = new String[]{"getHurtSound", "func_184601_bQ"};
     private static final String[] GET_DEATH_SOUND = new String[]{"getDeathSound", "func_184615_bR"};
     private static final String[] PLAY_STEP_SOUND = new String[]{"playStepSound", "func_180429_a"};
+    
+    /**
+     * Ascends up a class chain until it finds the specified method, regardless
+     * of access modifier. Assumes the Entity class defines the specified method.
+     */
+    private static Method getPrivateEntityMethod(Class clazz, String methodName, Class<?>... paramVarArgs)
+            throws NoSuchMethodException, SecurityException
+    {
+        Method privateMethod = null;
+        
+        for (Class testClazz = clazz;
+                testClazz != Entity.class && privateMethod == null;
+                testClazz = testClazz.getSuperclass())
+        {
+            for (Method method : testClazz.getDeclaredMethods())
+            {
+                if (!method.getName().equals(methodName))
+                {
+                    continue;
+                }
+                
+                Class<?>[] parameters = method.getParameterTypes();
+                if (!(parameters.length == paramVarArgs.length))
+                {
+                    continue;
+                }
+                boolean matchingMethod = true;
+                for (int i = 0; i < parameters.length; i++)
+                {
+                    if (!(parameters[i] == paramVarArgs[i]))
+                    {
+                        matchingMethod = false;
+                        break;
+                    }
+                }
+                
+                if (matchingMethod)
+                {
+                    privateMethod = method;
+                    break;
+                }
+            }
+        }
+        
+        if (privateMethod == null)
+        {
+            privateMethod = Entity.class.getDeclaredMethod(methodName, paramVarArgs);
+        }
+        
+        privateMethod.setAccessible(true);
+        return privateMethod;
+    }
     
     @SubscribeEvent
     public void onPlaySound(PlaySoundAtEntityEvent event)
@@ -74,9 +127,8 @@ public class SoundHandler {
     {
         try
         {
-            Method methodHurtSound = soundEntity.getClass()
-                    .getDeclaredMethod(GET_HURT_SOUND[MetamorphCoremod.obfuscated ? 1 : 0]);
-            methodHurtSound.setAccessible(true);
+            Method methodHurtSound = getPrivateEntityMethod(soundEntity.getClass(),
+                    GET_HURT_SOUND[MetamorphCoremod.obfuscated ? 1 : 0]);
             SoundEvent newSound = (SoundEvent)methodHurtSound.invoke(soundEntity);
             if (newSound != null)
             {
@@ -95,9 +147,8 @@ public class SoundHandler {
     {
         try
         {
-            Method methodDeathSound = soundEntity.getClass()
-                    .getDeclaredMethod(GET_DEATH_SOUND[MetamorphCoremod.obfuscated ? 1 : 0]);
-            methodDeathSound.setAccessible(true);
+            Method methodDeathSound = getPrivateEntityMethod(soundEntity.getClass(),
+                    GET_DEATH_SOUND[MetamorphCoremod.obfuscated ? 1 : 0]);
             SoundEvent newSound = (SoundEvent)methodDeathSound.invoke(soundEntity);
             if (newSound != null)
             {
@@ -116,10 +167,9 @@ public class SoundHandler {
     {
         try
         {
-            Method methodPlayStep = soundEntity.getClass()
-                    .getDeclaredMethod(PLAY_STEP_SOUND[MetamorphCoremod.obfuscated ? 1 : 0],
-                            BlockPos.class, Block.class);
-            methodPlayStep.setAccessible(true);
+            Method methodPlayStep = getPrivateEntityMethod(soundEntity.getClass(),
+                    PLAY_STEP_SOUND[MetamorphCoremod.obfuscated ? 1 : 0],
+                    BlockPos.class, Block.class);
             
             int x = MathHelper.floor_double(soundEntity.posX);
             int y = MathHelper.floor_double(soundEntity.posY - 0.20000000298023224D);
