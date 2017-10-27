@@ -28,15 +28,15 @@ public class SoundHandler
     
     /**
      * Ascends up a class chain until it finds the specified method, regardless
-     * of access modifier. Assumes the Entity class defines the specified method.
+     * of access modifier. Assumes finalClazz is the original declarer of the specified method.
      */
-    private static Method getPrivateEntityMethod(Class clazz, String methodName, Class<?>... paramVarArgs)
+    private static Method getPrivateMethod(Class clazz, Class finalClazz, String methodName, Class<?>... paramVarArgs)
             throws NoSuchMethodException, SecurityException
     {
         Method privateMethod = null;
         
         for (Class testClazz = clazz;
-                testClazz != Entity.class && privateMethod == null;
+                testClazz != finalClazz && privateMethod == null;
                 testClazz = testClazz.getSuperclass())
         {
             for (Method method : testClazz.getDeclaredMethods())
@@ -71,7 +71,7 @@ public class SoundHandler
         
         if (privateMethod == null)
         {
-            privateMethod = Entity.class.getDeclaredMethod(methodName, paramVarArgs);
+            privateMethod = finalClazz.getDeclaredMethod(methodName, paramVarArgs);
         }
         
         privateMethod.setAccessible(true);
@@ -127,7 +127,8 @@ public class SoundHandler
     {
         try
         {
-            Method methodHurtSound = getPrivateEntityMethod(soundEntity.getClass(),
+            Method methodHurtSound = getPrivateMethod(soundEntity.getClass(),
+                    EntityLivingBase.class,
                     GET_HURT_SOUND[MetamorphCoremod.obfuscated ? 1 : 0]);
             SoundEvent newSound = (SoundEvent)methodHurtSound.invoke(soundEntity);
             if (newSound != null)
@@ -147,7 +148,8 @@ public class SoundHandler
     {
         try
         {
-            Method methodDeathSound = getPrivateEntityMethod(soundEntity.getClass(),
+            Method methodDeathSound = getPrivateMethod(soundEntity.getClass(),
+                    EntityLivingBase.class,
                     GET_DEATH_SOUND[MetamorphCoremod.obfuscated ? 1 : 0]);
             SoundEvent newSound = (SoundEvent)methodDeathSound.invoke(soundEntity);
             if (newSound != null)
@@ -167,7 +169,8 @@ public class SoundHandler
     {
         try
         {
-            Method methodPlayStep = getPrivateEntityMethod(soundEntity.getClass(),
+            Method methodPlayStep = getPrivateMethod(soundEntity.getClass(),
+                    Entity.class,
                     PLAY_STEP_SOUND[MetamorphCoremod.obfuscated ? 1 : 0],
                     BlockPos.class, Block.class);
             
