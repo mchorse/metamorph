@@ -96,7 +96,7 @@ public class TGuiIngameForge implements IClassTransformer
                             "Lnet/minecraft/client/gui/ScaledResolution;"));
                     // Event hook for AirPossiblyRenderedEvent
                     patch.add(new MethodInsnNode(Opcodes.INVOKESTATIC,
-                            "mchorse/metamorph/client/AirPossiblyRenderedEvent",
+                            "mchorse/metamorph/client/AirPossiblyRenderingEvent",
                             "hook",
                             "(Lnet/minecraftforge/client/event/RenderGameOverlayEvent;" +
                             "FLnet/minecraft/client/gui/ScaledResolution;)V",

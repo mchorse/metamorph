@@ -71,7 +71,7 @@ public class RenderingHandler
      * Draw replacement air bar for morphs that can't breathe on land
      */
     @SubscribeEvent
-    public void onAirPossiblyRendered(AirPossiblyRenderedEvent event)
+    public void onAirPossiblyRendered(AirPossiblyRenderingEvent event)
     {
         ScaledResolution resolution = event.getResolution();
         this.hud.renderSquidAir(resolution.getScaledWidth(), resolution.getScaledHeight(), event.getEventParent());

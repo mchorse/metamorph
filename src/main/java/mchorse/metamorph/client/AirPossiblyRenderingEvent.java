@@ -5,12 +5,12 @@ import net.minecraftforge.client.event.RenderGameOverlayEvent;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.fml.common.eventhandler.Event;
 
-public class AirPossiblyRenderedEvent extends Event {
+public class AirPossiblyRenderingEvent extends Event {
     private RenderGameOverlayEvent eventParent;
     private float partialTicks;
     private ScaledResolution resolution;
     
-    public AirPossiblyRenderedEvent(RenderGameOverlayEvent eventParent, float partialTicks, ScaledResolution resolution)
+    public AirPossiblyRenderingEvent(RenderGameOverlayEvent eventParent, float partialTicks, ScaledResolution resolution)
     {
         this.eventParent = eventParent;
         this.partialTicks = partialTicks;
@@ -33,6 +33,6 @@ public class AirPossiblyRenderedEvent extends Event {
     }
     
     public static void hook(RenderGameOverlayEvent eventParent, float partialTicks, ScaledResolution resolution) {
-        MinecraftForge.EVENT_BUS.post(new AirPossiblyRenderedEvent(eventParent, partialTicks, resolution));
+        MinecraftForge.EVENT_BUS.post(new AirPossiblyRenderingEvent(eventParent, partialTicks, resolution));
     }
 }
