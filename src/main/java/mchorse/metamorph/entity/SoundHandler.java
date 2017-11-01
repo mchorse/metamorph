@@ -7,6 +7,7 @@ import mchorse.metamorph.api.morphs.EntityMorph;
 import mchorse.metamorph.capabilities.morphing.IMorphing;
 import mchorse.metamorph.capabilities.morphing.Morphing;
 import mchorse.metamorph.coremod.MetamorphCoremod;
+import mchorse.metamorph.util.InvokeUtil;
 import net.minecraft.block.Block;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
@@ -25,58 +26,6 @@ public class SoundHandler
     private static final String[] GET_HURT_SOUND = new String[]{"getHurtSound", "func_184601_bQ"};
     private static final String[] GET_DEATH_SOUND = new String[]{"getDeathSound", "func_184615_bR"};
     private static final String[] PLAY_STEP_SOUND = new String[]{"playStepSound", "func_180429_a"};
-    
-    /**
-     * Ascends up a class chain until it finds the specified method, regardless
-     * of access modifier. Assumes finalClazz is the original declarer of the specified method.
-     */
-    private static Method getPrivateMethod(Class clazz, Class finalClazz, String methodName, Class<?>... paramVarArgs)
-            throws NoSuchMethodException, SecurityException
-    {
-        Method privateMethod = null;
-        
-        for (Class testClazz = clazz;
-                testClazz != finalClazz && privateMethod == null;
-                testClazz = testClazz.getSuperclass())
-        {
-            for (Method method : testClazz.getDeclaredMethods())
-            {
-                if (!method.getName().equals(methodName))
-                {
-                    continue;
-                }
-                
-                Class<?>[] parameters = method.getParameterTypes();
-                if (!(parameters.length == paramVarArgs.length))
-                {
-                    continue;
-                }
-                boolean matchingMethod = true;
-                for (int i = 0; i < parameters.length; i++)
-                {
-                    if (!(parameters[i] == paramVarArgs[i]))
-                    {
-                        matchingMethod = false;
-                        break;
-                    }
-                }
-                
-                if (matchingMethod)
-                {
-                    privateMethod = method;
-                    break;
-                }
-            }
-        }
-        
-        if (privateMethod == null)
-        {
-            privateMethod = finalClazz.getDeclaredMethod(methodName, paramVarArgs);
-        }
-        
-        privateMethod.setAccessible(true);
-        return privateMethod;
-    }
     
     @SubscribeEvent
     public void onPlaySound(PlaySoundAtEntityEvent event)
@@ -127,7 +76,7 @@ public class SoundHandler
     {
         try
         {
-            Method methodHurtSound = getPrivateMethod(soundEntity.getClass(),
+            Method methodHurtSound = InvokeUtil.getPrivateMethod(soundEntity.getClass(),
                     EntityLivingBase.class,
                     GET_HURT_SOUND[MetamorphCoremod.obfuscated ? 1 : 0]);
             SoundEvent newSound = (SoundEvent)methodHurtSound.invoke(soundEntity);
@@ -148,7 +97,7 @@ public class SoundHandler
     {
         try
         {
-            Method methodDeathSound = getPrivateMethod(soundEntity.getClass(),
+            Method methodDeathSound = InvokeUtil.getPrivateMethod(soundEntity.getClass(),
                     EntityLivingBase.class,
                     GET_DEATH_SOUND[MetamorphCoremod.obfuscated ? 1 : 0]);
             SoundEvent newSound = (SoundEvent)methodDeathSound.invoke(soundEntity);
@@ -169,7 +118,7 @@ public class SoundHandler
     {
         try
         {
-            Method methodPlayStep = getPrivateMethod(soundEntity.getClass(),
+            Method methodPlayStep = InvokeUtil.getPrivateMethod(soundEntity.getClass(),
                     Entity.class,
                     PLAY_STEP_SOUND[MetamorphCoremod.obfuscated ? 1 : 0],
                     BlockPos.class, Block.class);
