@@ -49,7 +49,8 @@ public class MetamorphCoremod implements IFMLLoadingPlugin
     
     public static class Container extends DummyModContainer
     {
-        public Container() {
+        public Container()
+        {
             super(new ModMetadata());
             ModMetadata meta = getMetadata();
             meta.modId = "metamorph-coremod";
@@ -96,7 +97,8 @@ public class MetamorphCoremod implements IFMLLoadingPlugin
      * you can stick the transformed bytes through this and get a debug
      * output of the entire class.
      */
-    public static void logClassBytesToDebug(byte[] bytes) {
+    public static void logClassBytesToDebug(byte[] bytes)
+    {
         StringWriter stringWriter = new StringWriter();
         TraceClassVisitor traceVisitor = new TraceClassVisitor(new PrintWriter(stringWriter));
         (new ClassReader(bytes)).accept(traceVisitor, 0);

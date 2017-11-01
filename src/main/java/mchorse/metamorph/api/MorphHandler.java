@@ -87,7 +87,8 @@ public class MorphHandler
             }
         }
         
-        if (player.worldObj.isRemote) {
+        if (player.worldObj.isRemote)
+        {
             // Assume no squid air unless set by the Swim ability each update
             GuiIngameForge.renderAir = true;
             ClientProxy.hud.renderSquidAir = false;

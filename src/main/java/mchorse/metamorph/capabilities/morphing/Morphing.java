@@ -362,22 +362,26 @@ public class Morphing implements IMorphing
     }
     
     @Override
-    public boolean getHasSquidAir() {
+    public boolean getHasSquidAir()
+    {
         return hasSquidAir;
     }
 
     @Override
-    public void setHasSquidAir(boolean hasSquidAir) {
+    public void setHasSquidAir(boolean hasSquidAir)
+    {
         this.hasSquidAir = hasSquidAir;
     }
     
     @Override
-    public int getSquidAir() {
+    public int getSquidAir()
+    {
         return squidAir;
     }
 
     @Override
-    public void setSquidAir(int squidAir) {
+    public void setSquidAir(int squidAir)
+    {
         this.squidAir = squidAir;
     }
 

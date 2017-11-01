@@ -11,7 +11,8 @@ public class ClientHandlerMorphState extends ClientMessageHandler<PacketMorphSta
 {
     @Override
     @SideOnly(Side.CLIENT)
-    public void run(EntityPlayerSP player, PacketMorphState message) {
+    public void run(EntityPlayerSP player, PacketMorphState message)
+    {
         Morphing.get(player).setSquidAir(message.squidAir);
     }
 }

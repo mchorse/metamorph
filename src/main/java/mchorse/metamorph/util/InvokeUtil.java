@@ -2,7 +2,8 @@ package mchorse.metamorph.util;
 
 import java.lang.reflect.Method;
 
-public class InvokeUtil {
+public class InvokeUtil
+{
 
     /**
      * Ascends up a class chain until it finds the specified method, regardless
