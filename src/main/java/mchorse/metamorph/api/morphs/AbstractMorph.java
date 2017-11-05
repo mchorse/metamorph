@@ -296,11 +296,7 @@ public abstract class AbstractMorph
             Method methodHurtSound = InvokeUtil.getPrivateMethod(target.getClass(),
                     EntityLivingBase.class,
                     SoundHandler.GET_HURT_SOUND[MetamorphCoremod.obfuscated ? 1 : 0]);
-            SoundEvent newSound = (SoundEvent)methodHurtSound.invoke(target);
-            if (newSound != null)
-            {
-                return newSound;
-            }
+            return (SoundEvent)methodHurtSound.invoke(target);
         }
         catch (Exception e)
         {
@@ -321,11 +317,7 @@ public abstract class AbstractMorph
             Method methodDeathSound = InvokeUtil.getPrivateMethod(target.getClass(),
                     EntityLivingBase.class,
                     SoundHandler.GET_DEATH_SOUND[MetamorphCoremod.obfuscated ? 1 : 0]);
-            SoundEvent newSound = (SoundEvent)methodDeathSound.invoke(target);
-            if (newSound != null)
-            {
-                return newSound;
-            }
+            return (SoundEvent)methodDeathSound.invoke(target);
         }
         catch (Exception e)
         {
