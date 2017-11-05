@@ -7,7 +7,6 @@ import mchorse.metamorph.api.MorphSettings;
 import mchorse.metamorph.api.abilities.IAbility;
 import mchorse.metamorph.capabilities.morphing.IMorphing;
 import mchorse.metamorph.capabilities.morphing.Morphing;
-import mchorse.metamorph.coremod.MetamorphCoremod;
 import mchorse.metamorph.entity.SoundHandler;
 import mchorse.metamorph.util.InvokeUtil;
 import net.minecraft.block.Block;
@@ -295,7 +294,7 @@ public abstract class AbstractMorph
         {
             Method methodHurtSound = InvokeUtil.getPrivateMethod(target.getClass(),
                     EntityLivingBase.class,
-                    SoundHandler.GET_HURT_SOUND[MetamorphCoremod.obfuscated ? 1 : 0]);
+                    SoundHandler.GET_HURT_SOUND.getName());
             return (SoundEvent)methodHurtSound.invoke(target);
         }
         catch (Exception e)
@@ -316,7 +315,7 @@ public abstract class AbstractMorph
         {
             Method methodDeathSound = InvokeUtil.getPrivateMethod(target.getClass(),
                     EntityLivingBase.class,
-                    SoundHandler.GET_DEATH_SOUND[MetamorphCoremod.obfuscated ? 1 : 0]);
+                    SoundHandler.GET_DEATH_SOUND.getName());
             return (SoundEvent)methodDeathSound.invoke(target);
         }
         catch (Exception e)
@@ -337,7 +336,7 @@ public abstract class AbstractMorph
         {
             Method methodPlayStep = InvokeUtil.getPrivateMethod(target.getClass(),
                     Entity.class,
-                    SoundHandler.PLAY_STEP_SOUND[MetamorphCoremod.obfuscated ? 1 : 0],
+                    SoundHandler.PLAY_STEP_SOUND.getName(),
                     BlockPos.class, Block.class);
             
             int x = MathHelper.floor_double(target.posX);

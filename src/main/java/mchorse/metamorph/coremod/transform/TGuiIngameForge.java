@@ -13,25 +13,25 @@ import org.objectweb.asm.tree.MethodInsnNode;
 import org.objectweb.asm.tree.MethodNode;
 import org.objectweb.asm.tree.VarInsnNode;
 
-import mchorse.metamorph.coremod.MetamorphCoremod;
+import mchorse.metamorph.coremod.ObfuscatedName;
 import net.minecraft.launchwrapper.IClassTransformer;
 
 public class TGuiIngameForge implements IClassTransformer
 {
     public static final String GUI_INGAME_FORGE = "net.minecraftforge.client.GuiIngameForge";
-    public static final String[] RENDER_GAME_OVERLAY = new String[]{"renderGameOverlay", "func_175180_a"};
+    public static final ObfuscatedName RENDER_GAME_OVERLAY = new ObfuscatedName("renderGameOverlay", "func_175180_a");
     
     @Override
     public byte[] transform(String name, String transformedName, byte[] basicClass)
     {
         if (transformedName.equals(GUI_INGAME_FORGE))
         {
-            return transformClass(basicClass, MetamorphCoremod.obfuscated);
+            return transformClass(basicClass);
         }
         return basicClass;
     }
     
-    private byte[] transformClass(byte[] basicClass, boolean obfuscated)
+    private byte[] transformClass(byte[] basicClass)
     {
         ClassReader reader = new ClassReader(basicClass);
         ClassNode visitor = new ClassNode();
@@ -39,7 +39,7 @@ public class TGuiIngameForge implements IClassTransformer
         
         for (MethodNode method : visitor.methods)
         {
-            if (method.name.equals(RENDER_GAME_OVERLAY[obfuscated ? 1 : 0]))
+            if (method.name.equals(RENDER_GAME_OVERLAY.getName()))
             {
                 InsnList instructions = method.instructions;
                 

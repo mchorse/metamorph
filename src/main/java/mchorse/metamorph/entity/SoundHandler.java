@@ -4,6 +4,7 @@ import mchorse.metamorph.api.morphs.AbstractMorph;
 import mchorse.metamorph.api.morphs.EntityMorph;
 import mchorse.metamorph.capabilities.morphing.IMorphing;
 import mchorse.metamorph.capabilities.morphing.Morphing;
+import mchorse.metamorph.coremod.ObfuscatedName;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
@@ -17,9 +18,9 @@ import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
  */
 public class SoundHandler
 {
-    public static final String[] GET_HURT_SOUND = new String[]{"getHurtSound", "func_184601_bQ"};
-    public static final String[] GET_DEATH_SOUND = new String[]{"getDeathSound", "func_184615_bR"};
-    public static final String[] PLAY_STEP_SOUND = new String[]{"playStepSound", "func_180429_a"};
+    public static final ObfuscatedName GET_HURT_SOUND = new ObfuscatedName("getHurtSound", "func_184601_bQ");
+    public static final ObfuscatedName GET_DEATH_SOUND = new ObfuscatedName("getDeathSound", "func_184615_bR");
+    public static final ObfuscatedName PLAY_STEP_SOUND = new ObfuscatedName("playStepSound", "func_180429_a");
     
     public static final DamageSource GENERIC_DAMAGE = DamageSource.generic;
     
