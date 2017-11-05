@@ -57,7 +57,7 @@ public class MetamorphCoremod implements IFMLLoadingPlugin
             meta.name = "Metamorph Coremod";
             meta.version = Metamorph.VERSION;
             meta.credits = "";
-            meta.authorList = Arrays.asList("mchorse");
+            meta.authorList = Arrays.asList("mchorse", "asanetargoss");
             meta.description = "Coremod for the metamorph mod.";
             meta.url = "";
             meta.screenshots = new String[0];
