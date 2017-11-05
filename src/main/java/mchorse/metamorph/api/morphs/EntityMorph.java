@@ -12,6 +12,10 @@ import mchorse.metamorph.api.MorphSettings;
 import mchorse.metamorph.api.models.IHandProvider;
 import mchorse.metamorph.capabilities.morphing.IMorphing;
 import mchorse.metamorph.client.gui.utils.GuiUtils;
+import mchorse.metamorph.coremod.MetamorphCoremod;
+import mchorse.metamorph.entity.SoundHandler;
+import mchorse.metamorph.util.InvokeUtil;
+import net.minecraft.block.Block;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.model.ModelBase;
 import net.minecraft.client.model.ModelBiped;
@@ -33,8 +37,12 @@ import net.minecraft.entity.passive.EntityRabbit;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.util.DamageSource;
 import net.minecraft.util.EnumHand;
 import net.minecraft.util.ResourceLocation;
+import net.minecraft.util.SoundEvent;
+import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.math.MathHelper;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
@@ -718,6 +726,74 @@ public class EntityMorph extends AbstractMorph
         }
 
         return this.entity.height;
+    }
+    
+    @Override
+    public SoundEvent getHurtSound(EntityLivingBase target, DamageSource damageSource)
+    {
+        try
+        {
+            Method methodHurtSound = InvokeUtil.getPrivateMethod(this.entity.getClass(),
+                    EntityLivingBase.class,
+                    SoundHandler.GET_HURT_SOUND[MetamorphCoremod.obfuscated ? 1 : 0]);
+            SoundEvent newSound = (SoundEvent)methodHurtSound.invoke(this.entity);
+            if (newSound != null)
+            {
+                return newSound;
+            }
+        }
+        catch (Exception e)
+        {
+            e.printStackTrace();
+        }
+        
+        return null;
+    }
+    
+    @Override
+    public SoundEvent getDeathSound(EntityLivingBase target)
+    {
+        try
+        {
+            Method methodDeathSound = InvokeUtil.getPrivateMethod(this.entity.getClass(),
+                    EntityLivingBase.class,
+                    SoundHandler.GET_DEATH_SOUND[MetamorphCoremod.obfuscated ? 1 : 0]);
+            SoundEvent newSound = (SoundEvent)methodDeathSound.invoke(this.entity);
+            if (newSound != null)
+            {
+                return newSound;
+            }
+        }
+        catch (Exception e)
+        {
+            e.printStackTrace();
+        }
+        
+        return null;
+    }
+    
+    @Override
+    public void playStepSound(EntityLivingBase target)
+    {
+        try
+        {
+            Method methodPlayStep = InvokeUtil.getPrivateMethod(this.entity.getClass(),
+                    Entity.class,
+                    SoundHandler.PLAY_STEP_SOUND[MetamorphCoremod.obfuscated ? 1 : 0],
+                    BlockPos.class, Block.class);
+            
+            int x = MathHelper.floor_double(this.entity.posX);
+            int y = MathHelper.floor_double(this.entity.posY - 0.20000000298023224D);
+            int z = MathHelper.floor_double(this.entity.posZ);
+            BlockPos pos = new BlockPos(x, y, z);
+            Block block = this.entity.worldObj.getBlockState(pos).getBlock();
+            
+            methodPlayStep.invoke(this.entity, pos, block);
+        }
+        catch (Exception e)
+        {
+            e.printStackTrace();
+        }
     }
 
     @Override

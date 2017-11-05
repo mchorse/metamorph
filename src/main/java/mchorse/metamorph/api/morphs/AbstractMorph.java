@@ -1,18 +1,28 @@
 package mchorse.metamorph.api.morphs;
 
+import java.lang.reflect.Method;
+
 import mchorse.metamorph.Metamorph;
 import mchorse.metamorph.api.MorphSettings;
 import mchorse.metamorph.api.abilities.IAbility;
 import mchorse.metamorph.capabilities.morphing.IMorphing;
 import mchorse.metamorph.capabilities.morphing.Morphing;
+import mchorse.metamorph.coremod.MetamorphCoremod;
+import mchorse.metamorph.entity.SoundHandler;
+import mchorse.metamorph.util.InvokeUtil;
+import net.minecraft.block.Block;
 import net.minecraft.client.renderer.entity.Render;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.SharedMonsterAttributes;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.util.DamageSource;
 import net.minecraft.util.EnumHand;
+import net.minecraft.util.SoundEvent;
 import net.minecraft.util.math.AxisAlignedBB;
+import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.math.MathHelper;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
@@ -265,6 +275,92 @@ public abstract class AbstractMorph
      * Get height of this morph 
      */
     public abstract float getHeight(EntityLivingBase target);
+    
+    /**
+     * Get the default sound that this morph makes when it
+     * is hurt
+     */
+    public final SoundEvent getHurtSound(EntityLivingBase target)
+    {
+        return getHurtSound(target, SoundHandler.GENERIC_DAMAGE);
+    }
+    
+    /**
+     * Get the sound that this morph makes when it
+     * is hurt by the given DamageSource
+     */
+    public SoundEvent getHurtSound(EntityLivingBase target, DamageSource damageSource)
+    {
+        try
+        {
+            Method methodHurtSound = InvokeUtil.getPrivateMethod(target.getClass(),
+                    EntityLivingBase.class,
+                    SoundHandler.GET_HURT_SOUND[MetamorphCoremod.obfuscated ? 1 : 0]);
+            SoundEvent newSound = (SoundEvent)methodHurtSound.invoke(target);
+            if (newSound != null)
+            {
+                return newSound;
+            }
+        }
+        catch (Exception e)
+        {
+            e.printStackTrace();
+        }
+        
+        return null;
+    }
+    
+    /**
+     * Get the sound that this morph makes when it
+     * is killed
+     */
+    public SoundEvent getDeathSound(EntityLivingBase target)
+    {
+        try
+        {
+            Method methodDeathSound = InvokeUtil.getPrivateMethod(target.getClass(),
+                    EntityLivingBase.class,
+                    SoundHandler.GET_DEATH_SOUND[MetamorphCoremod.obfuscated ? 1 : 0]);
+            SoundEvent newSound = (SoundEvent)methodDeathSound.invoke(target);
+            if (newSound != null)
+            {
+                return newSound;
+            }
+        }
+        catch (Exception e)
+        {
+            e.printStackTrace();
+        }
+        
+        return null;
+    }
+    
+    /**
+     * Plays the sound that this morph makes when it
+     * takes a step.
+     */
+    public void playStepSound(EntityLivingBase target)
+    {
+        try
+        {
+            Method methodPlayStep = InvokeUtil.getPrivateMethod(target.getClass(),
+                    Entity.class,
+                    SoundHandler.PLAY_STEP_SOUND[MetamorphCoremod.obfuscated ? 1 : 0],
+                    BlockPos.class, Block.class);
+            
+            int x = MathHelper.floor_double(target.posX);
+            int y = MathHelper.floor_double(target.posY - 0.20000000298023224D);
+            int z = MathHelper.floor_double(target.posZ);
+            BlockPos pos = new BlockPos(x, y, z);
+            Block block = target.worldObj.getBlockState(pos).getBlock();
+            
+            methodPlayStep.invoke(target, pos, block);
+        }
+        catch (Exception e)
+        {
+            e.printStackTrace();
+        }
+    }
 
     /**
      * Check either if given object is the same as this morph 
