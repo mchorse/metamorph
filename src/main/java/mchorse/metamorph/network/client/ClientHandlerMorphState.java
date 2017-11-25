@@ -13,6 +13,7 @@ public class ClientHandlerMorphState extends ClientMessageHandler<PacketMorphSta
     @SideOnly(Side.CLIENT)
     public void run(EntityPlayerSP player, PacketMorphState message)
     {
+        Morphing.get(player).setHasSquidAir(message.hasSquidAir);
         Morphing.get(player).setSquidAir(message.squidAir);
     }
 }

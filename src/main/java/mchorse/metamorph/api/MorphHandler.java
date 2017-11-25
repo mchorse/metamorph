@@ -42,7 +42,7 @@ public class MorphHandler
     /* Next tick tasks (used for "knockback" attack) */
     public static List<Runnable> FUTURE_TASKS_CLIENT = new ArrayList<Runnable>();
     public static List<Runnable> FUTURE_TASKS_SERVER = new ArrayList<Runnable>();
-
+    
     /**
      * When player is morphed, its morphing abilities are executed over here.
      * 
@@ -87,11 +87,20 @@ public class MorphHandler
             }
         }
         
+        /* Keep client gui state up-to-date for morphs with the
+         * Swim ability.
+         */
         if (player.worldObj.isRemote)
         {
-            // Assume no squid air unless set by the Swim ability each update
-            GuiIngameForge.renderAir = true;
-            ClientProxy.hud.renderSquidAir = false;
+            boolean hasSquidAir = false;
+            int squidAir = 300;
+            if (capability != null) {
+                hasSquidAir = capability.getHasSquidAir();
+                squidAir = capability.getSquidAir();
+            }
+            GuiIngameForge.renderAir = !hasSquidAir;
+            ClientProxy.hud.renderSquidAir = hasSquidAir;
+            ClientProxy.hud.squidAir = squidAir;
         }
 
         try

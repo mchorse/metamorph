@@ -6,11 +6,8 @@ import java.util.List;
 
 import mchorse.metamorph.Metamorph;
 import mchorse.metamorph.api.morphs.AbstractMorph;
-import mchorse.metamorph.network.Dispatcher;
-import mchorse.metamorph.network.common.PacketMorphState;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.init.SoundEvents;
 import net.minecraft.util.EnumParticleTypes;
 import net.minecraft.world.WorldServer;
@@ -404,15 +401,6 @@ public class Morphing implements IMorphing
         if (this.morph != null)
         {
             this.morph.update(player, this);
-        }
-        
-        /* Keep morph state up-to-date by sending a packet once per second,
-         * currently only used to set the air state for morphs with the
-         * Swim ability. Air state is stored in morphing capability.
-         */
-        if (!player.worldObj.isRemote && player.ticksExisted % 20 == 0)
-        {
-            Dispatcher.sendTo(new PacketMorphState(this), (EntityPlayerMP)player);
         }
     }
 }

@@ -1,16 +1,12 @@
 package mchorse.vanilla_pack.abilities;
 
-import mchorse.metamorph.ClientProxy;
 import mchorse.metamorph.api.abilities.Ability;
 import mchorse.metamorph.capabilities.morphing.IMorphing;
 import mchorse.metamorph.capabilities.morphing.Morphing;
-import net.minecraft.client.Minecraft;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.util.DamageSource;
 import net.minecraft.util.math.MathHelper;
-import net.minecraft.world.EnumDifficulty;
-import net.minecraftforge.client.GuiIngameForge;
 
 /**
  * Swim ability
@@ -79,15 +75,6 @@ public class Swim extends Ability
                     }
                     morphing.setSquidAir(air);
                 }
-                // Update air render state if we are client-side
-                // Boolean flags must be set every tick since it is
-                // reset during each call to AbstractMorph.update
-                if (target.worldObj.isRemote)
-                {
-                    GuiIngameForge.renderAir = false;
-                    ClientProxy.hud.renderSquidAir = true;
-                    ClientProxy.hud.squidAir = morphing.getSquidAir();
-                }
             }
         }
     }
@@ -99,11 +86,7 @@ public class Swim extends Ability
         if (morphing != null)
         {
             morphing.setSquidAir(target.getAir());
-        }
-        if (target.worldObj.isRemote)
-        {
-            GuiIngameForge.renderAir = false;
-            ClientProxy.hud.renderSquidAir = true;
+            morphing.setHasSquidAir(true);
         }
     }
     
@@ -114,11 +97,7 @@ public class Swim extends Ability
         if (morphing != null)
         {
             target.setAir(morphing.getSquidAir());
-        }
-        if (target.worldObj.isRemote)
-        {
-            GuiIngameForge.renderAir = true;
-            ClientProxy.hud.renderSquidAir = false;
+            morphing.setHasSquidAir(false);
         }
     }
 }
