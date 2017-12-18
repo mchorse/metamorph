@@ -786,6 +786,15 @@ public class EntityMorph extends AbstractMorph
             e.printStackTrace();
         }
     }
+    
+    @Override
+    public void onChangeDimension(EntityPlayer player, int oldDim, int currentDim)
+    {
+    	if (this.entity != null)
+    	{
+    		this.entity.worldObj = player.worldObj;
+    	}
+    }
 
     @Override
     public void toNBT(NBTTagCompound tag)

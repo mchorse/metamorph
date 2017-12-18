@@ -352,6 +352,11 @@ public abstract class AbstractMorph
             e.printStackTrace();
         }
     }
+    
+    /**
+     * Called when the player just changed dimensions
+     */
+    public void onChangeDimension(EntityPlayer player, int oldDim, int currentDim) { }
 
     /**
      * Check either if given object is the same as this morph 

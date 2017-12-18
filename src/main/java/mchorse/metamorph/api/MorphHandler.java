@@ -22,6 +22,7 @@ import net.minecraftforge.event.entity.living.LivingAttackEvent;
 import net.minecraftforge.event.entity.living.LivingDeathEvent;
 import net.minecraftforge.event.entity.living.LivingSetAttackTargetEvent;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
+import net.minecraftforge.fml.common.gameevent.PlayerEvent.PlayerChangedDimensionEvent;
 import net.minecraftforge.fml.common.gameevent.TickEvent.Phase;
 import net.minecraftforge.fml.common.gameevent.TickEvent.PlayerTickEvent;
 
@@ -245,6 +246,20 @@ public class MorphHandler
                 }
             }
         }
+    }
+    
+    /**
+     * Make sure the player dimension and morph dimension are synced
+     */
+    @SubscribeEvent
+    public void onPlayerChangeDimension(PlayerChangedDimensionEvent event)
+    {
+    	IMorphing capability = Morphing.get(event.player);
+    	
+    	if (capability != null && capability.getCurrentMorph() != null)
+    	{
+    		capability.getCurrentMorph().onChangeDimension(event.player, event.fromDim, event.toDim);
+    	}
     }
 
     /**
