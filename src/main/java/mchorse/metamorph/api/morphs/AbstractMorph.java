@@ -286,43 +286,20 @@ public abstract class AbstractMorph
     
     /**
      * Get the sound that this morph makes when it
-     * is hurt by the given DamageSource
+     * is hurt by the given DamageSource, or return null
+     * for no change.
      */
     public SoundEvent getHurtSound(EntityLivingBase target, DamageSource damageSource)
     {
-        try
-        {
-            Method methodHurtSound = InvokeUtil.getPrivateMethod(target.getClass(),
-                    EntityLivingBase.class,
-                    SoundHandler.GET_HURT_SOUND.getName());
-            return (SoundEvent)methodHurtSound.invoke(target);
-        }
-        catch (Exception e)
-        {
-            e.printStackTrace();
-        }
-        
         return null;
     }
     
     /**
      * Get the sound that this morph makes when it
-     * is killed
+     * is killed, or return null for no change.
      */
     public SoundEvent getDeathSound(EntityLivingBase target)
     {
-        try
-        {
-            Method methodDeathSound = InvokeUtil.getPrivateMethod(target.getClass(),
-                    EntityLivingBase.class,
-                    SoundHandler.GET_DEATH_SOUND.getName());
-            return (SoundEvent)methodDeathSound.invoke(target);
-        }
-        catch (Exception e)
-        {
-            e.printStackTrace();
-        }
-        
         return null;
     }
     
