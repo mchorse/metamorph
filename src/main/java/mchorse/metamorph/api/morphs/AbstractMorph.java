@@ -327,31 +327,18 @@ public abstract class AbstractMorph
     }
     
     /**
-     * Plays the sound that this morph makes when it
-     * takes a step.
+     * Make this return true if you override playStepSound(..)
      */
-    public void playStepSound(EntityLivingBase target)
+    public boolean hasCustomStepSound(EntityLivingBase target)
     {
-        try
-        {
-            Method methodPlayStep = InvokeUtil.getPrivateMethod(target.getClass(),
-                    Entity.class,
-                    SoundHandler.PLAY_STEP_SOUND.getName(),
-                    BlockPos.class, Block.class);
-            
-            int x = MathHelper.floor_double(target.posX);
-            int y = MathHelper.floor_double(target.posY - 0.20000000298023224D);
-            int z = MathHelper.floor_double(target.posZ);
-            BlockPos pos = new BlockPos(x, y, z);
-            Block block = target.worldObj.getBlockState(pos).getBlock();
-            
-            methodPlayStep.invoke(target, pos, block);
-        }
-        catch (Exception e)
-        {
-            e.printStackTrace();
-        }
+    	return false;
     }
+    
+    /**
+     * Plays the sound that this morph makes when it
+     * takes a step, but only if hasCustomStepSound(..) returns true
+     */
+    public void playStepSound(EntityLivingBase target) { }
     
     /**
      * Called when the player just changed dimensions

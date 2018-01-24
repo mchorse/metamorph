@@ -764,6 +764,12 @@ public class EntityMorph extends AbstractMorph
     }
     
     @Override
+    public boolean hasCustomStepSound(EntityLivingBase target)
+    {
+    	return true;
+    }
+    
+    @Override
     public void playStepSound(EntityLivingBase target)
     {
         try
