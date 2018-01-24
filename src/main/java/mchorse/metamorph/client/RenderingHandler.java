@@ -79,7 +79,7 @@ public class RenderingHandler
         	return;
         }
         
-        if (!this.hud.renderAir && !this.hud.renderSquidAir)
+        if (!this.hud.renderAnyAir && !this.hud.renderSquidAir)
         {
 	        event.setCanceled(true);
         	return;

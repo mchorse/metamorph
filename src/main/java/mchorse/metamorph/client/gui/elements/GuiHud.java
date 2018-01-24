@@ -12,7 +12,7 @@ public class GuiHud extends Gui
 	 * even if renderSquidAir is false.
 	 * Checked by RenderingHandler
 	 */
-	public boolean renderAir = true;
+	public boolean renderAnyAir = true;
 	/**
 	 * Whether or not squid air should be rendered
 	 * in place of regular player air.

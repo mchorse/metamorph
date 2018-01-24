@@ -35,7 +35,7 @@ public class WaterBreath extends Ability
     {
         if (target.worldObj.isRemote && target == Minecraft.getMinecraft().thePlayer)
         {
-            ClientProxy.hud.renderAir = false;
+            ClientProxy.hud.renderAnyAir = false;
         }
     }
 
@@ -51,7 +51,7 @@ public class WaterBreath extends Ability
     {
         if (target.worldObj.isRemote && target == Minecraft.getMinecraft().thePlayer)
         {
-        	ClientProxy.hud.renderAir = true;
+        	ClientProxy.hud.renderAnyAir = true;
         }
     }
 }
