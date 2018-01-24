@@ -1,4 +1,6 @@
-package mchorse.metamorph.coremod;
+package mchorse.metamorph.util;
+
+import net.minecraftforge.classloading.FMLForgePlugin;
 
 public class ObfuscatedName 
 {
@@ -13,6 +15,6 @@ public class ObfuscatedName
     
     public String getName()
     {
-        return MetamorphCoremod.obfuscated ? srgName : mcpName; 
+        return FMLForgePlugin.RUNTIME_DEOBF ? srgName : mcpName; 
     }
 }

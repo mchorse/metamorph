@@ -99,7 +99,6 @@ public class MorphHandler
                 hasSquidAir = capability.getHasSquidAir();
                 squidAir = capability.getSquidAir();
             }
-            GuiIngameForge.renderAir = !hasSquidAir;
             ClientProxy.hud.renderSquidAir = hasSquidAir;
             ClientProxy.hud.squidAir = squidAir;
         }

@@ -1,9 +1,9 @@
 package mchorse.vanilla_pack.abilities;
 
+import mchorse.metamorph.ClientProxy;
 import mchorse.metamorph.api.abilities.Ability;
 import net.minecraft.client.Minecraft;
 import net.minecraft.entity.EntityLivingBase;
-import net.minecraftforge.client.GuiIngameForge;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
@@ -35,7 +35,7 @@ public class WaterBreath extends Ability
     {
         if (target.worldObj.isRemote && target == Minecraft.getMinecraft().thePlayer)
         {
-            GuiIngameForge.renderAir = false;
+            ClientProxy.hud.renderAir = false;
         }
     }
 
@@ -51,7 +51,7 @@ public class WaterBreath extends Ability
     {
         if (target.worldObj.isRemote && target == Minecraft.getMinecraft().thePlayer)
         {
-            GuiIngameForge.renderAir = true;
+        	ClientProxy.hud.renderAir = true;
         }
     }
 }

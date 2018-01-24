@@ -20,6 +20,7 @@ import net.minecraftforge.client.GuiIngameForge;
 import net.minecraftforge.client.event.RenderGameOverlayEvent;
 import net.minecraftforge.client.event.RenderLivingEvent;
 import net.minecraftforge.client.event.RenderPlayerEvent;
+import net.minecraftforge.fml.common.eventhandler.EventPriority;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
@@ -70,11 +71,27 @@ public class RenderingHandler
     /**
      * Draw replacement air bar for morphs that can't breathe on land
      */
-    @SubscribeEvent
-    public void onAirPossiblyRendered(AirPossiblyRenderingEvent event)
+    @SubscribeEvent(priority=EventPriority.LOWEST)
+    public void onAirRenderPre(RenderGameOverlayEvent.Pre event)
     {
-        ScaledResolution resolution = event.getResolution();
-        this.hud.renderSquidAir(resolution.getScaledWidth(), resolution.getScaledHeight(), event.getEventParent());
+        if (event.getType() != RenderGameOverlayEvent.ElementType.AIR || event.isCanceled())
+        {
+        	return;
+        }
+        
+        if (!this.hud.renderAir && !this.hud.renderSquidAir)
+        {
+	        event.setCanceled(true);
+        	return;
+        }
+        
+        if (this.hud.renderSquidAir)
+        {
+	        event.setCanceled(true);
+	        
+	    	ScaledResolution resolution = event.getResolution();
+	        this.hud.renderSquidAir(resolution.getScaledWidth(), resolution.getScaledHeight());
+        }
     }
 
     /**

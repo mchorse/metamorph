@@ -99,12 +99,3 @@ processResources
         exclude 'mcmod.info'
     }
 }
-
-jar {
-    manifest {
-        attributes (
-            'FMLCorePlugin': 'mchorse.metamorph.coremod.MetamorphCoremod',
-            'FMLCorePluginContainsFMLMod': 'true'
-        )
-    }
-}
