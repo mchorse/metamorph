@@ -64,6 +64,7 @@ public class Swim extends Ability
                 if (target.isInWater())
                 {
                     morphing.setSquidAir(300);
+                    target.setAir(300);
                 }
                 else
                 {
