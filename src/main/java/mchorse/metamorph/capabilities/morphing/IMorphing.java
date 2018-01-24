@@ -4,6 +4,7 @@ import java.util.List;
 
 import mchorse.metamorph.api.morphs.AbstractMorph;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.util.DamageSource;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
@@ -39,6 +40,18 @@ public interface IMorphing
      */
     @SideOnly(Side.CLIENT)
     public boolean renderPlayer(EntityPlayer player, double x, double y, double z, float yaw, float partialTick);
+    
+    /**
+     * Check the last damage source received by the
+     * player. (This value is volatile and not stored)
+     */
+    public DamageSource getLastDamageSource();
+    
+    /**
+     * Record the last damage source received by the
+     * player. (This value is volatile and not stored)
+     */
+    public void setLastDamageSource(DamageSource damageSource);
 
     /**
      * Add a morph

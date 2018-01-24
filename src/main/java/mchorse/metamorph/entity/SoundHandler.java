@@ -11,6 +11,8 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.util.DamageSource;
 import net.minecraft.util.SoundEvent;
 import net.minecraftforge.event.entity.PlaySoundAtEntityEvent;
+import net.minecraftforge.event.entity.living.LivingAttackEvent;
+import net.minecraftforge.fml.common.eventhandler.EventPriority;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 
 /**
@@ -23,6 +25,28 @@ public class SoundHandler
     public static final ObfuscatedName PLAY_STEP_SOUND = new ObfuscatedName("playStepSound", "func_180429_a");
     
     public static final DamageSource GENERIC_DAMAGE = DamageSource.generic;
+    
+    @SubscribeEvent(priority=EventPriority.LOWEST)
+    public void onPlayerHurt(LivingAttackEvent event)
+    {
+        if (event.isCanceled())
+        {
+            return;
+        }
+        
+        Entity entity = event.getEntity();
+        if (!(entity instanceof EntityPlayer))
+        {
+            return;
+        }
+        IMorphing morphing = Morphing.get((EntityPlayer)entity);
+        if (morphing == null)
+        {
+            return;
+        }
+        
+        morphing.setLastDamageSource(event.getSource());
+    }
     
     @SubscribeEvent
     public void onPlaySound(PlaySoundAtEntityEvent event)
@@ -48,7 +72,7 @@ public class SoundHandler
         String soundType = event.getSound().getRegistryName().getResourcePath();
         if (soundType.endsWith(".hurt"))
         {
-            SoundEvent newSound = morph.getHurtSound(soundEntity);
+            SoundEvent newSound = morph.getHurtSound(soundEntity, morphing.getLastDamageSource());
             if (newSound != null)
             {
                 event.setSound(newSound);

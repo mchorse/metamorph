@@ -9,6 +9,7 @@ import mchorse.metamorph.api.morphs.AbstractMorph;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.SoundEvents;
+import net.minecraft.util.DamageSource;
 import net.minecraft.util.EnumParticleTypes;
 import net.minecraft.world.WorldServer;
 import net.minecraftforge.fml.relauncher.Side;
@@ -46,6 +47,11 @@ public class Morphing implements IMorphing
      * Animation timer 
      */
     private int animation;
+    
+    /**
+     * The last damage source received by the player
+     */
+    private DamageSource lastDamageSource;
 
     /**
      * (health / max health) is stored here when the new max health ends up
@@ -165,6 +171,18 @@ public class Morphing implements IMorphing
         GlStateManager.popMatrix();
 
         return true;
+    }
+    
+    @Override
+    public DamageSource getLastDamageSource()
+    {
+        return lastDamageSource;
+    }
+    
+    @Override
+    public void setLastDamageSource(DamageSource damageSource)
+    {
+        this.lastDamageSource = damageSource;
     }
 
     @Override
