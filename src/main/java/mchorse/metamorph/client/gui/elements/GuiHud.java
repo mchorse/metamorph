@@ -7,17 +7,17 @@ import net.minecraftforge.client.GuiIngameForge;
 
 public class GuiHud extends Gui
 {
-	/**
-	 * Setting this to false will make the air bar hidden,
-	 * even if renderSquidAir is false.
-	 * Checked by RenderingHandler
-	 */
-	public boolean renderAnyAir = true;
-	/**
-	 * Whether or not squid air should be rendered
-	 * in place of regular player air.
-	 * Checked by RenderingHandler
-	 */
+    /**
+     * Setting this to false will make the air bar hidden,
+     * even if renderSquidAir is false.
+     * Checked by RenderingHandler
+     */
+    public boolean renderAnyAir = true;
+    /**
+     * Whether or not squid air should be rendered
+     * in place of regular player air.
+     * Checked by RenderingHandler
+     */
     public boolean renderSquidAir = false;
     public int squidAir = 300;
     

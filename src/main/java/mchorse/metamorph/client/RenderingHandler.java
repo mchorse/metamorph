@@ -76,21 +76,21 @@ public class RenderingHandler
     {
         if (event.getType() != RenderGameOverlayEvent.ElementType.AIR || event.isCanceled())
         {
-        	return;
+            return;
         }
         
         if (!this.hud.renderAnyAir && !this.hud.renderSquidAir)
         {
-	        event.setCanceled(true);
-        	return;
+            event.setCanceled(true);
+            return;
         }
         
         if (this.hud.renderSquidAir)
         {
-	        event.setCanceled(true);
-	        
-	    	ScaledResolution resolution = event.getResolution();
-	        this.hud.renderSquidAir(resolution.getScaledWidth(), resolution.getScaledHeight());
+            event.setCanceled(true);
+            
+            ScaledResolution resolution = event.getResolution();
+            this.hud.renderSquidAir(resolution.getScaledWidth(), resolution.getScaledHeight());
         }
     }
 

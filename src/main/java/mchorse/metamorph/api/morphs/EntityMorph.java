@@ -766,7 +766,7 @@ public class EntityMorph extends AbstractMorph
     @Override
     public boolean hasCustomStepSound(EntityLivingBase target)
     {
-    	return true;
+        return true;
     }
     
     @Override
@@ -796,10 +796,10 @@ public class EntityMorph extends AbstractMorph
     @Override
     public void onChangeDimension(EntityPlayer player, int oldDim, int currentDim)
     {
-    	if (this.entity != null)
-    	{
-    		this.entity.worldObj = player.worldObj;
-    	}
+        if (this.entity != null)
+        {
+            this.entity.worldObj = player.worldObj;
+        }
     }
 
     @Override

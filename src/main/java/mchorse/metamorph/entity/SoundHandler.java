@@ -64,9 +64,10 @@ public class SoundHandler
         }
         else if (soundType.endsWith(".step"))
         {
-            if (morph.hasCustomStepSound(soundEntity)) {
-            	event.setCanceled(true);
-	            morph.playStepSound(soundEntity);
+            if (morph.hasCustomStepSound(soundEntity))
+            {
+                event.setCanceled(true);
+                morph.playStepSound(soundEntity);
             }
         }
     }
