@@ -69,7 +69,7 @@ public class GuiCreativeMenu extends GuiScreen
             EntityPlayer player = Minecraft.getMinecraft().player;
             IMorphing morphing = Morphing.get(player);
 
-            this.pane = new GuiCreativeMorphs(6, morphing.getCurrentMorph());
+            this.pane = new GuiCreativeMorphs(6, morphing.getCurrentMorph(), morphing);
         }
 
         int x = width - 10;
