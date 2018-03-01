@@ -71,7 +71,7 @@ public class RenderingHandler
     /**
      * Draw replacement air bar for morphs that can't breathe on land
      */
-    @SubscribeEvent(priority=EventPriority.LOWEST)
+    @SubscribeEvent
     public void onAirRenderPre(RenderGameOverlayEvent.Pre event)
     {
         if (event.getType() != RenderGameOverlayEvent.ElementType.AIR || event.isCanceled())
