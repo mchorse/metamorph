@@ -181,7 +181,7 @@ public class RenderingHandler
             return;
         }
 
-        double dist = entity.getDistanceSqToEntity(this.manager.renderViewEntity);
+        double dist = entity.getDistanceSq(this.manager.renderViewEntity);
         float factor = entity.isSneaking() ? 32.0F : 64.0F;
 
         if (dist < (double) (factor * factor))

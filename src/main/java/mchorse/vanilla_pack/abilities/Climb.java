@@ -15,7 +15,7 @@ public class Climb extends Ability
     public void update(EntityLivingBase target)
     {
         /* Works properly only on client side :( */
-        if (target.isCollidedHorizontally)
+        if (target.collidedHorizontally)
         {
             target.motionY = target.isSneaking() ? 0 : 0.2D;
         }

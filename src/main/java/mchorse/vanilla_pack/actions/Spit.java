@@ -30,7 +30,7 @@ public class Spit implements IAction
         double d4 = vec3d.z;
 
         spit.setPosition(target.posX + d2 * 1.5, target.posY + target.height * 0.8F, target.posZ + d4 * 1.5);
-        spit.setThrowableHeading(d2, d3, d4, (float) 1.0F, 1.0F);
+        spit.shoot(d2, d3, d4, (float) 1.0F, 1.0F);
 
         if (morph instanceof EntityMorph)
         {
