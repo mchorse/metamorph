@@ -71,7 +71,7 @@ public class RenderSubPlayer extends RenderPlayer
     @Override
     public ModelPlayer getMainModel()
     {
-        return this.original.getMainModel();
+        return this.original == null ? super.getMainModel() : this.original.getMainModel();
     }
 
     @Override
