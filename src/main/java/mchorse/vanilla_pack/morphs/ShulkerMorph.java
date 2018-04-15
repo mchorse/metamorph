@@ -41,8 +41,11 @@ public class ShulkerMorph extends EntityMorph
     @Override
     public void update(EntityLivingBase target, IMorphing cap)
     {
-        target.motionX = target.motionY = target.motionZ = 0;
-        target.setPosition(this.blockPos.getX() + 0.5, this.blockPos.getY(), this.blockPos.getZ() + 0.5);
+        if (this.blockPos != null)
+        {
+            target.motionX = target.motionY = target.motionZ = 0;
+            target.setPosition(this.blockPos.getX() + 0.5, this.blockPos.getY(), this.blockPos.getZ() + 0.5);
+        }
 
         super.update(target, cap);
 
