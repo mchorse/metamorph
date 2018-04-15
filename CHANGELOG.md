@@ -1,5 +1,21 @@
 # Metamorph Change Log
 
+## Metamorph 1.1.5
+
+This is a small, quick and dirty patch that provides several bugfixes (mainly for Blockbuster's update).
+
+* Add acquired morphs to creative morph menu (to be able to configure acquired morphs in the morph builder)
+* Allow using ESC button to close the creative morph menu
+* Delegate RenderSubPlayer methods to original RenderPlayer method
+* Disable change of morphs in adventure mode
+* Fix `ShulkerMorph` NPE crash
+* Fix `BlockMorph` returning `null` in the clone method (now block morphs can be used with Blockbuster)
+* Fix class cast crash with RFTools
+* Fix name tags appearing for actor entities
+* Fix player morph SkinType values in NBT
+* Restore back the old health
+* Move damage logic from `swim` ability to `water_breath`
+
 ## Metamorph 1.1.4
 
 This is a patch update has no aim altogether. It's just has few fixes and lots of nice features being added like an ability to morph into players (and have their skins) and blocks, more mob actions and etc.
