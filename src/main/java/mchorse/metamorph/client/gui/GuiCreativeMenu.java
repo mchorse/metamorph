@@ -217,6 +217,8 @@ public class GuiCreativeMenu extends GuiScreen
     @Override
     protected void keyTyped(char typedChar, int keyCode) throws IOException
     {
+        super.keyTyped(typedChar, keyCode);
+
         if (this.builderMode)
         {
             this.builder.keyTyped(typedChar, keyCode);
