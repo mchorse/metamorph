@@ -160,48 +160,48 @@ public class RenderingHandler
 
     /**
      * On name render, simply render the name of the user, instead of the name of 
-     * the entity.  
+     * the entity.
      */
     @SubscribeEvent
     public void onNameRender(RenderLivingEvent.Specials.Pre<EntityLivingBase> event)
     {
-        EntityLivingBase render = EntityMorph.renderEntity;
+        EntityLivingBase host = EntityMorph.renderEntity;
 
-        if (render == null)
+        if (host == null)
         {
             return;
         }
 
         event.setCanceled(true);
 
-        EntityLivingBase entity = event.getEntity();
+        EntityLivingBase target = event.getEntity();
 
-        if (!this.canRenderName(render, entity))
+        if (!this.canRenderName(host))
         {
             return;
         }
 
-        double dist = entity.getDistanceSqToEntity(this.manager.renderViewEntity);
-        float factor = entity.isSneaking() ? 32.0F : 64.0F;
+        double dist = target.getDistanceSqToEntity(this.manager.renderViewEntity);
+        float factor = target.isSneaking() ? 32.0F : 64.0F;
 
         if (dist < (double) (factor * factor))
         {
             GlStateManager.alphaFunc(516, 0.1F);
-            this.renderEntityName(entity, render.getDisplayName().getFormattedText(), event.getX(), event.getY(), event.getZ());
+            this.renderEntityName(target, host.getDisplayName().getFormattedText(), event.getX(), event.getY(), event.getZ());
         }
     }
 
     /**
      * Can render the morph's name 
      */
-    protected boolean canRenderName(EntityLivingBase entity, EntityLivingBase render)
+    protected boolean canRenderName(EntityLivingBase host)
     {
         EntityPlayerSP entityplayersp = Minecraft.getMinecraft().thePlayer;
-        boolean flag = !entity.isInvisibleToPlayer(entityplayersp);
+        boolean flag = !host.isInvisibleToPlayer(entityplayersp);
 
-        if (entity != entityplayersp)
+        if (host != entityplayersp)
         {
-            Team team = entity.getTeam();
+            Team team = host.getTeam();
             Team team1 = entityplayersp.getTeam();
 
             if (team != null)
@@ -224,7 +224,12 @@ public class RenderingHandler
             }
         }
 
-        return Minecraft.isGuiEnabled() && entity != this.manager.renderViewEntity && flag && !entity.isBeingRidden();
+        if (!(host instanceof EntityPlayer))
+        {
+            flag = flag && host.hasCustomName();
+        }
+
+        return Minecraft.isGuiEnabled() && host != this.manager.renderViewEntity && flag && !host.isBeingRidden();
     }
 
     /**
