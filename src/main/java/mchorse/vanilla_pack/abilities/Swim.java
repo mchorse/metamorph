@@ -2,9 +2,7 @@ package mchorse.vanilla_pack.abilities;
 
 import mchorse.metamorph.api.abilities.Ability;
 import net.minecraft.entity.EntityLivingBase;
-import net.minecraft.util.DamageSource;
 import net.minecraft.util.math.MathHelper;
-import net.minecraft.world.EnumDifficulty;
 
 /**
  * Swim ability
@@ -43,10 +41,6 @@ public class Swim extends Ability
                     target.motionY = 0;
                 }
             }
-        }
-        else
-        {
-            target.attackEntityFrom(DamageSource.drown, target.worldObj.getDifficulty().equals(EnumDifficulty.PEACEFUL) ? 1.0F : 0.5F);
         }
     }
 }
