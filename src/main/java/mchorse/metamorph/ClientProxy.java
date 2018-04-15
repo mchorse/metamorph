@@ -11,12 +11,16 @@ import mchorse.metamorph.client.gui.elements.GuiOverlay;
 import mchorse.metamorph.client.gui.elements.GuiSurvivalMorphs;
 import mchorse.metamorph.client.render.RenderCustomModel;
 import mchorse.metamorph.client.render.RenderMorph;
-import mchorse.metamorph.client.render.RenderSubPlayer;
 import mchorse.metamorph.entity.EntityMorph;
 import mchorse.vanilla_pack.client.gui.GuiNBTMorphBuilder;
 import mchorse.vanilla_pack.client.gui.GuiPlayerMorphBuilder;
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.network.NetworkPlayerInfo;
 import net.minecraft.client.renderer.entity.RenderManager;
+import net.minecraft.client.renderer.entity.RenderPlayer;
+import net.minecraft.client.renderer.entity.RenderSubPlayer;
+import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.world.GameType;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.fml.client.registry.RenderingRegistry;
 import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
@@ -127,10 +131,23 @@ public class ClientProxy extends CommonProxy
         /* Replace player renderers with Blockbuster substitutes */
         if (skins != null)
         {
-            skins.put("slim", new RenderSubPlayer(manager, true));
-            skins.put("default", new RenderSubPlayer(manager, false));
+            RenderPlayer slim = skins.get("slim");
+            RenderPlayer def = skins.get("default");
+
+            skins.put("slim", new RenderSubPlayer(manager, slim, true));
+            skins.put("default", new RenderSubPlayer(manager, def, false));
 
             Metamorph.log("Skin map renderers were successfully replaced with Metamorph substitutes!");
         }
+    }
+
+    /**
+     * Get game mode of a player 
+     */
+    public static GameType getGameMode(EntityPlayer player)
+    {
+        NetworkPlayerInfo networkplayerinfo = Minecraft.getMinecraft().getConnection().getPlayerInfo(player.getGameProfile().getId());
+
+        return networkplayerinfo != null ? networkplayerinfo.getGameType() : GameType.CREATIVE;
     }
 }

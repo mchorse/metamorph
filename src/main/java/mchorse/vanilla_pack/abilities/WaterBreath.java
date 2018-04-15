@@ -3,6 +3,8 @@ package mchorse.vanilla_pack.abilities;
 import mchorse.metamorph.api.abilities.Ability;
 import net.minecraft.client.Minecraft;
 import net.minecraft.entity.EntityLivingBase;
+import net.minecraft.util.DamageSource;
+import net.minecraft.world.EnumDifficulty;
 import net.minecraftforge.client.GuiIngameForge;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
@@ -20,6 +22,10 @@ public class WaterBreath extends Ability
         if (target.isInWater())
         {
             target.setAir(300);
+        }
+        else
+        {
+            target.attackEntityFrom(DamageSource.DROWN, target.world.getDifficulty().equals(EnumDifficulty.PEACEFUL) ? 1.0F : 0.5F);
         }
     }
 

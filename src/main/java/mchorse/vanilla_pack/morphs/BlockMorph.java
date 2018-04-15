@@ -133,7 +133,7 @@ public class BlockMorph extends AbstractMorph
         morph.block = this.block;
         morph.blockPos = this.blockPos;
 
-        return null;
+        return morph;
     }
 
     @Override

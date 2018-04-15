@@ -8,12 +8,18 @@ import mchorse.metamorph.capabilities.morphing.IMorphing;
 import mchorse.metamorph.capabilities.morphing.Morphing;
 import mchorse.metamorph.network.common.PacketSelectMorph;
 import net.minecraft.entity.player.EntityPlayerMP;
+import net.minecraft.world.GameType;
 
 public class ServerHandlerSelectMorph extends ServerMessageHandler<PacketSelectMorph>
 {
     @Override
     public void run(EntityPlayerMP player, PacketSelectMorph message)
     {
+        if (player.interactionManager.getGameType() == GameType.ADVENTURE)
+        {
+            return;
+        }
+
         int index = message.index;
 
         IMorphing capability = Morphing.get(player);
