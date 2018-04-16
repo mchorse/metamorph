@@ -23,6 +23,7 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.world.GameType;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.fml.client.registry.RenderingRegistry;
+import net.minecraftforge.fml.common.event.FMLPostInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
@@ -68,12 +69,6 @@ public class ClientProxy extends CommonProxy
     @Override
     public void load()
     {
-        /* Rendering stuff */
-        RenderManager manager = Minecraft.getMinecraft().getRenderManager();
-        modelRenderer = new RenderCustomModel(manager, null, 0.5F);
-
-        this.substitutePlayerRenderers(manager);
-
         /* Continue loading process */
         super.load();
 
@@ -87,6 +82,21 @@ public class ClientProxy extends CommonProxy
         /* Register morph builders */
         GuiMorphBuilder.BUILDERS.put("nbt", new GuiNBTMorphBuilder());
         GuiMorphBuilder.BUILDERS.put("player", new GuiPlayerMorphBuilder());
+    }
+
+    /**
+     * In post load, we're going to substitute player renderers 
+     */
+    @Override
+    public void postLoad(FMLPostInitializationEvent event)
+    {
+        super.postLoad(event);
+
+        /* Rendering stuff */
+        RenderManager manager = Minecraft.getMinecraft().getRenderManager();
+        modelRenderer = new RenderCustomModel(manager, null, 0.5F);
+
+        this.substitutePlayerRenderers(manager);
     }
 
     /**
