@@ -31,13 +31,13 @@ import net.minecraftforge.fml.common.event.FMLServerStartingEvent;
  * they're outdated), however, iChun saying that he's working on Morph for 
  * 1.10.2, this is really exciting! :D
  */
-@Mod(modid = Metamorph.MODID, name = Metamorph.MODNAME, version = Metamorph.VERSION, guiFactory = Metamorph.GUI_FACTORY, updateJSON = "https://raw.githubusercontent.com/mchorse/metamorph/master/version.json")
+@Mod(modid = Metamorph.MODID, name = Metamorph.MODNAME, version = Metamorph.VERSION, guiFactory = Metamorph.GUI_FACTORY, updateJSON = "https://raw.githubusercontent.com/mchorse/metamorph/master/version.json", dependencies = "after:moreplayermodels")
 public class Metamorph
 {
     /* Metadata fields */
     public static final String MODID = "metamorph";
     public static final String MODNAME = "Metamorph";
-    public static final String VERSION = "1.1.5";
+    public static final String VERSION = "1.1.6";
 
     public static final String CLIENT_PROXY = "mchorse.metamorph.ClientProxy";
     public static final String SERVER_PROXY = "mchorse.metamorph.CommonProxy";
@@ -71,6 +71,8 @@ public class Metamorph
     {
         /* I hope all entities are going to be loaded */
         MorphManager.initiateMap();
+
+        proxy.postLoad(event);
     }
 
     @EventHandler
