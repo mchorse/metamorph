@@ -1,6 +1,5 @@
 package mchorse.metamorph;
 
-import java.lang.reflect.Field;
 import java.util.Map;
 
 import mchorse.metamorph.api.MorphManager;
@@ -23,6 +22,7 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.world.GameType;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.fml.client.registry.RenderingRegistry;
+import net.minecraftforge.fml.common.event.FMLPostInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
@@ -68,12 +68,6 @@ public class ClientProxy extends CommonProxy
     @Override
     public void load()
     {
-        /* Rendering stuff */
-        RenderManager manager = Minecraft.getMinecraft().getRenderManager();
-        modelRenderer = new RenderCustomModel(manager, null, 0.5F);
-
-        this.substitutePlayerRenderers(manager);
-
         /* Continue loading process */
         super.load();
 
@@ -90,43 +84,27 @@ public class ClientProxy extends CommonProxy
     }
 
     /**
+     * In post load, we're going to substitute player renderers 
+     */
+    @Override
+    public void postLoad(FMLPostInitializationEvent event)
+    {
+        super.postLoad(event);
+
+        /* Rendering stuff */
+        RenderManager manager = Minecraft.getMinecraft().getRenderManager();
+        modelRenderer = new RenderCustomModel(manager, null, 0.5F);
+
+        this.substitutePlayerRenderers(manager);
+    }
+
+    /**
      * Substitute default player renders to get the ability to render the
      * hand.
-     *
-     * Please, kids, don't do that at home. This was made by an expert in
-     * his field, so please, don't override skinMap the way I did. Don't break
-     * the compatibility with this mod (already confirmed breaking while 
-     * using Metamorph and Blockbuster together).
      */
-    @SuppressWarnings({"rawtypes", "unchecked"})
     private void substitutePlayerRenderers(RenderManager manager)
     {
-        Map<String, net.minecraft.client.renderer.entity.RenderPlayer> skins = null;
-
-        /* Iterate over all render manager fields and get access to skinMap */
-        for (Field field : manager.getClass().getDeclaredFields())
-        {
-            if (field.getType().equals(Map.class))
-            {
-                field.setAccessible(true);
-
-                try
-                {
-                    Map map = (Map) field.get(manager);
-
-                    if (map.get("default") instanceof net.minecraft.client.renderer.entity.RenderPlayer)
-                    {
-                        skins = map;
-
-                        break;
-                    }
-                }
-                catch (Exception e)
-                {
-                    e.printStackTrace();
-                }
-            }
-        }
+        Map<String, net.minecraft.client.renderer.entity.RenderPlayer> skins = manager.getSkinMap();
 
         /* Replace player renderers with Blockbuster substitutes */
         if (skins != null)

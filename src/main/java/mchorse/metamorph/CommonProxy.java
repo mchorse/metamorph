@@ -19,6 +19,7 @@ import mchorse.vanilla_pack.RegisterHandler;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.common.capabilities.CapabilityManager;
 import net.minecraftforge.common.config.Configuration;
+import net.minecraftforge.fml.common.event.FMLPostInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
 import net.minecraftforge.fml.common.registry.EntityRegistry;
 
@@ -113,4 +114,10 @@ public class CommonProxy
             MorphUtils.generateFile(blacklist, "[]");
         }
     }
+
+    /**
+     * Post load
+     */
+    public void postLoad(FMLPostInitializationEvent event)
+    {}
 }
