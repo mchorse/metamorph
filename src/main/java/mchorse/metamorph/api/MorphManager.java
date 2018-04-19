@@ -10,7 +10,6 @@ import java.util.TreeSet;
 import mchorse.metamorph.api.abilities.IAbility;
 import mchorse.metamorph.api.abilities.IAction;
 import mchorse.metamorph.api.abilities.IAttackAbility;
-import mchorse.metamorph.api.models.ModelManager;
 import mchorse.metamorph.api.morphs.AbstractMorph;
 import mchorse.metamorph.api.morphs.EntityMorph;
 import net.minecraft.client.Minecraft;
@@ -64,11 +63,6 @@ public class MorphManager
      * server start. Modifying this is a not a good idea 
      */
     public Set<String> activeBlacklist = new TreeSet<String>();
-
-    /**
-     * Model manager
-     */
-    public ModelManager models;
 
     /**
      * Check whether morph by the given name is blacklisted 
