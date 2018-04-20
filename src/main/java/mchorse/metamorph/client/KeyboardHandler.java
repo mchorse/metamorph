@@ -2,6 +2,7 @@ package mchorse.metamorph.client;
 
 import org.lwjgl.input.Keyboard;
 
+import mchorse.metamorph.ClientProxy;
 import mchorse.metamorph.capabilities.morphing.IMorphing;
 import mchorse.metamorph.capabilities.morphing.Morphing;
 import mchorse.metamorph.client.gui.GuiCreativeMenu;
@@ -13,6 +14,7 @@ import mchorse.metamorph.network.common.PacketSelectMorph;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.settings.KeyBinding;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.world.GameType;
 import net.minecraftforge.fml.client.registry.ClientRegistry;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.common.gameevent.InputEvent;
@@ -102,6 +104,12 @@ public class KeyboardHandler
             mc.displayGuiScreen(new GuiCreativeMenu());
         }
 
+        if (ClientProxy.getGameMode(mc.thePlayer) == GameType.ADVENTURE)
+        {
+            return;
+        }
+
+        /* Survival morphing key handling */
         if (keySurvivalMenu.isPressed())
         {
             mc.displayGuiScreen(new GuiSurvivalMenu(this.overlay));

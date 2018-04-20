@@ -50,6 +50,11 @@ public abstract class AbstractMorph
      */
     public String name = "";
 
+    /**
+     * Health when the player morphed into this morph 
+     */
+    protected float lastHealth;
+
     /* Rendering */
 
     /**
@@ -116,6 +121,7 @@ public abstract class AbstractMorph
      */
     public void morph(EntityLivingBase target)
     {
+        this.lastHealth = (float) target.getEntityAttribute(SharedMonsterAttributes.MAX_HEALTH).getBaseValue();
         this.setHealth(target, this.settings.health);
 
         for (IAbility ability : this.settings.abilities)
@@ -133,7 +139,7 @@ public abstract class AbstractMorph
     public void demorph(EntityLivingBase target)
     {
         /* 20 is default player's health */
-        this.setHealth(target, 20);
+        this.setHealth(target, this.lastHealth);
 
         for (IAbility ability : this.settings.abilities)
         {
@@ -175,7 +181,7 @@ public abstract class AbstractMorph
      * 
      * @author asanetargoss
      */
-    protected void setHealth(EntityLivingBase target, int health)
+    protected void setHealth(EntityLivingBase target, float health)
     {
         if (Metamorph.proxy.config.disable_health)
         {
@@ -221,7 +227,7 @@ public abstract class AbstractMorph
     /**
      * Set player's max health
      */
-    protected void setMaxHealth(EntityLivingBase target, int health)
+    protected void setMaxHealth(EntityLivingBase target, float health)
     {
         if (target.getMaxHealth() != health)
         {
@@ -346,6 +352,7 @@ public abstract class AbstractMorph
     public void toNBT(NBTTagCompound tag)
     {
         tag.setString("Name", this.name);
+        tag.setFloat("LastHealth", this.lastHealth);
     }
 
     /**
@@ -354,5 +361,6 @@ public abstract class AbstractMorph
     public void fromNBT(NBTTagCompound tag)
     {
         this.name = tag.getString("Name");
+        this.lastHealth = tag.getFloat("LastHealth");
     }
 }

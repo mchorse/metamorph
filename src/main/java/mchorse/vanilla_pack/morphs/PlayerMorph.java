@@ -104,8 +104,6 @@ public class PlayerMorph extends EntityMorph
     {
         EntityPlayer entity = (EntityPlayer) this.entity;
 
-        net.minecraftforge.fml.common.FMLCommonHandler.instance().onPlayerPreTick(entity);
-
         entity.setPrimaryHand(target.getPrimaryHand());
 
         /* Update the cape */
@@ -155,8 +153,6 @@ public class PlayerMorph extends EntityMorph
         entity.chasingPosX += d0 * 0.25D;
         entity.chasingPosZ += d2 * 0.25D;
         entity.chasingPosY += d1 * 0.25D;
-
-        net.minecraftforge.fml.common.FMLCommonHandler.instance().onPlayerPostTick(entity);
     }
 
     /**

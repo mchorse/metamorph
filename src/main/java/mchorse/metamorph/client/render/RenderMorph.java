@@ -1,7 +1,5 @@
 package mchorse.metamorph.client.render;
 
-import mchorse.metamorph.api.models.Model;
-import mchorse.metamorph.api.morphs.CustomMorph;
 import mchorse.metamorph.entity.EntityMorph;
 import net.minecraft.client.model.ModelBase;
 import net.minecraft.client.renderer.GlStateManager;
@@ -100,15 +98,6 @@ public class RenderMorph extends RenderLivingBase<EntityMorph>
         float x = 1.0F;
         float y = 1.0F;
         float z = 1.0F;
-
-        if (entity.morph instanceof CustomMorph)
-        {
-            Model data = ((CustomMorph) entity.morph).model;
-
-            x = data.scale[0];
-            y = data.scale[1];
-            z = data.scale[2];
-        }
 
         x = MathHelper.clamp_float(x, 0.0F, 1.5F);
         y = MathHelper.clamp_float(y, 0.0F, 1.5F);

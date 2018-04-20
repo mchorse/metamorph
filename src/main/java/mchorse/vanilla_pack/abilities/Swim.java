@@ -1,11 +1,7 @@
 package mchorse.vanilla_pack.abilities;
 
 import mchorse.metamorph.api.abilities.Ability;
-import mchorse.metamorph.capabilities.morphing.IMorphing;
-import mchorse.metamorph.capabilities.morphing.Morphing;
 import net.minecraft.entity.EntityLivingBase;
-import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.util.DamageSource;
 import net.minecraft.util.math.MathHelper;
 
 /**
@@ -21,7 +17,6 @@ public class Swim extends Ability
     public void update(EntityLivingBase target)
     {
         updateMotion(target);
-        updateAir(target);
     }
     
     private void updateMotion(EntityLivingBase target)
@@ -51,54 +46,6 @@ public class Swim extends Ability
                     target.motionY = 0;
                 }
             }
-        }
-    }
-    
-    private void updateAir(EntityLivingBase target)
-    {
-        if (target instanceof EntityPlayer)
-        {
-            IMorphing morphing = Morphing.get((EntityPlayer)target);
-            if (morphing != null)
-            {
-                if (target.isInWater())
-                {
-                    morphing.setSquidAir(300);
-                    target.setAir(300);
-                }
-                else
-                {
-                    int air = morphing.getSquidAir() - 1;
-                    if (air <= -20)
-                    {
-                        air = 0;
-                        target.attackEntityFrom(DamageSource.drown, 2.0F);
-                    }
-                    morphing.setSquidAir(air);
-                }
-            }
-        }
-    }
-    
-    @Override
-    public void onMorph(EntityLivingBase target)
-    {
-        IMorphing morphing = Morphing.get((EntityPlayer)target);
-        if (morphing != null)
-        {
-            morphing.setSquidAir(target.getAir());
-            morphing.setHasSquidAir(true);
-        }
-    }
-    
-    @Override
-    public void onDemorph(EntityLivingBase target)
-    {
-        IMorphing morphing = Morphing.get((EntityPlayer)target);
-        if (morphing != null)
-        {
-            target.setAir(morphing.getSquidAir());
-            morphing.setHasSquidAir(false);
         }
     }
 }

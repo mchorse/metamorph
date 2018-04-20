@@ -6,11 +6,12 @@
   		"version": "${version}",
   		"mcversion": "${mcversion}",
   		"url": "https://github.com/mchorse/metamorph",
+  		"updateJSON": "https://raw.githubusercontent.com/mchorse/metamorph/master/version.json",
   		"updateUrl": "",
   		"authorList": ["mchorse"],
-  		"credits": "SCtester for ideas, feedback and testing, NlL5 for sheep model, Morph and Shape Shifter Z mods for inspiration",
+  		"credits": "SCtester for ideas, feedback and testing, NlL5 for sheep model, Morph and Shape Shifter Z mods for inspiration.  Also big thanks to ycwei982 for testing, adding few features and localization!",
 		"logoFile": "",
 		"screenshots": [],
-		"dependencies": []
+		"dependencies": ["moreplayermodels"]
 	}
 ]

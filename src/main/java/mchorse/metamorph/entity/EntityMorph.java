@@ -45,6 +45,7 @@ public class EntityMorph extends EntityLivingBase implements IEntityAdditionalSp
     private EntityPlayer player;
 
     public int timer = 30;
+    public int lifetime = 2400;
     public AbstractMorph morph;
 
     /**
@@ -153,6 +154,18 @@ public class EntityMorph extends EntityLivingBase implements IEntityAdditionalSp
         /* Find an owner */
         if (!this.worldObj.isRemote && !this.isDead)
         {
+            if (this.lifetime > 0)
+            {
+                this.lifetime--;
+            }
+            else if (this.lifetime == 0)
+            {
+                /* I.e. kill only if lifetime was above 0 (in this case
+                 * only /summon'd morph with custom name tag can have 
+                 * negative lifetime) */
+                this.setDead();
+            }
+
             this.updateMorph();
         }
     }
@@ -223,6 +236,7 @@ public class EntityMorph extends EntityLivingBase implements IEntityAdditionalSp
     @Override
     public void writeEntityToNBT(NBTTagCompound compound)
     {
+        compound.setInteger("LifeTime", this.lifetime);
         compound.setBoolean("Ownerless", this.ownerless);
 
         if (this.username != null && !this.username.isEmpty())
@@ -250,6 +264,11 @@ public class EntityMorph extends EntityLivingBase implements IEntityAdditionalSp
         String owner = compound.getString("Owner");
 
         this.owner = owner.isEmpty() ? null : UUID.fromString(owner);
+
+        if (compound.hasKey("LifeTime", 99))
+        {
+            this.lifetime = compound.getInteger("LifeTime");
+        }
 
         if (this.owner != null)
         {

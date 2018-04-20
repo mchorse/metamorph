@@ -1,0 +1,20 @@
+{
+    "homepage":"https://minecraft.curseforge.com/projects/metamorph",
+    "1.10.2":{
+        "1.1.5": "This is a small, quick and dirty patch that provides several bugfixes (mainly for Blockbuster's update)."
+    },
+    "1.11.2":{
+        "1.1.5": "This is a small, quick and dirty patch that provides several bugfixes (mainly for Blockbuster's update)."
+    },
+    "1.12.2":{
+        "1.1.5": "This is a small, quick and dirty patch that provides several bugfixes (mainly for Blockbuster's update)."
+    },
+    "promos":{
+        "1.10.2-latest":"1.1.5",
+        "1.10.2-recommended":"1.1.5",
+        "1.11.2-latest":"1.1.5",
+        "1.11.2-recommended":"1.1.5",
+        "1.12.2-latest":"1.1.5",
+        "1.12.2-recommended":"1.1.5"
+   }
+}

@@ -5,7 +5,6 @@ import java.io.File;
 import mchorse.metamorph.api.MorphHandler;
 import mchorse.metamorph.api.MorphManager;
 import mchorse.metamorph.api.MorphUtils;
-import mchorse.metamorph.api.models.ModelManager;
 import mchorse.metamorph.capabilities.CapabilityHandler;
 import mchorse.metamorph.capabilities.morphing.IMorphing;
 import mchorse.metamorph.capabilities.morphing.Morphing;
@@ -20,6 +19,7 @@ import mchorse.vanilla_pack.RegisterHandler;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.common.capabilities.CapabilityManager;
 import net.minecraftforge.common.config.Configuration;
+import net.minecraftforge.fml.common.event.FMLPostInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
 import net.minecraftforge.fml.common.registry.EntityRegistry;
 
@@ -32,10 +32,6 @@ import net.minecraftforge.fml.common.registry.EntityRegistry;
  */
 public class CommonProxy
 {
-    /**
-     * Model handler. This class is responsible for managing models and more. 
-     */
-    public ModelManager models = new ModelManager();
 
     /**
      * Metamorph config filled with cool configuration points
@@ -62,8 +58,7 @@ public class CommonProxy
         /* Network messages */
         Dispatcher.register();
 
-        /* Attaching model manager and morph factories to the morph manager */
-        MorphManager.INSTANCE.models = this.models;
+        /* Attaching morph factories to the morph manager */
         MorphManager.INSTANCE.factories.add(new MobMorphFactory());
         MorphManager.INSTANCE.factories.add(new PlayerMorphFactory());
 
@@ -115,4 +110,10 @@ public class CommonProxy
             MorphUtils.generateFile(blacklist, "[]");
         }
     }
+
+    /**
+     * Post load
+     */
+    public void postLoad(FMLPostInitializationEvent event)
+    {}
 }
