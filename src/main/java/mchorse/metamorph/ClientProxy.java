@@ -9,7 +9,6 @@ import mchorse.metamorph.client.RenderingHandler;
 import mchorse.metamorph.client.gui.builder.GuiMorphBuilder;
 import mchorse.metamorph.client.gui.elements.GuiOverlay;
 import mchorse.metamorph.client.gui.elements.GuiSurvivalMorphs;
-import mchorse.metamorph.client.render.RenderCustomModel;
 import mchorse.metamorph.client.render.RenderMorph;
 import mchorse.metamorph.entity.EntityMorph;
 import mchorse.vanilla_pack.client.gui.GuiNBTMorphBuilder;
@@ -47,11 +46,6 @@ public class ClientProxy extends CommonProxy
      * GUI overlay which is responsible for showing up acquired morphs
      */
     public static GuiOverlay morphOverlay = new GuiOverlay();
-
-    /**
-     * Custom model renderer 
-     */
-    public static RenderCustomModel modelRenderer;
 
     /**
      * Keyboard handler 
@@ -94,7 +88,6 @@ public class ClientProxy extends CommonProxy
 
         /* Rendering stuff */
         RenderManager manager = Minecraft.getMinecraft().getRenderManager();
-        modelRenderer = new RenderCustomModel(manager, null, 0.5F);
 
         this.substitutePlayerRenderers(manager);
     }

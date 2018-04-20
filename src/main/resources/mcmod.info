@@ -2,7 +2,7 @@
 	{
 		"modid": "metamorph",
   		"name": "Metamorph",
-  		"description": "Morphing/shape-shifting mod for newer minecraft versions",
+  		"description": "Allows players to morph into different mobs and more!",
   		"version": "${version}",
   		"mcversion": "${mcversion}",
   		"url": "https://github.com/mchorse/metamorph",
