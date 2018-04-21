@@ -91,18 +91,6 @@ public class BlockMorph extends AbstractMorph
         GlStateManager.translate(0.0F, 0.0F, 1.0F);
         GlStateManager.popMatrix();
     }
-    
-    @Override
-    public float getWidth()
-    {
-        return 0.99F;
-    }
-    
-    @Override
-    public float getHeight()
-    {
-        return 0.99F;
-    }
 
     /**
      * Update the entity
@@ -210,12 +198,12 @@ public class BlockMorph extends AbstractMorph
     @Override
     public float getWidth(EntityLivingBase target)
     {
-        return 1;
+        return 0.99F;
     }
 
     @Override
     public float getHeight(EntityLivingBase target)
     {
-        return 1;
+        return 0.99F;
     }
 }

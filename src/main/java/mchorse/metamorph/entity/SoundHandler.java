@@ -88,7 +88,7 @@ public class SoundHandler
         }
         else if (soundType.endsWith(".step"))
         {
-            if (player.width != morph.getWidth() || player.height !=  morph.getHeight())
+            if (player.width != morph.getWidth(player) || player.height !=  morph.getHeight(player))
             {
                 /*
                  * Check if the player's current hitbox does not

@@ -486,38 +486,6 @@ public class EntityMorph extends AbstractMorph
     {
         this.entity.onUpdate();
     }
-    
-    @Override
-    public float getWidth()
-    {
-        if (this.entity == null)
-        {
-            return 0.6F;
-        }
-        boolean isAnimalChild = this.entity instanceof EntityAgeable && this.entityData.getInteger("Age") < 0;
-        float width = this.entity.width;
-        if (isAnimalChild)
-        {
-            width *= 0.5;
-        }
-        return width;
-    }
-    
-    @Override
-    public float getHeight()
-    {
-        if (this.entity == null)
-        {
-            return 1.8F;
-        }
-        boolean isAnimalChild = this.entity instanceof EntityAgeable && this.entityData.getInteger("Age") < 0;
-        float height = this.entity.height;
-        if (isAnimalChild)
-        {
-            height *= 0.5;
-        }
-        return height;
-    }
 
     @Override
     protected void updateSize(EntityLivingBase target, float width, float height)
