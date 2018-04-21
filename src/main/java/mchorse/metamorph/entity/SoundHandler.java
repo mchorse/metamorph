@@ -88,7 +88,21 @@ public class SoundHandler
         }
         else if (soundType.endsWith(".step"))
         {
-            if (morph.hasCustomStepSound(soundEntity))
+            if (player.width != morph.getWidth() || player.height !=  morph.getHeight())
+            {
+                /*
+                 * Check if the player's current hitbox does not
+                 * match the morph hitbox.
+                 * 
+                 * Each tick, the player entity attempts to revert
+                 * back to the default player hitbox. If the current
+                 * morph hitbox is smaller than the player hitbox,
+                 * movement can be triggered, which in turn triggers
+                 * a step sound.
+                 */
+                event.setCanceled(true);
+            }
+            else if (morph.hasCustomStepSound(soundEntity))
             {
                 event.setCanceled(true);
                 morph.playStepSound(soundEntity);

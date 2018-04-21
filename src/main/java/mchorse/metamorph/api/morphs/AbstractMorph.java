@@ -146,6 +146,27 @@ public abstract class AbstractMorph
             ability.onDemorph(target);
         }
     }
+    
+    /* Getting size */
+    
+    /** Public function for getting the width. Not used by updateSize. */
+    public abstract float getWidth();
+    
+    /** Public function for getting the height. Not used by updateSize. */
+    public abstract float getHeight();
+    
+    /** Public function for getting the eye height. Not used by updateSize. */
+    public float getEyeHeight()
+    {
+        if (!Metamorph.proxy.config.disable_pov)
+        {
+            return this.getHeight() * 0.9F;
+        }
+        else
+        {
+            return 1.62F;
+        }
+    }
 
     /* Adjusting size */
 
