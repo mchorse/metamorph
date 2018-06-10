@@ -49,6 +49,7 @@ metamorph.config.disable_pov=Disable POV
 metamorph.config.disable_health=Disable health scaling
 metamorph.config.disable_morph_animation=Disable morph animation
 metamorph.config.disable_morph_disguise=Disable morph hostility
+metamorph.config.acquire_immediately=Acquire morph immediately
 
 # Commands
 metamorph.commands.morph=Morph command. This command is responsible for morphing player into specified morph.\n\n/morph <username> [morph_name] [data_tag]
