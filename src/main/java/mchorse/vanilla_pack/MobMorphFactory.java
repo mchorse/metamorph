@@ -7,6 +7,7 @@ import mchorse.metamorph.api.MorphManager;
 import mchorse.metamorph.api.morphs.AbstractMorph;
 import mchorse.metamorph.api.morphs.EntityMorph;
 import mchorse.vanilla_pack.morphs.BlockMorph;
+import mchorse.vanilla_pack.morphs.DragonMorph;
 import mchorse.vanilla_pack.morphs.IronGolemMorph;
 import mchorse.vanilla_pack.morphs.ShulkerMorph;
 import mchorse.vanilla_pack.morphs.UndeadMorph;
@@ -344,7 +345,10 @@ public class MobMorphFactory implements IMorphFactory
         {
             return new ShulkerMorph();
         }
-
+        else if (name.equals("minecraft:ender_dragon"))
+        {
+        	return new DragonMorph();
+        }
         return new EntityMorph();
     }
 }

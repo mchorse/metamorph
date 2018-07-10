@@ -83,7 +83,8 @@ public class CommonProxy
      * configuration. I don't know how it's going to work in multiplayer, 
      * probably won't lol
      */
-    public void load()
+    @SuppressWarnings("deprecation")
+	public void load()
     {
         /* Event listeners */
         MinecraftForge.EVENT_BUS.register(this.config);

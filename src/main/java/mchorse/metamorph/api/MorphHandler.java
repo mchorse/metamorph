@@ -9,6 +9,7 @@ import mchorse.metamorph.api.morphs.AbstractMorph;
 import mchorse.metamorph.capabilities.morphing.IMorphing;
 import mchorse.metamorph.capabilities.morphing.Morphing;
 import mchorse.metamorph.entity.EntityMorph;
+import mchorse.vanilla_pack.morphs.DragonMorph;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLiving;
 import net.minecraft.entity.EntityLivingBase;
@@ -232,7 +233,17 @@ public class MorphHandler
             }
         }
     }
-
+    @SubscribeEvent
+    public void onLivingAttack(LivingAttackEvent e)
+    {
+    	System.out.println(e.toString());
+    	if(e.getEntityLiving() instanceof EntityPlayer
+    			&& e.getSource().getImmediateSource() instanceof DragonMorph.EntityDragonMorph
+    			&& ((DragonMorph.EntityDragonMorph)(e.getSource().getImmediateSource())).isOwner(e.getEntityLiving()))
+    	{
+    		e.setCanceled(true);
+    	}
+    }
     /**
      * Run future tasks on both client and server. 
      */

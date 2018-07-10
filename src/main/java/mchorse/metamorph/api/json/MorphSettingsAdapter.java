@@ -23,10 +23,10 @@ import mchorse.metamorph.api.abilities.IAbility;
  */
 public class MorphSettingsAdapter implements JsonDeserializer<MorphSettings>
 {
-    private Gson gson = new GsonBuilder().create();
+    @SuppressWarnings("unused")
+	private Gson gson = new GsonBuilder().create();
 
     @Override
-    @SuppressWarnings("unchecked")
     public MorphSettings deserialize(JsonElement json, Type typeOfT, JsonDeserializationContext context) throws JsonParseException
     {
         JsonObject object = json.getAsJsonObject();

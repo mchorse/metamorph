@@ -12,6 +12,7 @@ import mchorse.metamorph.api.abilities.IAction;
 import mchorse.metamorph.api.abilities.IAttackAbility;
 import mchorse.metamorph.api.morphs.AbstractMorph;
 import mchorse.metamorph.api.morphs.EntityMorph;
+import mchorse.vanilla_pack.morphs.DragonMorph;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.resources.I18n;
 import net.minecraft.entity.Entity;
@@ -75,7 +76,8 @@ public class MorphManager
     /**
      * Initiate a map of string entity name to its registry name  
      */
-    public static void initiateMap()
+    @SuppressWarnings("deprecation")
+	public static void initiateMap()
     {
         for (EntityEntry entity : ForgeRegistries.ENTITIES.getValues())
         {
@@ -239,7 +241,7 @@ public class MorphManager
     {
         for (int i = this.factories.size() - 1; i >= 0; i--)
         {
-            String name = this.factories.get(i).displayNameForMorph(morph);
+            String name =  morph instanceof DragonMorph ? "Ender Dragon" : this.factories.get(i).displayNameForMorph(morph);
 
             if (name != null)
             {

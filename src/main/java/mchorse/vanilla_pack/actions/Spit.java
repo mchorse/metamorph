@@ -12,7 +12,8 @@ import net.minecraft.util.math.Vec3d;
 
 public class Spit implements IAction
 {
-    @Override
+    @SuppressWarnings("unused")
+	@Override
     public void execute(EntityLivingBase target, AbstractMorph morph)
     {
         if (target.world.isRemote)
