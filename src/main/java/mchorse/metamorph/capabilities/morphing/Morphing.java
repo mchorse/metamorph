@@ -353,8 +353,8 @@ public class Morphing implements IMorphing
         {
             this.animation--;
         }
+        if (this.animation == 16 && !player.worldObj.isRemote && !Metamorph.proxy.config.disable_morph_animation)
 
-        if (this.animation == 16 && !player.world.isRemote)
         {
             /* Pop! */
             ((WorldServer) player.world).spawnParticle(EnumParticleTypes.EXPLOSION_NORMAL, false, player.posX, player.posY + 0.5, player.posZ, 25, 0.5, 0.5, 0.5, 0.05);

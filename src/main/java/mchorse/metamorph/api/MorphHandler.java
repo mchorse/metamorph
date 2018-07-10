@@ -150,8 +150,16 @@ public class MorphHandler
         tag.setTag("EntityData", EntityUtils.stripEntityNBT(target.serializeNBT()));
 
         AbstractMorph morph = MorphManager.INSTANCE.morphFromNBT(tag);
+        boolean acquired = capability.acquiredMorph(morph);
 
-        if (!Metamorph.proxy.config.prevent_ghosts || !capability.acquiredMorph(morph))
+        if (Metamorph.proxy.config.acquire_immediately && !acquired)
+        {
+            MorphAPI.acquire(player, morph);
+
+            return;
+        }
+
+        if (!Metamorph.proxy.config.prevent_ghosts || !acquired)
         {
             SpawnGhostEvent spawnGhostEvent = new SpawnGhostEvent.Pre(player, morph);
 
