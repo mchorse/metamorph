@@ -353,7 +353,7 @@ public class Morphing implements IMorphing
         {
             this.animation--;
         }
-        if (this.animation == 16 && !player.worldObj.isRemote && !Metamorph.proxy.config.disable_morph_animation)
+        if (this.animation == 16 && !player.world.isRemote && !Metamorph.proxy.config.disable_morph_animation)
 
         {
             /* Pop! */
