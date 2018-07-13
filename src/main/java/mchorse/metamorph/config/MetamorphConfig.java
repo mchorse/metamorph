@@ -62,7 +62,9 @@ public class MetamorphConfig
      * attacked by hostile mobs.
      */
     public boolean disable_morph_disguise;
-
+    
+    //added
+    public boolean disable_gui_open;
     /* End of config options */
 
     /**
@@ -94,6 +96,8 @@ public class MetamorphConfig
         this.disable_morph_animation = this.config.getBoolean("disable_morph_animation", cat, false, "Disables morphing animation", lang + "disable_morph_animation");
         this.disable_morph_disguise = this.config.getBoolean("disable_morph_disguise", cat, false, "Disables the ability of morphs labeled as 'hostile' to avoid being attacked by hostile mobs.", lang + "disable_morph_disguise");
 
+        //added
+        this.disable_gui_open=this.config.getBoolean("disable_gui_open", cat, false, "Disable Metamorph Gui from opening.",lang+"disable_gui_open");
         this.config.getCategory(cat).setComment("General configuration of Metamorph mod");
 
         if (this.config.hasChanged())

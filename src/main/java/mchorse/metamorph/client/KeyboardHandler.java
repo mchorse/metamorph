@@ -3,6 +3,7 @@ package mchorse.metamorph.client;
 import org.lwjgl.input.Keyboard;
 
 import mchorse.metamorph.ClientProxy;
+import mchorse.metamorph.Metamorph;
 import mchorse.metamorph.capabilities.morphing.IMorphing;
 import mchorse.metamorph.capabilities.morphing.Morphing;
 import mchorse.metamorph.client.gui.GuiCreativeMenu;
@@ -101,7 +102,10 @@ public class KeyboardHandler
 
         if (keyCreativeMenu.isPressed() && mc.player.isCreative())
         {
-            mc.displayGuiScreen(new GuiCreativeMenu());
+        	//added
+        	if(!Metamorph.proxy.config.disable_gui_open){
+        		mc.displayGuiScreen(new GuiCreativeMenu());
+        	}
         }
 
         if (ClientProxy.getGameMode(mc.player) == GameType.ADVENTURE)
@@ -112,7 +116,10 @@ public class KeyboardHandler
         /* Survival morphing key handling */
         if (keySurvivalMenu.isPressed())
         {
-            mc.displayGuiScreen(new GuiSurvivalMenu(this.overlay));
+        	//added
+        	if(!Metamorph.proxy.config.disable_gui_open){
+        		mc.displayGuiScreen(new GuiSurvivalMenu(this.overlay));
+        	}
         }
 
         boolean prev = keyPrevMorph.isPressed();

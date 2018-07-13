@@ -75,3 +75,6 @@ morph.category.modded=Morphs from %s
 # Morph builders
 metamorph.builder.nbt=NBT data builder
 metamorph.builder.player=Player morph builder
+
+#added
+metamorph.config.disable_gui_open=Disable Metamorph Gui from opening
