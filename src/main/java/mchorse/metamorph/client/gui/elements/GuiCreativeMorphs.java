@@ -64,6 +64,16 @@ public class GuiCreativeMorphs extends GuiScrollPane
     private GuiCreativeVariantPicker picker;
 
     /**
+     * Acquired morphs category
+     */
+    private MorphCategory acquired;
+
+    /**
+     * Morph that was selected 
+     */
+    private MorphCell selectedCell;
+
+    /**
      * Category label shift
      */
     public int shiftX = 0;
@@ -140,16 +150,17 @@ public class GuiCreativeMorphs extends GuiScrollPane
             }
         });
 
+        this.acquired = new MorphCategory("acquired", "acquired");
+        this.acquired.cells.add(this.selectedCell = new MorphCell());
+        this.selectedCell.hasVisible = false;
+        this.categories.add(0, this.acquired);
+
         /* Add also acquired morphs category, in case if capability was provided */
         if (morphing != null)
         {
-            MorphCategory category = new MorphCategory("acquired", "acquired");
-
-            this.categories.add(0, category);
-
             for (AbstractMorph morph : morphing.getAcquiredMorphs())
             {
-                category.cells.add(new MorphCell(MorphManager.INSTANCE.morphDisplayNameFromMorph(morph), morph));
+                this.acquired.cells.add(new MorphCell(MorphManager.INSTANCE.morphDisplayNameFromMorph(morph), morph));
             }
         }
     }
@@ -223,6 +234,15 @@ public class GuiCreativeMorphs extends GuiScrollPane
 
         this.selected = selectedCat;
         this.selectedMorph = selectedMorph;
+
+        if (selectedCat == -1 || selectedMorph == -1 && morph != null)
+        {
+            this.selected = 0;
+            this.selectedMorph = 0;
+            this.scrollTo(0);
+            this.selectedCell.variants.clear();
+            this.selectedCell.variants.add(new MorphVariant("Selected", morph.clone(true)));
+        }
     }
 
     /**

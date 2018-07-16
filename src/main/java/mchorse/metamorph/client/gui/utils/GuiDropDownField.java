@@ -120,7 +120,12 @@ public class GuiDropDownField
         Gui.drawRect(this.x, this.y, this.x + this.w, this.y + h, 0xff888888);
         Gui.drawRect(this.x + 1, this.y + 1, this.x + this.w - 1, this.y + h - 1, 0xff000000);
 
-        String selected = this.selected >= 0 ? this.values.get(this.selected).title : "";
+        String selected = "";
+
+        if (this.selected >= 0 && this.selected < this.values.size())
+        {
+            selected = this.values.get(this.selected).title;
+        }
 
         this.font.drawStringWithShadow(selected, this.x + 6, this.y + 6, 0xffffff);
 
