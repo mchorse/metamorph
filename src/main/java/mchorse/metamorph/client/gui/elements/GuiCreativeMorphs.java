@@ -16,6 +16,7 @@ import mchorse.metamorph.client.gui.utils.GuiScrollPane;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.resources.I18n;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.world.World;
 
@@ -150,9 +151,13 @@ public class GuiCreativeMorphs extends GuiScrollPane
             }
         });
 
+        NBTTagCompound tag = new NBTTagCompound();
+        tag.setString("Name", "metamorph.Block");
+        tag.setString("Block", "minecraft:stone");
+
         this.acquired = new MorphCategory("acquired", "acquired");
         this.acquired.cells.add(this.selectedCell = new MorphCell());
-        this.selectedCell.hasVisible = false;
+        this.selectedCell.variants.add(new MorphVariant("Selected", MorphManager.INSTANCE.morphFromNBT(tag)));
         this.categories.add(0, this.acquired);
 
         /* Add also acquired morphs category, in case if capability was provided */
@@ -235,13 +240,14 @@ public class GuiCreativeMorphs extends GuiScrollPane
         this.selected = selectedCat;
         this.selectedMorph = selectedMorph;
 
-        if (selectedCat == -1 || selectedMorph == -1 && morph != null)
+        if ((selectedCat == -1 || selectedMorph == -1) && morph != null)
         {
             this.selected = 0;
             this.selectedMorph = 0;
             this.scrollTo(0);
             this.selectedCell.variants.clear();
             this.selectedCell.variants.add(new MorphVariant("Selected", morph.clone(true)));
+            this.selectedCell.selected = 0;
         }
     }
 
@@ -336,7 +342,12 @@ public class GuiCreativeMorphs extends GuiScrollPane
 
             if (this.selectedMorph >= 0 && this.selectedMorph < category.cells.size())
             {
-                return category.cells.get(this.selectedMorph);
+                MorphCell cell = category.cells.get(this.selectedMorph);
+
+                if (!cell.variants.isEmpty())
+                {
+                    return cell;
+                }
             }
         }
 
