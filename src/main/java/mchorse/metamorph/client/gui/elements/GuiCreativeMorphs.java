@@ -243,10 +243,10 @@ public class GuiCreativeMorphs extends GuiScrollPane
         if ((selectedCat == -1 || selectedMorph == -1) && morph != null)
         {
             this.selected = 0;
-            this.selectedMorph = 0;
+            this.selectedMorph = this.selectedCell.index;
             this.scrollTo(0);
             this.selectedCell.variants.clear();
-            this.selectedCell.variants.add(new MorphVariant("Selected", morph.clone(true)));
+            this.selectedCell.variants.add(new MorphVariant(I18n.format("metamorph.gui.selected"), morph.clone(true)));
             this.selectedCell.selected = 0;
         }
     }
@@ -566,10 +566,11 @@ public class GuiCreativeMorphs extends GuiScrollPane
             {
                 result = I18n.format(KEY + "unknown");
             }
-            else if (result.equals(KEY + title))
-            {
-                result = I18n.format(KEY + "modded", title);
-            }
+            else
+                if (result.equals(KEY + title))
+                {
+                    result = I18n.format(KEY + "modded", title);
+                }
 
             this.title = result;
             this.key = key;
@@ -676,10 +677,11 @@ public class GuiCreativeMorphs extends GuiScrollPane
 
                 this.first = false;
             }
-            else if (!this.error)
-            {
-                this.morph.renderOnScreen(player, x, y, scale, 1.0F);
-            }
+            else
+                if (!this.error)
+                {
+                    this.morph.renderOnScreen(player, x, y, scale, 1.0F);
+                }
         }
     }
 }
