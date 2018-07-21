@@ -29,6 +29,7 @@ metamorph.gui.search=Search
 metamorph.gui.only_favorites=Show favorites
 metamorph.gui.all_morphs=Show all
 metamorph.gui.no_morph=No Morph Selected
+metamorph.gui.selected=Selected
 
 metamorph.gui.from_morph=From morph
 metamorph.gui.list=List
