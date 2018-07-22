@@ -8,6 +8,11 @@ Most of vanilla mob morphs have their abilities (preconfigured), meanwhile most 
 
 Heavily inspired by iChun's Morph mod and zacuke's Shape Shifter Z mod, and works only with Forge for Minecraft 1.10.2, 1.11.2 and 1.12.2.
 
+## FAQ
+
+**Q: My screen goes up and down. How to fix?**  
+A: Most likely you installed MorePlayerModels mod alongside Metamorph. To fix that, either go to `Mod Options > Metamorph > General` and enable `Disable POV` option, or disable POV option in MPM's config and restart the game.
+
 ## Install
 
 Install [Minecraft Forge](http://files.minecraftforge.net/), download the latest stable version of jar file for available minecraft version. Put it in minecraft's `mods` folder, and launch the game.
