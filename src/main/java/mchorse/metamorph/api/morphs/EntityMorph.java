@@ -558,7 +558,7 @@ public class EntityMorph extends AbstractMorph
         {
             Class[] args = method.getParameterTypes();
 
-            boolean hasEntityArg = args.length == 1 && args[0].isAssignableFrom(Entity.class);
+            boolean hasEntityArg = args.length == 1 && Entity.class.isAssignableFrom(args[0]);
             boolean returnsRL = method.getReturnType().isAssignableFrom(ResourceLocation.class);
 
             if (hasEntityArg && returnsRL)
