@@ -29,6 +29,7 @@ metamorph.gui.search=搜索
 metamorph.gui.only_favorites=展示喜欢的
 metamorph.gui.all_morphs=展示全部
 metamorph.gui.no_morph=没有选择伪装
+metamorph.gui.selected=选择
 
 # Config
 metamorph.config.general.title=通用

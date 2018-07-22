@@ -29,6 +29,7 @@ metamorph.gui.search=Найти
 metamorph.gui.only_favorites=Показать фаворитов
 metamorph.gui.all_morphs=Показать всех
 metamorph.gui.no_morph=Превращение не выбрано
+metamorph.gui.selected=Выбранный
 
 # Config
 metamorph.config.general.title=Основные
