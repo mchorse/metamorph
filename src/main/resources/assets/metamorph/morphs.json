@@ -223,7 +223,8 @@
     "minecraft:zombie": {
         "abilities": ["sun_allergy", "hungerless"],
         "health": 20,
-        "hostile": true
+        "hostile": true,
+        "hands": true
     },
     "minecraft:husk": {
         "abilities": ["sun_allergy", "hungerless"],
