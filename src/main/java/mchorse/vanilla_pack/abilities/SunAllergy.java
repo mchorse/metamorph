@@ -32,7 +32,7 @@ public class SunAllergy extends Ability
 
         float brightness = target.getBrightness(1.0F);
         boolean random = this.random.nextFloat() * 30.0F < (brightness - 0.4F) * 2.0F;
-        this.pos.setPos(target.posX, target.posY, target.posZ);
+        this.pos.setPos(target.posX, target.posY + target.getEyeHeight(), target.posZ);
 
         /* Taken from EntityZombie class and slightly modified */
         if (brightness > 0.5 && random && target.world.canSeeSky(pos))
@@ -41,7 +41,7 @@ public class SunAllergy extends Ability
             ItemStack itemstack = target.getItemStackFromSlot(EntityEquipmentSlot.HEAD);
 
             /* If target has a head slot on the head, then damage it */
-            if (itemstack != null)
+            if (!itemstack.isEmpty())
             {
                 boolean isCreativePlayer = target instanceof EntityPlayer && ((EntityPlayer) target).isCreative();
 
