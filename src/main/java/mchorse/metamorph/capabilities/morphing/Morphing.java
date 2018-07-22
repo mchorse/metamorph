@@ -249,7 +249,11 @@ public class Morphing implements IMorphing
      */
     protected void setMorph(AbstractMorph morph)
     {
-        this.animation = 20;
+        if (!Metamorph.proxy.config.disable_morph_animation)
+        {
+            this.animation = 20;
+        }
+
         this.previousMorph = this.morph;
         this.morph = morph;
     }
