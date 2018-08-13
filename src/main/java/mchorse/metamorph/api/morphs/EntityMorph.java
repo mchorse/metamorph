@@ -479,7 +479,7 @@ public class EntityMorph extends AbstractMorph
     }
 
     @Override
-    protected void updateSize(EntityLivingBase target, float width, float height)
+    public void updateSize(EntityLivingBase target, float width, float height)
     {
         boolean isAnimalChild = this.entity instanceof EntityAgeable && this.entityData.getInteger("Age") < 0;
 
