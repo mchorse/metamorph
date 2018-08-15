@@ -54,12 +54,14 @@ public class MorphAPI
         }
         
         if (!force && !player.noClip &&
-        		!Metamorph.proxy.config.morph_in_tight_spaces &&
-        		!EntityUtils.canPlayerMorphFit(player, morphing.getCurrentMorph(), morph)) {
-        	if (!player.worldObj.isRemote) {
-        		((EntityPlayerMP)player).connection.sendPacket(new SPacketChat(new TextComponentTranslation("metamorph.gui.status.tight_space"), (byte)2));
-        	}
-        	return false;
+                !Metamorph.proxy.config.morph_in_tight_spaces &&
+                !EntityUtils.canPlayerMorphFit(player, morphing.getCurrentMorph(), morph))
+        {
+            if (!player.worldObj.isRemote)
+            {
+                ((EntityPlayerMP)player).connection.sendPacket(new SPacketChat(new TextComponentTranslation("metamorph.gui.status.tight_space"), (byte)2));
+            }
+            return false;
         }
 
         MorphEvent.Pre event = new MorphEvent.Pre(player, morph, force);

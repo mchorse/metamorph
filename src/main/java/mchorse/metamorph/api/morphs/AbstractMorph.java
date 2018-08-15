@@ -151,8 +151,9 @@ public abstract class AbstractMorph
         updateSizeDefault(target, width, height);
     }
     
-    public static void updateSizeDefault(EntityLivingBase target, float width, float height) {
-    	if (target instanceof EntityPlayer && !Metamorph.proxy.config.disable_pov)
+    public static void updateSizeDefault(EntityLivingBase target, float width, float height)
+    {
+        if (target instanceof EntityPlayer && !Metamorph.proxy.config.disable_pov)
         {
             ((EntityPlayer) target).eyeHeight = height * 0.9F;
         }
