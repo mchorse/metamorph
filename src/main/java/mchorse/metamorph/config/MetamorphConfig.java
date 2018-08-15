@@ -69,6 +69,11 @@ public class MetamorphConfig
      */
     public boolean acquire_immediately;
 
+    /**
+     * Allows morphing even if it could cause suffocation and allow passing through walls
+     */
+    public boolean morph_in_tight_spaces;
+
     /* End of config options */
 
     /**
@@ -100,6 +105,7 @@ public class MetamorphConfig
         this.disable_morph_animation = this.config.getBoolean("disable_morph_animation", cat, false, "Disables morphing animation", lang + "disable_morph_animation");
         this.disable_morph_disguise = this.config.getBoolean("disable_morph_disguise", cat, false, "Disables the ability of morphs labeled as 'hostile' to avoid being attacked by hostile mobs.", lang + "disable_morph_disguise");
         this.acquire_immediately = this.config.getBoolean("acquire_immediately", cat, false, "Acquires morph immediately after player kills an entity instead of spawning a ghost", lang + "acquire_immediately");
+        this.morph_in_tight_spaces = this.config.getBoolean("morph_in_tight_spaces", cat, false, "Allows morphing even if it could cause suffocation and allow passing through walls", lang + "morph_in_tight_spaces");
 
         this.config.getCategory(cat).setComment("General configuration of Metamorph mod");
 

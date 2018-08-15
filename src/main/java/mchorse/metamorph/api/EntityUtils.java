@@ -14,6 +14,7 @@ import mchorse.metamorph.capabilities.morphing.IMorphing;
 import mchorse.metamorph.capabilities.morphing.MorphingProvider;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
+import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.EntityEquipmentSlot;
 import net.minecraft.nbt.NBTBase;
 import net.minecraft.nbt.NBTPrimitive;
@@ -316,5 +317,49 @@ public class EntityUtils
         Vec3d eyeReach = eyePos.addVector(eyeDir.xCoord * blockReachDistance, eyeDir.yCoord * blockReachDistance, eyeDir.zCoord * blockReachDistance);
 
         return input.worldObj.rayTraceBlocks(eyePos, eyeReach, false, false, true);
+    }
+    
+    public static void forceUpdateSize(EntityPlayer player, AbstractMorph morph)
+    {
+        if (morph != null)
+        {
+            morph.updateSize(player, morph.getWidth(player), morph.getHeight(player));
+        }
+        else
+        {
+            float width;
+            float height;
+            if (player.isElytraFlying())
+            {
+                width = 0.6F;
+                height = 0.6F;
+            }
+            else if (player.isPlayerSleeping())
+            {
+                width = 0.2F;
+                height = 0.2F;
+            }
+            else if (player.isSneaking())
+            {
+                width = 0.6F;
+                height = 1.65F;
+            }
+            else
+            {
+                width = 0.6F;
+                height = 1.8F;
+            }
+            
+            AbstractMorph.updateSizeDefault(player, width, height);
+        }
+    }
+
+    public static boolean canPlayerMorphFit(EntityPlayer player, AbstractMorph currentMorph, AbstractMorph newMorph)
+    {
+        boolean canFit;
+        forceUpdateSize(player, newMorph);
+        canFit = player.worldObj.getCollisionBoxes(player.getEntityBoundingBox()).isEmpty();
+        forceUpdateSize(player, currentMorph);
+        return canFit;
     }
 }

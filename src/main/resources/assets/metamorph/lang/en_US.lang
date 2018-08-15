@@ -39,6 +39,8 @@ metamorph.gui.panels.name=Name
 metamorph.gui.panels.username=Username
 metamorph.gui.panels.updating=Updating...
 
+metamorph.gui.status.tight_space=There is not enough space to morph here
+
 # Config
 metamorph.config.general.title=General
 metamorph.config.keep_morphs=Retain morphs on death
@@ -51,6 +53,7 @@ metamorph.config.disable_health=Disable health scaling
 metamorph.config.disable_morph_animation=Disable morph animation
 metamorph.config.disable_morph_disguise=Disable morph hostility
 metamorph.config.acquire_immediately=Acquire morph immediately
+metamorph.config.morph_in_tight_spaces=Allow morphing in tight spaces
 
 # Commands
 metamorph.commands.morph=Morph command. This command is responsible for morphing player into specified morph.\n\n/morph <username> [morph_name] [data_tag]
