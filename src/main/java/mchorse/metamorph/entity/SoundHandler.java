@@ -20,9 +20,9 @@ import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
  */
 public class SoundHandler
 {
-    public static final ObfuscatedName GET_HURT_SOUND = new ObfuscatedName("getHurtSound", "func_184601_bQ");
-    public static final ObfuscatedName GET_DEATH_SOUND = new ObfuscatedName("getDeathSound", "func_184615_bR");
-    public static final ObfuscatedName PLAY_STEP_SOUND = new ObfuscatedName("playStepSound", "func_180429_a");
+    public static final ObfuscatedName GET_HURT_SOUND = new ObfuscatedName("func_184601_bQ" /* getHurtSound */);
+    public static final ObfuscatedName GET_DEATH_SOUND = new ObfuscatedName("func_184615_bR" /* getDeathSound */);
+    public static final ObfuscatedName PLAY_STEP_SOUND = new ObfuscatedName("func_180429_a" /* playStepSound */);
     
     public static final DamageSource GENERIC_DAMAGE = DamageSource.generic;
     
