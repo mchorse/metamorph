@@ -5,10 +5,12 @@ import java.util.Iterator;
 import java.util.List;
 
 import mchorse.metamorph.Metamorph;
+import mchorse.metamorph.api.MorphManager;
 import mchorse.metamorph.api.morphs.AbstractMorph;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.SoundEvents;
+import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.DamageSource;
 import net.minecraft.util.EnumParticleTypes;
 import net.minecraft.world.WorldServer;
@@ -359,8 +361,10 @@ public class Morphing implements IMorphing
     @Override
     public void copy(IMorphing morphing, EntityPlayer player)
     {
-        this.acquiredMorphs = morphing.getAcquiredMorphs();
-        this.setCurrentMorph(morphing.getCurrentMorph(), player, true);
+        this.acquiredMorphs.addAll(morphing.getAcquiredMorphs());
+        NBTTagCompound morphNBT = new NBTTagCompound();
+        morphing.getCurrentMorph().toNBT(morphNBT);
+        this.setCurrentMorph(MorphManager.INSTANCE.morphFromNBT(morphNBT), player, true);
         this.setFavorites(morphing.getFavorites());
     }
 
