@@ -1,5 +1,6 @@
 package mchorse.metamorph.entity;
 
+import mchorse.metamorph.Metamorph;
 import mchorse.metamorph.api.morphs.AbstractMorph;
 import mchorse.metamorph.api.morphs.EntityMorph;
 import mchorse.metamorph.capabilities.morphing.IMorphing;
@@ -9,6 +10,7 @@ import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.util.DamageSource;
+import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.SoundEvent;
 import net.minecraftforge.event.entity.PlaySoundAtEntityEvent;
 import net.minecraftforge.event.entity.living.LivingAttackEvent;
@@ -25,6 +27,8 @@ public class SoundHandler
     public static final ObfuscatedName PLAY_STEP_SOUND = new ObfuscatedName("func_180429_a" /* playStepSound */);
     
     public static final DamageSource GENERIC_DAMAGE = DamageSource.generic;
+    
+    public static final SoundEvent NO_SOUND = new SoundEvent(new ResourceLocation(Metamorph.MODID, "no_sound"));
     
     @SubscribeEvent(priority=EventPriority.LOWEST)
     public void onPlayerHurt(LivingAttackEvent event)
@@ -73,7 +77,10 @@ public class SoundHandler
         if (soundType.endsWith(".hurt"))
         {
             SoundEvent newSound = morph.getHurtSound(soundEntity, morphing.getLastDamageSource());
-            if (newSound != null)
+            if (newSound == NO_SOUND) {
+                event.setCanceled(true);
+            }
+            else if (newSound != null)
             {
                 event.setSound(newSound);
             }
@@ -81,7 +88,10 @@ public class SoundHandler
         else if (soundType.endsWith(".death"))
         {
             SoundEvent newSound = morph.getDeathSound(soundEntity);
-            if (newSound != null)
+            if (newSound == NO_SOUND) {
+                event.setCanceled(true);
+            }
+            else if (newSound != null)
             {
                 event.setSound(newSound);
             }

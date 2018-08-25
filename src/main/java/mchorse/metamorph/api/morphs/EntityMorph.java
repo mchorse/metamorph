@@ -735,7 +735,12 @@ public class EntityMorph extends AbstractMorph
             Method methodHurtSound = InvokeUtil.getPrivateMethod(this.entity.getClass(),
                     EntityLivingBase.class,
                     SoundHandler.GET_HURT_SOUND.getName());
-            return (SoundEvent)methodHurtSound.invoke(this.entity);
+            SoundEvent hurtSound = (SoundEvent)methodHurtSound.invoke(this.entity);
+            if (hurtSound == null)
+            {
+                hurtSound = SoundHandler.NO_SOUND;
+            }
+            return hurtSound;
         }
         catch (Exception e)
         {
@@ -753,7 +758,12 @@ public class EntityMorph extends AbstractMorph
             Method methodDeathSound = InvokeUtil.getPrivateMethod(this.entity.getClass(),
                     EntityLivingBase.class,
                     SoundHandler.GET_DEATH_SOUND.getName());
-            return (SoundEvent)methodDeathSound.invoke(this.entity);
+            SoundEvent deathSound = (SoundEvent)methodDeathSound.invoke(this.entity);
+            if (deathSound == null)
+            {
+                deathSound = SoundHandler.NO_SOUND;
+            }
+            return deathSound;
         }
         catch (Exception e)
         {
