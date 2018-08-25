@@ -2,12 +2,10 @@ package mchorse.metamorph.entity;
 
 import mchorse.metamorph.Metamorph;
 import mchorse.metamorph.api.morphs.AbstractMorph;
-import mchorse.metamorph.api.morphs.EntityMorph;
 import mchorse.metamorph.capabilities.morphing.IMorphing;
 import mchorse.metamorph.capabilities.morphing.Morphing;
 import mchorse.metamorph.util.ObfuscatedName;
 import net.minecraft.entity.Entity;
-import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.util.DamageSource;
 import net.minecraft.util.ResourceLocation;
@@ -71,12 +69,11 @@ public class SoundHandler
         {
             return;
         }
-        EntityLivingBase soundEntity = ((EntityMorph)morph).getEntity();
         
         String soundType = event.getSound().getRegistryName().getResourcePath();
         if (soundType.endsWith(".hurt"))
         {
-            SoundEvent newSound = morph.getHurtSound(soundEntity, morphing.getLastDamageSource());
+            SoundEvent newSound = morph.getHurtSound(player, morphing.getLastDamageSource());
             if (newSound == NO_SOUND) {
                 event.setCanceled(true);
             }
@@ -87,7 +84,7 @@ public class SoundHandler
         }
         else if (soundType.endsWith(".death"))
         {
-            SoundEvent newSound = morph.getDeathSound(soundEntity);
+            SoundEvent newSound = morph.getDeathSound(player);
             if (newSound == NO_SOUND) {
                 event.setCanceled(true);
             }
@@ -112,10 +109,10 @@ public class SoundHandler
                  */
                 event.setCanceled(true);
             }
-            else if (morph.hasCustomStepSound(soundEntity))
+            else if (morph.hasCustomStepSound(player))
             {
                 event.setCanceled(true);
-                morph.playStepSound(soundEntity);
+                morph.playStepSound(player);
             }
         }
     }

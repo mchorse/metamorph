@@ -730,12 +730,13 @@ public class EntityMorph extends AbstractMorph
     @Override
     public SoundEvent getHurtSound(EntityLivingBase target, DamageSource damageSource)
     {
+        EntityLivingBase entity = this.getEntity(target.worldObj);
         try
         {
-            Method methodHurtSound = InvokeUtil.getPrivateMethod(this.entity.getClass(),
+            Method methodHurtSound = InvokeUtil.getPrivateMethod(entity.getClass(),
                     EntityLivingBase.class,
                     SoundHandler.GET_HURT_SOUND.getName());
-            SoundEvent hurtSound = (SoundEvent)methodHurtSound.invoke(this.entity);
+            SoundEvent hurtSound = (SoundEvent)methodHurtSound.invoke(entity);
             if (hurtSound == null)
             {
                 hurtSound = SoundHandler.NO_SOUND;
@@ -753,12 +754,13 @@ public class EntityMorph extends AbstractMorph
     @Override
     public SoundEvent getDeathSound(EntityLivingBase target)
     {
+        EntityLivingBase entity = this.getEntity(target.worldObj);
         try
         {
-            Method methodDeathSound = InvokeUtil.getPrivateMethod(this.entity.getClass(),
+            Method methodDeathSound = InvokeUtil.getPrivateMethod(entity.getClass(),
                     EntityLivingBase.class,
                     SoundHandler.GET_DEATH_SOUND.getName());
-            SoundEvent deathSound = (SoundEvent)methodDeathSound.invoke(this.entity);
+            SoundEvent deathSound = (SoundEvent)methodDeathSound.invoke(entity);
             if (deathSound == null)
             {
                 deathSound = SoundHandler.NO_SOUND;
@@ -782,20 +784,21 @@ public class EntityMorph extends AbstractMorph
     @Override
     public void playStepSound(EntityLivingBase target)
     {
+        EntityLivingBase entity = this.getEntity(target.worldObj);
         try
         {
-            Method methodPlayStep = InvokeUtil.getPrivateMethod(this.entity.getClass(),
+            Method methodPlayStep = InvokeUtil.getPrivateMethod(entity.getClass(),
                     Entity.class,
                     SoundHandler.PLAY_STEP_SOUND.getName(),
                     BlockPos.class, Block.class);
             
-            int x = MathHelper.floor_double(this.entity.posX);
-            int y = MathHelper.floor_double(this.entity.posY - 0.20000000298023224D);
-            int z = MathHelper.floor_double(this.entity.posZ);
+            int x = MathHelper.floor_double(entity.posX);
+            int y = MathHelper.floor_double(entity.posY - 0.20000000298023224D);
+            int z = MathHelper.floor_double(entity.posZ);
             BlockPos pos = new BlockPos(x, y, z);
-            Block block = this.entity.worldObj.getBlockState(pos).getBlock();
+            Block block = entity.worldObj.getBlockState(pos).getBlock();
             
-            methodPlayStep.invoke(this.entity, pos, block);
+            methodPlayStep.invoke(entity, pos, block);
         }
         catch (Exception e)
         {
