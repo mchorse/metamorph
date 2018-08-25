@@ -66,7 +66,7 @@ public class CapabilityHandler
             /* Send data */
             Dispatcher.sendTo(new PacketBlacklist(MorphManager.INSTANCE.activeBlacklist), (EntityPlayerMP) player);
             Dispatcher.sendTo(new PacketSettings(MorphManager.INSTANCE.activeSettings), (EntityPlayerMP) player);
-            Dispatcher.sendTo(new PacketMorphState(cap), (EntityPlayerMP) player);
+            Dispatcher.sendTo(new PacketMorphState(player, cap), (EntityPlayerMP) player);
         }
     }
 
@@ -105,7 +105,7 @@ public class CapabilityHandler
                 IMorphing morphing = Morphing.get(player);
 
                 this.sendAcquiredMorphs(morphing, player);
-                Dispatcher.sendTo(new PacketMorphState(morphing), (EntityPlayerMP) player);
+                Dispatcher.sendTo(new PacketMorphState(player, morphing), (EntityPlayerMP) player);
             }
         }
     }

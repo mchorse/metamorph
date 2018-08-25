@@ -253,12 +253,12 @@ public class MorphHandler
     @SubscribeEvent
     public void onPlayerChangeDimension(PlayerChangedDimensionEvent event)
     {
-    	IMorphing capability = Morphing.get(event.player);
-    	
-    	if (capability != null && capability.getCurrentMorph() != null)
-    	{
-    		capability.getCurrentMorph().onChangeDimension(event.player, event.fromDim, event.toDim);
-    	}
+        IMorphing capability = Morphing.get(event.player);
+
+        if (capability != null && capability.getCurrentMorph() != null)
+        {
+            capability.getCurrentMorph().onChangeDimension(event.player, event.fromDim, event.toDim);
+        }
     }
 
     /**

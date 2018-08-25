@@ -1,9 +1,12 @@
 package mchorse.metamorph.network.client;
 
+import mchorse.metamorph.api.morphs.AbstractMorph;
+import mchorse.metamorph.api.morphs.EntityMorph;
+import mchorse.metamorph.capabilities.morphing.IMorphing;
 import mchorse.metamorph.capabilities.morphing.Morphing;
 import mchorse.metamorph.network.common.PacketMorphState;
-import mchorse.metamorph.network.common.PacketRemoveMorph;
 import net.minecraft.client.entity.EntityPlayerSP;
+import net.minecraft.entity.Entity;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
@@ -13,7 +16,15 @@ public class ClientHandlerMorphState extends ClientMessageHandler<PacketMorphSta
     @SideOnly(Side.CLIENT)
     public void run(EntityPlayerSP player, PacketMorphState message)
     {
-        Morphing.get(player).setHasSquidAir(message.hasSquidAir);
-        Morphing.get(player).setSquidAir(message.squidAir);
+        IMorphing capability = Morphing.get(player);
+        
+        AbstractMorph morph = capability.getCurrentMorph();
+        if (morph instanceof EntityMorph) {
+            Entity entity = ((EntityMorph)morph).getEntity(player.worldObj);
+            entity.setEntityId(message.entityID);
+        }
+        
+        capability.setHasSquidAir(message.hasSquidAir);
+        capability.setSquidAir(message.squidAir);
     }
 }
