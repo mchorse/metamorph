@@ -113,7 +113,7 @@ public class BlockMorph extends AbstractMorph
             target.setPosition(this.blockPos.getX() + 0.5, this.blockPos.getY(), this.blockPos.getZ() + 0.5);
         }
 
-        this.updateSize(target, 0.99F, 0.99F);
+        this.updateSize(target, getWidth(target), getHeight(target));
     }
 
     @Override
