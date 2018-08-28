@@ -32,9 +32,9 @@ public class MorphingStorage implements IStorage<IMorphing>
         NBTTagCompound tag = new NBTTagCompound();
         NBTTagList acquired = new NBTTagList();
         NBTTagList favorites = new NBTTagList();
-        tag.setTag("lastHealthRatio", new NBTTagFloat(instance.getLastHealthRatio()));
-        tag.setTag("hasSquidAir", new NBTTagByte(instance.getHasSquidAir() ? (byte)1 : (byte)0));
-        tag.setTag("squidAir", new NBTTagInt(instance.getSquidAir()));
+        tag.setTag("LastHealthRatio", new NBTTagFloat(instance.getLastHealthRatio()));
+        tag.setTag("HasSquidAir", new NBTTagByte(instance.getHasSquidAir() ? (byte)1 : (byte)0));
+        tag.setTag("SquidAir", new NBTTagInt(instance.getSquidAir()));
 
         if (instance.getCurrentMorph() != null)
         {
@@ -72,9 +72,9 @@ public class MorphingStorage implements IStorage<IMorphing>
             NBTTagList acquired = tag.getTagList("Morphs", 10);
             NBTTagList favorites = tag.getTagList("Favorites", 3);
             NBTTagCompound morphTag = tag.getCompoundTag("Morph");
-            instance.setLastHealthRatio(tag.getFloat("lastHealthRatio"));
-            instance.setHasSquidAir(tag.getByte("hasSquidAir") == 1);
-            instance.setSquidAir(tag.getInteger("squidAir"));
+            instance.setLastHealthRatio(tag.getFloat("LastHealthRatio"));
+            instance.setHasSquidAir(tag.getByte("HasSquidAir") == 1);
+            instance.setSquidAir(tag.getInteger("SquidAir"));
 
             if (!tag.hasNoTags())
             {
