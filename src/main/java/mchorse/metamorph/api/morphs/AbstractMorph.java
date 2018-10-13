@@ -146,7 +146,12 @@ public abstract class AbstractMorph
      * This method is responsible for doing trickshots, 360 noscopes while being 
      * morped in a morph. Probably...
      */
-    protected void updateSize(EntityLivingBase target, float width, float height)
+    public void updateSize(EntityLivingBase target, float width, float height)
+    {
+        updateSizeDefault(target, width, height);
+    }
+    
+    public static void updateSizeDefault(EntityLivingBase target, float width, float height)
     {
         if (target instanceof EntityPlayer && !Metamorph.proxy.config.disable_pov)
         {

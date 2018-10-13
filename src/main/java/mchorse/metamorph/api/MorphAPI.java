@@ -1,5 +1,6 @@
 package mchorse.metamorph.api;
 
+import mchorse.metamorph.Metamorph;
 import mchorse.metamorph.api.events.AcquireMorphEvent;
 import mchorse.metamorph.api.events.MorphEvent;
 import mchorse.metamorph.api.morphs.AbstractMorph;
@@ -11,6 +12,7 @@ import mchorse.metamorph.network.common.PacketMorph;
 import mchorse.metamorph.network.common.PacketMorphPlayer;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
+import net.minecraft.util.text.TextComponentTranslation;
 import net.minecraftforge.common.MinecraftForge;
 
 /**
@@ -46,6 +48,16 @@ public class MorphAPI
 
         if (morphing == null)
         {
+            return false;
+        }
+
+        if (!force && !player.noClip && !Metamorph.proxy.config.morph_in_tight_spaces && !EntityUtils.canPlayerMorphFit(player, morphing.getCurrentMorph(), morph))
+        {
+            if (!player.world.isRemote)
+            {
+                player.sendStatusMessage(new TextComponentTranslation("metamorph.gui.status.tight_space"), true);
+            }
+
             return false;
         }
 
