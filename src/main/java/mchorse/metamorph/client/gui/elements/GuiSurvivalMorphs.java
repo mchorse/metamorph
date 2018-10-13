@@ -10,12 +10,12 @@ import java.util.Map;
 
 import org.lwjgl.opengl.GL11;
 
+import mchorse.mclib.client.gui.utils.GuiUtils;
 import mchorse.metamorph.Metamorph;
 import mchorse.metamorph.api.MorphManager;
 import mchorse.metamorph.api.morphs.AbstractMorph;
 import mchorse.metamorph.capabilities.morphing.IMorphing;
 import mchorse.metamorph.capabilities.morphing.Morphing;
-import mchorse.metamorph.client.gui.utils.GuiUtils;
 import mchorse.metamorph.network.Dispatcher;
 import mchorse.metamorph.network.common.PacketFavoriteMorph;
 import mchorse.metamorph.network.common.PacketRemoveMorph;
