@@ -2,9 +2,9 @@ package mchorse.metamorph.client.gui.elements;
 
 import org.lwjgl.opengl.GL11;
 
+import mchorse.mclib.client.gui.utils.GuiUtils;
 import mchorse.metamorph.client.gui.elements.GuiCreativeMorphs.MorphCell;
 import mchorse.metamorph.client.gui.elements.GuiCreativeMorphs.MorphVariant;
-import mchorse.metamorph.client.gui.utils.GuiUtils;
 import net.minecraft.client.gui.Gui;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.entity.player.EntityPlayer;
