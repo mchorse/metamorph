@@ -294,7 +294,7 @@ public class GuiCreativeMenu extends GuiScreen
             {
                 this.drawCenteredString(fontRendererObj, morph.name, 70, 53, 0x888888);
 
-                morph.renderOnScreen(Minecraft.getMinecraft().thePlayer, 70, height - (int) ((float) height / 2.6), 43, 1.0F);
+                morph.renderOnScreen(Minecraft.getMinecraft().thePlayer, 70, height - (int) (height / 2.6), 43, 1.0F);
             }
         }
         else
@@ -314,7 +314,7 @@ public class GuiCreativeMenu extends GuiScreen
             {
                 this.drawCenteredString(fontRendererObj, morph.current().morph.name, 70, 53, 0x888888);
 
-                morph.current().render(Minecraft.getMinecraft().thePlayer, 70, height - (int) ((float) height / 2.6), 43);
+                morph.current().render(Minecraft.getMinecraft().thePlayer, 70, height - (int) (height / 2.6), 43);
             }
         }
 
