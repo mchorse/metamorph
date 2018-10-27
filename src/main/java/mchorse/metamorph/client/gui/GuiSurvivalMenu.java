@@ -166,7 +166,7 @@ public class GuiSurvivalMenu extends GuiScreen
 
             if (cell != null)
             {
-                this.favorite.displayString = cell.favorite ? I18n.format("metamorph.gui.unfavorite") : I18n.format("metamorph.gui.favorite");
+                this.favorite.displayString = cell.morph.favorite ? I18n.format("metamorph.gui.unfavorite") : I18n.format("metamorph.gui.favorite");
             }
             else
             {

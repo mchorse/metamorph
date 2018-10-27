@@ -42,6 +42,11 @@ public abstract class AbstractMorph
     public String name = "";
 
     /**
+     * Is this morph is favorite 
+     */
+    public boolean favorite = false;
+
+    /**
      * Health when the player morphed into this morph 
      */
     protected float lastHealth;
@@ -150,7 +155,7 @@ public abstract class AbstractMorph
     {
         updateSizeDefault(target, width, height);
     }
-    
+
     public static void updateSizeDefault(EntityLivingBase target, float width, float height)
     {
         if (target instanceof EntityPlayer && !Metamorph.proxy.config.disable_pov)
@@ -202,14 +207,13 @@ public abstract class AbstractMorph
                     // If it makes sense, store that ratio in the capability
                     capability.setLastHealthRatio(ratio);
                 }
-                else
-                    if (health > IMorphing.REASONABLE_HEALTH_VALUE)
-                    {
-                        // If it doesn't make sense, BUT the new max health makes
-                        // sense, retrieve the
-                        // ratio from the capability and use that instead
-                        ratio = capability.getLastHealthRatio();
-                    }
+                else if (health > IMorphing.REASONABLE_HEALTH_VALUE)
+                {
+                    // If it doesn't make sense, BUT the new max health makes
+                    // sense, retrieve the
+                    // ratio from the capability and use that instead
+                    ratio = capability.getLastHealthRatio();
+                }
             }
         }
 
@@ -303,6 +307,8 @@ public abstract class AbstractMorph
     {
         tag.setString("Name", this.name);
         tag.setFloat("LastHealth", this.lastHealth);
+
+        if (this.favorite) tag.setBoolean("Favorite", this.favorite);
     }
 
     /**
@@ -312,5 +318,7 @@ public abstract class AbstractMorph
     {
         this.name = tag.getString("Name");
         this.lastHealth = tag.getFloat("LastHealth");
+
+        if (tag.hasKey("Favorite")) this.favorite = tag.getBoolean("Favorite");
     }
 }
