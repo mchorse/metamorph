@@ -310,14 +310,7 @@ public class GuiSurvivalMorphs extends Gui
      */
     private int getDelay()
     {
-        int frameRate = this.mc.gameSettings.limitFramerate;
-
-        if (frameRate > 120)
-        {
-            frameRate = 120;
-        }
-
-        return frameRate * 2;
+        return this.mc.gameSettings.limitFramerate * 2;
     }
 
     /**
@@ -427,7 +420,7 @@ public class GuiSurvivalMorphs extends Gui
      */
     public void render(int width, int height)
     {
-        if (!this.inGUI && timer <= 0)
+        if (!this.inGUI && this.timer <= 0)
         {
             return;
         }

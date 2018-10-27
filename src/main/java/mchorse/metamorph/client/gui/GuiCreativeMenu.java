@@ -80,10 +80,10 @@ public class GuiCreativeMenu extends GuiScreen
         this.close = new GuiButton(2, x - 60, y, 60, 20, I18n.format("metamorph.gui.close"));
         this.top = new GuiButton(3, this.width - 30, 35, 20, 20, "^");
         this.top.visible = !this.builderMode;
-        this.toggle = new GuiButton(4, 10, this.height - 30, 55, 20, I18n.format("metamorph.gui.builder"));
-        this.fromMorph = new GuiButton(5, 145 - 75, this.height - 30, 65, 20, I18n.format("metamorph.gui.from_morph"));
+        this.toggle = new GuiButton(4, this.width - 35 - 75 - 55, 35, 55, 20, I18n.format("metamorph.gui.builder"));
+        this.fromMorph = new GuiButton(5, this.width - 35 - 70, 35, 70, 20, I18n.format("metamorph.gui.from_morph"));
 
-        this.search = new GuiTextField(-1, this.fontRendererObj, 195 + 1, 35 + 1, this.width - 230 - 2, 20 - 2);
+        this.search = new GuiTextField(-1, this.fontRendererObj, 60 + 1, 35 + 1, this.width - 95 - 75 - 60 - 2, 20 - 2);
         this.search.setFocused(true);
 
         this.buttonList.add(this.morph);
@@ -94,10 +94,10 @@ public class GuiCreativeMenu extends GuiScreen
         this.buttonList.add(this.fromMorph);
 
         this.pane.setHidden(false);
-        this.pane.updateRect(145, 55, this.width - 155, this.height - 55);
+        this.pane.updateRect(10, 55, this.width - 20, this.height - 55);
         this.pane.scrollBy(0);
 
-        this.pane.setPerRow((int) Math.ceil((this.width - 155) / 54.0F));
+        this.pane.setPerRow((int) Math.ceil((this.width - 20) / 54.0F));
         this.pane.setFilter(this.search.getText());
 
         this.builder.update(145, 35, this.width - 155, this.height - 35);
@@ -300,7 +300,7 @@ public class GuiCreativeMenu extends GuiScreen
         else
         {
             /* Draw creative morphs */
-            this.fontRendererObj.drawStringWithShadow(I18n.format("metamorph.gui.search"), 146, 41, 0xffffff);
+            this.fontRendererObj.drawStringWithShadow(I18n.format("metamorph.gui.search"), 10, 41, 0xffffff);
             this.search.drawTextBox();
             this.pane.drawScreen(mouseX, mouseY, partialTicks);
 
@@ -308,13 +308,11 @@ public class GuiCreativeMenu extends GuiScreen
             MorphCell morph = this.pane.getSelected();
             String selected = morph != null ? morph.current().name : I18n.format("metamorph.gui.no_morph");
 
-            this.drawCenteredString(fontRendererObj, selected, 70, 41, 0xffffffff);
+            this.drawCenteredString(fontRendererObj, selected, this.width / 2, this.height - 30, 0xffffffff);
 
             if (morph != null)
             {
-                this.drawCenteredString(fontRendererObj, morph.current().morph.name, 70, 53, 0x888888);
-
-                morph.current().render(Minecraft.getMinecraft().thePlayer, 70, height - (int) (height / 2.6), 43);
+                this.drawCenteredString(fontRendererObj, morph.current().morph.name, this.width / 2, this.height - 19, 0x888888);
             }
         }
 
