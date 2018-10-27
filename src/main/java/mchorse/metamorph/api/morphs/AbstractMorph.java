@@ -298,6 +298,15 @@ public abstract class AbstractMorph
         return super.equals(obj);
     }
 
+    /**
+     * Check whether the morph can be merged (this should allow 
+     * overwriting of a morph instead of completely replacing it)
+     */
+    public boolean canMerge(AbstractMorph morph)
+    {
+        return false;
+    }
+
     /* Reading / writing to NBT */
 
     /**
