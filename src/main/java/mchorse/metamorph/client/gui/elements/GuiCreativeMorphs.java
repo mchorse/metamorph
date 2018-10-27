@@ -1,6 +1,5 @@
 package mchorse.metamorph.client.gui.elements;
 
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
@@ -8,12 +7,18 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.lwjgl.opengl.GL11;
+
+import mchorse.mclib.client.gui.framework.GuiTooltip;
+import mchorse.mclib.client.gui.framework.elements.GuiElement;
+import mchorse.mclib.client.gui.utils.GuiUtils;
+import mchorse.mclib.client.gui.utils.ScrollArea;
 import mchorse.metamorph.api.MorphList;
 import mchorse.metamorph.api.MorphManager;
 import mchorse.metamorph.api.morphs.AbstractMorph;
 import mchorse.metamorph.capabilities.morphing.IMorphing;
-import mchorse.metamorph.client.gui.utils.GuiScrollPane;
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.gui.GuiScreen;
 import net.minecraft.client.resources.I18n;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.nbt.NBTTagCompound;
@@ -27,7 +32,7 @@ import net.minecraft.world.World;
  * it's impossible to list all variation of those morphs. iChun probably knows 
  * it, that's why he doesn't bother with a GUI of all available morphs.
  */
-public class GuiCreativeMorphs extends GuiScrollPane
+public class GuiCreativeMorphs extends GuiElement
 {
     /**
      * Morph cell's height 
@@ -75,6 +80,11 @@ public class GuiCreativeMorphs extends GuiScrollPane
     private MorphCell selectedCell;
 
     /**
+     * Scroll area responsible for handling area scroll 
+     */
+    public ScrollArea scroll = new ScrollArea(60);
+
+    /**
      * Category label shift
      */
     public int shiftX = 0;
@@ -84,18 +94,33 @@ public class GuiCreativeMorphs extends GuiScrollPane
      * 
      * Compile the categories list and compute the scroll height of this scroll pane 
      */
-    public GuiCreativeMorphs(int perRow, AbstractMorph selected, IMorphing morphing)
+    public GuiCreativeMorphs(Minecraft mc, int perRow, AbstractMorph selected, IMorphing morphing)
     {
+        super(mc);
+
         this.perRow = perRow;
         this.compileCategories(morphing);
         this.initiateCategories(selected);
-        this.setScrollSpeed(15);
-        this.picker = new GuiCreativeVariantPicker(this);
+        this.picker = new GuiCreativeVariantPicker(mc, this);
+        this.picker.resizer().parent(this.area).set(0, 0, 0, 60).w(1, 0).y(1, -60);
+
+        this.createChildren();
+        this.children.add(this.picker);
+
+        this.scroll.scrollSpeed = 15;
     }
 
-    public GuiCreativeMorphs(int perRow, AbstractMorph selected)
+    public GuiCreativeMorphs(Minecraft mc, int perRow, AbstractMorph selected)
     {
-        this(perRow, selected, null);
+        this(mc, perRow, selected, null);
+    }
+
+    @Override
+    public void resize(int width, int height)
+    {
+        super.resize(width, height);
+
+        this.scroll.copy(this.area);
     }
 
     /**
@@ -185,7 +210,7 @@ public class GuiCreativeMorphs extends GuiScrollPane
         int selectedCat = -1;
         int selectedMorph = -1;
 
-        this.scrollHeight = 0;
+        this.scroll.scrollSize = 0;
 
         for (MorphCategory category : this.categories)
         {
@@ -202,9 +227,9 @@ public class GuiCreativeMorphs extends GuiScrollPane
 
             /* Calculate the scroll height and per category height */
             category.height = MathHelper.ceiling_float_int((float) category.cells.size() / (float) this.perRow);
-            category.y = this.scrollHeight + 10;
+            category.y = this.scroll.scrollSize + 10;
 
-            this.scrollHeight += category.height * CELL_HEIGHT + 40;
+            this.scroll.scrollSize += category.height * CELL_HEIGHT + 40;
 
             /* Select current morph */
             for (MorphCell cell : category.cells)
@@ -234,8 +259,8 @@ public class GuiCreativeMorphs extends GuiScrollPane
             i++;
         }
 
-        this.scrollHeight -= 10;
-        this.scrollTo(y);
+        this.scroll.scrollSize -= 10;
+        this.scroll.scrollTo(y);
 
         this.selected = selectedCat;
         this.selectedMorph = selectedMorph;
@@ -244,7 +269,7 @@ public class GuiCreativeMorphs extends GuiScrollPane
         {
             this.selected = 0;
             this.selectedMorph = this.selectedCell.index;
-            this.scrollTo(0);
+            this.scroll.scrollTo(0);
             this.selectedCell.variants.clear();
             this.selectedCell.variants.add(new MorphVariant(I18n.format("metamorph.gui.selected"), morph.clone(true)));
             this.selectedCell.selected = 0;
@@ -277,8 +302,8 @@ public class GuiCreativeMorphs extends GuiScrollPane
 
         String lcfilter = filter.toLowerCase();
 
-        this.scrollY = 0;
-        this.scrollHeight = 0;
+        this.scroll.scroll = 0;
+        this.scroll.scrollSize = 0;
         this.previousFilter = filter;
 
         for (MorphCategory cat : this.categories)
@@ -317,9 +342,9 @@ public class GuiCreativeMorphs extends GuiScrollPane
             }
 
             cat.height = MathHelper.ceiling_float_int((float) i / (float) this.perRow);
-            cat.y = this.scrollHeight + 10;
+            cat.y = this.scroll.scrollSize + 10;
 
-            this.scrollHeight += i == 0 ? 0 : cat.height * CELL_HEIGHT + 40;
+            this.scroll.scrollSize += i == 0 ? 0 : cat.height * CELL_HEIGHT + 40;
         }
     }
 
@@ -361,26 +386,22 @@ public class GuiCreativeMorphs extends GuiScrollPane
      * simple feature.
      */
     @Override
-    protected void mouseClicked(int mouseX, int mouseY, int mouseButton) throws IOException
+    public boolean mouseClicked(int mouseX, int mouseY, int mouseButton)
     {
-        super.mouseClicked(mouseX, mouseY, mouseButton);
-
-        if (!this.isInside(mouseX, mouseY) || this.dragging)
+        if (this.scroll.mouseClicked(mouseX, mouseY) || super.mouseClicked(mouseX, mouseY, mouseButton))
         {
-            return;
+            return true;
         }
 
-        if (this.picker.isActive() && mouseY >= this.y + this.h - CELL_HEIGHT)
+        if (!this.area.isInside(mouseX, mouseY))
         {
-            this.picker.mouseClicked(mouseX, mouseY, mouseButton);
-
-            return;
+            return false;
         }
 
         /* Computing x and y. X is horizontal index, and y is simply shifted 
          * mouseY relative to the scroll pane's top edge*/
-        int y = mouseY - this.y + this.scrollY - 10;
-        int x = (mouseX - this.x) / (this.w / this.perRow);
+        int y = mouseY - this.scroll.y + this.scroll.scroll - 10;
+        int x = (mouseX - this.scroll.x) / (this.scroll.w / this.perRow);
         int i = 0;
 
         /* Searching for a category which is in shifted y's range */
@@ -430,41 +451,48 @@ public class GuiCreativeMorphs extends GuiScrollPane
             this.selected = -1;
             this.selectedMorph = -1;
         }
+
+        return true;
     }
 
     @Override
-    protected void mouseReleased(int mouseX, int mouseY, int state)
+    public boolean mouseScrolled(int mouseX, int mouseY, int scroll)
     {
-        if (this.picker.isActive())
-        {
-            this.picker.mouseReleased(mouseX, mouseY, state);
-        }
+        return super.mouseScrolled(mouseX, mouseY, scroll) || this.scroll.mouseScroll(mouseX, mouseY, scroll);
+    }
 
+    @Override
+    public void mouseReleased(int mouseX, int mouseY, int state)
+    {
         super.mouseReleased(mouseX, mouseY, state);
-    }
-
-    /**
-     * Don't draw the background 
-     */
-    @Override
-    protected void drawBackground(int mouseX, int mouseY, float partialTicks)
-    {}
-
-    @Override
-    protected void drawScrollBar(int mouseX, int mouseY, float partialTicks)
-    {
-        if (this.picker.isActive())
-        {
-            this.picker.drawPane(mouseX, mouseY, partialTicks);
-        }
-
-        super.drawScrollBar(mouseX, mouseY, partialTicks);
+        this.scroll.mouseReleased(mouseX, mouseY);
     }
 
     @Override
-    protected void drawPane(int mouseX, int mouseY, float partialTicks)
+    public void draw(GuiTooltip tooltip, int mouseX, int mouseY, float partialTicks)
     {
-        int m = this.w / this.perRow;
+        GuiScreen screen = this.mc.currentScreen;
+
+        this.scroll.drag(mouseX, mouseY);
+
+        GL11.glPushMatrix();
+        GL11.glTranslatef(0, -this.scroll.scroll, 0);
+
+        GuiUtils.scissor(this.scroll.x, this.scroll.y, this.scroll.w, this.scroll.h, screen.width, screen.height);
+
+        this.drawMorphs(mouseX, mouseY);
+
+        GL11.glDisable(GL11.GL_SCISSOR_TEST);
+        GL11.glPopMatrix();
+
+        this.scroll.drawScrollbar();
+
+        super.draw(tooltip, mouseX, mouseY, partialTicks);
+    }
+
+    private void drawMorphs(int mouseX, int mouseY)
+    {
+        int m = this.scroll.w / this.perRow;
         int j = 0;
 
         /* Render morphs */
@@ -472,7 +500,7 @@ public class GuiCreativeMorphs extends GuiScrollPane
         {
             int h = (MathHelper.ceiling_float_int(category.cells.size() / this.perRow) + 1) * CELL_HEIGHT;
 
-            if (category.height == 0 || category.y < this.scrollY - h || category.y > this.scrollY + this.h)
+            if (category.height == 0 || category.y < this.scroll.scroll - h || category.y > this.scroll.scroll + this.scroll.h)
             {
                 j++;
 
@@ -480,15 +508,15 @@ public class GuiCreativeMorphs extends GuiScrollPane
             }
 
             int k = 0;
-            this.drawString(fontRendererObj, category.title, this.x + this.shiftX + 1, category.y + this.y, 0xFFFFFFFF);
+            this.drawString(this.font, category.title, this.scroll.x + this.shiftX + 1, category.y + this.scroll.y, 0xFFFFFFFF);
 
             for (MorphCell cell : category.cells)
             {
-                int x = k % this.perRow * m + this.x;
-                int y = k / this.perRow * CELL_HEIGHT + category.y + this.y;
+                int x = k % this.perRow * m + this.scroll.x;
+                int y = k / this.perRow * CELL_HEIGHT + category.y + this.scroll.y;
 
-                boolean insidePicker = this.picker.isActive() && mouseY >= this.y + this.h - CELL_HEIGHT;
-                boolean hover = mouseX >= x && mouseY + this.scrollY >= y && mouseX < x + m && mouseY + this.scrollY < y + CELL_HEIGHT && !insidePicker;
+                boolean insidePicker = this.picker.isActive() && mouseY >= this.scroll.y + this.scroll.h - CELL_HEIGHT;
+                boolean hover = mouseX >= x && mouseY + this.scroll.scroll >= y && mouseX < x + m && mouseY + this.scroll.scroll < y + CELL_HEIGHT && !insidePicker;
 
                 MorphVariant variant = cell.current();
 
@@ -497,7 +525,7 @@ public class GuiCreativeMorphs extends GuiScrollPane
                     continue;
                 }
 
-                if (y < this.scrollY - CELL_HEIGHT / 4)
+                if (y < this.scroll.scroll - CELL_HEIGHT / 4)
                 {
                     k++;
                     continue;
@@ -566,11 +594,10 @@ public class GuiCreativeMorphs extends GuiScrollPane
             {
                 result = I18n.format(KEY + "unknown");
             }
-            else
-                if (result.equals(KEY + title))
-                {
-                    result = I18n.format(KEY + "modded", title);
-                }
+            else if (result.equals(KEY + title))
+            {
+                result = I18n.format(KEY + "modded", title);
+            }
 
             this.title = result;
             this.key = key;
@@ -677,11 +704,10 @@ public class GuiCreativeMorphs extends GuiScrollPane
 
                 this.first = false;
             }
-            else
-                if (!this.error)
-                {
-                    this.morph.renderOnScreen(player, x, y, scale, 1.0F);
-                }
+            else if (!this.error)
+            {
+                this.morph.renderOnScreen(player, x, y, scale, 1.0F);
+            }
         }
     }
 }

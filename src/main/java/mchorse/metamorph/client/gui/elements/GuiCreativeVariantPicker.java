@@ -2,10 +2,16 @@ package mchorse.metamorph.client.gui.elements;
 
 import org.lwjgl.opengl.GL11;
 
+import mchorse.mclib.client.gui.framework.GuiTooltip;
+import mchorse.mclib.client.gui.framework.elements.GuiElement;
 import mchorse.mclib.client.gui.utils.GuiUtils;
+import mchorse.mclib.client.gui.utils.ScrollArea;
+import mchorse.mclib.client.gui.utils.ScrollArea.ScrollDirection;
 import mchorse.metamorph.client.gui.elements.GuiCreativeMorphs.MorphCell;
 import mchorse.metamorph.client.gui.elements.GuiCreativeMorphs.MorphVariant;
+import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.Gui;
+import net.minecraft.client.gui.GuiScreen;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.util.math.MathHelper;
@@ -16,7 +22,7 @@ import net.minecraft.util.math.MathHelper;
  * This class is responsible for displaying, scrolling through and 
  * picking the collapsed variants of morphs in {@link GuiCreativeMorphs}. 
  */
-public class GuiCreativeVariantPicker
+public class GuiCreativeVariantPicker extends GuiElement
 {
     /**
      * Parent view 
@@ -29,18 +35,24 @@ public class GuiCreativeVariantPicker
     public MorphCell previous;
 
     /**
-     * Whether the user currently scrolling 
+     * Horizontal scroll area 
      */
-    public boolean scrolling;
+    public ScrollArea scroll = new ScrollArea(40);
 
-    /**
-     * Scrolling offset 
-     */
-    public int scroll;
-
-    public GuiCreativeVariantPicker(GuiCreativeMorphs morphs)
+    public GuiCreativeVariantPicker(Minecraft mc, GuiCreativeMorphs morphs)
     {
+        super(mc);
+
         this.morphs = morphs;
+        this.scroll.direction = ScrollDirection.HORIZONTAL;
+    }
+
+    @Override
+    public void resize(int width, int height)
+    {
+        super.resize(width, height);
+
+        this.scroll.copy(this.area);
     }
 
     /**
@@ -56,16 +68,16 @@ public class GuiCreativeVariantPicker
 
         if (this.previous != selected)
         {
-            this.scroll = 0;
+            this.scroll.scroll = 0;
 
             if (selected != null && selected.variants.size() > 1)
             {
-                int maxWidth = selected.variants.size() * 40 - this.morphs.w;
+                int maxWidth = selected.variants.size() * 40 - this.area.w;
 
                 if (maxWidth > 0)
                 {
-                    this.scroll = selected.selected * 40;
-                    this.scroll = MathHelper.clamp_int(this.scroll, 0, maxWidth);
+                    this.scroll.scroll = selected.selected * 40;
+                    this.scroll.scroll = MathHelper.clamp_int(this.scroll.scroll, 0, maxWidth);
                 }
             }
         }
@@ -79,17 +91,21 @@ public class GuiCreativeVariantPicker
      * When mouse clicked, it's either marks as scrolling, or selects 
      * the current morph variant to a different index. 
      */
-    public void mouseClicked(int mouseX, int mouseY, int mouseButton)
+    @Override
+    public boolean mouseClicked(int mouseX, int mouseY, int mouseButton)
     {
-        if (mouseY >= this.morphs.y + this.morphs.h - 10)
+        if (this.scroll.mouseClicked(mouseX, mouseY))
         {
-            this.scrolling = true;
+            return true;
+        }
 
-            return;
+        if (!this.scroll.isInside(mouseX, mouseY) || !this.isActive())
+        {
+            return false;
         }
 
         MorphCell selected = this.morphs.getSelected();
-        int index = (mouseX - this.morphs.x + this.scroll) / 40;
+        int index = (mouseX - this.scroll.x + this.scroll.scroll) / 40;
         int i = 0;
         int j = 0;
 
@@ -109,46 +125,69 @@ public class GuiCreativeVariantPicker
 
             j++;
         }
+
+        return true;
+    }
+
+    @Override
+    public boolean mouseScrolled(int mouseX, int mouseY, int scroll)
+    {
+        if (this.isActive())
+        {
+            return this.scroll.mouseScroll(mouseX, mouseY, scroll);
+        }
+
+        return super.mouseScrolled(mouseX, mouseY, scroll);
     }
 
     /**
      * When mouse released, just reset the scrolling flag 
      */
+    @Override
     public void mouseReleased(int mouseX, int mouseY, int state)
     {
-        this.scrolling = false;
+        this.scroll.mouseReleased(mouseX, mouseY);
     }
 
     /**
      * This method is responsible for drawing morph variants, scroll bar, 
      * selected morph bar, and also responsible for scrolling this view.
      */
-    public void drawPane(int mouseX, int mouseY, float partialTicks)
+    @Override
+    public void draw(GuiTooltip tooltip, int mouseX, int mouseY, float partialTicks)
     {
-        MorphCell selected = this.morphs.getSelected();
-        EntityPlayer player = this.morphs.mc.thePlayer;
-
-        if (selected != null)
+        if (!this.isActive())
         {
-            int w = this.morphs.w;
-            int h = this.morphs.h;
-            int x = this.morphs.x;
-            int y = this.morphs.y + h - GuiCreativeMorphs.CELL_HEIGHT;
+            return;
+        }
+
+        MorphCell selected = this.morphs.getSelected();
+        Minecraft mc = Minecraft.getMinecraft();
+
+        EntityPlayer player = mc.thePlayer;
+        GuiScreen screen = mc.currentScreen;
+
+        if (selected != null && selected.hasVisible)
+        {
+            int w = this.scroll.w;
+            int h = this.scroll.h;
+            int x = this.scroll.x;
+            int y = this.scroll.y;
             int i = 0;
             int j = 0;
 
             GlStateManager.pushMatrix();
             GlStateManager.translate(0, 0, 200);
-            Gui.drawRect(x, y, x + w, y + GuiCreativeMorphs.CELL_HEIGHT, 0xaa000000);
+            Gui.drawRect(x, y, x + w, y + h, 0xaa000000);
 
-            GuiUtils.scissor(x, y, w, h, this.morphs.width, this.morphs.height);
+            GuiUtils.scissor(x, y, w, h, screen.width, screen.height);
 
             /* Draw morph variants within viewing range */
             for (MorphVariant variant : selected.variants)
             {
                 boolean variantSelected = j == selected.selected;
 
-                x = this.morphs.x + i * 40 - this.scroll;
+                x = this.scroll.x + i * 40 - this.scroll.scroll;
                 j++;
 
                 if (variant.hidden)
@@ -158,7 +197,7 @@ public class GuiCreativeVariantPicker
 
                 i++;
 
-                if (x < this.morphs.x - 40 || x >= this.morphs.x + this.morphs.w)
+                if (x < this.scroll.x - 40 || x >= this.scroll.x + this.scroll.w)
                 {
                     continue;
                 }
@@ -174,28 +213,10 @@ public class GuiCreativeVariantPicker
             GL11.glDisable(GL11.GL_SCISSOR_TEST);
             GlStateManager.popMatrix();
 
-            int maxWidth = i * 40 - this.morphs.w;
-
-            /* Scroll the view */
-            if (this.scrolling)
-            {
-                float factor = (mouseX - (float) this.morphs.x) / this.morphs.w;
-
-                this.scroll = (int) (factor * maxWidth);
-            }
-
-            this.scroll = MathHelper.clamp_int(this.scroll, 0, maxWidth < 0 ? 0 : maxWidth);
-
-            /* Draw scrollbar */
-            if (maxWidth > 0)
-            {
-                float factor = this.scroll / (float) maxWidth;
-
-                int sx = this.morphs.x + (int) (factor * (this.morphs.w - 20));
-
-                Gui.drawRect(this.morphs.x, y + 50, this.morphs.x + this.morphs.w, y + 60, 0xcc000000);
-                Gui.drawRect(sx, y + 50, sx + 20, y + 60, 0xffffffff);
-            }
+            /* Scroll bar */
+            this.scroll.scrollSize = j * 40;
+            this.scroll.drag(mouseX, mouseY);
+            this.scroll.drawScrollbar();
         }
     }
 }

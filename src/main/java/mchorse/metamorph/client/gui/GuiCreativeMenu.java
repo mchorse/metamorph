@@ -72,7 +72,7 @@ public class GuiCreativeMenu extends GuiBase
         });
 
         this.close = GuiButtonElement.button(mc, I18n.format("metamorph.gui.close"), (b) -> this.closeScreen());
-        this.top = GuiButtonElement.button(mc, "^", (b) -> this.pane.scrollTo(0));
+        this.top = GuiButtonElement.button(mc, "^", (b) -> this.pane.scroll.scrollTo(0));
         this.toggle = GuiButtonElement.button(mc, I18n.format("metamorph.gui.builder"), (b) ->
         {
             this.builderMode = !this.builderMode;
@@ -126,14 +126,16 @@ public class GuiCreativeMenu extends GuiBase
             EntityPlayer player = Minecraft.getMinecraft().thePlayer;
             IMorphing morphing = Morphing.get(player);
 
-            this.pane = new GuiCreativeMorphs(6, morphing.getCurrentMorph(), morphing);
+            this.pane = new GuiCreativeMorphs(this.mc, 6, morphing.getCurrentMorph(), morphing);
+            this.pane.resizer().parent(this.area).set(10, 55, 0, 0).w(1, -20).h(1, -55);
+
+            this.elements.add(this.pane);
         }
 
         super.initGui();
 
-        this.pane.setHidden(false);
-        this.pane.updateRect(10, 55, this.width - 20, this.height - 55);
-        this.pane.scrollBy(0);
+        this.pane.setVisible(true);
+        this.pane.scroll.scrollBy(0);
 
         this.pane.setPerRow((int) Math.ceil((this.width - 20) / 54.0F));
         this.pane.setFilter(this.search.field.getText());
@@ -163,39 +165,15 @@ public class GuiCreativeMenu extends GuiBase
         return null;
     }
 
-    /**
-     * Handle mouse input 
-     * 
-     * This method is probably one of important ones in this class. It's 
-     * responsible for scrolling the morph area.
-     */
-    @Override
-    public void handleMouseInput() throws IOException
-    {
-        this.pane.handleMouseInput();
-        super.handleMouseInput();
-    }
-
-    @Override
-    public void setWorldAndResolution(Minecraft mc, int width, int height)
-    {
-        super.setWorldAndResolution(mc, width, height);
-        this.pane.setWorldAndResolution(mc, width, height);
-    }
-
     @Override
     protected void mouseClicked(int mouseX, int mouseY, int mouseButton) throws IOException
     {
-        super.mouseClicked(mouseX, mouseY, mouseButton);
-
         if (this.builderMode)
         {
             this.builder.mouseClicked(mouseX, mouseY, mouseButton);
         }
-        else
-        {
-            this.search.mouseClicked(mouseX, mouseY, mouseButton);
-        }
+
+        super.mouseClicked(mouseX, mouseY, mouseButton);
     }
 
     /**
@@ -215,23 +193,21 @@ public class GuiCreativeMenu extends GuiBase
         }
         else
         {
-            super.keyTyped(typedChar, keyCode);
-
             if (keyCode == Keyboard.KEY_DOWN)
             {
-                this.pane.scrollBy(30);
+                this.pane.scroll.scrollBy(30);
             }
             else if (keyCode == Keyboard.KEY_UP)
             {
-                this.pane.scrollBy(-30);
+                this.pane.scroll.scrollBy(-30);
             }
             else if (keyCode == Keyboard.KEY_LEFT)
             {
-                this.pane.scrollTo(0);
+                this.pane.scroll.scrollTo(0);
             }
             else if (keyCode == Keyboard.KEY_RIGHT)
             {
-                this.pane.scrollTo(this.pane.getHeight());
+                this.pane.scroll.scrollTo(this.pane.scroll.scrollSize);
             }
         }
     }
@@ -243,10 +219,8 @@ public class GuiCreativeMenu extends GuiBase
         {
             this.builder.mouseReleased(mouseX, mouseY, state);
         }
-        else
-        {
-            super.mouseReleased(mouseX, mouseY, state);
-        }
+
+        super.mouseReleased(mouseX, mouseY, state);
     }
 
     /**
@@ -280,11 +254,14 @@ public class GuiCreativeMenu extends GuiBase
                 morph.renderOnScreen(Minecraft.getMinecraft().thePlayer, 70, height - (int) (height / 2.6), 43, 1.0F);
             }
         }
-        else
+
+        /* Render buttons */
+        super.drawScreen(mouseX, mouseY, partialTicks);
+
+        if (!this.builderMode)
         {
             /* Draw creative morphs */
             this.fontRendererObj.drawStringWithShadow(I18n.format("metamorph.gui.search"), 10, 41, 0xffffff);
-            this.pane.drawScreen(mouseX, mouseY, partialTicks);
 
             /* Draw currently selected morph */
             MorphCell morph = this.pane.getSelected();
@@ -297,8 +274,5 @@ public class GuiCreativeMenu extends GuiBase
                 this.drawCenteredString(fontRendererObj, morph.current().morph.name, this.width / 2, this.height - 19, 0x888888);
             }
         }
-
-        /* Render buttons */
-        super.drawScreen(mouseX, mouseY, partialTicks);
     }
 }
