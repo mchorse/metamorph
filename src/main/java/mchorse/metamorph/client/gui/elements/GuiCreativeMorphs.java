@@ -7,6 +7,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.lwjgl.input.Keyboard;
 import org.lwjgl.opengl.GL11;
 
 import mchorse.mclib.client.gui.framework.GuiTooltip;
@@ -466,6 +467,35 @@ public class GuiCreativeMorphs extends GuiElement
     {
         super.mouseReleased(mouseX, mouseY, state);
         this.scroll.mouseReleased(mouseX, mouseY);
+    }
+
+    /**
+     * Shortcuts for scrolling the morph menu up and down with arrow keys. 
+     * 
+     * There are also shortcuts for getting in the end or beginning of the 
+     * screen (left and right arrow keys).
+     */
+    @Override
+    public void keyTyped(char typedChar, int keyCode)
+    {
+        super.keyTyped(typedChar, keyCode);
+
+        if (keyCode == Keyboard.KEY_DOWN)
+        {
+            this.scroll.scrollBy(30);
+        }
+        else if (keyCode == Keyboard.KEY_UP)
+        {
+            this.scroll.scrollBy(-30);
+        }
+        else if (keyCode == Keyboard.KEY_LEFT)
+        {
+            this.scroll.scrollTo(0);
+        }
+        else if (keyCode == Keyboard.KEY_RIGHT)
+        {
+            this.scroll.scrollTo(this.scroll.scrollSize);
+        }
     }
 
     @Override
