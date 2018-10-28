@@ -117,6 +117,7 @@ public class GuiCreativeVariantPicker extends GuiElement
                 if (i == index)
                 {
                     selected.selected = j;
+                    this.morphs.setMorph(this.morphs.getSelected().current().morph);
 
                     break;
                 }

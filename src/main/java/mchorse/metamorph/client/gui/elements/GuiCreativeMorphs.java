@@ -503,7 +503,7 @@ public class GuiCreativeMorphs extends GuiElement
         return true;
     }
 
-    private void setMorph(AbstractMorph morph)
+    public void setMorph(AbstractMorph morph)
     {
         if (this.callback != null)
         {
