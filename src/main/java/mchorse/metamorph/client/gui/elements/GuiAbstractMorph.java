@@ -50,7 +50,7 @@ public class GuiAbstractMorph extends GuiElement
 
         this.createChildren();
         this.data = new GuiTextElement(mc, 10000, (str) -> this.editNBT(str));
-        this.data.resizer().parent(this.area).set(0, 0, 0, 20).w(1, 0).y(1, -30);
+        this.data.resizer().parent(this.area).set(10, 0, 0, 20).w(1, -20).y(1, -30);
 
         this.children.add(this.data);
     }

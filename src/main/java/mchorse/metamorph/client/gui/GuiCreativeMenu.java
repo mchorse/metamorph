@@ -104,9 +104,10 @@ public class GuiCreativeMenu extends GuiBase
             IMorphing morphing = Morphing.get(player);
 
             this.pane = new GuiCreativeMorphs(this.mc, 6, morphing.getCurrentMorph(), morphing);
-            this.pane.resizer().parent(this.area).set(10, 55, 0, 0).w(1, -20).h(1, -55);
+            this.pane.resizer().parent(this.area).set(0, 55, 0, 0).w(1, 0).h(1, -55);
+            this.pane.shiftX = 9;
 
-            this.elements.add(this.pane);
+            this.elements.elements.add(0, this.pane);
         }
 
         super.initGui();
@@ -147,11 +148,12 @@ public class GuiCreativeMenu extends GuiBase
     {
         /* Draw panel backgrounds */
         this.drawDefaultBackground();
-        this.drawString(fontRendererObj, I18n.format("metamorph.gui.creative_title"), 10, 11, 0xffffff);
-        this.fontRendererObj.drawStringWithShadow(I18n.format("metamorph.gui.search"), 10, 41, 0xffffff);
 
         /* Render buttons */
         super.drawScreen(mouseX, mouseY, partialTicks);
+
+        this.drawString(fontRendererObj, I18n.format("metamorph.gui.creative_title"), 10, 11, 0xffffff);
+        this.fontRendererObj.drawStringWithShadow(I18n.format("metamorph.gui.search"), 10, 41, 0xffffff);
 
         if (!this.pane.isEditMode())
         {

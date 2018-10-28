@@ -8,7 +8,10 @@ import mchorse.metamorph.client.gui.elements.GuiAbstractMorph;
 import mchorse.vanilla_pack.morphs.PlayerMorph;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiButton;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 
+@SideOnly(Side.CLIENT)
 public class GuiPlayerMorph extends GuiAbstractMorph
 {
     public GuiTextElement username;
@@ -21,7 +24,7 @@ public class GuiPlayerMorph extends GuiAbstractMorph
         super(mc);
 
         this.username = new GuiTextElement(mc, 120, (str) -> this.editUsername(str));
-        this.username.resizer().parent(this.area).set(0, 10, 0, 20).w(1, 0).y(1, -30);
+        this.username.resizer().parent(this.area).set(10, 10, 0, 20).w(1, -20).y(1, -30);
 
         this.toggle = GuiButtonElement.button(mc, "NBT", (b) ->
         {
@@ -29,7 +32,7 @@ public class GuiPlayerMorph extends GuiAbstractMorph
             this.data.toggleVisible();
             this.updateNBT();
         });
-        this.toggle.resizer().parent(this.area).set(0, 0, 60, 20).x(1, -60);
+        this.toggle.resizer().parent(this.area).set(0, 10, 60, 20).x(1, -70);
 
         this.data.toggleVisible();
         this.children.add(this.username, this.toggle);
@@ -37,7 +40,7 @@ public class GuiPlayerMorph extends GuiAbstractMorph
 
     private void editUsername(String str)
     {
-        this.counter = 20;
+        this.counter = 10;
     }
 
     @Override
