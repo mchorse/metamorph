@@ -75,6 +75,7 @@ morph.category.blocks=Blocks morphs
 morph.category.boss=Boss morphs
 morph.category.acquired=Your morphs
 morph.category.hostile=Hostile morphs
+morph.category.players=Player morphs
 morph.category.modded=Morphs from %s
 
 # Morph builders

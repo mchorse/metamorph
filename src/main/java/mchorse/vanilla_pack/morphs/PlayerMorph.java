@@ -41,6 +41,12 @@ public class PlayerMorph extends EntityMorph
         this.name = "Player";
     }
 
+    public void setProfile(String username)
+    {
+        this.profile = new GameProfile(null, username);
+        this.profile = TileEntitySkull.updateGameprofile(this.profile);
+    }
+
     /**
      * Create a player morph 
      */
@@ -177,6 +183,14 @@ public class PlayerMorph extends EntityMorph
     }
 
     @Override
+    public void reset()
+    {
+        super.reset();
+
+        this.profile = null;
+    }
+
+    @Override
     public boolean equals(Object obj)
     {
         boolean result = super.equals(obj);
@@ -202,8 +216,7 @@ public class PlayerMorph extends EntityMorph
         }
         else if (tag.hasKey("Username"))
         {
-            this.profile = new GameProfile(null, tag.getString("Username"));
-            this.profile = TileEntitySkull.updateGameprofile(this.profile);
+            this.setProfile(tag.getString("Username"));
         }
     }
 
@@ -269,7 +282,7 @@ public class PlayerMorph extends EntityMorph
 
                 if (map.containsKey(Type.SKIN))
                 {
-                    resourcelocation = minecraft.getSkinManager().loadSkin((MinecraftProfileTexture) map.get(Type.SKIN), Type.SKIN);
+                    resourcelocation = minecraft.getSkinManager().loadSkin(map.get(Type.SKIN), Type.SKIN);
                 }
                 else
                 {
@@ -284,6 +297,7 @@ public class PlayerMorph extends EntityMorph
         /**
          * Get this player's custom cape skin 
          */
+        @Override
         public ResourceLocation getLocationCape()
         {
             ResourceLocation resourcelocation = null;
@@ -295,7 +309,7 @@ public class PlayerMorph extends EntityMorph
 
                 if (map.containsKey(Type.CAPE))
                 {
-                    resourcelocation = minecraft.getSkinManager().loadSkin((MinecraftProfileTexture) map.get(Type.CAPE), Type.CAPE);
+                    resourcelocation = minecraft.getSkinManager().loadSkin(map.get(Type.CAPE), Type.CAPE);
                 }
             }
 
@@ -312,6 +326,7 @@ public class PlayerMorph extends EntityMorph
             return true;
         }
 
+        @Override
         public boolean hasPlayerInfo()
         {
             return true;

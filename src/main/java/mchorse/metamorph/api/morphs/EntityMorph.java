@@ -681,6 +681,26 @@ public class EntityMorph extends AbstractMorph
         return result;
     }
 
+    @Override
+    public void reset()
+    {
+        this.resetEntity();
+        this.entityData = null;
+
+        if (this.customSettings)
+        {
+            this.settings = MorphSettings.DEFAULT;
+            this.customSettings = false;
+        }
+    }
+
+    public void resetEntity()
+    {
+        this.entity = null;
+        this.renderer = null;
+        this.triedHands = false;
+    }
+
     /**
      * Clone this {@link EntityMorph} 
      */
@@ -732,16 +752,5 @@ public class EntityMorph extends AbstractMorph
         super.fromNBT(tag);
 
         this.entityData = tag.getCompoundTag("EntityData");
-
-        /* Reset */
-        this.entity = null;
-        this.renderer = null;
-        this.triedHands = false;
-
-        if (this.customSettings)
-        {
-            this.settings = MorphSettings.DEFAULT;
-            this.customSettings = false;
-        }
     }
 }

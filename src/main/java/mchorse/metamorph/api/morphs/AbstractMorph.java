@@ -307,6 +307,12 @@ public abstract class AbstractMorph
         return false;
     }
 
+    /**
+     * Reset data for editing 
+     */
+    public void reset()
+    {}
+
     /* Reading / writing to NBT */
 
     /**
@@ -325,6 +331,8 @@ public abstract class AbstractMorph
      */
     public void fromNBT(NBTTagCompound tag)
     {
+        this.reset();
+
         this.name = tag.getString("Name");
         this.lastHealth = tag.getFloat("LastHealth");
 

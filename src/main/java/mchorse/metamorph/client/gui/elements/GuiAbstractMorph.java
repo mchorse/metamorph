@@ -10,7 +10,10 @@ import mchorse.metamorph.api.morphs.AbstractMorph;
 import net.minecraft.client.Minecraft;
 import net.minecraft.nbt.JsonToNBT;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 
+@SideOnly(Side.CLIENT)
 public class GuiAbstractMorph extends GuiElement
 {
     /**
@@ -20,18 +23,16 @@ public class GuiAbstractMorph extends GuiElement
 
     public GuiTextElement data;
 
-    private AbstractMorph morph;
-    private boolean error;
+    protected AbstractMorph morph;
+    protected boolean error;
 
     /**
      * Prepare and return a morph editor based on given morph 
      */
     public static GuiAbstractMorph fromMorph(AbstractMorph morph)
     {
-        for (int i = EDITORS.size() - 1; i >= 0; i--)
+        for (GuiAbstractMorph editor : EDITORS)
         {
-            GuiAbstractMorph editor = EDITORS.get(i);
-
             if (editor.canEdit(morph))
             {
                 editor.startEdit(morph);
@@ -48,8 +49,8 @@ public class GuiAbstractMorph extends GuiElement
         super(mc);
 
         this.createChildren();
-        this.data = new GuiTextElement(mc, 10000, (str) -> this.editNbt(str));
-        this.data.resizer().parent(this.area).set(10, 0, 0, 20).w(1, -20).y(1, -30);
+        this.data = new GuiTextElement(mc, 10000, (str) -> this.editNBT(str));
+        this.data.resizer().parent(this.area).set(0, 0, 0, 20).w(1, 0).y(1, -30);
 
         this.children.add(this.data);
     }
@@ -64,13 +65,10 @@ public class GuiAbstractMorph extends GuiElement
         this.morph = morph;
         this.error = false;
 
-        NBTTagCompound tag = new NBTTagCompound();
-
-        morph.toNBT(tag);
-        this.data.setText(tag.toString());
+        this.updateNBT();
     }
 
-    private void editNbt(String str)
+    protected void editNBT(String str)
     {
         try
         {
@@ -83,6 +81,14 @@ public class GuiAbstractMorph extends GuiElement
         }
     }
 
+    protected void updateNBT()
+    {
+        NBTTagCompound tag = new NBTTagCompound();
+
+        morph.toNBT(tag);
+        this.data.setText(tag.toString());
+    }
+
     @Override
     public void draw(GuiTooltip tooltip, int mouseX, int mouseY, float partialTicks)
     {
@@ -90,10 +96,13 @@ public class GuiAbstractMorph extends GuiElement
 
         super.draw(tooltip, mouseX, mouseY, partialTicks);
 
-        this.font.drawStringWithShadow("NBT data", this.data.area.x, this.data.area.y - 12, this.error ? 0xffff3355 : 0xffffff);
+        if (this.data.isVisible())
+        {
+            this.font.drawStringWithShadow("NBT data", this.data.area.x, this.data.area.y - 12, this.error ? 0xffff3355 : 0xffffff);
+        }
     }
 
-    private void drawMorph(int mouseX, int mouseY, float partialTicks)
+    protected void drawMorph(int mouseX, int mouseY, float partialTicks)
     {
         try
         {
