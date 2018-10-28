@@ -732,5 +732,16 @@ public class EntityMorph extends AbstractMorph
         super.fromNBT(tag);
 
         this.entityData = tag.getCompoundTag("EntityData");
+
+        /* Reset */
+        this.entity = null;
+        this.renderer = null;
+        this.triedHands = false;
+
+        if (this.customSettings)
+        {
+            this.settings = MorphSettings.DEFAULT;
+            this.customSettings = false;
+        }
     }
 }

@@ -6,10 +6,12 @@ import mchorse.metamorph.api.MorphList;
 import mchorse.metamorph.api.MorphManager;
 import mchorse.metamorph.api.morphs.AbstractMorph;
 import mchorse.metamorph.api.morphs.EntityMorph;
+import mchorse.metamorph.client.gui.elements.GuiAbstractMorph;
 import mchorse.vanilla_pack.morphs.BlockMorph;
 import mchorse.vanilla_pack.morphs.IronGolemMorph;
 import mchorse.vanilla_pack.morphs.ShulkerMorph;
 import mchorse.vanilla_pack.morphs.UndeadMorph;
+import net.minecraft.client.Minecraft;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityList;
 import net.minecraft.entity.EntityLivingBase;
@@ -41,13 +43,12 @@ public class MobMorphFactory implements IMorphFactory
     public void register(MorphManager manager)
     {}
 
-    /**
-     * What should I implement here?
-     */
     @Override
     @SideOnly(Side.CLIENT)
     public void registerClient(MorphManager manager)
-    {}
+    {
+        GuiAbstractMorph.EDITORS.add(new GuiAbstractMorph(Minecraft.getMinecraft()));
+    }
 
     @Override
     @SideOnly(Side.CLIENT)

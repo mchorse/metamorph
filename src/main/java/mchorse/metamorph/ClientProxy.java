@@ -54,6 +54,7 @@ public class ClientProxy extends CommonProxy
     {
         super.preLoad(event);
 
+        /* Register entity renderers */
         RenderingRegistry.registerEntityRenderingHandler(EntityMorph.class, new RenderMorph.MorphFactory());
     }
 

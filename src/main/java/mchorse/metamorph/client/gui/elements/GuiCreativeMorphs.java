@@ -6,13 +6,16 @@ import java.util.Comparator;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.function.Consumer;
 
 import org.lwjgl.input.Keyboard;
 import org.lwjgl.opengl.GL11;
 
 import mchorse.mclib.client.gui.framework.GuiTooltip;
+import mchorse.mclib.client.gui.framework.elements.GuiDelegateElement;
 import mchorse.mclib.client.gui.framework.elements.GuiElement;
 import mchorse.mclib.client.gui.utils.GuiUtils;
+import mchorse.mclib.client.gui.utils.Resizer.Measure;
 import mchorse.mclib.client.gui.utils.ScrollArea;
 import mchorse.metamorph.api.MorphList;
 import mchorse.metamorph.api.MorphManager;
@@ -71,6 +74,11 @@ public class GuiCreativeMorphs extends GuiElement
     private GuiCreativeVariantPicker picker;
 
     /**
+     * Morph editor 
+     */
+    private GuiDelegateElement<GuiAbstractMorph> editor;
+
+    /**
      * Acquired morphs category
      */
     private MorphCategory acquired;
@@ -84,6 +92,11 @@ public class GuiCreativeMorphs extends GuiElement
      * Scroll area responsible for handling area scroll 
      */
     public ScrollArea scroll = new ScrollArea(60);
+
+    /**
+     * Morph consumer 
+     */
+    public Consumer<AbstractMorph> callback;
 
     /**
      * Category label shift
@@ -105,8 +118,11 @@ public class GuiCreativeMorphs extends GuiElement
         this.picker = new GuiCreativeVariantPicker(mc, this);
         this.picker.resizer().parent(this.area).set(0, 0, 0, 60).w(1, 0).y(1, -60);
 
+        this.editor = new GuiDelegateElement<GuiAbstractMorph>(mc, null);
+        this.editor.resizer().parent(this.area).set(0, 0, 1, 1, Measure.RELATIVE);
+
         this.createChildren();
-        this.children.add(this.picker);
+        this.children.add(this.picker, this.editor);
 
         this.scroll.scrollSpeed = 15;
     }
@@ -122,6 +138,35 @@ public class GuiCreativeMorphs extends GuiElement
         super.resize(width, height);
 
         this.scroll.copy(this.area);
+    }
+
+    public boolean isEditMode()
+    {
+        return this.editor.delegate != null;
+    }
+
+    public void toggleEditMode()
+    {
+        if (this.getSelected() == null)
+        {
+            return;
+        }
+
+        if (!this.isEditMode())
+        {
+            GuiAbstractMorph morph = GuiAbstractMorph.fromMorph(this.getSelected().current().morph);
+
+            if (morph != null)
+            {
+                this.editor.setDelegate(morph);
+            }
+        }
+        else
+        {
+            this.editor.setDelegate(null);
+        }
+
+        this.picker.setVisible(this.editor.delegate == null);
     }
 
     /**
@@ -394,7 +439,7 @@ public class GuiCreativeMorphs extends GuiElement
             return true;
         }
 
-        if (!this.area.isInside(mouseX, mouseY))
+        if (!this.area.isInside(mouseX, mouseY) || this.isEditMode())
         {
             return false;
         }
@@ -439,6 +484,7 @@ public class GuiCreativeMorphs extends GuiElement
                     if (j == index)
                     {
                         this.selectedMorph = cell.index;
+                        this.setMorph(this.getSelected().current().morph);
 
                         break;
                     }
@@ -451,9 +497,18 @@ public class GuiCreativeMorphs extends GuiElement
         {
             this.selected = -1;
             this.selectedMorph = -1;
+            this.setMorph(null);
         }
 
         return true;
+    }
+
+    private void setMorph(AbstractMorph morph)
+    {
+        if (this.callback != null)
+        {
+            this.callback.accept(morph);
+        }
     }
 
     @Override
@@ -480,42 +535,48 @@ public class GuiCreativeMorphs extends GuiElement
     {
         super.keyTyped(typedChar, keyCode);
 
-        if (keyCode == Keyboard.KEY_DOWN)
+        if (!this.isEditMode())
         {
-            this.scroll.scrollBy(30);
-        }
-        else if (keyCode == Keyboard.KEY_UP)
-        {
-            this.scroll.scrollBy(-30);
-        }
-        else if (keyCode == Keyboard.KEY_LEFT)
-        {
-            this.scroll.scrollTo(0);
-        }
-        else if (keyCode == Keyboard.KEY_RIGHT)
-        {
-            this.scroll.scrollTo(this.scroll.scrollSize);
+            if (keyCode == Keyboard.KEY_DOWN)
+            {
+                this.scroll.scrollBy(30);
+            }
+            else if (keyCode == Keyboard.KEY_UP)
+            {
+                this.scroll.scrollBy(-30);
+            }
+            else if (keyCode == Keyboard.KEY_LEFT)
+            {
+                this.scroll.scrollTo(0);
+            }
+            else if (keyCode == Keyboard.KEY_RIGHT)
+            {
+                this.scroll.scrollTo(this.scroll.scrollSize);
+            }
         }
     }
 
     @Override
     public void draw(GuiTooltip tooltip, int mouseX, int mouseY, float partialTicks)
     {
-        GuiScreen screen = this.mc.currentScreen;
+        if (!this.isEditMode())
+        {
+            GuiScreen screen = this.mc.currentScreen;
 
-        this.scroll.drag(mouseX, mouseY);
+            this.scroll.drag(mouseX, mouseY);
 
-        GL11.glPushMatrix();
-        GL11.glTranslatef(0, -this.scroll.scroll, 0);
+            GL11.glPushMatrix();
+            GL11.glTranslatef(0, -this.scroll.scroll, 0);
 
-        GuiUtils.scissor(this.scroll.x, this.scroll.y, this.scroll.w, this.scroll.h, screen.width, screen.height);
+            GuiUtils.scissor(this.scroll.x, this.scroll.y, this.scroll.w, this.scroll.h, screen.width, screen.height);
 
-        this.drawMorphs(mouseX, mouseY);
+            this.drawMorphs(mouseX, mouseY);
 
-        GL11.glDisable(GL11.GL_SCISSOR_TEST);
-        GL11.glPopMatrix();
+            GL11.glDisable(GL11.GL_SCISSOR_TEST);
+            GL11.glPopMatrix();
 
-        this.scroll.drawScrollbar();
+            this.scroll.drawScrollbar();
+        }
 
         super.draw(tooltip, mouseX, mouseY, partialTicks);
     }

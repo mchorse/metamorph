@@ -45,6 +45,7 @@ public class GuiCreativeVariantPicker extends GuiElement
 
         this.morphs = morphs;
         this.scroll.direction = ScrollDirection.HORIZONTAL;
+        this.scroll.scrollSpeed = 5;
     }
 
     @Override

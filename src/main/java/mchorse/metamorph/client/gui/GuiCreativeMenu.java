@@ -39,8 +39,6 @@ public class GuiCreativeMenu extends GuiBase
     private GuiTextElement search;
     private GuiCreativeMorphs pane;
 
-    private boolean editMode;
-
     public GuiCreativeMenu()
     {
         Minecraft mc = Minecraft.getMinecraft();
@@ -65,7 +63,7 @@ public class GuiCreativeMenu extends GuiBase
         this.top = GuiButtonElement.button(mc, "^", (b) -> this.pane.scroll.scrollTo(0));
         this.edit = GuiButtonElement.button(mc, I18n.format("metamorph.gui.builder"), (b) ->
         {
-            this.editMode = !this.editMode;
+            this.pane.toggleEditMode();
             this.updateButton();
         });
 
@@ -86,8 +84,7 @@ public class GuiCreativeMenu extends GuiBase
 
     private void updateButton()
     {
-        this.top.toggleVisible();
-        this.edit.button.displayString = this.editMode ? I18n.format("metamorph.gui.list") : I18n.format("metamorph.gui.builder");
+        this.edit.button.displayString = this.pane.isEditMode() ? I18n.format("metamorph.gui.list") : I18n.format("metamorph.gui.builder");
     }
 
     /* GUI stuff and input */
@@ -151,16 +148,14 @@ public class GuiCreativeMenu extends GuiBase
         /* Draw panel backgrounds */
         this.drawDefaultBackground();
         this.drawString(fontRendererObj, I18n.format("metamorph.gui.creative_title"), 10, 11, 0xffffff);
+        this.fontRendererObj.drawStringWithShadow(I18n.format("metamorph.gui.search"), 10, 41, 0xffffff);
 
         /* Render buttons */
         super.drawScreen(mouseX, mouseY, partialTicks);
 
-        if (!this.editMode)
+        if (!this.pane.isEditMode())
         {
-            /* Draw creative morphs */
-            this.fontRendererObj.drawStringWithShadow(I18n.format("metamorph.gui.search"), 10, 41, 0xffffff);
-
-            /* Draw currently selected morph */
+            /* Draw stats about currently selected morph */
             MorphCell morph = this.pane.getSelected();
             String selected = morph != null ? morph.current().name : I18n.format("metamorph.gui.no_morph");
 
