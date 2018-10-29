@@ -1,8 +1,5 @@
 package mchorse.metamorph.client.gui.elements;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import mchorse.mclib.client.gui.framework.GuiTooltip;
 import mchorse.mclib.client.gui.framework.elements.GuiElement;
 import mchorse.mclib.client.gui.framework.elements.GuiTextElement;
@@ -16,33 +13,10 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 @SideOnly(Side.CLIENT)
 public class GuiAbstractMorph extends GuiElement
 {
-    /**
-     * List of available morph editors 
-     */
-    public static final List<GuiAbstractMorph> EDITORS = new ArrayList<GuiAbstractMorph>();
-
     public GuiTextElement data;
 
     protected AbstractMorph morph;
     protected boolean error;
-
-    /**
-     * Prepare and return a morph editor based on given morph 
-     */
-    public static GuiAbstractMorph fromMorph(AbstractMorph morph)
-    {
-        for (GuiAbstractMorph editor : EDITORS)
-        {
-            if (editor.canEdit(morph))
-            {
-                editor.startEdit(morph);
-
-                return editor;
-            }
-        }
-
-        return null;
-    }
 
     public GuiAbstractMorph(Minecraft mc)
     {

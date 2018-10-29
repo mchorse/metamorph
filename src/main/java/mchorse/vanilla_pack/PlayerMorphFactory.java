@@ -1,5 +1,7 @@
 package mchorse.vanilla_pack;
 
+import java.util.List;
+
 import mchorse.metamorph.api.IMorphFactory;
 import mchorse.metamorph.api.MorphList;
 import mchorse.metamorph.api.MorphManager;
@@ -33,8 +35,13 @@ public class PlayerMorphFactory implements IMorphFactory
     @Override
     @SideOnly(Side.CLIENT)
     public void registerClient(MorphManager manager)
+    {}
+
+    @Override
+    @SideOnly(Side.CLIENT)
+    public void registerMorphEditors(List<GuiAbstractMorph> editors)
     {
-        GuiAbstractMorph.EDITORS.add(new GuiPlayerMorph(Minecraft.getMinecraft()));
+        editors.add(new GuiPlayerMorph(Minecraft.getMinecraft()));
     }
 
     /**

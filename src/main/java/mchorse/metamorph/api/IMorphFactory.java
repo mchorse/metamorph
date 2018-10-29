@@ -1,6 +1,9 @@
 package mchorse.metamorph.api;
 
+import java.util.List;
+
 import mchorse.metamorph.api.morphs.AbstractMorph;
+import mchorse.metamorph.client.gui.elements.GuiAbstractMorph;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.relauncher.Side;
@@ -28,6 +31,13 @@ public interface IMorphFactory
      */
     @SideOnly(Side.CLIENT)
     public void registerClient(MorphManager manager);
+
+    /**
+     * Register morph editors which will be available in the creative 
+     * morphs for editing 
+     */
+    @SideOnly(Side.CLIENT)
+    public void registerMorphEditors(List<GuiAbstractMorph> editors);
 
     /**
      * Get display name for morph

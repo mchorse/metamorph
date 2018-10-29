@@ -12,8 +12,10 @@ import org.lwjgl.input.Keyboard;
 import org.lwjgl.opengl.GL11;
 
 import mchorse.mclib.client.gui.framework.GuiTooltip;
+import mchorse.mclib.client.gui.framework.elements.GuiButtonElement;
 import mchorse.mclib.client.gui.framework.elements.GuiDelegateElement;
 import mchorse.mclib.client.gui.framework.elements.GuiElement;
+import mchorse.mclib.client.gui.framework.elements.GuiTextElement;
 import mchorse.mclib.client.gui.utils.GuiUtils;
 import mchorse.mclib.client.gui.utils.Resizer.Measure;
 import mchorse.mclib.client.gui.utils.ScrollArea;
@@ -22,6 +24,7 @@ import mchorse.metamorph.api.MorphManager;
 import mchorse.metamorph.api.morphs.AbstractMorph;
 import mchorse.metamorph.capabilities.morphing.IMorphing;
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.gui.GuiButton;
 import net.minecraft.client.gui.GuiScreen;
 import net.minecraft.client.resources.I18n;
 import net.minecraft.entity.player.EntityPlayer;
@@ -69,16 +72,6 @@ public class GuiCreativeMorphs extends GuiElement
     private List<MorphCategory> categories = new ArrayList<MorphCategory>();
 
     /**
-     * Variant picker 
-     */
-    private GuiCreativeVariantPicker picker;
-
-    /**
-     * Morph editor 
-     */
-    private GuiDelegateElement<GuiAbstractMorph> editor;
-
-    /**
      * Acquired morphs category
      */
     private MorphCategory acquired;
@@ -104,6 +97,25 @@ public class GuiCreativeMorphs extends GuiElement
     public int shiftX = 0;
 
     /**
+     * Available morph editors 
+     */
+    private List<GuiAbstractMorph> editors;
+
+    /**
+     * Variant picker 
+     */
+    private GuiCreativeVariantPicker picker;
+
+    /**
+     * Morph editor 
+     */
+    private GuiDelegateElement<GuiAbstractMorph> editor;
+
+    private GuiButtonElement<GuiButton> top;
+    private GuiButtonElement<GuiButton> edit;
+    private GuiTextElement search;
+
+    /**
      * Initiate this GUI.
      * 
      * Compile the categories list and compute the scroll height of this scroll pane 
@@ -124,12 +136,33 @@ public class GuiCreativeMorphs extends GuiElement
         this.createChildren();
         this.children.add(this.picker, this.editor);
 
+        this.top = GuiButtonElement.button(mc, "^", (b) -> this.scroll.scrollTo(0));
+        this.edit = GuiButtonElement.button(mc, I18n.format("metamorph.gui.builder"), (b) ->
+        {
+            this.toggleEditMode();
+            this.updateButton();
+        });
+
+        this.search = new GuiTextElement(mc, (filter) -> this.setFilter(filter));
+        this.search.field.setFocused(true);
+
+        this.edit.resizer().parent(this.area).set(0, 10, 55, 20).x(1, -35 - 55);
+        this.top.resizer().relative(this.edit.resizer()).set(60, 0, 20, 20);
+
+        this.search.resizer().parent(this.area).set(10, 10, 0, 20).w(1, -105);
+        this.children.add(this.search, this.edit, this.top);
+
         this.scroll.scrollSpeed = 15;
     }
 
     public GuiCreativeMorphs(Minecraft mc, int perRow, AbstractMorph selected)
     {
         this(mc, perRow, selected, null);
+    }
+
+    private void updateButton()
+    {
+        this.edit.button.displayString = this.isEditMode() ? I18n.format("metamorph.gui.list") : I18n.format("metamorph.gui.builder");
     }
 
     @Override
@@ -154,7 +187,7 @@ public class GuiCreativeMorphs extends GuiElement
 
         if (!this.isEditMode())
         {
-            GuiAbstractMorph morph = GuiAbstractMorph.fromMorph(this.getSelected().current().morph);
+            GuiAbstractMorph morph = this.getMorphEditor(this.getSelected().current().morph);
 
             if (morph != null)
             {
@@ -166,7 +199,47 @@ public class GuiCreativeMorphs extends GuiElement
             this.editor.setDelegate(null);
         }
 
-        this.picker.setVisible(this.editor.delegate == null);
+        boolean hide = this.editor.delegate == null;
+
+        this.picker.setVisible(hide);
+        this.search.setVisible(hide);
+        this.top.setVisible(hide);
+
+        if (hide)
+        {
+            GuiScreen screen = Minecraft.getMinecraft().currentScreen;
+
+            this.edit.resizer().parent(this.area).set(0, 10, 55, 20).x(1, -35 - 55);
+            this.edit.resize(screen.width, screen.height);
+        }
+        else
+        {
+            GuiScreen screen = Minecraft.getMinecraft().currentScreen;
+
+            this.edit.resizer().parent(this.area).set(0, 10, 55, 20).x(10);
+            this.edit.resize(screen.width, screen.height);
+        }
+    }
+
+    private GuiAbstractMorph getMorphEditor(AbstractMorph morph)
+    {
+        if (this.editors == null)
+        {
+            this.editors = new ArrayList<GuiAbstractMorph>();
+            MorphManager.INSTANCE.registerMorphEditors(this.editors);
+        }
+
+        for (GuiAbstractMorph editor : this.editors)
+        {
+            if (editor.canEdit(morph))
+            {
+                editor.startEdit(morph);
+
+                return editor;
+            }
+        }
+
+        return null;
     }
 
     /**
@@ -256,7 +329,7 @@ public class GuiCreativeMorphs extends GuiElement
         int selectedCat = -1;
         int selectedMorph = -1;
 
-        this.scroll.scrollSize = 0;
+        this.scroll.scrollSize = 30;
 
         for (MorphCategory category : this.categories)
         {
@@ -349,7 +422,7 @@ public class GuiCreativeMorphs extends GuiElement
         String lcfilter = filter.toLowerCase();
 
         this.scroll.scroll = 0;
-        this.scroll.scrollSize = 0;
+        this.scroll.scrollSize = 30;
         this.previousFilter = filter;
 
         for (MorphCategory cat : this.categories)
@@ -439,7 +512,7 @@ public class GuiCreativeMorphs extends GuiElement
             return true;
         }
 
-        if (!this.area.isInside(mouseX, mouseY) || this.isEditMode())
+        if (!this.area.isInside(mouseX, mouseY) || this.isEditMode() || this.search.field.isFocused())
         {
             return false;
         }
@@ -579,6 +652,11 @@ public class GuiCreativeMorphs extends GuiElement
         }
 
         super.draw(tooltip, mouseX, mouseY, partialTicks);
+
+        if (!this.isEditMode() && !this.search.field.isFocused() && this.search.field.getText().isEmpty())
+        {
+            this.font.drawStringWithShadow(I18n.format("metamorph.gui.search"), this.search.area.x + 5, this.search.area.y + 6, 0x888888);
+        }
     }
 
     private void drawMorphs(int mouseX, int mouseY)
