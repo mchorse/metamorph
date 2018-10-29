@@ -109,11 +109,11 @@ public class GuiCreativeMorphs extends GuiElement
     /**
      * Morph editor 
      */
-    private GuiDelegateElement<GuiAbstractMorph> editor;
+    public GuiDelegateElement<GuiAbstractMorph> editor;
 
-    private GuiButtonElement<GuiButton> top;
-    private GuiButtonElement<GuiButton> edit;
-    private GuiTextElement search;
+    public GuiButtonElement<GuiButton> top;
+    public GuiButtonElement<GuiButton> edit;
+    public GuiTextElement search;
 
     /**
      * Initiate this GUI.
