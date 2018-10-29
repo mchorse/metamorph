@@ -196,6 +196,7 @@ public class GuiCreativeMorphs extends GuiElement
         }
         else
         {
+            this.editor.delegate.finishEdit();
             this.editor.setDelegate(null);
         }
 
@@ -205,17 +206,15 @@ public class GuiCreativeMorphs extends GuiElement
         this.search.setVisible(hide);
         this.top.setVisible(hide);
 
+        GuiScreen screen = Minecraft.getMinecraft().currentScreen;
+
         if (hide)
         {
-            GuiScreen screen = Minecraft.getMinecraft().currentScreen;
-
             this.edit.resizer().parent(this.area).set(0, 10, 55, 20).x(1, -35 - 55);
             this.edit.resize(screen.width, screen.height);
         }
         else
         {
-            GuiScreen screen = Minecraft.getMinecraft().currentScreen;
-
             this.edit.resizer().parent(this.area).set(0, 10, 55, 20).x(10);
             this.edit.resize(screen.width, screen.height);
         }

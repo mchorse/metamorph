@@ -42,6 +42,9 @@ public class GuiAbstractMorph extends GuiElement
         this.updateNBT();
     }
 
+    public void finishEdit()
+    {}
+
     protected void editNBT(String str)
     {
         try
