@@ -134,7 +134,6 @@ public class GuiCreativeMorphs extends GuiElement
         this.editor.resizer().parent(this.area).set(0, 0, 1, 1, Measure.RELATIVE);
 
         this.createChildren();
-        this.children.add(this.picker, this.editor);
 
         this.top = GuiButtonElement.button(mc, "^", (b) -> this.scroll.scrollTo(0));
         this.edit = GuiButtonElement.button(mc, I18n.format("metamorph.gui.builder"), (b) ->
@@ -150,7 +149,7 @@ public class GuiCreativeMorphs extends GuiElement
         this.top.resizer().relative(this.edit.resizer()).set(60, 0, 20, 20);
 
         this.search.resizer().parent(this.area).set(10, 10, 0, 20).w(1, -105);
-        this.children.add(this.search, this.edit, this.top);
+        this.children.add(this.picker, this.search, this.edit, this.top, this.editor);
 
         this.scroll.scrollSpeed = 15;
     }
