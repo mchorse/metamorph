@@ -350,7 +350,7 @@ public class GuiSurvivalMorphs extends Gui
 
     public int getSelected()
     {
-        return this.index == -1 ? -1 : this.morphs.get(this.index).current().index;
+        return this.index == -1 ? -1 : (this.morphs.size() == 0 ? -1 : this.morphs.get(this.index).current().index);
     }
 
     public MorphCell getCurrent()

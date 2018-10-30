@@ -5,6 +5,7 @@ import java.util.Map;
 
 import mchorse.metamorph.api.MorphManager;
 import mchorse.metamorph.client.KeyboardHandler;
+import mchorse.metamorph.client.NetworkHandler;
 import mchorse.metamorph.client.RenderingHandler;
 import mchorse.metamorph.client.gui.elements.GuiOverlay;
 import mchorse.metamorph.client.gui.elements.GuiSurvivalMorphs;
@@ -56,6 +57,9 @@ public class ClientProxy extends CommonProxy
 
         /* Register entity renderers */
         RenderingRegistry.registerEntityRenderingHandler(EntityMorph.class, new RenderMorph.MorphFactory());
+
+        /* Registering an event channel for custom payload */
+        Metamorph.channel.register(new NetworkHandler());
     }
 
     @Override
