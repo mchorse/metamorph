@@ -12,6 +12,7 @@ import mchorse.metamorph.api.abilities.IAction;
 import mchorse.metamorph.api.abilities.IAttackAbility;
 import mchorse.metamorph.api.morphs.AbstractMorph;
 import mchorse.metamorph.api.morphs.EntityMorph;
+import mchorse.metamorph.client.gui.elements.GuiAbstractMorph;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.resources.I18n;
 import net.minecraft.entity.Entity;
@@ -135,6 +136,18 @@ public class MorphManager
         for (int i = this.factories.size() - 1; i >= 0; i--)
         {
             this.factories.get(i).registerClient(this);
+        }
+    }
+
+    /**
+     * Register morph editors 
+     */
+    @SideOnly(Side.CLIENT)
+    public void registerMorphEditors(List<GuiAbstractMorph> editors)
+    {
+        for (int i = this.factories.size() - 1; i >= 0; i--)
+        {
+            this.factories.get(i).registerMorphEditors(editors);
         }
     }
 

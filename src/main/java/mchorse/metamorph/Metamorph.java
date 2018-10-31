@@ -15,6 +15,8 @@ import net.minecraftforge.fml.common.event.FMLInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLPostInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLServerStartingEvent;
+import net.minecraftforge.fml.common.network.FMLEventChannel;
+import net.minecraftforge.fml.common.network.NetworkRegistry;
 
 /**
  * Metamorph mod
@@ -51,11 +53,17 @@ public class Metamorph
     @Mod.Instance(MODID)
     public static Metamorph instance;
 
+    /**
+     * Custom payload channel 
+     */
+    public static FMLEventChannel channel;
+
     /* Events */
     @EventHandler
     public void preLoad(FMLPreInitializationEvent event)
     {
         LOGGER = event.getModLog();
+        channel = NetworkRegistry.INSTANCE.newEventDrivenChannel("Metamorph");
 
         proxy.preLoad(event);
     }

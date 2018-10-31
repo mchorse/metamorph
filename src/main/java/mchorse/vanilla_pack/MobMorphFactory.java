@@ -1,15 +1,19 @@
 package mchorse.vanilla_pack;
 
+import java.util.List;
+
 import mchorse.metamorph.api.EntityUtils;
 import mchorse.metamorph.api.IMorphFactory;
 import mchorse.metamorph.api.MorphList;
 import mchorse.metamorph.api.MorphManager;
 import mchorse.metamorph.api.morphs.AbstractMorph;
 import mchorse.metamorph.api.morphs.EntityMorph;
+import mchorse.metamorph.client.gui.elements.GuiAbstractMorph;
 import mchorse.vanilla_pack.morphs.BlockMorph;
 import mchorse.vanilla_pack.morphs.IronGolemMorph;
 import mchorse.vanilla_pack.morphs.ShulkerMorph;
 import mchorse.vanilla_pack.morphs.UndeadMorph;
+import net.minecraft.client.Minecraft;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityList;
 import net.minecraft.entity.EntityLivingBase;
@@ -44,9 +48,6 @@ public class MobMorphFactory implements IMorphFactory
     public void register(MorphManager manager)
     {}
 
-    /**
-     * What should I implement here?
-     */
     @Override
     @SideOnly(Side.CLIENT)
     public void registerClient(MorphManager manager)
@@ -54,7 +55,14 @@ public class MobMorphFactory implements IMorphFactory
 
     @Override
     @SideOnly(Side.CLIENT)
-    public String displayNameForMorph(AbstractMorph morph)
+    public void registerMorphEditors(List<GuiAbstractMorph> editors)
+    {
+        editors.add(new GuiAbstractMorph(Minecraft.getMinecraft()));
+    }
+
+    @Override
+    @SideOnly(Side.CLIENT)
+    public String displayNameForMorph(AbstractMorph morphName)
     {
         return null;
     }
