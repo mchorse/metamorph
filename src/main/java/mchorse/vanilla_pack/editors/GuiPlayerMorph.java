@@ -8,6 +8,7 @@ import mchorse.metamorph.client.gui.elements.GuiAbstractMorph;
 import mchorse.vanilla_pack.morphs.PlayerMorph;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiButton;
+import net.minecraft.client.resources.I18n;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
@@ -26,7 +27,7 @@ public class GuiPlayerMorph extends GuiAbstractMorph
         this.username = new GuiTextElement(mc, 120, (str) -> this.editUsername(str));
         this.username.resizer().parent(this.area).set(10, 10, 0, 20).w(1, -20).y(1, -30);
 
-        this.toggle = GuiButtonElement.button(mc, "NBT", (b) ->
+        this.toggle = GuiButtonElement.button(mc, I18n.format("metamorph.gui.panels.nbt"), (b) ->
         {
             this.username.toggleVisible();
             this.data.toggleVisible();
@@ -40,7 +41,7 @@ public class GuiPlayerMorph extends GuiAbstractMorph
 
     private void editUsername(String str)
     {
-        this.counter = 10;
+        this.counter = 15;
     }
 
     @Override
@@ -70,6 +71,10 @@ public class GuiPlayerMorph extends GuiAbstractMorph
                 morph.setProfile(this.username.field.getText());
             }
 
+            String updating = I18n.format("metamorph.gui.panels.updating");
+            int w = this.font.getStringWidth(updating);
+
+            this.font.drawStringWithShadow(updating, this.username.area.getX(1) - w, this.username.area.y - 12, 0xaaaaaa);
             this.counter--;
         }
 
@@ -77,7 +82,7 @@ public class GuiPlayerMorph extends GuiAbstractMorph
 
         if (this.username.isVisible())
         {
-            this.font.drawStringWithShadow("Username", this.username.area.x, this.username.area.y - 12, this.error ? 0xffff3355 : 0xffffff);
+            this.font.drawStringWithShadow(I18n.format("metamorph.gui.panels.username"), this.username.area.x, this.username.area.y - 12, this.error ? 0xffff3355 : 0xffffff);
         }
     }
 }

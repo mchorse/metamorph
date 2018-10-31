@@ -5,6 +5,7 @@ import mchorse.mclib.client.gui.framework.elements.GuiElement;
 import mchorse.mclib.client.gui.framework.elements.GuiTextElement;
 import mchorse.metamorph.api.morphs.AbstractMorph;
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.resources.I18n;
 import net.minecraft.nbt.JsonToNBT;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraftforge.fml.relauncher.Side;
@@ -75,7 +76,7 @@ public class GuiAbstractMorph extends GuiElement
 
         if (this.data.isVisible())
         {
-            this.font.drawStringWithShadow("NBT data", this.data.area.x, this.data.area.y - 12, this.error ? 0xffff3355 : 0xffffff);
+            this.font.drawStringWithShadow(I18n.format("metamorph.gui.panels.nbt_data"), this.data.area.x, this.data.area.y - 12, this.error ? 0xffff3355 : 0xffffff);
         }
     }
 

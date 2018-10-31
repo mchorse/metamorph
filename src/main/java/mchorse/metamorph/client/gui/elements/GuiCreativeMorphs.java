@@ -136,7 +136,7 @@ public class GuiCreativeMorphs extends GuiElement
         this.createChildren();
 
         this.top = GuiButtonElement.button(mc, "^", (b) -> this.scroll.scrollTo(0));
-        this.edit = GuiButtonElement.button(mc, I18n.format("metamorph.gui.builder"), (b) ->
+        this.edit = GuiButtonElement.button(mc, I18n.format("metamorph.gui.edit"), (b) ->
         {
             this.toggleEditMode();
             this.updateButton();
@@ -149,7 +149,7 @@ public class GuiCreativeMorphs extends GuiElement
         this.top.resizer().relative(this.edit.resizer()).set(60, 0, 20, 20);
 
         this.search.resizer().parent(this.area).set(10, 10, 0, 20).w(1, -105);
-        this.children.add(this.picker, this.search, this.edit, this.top, this.editor);
+        this.children.add(this.picker, this.edit, this.search, this.top, this.editor);
 
         this.scroll.scrollSpeed = 15;
     }
@@ -161,7 +161,7 @@ public class GuiCreativeMorphs extends GuiElement
 
     private void updateButton()
     {
-        this.edit.button.displayString = this.isEditMode() ? I18n.format("metamorph.gui.list") : I18n.format("metamorph.gui.builder");
+        this.edit.button.displayString = this.isEditMode() ? I18n.format("metamorph.gui.finish") : I18n.format("metamorph.gui.edit");
     }
 
     @Override
@@ -377,7 +377,7 @@ public class GuiCreativeMorphs extends GuiElement
         }
 
         this.scroll.scrollSize -= 10;
-        this.scroll.scrollTo(y);
+        this.scroll.scrollTo(y - 40);
 
         this.selected = selectedCat;
         this.selectedMorph = selectedMorph;
