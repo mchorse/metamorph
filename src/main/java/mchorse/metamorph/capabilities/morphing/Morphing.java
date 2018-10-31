@@ -1,7 +1,6 @@
 package mchorse.metamorph.capabilities.morphing;
 
 import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.List;
 
 import mchorse.metamorph.Metamorph;
@@ -26,11 +25,6 @@ public class Morphing implements IMorphing
      * List of acquired abstract morphs 
      */
     private List<AbstractMorph> acquiredMorphs = new ArrayList<AbstractMorph>();
-
-    /**
-     * List of favorite morphs 
-     */
-    private List<Integer> favorites = new ArrayList<Integer>();
 
     /**
      * Current used morph
@@ -249,13 +243,16 @@ public class Morphing implements IMorphing
      */
     protected void setMorph(AbstractMorph morph)
     {
-        if (!Metamorph.proxy.config.disable_morph_animation)
+        if (this.morph == null || (this.morph != null && !this.morph.canMerge(morph)))
         {
-            this.animation = 20;
-        }
+            if (!Metamorph.proxy.config.disable_morph_animation)
+            {
+                this.animation = 20;
+            }
 
-        this.previousMorph = this.morph;
-        this.morph = morph;
+            this.previousMorph = this.morph;
+            this.morph = morph;
+        }
     }
 
     @Override
@@ -267,33 +264,14 @@ public class Morphing implements IMorphing
     @Override
     public boolean favorite(int index)
     {
-        int favorite = this.favorites.indexOf(index);
-
-        if (favorite == -1)
+        if (index >= 0 && index < this.acquiredMorphs.size())
         {
-            this.favorites.add(index);
+            AbstractMorph morph = this.acquiredMorphs.get(index);
 
-            return true;
-        }
-        else
-        {
-            this.favorites.remove(favorite);
+            morph.favorite = !morph.favorite;
         }
 
         return false;
-    }
-
-    @Override
-    public List<Integer> getFavorites()
-    {
-        return this.favorites;
-    }
-
-    @Override
-    public void setFavorites(List<Integer> favorites)
-    {
-        this.favorites.clear();
-        this.favorites.addAll(favorites);
     }
 
     @Override
@@ -301,28 +279,7 @@ public class Morphing implements IMorphing
     {
         if (!this.acquiredMorphs.isEmpty() && index >= 0 && index < this.acquiredMorphs.size())
         {
-            Iterator<Integer> favorites = this.favorites.iterator();
-            int i = 0;
-
             this.acquiredMorphs.remove(index);
-
-            while (favorites.hasNext())
-            {
-                int favorite = favorites.next().intValue();
-
-                if (favorite == index)
-                {
-                    favorites.remove();
-
-                    i--;
-                }
-                else if (favorite > index)
-                {
-                    this.favorites.set(i, favorite - 1);
-                }
-
-                i++;
-            }
 
             return true;
         }
@@ -335,7 +292,6 @@ public class Morphing implements IMorphing
     {
         this.acquiredMorphs = morphing.getAcquiredMorphs();
         this.setCurrentMorph(morphing.getCurrentMorph(), player, true);
-        this.setFavorites(morphing.getFavorites());
     }
 
     @Override

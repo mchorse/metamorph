@@ -32,8 +32,9 @@ metamorph.gui.no_morph=No Morph Selected
 metamorph.gui.selected=Selected
 
 metamorph.gui.from_morph=From morph
-metamorph.gui.list=List
-metamorph.gui.builder=Builder
+metamorph.gui.edit=Edit
+metamorph.gui.finish=Finish
+metamorph.gui.panels.nbt_data=NBT data
 metamorph.gui.panels.nbt=NBT data
 metamorph.gui.panels.name=Name
 metamorph.gui.panels.username=Username
@@ -75,8 +76,5 @@ morph.category.blocks=Blocks morphs
 morph.category.boss=Boss morphs
 morph.category.acquired=Your morphs
 morph.category.hostile=Hostile morphs
+morph.category.players=Player morphs
 morph.category.modded=Morphs from %s
-
-# Morph builders
-metamorph.builder.nbt=NBT data builder
-metamorph.builder.player=Player morph builder

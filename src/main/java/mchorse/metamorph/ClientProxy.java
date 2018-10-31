@@ -5,14 +5,12 @@ import java.util.Map;
 
 import mchorse.metamorph.api.MorphManager;
 import mchorse.metamorph.client.KeyboardHandler;
+import mchorse.metamorph.client.NetworkHandler;
 import mchorse.metamorph.client.RenderingHandler;
-import mchorse.metamorph.client.gui.builder.GuiMorphBuilder;
 import mchorse.metamorph.client.gui.elements.GuiOverlay;
 import mchorse.metamorph.client.gui.elements.GuiSurvivalMorphs;
 import mchorse.metamorph.client.render.RenderMorph;
 import mchorse.metamorph.entity.EntityMorph;
-import mchorse.vanilla_pack.client.gui.GuiNBTMorphBuilder;
-import mchorse.vanilla_pack.client.gui.GuiPlayerMorphBuilder;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.network.NetworkPlayerInfo;
 import net.minecraft.client.renderer.entity.RenderManager;
@@ -57,7 +55,11 @@ public class ClientProxy extends CommonProxy
     {
         super.preLoad(event);
 
+        /* Register entity renderers */
         RenderingRegistry.registerEntityRenderingHandler(EntityMorph.class, new RenderMorph.MorphFactory());
+
+        /* Registering an event channel for custom payload */
+        Metamorph.channel.register(new NetworkHandler());
     }
 
     @Override
@@ -72,10 +74,6 @@ public class ClientProxy extends CommonProxy
 
         /* Register client morph manager */
         MorphManager.INSTANCE.registerClient();
-
-        /* Register morph builders */
-        GuiMorphBuilder.BUILDERS.put("nbt", new GuiNBTMorphBuilder());
-        GuiMorphBuilder.BUILDERS.put("player", new GuiPlayerMorphBuilder());
     }
 
     /**
