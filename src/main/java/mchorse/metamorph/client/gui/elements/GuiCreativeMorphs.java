@@ -197,6 +197,8 @@ public class GuiCreativeMorphs extends GuiElement
         {
             this.editor.delegate.finishEdit();
             this.editor.setDelegate(null);
+
+            this.setMorph(this.getSelected().current().morph);
         }
 
         boolean hide = this.editor.delegate == null;
