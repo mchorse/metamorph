@@ -307,7 +307,8 @@ public class GuiCreativeMorphs extends GuiElement
         {
             for (AbstractMorph morph : morphing.getAcquiredMorphs())
             {
-                this.acquired.cells.add(new MorphCell(MorphManager.INSTANCE.morphDisplayNameFromMorph(morph), morph));
+                /* Cloning morphs so the survival morphs won't get modified */
+                this.acquired.cells.add(new MorphCell(MorphManager.INSTANCE.morphDisplayNameFromMorph(morph), morph.clone(true)));
             }
         }
     }
