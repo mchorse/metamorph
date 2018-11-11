@@ -69,6 +69,7 @@ public class EntityMorph extends AbstractMorph
     /**
      * Did this instance already tried to setup first-person hands 
      */
+    @SideOnly(Side.CLIENT)
     public boolean triedHands;
 
     /* Rendering */
@@ -696,9 +697,16 @@ public class EntityMorph extends AbstractMorph
 
     public void resetEntity()
     {
-        this.entity = null;
-        this.renderer = null;
-        this.triedHands = false;
+        if (this.entity != null)
+        {
+            this.entity = null;
+
+            if (this.entity.world.isRemote)
+            {
+                this.renderer = null;
+                this.triedHands = false;
+            }
+        }
     }
 
     /**
