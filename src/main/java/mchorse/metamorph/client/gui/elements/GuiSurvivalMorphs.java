@@ -219,7 +219,7 @@ public class GuiSurvivalMorphs extends Gui
      */
     public void up()
     {
-        if (this.index >= 0)
+        if (this.index >= 0 && this.index < this.morphs.size())
         {
             MorphType type = this.morphs.get(this.index);
 
@@ -236,7 +236,7 @@ public class GuiSurvivalMorphs extends Gui
      */
     public void down()
     {
-        if (this.index >= 0)
+        if (this.index >= 0 && this.index < this.morphs.size())
         {
             MorphType type = this.morphs.get(this.index);
 
