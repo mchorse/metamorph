@@ -4,6 +4,8 @@ import mchorse.metamorph.capabilities.morphing.IMorphing;
 import mchorse.metamorph.capabilities.morphing.Morphing;
 import net.minecraft.client.entity.AbstractClientPlayer;
 import net.minecraft.client.model.ModelPlayer;
+import net.minecraft.client.renderer.entity.layers.LayerRenderer;
+import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.util.EnumHand;
 import net.minecraft.util.ResourceLocation;
 
@@ -26,6 +28,15 @@ public class RenderSubPlayer extends RenderPlayer
     {
         super(renderManager, smallArms);
         this.original = original;
+    }
+
+    /**
+     * Should make layers added to the original player renderer
+     */
+    @Override
+    public <V extends EntityLivingBase, U extends LayerRenderer<V>> boolean addLayer(U layer)
+    {
+        return this.original.addLayer(layer);
     }
 
     /**
