@@ -36,6 +36,11 @@ public class RenderSubPlayer extends RenderPlayer
     @Override
     public <V extends EntityLivingBase, U extends LayerRenderer<V>> boolean addLayer(U layer)
     {
+        if (this.original == null)
+        {
+            return false;
+        }
+        
         return this.original.addLayer(layer);
     }
 
