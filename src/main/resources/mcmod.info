@@ -9,7 +9,7 @@
   		"updateJSON": "https://raw.githubusercontent.com/mchorse/metamorph/master/version.json",
   		"updateUrl": "",
   		"authorList": ["mchorse", "asanetargoss"],
-  		"credits": "asanetargoss for mod development. SCtester for ideas, feedback and testing, Morph and Shape Shifter Z mods for inspiration. Also big thanks to ycwei982 for testing, adding few features and localization!",
+  		"credits": "asanetargoss for mod development. SCtester for ideas, feedback and testing. Morph and Shape Shifter Z mods for inspiration. Also big thanks to ycwei982 for testing, adding few features and localization!",
 		"logoFile": "",
 		"screenshots": [],
 		"dependencies": ["moreplayermodels"]
