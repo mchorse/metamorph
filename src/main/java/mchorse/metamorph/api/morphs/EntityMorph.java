@@ -699,13 +699,13 @@ public class EntityMorph extends AbstractMorph
     {
         if (this.entity != null)
         {
-            this.entity = null;
-
             if (this.entity.world.isRemote)
             {
                 this.renderer = null;
                 this.triedHands = false;
             }
+
+            this.entity = null;
         }
     }
 

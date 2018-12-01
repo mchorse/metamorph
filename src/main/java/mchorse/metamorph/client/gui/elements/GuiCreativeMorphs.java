@@ -139,7 +139,6 @@ public class GuiCreativeMorphs extends GuiElement
         this.edit = GuiButtonElement.button(mc, I18n.format("metamorph.gui.edit"), (b) ->
         {
             this.toggleEditMode();
-            this.updateButton();
         });
 
         this.search = new GuiTextElement(mc, (filter) -> this.setFilter(filter));
@@ -157,11 +156,6 @@ public class GuiCreativeMorphs extends GuiElement
     public GuiCreativeMorphs(Minecraft mc, int perRow, AbstractMorph selected)
     {
         this(mc, perRow, selected, null);
-    }
-
-    private void updateButton()
-    {
-        this.edit.button.displayString = this.isEditMode() ? I18n.format("metamorph.gui.finish") : I18n.format("metamorph.gui.edit");
     }
 
     @Override
@@ -188,6 +182,8 @@ public class GuiCreativeMorphs extends GuiElement
         {
             GuiAbstractMorph morph = this.getMorphEditor(this.getSelected().current().morph);
 
+            morph.finish.callback = this.getToggleCallback();
+
             if (morph != null)
             {
                 this.editor.setDelegate(morph);
@@ -206,19 +202,12 @@ public class GuiCreativeMorphs extends GuiElement
         this.picker.setVisible(hide);
         this.search.setVisible(hide);
         this.top.setVisible(hide);
+        this.edit.setVisible(hide);
+    }
 
-        GuiScreen screen = Minecraft.getMinecraft().currentScreen;
-
-        if (hide)
-        {
-            this.edit.resizer().parent(this.area).set(0, 10, 55, 20).x(1, -35 - 55);
-            this.edit.resize(screen.width, screen.height);
-        }
-        else
-        {
-            this.edit.resizer().parent(this.area).set(0, 10, 55, 20).x(10);
-            this.edit.resize(screen.width, screen.height);
-        }
+    protected Consumer<GuiButtonElement<GuiButton>> getToggleCallback()
+    {
+        return this.edit.callback;
     }
 
     private GuiAbstractMorph getMorphEditor(AbstractMorph morph)
