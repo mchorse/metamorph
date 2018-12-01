@@ -1,10 +1,12 @@
 package mchorse.metamorph.client.gui.elements;
 
 import mchorse.mclib.client.gui.framework.GuiTooltip;
+import mchorse.mclib.client.gui.framework.elements.GuiButtonElement;
 import mchorse.mclib.client.gui.framework.elements.GuiElement;
 import mchorse.mclib.client.gui.framework.elements.GuiTextElement;
 import mchorse.metamorph.api.morphs.AbstractMorph;
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.gui.GuiButton;
 import net.minecraft.client.resources.I18n;
 import net.minecraft.nbt.JsonToNBT;
 import net.minecraft.nbt.NBTTagCompound;
@@ -15,6 +17,7 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 public class GuiAbstractMorph extends GuiElement
 {
     public GuiTextElement data;
+    public GuiButtonElement<GuiButton> finish;
 
     protected AbstractMorph morph;
     protected boolean error;
@@ -27,7 +30,10 @@ public class GuiAbstractMorph extends GuiElement
         this.data = new GuiTextElement(mc, 10000, (str) -> this.editNBT(str));
         this.data.resizer().parent(this.area).set(10, 0, 0, 20).w(1, -20).y(1, -30);
 
-        this.children.add(this.data);
+        this.finish = GuiButtonElement.button(mc, I18n.format("metamorph.gui.finish"), null);
+        this.finish.resizer().parent(this.area).set(10, 10, 55, 20);
+
+        this.children.add(this.data, this.finish);
     }
 
     public boolean canEdit(AbstractMorph morph)
