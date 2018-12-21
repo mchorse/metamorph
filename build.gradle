@@ -41,6 +41,7 @@ minecraft
 dependencies 
 {
 	compile files("run/libs/mclib-${mclib}-${project.minecraft.version}-dev.jar")
+	compile files("run/libs/blockbuster-1.5.3-${project.minecraft.version}-dev.jar")
 }
 
 eclipse
@@ -65,6 +66,9 @@ eclipse
                 
                 def lib = entries.find { it.path.contains "mclib-${mclib}" } 
                 lib.sourcePath = getMeReference(file("run/libs/mclib-${mclib}-${ver}-sources.jar"))
+                
+                lib = entries.find { it.path.contains "blockbuster-1.5.3" }
+                lib.sourcePath = getMeReference(file("run/libs/blockbuster-1.5.3-${ver}-sources.jar"))
             }
         }
     }
