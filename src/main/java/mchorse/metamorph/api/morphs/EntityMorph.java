@@ -476,7 +476,10 @@ public class EntityMorph extends AbstractMorph
 
     protected void updateEntity(EntityLivingBase target)
     {
-        this.entity.onUpdate();
+        if (this.settings.updates)
+        {
+            this.entity.onUpdate();
+        }
     }
 
     @Override

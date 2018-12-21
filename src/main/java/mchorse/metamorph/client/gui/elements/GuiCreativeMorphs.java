@@ -361,6 +361,7 @@ public class GuiCreativeMorphs extends GuiElement
                 }
 
                 cell.index = j;
+                cell.hasVisible = true;
 
                 j++;
             }
@@ -463,6 +464,15 @@ public class GuiCreativeMorphs extends GuiElement
     public void setSelected(AbstractMorph morph)
     {
         this.initiateCategories(morph);
+
+        /* Make sure to restore the state from previous time */
+        String prevFilter = this.previousFilter;
+
+        if (!prevFilter.isEmpty())
+        {
+            this.previousFilter = "";
+            this.setFilter(prevFilter);
+        }
     }
 
     /**

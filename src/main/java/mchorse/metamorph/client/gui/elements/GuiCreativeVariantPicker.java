@@ -216,7 +216,7 @@ public class GuiCreativeVariantPicker extends GuiElement
             GlStateManager.popMatrix();
 
             /* Scroll bar */
-            this.scroll.scrollSize = j * 40;
+            this.scroll.scrollSize = i * 40;
             this.scroll.drag(mouseX, mouseY);
             this.scroll.drawScrollbar();
         }

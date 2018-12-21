@@ -59,6 +59,11 @@ public class MorphSettings
     public boolean hands;
 
     /**
+     * Does this morph updates itself 
+     */
+    public boolean updates = true;
+
+    /**
      * Merge given morph settings with this settings 
      */
     public void merge(MorphSettings setting)
@@ -82,8 +87,10 @@ public class MorphSettings
         this.speed = setting.speed;
         this.hostile = setting.hostile;
         this.hands = setting.hands;
+        this.updates = setting.updates;
     }
 
+    @Override
     public MorphSettings clone()
     {
         MorphSettings settings = new MorphSettings();
@@ -128,6 +135,7 @@ public class MorphSettings
         buf.writeFloat(this.speed);
         buf.writeBoolean(this.hostile);
         buf.writeBoolean(this.hands);
+        buf.writeBoolean(this.updates);
     }
 
     /**
@@ -167,6 +175,7 @@ public class MorphSettings
         this.speed = buf.readFloat();
         this.hostile = buf.readBoolean();
         this.hands = buf.readBoolean();
+        this.updates = buf.readBoolean();
     }
 
     /**

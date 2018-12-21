@@ -106,8 +106,27 @@ public class MorphManager
      */
     public void setActiveSettings(Map<String, MorphSettings> settings)
     {
+        Map<String, MorphSettings> newSettings = new HashMap<String, MorphSettings>();
+
+        for (Map.Entry<String, MorphSettings> entry : settings.entrySet())
+        {
+            String key = entry.getKey();
+            MorphSettings setting = this.activeSettings.get(key);
+
+            if (setting == null)
+            {
+                setting = entry.getValue();
+            }
+            else
+            {
+                setting.merge(entry.getValue());
+            }
+
+            newSettings.put(key, setting);
+        }
+
         this.activeSettings.clear();
-        this.activeSettings.putAll(settings);
+        this.activeSettings.putAll(newSettings);
     }
 
     /**
