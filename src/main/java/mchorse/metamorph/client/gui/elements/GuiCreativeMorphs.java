@@ -441,7 +441,7 @@ public class GuiCreativeMorphs extends GuiElement
 
                     if (!variant.hidden)
                     {
-                        if (!selected)
+                        if (!selected && select)
                         {
                             cell.selected = j;
                             selected = true;
