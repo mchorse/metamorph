@@ -398,12 +398,20 @@ public class GuiCreativeMorphs extends GuiElement
     }
 
     /**
+     * Added for compatibility 
+     */
+    public void setFilter(String filter)
+    {
+        this.setFilter(filter, true);
+    }
+
+    /**
      * Set filter for search
      * 
      * This method is responsible for recalculating the hidden flag of the 
      * individual cells and changing heights and y position of each category.
      */
-    public void setFilter(String filter)
+    public void setFilter(String filter, boolean select)
     {
         if (filter.equals(this.previousFilter))
         {
@@ -471,7 +479,7 @@ public class GuiCreativeMorphs extends GuiElement
         if (!prevFilter.isEmpty())
         {
             this.previousFilter = "";
-            this.setFilter(prevFilter);
+            this.setFilter(prevFilter, false);
         }
     }
 
