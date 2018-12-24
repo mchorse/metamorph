@@ -14,7 +14,6 @@ import net.minecraft.client.gui.Gui;
 import net.minecraft.client.gui.GuiScreen;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.util.math.MathHelper;
 
 /**
  * Creative morph variant picker GUI subview
@@ -69,17 +68,25 @@ public class GuiCreativeVariantPicker extends GuiElement
 
         if (this.previous != selected)
         {
+            int size = selected.variants.size();
+
             this.scroll.scroll = 0;
 
-            if (selected != null && selected.variants.size() > 1)
+            if (selected != null && size > 1)
             {
-                int maxWidth = selected.variants.size() * 40 - this.area.w;
+                int index = 0;
 
-                if (maxWidth > 0)
+                for (int i = 0; i < size; i++)
                 {
-                    this.scroll.scroll = selected.selected * 40;
-                    this.scroll.scroll = MathHelper.clamp_int(this.scroll.scroll, 0, maxWidth);
+                    if (i == selected.selected)
+                    {
+                        break;
+                    }
+
+                    index += selected.variants.get(i).hidden ? 0 : 1;
                 }
+
+                this.scroll.scroll = index * 40;
             }
         }
 
@@ -217,6 +224,7 @@ public class GuiCreativeVariantPicker extends GuiElement
 
             /* Scroll bar */
             this.scroll.scrollSize = i * 40;
+            this.scroll.clamp();
             this.scroll.drag(mouseX, mouseY);
             this.scroll.drawScrollbar();
         }
