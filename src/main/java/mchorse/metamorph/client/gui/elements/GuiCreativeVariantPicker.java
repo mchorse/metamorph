@@ -68,25 +68,27 @@ public class GuiCreativeVariantPicker extends GuiElement
 
         if (this.previous != selected)
         {
-            int size = selected.variants.size();
-
             this.scroll.scroll = 0;
 
-            if (selected != null && size > 1)
+            if (selected != null)
             {
+                int size = selected.variants.size();
                 int index = 0;
 
-                for (int i = 0; i < size; i++)
+                if (size > 1)
                 {
-                    if (i == selected.selected)
+                    for (int i = 0; i < size; i++)
                     {
-                        break;
+                        if (i == selected.selected)
+                        {
+                            break;
+                        }
+
+                        index += selected.variants.get(i).hidden ? 0 : 1;
                     }
 
-                    index += selected.variants.get(i).hidden ? 0 : 1;
+                    this.scroll.scroll = index * 40;
                 }
-
-                this.scroll.scroll = index * 40;
             }
         }
 
