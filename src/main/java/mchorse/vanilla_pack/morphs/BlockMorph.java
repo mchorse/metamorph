@@ -153,6 +153,7 @@ public class BlockMorph extends AbstractMorph
     }
 
     @Override
+    @SuppressWarnings(value = {"deprecation"})
     public void fromNBT(NBTTagCompound tag)
     {
         super.fromNBT(tag);

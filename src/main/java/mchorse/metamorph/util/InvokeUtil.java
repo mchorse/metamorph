@@ -9,12 +9,12 @@ public class InvokeUtil
      * Ascends up a class chain until it finds the specified method, regardless
      * of access modifier. Assumes finalClazz is the original declarer of the specified method.
      */
-    public static Method getPrivateMethod(Class clazz, Class finalClazz, String methodName, Class<?>... paramVarArgs)
+    public static Method getPrivateMethod(Class<?> clazz, Class<?> finalClazz, String methodName, Class<?>... paramVarArgs)
             throws NoSuchMethodException, SecurityException
     {
         Method privateMethod = null;
         
-        for (Class testClazz = clazz;
+        for (Class<?> testClazz = clazz;
                 testClazz != finalClazz && privateMethod == null;
                 testClazz = testClazz.getSuperclass())
         {

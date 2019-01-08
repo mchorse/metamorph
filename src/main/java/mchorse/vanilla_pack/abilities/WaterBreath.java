@@ -1,10 +1,8 @@
 package mchorse.vanilla_pack.abilities;
 
-import mchorse.metamorph.ClientProxy;
 import mchorse.metamorph.api.abilities.Ability;
 import mchorse.metamorph.capabilities.morphing.IMorphing;
 import mchorse.metamorph.capabilities.morphing.Morphing;
-import net.minecraft.client.Minecraft;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.util.DamageSource;

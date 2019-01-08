@@ -37,6 +37,7 @@ public class CapabilityHandler
      * Attach capabilities (well, only one, right now)
      */
     @SubscribeEvent
+    @SuppressWarnings(value = {"deprecation"})
     public void attachCapability(AttachCapabilitiesEvent.Entity event)
     {
         if (!(event.getEntity() instanceof EntityPlayer)) return;

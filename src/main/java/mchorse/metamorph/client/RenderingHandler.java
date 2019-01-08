@@ -16,7 +16,6 @@ import net.minecraft.client.renderer.entity.RenderManager;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.scoreboard.Team;
-import net.minecraftforge.client.GuiIngameForge;
 import net.minecraftforge.client.event.RenderGameOverlayEvent;
 import net.minecraftforge.client.event.RenderLivingEvent;
 import net.minecraftforge.client.event.RenderPlayerEvent;

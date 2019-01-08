@@ -1,15 +1,11 @@
 package mchorse.metamorph.api.morphs;
 
-import java.lang.reflect.Method;
-
 import mchorse.metamorph.Metamorph;
 import mchorse.metamorph.api.MorphSettings;
 import mchorse.metamorph.api.abilities.IAbility;
 import mchorse.metamorph.capabilities.morphing.IMorphing;
 import mchorse.metamorph.capabilities.morphing.Morphing;
 import mchorse.metamorph.entity.SoundHandler;
-import mchorse.metamorph.util.InvokeUtil;
-import net.minecraft.block.Block;
 import net.minecraft.client.renderer.entity.Render;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
@@ -20,8 +16,6 @@ import net.minecraft.util.DamageSource;
 import net.minecraft.util.EnumHand;
 import net.minecraft.util.SoundEvent;
 import net.minecraft.util.math.AxisAlignedBB;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.math.MathHelper;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 

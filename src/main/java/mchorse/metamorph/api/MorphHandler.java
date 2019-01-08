@@ -15,7 +15,6 @@ import net.minecraft.entity.EntityLiving;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.nbt.NBTTagCompound;
-import net.minecraftforge.client.GuiIngameForge;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.common.util.FakePlayer;
 import net.minecraftforge.event.entity.living.LivingAttackEvent;
