@@ -29,14 +29,18 @@ metamorph.gui.search=Search
 metamorph.gui.only_favorites=Show favorites
 metamorph.gui.all_morphs=Show all
 metamorph.gui.no_morph=No Morph Selected
+metamorph.gui.selected=Selected
 
 metamorph.gui.from_morph=From morph
-metamorph.gui.list=List
-metamorph.gui.builder=Builder
+metamorph.gui.edit=Edit
+metamorph.gui.finish=Finish
+metamorph.gui.panels.nbt_data=NBT data
 metamorph.gui.panels.nbt=NBT data
 metamorph.gui.panels.name=Name
 metamorph.gui.panels.username=Username
 metamorph.gui.panels.updating=Updating...
+
+metamorph.gui.status.tight_space=There is not enough space to morph here
 
 # Config
 metamorph.config.general.title=General
@@ -49,6 +53,8 @@ metamorph.config.disable_pov=Disable POV
 metamorph.config.disable_health=Disable health scaling
 metamorph.config.disable_morph_animation=Disable morph animation
 metamorph.config.disable_morph_disguise=Disable morph hostility
+metamorph.config.acquire_immediately=Acquire morph immediately
+metamorph.config.morph_in_tight_spaces=Allow morphing in tight spaces
 
 # Commands
 metamorph.commands.morph=Morph command. This command is responsible for morphing player into specified morph.\n\n/morph <username> [morph_name] [data_tag]
@@ -70,8 +76,5 @@ morph.category.blocks=Blocks morphs
 morph.category.boss=Boss morphs
 morph.category.acquired=Your morphs
 morph.category.hostile=Hostile morphs
+morph.category.players=Player morphs
 morph.category.modded=Morphs from %s
-
-# Morph builders
-metamorph.builder.nbt=NBT data builder
-metamorph.builder.player=Player morph builder

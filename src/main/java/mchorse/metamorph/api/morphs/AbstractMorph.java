@@ -51,6 +51,11 @@ public abstract class AbstractMorph
     public String name = "";
 
     /**
+     * Is this morph is favorite 
+     */
+    public boolean favorite = false;
+
+    /**
      * Health when the player morphed into this morph 
      */
     protected float lastHealth;
@@ -121,7 +126,7 @@ public abstract class AbstractMorph
      */
     public void morph(EntityLivingBase target)
     {
-        this.lastHealth = (float) target.getEntityAttribute(SharedMonsterAttributes.MAX_HEALTH).getBaseValue();
+        this.lastHealth = target.getMaxHealth();
         this.setHealth(target, this.settings.health);
 
         for (IAbility ability : this.settings.abilities)
@@ -139,7 +144,7 @@ public abstract class AbstractMorph
     public void demorph(EntityLivingBase target)
     {
         /* 20 is default player's health */
-        this.setHealth(target, this.lastHealth);
+        this.setHealth(target, this.lastHealth < 20 ? 20 : this.lastHealth);
 
         for (IAbility ability : this.settings.abilities)
         {
@@ -155,7 +160,12 @@ public abstract class AbstractMorph
      * This method is responsible for doing trickshots, 360 noscopes while being 
      * morped in a morph. Probably...
      */
-    protected void updateSize(EntityLivingBase target, float width, float height)
+    public void updateSize(EntityLivingBase target, float width, float height)
+    {
+        updateSizeDefault(target, width, height);
+    }
+
+    public static void updateSizeDefault(EntityLivingBase target, float width, float height)
     {
         if (target instanceof EntityPlayer && !Metamorph.proxy.config.disable_pov)
         {
@@ -362,6 +372,21 @@ public abstract class AbstractMorph
         return super.equals(obj);
     }
 
+    /**
+     * Check whether the morph can be merged (this should allow 
+     * overwriting of a morph instead of completely replacing it)
+     */
+    public boolean canMerge(AbstractMorph morph)
+    {
+        return false;
+    }
+
+    /**
+     * Reset data for editing 
+     */
+    public void reset()
+    {}
+
     /* Reading / writing to NBT */
 
     /**
@@ -371,6 +396,8 @@ public abstract class AbstractMorph
     {
         tag.setString("Name", this.name);
         tag.setFloat("LastHealth", this.lastHealth);
+
+        if (this.favorite) tag.setBoolean("Favorite", this.favorite);
     }
 
     /**
@@ -378,7 +405,11 @@ public abstract class AbstractMorph
      */
     public void fromNBT(NBTTagCompound tag)
     {
+        this.reset();
+
         this.name = tag.getString("Name");
         this.lastHealth = tag.getFloat("LastHealth");
+
+        if (tag.hasKey("Favorite")) this.favorite = tag.getBoolean("Favorite");
     }
 }

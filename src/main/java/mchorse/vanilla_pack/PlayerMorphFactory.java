@@ -1,10 +1,15 @@
 package mchorse.vanilla_pack;
 
+import java.util.List;
+
 import mchorse.metamorph.api.IMorphFactory;
 import mchorse.metamorph.api.MorphList;
 import mchorse.metamorph.api.MorphManager;
 import mchorse.metamorph.api.morphs.AbstractMorph;
+import mchorse.metamorph.client.gui.elements.GuiAbstractMorph;
+import mchorse.vanilla_pack.editors.GuiPlayerMorph;
 import mchorse.vanilla_pack.morphs.PlayerMorph;
+import net.minecraft.client.Minecraft;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.relauncher.Side;
@@ -18,6 +23,11 @@ import net.minecraftforge.fml.relauncher.SideOnly;
  */
 public class PlayerMorphFactory implements IMorphFactory
 {
+    /**
+     * Notch, the Minecraft's creator 
+     */
+    private PlayerMorph notch;
+
     @Override
     public void register(MorphManager manager)
     {}
@@ -26,6 +36,13 @@ public class PlayerMorphFactory implements IMorphFactory
     @SideOnly(Side.CLIENT)
     public void registerClient(MorphManager manager)
     {}
+
+    @Override
+    @SideOnly(Side.CLIENT)
+    public void registerMorphEditors(List<GuiAbstractMorph> editors)
+    {
+        editors.add(new GuiPlayerMorph(Minecraft.getMinecraft()));
+    }
 
     /**
      * Return game profile's username as for player's name 
@@ -44,7 +61,20 @@ public class PlayerMorphFactory implements IMorphFactory
 
     @Override
     public void getMorphs(MorphList morphs, World world)
-    {}
+    {
+        if (this.notch == null)
+        {
+            this.notch = new PlayerMorph();
+
+            NBTTagCompound tag = new NBTTagCompound();
+
+            tag.setString("Name", "Player");
+            tag.setString("Username", "Notch");
+            this.notch.fromNBT(tag);
+        }
+
+        morphs.addMorph("Notch", "players", this.notch);
+    }
 
     @Override
     public boolean hasMorph(String name)

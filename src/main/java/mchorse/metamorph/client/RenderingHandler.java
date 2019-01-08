@@ -98,7 +98,7 @@ public class RenderingHandler
      * I wish devs at Mojang scissored the inventory area where those the 
      * player model is rendered. 
      */
-    @SubscribeEvent
+    @SubscribeEvent(priority = EventPriority.HIGHEST)
     public void onPlayerRender(RenderPlayerEvent.Pre event)
     {
         EntityPlayer player = event.getEntityPlayer();
@@ -120,66 +120,18 @@ public class RenderingHandler
         else if (capability.isAnimating())
         {
             float partialTick = event.getPartialRenderTick();
-
-            GlStateManager.pushMatrix();
+            float anim = 0;
 
             if (capability.getCurrentMorph() == null && animation <= 10)
             {
-                float anim = (animation - partialTick) / 10.0F;
-                float offset = 0;
-
-                if (anim >= 0)
-                {
-                    offset = -anim * anim * 2F;
-                }
-
-                GlStateManager.translate(0, offset, 0);
-
-                if (anim >= 0)
-                {
-                    GlStateManager.rotate(anim * -90.0F, 1, 0, 0);
-                    GlStateManager.scale(1 - anim, 1 - anim, 1 - anim);
-                }
+                anim = 1 - (animation - partialTick) / 10.0F;
             }
             else if (capability.getPreviousMorph() == null && animation > 10)
             {
-                float anim = (animation - 10 - partialTick) / 10.0F;
-                float offset = 0;
-
-                if (anim >= 0)
-                {
-                    offset = (1 - anim);
-                }
-
-                GlStateManager.translate(0, offset, 0);
-
-                if (anim >= 0)
-                {
-                    GlStateManager.rotate((1 - anim) * 90.0F, 1, 0, 0);
-                    GlStateManager.scale(anim, anim, anim);
-                }
+                anim = (animation - 10 - partialTick) / 10.0F;
             }
-        }
-    }
 
-    /**
-     * Pop the matrix if animation is running 
-     */
-    @SubscribeEvent
-    public void onPlayerPostRender(RenderPlayerEvent.Post event)
-    {
-        EntityPlayer player = event.getEntityPlayer();
-        IMorphing capability = Morphing.get(player);
-
-        /* No morph, no problem */
-        if (capability == null)
-        {
-            return;
-        }
-
-        if (capability.isAnimating())
-        {
-            GlStateManager.popMatrix();
+            GlStateManager.color(1, 1, 1, anim);
         }
     }
 
@@ -209,7 +161,7 @@ public class RenderingHandler
         double dist = target.getDistanceSqToEntity(this.manager.renderViewEntity);
         float factor = target.isSneaking() ? 32.0F : 64.0F;
 
-        if (dist < (double) (factor * factor))
+        if (dist < factor * factor)
         {
             GlStateManager.alphaFunc(516, 0.1F);
             this.renderEntityName(target, host.getDisplayName().getFormattedText(), event.getX(), event.getY(), event.getZ());

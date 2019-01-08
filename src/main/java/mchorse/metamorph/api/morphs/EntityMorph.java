@@ -6,12 +6,12 @@ import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
 
+import mchorse.mclib.client.gui.utils.GuiUtils;
 import mchorse.metamorph.Metamorph;
 import mchorse.metamorph.api.EntityUtils;
 import mchorse.metamorph.api.MorphSettings;
 import mchorse.metamorph.api.models.IHandProvider;
 import mchorse.metamorph.capabilities.morphing.IMorphing;
-import mchorse.metamorph.client.gui.utils.GuiUtils;
 import mchorse.metamorph.entity.SoundHandler;
 import mchorse.metamorph.util.InvokeUtil;
 import net.minecraft.block.Block;
@@ -76,6 +76,7 @@ public class EntityMorph extends AbstractMorph
     /**
      * Did this instance already tried to setup first-person hands 
      */
+    @SideOnly(Side.CLIENT)
     public boolean triedHands;
 
     /* Rendering */
@@ -484,11 +485,14 @@ public class EntityMorph extends AbstractMorph
 
     protected void updateEntity(EntityLivingBase target)
     {
-        this.entity.onUpdate();
+        if (this.settings.updates)
+        {
+            this.entity.onUpdate();
+        }
     }
 
     @Override
-    protected void updateSize(EntityLivingBase target, float width, float height)
+    public void updateSize(EntityLivingBase target, float width, float height)
     {
         boolean isAnimalChild = this.entity instanceof EntityAgeable && this.entityData.getInteger("Age") < 0;
 
@@ -567,7 +571,7 @@ public class EntityMorph extends AbstractMorph
         {
             Class[] args = method.getParameterTypes();
 
-            boolean hasEntityArg = args.length == 1 && args[0].isAssignableFrom(Entity.class);
+            boolean hasEntityArg = args.length == 1 && Entity.class.isAssignableFrom(args[0]);
             boolean returnsRL = method.getReturnType().isAssignableFrom(ResourceLocation.class);
 
             if (hasEntityArg && returnsRL)
@@ -688,6 +692,33 @@ public class EntityMorph extends AbstractMorph
         }
 
         return result;
+    }
+
+    @Override
+    public void reset()
+    {
+        this.resetEntity();
+        this.entityData = null;
+
+        if (this.customSettings)
+        {
+            this.settings = MorphSettings.DEFAULT;
+            this.customSettings = false;
+        }
+    }
+
+    public void resetEntity()
+    {
+        if (this.entity != null)
+        {
+            if (this.entity.worldObj.isRemote)
+            {
+                this.renderer = null;
+                this.triedHands = false;
+            }
+
+            this.entity = null;
+        }
     }
 
     /**

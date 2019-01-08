@@ -1,4 +1,5 @@
-buildscript {
+buildscript 
+{
     repositories {
         jcenter()
         maven {
@@ -6,6 +7,7 @@ buildscript {
             url = "http://files.minecraftforge.net/maven"
         }
     }
+    
     dependencies {
         classpath 'net.minecraftforge.gradle:ForgeGradle:2.2-SNAPSHOT'
     }
@@ -13,30 +15,78 @@ buildscript {
 
 apply plugin: 'net.minecraftforge.gradle.forge'
 
-version = "1.1.6"
 group = "mchorse.metamorph"
 archivesBaseName = "metamorph"
+sourceCompatibility = targetCompatibility = "1.8"
 
-sourceCompatibility = targetCompatibility = "1.6" // Need this here so eclipse task generates correctly.
-
-compileJava {
-    sourceCompatibility = targetCompatibility = "1.6"
+compileJava 
+{
+    sourceCompatibility = targetCompatibility = "1.8"
 }
 
-minecraft {
-    version = "1.10.2-12.18.3.2185"
+/* Minecraft configuration */
+
+minecraft 
+{
+    version = "${mc_version}-${forge_version}"
     runDir = "run"
-    
-    // the mappings can be changed at any time, and must be in the following format.
-    // snapshot_YYYYMMDD   snapshot are built nightly.
-    // stable_#            stables are built at the discretion of the MCP team.
-    // Use non-default mappings at your own risk. they may not allways work.
-    // simply re-run your setup task after changing the mappings to update your workspace.
-    mappings = "snapshot_20161111"
-    // makeObfSourceJar = false // an Srg named sources jar is made by default. uncomment this to disable.
+    mappings = snapshot
     
     clientJvmArgs = ["-Xmx1G"]
     serverJvmArgs = ["-Xmx1G"]
+    
+    replace "%VERSION%", project.version
+    replace "%MCLIB%", project.mclib
+}
+
+dependencies 
+{
+	compile files("run/libs/mclib-${mclib}-${project.minecraft.version}-dev.jar")
+}
+
+eclipse
+{
+    classpath
+    {
+        file
+        {
+            whenMerged
+            { classpath -> 
+                def ver = project.minecraft.version
+                /* Fucking gradle 2.14 doesn't have fileReference() method,
+                 * screw you piece of shit */
+                def getMeReference = { File file ->
+                	return [
+                		getFile: { return file },
+                		getPath: { return file.getAbsolutePath() },
+                		getJarURL: { return file.getAbsolutePath() },
+                		isRelativeToPathVariable: { return false }
+                	] as org.gradle.plugins.ide.eclipse.model.FileReference
+                }
+                
+                def lib = entries.find { it.path.contains "mclib-${mclib}" } 
+                lib.sourcePath = getMeReference(file("run/libs/mclib-${mclib}-${ver}-sources.jar"))
+            }
+        }
+    }
+}
+
+processResources
+{
+    inputs.property "version", project.version
+    inputs.property "mcversion", project.minecraft.version
+    
+    project.version += "-" + project.minecraft.version
+
+    from(sourceSets.main.resources.srcDirs) {
+        include 'mcmod.info'
+                
+        expand 'version':project.version, 'mcversion':project.minecraft.version
+    }
+        
+    from(sourceSets.main.resources.srcDirs) {
+        exclude 'mcmod.info'
+    }
 }
 
 task deobfJar(type: Jar) {
@@ -52,50 +102,4 @@ task sourcesJar(type: Jar) {
 artifacts {
     archives deobfJar
     archives sourcesJar
-}
-
-dependencies {
-    // you may put jars on which you depend on in ./libs
-    // or you may define them like so..
-    //compile "some.group:artifact:version:classifier"
-    //compile "some.group:artifact:version"
-      
-    // real examples
-    //compile 'com.mod-buildcraft:buildcraft:6.0.8:dev'  // adds buildcraft to the dev env
-    //compile 'com.googlecode.efficient-java-matrix-library:ejml:0.24' // adds ejml to the dev env
-
-    // the 'provided' configuration is for optional dependencies that exist at compile-time but might not at runtime.
-    //provided 'com.mod-buildcraft:buildcraft:6.0.8:dev'
-
-    // the deobf configurations:  'deobfCompile' and 'deobfProvided' are the same as the normal compile and provided,
-    // except that these dependencies get remapped to your current MCP mappings
-    //deobfCompile 'com.mod-buildcraft:buildcraft:6.0.8:dev'
-    //deobfProvided 'com.mod-buildcraft:buildcraft:6.0.8:dev'
-
-    // for more info...
-    // http://www.gradle.org/docs/current/userguide/artifact_dependencies_tutorial.html
-    // http://www.gradle.org/docs/current/userguide/dependency_management.html
-}
-
-processResources
-{
-    // this will ensure that this task is redone when the versions change.
-    inputs.property "version", project.version
-    inputs.property "mcversion", project.minecraft.version
-    
-    // Append minecraft version to the build
-    project.version += "-" + project.minecraft.version
-
-    // replace stuff in mcmod.info, nothing else
-    from(sourceSets.main.resources.srcDirs) {
-        include 'mcmod.info'
-                
-        // replace version and mcversion
-        expand 'version':project.version, 'mcversion':project.minecraft.version
-    }
-        
-    // copy everything else, thats not the mcmod.info
-    from(sourceSets.main.resources.srcDirs) {
-        exclude 'mcmod.info'
-    }
 }

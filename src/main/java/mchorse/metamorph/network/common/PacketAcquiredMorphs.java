@@ -16,18 +16,15 @@ import net.minecraftforge.fml.common.network.simpleimpl.IMessage;
 public class PacketAcquiredMorphs implements IMessage
 {
     public List<AbstractMorph> morphs;
-    public List<Integer> favorites;
 
     public PacketAcquiredMorphs()
     {
         this.morphs = new ArrayList<AbstractMorph>();
-        this.favorites = new ArrayList<Integer>();
     }
 
-    public PacketAcquiredMorphs(List<AbstractMorph> morphs, List<Integer> favorites)
+    public PacketAcquiredMorphs(List<AbstractMorph> morphs)
     {
         this.morphs = morphs;
-        this.favorites = favorites;
     }
 
     @Override
@@ -36,11 +33,6 @@ public class PacketAcquiredMorphs implements IMessage
         for (int i = 0, c = buf.readInt(); i < c; i++)
         {
             this.morphs.add(MorphManager.INSTANCE.morphFromNBT(ByteBufUtils.readTag(buf)));
-        }
-
-        for (int i = 0, c = buf.readInt(); i < c; i++)
-        {
-            this.favorites.add(buf.readInt());
         }
     }
 
@@ -55,13 +47,6 @@ public class PacketAcquiredMorphs implements IMessage
 
             morph.toNBT(tag);
             ByteBufUtils.writeTag(buf, tag);
-        }
-
-        buf.writeInt(this.favorites.size());
-
-        for (Integer index : this.favorites)
-        {
-            buf.writeInt(index);
         }
     }
 }

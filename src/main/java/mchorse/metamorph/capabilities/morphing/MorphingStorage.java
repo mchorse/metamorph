@@ -31,7 +31,6 @@ public class MorphingStorage implements IStorage<IMorphing>
     {
         NBTTagCompound tag = new NBTTagCompound();
         NBTTagList acquired = new NBTTagList();
-        NBTTagList favorites = new NBTTagList();
         tag.setTag("LastHealthRatio", new NBTTagFloat(instance.getLastHealthRatio()));
         tag.setTag("HasSquidAir", new NBTTagByte(instance.getHasSquidAir() ? (byte)1 : (byte)0));
         tag.setTag("SquidAir", new NBTTagInt(instance.getSquidAir()));
@@ -45,7 +44,6 @@ public class MorphingStorage implements IStorage<IMorphing>
         }
 
         tag.setTag("Morphs", acquired);
-        tag.setTag("Favorites", favorites);
 
         for (AbstractMorph acquiredMorph : instance.getAcquiredMorphs())
         {
@@ -53,11 +51,6 @@ public class MorphingStorage implements IStorage<IMorphing>
 
             acquiredMorph.toNBT(acquiredTag);
             acquired.appendTag(acquiredTag);
-        }
-
-        for (Integer index : instance.getFavorites())
-        {
-            favorites.appendTag(new NBTTagInt(index.intValue()));
         }
 
         return tag;
@@ -81,10 +74,10 @@ public class MorphingStorage implements IStorage<IMorphing>
                 instance.setCurrentMorph(MorphManager.INSTANCE.morphFromNBT(morphTag), null, true);
             }
 
+            List<AbstractMorph> acquiredMorphs = new ArrayList<AbstractMorph>();
+
             if (!acquired.hasNoTags())
             {
-                List<AbstractMorph> acquiredMorphs = new ArrayList<AbstractMorph>();
-
                 for (int i = 0; i < acquired.tagCount(); i++)
                 {
                     NBTTagCompound acquiredTag = acquired.getCompoundTagAt(i);
@@ -101,14 +94,15 @@ public class MorphingStorage implements IStorage<IMorphing>
 
             if (!favorites.hasNoTags())
             {
-                List<Integer> favoritesIndices = new ArrayList<Integer>();
-
                 for (int i = 0; i < favorites.tagCount(); i++)
                 {
-                    favoritesIndices.add(favorites.getIntAt(i));
-                }
+                    int index = favorites.getIntAt(i);
 
-                instance.setFavorites(favoritesIndices);
+                    if (index >= 0 && index < acquiredMorphs.size())
+                    {
+                        acquiredMorphs.get(index).favorite = true;
+                    }
+                }
             }
         }
     }

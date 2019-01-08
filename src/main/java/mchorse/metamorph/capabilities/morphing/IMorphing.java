@@ -102,16 +102,6 @@ public interface IMorphing
     public boolean favorite(int index);
 
     /**
-     * Get indices of all favorite morphs 
-     */
-    public List<Integer> getFavorites();
-
-    /**
-     * Set list of integer indices 
-     */
-    public void setFavorites(List<Integer> favorites);
-
-    /**
      * Remove a morph at given index
      */
     public boolean remove(int index);

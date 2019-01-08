@@ -15,6 +15,8 @@ import net.minecraftforge.fml.common.event.FMLInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLPostInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLServerStartingEvent;
+import net.minecraftforge.fml.common.network.FMLEventChannel;
+import net.minecraftforge.fml.common.network.NetworkRegistry;
 
 /**
  * Metamorph mod
@@ -31,13 +33,13 @@ import net.minecraftforge.fml.common.event.FMLServerStartingEvent;
  * they're outdated), however, iChun saying that he's working on Morph for 
  * 1.10.2, this is really exciting! :D
  */
-@Mod(modid = Metamorph.MODID, name = Metamorph.MODNAME, version = Metamorph.VERSION, guiFactory = Metamorph.GUI_FACTORY, updateJSON = "https://raw.githubusercontent.com/mchorse/metamorph/master/version.json", dependencies = "after:moreplayermodels")
+@Mod(modid = Metamorph.MODID, name = Metamorph.MODNAME, version = Metamorph.VERSION, guiFactory = Metamorph.GUI_FACTORY, updateJSON = "https://raw.githubusercontent.com/mchorse/metamorph/master/version.json", dependencies = "after:moreplayermodels;required-after:mclib@[%MCLIB%,)")
 public class Metamorph
 {
     /* Metadata fields */
     public static final String MODID = "metamorph";
     public static final String MODNAME = "Metamorph";
-    public static final String VERSION = "1.1.6";
+    public static final String VERSION = "%VERSION%";
 
     public static final String CLIENT_PROXY = "mchorse.metamorph.ClientProxy";
     public static final String SERVER_PROXY = "mchorse.metamorph.CommonProxy";
@@ -51,11 +53,17 @@ public class Metamorph
     @Mod.Instance(MODID)
     public static Metamorph instance;
 
+    /**
+     * Custom payload channel 
+     */
+    public static FMLEventChannel channel;
+
     /* Events */
     @EventHandler
     public void preLoad(FMLPreInitializationEvent event)
     {
         LOGGER = event.getModLog();
+        channel = NetworkRegistry.INSTANCE.newEventDrivenChannel("Metamorph");
 
         proxy.preLoad(event);
     }

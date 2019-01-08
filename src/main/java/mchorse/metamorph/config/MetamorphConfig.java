@@ -56,12 +56,23 @@ public class MetamorphConfig
      * Disables morphing animation 
      */
     public boolean disable_morph_animation;
-    
+
     /**
      * Disable the ability of morphs labeled as "hostile" to avoid being
      * attacked by hostile mobs.
      */
     public boolean disable_morph_disguise;
+
+    /**
+     * Acquires morph immediately after player kills an entity instead 
+     * of spawning a ghost
+     */
+    public boolean acquire_immediately;
+
+    /**
+     * Allows morphing even if it could cause suffocation and allow passing through walls
+     */
+    public boolean morph_in_tight_spaces;
 
     /* End of config options */
 
@@ -93,6 +104,8 @@ public class MetamorphConfig
         this.disable_health = this.config.getBoolean("disable_health", cat, false, "Disable modifying health. Requested to fix dying all the time with Tough as Nails", lang + "disable_health");
         this.disable_morph_animation = this.config.getBoolean("disable_morph_animation", cat, false, "Disables morphing animation", lang + "disable_morph_animation");
         this.disable_morph_disguise = this.config.getBoolean("disable_morph_disguise", cat, false, "Disables the ability of morphs labeled as 'hostile' to avoid being attacked by hostile mobs.", lang + "disable_morph_disguise");
+        this.acquire_immediately = this.config.getBoolean("acquire_immediately", cat, false, "Acquires morph immediately after player kills an entity instead of spawning a ghost", lang + "acquire_immediately");
+        this.morph_in_tight_spaces = this.config.getBoolean("morph_in_tight_spaces", cat, false, "Allows morphing even if it could cause suffocation and allow passing through walls", lang + "morph_in_tight_spaces");
 
         this.config.getCategory(cat).setComment("General configuration of Metamorph mod");
 

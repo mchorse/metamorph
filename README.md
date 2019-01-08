@@ -8,9 +8,14 @@ Most of vanilla mob morphs have their abilities (preconfigured), meanwhile most 
 
 Heavily inspired by iChun's Morph mod and zacuke's Shape Shifter Z mod, and works only with Forge for Minecraft 1.10.2, 1.11.2 and 1.12.2.
 
+## FAQ
+
+**Q: My screen goes up and down. How to fix?**  
+A: Most likely you installed MorePlayerModels mod alongside Metamorph. To fix that, either go to `Mod Options > Metamorph > General` and enable `Disable POV` option, or disable POV option in MPM's config and restart the game.
+
 ## Install
 
-Install [Minecraft Forge](http://files.minecraftforge.net/), download the latest stable version of jar file for available minecraft version. Put it in minecraft's `mods` folder, and launch the game.
+Install [Minecraft Forge](http://files.minecraftforge.net/), download the latest stable version of jar file for available minecraft version. Also install following mods: [McLib](https://minecraft.curseforge.com/projects/mchorses-mclib). Put it in minecraft's `mods` folder, and launch the game.
 
 After that, Metamorph mod should be installed and will appear in Minecraft's mods menu. If Metamorph didn't appear in the mods menu, then something went wrong. 
 
@@ -57,7 +62,11 @@ When reposting my mod on your own website or reviewing it, please consider follo
 
 If you're interested in this project, you might as well follow me on any of social media accounts listed below:
 
-[![YouTube](http://i.imgur.com/yA4qam9.png)](https://www.youtube.com/channel/UCWVDjAcecHHa8UrEWMRGI8w) [![Discord](http://i.imgur.com/gI6JEpJ.png)](https://discord.gg/qfxrqUF) [![Twitter](http://i.imgur.com/6b8vHcX.png)](https://twitter.com/McHorsy) [![GitHub](http://i.imgur.com/DmTn1f1.png)](https://github.com/mchorse)  
+[![YouTube](http://i.imgur.com/yA4qam9.png)](https://www.youtube.com/channel/UCWVDjAcecHHa8UrEWMRGI8w) [![Discord](http://i.imgur.com/gI6JEpJ.png)](https://discord.gg/qfxrqUF) [![Twitter](http://i.imgur.com/6b8vHcX.png)](https://twitter.com/McHorsy) [![GitHub](http://i.imgur.com/DmTn1f1.png)](https://github.com/mchorse) 
+
+Also, I would really appreciate if you will support me on Patreon!
+
+[![Become my Patron](https://i.imgur.com/4pQZ2xW.png)](https://www.patreon.com/McHorse) 
 
 ## Bug reports
 

@@ -1,5 +1,30 @@
 # Metamorph Change Log
 
+## Metamorph 1.1.7
+
+This is a small patch update which is mostly oriented toward Blockbuster's compatibility.
+
+* Added `mclib` library mod as a dependency
+* Added morph merging API
+* Added custom payload listener (now plugins are able to modify of the players via custom payload packets)
+* Fixed issues with player render mods (like Mo' Bends or Emoticons) by changing player morphing animation
+* Full rewrite of Metamorph's GUIs to support McLib GUI framework
+* Prevent morphing into the bounds of other blocks (added by asanetargoss)
+* Removed morph builders (but replaced with morph editors)
+
+## Metamorph 1.1.6
+
+This is a small and quick patch which (again) provides several bug fixes mainly for Blockbuster's update.
+
+* Disable delay and particles when morph animation is turned off
+* Fixed MPM compatibility
+* Fixed losing morphs when returning from end (fixed by asanetargoss)
+* Fixed OpenGL error with transformation matrix (not popped stack)
+* Fixed NPE in morph builder drop down
+* Fixed low max health when demorphing
+* Fixed sun allergy not causing damage in 1.11.2+
+* Fixed issue with player morph's hand not rendering in first person
+
 ## Metamorph 1.1.5
 
 This is a small, quick and dirty patch that provides several bugfixes (mainly for Blockbuster's update).

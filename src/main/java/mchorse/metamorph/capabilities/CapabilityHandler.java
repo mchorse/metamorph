@@ -111,7 +111,7 @@ public class CapabilityHandler
     }
 
     /**
-     * Copy data from dead player to the new player
+     * Copy data from dead player (or player returning from end) to the new player
      */
     @SubscribeEvent
     public void onPlayerClone(PlayerEvent.Clone event)
@@ -120,7 +120,7 @@ public class CapabilityHandler
         IMorphing morphing = Morphing.get(player);
         IMorphing oldMorphing = Morphing.get(event.getOriginal());
 
-        if (Metamorph.proxy.config.keep_morphs)
+        if (Metamorph.proxy.config.keep_morphs || !event.isWasDeath())
         {
             morphing.copy(oldMorphing, player);
         }
@@ -134,6 +134,6 @@ public class CapabilityHandler
         EntityPlayerMP mp = (EntityPlayerMP) player;
 
         Dispatcher.sendTo(new PacketMorph(cap.getCurrentMorph()), mp);
-        Dispatcher.sendTo(new PacketAcquiredMorphs(cap.getAcquiredMorphs(), cap.getFavorites()), mp);
+        Dispatcher.sendTo(new PacketAcquiredMorphs(cap.getAcquiredMorphs()), mp);
     }
 }

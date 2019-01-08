@@ -10,12 +10,12 @@ import java.util.Map;
 
 import org.lwjgl.opengl.GL11;
 
+import mchorse.mclib.client.gui.utils.GuiUtils;
 import mchorse.metamorph.Metamorph;
 import mchorse.metamorph.api.MorphManager;
 import mchorse.metamorph.api.morphs.AbstractMorph;
 import mchorse.metamorph.capabilities.morphing.IMorphing;
 import mchorse.metamorph.capabilities.morphing.Morphing;
-import mchorse.metamorph.client.gui.utils.GuiUtils;
 import mchorse.metamorph.network.Dispatcher;
 import mchorse.metamorph.network.common.PacketFavoriteMorph;
 import mchorse.metamorph.network.common.PacketRemoveMorph;
@@ -44,6 +44,11 @@ import net.minecraft.util.math.MathHelper;
  */
 public class GuiSurvivalMorphs extends Gui
 {
+    /**
+     * Icons resource location 
+     */
+    public static final ResourceLocation ICONS = new ResourceLocation("metamorph", "textures/gui/icons.png");
+
     /**
      * Latest used morph cell. Used for favoriting 
      */
@@ -93,7 +98,6 @@ public class GuiSurvivalMorphs extends Gui
     {
         /* Collect all variations into one cells */
         Map<String, MorphType> separated = new HashMap<String, MorphType>();
-        List<Integer> favorites = morphing.getFavorites();
         int i = 0;
 
         for (AbstractMorph morph : morphing.getAcquiredMorphs())
@@ -106,7 +110,7 @@ public class GuiSurvivalMorphs extends Gui
                 separated.put(morph.name, list);
             }
 
-            list.morphs.add(new MorphCell(i, morph, favorites.indexOf(i) >= 0));
+            list.morphs.add(new MorphCell(i, morph));
             i++;
         }
 
@@ -132,7 +136,7 @@ public class GuiSurvivalMorphs extends Gui
 
                 while (cellIt.hasNext())
                 {
-                    if (!cellIt.next().favorite)
+                    if (!cellIt.next().morph.favorite)
                     {
                         cellIt.remove();
                     }
@@ -213,7 +217,7 @@ public class GuiSurvivalMorphs extends Gui
      */
     public void up()
     {
-        if (this.index >= 0)
+        if (this.index >= 0 && this.index < this.morphs.size())
         {
             MorphType type = this.morphs.get(this.index);
 
@@ -230,7 +234,7 @@ public class GuiSurvivalMorphs extends Gui
      */
     public void down()
     {
-        if (this.index >= 0)
+        if (this.index >= 0 && this.index < this.morphs.size())
         {
             MorphType type = this.morphs.get(this.index);
 
@@ -252,9 +256,7 @@ public class GuiSurvivalMorphs extends Gui
     {
         if (latest != null && latest.index == index)
         {
-            latest.favorite = Morphing.get(this.mc.thePlayer).getFavorites().indexOf(index) >= 0;
-
-            if (this.showFavorites && !latest.favorite)
+            if (this.showFavorites && !latest.morph.favorite)
             {
                 this.toRemove.put(index, new MorphRemove(index, latest.typeIndex));
                 this.remove(index);
@@ -308,14 +310,7 @@ public class GuiSurvivalMorphs extends Gui
      */
     private int getDelay()
     {
-        int frameRate = this.mc.gameSettings.limitFramerate;
-
-        if (frameRate > 120)
-        {
-            frameRate = 120;
-        }
-
-        return frameRate * 2;
+        return this.mc.gameSettings.limitFramerate * 2;
     }
 
     /**
@@ -355,7 +350,7 @@ public class GuiSurvivalMorphs extends Gui
 
     public int getSelected()
     {
-        return this.index == -1 ? -1 : this.morphs.get(this.index).current().index;
+        return this.index == -1 ? -1 : (this.morphs.size() == 0 ? -1 : this.morphs.get(this.index).current().index);
     }
 
     public MorphCell getCurrent()
@@ -406,7 +401,6 @@ public class GuiSurvivalMorphs extends Gui
         if (latest == null)
         {
             latest = cell;
-            latest.favorite = !latest.favorite;
             Dispatcher.sendToServer(new PacketFavoriteMorph(cell.index));
         }
     }
@@ -426,7 +420,7 @@ public class GuiSurvivalMorphs extends Gui
      */
     public void render(int width, int height)
     {
-        if (!this.inGUI && timer <= 0)
+        if (!this.inGUI && this.timer <= 0)
         {
             return;
         }
@@ -613,10 +607,10 @@ public class GuiSurvivalMorphs extends Gui
     {
         morph.morph.renderOnScreen(player, x, y, scale, 1.0F);
 
-        if (morph.favorite)
+        if (morph.morph.favorite)
         {
             GlStateManager.enableAlpha();
-            this.mc.renderEngine.bindTexture(new ResourceLocation("metamorph", "textures/gui/icons.png"));
+            this.mc.renderEngine.bindTexture(ICONS);
 
             if (this.inGUI)
             {
@@ -743,7 +737,7 @@ public class GuiSurvivalMorphs extends Gui
         {
             for (MorphCell cell : this.morphs)
             {
-                if (cell.favorite)
+                if (cell.morph.favorite)
                 {
                     return true;
                 }
@@ -789,14 +783,12 @@ public class GuiSurvivalMorphs extends Gui
     {
         public int index;
         public int typeIndex;
-        public boolean favorite;
         public AbstractMorph morph;
 
-        public MorphCell(int index, AbstractMorph morph, boolean favorite)
+        public MorphCell(int index, AbstractMorph morph)
         {
             this.index = index;
             this.morph = morph;
-            this.favorite = favorite;
         }
     }
 

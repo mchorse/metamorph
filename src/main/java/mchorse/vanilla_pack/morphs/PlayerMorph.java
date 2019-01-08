@@ -1,17 +1,11 @@
 package mchorse.vanilla_pack.morphs;
 
-import java.util.Map;
-import java.util.UUID;
-
 import com.mojang.authlib.GameProfile;
-import com.mojang.authlib.minecraft.MinecraftProfileTexture;
-import com.mojang.authlib.minecraft.MinecraftProfileTexture.Type;
 
 import mchorse.metamorph.api.morphs.AbstractMorph;
 import mchorse.metamorph.api.morphs.EntityMorph;
-import net.minecraft.client.Minecraft;
 import net.minecraft.client.entity.EntityOtherPlayerMP;
-import net.minecraft.client.resources.DefaultPlayerSkin;
+import net.minecraft.client.network.NetworkPlayerInfo;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EnumPlayerModelParts;
@@ -39,6 +33,12 @@ public class PlayerMorph extends EntityMorph
     public PlayerMorph()
     {
         this.name = "Player";
+    }
+
+    public void setProfile(String username)
+    {
+        this.profile = new GameProfile(null, username);
+        this.profile = TileEntitySkull.updateGameprofile(this.profile);
     }
 
     /**
@@ -177,6 +177,14 @@ public class PlayerMorph extends EntityMorph
     }
 
     @Override
+    public void reset()
+    {
+        super.reset();
+
+        this.profile = null;
+    }
+
+    @Override
     public boolean equals(Object obj)
     {
         boolean result = super.equals(obj);
@@ -202,8 +210,7 @@ public class PlayerMorph extends EntityMorph
         }
         else if (tag.hasKey("Username"))
         {
-            this.profile = new GameProfile(null, tag.getString("Username"));
-            this.profile = TileEntitySkull.updateGameprofile(this.profile);
+            this.setProfile(tag.getString("Username"));
         }
     }
 
@@ -233,13 +240,29 @@ public class PlayerMorph extends EntityMorph
     {
         public GameProfile profile;
         public boolean isBaby;
-        public String skinType = "steve";
+        public String skinType = "";
+
+        /**
+         * Player's network info
+         */
+        public NetworkPlayerInfo info;
 
         public PlayerMorphClientEntity(World world, GameProfile profile)
         {
             super(world, profile);
 
             this.profile = profile;
+        }
+
+        /**
+         * Initiate network info property thing 
+         */
+        protected void initiateNetworkInfo()
+        {
+            if (this.info == null)
+            {
+                this.info = new NetworkPlayerInfo(this.profile);
+            }
         }
 
         @Override
@@ -251,6 +274,12 @@ public class PlayerMorph extends EntityMorph
         @Override
         public String getSkinType()
         {
+            if (this.skinType.isEmpty())
+            {
+                this.initiateNetworkInfo();
+                return this.info.getSkinType();
+            }
+
             return this.skinType.equals("alex") ? "slim" : "default";
         }
 
@@ -260,46 +289,18 @@ public class PlayerMorph extends EntityMorph
         @Override
         public ResourceLocation getLocationSkin()
         {
-            ResourceLocation resourcelocation = DefaultPlayerSkin.getDefaultSkinLegacy();
-
-            if (profile != null)
-            {
-                Minecraft minecraft = Minecraft.getMinecraft();
-                Map<Type, MinecraftProfileTexture> map = minecraft.getSkinManager().loadSkinFromCache(profile);
-
-                if (map.containsKey(Type.SKIN))
-                {
-                    resourcelocation = minecraft.getSkinManager().loadSkin((MinecraftProfileTexture) map.get(Type.SKIN), Type.SKIN);
-                }
-                else
-                {
-                    UUID uuid = EntityPlayer.getUUID(profile);
-                    resourcelocation = DefaultPlayerSkin.getDefaultSkin(uuid);
-                }
-            }
-
-            return resourcelocation;
+            this.initiateNetworkInfo();
+            return this.info.getLocationSkin();
         }
 
         /**
          * Get this player's custom cape skin 
          */
+        @Override
         public ResourceLocation getLocationCape()
         {
-            ResourceLocation resourcelocation = null;
-
-            if (profile != null)
-            {
-                Minecraft minecraft = Minecraft.getMinecraft();
-                Map<Type, MinecraftProfileTexture> map = minecraft.getSkinManager().loadSkinFromCache(profile);
-
-                if (map.containsKey(Type.CAPE))
-                {
-                    resourcelocation = minecraft.getSkinManager().loadSkin((MinecraftProfileTexture) map.get(Type.CAPE), Type.CAPE);
-                }
-            }
-
-            return resourcelocation;
+            this.initiateNetworkInfo();
+            return this.info.getLocationCape();
         }
 
         /**
@@ -312,9 +313,10 @@ public class PlayerMorph extends EntityMorph
             return true;
         }
 
+        @Override
         public boolean hasPlayerInfo()
         {
-            return true;
+            return this.info != null;
         }
 
         @Override
