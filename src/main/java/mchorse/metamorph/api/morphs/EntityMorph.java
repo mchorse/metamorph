@@ -389,6 +389,7 @@ public class EntityMorph extends AbstractMorph
         entity.rotationYawHead = target.rotationYawHead;
         entity.renderYawOffset = target.renderYawOffset;
 
+        entity.isSwingInProgress = target.isSwingInProgress;
         entity.swingProgress = target.swingProgress;
         entity.limbSwing = target.limbSwing;
         entity.limbSwingAmount = target.limbSwingAmount;
