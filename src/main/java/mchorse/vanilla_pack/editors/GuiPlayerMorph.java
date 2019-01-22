@@ -41,6 +41,11 @@ public class GuiPlayerMorph extends GuiAbstractMorph
 
     private void editUsername(String str)
     {
+        if (str.isEmpty())
+        {
+            return;
+        }
+
         this.counter = 15;
     }
 
@@ -63,7 +68,7 @@ public class GuiPlayerMorph extends GuiAbstractMorph
     {
         if (this.counter >= 0)
         {
-            if (this.counter == 0)
+            if (this.counter == 0 && !this.username.field.getText().isEmpty())
             {
                 PlayerMorph morph = (PlayerMorph) this.morph;
 
