@@ -80,6 +80,7 @@ public class BlockMorph extends AbstractMorph
     {
         Minecraft mc = Minecraft.getMinecraft();
 
+        GlStateManager.enableRescaleNormal();
         BlockRendererDispatcher blockrendererdispatcher = mc.getBlockRendererDispatcher();
         GlStateManager.pushMatrix();
         GlStateManager.translate((float) x, (float) y + 0.5F, (float) z);
@@ -90,6 +91,7 @@ public class BlockMorph extends AbstractMorph
         blockrendererdispatcher.renderBlockBrightness(this.block, 1.0F);
         GlStateManager.translate(0.0F, 0.0F, 1.0F);
         GlStateManager.popMatrix();
+        GlStateManager.disableRescaleNormal();
     }
 
     /**
