@@ -21,6 +21,7 @@ import mchorse.mclib.client.gui.utils.Resizer.Measure;
 import mchorse.mclib.client.gui.utils.ScrollArea;
 import mchorse.metamorph.api.MorphList;
 import mchorse.metamorph.api.MorphManager;
+import mchorse.metamorph.api.events.ReloadMorphs;
 import mchorse.metamorph.api.morphs.AbstractMorph;
 import mchorse.metamorph.capabilities.morphing.IMorphing;
 import net.minecraft.client.Minecraft;
@@ -31,6 +32,7 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.world.World;
+import net.minecraftforge.common.MinecraftForge;
 
 /**
  * Scroll list of available morphs
@@ -123,6 +125,8 @@ public class GuiCreativeMorphs extends GuiElement
     public GuiCreativeMorphs(Minecraft mc, int perRow, AbstractMorph selected, IMorphing morphing)
     {
         super(mc);
+
+        MinecraftForge.EVENT_BUS.post(new ReloadMorphs());
 
         this.perRow = perRow;
         this.compileCategories(morphing);
