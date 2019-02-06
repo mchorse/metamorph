@@ -577,6 +577,11 @@ public class GuiCreativeMorphs extends GuiElement
                     j++;
                 }
             }
+
+            if (this.selectedMorph == -1)
+            {
+                this.setMorph(null);
+            }
         }
         else
         {
