@@ -44,6 +44,7 @@ public class GuiCreativeMenu extends GuiBase
 
         this.morph = GuiButtonElement.button(mc, I18n.format("metamorph.gui.morph"), (b) ->
         {
+            this.pane.finish();
             AbstractMorph morph = this.getMorph();
 
             if (morph != null)
@@ -55,6 +56,7 @@ public class GuiCreativeMenu extends GuiBase
 
         this.acquire = GuiButtonElement.button(mc, I18n.format("metamorph.gui.acquire"), (b) ->
         {
+            this.pane.finish();
             Dispatcher.sendToServer(new PacketAcquireMorph(this.getMorph()));
         });
 
