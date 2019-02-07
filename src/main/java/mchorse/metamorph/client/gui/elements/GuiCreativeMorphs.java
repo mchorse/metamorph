@@ -209,6 +209,14 @@ public class GuiCreativeMorphs extends GuiElement
         this.edit.setVisible(hide);
     }
 
+    public void finish()
+    {
+        if (this.isEditMode())
+        {
+            this.editor.delegate.finishEdit();
+        }
+    }
+
     protected Consumer<GuiButtonElement<GuiButton>> getToggleCallback()
     {
         return this.edit.callback;
