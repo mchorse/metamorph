@@ -177,20 +177,25 @@ public class GuiCreativeMorphs extends GuiElement
 
     public void toggleEditMode()
     {
-        if (this.getSelected() == null)
+        MorphCell cell = this.getSelected();
+
+        if (cell == null)
         {
             return;
         }
 
+        AbstractMorph morph = cell.current().morph;
+
         if (!this.isEditMode())
         {
-            GuiAbstractMorph morph = this.getMorphEditor(this.getSelected().current().morph);
+            GuiAbstractMorph editor = this.getMorphEditor(morph);
 
-            morph.finish.callback = this.getToggleCallback();
+            editor.finish.callback = this.getToggleCallback();
 
-            if (morph != null)
+            if (editor != null)
             {
-                this.editor.setDelegate(morph);
+                this.editor.setDelegate(editor);
+                this.setMorph(morph);
             }
         }
         else
@@ -198,7 +203,7 @@ public class GuiCreativeMorphs extends GuiElement
             this.editor.delegate.finishEdit();
             this.editor.setDelegate(null);
 
-            this.setMorph(this.getSelected().current().morph);
+            this.setMorph(morph);
         }
 
         boolean hide = this.editor.delegate == null;
