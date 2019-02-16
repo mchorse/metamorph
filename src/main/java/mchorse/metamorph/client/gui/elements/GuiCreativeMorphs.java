@@ -403,7 +403,7 @@ public class GuiCreativeMorphs extends GuiElement
             this.selectedMorph = this.selectedCell.index;
             this.scroll.scrollTo(0);
             this.selectedCell.variants.clear();
-            this.selectedCell.variants.add(new MorphVariant(I18n.format("metamorph.gui.selected"), morph.clone(true)));
+            this.selectedCell.variants.add(new MorphVariant(I18n.format("metamorph.gui.selected"), compare ? morph.clone(true) : morph));
             this.selectedCell.selected = 0;
         }
     }
