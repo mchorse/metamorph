@@ -130,7 +130,7 @@ public class GuiCreativeMorphs extends GuiElement
 
         this.perRow = perRow;
         this.compileCategories(morphing);
-        this.initiateCategories(selected);
+        this.initiateCategories(selected, true);
         this.picker = new GuiCreativeVariantPicker(mc, this);
         this.picker.resizer().parent(this.area).set(0, 0, 0, 60).w(1, 0).y(1, -60);
 
@@ -188,6 +188,11 @@ public class GuiCreativeMorphs extends GuiElement
 
         if (!this.isEditMode())
         {
+            if (morph != null)
+            {
+                morph = morph.clone(true);
+            }
+
             GuiAbstractMorph editor = this.getMorphEditor(morph);
 
             editor.finish.callback = this.getToggleCallback();
@@ -195,7 +200,7 @@ public class GuiCreativeMorphs extends GuiElement
             if (editor != null)
             {
                 this.editor.setDelegate(editor);
-                this.setMorph(morph);
+                this.setSelected(morph, false, false);
             }
         }
         else
@@ -328,7 +333,7 @@ public class GuiCreativeMorphs extends GuiElement
      * alphabet, computing space attributes (height and y-coord) and selecting 
      * most similar morph that player might have.
      */
-    protected void initiateCategories(AbstractMorph morph)
+    protected void initiateCategories(AbstractMorph morph, boolean compare)
     {
         int i = 0;
         int y = 0;
@@ -369,7 +374,7 @@ public class GuiCreativeMorphs extends GuiElement
                     }
                 });
 
-                if (selectedCat == -1 && morph != null && cell.hasMorph(morph))
+                if (selectedCat == -1 && morph != null && cell.hasMorph(morph) && compare)
                 {
                     selectedCat = i;
                     selectedMorph = j;
@@ -411,7 +416,7 @@ public class GuiCreativeMorphs extends GuiElement
         MorphCell selected = this.getSelected();
 
         this.perRow = perRow;
-        this.initiateCategories(selected != null ? selected.current().morph : null);
+        this.initiateCategories(selected != null ? selected.current().morph : null, true);
     }
 
     /**
@@ -483,20 +488,28 @@ public class GuiCreativeMorphs extends GuiElement
         }
     }
 
+    public void setSelected(AbstractMorph morph)
+    {
+        this.setSelected(morph, true, true);
+    }
+
     /**
      * Set selected morph 
      */
-    public void setSelected(AbstractMorph morph)
+    public void setSelected(AbstractMorph morph, boolean restore, boolean compare)
     {
-        this.initiateCategories(morph);
+        this.initiateCategories(morph, compare);
 
         /* Make sure to restore the state from previous time */
-        String prevFilter = this.previousFilter;
-
-        if (!prevFilter.isEmpty())
+        if (restore)
         {
-            this.previousFilter = "";
-            this.setFilter(prevFilter, false);
+            String prevFilter = this.previousFilter;
+
+            if (!prevFilter.isEmpty())
+            {
+                this.previousFilter = "";
+                this.setFilter(prevFilter, false);
+            }
         }
     }
 
