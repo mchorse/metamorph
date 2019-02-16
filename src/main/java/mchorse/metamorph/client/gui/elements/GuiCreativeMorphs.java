@@ -201,6 +201,7 @@ public class GuiCreativeMorphs extends GuiElement
             {
                 this.editor.setDelegate(editor);
                 this.setSelected(morph, false, false);
+                this.setMorph(morph);
             }
         }
         else
