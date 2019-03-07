@@ -31,7 +31,7 @@ public class MorphBodyPart implements IBodyPart
     @SideOnly(Side.CLIENT)
     public void init()
     {
-        this.entity = new DummyEntity(Minecraft.getMinecraft().theWorld);
+        this.entity = new DummyEntity(Minecraft.getMinecraft().world);
         this.entity.rotationYaw = this.entity.prevRotationYaw;
         this.entity.rotationYawHead = this.entity.prevRotationYawHead;
         this.entity.onGround = true;
