@@ -31,7 +31,7 @@ public class MorphingStorage implements IStorage<IMorphing>
     {
         NBTTagCompound tag = new NBTTagCompound();
         NBTTagList acquired = new NBTTagList();
-        tag.setTag("LastHealthRatio", new NBTTagFloat(instance.getLastHealthRatio()));
+        tag.setTag("lastHealthRatio", new NBTTagFloat(instance.getLastHealthRatio()));
         tag.setTag("HasSquidAir", new NBTTagByte(instance.getHasSquidAir() ? (byte)1 : (byte)0));
         tag.setTag("SquidAir", new NBTTagInt(instance.getSquidAir()));
 
