@@ -10,10 +10,10 @@ import mchorse.metamorph.network.Dispatcher;
 import mchorse.metamorph.network.common.PacketAcquireMorph;
 import mchorse.metamorph.network.common.PacketMorph;
 import mchorse.metamorph.network.common.PacketMorphPlayer;
+import mchorse.metamorph.network.common.PacketMorphState;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.network.play.server.SPacketChat;
-import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.text.TextComponentTranslation;
 import net.minecraftforge.common.MinecraftForge;
 
@@ -77,6 +77,7 @@ public class MorphAPI
         {
             Dispatcher.sendTo(new PacketMorph(morph), (EntityPlayerMP) player);
             Dispatcher.updateTrackers(player, new PacketMorphPlayer(player.getEntityId(), morph));
+            Dispatcher.sendTo(new PacketMorphState(player, morphing), (EntityPlayerMP) player);
         }
 
         if (morphed)

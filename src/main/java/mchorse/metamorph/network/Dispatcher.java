@@ -7,6 +7,7 @@ import mchorse.metamorph.network.client.ClientHandlerBlacklist;
 import mchorse.metamorph.network.client.ClientHandlerFavoriteMorph;
 import mchorse.metamorph.network.client.ClientHandlerMorph;
 import mchorse.metamorph.network.client.ClientHandlerMorphPlayer;
+import mchorse.metamorph.network.client.ClientHandlerMorphState;
 import mchorse.metamorph.network.client.ClientHandlerRemoveMorph;
 import mchorse.metamorph.network.client.ClientHandlerSettings;
 import mchorse.metamorph.network.common.PacketAcquireMorph;
@@ -16,6 +17,7 @@ import mchorse.metamorph.network.common.PacketBlacklist;
 import mchorse.metamorph.network.common.PacketFavoriteMorph;
 import mchorse.metamorph.network.common.PacketMorph;
 import mchorse.metamorph.network.common.PacketMorphPlayer;
+import mchorse.metamorph.network.common.PacketMorphState;
 import mchorse.metamorph.network.common.PacketRemoveMorph;
 import mchorse.metamorph.network.common.PacketSelectMorph;
 import mchorse.metamorph.network.common.PacketSettings;
@@ -89,6 +91,9 @@ public class Dispatcher
         register(PacketAcquiredMorphs.class, ClientHandlerAcquiredMorphs.class, Side.CLIENT);
 
         register(PacketSelectMorph.class, ServerHandlerSelectMorph.class, Side.SERVER);
+        
+        /* Morph state */
+        register(PacketMorphState.class, ClientHandlerMorphState.class, Side.CLIENT);
 
         /* Managing morphs */
         register(PacketFavoriteMorph.class, ClientHandlerFavoriteMorph.class, Side.CLIENT);

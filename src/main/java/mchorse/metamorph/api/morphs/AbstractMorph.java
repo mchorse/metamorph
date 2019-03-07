@@ -5,13 +5,16 @@ import mchorse.metamorph.api.MorphSettings;
 import mchorse.metamorph.api.abilities.IAbility;
 import mchorse.metamorph.capabilities.morphing.IMorphing;
 import mchorse.metamorph.capabilities.morphing.Morphing;
+import mchorse.metamorph.entity.SoundHandler;
 import net.minecraft.client.renderer.entity.Render;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.SharedMonsterAttributes;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.util.DamageSource;
 import net.minecraft.util.EnumHand;
+import net.minecraft.util.SoundEvent;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
@@ -271,6 +274,8 @@ public abstract class AbstractMorph
      * </p>
      */
     public abstract AbstractMorph clone(boolean isRemote);
+    
+    /* Getting size */
 
     /**
      * Get width of this morph 
@@ -281,6 +286,69 @@ public abstract class AbstractMorph
      * Get height of this morph 
      */
     public abstract float getHeight(EntityLivingBase target);
+    
+    /**
+     * Get the eye height of this morph.
+     * Not used by updateSize.
+     */
+    public float getEyeHeight(EntityLivingBase target)
+    {
+        if (!Metamorph.proxy.config.disable_pov)
+        {
+            return this.getHeight(target) * 0.9F;
+        }
+        else
+        {
+            return 1.62F;
+        }
+    }
+    
+    /**
+     * Get the default sound that this morph makes when it
+     * is hurt
+     */
+    public final SoundEvent getHurtSound(EntityLivingBase target)
+    {
+        return getHurtSound(target, SoundHandler.GENERIC_DAMAGE);
+    }
+    
+    /**
+     * Get the sound that this morph makes when it
+     * is hurt by the given DamageSource, or return null
+     * for no change.
+     */
+    public SoundEvent getHurtSound(EntityLivingBase target, DamageSource damageSource)
+    {
+        return null;
+    }
+    
+    /**
+     * Get the sound that this morph makes when it
+     * is killed, or return null for no change.
+     */
+    public SoundEvent getDeathSound(EntityLivingBase target)
+    {
+        return null;
+    }
+    
+    /**
+     * Make this return true if you override playStepSound(..)
+     */
+    public boolean hasCustomStepSound(EntityLivingBase target)
+    {
+        return false;
+    }
+    
+    /**
+     * Plays the sound that this morph makes when it
+     * takes a step, but only if hasCustomStepSound(..) returns true
+     */
+    public void playStepSound(EntityLivingBase target) { }
+    
+    /**
+     * Called when the player just changed dimensions
+     */
+    public void onChangeDimension(EntityPlayer player, int oldDim, int currentDim) { }
 
     /**
      * Check either if given object is the same as this morph 

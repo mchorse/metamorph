@@ -10,6 +10,7 @@ import mchorse.metamorph.network.common.PacketAcquiredMorphs;
 import mchorse.metamorph.network.common.PacketBlacklist;
 import mchorse.metamorph.network.common.PacketMorph;
 import mchorse.metamorph.network.common.PacketMorphPlayer;
+import mchorse.metamorph.network.common.PacketMorphState;
 import mchorse.metamorph.network.common.PacketSettings;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
@@ -36,6 +37,7 @@ public class CapabilityHandler
      * Attach capabilities (well, only one, right now)
      */
     @SubscribeEvent
+    @SuppressWarnings(value = {"deprecation"})
     public void attachCapability(AttachCapabilitiesEvent.Entity event)
     {
         if (!(event.getEntity() instanceof EntityPlayer)) return;
@@ -65,6 +67,7 @@ public class CapabilityHandler
             /* Send data */
             Dispatcher.sendTo(new PacketBlacklist(MorphManager.INSTANCE.activeBlacklist), (EntityPlayerMP) player);
             Dispatcher.sendTo(new PacketSettings(MorphManager.INSTANCE.activeSettings), (EntityPlayerMP) player);
+            Dispatcher.sendTo(new PacketMorphState(player, cap), (EntityPlayerMP) player);
         }
     }
 
@@ -103,6 +106,7 @@ public class CapabilityHandler
                 IMorphing morphing = Morphing.get(player);
 
                 this.sendAcquiredMorphs(morphing, player);
+                Dispatcher.sendTo(new PacketMorphState(player, morphing), (EntityPlayerMP) player);
             }
         }
     }

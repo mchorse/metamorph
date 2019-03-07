@@ -115,7 +115,7 @@ public class BlockMorph extends AbstractMorph
             target.setPosition(this.blockPos.getX() + 0.5, this.blockPos.getY(), this.blockPos.getZ() + 0.5);
         }
 
-        this.updateSize(target, 0.99F, 0.99F);
+        this.updateSize(target, getWidth(target), getHeight(target));
     }
 
     @Override
@@ -155,6 +155,7 @@ public class BlockMorph extends AbstractMorph
     }
 
     @Override
+    @SuppressWarnings(value = {"deprecation"})
     public void fromNBT(NBTTagCompound tag)
     {
         super.fromNBT(tag);
@@ -200,12 +201,12 @@ public class BlockMorph extends AbstractMorph
     @Override
     public float getWidth(EntityLivingBase target)
     {
-        return 1;
+        return 0.99F;
     }
 
     @Override
     public float getHeight(EntityLivingBase target)
     {
-        return 1;
+        return 0.99F;
     }
 }

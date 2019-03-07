@@ -11,6 +11,7 @@ import mchorse.metamorph.capabilities.morphing.Morphing;
 import mchorse.metamorph.capabilities.morphing.MorphingStorage;
 import mchorse.metamorph.config.MetamorphConfig;
 import mchorse.metamorph.entity.EntityMorph;
+import mchorse.metamorph.entity.SoundHandler;
 import mchorse.metamorph.network.Dispatcher;
 import mchorse.vanilla_pack.MobMorphFactory;
 import mchorse.vanilla_pack.PlayerMorphFactory;
@@ -87,6 +88,7 @@ public class CommonProxy
         /* Event listeners */
         MinecraftForge.EVENT_BUS.register(this.config);
         MinecraftForge.EVENT_BUS.register(new MorphHandler());
+        MinecraftForge.EVENT_BUS.register(new SoundHandler());
         MinecraftForge.EVENT_BUS.register(new CapabilityHandler());
         MinecraftForge.EVENT_BUS.register(new RegisterHandler());
 

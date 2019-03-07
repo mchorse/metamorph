@@ -4,10 +4,13 @@ import java.util.ArrayList;
 import java.util.List;
 
 import mchorse.metamorph.Metamorph;
+import mchorse.metamorph.api.MorphManager;
 import mchorse.metamorph.api.morphs.AbstractMorph;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.SoundEvents;
+import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.util.DamageSource;
 import net.minecraft.util.EnumParticleTypes;
 import net.minecraft.world.WorldServer;
 import net.minecraftforge.fml.relauncher.Side;
@@ -40,12 +43,29 @@ public class Morphing implements IMorphing
      * Animation timer 
      */
     private int animation;
+    
+    /**
+     * The last damage source received by the player
+     */
+    private DamageSource lastDamageSource;
 
     /**
      * (health / max health) is stored here when the new max health ends up
      * very close to zero, and retrieved when the fraction is meaningful again
      */
     private float lastHealthRatio;
+    
+    /**
+     * Whether or not the current player is in a morph which can drown on land
+     * due to having the Swim ability
+     */
+    private boolean hasSquidAir = false;
+    
+    /**
+     * The air value used for morphs with the Swim ability in place of regular
+     * player air
+     */
+    private int squidAir = 300;
 
     public static IMorphing get(EntityPlayer player)
     {
@@ -147,6 +167,18 @@ public class Morphing implements IMorphing
         GlStateManager.popMatrix();
 
         return true;
+    }
+    
+    @Override
+    public DamageSource getLastDamageSource()
+    {
+        return lastDamageSource;
+    }
+    
+    @Override
+    public void setLastDamageSource(DamageSource damageSource)
+    {
+        this.lastDamageSource = damageSource;
     }
 
     @Override
@@ -290,8 +322,10 @@ public class Morphing implements IMorphing
     @Override
     public void copy(IMorphing morphing, EntityPlayer player)
     {
-        this.acquiredMorphs = morphing.getAcquiredMorphs();
-        this.setCurrentMorph(morphing.getCurrentMorph(), player, true);
+        this.acquiredMorphs.addAll(morphing.getAcquiredMorphs());
+        NBTTagCompound morphNBT = new NBTTagCompound();
+        morphing.getCurrentMorph().toNBT(morphNBT);
+        this.setCurrentMorph(MorphManager.INSTANCE.morphFromNBT(morphNBT), player, true);
     }
 
     @Override
@@ -304,6 +338,30 @@ public class Morphing implements IMorphing
     public void setLastHealthRatio(float lastHealthRatio)
     {
         this.lastHealthRatio = lastHealthRatio;
+    }
+    
+    @Override
+    public boolean getHasSquidAir()
+    {
+        return hasSquidAir;
+    }
+
+    @Override
+    public void setHasSquidAir(boolean hasSquidAir)
+    {
+        this.hasSquidAir = hasSquidAir;
+    }
+    
+    @Override
+    public int getSquidAir()
+    {
+        return squidAir;
+    }
+
+    @Override
+    public void setSquidAir(int squidAir)
+    {
+        this.squidAir = squidAir;
     }
 
     @Override
