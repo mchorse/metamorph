@@ -12,6 +12,9 @@ import mchorse.metamorph.api.EntityUtils;
 import mchorse.metamorph.api.MorphSettings;
 import mchorse.metamorph.api.models.IHandProvider;
 import mchorse.metamorph.capabilities.morphing.IMorphing;
+import mchorse.metamorph.entity.SoundHandler;
+import mchorse.metamorph.util.InvokeUtil;
+import net.minecraft.block.Block;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.model.ModelBase;
 import net.minecraft.client.model.ModelBiped;
@@ -33,8 +36,12 @@ import net.minecraft.entity.passive.EntityRabbit;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.util.DamageSource;
 import net.minecraft.util.EnumHand;
 import net.minecraft.util.ResourceLocation;
+import net.minecraft.util.SoundEvent;
+import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.math.MathHelper;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
@@ -422,6 +429,8 @@ public class EntityMorph extends AbstractMorph
         entity.ticksExisted = target.ticksExisted;
         /* Fighting with death of entities like zombies */
         entity.setHealth(target.getHealth());
+        /* Prevent drowning sound of squids, guardians, etc... */
+        entity.setAir(300);
 
         /* Now goes the code responsible for achieving somewhat riding 
          * support. This is ridiculous... */
@@ -748,6 +757,88 @@ public class EntityMorph extends AbstractMorph
         }
 
         return this.entity.height;
+    }
+
+    @Override
+    public SoundEvent getHurtSound(EntityLivingBase target, DamageSource damageSource)
+    {
+        EntityLivingBase entity = this.getEntity(target.world);
+
+        try
+        {
+            Method methodHurtSound = InvokeUtil.getPrivateMethod(entity.getClass(), EntityLivingBase.class, SoundHandler.GET_HURT_SOUND.getName());
+            SoundEvent hurtSound = (SoundEvent) methodHurtSound.invoke(entity);
+            if (hurtSound == null)
+            {
+                hurtSound = SoundHandler.NO_SOUND;
+            }
+            return hurtSound;
+        }
+        catch (Exception e)
+        {
+            e.printStackTrace();
+        }
+
+        return null;
+    }
+
+    @Override
+    public SoundEvent getDeathSound(EntityLivingBase target)
+    {
+        EntityLivingBase entity = this.getEntity(target.world);
+        try
+        {
+            Method methodDeathSound = InvokeUtil.getPrivateMethod(entity.getClass(), EntityLivingBase.class, SoundHandler.GET_DEATH_SOUND.getName());
+            SoundEvent deathSound = (SoundEvent) methodDeathSound.invoke(entity);
+            if (deathSound == null)
+            {
+                deathSound = SoundHandler.NO_SOUND;
+            }
+            return deathSound;
+        }
+        catch (Exception e)
+        {
+            e.printStackTrace();
+        }
+
+        return null;
+    }
+
+    @Override
+    public boolean hasCustomStepSound(EntityLivingBase target)
+    {
+        return true;
+    }
+
+    @Override
+    public void playStepSound(EntityLivingBase target)
+    {
+        EntityLivingBase entity = this.getEntity(target.world);
+        try
+        {
+            Method methodPlayStep = InvokeUtil.getPrivateMethod(entity.getClass(), Entity.class, SoundHandler.PLAY_STEP_SOUND.getName(), BlockPos.class, Block.class);
+
+            int x = MathHelper.floor(entity.posX);
+            int y = MathHelper.floor(entity.posY - 0.20000000298023224D);
+            int z = MathHelper.floor(entity.posZ);
+            BlockPos pos = new BlockPos(x, y, z);
+            Block block = entity.world.getBlockState(pos).getBlock();
+
+            methodPlayStep.invoke(entity, pos, block);
+        }
+        catch (Exception e)
+        {
+            e.printStackTrace();
+        }
+    }
+
+    @Override
+    public void onChangeDimension(EntityPlayer player, int oldDim, int currentDim)
+    {
+        if (this.entity != null)
+        {
+            this.entity.world = player.world;
+        }
     }
 
     @Override

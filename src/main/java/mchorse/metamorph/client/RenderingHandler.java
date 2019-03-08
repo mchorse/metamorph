@@ -3,6 +3,7 @@ package mchorse.metamorph.client;
 import mchorse.metamorph.api.morphs.EntityMorph;
 import mchorse.metamorph.capabilities.morphing.IMorphing;
 import mchorse.metamorph.capabilities.morphing.Morphing;
+import mchorse.metamorph.client.gui.elements.GuiHud;
 import mchorse.metamorph.client.gui.elements.GuiOverlay;
 import mchorse.metamorph.client.gui.elements.GuiSurvivalMorphs;
 import net.minecraft.client.Minecraft;
@@ -36,12 +37,14 @@ public class RenderingHandler
 {
     private GuiSurvivalMorphs overlay;
     private GuiOverlay morphOverlay;
+    private GuiHud hud;
     private RenderManager manager;
 
-    public RenderingHandler(GuiSurvivalMorphs overlay, GuiOverlay morphOverlay)
+    public RenderingHandler(GuiSurvivalMorphs overlay, GuiOverlay morphOverlay, GuiHud hud)
     {
         this.overlay = overlay;
         this.morphOverlay = morphOverlay;
+        this.hud = hud;
         this.manager = Minecraft.getMinecraft().getRenderManager();
     }
 
@@ -61,6 +64,26 @@ public class RenderingHandler
             }
 
             this.morphOverlay.render(resolution.getScaledWidth(), resolution.getScaledHeight());
+        }
+    }
+    
+    /**
+     * Draw replacement air bar for morphs that can't breathe on land
+     */
+    @SubscribeEvent
+    public void onAirRenderPre(RenderGameOverlayEvent.Pre event)
+    {
+        if (event.getType() != RenderGameOverlayEvent.ElementType.AIR || event.isCanceled())
+        {
+            return;
+        }
+        
+        if (this.hud.renderSquidAir)
+        {
+            event.setCanceled(true);
+            
+            ScaledResolution resolution = event.getResolution();
+            this.hud.renderSquidAir(resolution.getScaledWidth(), resolution.getScaledHeight());
         }
     }
 

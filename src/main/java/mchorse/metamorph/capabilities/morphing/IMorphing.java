@@ -4,6 +4,7 @@ import java.util.List;
 
 import mchorse.metamorph.api.morphs.AbstractMorph;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.util.DamageSource;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
@@ -39,6 +40,18 @@ public interface IMorphing
      */
     @SideOnly(Side.CLIENT)
     public boolean renderPlayer(EntityPlayer player, double x, double y, double z, float yaw, float partialTick);
+    
+    /**
+     * Check the last damage source received by the
+     * player. (This value is volatile and not stored)
+     */
+    public DamageSource getLastDamageSource();
+    
+    /**
+     * Record the last damage source received by the
+     * player. (This value is volatile and not stored)
+     */
+    public void setLastDamageSource(DamageSource damageSource);
 
     /**
      * Add a morph
@@ -107,6 +120,26 @@ public interface IMorphing
      * Determines what the player's new health will be if the player morphs out of a morph with very low health
      */
     public void setLastHealthRatio(float lastHealthRatio);
+    
+    /**
+     * Gets whether the player is in a morph which drowns on hand due to the Swim ability
+     */
+    public boolean getHasSquidAir();
+    
+    /**
+     * Sets whether the player is in a morph which drowns on hand due to the Swim ability
+     */
+    public void setHasSquidAir(boolean hasSquidAir);
+    
+    /**
+     * Gets the air value used when in a morph with the Swim ability
+     */
+    public int getSquidAir();
+    
+    /**
+     * Sets the air value of a morph in the Swim ability
+     */
+    public void setSquidAir(int squidAir);
 
     /**
      * Update the player 

@@ -3,6 +3,7 @@ package mchorse.metamorph.api;
 import java.util.ArrayList;
 import java.util.List;
 
+import mchorse.metamorph.ClientProxy;
 import mchorse.metamorph.Metamorph;
 import mchorse.metamorph.api.events.SpawnGhostEvent;
 import mchorse.metamorph.api.morphs.AbstractMorph;
@@ -20,6 +21,7 @@ import net.minecraftforge.event.entity.living.LivingAttackEvent;
 import net.minecraftforge.event.entity.living.LivingDeathEvent;
 import net.minecraftforge.event.entity.living.LivingSetAttackTargetEvent;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
+import net.minecraftforge.fml.common.gameevent.PlayerEvent.PlayerChangedDimensionEvent;
 import net.minecraftforge.fml.common.gameevent.TickEvent.Phase;
 import net.minecraftforge.fml.common.gameevent.TickEvent.PlayerTickEvent;
 
@@ -86,6 +88,24 @@ public class MorphHandler
             {
                 player.eyeHeight = player.getDefaultEyeHeight();
             }
+        }
+
+        /* Keep client gui state up-to-date for morphs with the
+         * Swim ability.
+         */
+        if (player.world.isRemote)
+        {
+            boolean hasSquidAir = false;
+            int squidAir = 300;
+
+            if (capability != null)
+            {
+                hasSquidAir = capability.getHasSquidAir();
+                squidAir = capability.getSquidAir();
+            }
+
+            ClientProxy.hud.renderSquidAir = hasSquidAir;
+            ClientProxy.hud.squidAir = squidAir;
         }
 
         try
@@ -238,6 +258,20 @@ public class MorphHandler
                     ((EntityLiving) event.getEntity()).setAttackTarget(null);
                 }
             }
+        }
+    }
+
+    /**
+     * Make sure the player dimension and morph dimension are synced
+     */
+    @SubscribeEvent
+    public void onPlayerChangeDimension(PlayerChangedDimensionEvent event)
+    {
+        IMorphing capability = Morphing.get(event.player);
+
+        if (capability != null && capability.getCurrentMorph() != null)
+        {
+            capability.getCurrentMorph().onChangeDimension(event.player, event.fromDim, event.toDim);
         }
     }
 
