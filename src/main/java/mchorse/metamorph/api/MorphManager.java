@@ -282,10 +282,15 @@ public class MorphManager
         /* Falling back to default method */
         String name = morph.name;
 
-        if (morph instanceof EntityMorph)
+        try
         {
-            name = EntityList.getEntityString(((EntityMorph) morph).getEntity(Minecraft.getMinecraft().world));
+            if (morph instanceof EntityMorph)
+            {
+                name = EntityList.getEntityString(((EntityMorph) morph).getEntity(Minecraft.getMinecraft().world));
+            }
         }
+        catch (Exception e)
+        {}
 
         String key = "entity." + name + ".name";
         String result = I18n.format(key);
