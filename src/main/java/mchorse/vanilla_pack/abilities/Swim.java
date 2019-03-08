@@ -16,6 +16,11 @@ public class Swim extends Ability
     @Override
     public void update(EntityLivingBase target)
     {
+        updateMotion(target);
+    }
+    
+    private void updateMotion(EntityLivingBase target)
+    {
         double speed = 0.35;
 
         if (target.isInWater())

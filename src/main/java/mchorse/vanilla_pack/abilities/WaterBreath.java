@@ -1,11 +1,11 @@
 package mchorse.vanilla_pack.abilities;
 
 import mchorse.metamorph.api.abilities.Ability;
-import net.minecraft.client.Minecraft;
+import mchorse.metamorph.capabilities.morphing.IMorphing;
+import mchorse.metamorph.capabilities.morphing.Morphing;
 import net.minecraft.entity.EntityLivingBase;
+import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.util.DamageSource;
-import net.minecraft.world.EnumDifficulty;
-import net.minecraftforge.client.GuiIngameForge;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
@@ -19,45 +19,66 @@ public class WaterBreath extends Ability
     @Override
     public void update(EntityLivingBase target)
     {
-        if (target.isInWater())
+        updateAir(target);
+    }
+
+    private void updateAir(EntityLivingBase target)
+    {
+        if (target instanceof EntityPlayer)
         {
-            target.setAir(300);
-        }
-        else
-        {
-            target.attackEntityFrom(DamageSource.DROWN, target.world.getDifficulty().equals(EnumDifficulty.PEACEFUL) ? 1.0F : 0.5F);
+            IMorphing morphing = Morphing.get((EntityPlayer) target);
+
+            if (morphing != null)
+            {
+                if (target.isInWater())
+                {
+                    morphing.setSquidAir(300);
+                    target.setAir(300);
+                }
+                else
+                {
+                    int air = morphing.getSquidAir() - 1;
+
+                    if (air <= -20)
+                    {
+                        air = 0;
+                        target.attackEntityFrom(DamageSource.DROWN, 2.0F);
+                    }
+
+                    morphing.setSquidAir(air);
+                }
+            }
         }
     }
 
     /**
-     * On morph, hide air bar in HUD
-     * 
-     * SideOnly annotation needed to remove this method from server (since 
-     * it will likely cause {@link NoClassDefFoundError} on dedicated server.
+     * On morph, show squid air
      */
     @Override
-    @SideOnly(Side.CLIENT)
     public void onMorph(EntityLivingBase target)
     {
-        if (target.world.isRemote && target == Minecraft.getMinecraft().player)
+        IMorphing morphing = Morphing.get((EntityPlayer) target);
+
+        if (morphing != null)
         {
-            GuiIngameForge.renderAir = false;
+            morphing.setSquidAir(target.getAir());
+            morphing.setHasSquidAir(true);
         }
     }
 
     /**
-     * On demorph, show back air bar in HUD
-     * 
-     * SideOnly annotation needed to remove this method from server (since 
-     * it will likely cause {@link NoClassDefFoundError} on dedicated server.
+     * On demorph, show regular player air again
      */
     @Override
     @SideOnly(Side.CLIENT)
     public void onDemorph(EntityLivingBase target)
     {
-        if (target.world.isRemote && target == Minecraft.getMinecraft().player)
+        IMorphing morphing = Morphing.get((EntityPlayer) target);
+
+        if (morphing != null)
         {
-            GuiIngameForge.renderAir = true;
+            target.setAir(morphing.getSquidAir());
+            morphing.setHasSquidAir(false);
         }
     }
 }
