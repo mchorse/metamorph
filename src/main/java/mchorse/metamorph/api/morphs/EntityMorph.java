@@ -488,7 +488,12 @@ public class EntityMorph extends AbstractMorph
     {
         if (this.settings.updates)
         {
+            boolean wasInvulnerable = target.isEntityInvulnerable(new DamageSource(""));
+            target.setEntityInvulnerable(true);
+            
             this.entity.onUpdate();
+            
+            target.setEntityInvulnerable(wasInvulnerable);
         }
     }
 
