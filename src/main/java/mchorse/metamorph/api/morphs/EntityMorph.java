@@ -343,6 +343,7 @@ public class EntityMorph extends AbstractMorph
         }
 
         /* Update entity */
+        target.setEntityInvulnerable(true);
         this.updateEntity(target);
         entity.deathTime = target.deathTime;
         entity.hurtTime = target.hurtTime;
