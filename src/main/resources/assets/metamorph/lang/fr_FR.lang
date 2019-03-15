@@ -1,0 +1,80 @@
+#PARSE_ESCAPES
+
+entity.metamorph.Morph.name=Morph
+
+# Keyboard bindings strings
+key.metamorph=Metamorph
+
+key.metamorph.action=Use action
+key.metamorph.creative_menu=Ouvrir le menu morph créatif
+key.metamorph.survival_menu=Ouvrir le menu morph survie
+
+key.metamorph.morph.next=Morph suivante
+key.metamorph.morph.prev=Morph précédente
+key.metamorph.morph.next_var=Variation de morph suivante
+key.metamorph.morph.prev_var=Variation de morph précedente
+key.metamorph.morph.select=Selectionner le morph actuel
+key.metamorph.morph.demorph=Demorph (Reprendre son apparence normale)
+
+# GUI
+metamorph.gui.creative_title=Menu Morph Créatif
+metamorph.gui.survival_title=Menu Morph Survie
+metamorph.gui.morph=Morph
+metamorph.gui.acquire=Choisir
+metamorph.gui.close=Fermer
+metamorph.gui.remove=Retirer
+metamorph.gui.favorite=Mettre en favori
+metamorph.gui.unfavorite=Retirer des favoris
+metamorph.gui.search=Rechercher
+metamorph.gui.only_favorites=Montrer les favoris
+metamorph.gui.all_morphs=Montrer tout
+metamorph.gui.no_morph=Aucun Morph selectionné
+metamorph.gui.selected=Selectionné
+
+metamorph.gui.from_morph=From morph
+metamorph.gui.edit=Editer
+metamorph.gui.finish=Terminer
+metamorph.gui.panels.nbt_data=données NBT
+metamorph.gui.panels.nbt=données NBT
+metamorph.gui.panels.name=Nom
+metamorph.gui.panels.username=Nom d'utilisateur
+metamorph.gui.panels.updating=Mise à jour...
+
+metamorph.gui.status.tight_space=Il n'y a pas assez d'expace pour le morphing ici
+
+# Config
+metamorph.config.general.title=Général
+metamorph.config.keep_morphs=Conserver les morphs après la mort
+metamorph.config.prevent_ghosts=Désactiver le fantôme
+metamorph.config.hide_username=Masquer le nom utilisateur
+metamorph.config.prevent_kill_acquire=Désactiver l'acquisition du morph en tuant le mob
+metamorph.config.show_demorph=Montrer la demorph
+metamorph.config.disable_pov=Déactiver POV
+metamorph.config.disable_health=Ne pas changer les PV
+metamorph.config.disable_morph_animation=Désactiver l'animation de morph
+metamorph.config.disable_morph_disguise=Désactiver l'hostilité des morphs
+metamorph.config.acquire_immediately=Acquérir le morph immédiatement
+metamorph.config.morph_in_tight_spaces=Autoriser le morphing dans des espaces restreints
+
+# Commands
+metamorph.commands.morph=Commande morph. Cette commande permet au joueur de se transformer en un morph.\n\n/morph <username> [morph_name] [data_tag]
+metamorph.commands.acquire_morph=Commande pour l'acquisition de morph. Cette commande permet d'attribuer au joueur un morph parmis les morphs acquis.\n\n/morph <username> <morph_name> [data_tag]
+metamorph.commands.metamorph=Commande Metamorph serveur. Cette commande permet la gestion de Metamoprh côté serveur.\n\n/metamorph reload <blacklist|morphs> - reloads Metamorph's blacklist or morph configuration
+
+metamorph.error.morph.not_player=L'entité %s n'est pas un joueur!
+metamorph.error.morph.nbt=Une erreur est surnevue lors de l'analyse des balises de données:\n%s
+metamorph.error.acquire=Impossible d'acquérir le morph de nom %s!
+metamorph.success.morph=Le joueur %s a été transformé en morph %s!
+metamorph.success.demorph=Le joueur %s a retrouvé son apparence !
+metamorph.success.acquire=Le joueur %s a acquis le morph %s !
+
+# Morph categories
+morph.category.unknown=Morphs inconnus
+morph.category.unsorted=Morphs non triés
+morph.category.animal=Morphs Animaux
+morph.category.blocks=Morphs Blocks
+morph.category.boss=Morphs Boss
+morph.category.acquired=Vos morphs
+morph.category.hostile=Morphs Hostiles
+morph.category.players=Morphs joueurs
+morph.category.modded=Morphs de %s
