@@ -323,9 +323,15 @@ public class Morphing implements IMorphing
     public void copy(IMorphing morphing, EntityPlayer player)
     {
         this.acquiredMorphs.addAll(morphing.getAcquiredMorphs());
-        NBTTagCompound morphNBT = new NBTTagCompound();
-        morphing.getCurrentMorph().toNBT(morphNBT);
-        this.setCurrentMorph(MorphManager.INSTANCE.morphFromNBT(morphNBT), player, true);
+        if (morphing.getCurrentMorph() != null) {
+            NBTTagCompound morphNBT = new NBTTagCompound();
+            morphing.getCurrentMorph().toNBT(morphNBT);
+            this.setCurrentMorph(MorphManager.INSTANCE.morphFromNBT(morphNBT), player, true);
+        }
+        else
+        {
+            this.setCurrentMorph(null, player, true);
+        }
     }
 
     @Override
