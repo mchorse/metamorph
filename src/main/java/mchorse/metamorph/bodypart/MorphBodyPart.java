@@ -21,7 +21,7 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 public class MorphBodyPart implements IBodyPart
 {
     public AbstractMorph morph;
-    public ItemStack[] slots = new ItemStack[6];
+    public ItemStack[] slots = new ItemStack[] {ItemStack.EMPTY, ItemStack.EMPTY, ItemStack.EMPTY, ItemStack.EMPTY, ItemStack.EMPTY, ItemStack.EMPTY};
     public float[] translate = new float[3];
     public float[] scale = new float[] {1, 1, 1};
     public float[] rotate = new float[] {180F, 0F, 0F};
@@ -147,7 +147,7 @@ public class MorphBodyPart implements IBodyPart
             for (int i = 0, c = items.tagCount(); i < c; i++)
             {
                 NBTTagCompound compound = items.getCompoundTagAt(i);
-                ItemStack stack = ItemStack.loadItemStackFromNBT(compound);
+                ItemStack stack = new ItemStack(compound);
 
                 this.slots[i] = stack;
             }
