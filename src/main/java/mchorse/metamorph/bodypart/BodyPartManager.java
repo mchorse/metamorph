@@ -84,6 +84,17 @@ public class BodyPartManager
         return super.equals(obj);
     }
 
+    public void copy(BodyPartManager manager, boolean isRemote)
+    {
+        this.reset();
+        this.parts.clear();
+
+        for (BodyPart part : manager.parts)
+        {
+            this.parts.add(part.clone(isRemote));
+        }
+    }
+
     /* NBT */
 
     public NBTTagList toNBT()
