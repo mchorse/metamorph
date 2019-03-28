@@ -8,6 +8,8 @@ import mchorse.metamorph.api.MorphManager;
 import mchorse.metamorph.api.morphs.AbstractMorph;
 import net.minecraft.client.Minecraft;
 import net.minecraft.entity.EntityLivingBase;
+import net.minecraft.inventory.EntityEquipmentSlot;
+import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
 import net.minecraftforge.fml.relauncher.Side;
@@ -19,6 +21,7 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 public class MorphBodyPart implements IBodyPart
 {
     public AbstractMorph morph;
+    public ItemStack[] slots = new ItemStack[6];
     public float[] translate = new float[3];
     public float[] scale = new float[] {1, 1, 1};
     public float[] rotate = new float[] {180F, 0F, 0F};
@@ -35,6 +38,20 @@ public class MorphBodyPart implements IBodyPart
         this.entity.rotationYaw = this.entity.prevRotationYaw;
         this.entity.rotationYawHead = this.entity.prevRotationYawHead;
         this.entity.onGround = true;
+    }
+
+    @SideOnly(Side.CLIENT)
+    public void updateEntity()
+    {
+        if (this.entity == null)
+        {
+            return;
+        }
+
+        for (int i = 0; i < this.slots.length; i++)
+        {
+            this.entity.setItemStackToSlot(EntityEquipmentSlot.values()[i], this.slots[i]);
+        }
     }
 
     @Override
@@ -123,6 +140,19 @@ public class MorphBodyPart implements IBodyPart
             this.morph = MorphManager.INSTANCE.morphFromNBT(tag.getCompoundTag("Morph"));
         }
 
+        if (tag.hasKey("Items", 9))
+        {
+            NBTTagList items = tag.getTagList("Items", 10);
+
+            for (int i = 0, c = items.tagCount(); i < c; i++)
+            {
+                NBTTagCompound compound = items.getCompoundTagAt(i);
+                ItemStack stack = ItemStack.loadItemStackFromNBT(compound);
+
+                this.slots[i] = stack;
+            }
+        }
+
         NBTUtils.readFloatList(tag.getTagList("T", 5), this.translate);
         NBTUtils.readFloatList(tag.getTagList("S", 5), this.scale);
         NBTUtils.readFloatList(tag.getTagList("R", 5), this.rotate);
@@ -140,6 +170,23 @@ public class MorphBodyPart implements IBodyPart
             this.morph.toNBT(morph);
             tag.setTag("Morph", morph);
         }
+
+        NBTTagList list = new NBTTagList();
+
+        for (int i = 0; i < this.slots.length; i++)
+        {
+            NBTTagCompound compound = new NBTTagCompound();
+            ItemStack stack = this.slots[i];
+
+            if (stack != null)
+            {
+                stack.writeToNBT(compound);
+            }
+
+            list.appendTag(compound);
+        }
+
+        tag.setTag("Items", list);
 
         if (this.translate[0] != 0 || this.translate[1] != 0 || this.translate[2] != 0)
         {
