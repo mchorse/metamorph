@@ -129,6 +129,11 @@ public class MorphBodyPart implements IBodyPart
         part.rotate[2] = this.rotate[2];
         part.useTarget = this.useTarget;
 
+        for (int i = 0; i < this.slots.length; i++)
+        {
+            part.slots[i] = this.slots[i];
+        }
+
         return part;
     }
 
