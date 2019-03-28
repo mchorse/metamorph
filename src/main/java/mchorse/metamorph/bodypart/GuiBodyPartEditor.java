@@ -95,7 +95,7 @@ public class GuiBodyPartEditor extends GuiElement implements IInventoryPicker
         {
             if (this.morphPicker == null)
             {
-                IMorphing morphing = Morphing.get(this.mc.thePlayer);
+                IMorphing morphing = Morphing.get(this.mc.player);
 
                 this.morphPicker = new GuiCreativeMorphsMenu(mc, 6, null, morphing);
                 this.morphPicker.resizer().parent(this.area).set(0, 0, 0, 0).w(1, 0).h(1, 0);
@@ -188,7 +188,7 @@ public class GuiBodyPartEditor extends GuiElement implements IInventoryPicker
         this.children.add(this.editor);
 
         /* Inventory */
-        this.inventory = new GuiInventory(this, mc.thePlayer);
+        this.inventory = new GuiInventory(this, mc.player);
 
         for (int i = 0; i < this.slots.length; i++)
         {
@@ -235,7 +235,7 @@ public class GuiBodyPartEditor extends GuiElement implements IInventoryPicker
 
     public void startEditing(BodyPartManager manager)
     {
-        this.inventory.player = this.mc.thePlayer;
+        this.inventory.player = this.mc.player;
         this.parts = manager;
 
         this.bodyParts.setList(manager.parts);
