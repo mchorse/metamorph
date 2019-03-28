@@ -196,6 +196,43 @@ public class MorphHandler
             MinecraftForge.EVENT_BUS.post(new SpawnGhostEvent.Post(player, morph));
         }
     }
+    
+    /**
+     * When an EntityMorph is updated, the entity may attempt to hurt the player.
+     * This should not be allowed.
+     */
+    @SubscribeEvent
+    public void onMorphAttackPlayer(LivingAttackEvent event)
+    {
+        Entity target = event.getEntity();
+        
+        if (target instanceof EntityPlayer)
+        {
+            EntityPlayer player = (EntityPlayer)target;
+            IMorphing capability = Morphing.get(player);
+            
+            if (capability == null || !capability.isMorphed())
+            {
+                return;
+            }
+            
+            AbstractMorph morph = capability.getCurrentMorph();
+            
+            if (morph == null || !(morph instanceof mchorse.metamorph.api.morphs.EntityMorph))
+            {
+                return;
+            }
+            
+            mchorse.metamorph.api.morphs.EntityMorph entityMorph = (mchorse.metamorph.api.morphs.EntityMorph)morph;
+            
+            if (entityMorph.isUpdatingEntity())
+            {
+                // Unfortunately, entities sometimes do damage to the player without telling the player where the damage came from
+                // Luckily, entities are ticked in sequence, so we know for certain the player's morph entity is responsible for this
+                event.setCanceled(true);
+            }
+        }
+    }
 
     /**
      * When player is morphed, he can deal an damage or effect onto the enemy. 
