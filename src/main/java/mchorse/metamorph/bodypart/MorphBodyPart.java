@@ -38,6 +38,8 @@ public class MorphBodyPart implements IBodyPart
         this.entity.rotationYaw = this.entity.prevRotationYaw;
         this.entity.rotationYawHead = this.entity.prevRotationYawHead;
         this.entity.onGround = true;
+
+        this.updateEntity();
     }
 
     @SideOnly(Side.CLIENT)
