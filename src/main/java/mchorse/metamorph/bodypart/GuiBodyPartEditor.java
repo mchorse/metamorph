@@ -67,15 +67,15 @@ public class GuiBodyPartEditor extends GuiElement implements IInventoryPicker
 
         this.createChildren();
 
-        this.tx = new GuiTrackpadElement(mc, I18n.format("blockbuster.gui.model_block.x"), (value) -> this.part.part.translate[0] = value);
-        this.ty = new GuiTrackpadElement(mc, I18n.format("blockbuster.gui.model_block.y"), (value) -> this.part.part.translate[1] = value);
-        this.tz = new GuiTrackpadElement(mc, I18n.format("blockbuster.gui.model_block.z"), (value) -> this.part.part.translate[2] = value);
-        this.sx = new GuiTrackpadElement(mc, I18n.format("blockbuster.gui.model_block.x"), (value) -> this.part.part.scale[0] = value);
-        this.sy = new GuiTrackpadElement(mc, I18n.format("blockbuster.gui.model_block.y"), (value) -> this.part.part.scale[1] = value);
-        this.sz = new GuiTrackpadElement(mc, I18n.format("blockbuster.gui.model_block.z"), (value) -> this.part.part.scale[2] = value);
-        this.rx = new GuiTrackpadElement(mc, I18n.format("blockbuster.gui.model_block.x"), (value) -> this.part.part.rotate[0] = value);
-        this.ry = new GuiTrackpadElement(mc, I18n.format("blockbuster.gui.model_block.y"), (value) -> this.part.part.rotate[1] = value);
-        this.rz = new GuiTrackpadElement(mc, I18n.format("blockbuster.gui.model_block.z"), (value) -> this.part.part.rotate[2] = value);
+        this.tx = new GuiTrackpadElement(mc, I18n.format("metamorph.gui.x"), (value) -> this.part.part.translate[0] = value);
+        this.ty = new GuiTrackpadElement(mc, I18n.format("metamorph.gui.y"), (value) -> this.part.part.translate[1] = value);
+        this.tz = new GuiTrackpadElement(mc, I18n.format("metamorph.gui.z"), (value) -> this.part.part.translate[2] = value);
+        this.sx = new GuiTrackpadElement(mc, I18n.format("metamorph.gui.x"), (value) -> this.part.part.scale[0] = value);
+        this.sy = new GuiTrackpadElement(mc, I18n.format("metamorph.gui.y"), (value) -> this.part.part.scale[1] = value);
+        this.sz = new GuiTrackpadElement(mc, I18n.format("metamorph.gui.z"), (value) -> this.part.part.scale[2] = value);
+        this.rx = new GuiTrackpadElement(mc, I18n.format("metamorph.gui.x"), (value) -> this.part.part.rotate[0] = value);
+        this.ry = new GuiTrackpadElement(mc, I18n.format("metamorph.gui.y"), (value) -> this.part.part.rotate[1] = value);
+        this.rz = new GuiTrackpadElement(mc, I18n.format("metamorph.gui.z"), (value) -> this.part.part.rotate[2] = value);
 
         this.tx.resizer().set(0, 35, 60, 20).parent(this.area).x(0.5F, -95).y(1, -105);
         this.ty.resizer().set(0, 25, 60, 20).relative(this.tx.resizer());
@@ -91,7 +91,7 @@ public class GuiBodyPartEditor extends GuiElement implements IInventoryPicker
 
         this.bodyParts = new GuiBodyPartListElement(mc, (part) -> this.setPart(part));
 
-        this.pickMorph = GuiButtonElement.button(mc, I18n.format("blockbuster.gui.pick"), (b) ->
+        this.pickMorph = GuiButtonElement.button(mc, I18n.format("metamorph.gui.pick"), (b) ->
         {
             if (this.morphPicker == null)
             {
@@ -115,7 +115,7 @@ public class GuiBodyPartEditor extends GuiElement implements IInventoryPicker
             this.morphPicker.setVisible(true);
         });
 
-        this.addPart = GuiButtonElement.button(mc, I18n.format("blockbuster.gui.add"), (b) ->
+        this.addPart = GuiButtonElement.button(mc, I18n.format("metamorph.gui.add"), (b) ->
         {
             BodyPart part = this.bodyParts.getCurrent();
             String limb = this.limbs.getCurrent();
@@ -144,7 +144,7 @@ public class GuiBodyPartEditor extends GuiElement implements IInventoryPicker
             this.setPart(part);
         });
 
-        this.removePart = GuiButtonElement.button(mc, I18n.format("blockbuster.gui.remove"), (b) ->
+        this.removePart = GuiButtonElement.button(mc, I18n.format("metamorph.gui.remove"), (b) ->
         {
             if (this.part == null)
             {
@@ -171,7 +171,7 @@ public class GuiBodyPartEditor extends GuiElement implements IInventoryPicker
             }
         });
 
-        this.useTarget = GuiButtonElement.checkbox(mc, I18n.format("blockbuster.gui.builder.use_target"), false, (b) ->
+        this.useTarget = GuiButtonElement.checkbox(mc, I18n.format("metamorph.gui.use_target"), false, (b) ->
         {
             if (this.part != null) this.part.part.useTarget = b.button.isChecked();
         });
@@ -338,16 +338,16 @@ public class GuiBodyPartEditor extends GuiElement implements IInventoryPicker
         this.inventory.draw(mouseX, mouseY, partialTicks);
 
         Gui.drawRect(this.bodyParts.area.x, this.bodyParts.area.y, this.bodyParts.area.getX(1), this.bodyParts.area.getY(1), 0x88000000);
-        this.font.drawStringWithShadow(I18n.format("blockbuster.gui.builder.body_parts"), this.bodyParts.area.x, this.bodyParts.area.y - 12, 0xffffff);
+        this.font.drawStringWithShadow(I18n.format("metamorph.gui.body_parts"), this.bodyParts.area.x, this.bodyParts.area.y - 12, 0xffffff);
 
         if (this.editor.isVisible())
         {
             Gui.drawRect(this.limbs.area.x, this.limbs.area.y, this.limbs.area.getX(1), this.limbs.area.getY(1), 0x88000000);
-            this.font.drawStringWithShadow(I18n.format("blockbuster.gui.builder.limbs"), this.limbs.area.x, this.limbs.area.y - 12, 0xffffff);
+            this.font.drawStringWithShadow(I18n.format("metamorph.gui.limbs"), this.limbs.area.x, this.limbs.area.y - 12, 0xffffff);
 
-            this.font.drawStringWithShadow(I18n.format("blockbuster.gui.model_block.translate"), this.tx.area.x, this.tx.area.y - 12, 0xffffff);
-            this.font.drawStringWithShadow(I18n.format("blockbuster.gui.model_block.scale"), this.sx.area.x, this.sx.area.y - 12, 0xffffff);
-            this.font.drawStringWithShadow(I18n.format("blockbuster.gui.model_block.rotate"), this.rx.area.x, this.rx.area.y - 12, 0xffffff);
+            this.font.drawStringWithShadow(I18n.format("metamorph.gui.translate"), this.tx.area.x, this.tx.area.y - 12, 0xffffff);
+            this.font.drawStringWithShadow(I18n.format("metamorph.gui.scale"), this.sx.area.x, this.sx.area.y - 12, 0xffffff);
+            this.font.drawStringWithShadow(I18n.format("metamorph.gui.rotate"), this.rx.area.x, this.rx.area.y - 12, 0xffffff);
         }
 
         super.draw(tooltip, mouseX, mouseY, partialTicks);
