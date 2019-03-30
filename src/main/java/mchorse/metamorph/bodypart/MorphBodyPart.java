@@ -6,6 +6,7 @@ import mchorse.mclib.utils.DummyEntity;
 import mchorse.mclib.utils.NBTUtils;
 import mchorse.metamorph.api.MorphManager;
 import mchorse.metamorph.api.morphs.AbstractMorph;
+import mchorse.metamorph.capabilities.morphing.IMorphing;
 import net.minecraft.client.Minecraft;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.inventory.EntityEquipmentSlot;
@@ -97,7 +98,7 @@ public class MorphBodyPart implements IBodyPart
 
     @Override
     @SideOnly(Side.CLIENT)
-    public void update(EntityLivingBase entity)
+    public void update(EntityLivingBase entity, IMorphing cap)
     {
         entity = this.useTarget ? entity : this.entity;
 
@@ -110,7 +111,7 @@ public class MorphBodyPart implements IBodyPart
 
             if (this.morph != null)
             {
-                this.morph.update(entity, null);
+                this.morph.update(entity, cap);
             }
         }
     }
