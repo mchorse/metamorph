@@ -17,6 +17,19 @@ key.metamorph.morph.select=选择目前的伪装
 key.metamorph.morph.demorph=取消伪装（变回玩家）
 
 # GUI
+metamorph.gui.x=X
+metamorph.gui.y=Y
+metamorph.gui.z=Z
+metamorph.gui.pick=选择伪装
+metamorph.gui.add=添加
+metamorph.gui.remove=移除
+metamorph.gui.use_target=使用目标
+metamorph.gui.body_parts=身体部分
+metamorph.gui.limbs=肢体
+metamorph.gui.translate=平移
+metamorph.gui.scale=缩放
+metamorph.gui.rotate=倾斜
+
 metamorph.gui.creative_title=创造模式伪装菜单
 metamorph.gui.survival_title=生存模式伪装菜单
 metamorph.gui.morph=伪装
