@@ -3,6 +3,7 @@ package mchorse.metamorph.bodypart;
 import java.util.ArrayList;
 import java.util.List;
 
+import mchorse.metamorph.capabilities.morphing.IMorphing;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
@@ -63,11 +64,11 @@ public class BodyPartManager
      * Update body limbs 
      */
     @SideOnly(Side.CLIENT)
-    public void updateBodyLimbs(EntityLivingBase target)
+    public void updateBodyLimbs(EntityLivingBase target, IMorphing cap)
     {
         for (BodyPart part : this.parts)
         {
-            part.update(target);
+            part.update(target, cap);
         }
     }
 
