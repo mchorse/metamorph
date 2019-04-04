@@ -123,7 +123,7 @@ public class MorphBodyPart implements IBodyPart
         {
             MorphBodyPart morph = (MorphBodyPart) part;
 
-            if (this.morph == null || !this.morph.canMerge(morph.morph))
+            if (this.morph == null || !this.morph.canMerge(morph.morph, isRemote))
             {
                 this.morph = morph.morph.clone(isRemote);
             }
