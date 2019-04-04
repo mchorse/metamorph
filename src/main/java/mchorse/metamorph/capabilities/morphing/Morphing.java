@@ -267,7 +267,7 @@ public class Morphing implements IMorphing
             this.morph.demorph(player);
         }
 
-        this.setMorph(null, player.world.isRemote);
+        this.setMorph(null, player == null ? false : player.world.isRemote);
     }
 
     /**
