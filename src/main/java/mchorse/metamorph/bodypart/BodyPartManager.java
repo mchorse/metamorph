@@ -96,6 +96,27 @@ public class BodyPartManager
         }
     }
 
+    public void merge(BodyPartManager manager, boolean isRemote)
+    {
+        if (manager.parts.size() != this.parts.size())
+        {
+            this.copy(manager, isRemote);
+
+            return;
+        }
+
+        for (int i = 0, c = this.parts.size(); i < c; i++)
+        {
+            BodyPart part = this.parts.get(i);
+            BodyPart other = manager.parts.get(i);
+
+            if (!part.canMerge(other.part, isRemote))
+            {
+                this.parts.set(i, other.clone(isRemote));
+            }
+        }
+    }
+
     /* NBT */
 
     public NBTTagList toNBT()

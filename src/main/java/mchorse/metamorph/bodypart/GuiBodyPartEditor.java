@@ -215,7 +215,7 @@ public class GuiBodyPartEditor extends GuiElement implements IInventoryPicker
 
         for (int i = 0; i < this.slots.length; i++)
         {
-            this.slots[i].update(this.area.getX(0.5F) + 30 * i - 90, this.area.y + 10);
+            this.slots[i].update(this.area.getX(0.5F) + 30 * i - 85, this.area.y + 10);
         }
 
         this.inventory.update(this.area.getX(0.5F), this.area.getY(0.5F) - 40);
