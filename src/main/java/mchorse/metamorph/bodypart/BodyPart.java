@@ -35,6 +35,12 @@ public class BodyPart implements IBodyPart
     }
 
     @Override
+    public boolean canMerge(IBodyPart part, boolean isRemote)
+    {
+        return this.part == null ? false : this.part.canMerge(part, isRemote);
+    }
+
+    @Override
     public boolean equals(Object obj)
     {
         boolean result = super.equals(obj);

@@ -20,6 +20,8 @@ public interface IBodyPart
     @SideOnly(Side.CLIENT)
     public void update(EntityLivingBase entity, IMorphing cap);
 
+    public boolean canMerge(IBodyPart part, boolean isRemote);
+
     public void toNBT(NBTTagCompound tag);
 
     public void fromNBT(NBTTagCompound tag);

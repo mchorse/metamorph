@@ -43,7 +43,7 @@ public class Morphing implements IMorphing
      * Animation timer 
      */
     private int animation;
-    
+
     /**
      * The last damage source received by the player
      */
@@ -54,13 +54,13 @@ public class Morphing implements IMorphing
      * very close to zero, and retrieved when the fraction is meaningful again
      */
     private float lastHealthRatio;
-    
+
     /**
      * Whether or not the current player is in a morph which can drown on land
      * due to having the Swim ability
      */
     private boolean hasSquidAir = false;
-    
+
     /**
      * The air value used for morphs with the Swim ability in place of regular
      * player air
@@ -168,13 +168,13 @@ public class Morphing implements IMorphing
 
         return true;
     }
-    
+
     @Override
     public DamageSource getLastDamageSource()
     {
         return lastDamageSource;
     }
-    
+
     @Override
     public void setLastDamageSource(DamageSource damageSource)
     {
@@ -246,7 +246,7 @@ public class Morphing implements IMorphing
                 this.morph.demorph(player);
             }
 
-            this.setMorph(morph);
+            this.setMorph(morph, player.world.isRemote);
 
             if (player != null)
             {
@@ -267,15 +267,15 @@ public class Morphing implements IMorphing
             this.morph.demorph(player);
         }
 
-        this.setMorph(null);
+        this.setMorph(null, player.world.isRemote);
     }
 
     /**
      * Set current morph, as well as update animation information  
      */
-    protected void setMorph(AbstractMorph morph)
+    protected void setMorph(AbstractMorph morph, boolean isRemote)
     {
-        if (this.morph == null || (this.morph != null && !this.morph.canMerge(morph)))
+        if (this.morph == null || (this.morph != null && !this.morph.canMerge(morph, isRemote)))
         {
             if (!Metamorph.proxy.config.disable_morph_animation)
             {
@@ -323,7 +323,8 @@ public class Morphing implements IMorphing
     public void copy(IMorphing morphing, EntityPlayer player)
     {
         this.acquiredMorphs.addAll(morphing.getAcquiredMorphs());
-        if (morphing.getCurrentMorph() != null) {
+        if (morphing.getCurrentMorph() != null)
+        {
             NBTTagCompound morphNBT = new NBTTagCompound();
             morphing.getCurrentMorph().toNBT(morphNBT);
             this.setCurrentMorph(MorphManager.INSTANCE.morphFromNBT(morphNBT), player, true);
@@ -345,7 +346,7 @@ public class Morphing implements IMorphing
     {
         this.lastHealthRatio = lastHealthRatio;
     }
-    
+
     @Override
     public boolean getHasSquidAir()
     {
@@ -357,7 +358,7 @@ public class Morphing implements IMorphing
     {
         this.hasSquidAir = hasSquidAir;
     }
-    
+
     @Override
     public int getSquidAir()
     {
