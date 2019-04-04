@@ -127,6 +127,24 @@ public class MorphBodyPart implements IBodyPart
             {
                 this.morph = morph.morph == null ? null : morph.morph.clone(isRemote);
             }
+
+            this.translate[0] = morph.translate[0];
+            this.translate[1] = morph.translate[1];
+            this.translate[2] = morph.translate[2];
+            this.scale[0] = morph.scale[0];
+            this.scale[1] = morph.scale[1];
+            this.scale[2] = morph.scale[2];
+            this.rotate[0] = morph.rotate[0];
+            this.rotate[1] = morph.rotate[1];
+            this.rotate[2] = morph.rotate[2];
+            this.useTarget = morph.useTarget;
+
+            for (int i = 0; i < morph.slots.length; i++)
+            {
+                this.slots[i] = morph.slots[i];
+            }
+
+            return true;
         }
 
         return false;

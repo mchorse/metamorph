@@ -37,7 +37,21 @@ public class BodyPart implements IBodyPart
     @Override
     public boolean canMerge(IBodyPart part, boolean isRemote)
     {
-        return this.part == null ? false : this.part.canMerge(part, isRemote);
+        if (part instanceof BodyPart)
+        {
+            BodyPart aPart = (BodyPart) part;
+
+            this.limb = aPart.limb;
+
+            if (this.part == null || !this.part.canMerge(aPart.part, isRemote))
+            {
+                this.part = aPart.part == null ? null : aPart.part.clone(isRemote);
+            }
+
+            return true;
+        }
+
+        return false;
     }
 
     @Override
