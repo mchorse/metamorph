@@ -116,6 +116,22 @@ public class MorphBodyPart implements IBodyPart
         }
     }
 
+    @Override
+    public boolean canMerge(IBodyPart part, boolean isRemote)
+    {
+        if (part instanceof MorphBodyPart)
+        {
+            MorphBodyPart morph = (MorphBodyPart) part;
+
+            if (this.morph == null || !this.morph.canMerge(morph.morph))
+            {
+                this.morph = morph.morph.clone(isRemote);
+            }
+        }
+
+        return false;
+    }
+
     public MorphBodyPart clone(boolean isRemote)
     {
         MorphBodyPart part = new MorphBodyPart();
