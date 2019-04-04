@@ -125,7 +125,7 @@ public class MorphBodyPart implements IBodyPart
 
             if (this.morph == null || !this.morph.canMerge(morph.morph, isRemote))
             {
-                this.morph = morph.morph.clone(isRemote);
+                this.morph = morph.morph == null ? null : morph.morph.clone(isRemote);
             }
         }
 
