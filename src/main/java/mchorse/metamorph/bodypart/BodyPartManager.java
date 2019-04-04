@@ -110,7 +110,7 @@ public class BodyPartManager
             BodyPart part = this.parts.get(i);
             BodyPart other = manager.parts.get(i);
 
-            if (!part.canMerge(other.part, isRemote))
+            if (!part.canMerge(other, isRemote))
             {
                 this.parts.set(i, other.clone(isRemote));
             }
