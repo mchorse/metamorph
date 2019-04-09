@@ -54,7 +54,7 @@ public class GuiBodyPartEditor extends GuiMorphPanel<AbstractMorph> implements I
     private GuiTrackpadElement rz;
 
     private GuiStringListElement limbs;
-    private GuiElements<IGuiElement> editor = new GuiElements<IGuiElement>();
+    private GuiElements<IGuiElement> elements = new GuiElements<IGuiElement>();
 
     private BodyPartManager parts;
     private BodyPart part;
@@ -185,9 +185,9 @@ public class GuiBodyPartEditor extends GuiMorphPanel<AbstractMorph> implements I
         this.bodyParts.resizer().parent(this.area).set(10, 50, 105, 0).h(1, -85);
         this.useTarget.resizer().parent(this.area).set(0, 0, 60, 11).x(1, -115).y(1, -49);
 
-        this.editor.add(this.tx, this.ty, this.tz, this.sx, this.sy, this.sz, this.rx, this.ry, this.rz, this.limbs, this.pickMorph, this.useTarget);
+        this.elements.add(this.tx, this.ty, this.tz, this.sx, this.sy, this.sz, this.rx, this.ry, this.rz, this.limbs, this.pickMorph, this.useTarget);
         this.children.add(this.addPart, this.removePart, this.bodyParts);
-        this.children.add(this.editor);
+        this.children.add(this.elements);
 
         /* Inventory */
         this.inventory = new GuiInventory(this, mc.thePlayer);
@@ -267,7 +267,7 @@ public class GuiBodyPartEditor extends GuiMorphPanel<AbstractMorph> implements I
     protected void setPart(BodyPart part)
     {
         this.part = part;
-        this.editor.setVisible(part != null);
+        this.elements.setVisible(part != null);
 
         if (this.part != null)
         {
@@ -355,7 +355,7 @@ public class GuiBodyPartEditor extends GuiMorphPanel<AbstractMorph> implements I
         Gui.drawRect(this.bodyParts.area.x, this.bodyParts.area.y, this.bodyParts.area.getX(1), this.bodyParts.area.getY(1), 0x88000000);
         this.font.drawStringWithShadow(I18n.format("metamorph.gui.body_parts"), this.bodyParts.area.x, this.bodyParts.area.y - 12, 0xffffff);
 
-        if (this.editor.isVisible())
+        if (this.elements.isVisible())
         {
             Gui.drawRect(this.limbs.area.x, this.limbs.area.y, this.limbs.area.getX(1), this.limbs.area.getY(1), 0x88000000);
             this.font.drawStringWithShadow(I18n.format("metamorph.gui.limbs"), this.limbs.area.x, this.limbs.area.y - 12, 0xffffff);
