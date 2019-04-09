@@ -23,7 +23,7 @@ import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
 @SideOnly(Side.CLIENT)
-@SuppressWarnings({"rawtypes"})
+@SuppressWarnings({"rawtypes", "unchecked"})
 public class GuiAbstractMorph<T extends AbstractMorph> extends GuiElement
 {
     public static final ResourceLocation PANEL_ICONS = new ResourceLocation("metamorph:textures/gui/icons.png");
@@ -56,8 +56,6 @@ public class GuiAbstractMorph<T extends AbstractMorph> extends GuiElement
         this.buttons = new GuiElements<GuiButtonElement<GuiTextureButton>>();
         GuiDrawable drawable = new GuiDrawable((v) ->
         {
-            this.drawGradientRect(this.area.x, this.area.getY(1) - 20, this.area.getX(1), this.area.getY(1), 0x00000000, 0x88000000);
-
             for (int i = 0, c = this.panels.size(); i < c; i++)
             {
                 if (this.view.delegate == this.panels.get(i))
