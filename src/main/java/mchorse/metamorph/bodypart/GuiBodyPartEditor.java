@@ -6,7 +6,6 @@ import java.util.function.Consumer;
 
 import mchorse.mclib.client.gui.framework.GuiTooltip;
 import mchorse.mclib.client.gui.framework.elements.GuiButtonElement;
-import mchorse.mclib.client.gui.framework.elements.GuiElement;
 import mchorse.mclib.client.gui.framework.elements.GuiElements;
 import mchorse.mclib.client.gui.framework.elements.GuiTrackpadElement;
 import mchorse.mclib.client.gui.framework.elements.IGuiElement;
@@ -16,8 +15,11 @@ import mchorse.mclib.client.gui.utils.Area;
 import mchorse.mclib.client.gui.widgets.GuiInventory;
 import mchorse.mclib.client.gui.widgets.GuiInventory.IInventoryPicker;
 import mchorse.mclib.client.gui.widgets.GuiSlot;
+import mchorse.metamorph.api.morphs.AbstractMorph;
 import mchorse.metamorph.capabilities.morphing.IMorphing;
 import mchorse.metamorph.capabilities.morphing.Morphing;
+import mchorse.metamorph.client.gui.editor.GuiAbstractMorph;
+import mchorse.metamorph.client.gui.editor.GuiMorphPanel;
 import mchorse.metamorph.client.gui.elements.GuiCreativeMorphs;
 import mchorse.metamorph.client.gui.elements.GuiCreativeMorphsMenu;
 import net.minecraft.client.Minecraft;
@@ -31,7 +33,7 @@ import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
 @SideOnly(Side.CLIENT)
-public class GuiBodyPartEditor extends GuiElement implements IInventoryPicker
+public class GuiBodyPartEditor extends GuiMorphPanel<AbstractMorph> implements IInventoryPicker
 {
     private GuiBodyPartListElement bodyParts;
     private GuiButtonElement<GuiButton> pickMorph;
@@ -61,9 +63,9 @@ public class GuiBodyPartEditor extends GuiElement implements IInventoryPicker
     private GuiSlot[] slots = new GuiSlot[6];
     private GuiSlot active;
 
-    public GuiBodyPartEditor(Minecraft mc)
+    public GuiBodyPartEditor(Minecraft mc, GuiAbstractMorph editor)
     {
-        super(mc);
+        super(mc, editor);
 
         this.createChildren();
 
@@ -223,6 +225,19 @@ public class GuiBodyPartEditor extends GuiElement implements IInventoryPicker
         if (this.morphPicker != null)
         {
             this.morphPicker.setPerRow((int) Math.ceil(this.morphPicker.area.w / 50.0F));
+        }
+    }
+
+    @Override
+    public void fillData(AbstractMorph morph)
+    {
+        super.fillData(morph);
+
+        if (morph instanceof IBodyPartProvider)
+        {
+            BodyPartManager manager = ((IBodyPartProvider) morph).getBodyPart();
+
+            this.startEditing(manager);
         }
     }
 

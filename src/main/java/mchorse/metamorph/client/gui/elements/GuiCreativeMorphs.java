@@ -24,6 +24,7 @@ import mchorse.metamorph.api.MorphManager;
 import mchorse.metamorph.api.events.ReloadMorphs;
 import mchorse.metamorph.api.morphs.AbstractMorph;
 import mchorse.metamorph.capabilities.morphing.IMorphing;
+import mchorse.metamorph.client.gui.editor.GuiAbstractMorph;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiButton;
 import net.minecraft.client.gui.GuiScreen;

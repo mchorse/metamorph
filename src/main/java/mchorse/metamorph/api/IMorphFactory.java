@@ -3,7 +3,7 @@ package mchorse.metamorph.api;
 import java.util.List;
 
 import mchorse.metamorph.api.morphs.AbstractMorph;
-import mchorse.metamorph.client.gui.elements.GuiAbstractMorph;
+import mchorse.metamorph.client.gui.editor.GuiAbstractMorph;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.relauncher.Side;
