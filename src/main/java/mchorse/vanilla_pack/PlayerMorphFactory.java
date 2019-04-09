@@ -6,7 +6,7 @@ import mchorse.metamorph.api.IMorphFactory;
 import mchorse.metamorph.api.MorphList;
 import mchorse.metamorph.api.MorphManager;
 import mchorse.metamorph.api.morphs.AbstractMorph;
-import mchorse.metamorph.client.gui.elements.GuiAbstractMorph;
+import mchorse.metamorph.client.gui.editor.GuiAbstractMorph;
 import mchorse.vanilla_pack.editors.GuiPlayerMorph;
 import mchorse.vanilla_pack.morphs.PlayerMorph;
 import net.minecraft.client.Minecraft;

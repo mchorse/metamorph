@@ -8,7 +8,7 @@ import mchorse.metamorph.api.MorphList;
 import mchorse.metamorph.api.MorphManager;
 import mchorse.metamorph.api.morphs.AbstractMorph;
 import mchorse.metamorph.api.morphs.EntityMorph;
-import mchorse.metamorph.client.gui.elements.GuiAbstractMorph;
+import mchorse.metamorph.client.gui.editor.GuiAbstractMorph;
 import mchorse.vanilla_pack.morphs.BlockMorph;
 import mchorse.vanilla_pack.morphs.IronGolemMorph;
 import mchorse.vanilla_pack.morphs.ShulkerMorph;
