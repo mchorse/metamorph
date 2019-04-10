@@ -2,7 +2,6 @@ package mchorse.vanilla_pack.editors;
 
 import mchorse.mclib.client.gui.framework.GuiTooltip;
 import mchorse.mclib.client.gui.framework.elements.GuiTextElement;
-import mchorse.metamorph.client.gui.editor.GuiAbstractMorph;
 import mchorse.metamorph.client.gui.editor.GuiMorphPanel;
 import mchorse.vanilla_pack.morphs.PlayerMorph;
 import net.minecraft.client.Minecraft;
@@ -15,12 +14,12 @@ import net.minecraftforge.fml.relauncher.SideOnly;
  */
 @SideOnly(Side.CLIENT)
 @SuppressWarnings("rawtypes")
-public class GuiUsernamePanel extends GuiMorphPanel<PlayerMorph>
+public class GuiUsernamePanel extends GuiMorphPanel<PlayerMorph, GuiPlayerMorph>
 {
     public GuiTextElement username;
     private int counter = -1;
 
-    public GuiUsernamePanel(Minecraft mc, GuiAbstractMorph editor)
+    public GuiUsernamePanel(Minecraft mc, GuiPlayerMorph editor)
     {
         super(mc, editor);
 
