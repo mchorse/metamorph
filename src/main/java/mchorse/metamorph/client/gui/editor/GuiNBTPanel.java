@@ -12,7 +12,7 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 
 @SideOnly(Side.CLIENT)
 @SuppressWarnings("rawtypes")
-public class GuiNBTPanel extends GuiMorphPanel<AbstractMorph>
+public class GuiNBTPanel extends GuiMorphPanel<AbstractMorph, GuiAbstractMorph>
 {
     public GuiTextElement data;
     public boolean error;

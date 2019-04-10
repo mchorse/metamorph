@@ -33,7 +33,7 @@ import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
 @SideOnly(Side.CLIENT)
-public class GuiBodyPartEditor extends GuiMorphPanel<AbstractMorph> implements IInventoryPicker
+public class GuiBodyPartEditor extends GuiMorphPanel<AbstractMorph, GuiAbstractMorph> implements IInventoryPicker
 {
     private GuiBodyPartListElement bodyParts;
     private GuiButtonElement<GuiButton> pickMorph;
@@ -79,7 +79,7 @@ public class GuiBodyPartEditor extends GuiMorphPanel<AbstractMorph> implements I
         this.ry = new GuiTrackpadElement(mc, I18n.format("metamorph.gui.y"), (value) -> this.part.part.rotate[1] = value);
         this.rz = new GuiTrackpadElement(mc, I18n.format("metamorph.gui.z"), (value) -> this.part.part.rotate[2] = value);
 
-        this.tx.resizer().set(0, 35, 60, 20).parent(this.area).x(0.5F, -95).y(1, -105);
+        this.tx.resizer().set(0, 35, 60, 20).parent(this.area).x(0.5F, -95).y(1, -75);
         this.ty.resizer().set(0, 25, 60, 20).relative(this.tx.resizer());
         this.tz.resizer().set(0, 25, 60, 20).relative(this.ty.resizer());
         this.sx.resizer().set(65, 0, 60, 20).relative(this.tx.resizer());
@@ -178,11 +178,11 @@ public class GuiBodyPartEditor extends GuiMorphPanel<AbstractMorph> implements I
             if (this.part != null) this.part.part.useTarget = b.button.isChecked();
         });
 
-        this.limbs.resizer().parent(this.area).set(0, 50, 105, 90).x(1, -115).h(1, -105);
+        this.limbs.resizer().parent(this.area).set(0, 50, 105, 90).x(1, -115).h(1, -55);
         this.pickMorph.resizer().parent(this.area).set(0, 10, 105, 20).x(1, -115);
         this.addPart.resizer().parent(this.area).set(10, 10, 50, 20);
         this.removePart.resizer().relative(this.addPart.resizer()).set(55, 0, 50, 20);
-        this.bodyParts.resizer().parent(this.area).set(10, 50, 105, 0).h(1, -85);
+        this.bodyParts.resizer().parent(this.area).set(10, 50, 105, 0).h(1, -55);
         this.useTarget.resizer().parent(this.area).set(0, 0, 60, 11).x(1, -115).y(1, -49);
 
         this.elements.add(this.tx, this.ty, this.tz, this.sx, this.sy, this.sz, this.rx, this.ry, this.rz, this.limbs, this.pickMorph, this.useTarget);

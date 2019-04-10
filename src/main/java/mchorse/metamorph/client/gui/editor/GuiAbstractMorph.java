@@ -62,13 +62,13 @@ public class GuiAbstractMorph<T extends AbstractMorph> extends GuiElement
                 {
                     Area area = this.buttons.elements.get(i).area;
 
-                    Gui.drawRect(area.x - 2, area.y - 2, area.getX(1) + 2, this.area.getY(1) + 2, 0x880088ff);
+                    Gui.drawRect(area.x - 2, area.y - 2, area.getX(1) + 2, area.getY(1) + 2, 0x880088ff);
                 }
             }
         });
 
         this.registerPanel(this.nbt, PANEL_ICONS, I18n.format("metamorph.gui.panels.nbt"), 0, 0, 0, 16);
-        this.children.add(this.view, this.finish, drawable, this.buttons);
+        this.children.add(drawable, this.buttons, this.finish, this.view);
     }
 
     /**
