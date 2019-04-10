@@ -79,7 +79,7 @@ public class GuiBodyPartEditor extends GuiMorphPanel<AbstractMorph, GuiAbstractM
         this.ry = new GuiTrackpadElement(mc, I18n.format("metamorph.gui.y"), (value) -> this.part.part.rotate[1] = value);
         this.rz = new GuiTrackpadElement(mc, I18n.format("metamorph.gui.z"), (value) -> this.part.part.rotate[2] = value);
 
-        this.tx.resizer().set(0, 35, 60, 20).parent(this.area).x(0.5F, -95).y(1, -75);
+        this.tx.resizer().set(0, 35, 60, 20).parent(this.area).x(0.5F, -95).y(1, -80);
         this.ty.resizer().set(0, 25, 60, 20).relative(this.tx.resizer());
         this.tz.resizer().set(0, 25, 60, 20).relative(this.ty.resizer());
         this.sx.resizer().set(65, 0, 60, 20).relative(this.tx.resizer());
@@ -178,16 +178,15 @@ public class GuiBodyPartEditor extends GuiMorphPanel<AbstractMorph, GuiAbstractM
             if (this.part != null) this.part.part.useTarget = b.button.isChecked();
         });
 
-        this.limbs.resizer().parent(this.area).set(0, 50, 105, 90).x(1, -115).h(1, -55);
-        this.pickMorph.resizer().parent(this.area).set(0, 10, 105, 20).x(1, -115);
+        this.limbs.resizer().parent(this.area).set(0, 80, 105, 90).x(1, -115).h(1, -106);
+        this.pickMorph.resizer().parent(this.area).set(0, 40, 105, 20).x(1, -115);
         this.addPart.resizer().parent(this.area).set(10, 10, 50, 20);
         this.removePart.resizer().relative(this.addPart.resizer()).set(55, 0, 50, 20);
         this.bodyParts.resizer().parent(this.area).set(10, 50, 105, 0).h(1, -55);
-        this.useTarget.resizer().parent(this.area).set(0, 0, 60, 11).x(1, -115).y(1, -49);
+        this.useTarget.resizer().parent(this.area).set(0, 0, 60, 11).x(1, -115).y(1, -21);
 
         this.elements.add(this.tx, this.ty, this.tz, this.sx, this.sy, this.sz, this.rx, this.ry, this.rz, this.limbs, this.pickMorph, this.useTarget);
-        this.children.add(this.addPart, this.removePart, this.bodyParts);
-        this.children.add(this.elements);
+        this.children.add(this.addPart, this.removePart, this.bodyParts, this.elements);
 
         /* Inventory */
         this.inventory = new GuiInventory(this, mc.thePlayer);
@@ -315,21 +314,24 @@ public class GuiBodyPartEditor extends GuiMorphPanel<AbstractMorph, GuiAbstractM
             return true;
         }
 
-        this.inventory.mouseClicked(mouseX, mouseY, mouseButton);
-        this.active = null;
-
-        for (GuiSlot slot : this.slots)
+        if (this.elements.isVisible())
         {
-            if (slot.area.isInside(mouseX, mouseY))
+            this.inventory.mouseClicked(mouseX, mouseY, mouseButton);
+            this.active = null;
+
+            for (GuiSlot slot : this.slots)
             {
-                this.active = slot;
-                this.inventory.visible = true;
+                if (slot.area.isInside(mouseX, mouseY))
+                {
+                    this.active = slot;
+                    this.inventory.visible = true;
+                }
             }
-        }
 
-        if (this.active != null || (this.inventory.visible && this.inventory.area.isInside(mouseX, mouseY)))
-        {
-            return true;
+            if (this.active != null || (this.inventory.visible && this.inventory.area.isInside(mouseX, mouseY)))
+            {
+                return true;
+            }
         }
 
         return false;
@@ -338,19 +340,22 @@ public class GuiBodyPartEditor extends GuiMorphPanel<AbstractMorph, GuiAbstractM
     @Override
     public void draw(GuiTooltip tooltip, int mouseX, int mouseY, float partialTicks)
     {
-        for (GuiSlot slot : this.slots)
+        if (this.elements.isVisible())
         {
-            slot.draw(mouseX, mouseY, partialTicks);
+            for (GuiSlot slot : this.slots)
+            {
+                slot.draw(mouseX, mouseY, partialTicks);
+            }
+
+            if (this.active != null)
+            {
+                Area a = this.active.area;
+
+                Gui.drawRect(a.x, a.y, a.x + a.w, a.y + a.h, 0x880088ff);
+            }
+
+            this.inventory.draw(mouseX, mouseY, partialTicks);
         }
-
-        if (this.active != null)
-        {
-            Area a = this.active.area;
-
-            Gui.drawRect(a.x, a.y, a.x + a.w, a.y + a.h, 0x880088ff);
-        }
-
-        this.inventory.draw(mouseX, mouseY, partialTicks);
 
         Gui.drawRect(this.bodyParts.area.x, this.bodyParts.area.y, this.bodyParts.area.getX(1), this.bodyParts.area.getY(1), 0x88000000);
         this.font.drawStringWithShadow(I18n.format("metamorph.gui.body_parts"), this.bodyParts.area.x, this.bodyParts.area.y - 12, 0xffffff);
