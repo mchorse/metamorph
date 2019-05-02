@@ -8,6 +8,8 @@ import java.util.Set;
 
 import mchorse.metamorph.api.events.RegisterBlacklistEvent;
 import mchorse.metamorph.api.events.RegisterSettingsEvent;
+import mchorse.metamorph.api.morphs.AbstractMorph;
+import net.minecraft.nbt.NBTTagCompound;
 import net.minecraftforge.common.MinecraftForge;
 
 public class MorphUtils
@@ -51,5 +53,29 @@ public class MorphUtils
         MinecraftForge.EVENT_BUS.post(event);
 
         return event.settings;
+    }
+
+    /**
+     * Clone a morph 
+     */
+    public static AbstractMorph clone(AbstractMorph morph, boolean isRemote)
+    {
+        return morph == null ? null : morph.clone(isRemote);
+    }
+
+    /**
+     * Morph to NBT 
+     */
+    public static NBTTagCompound toNBT(AbstractMorph morph)
+    {
+        if (morph == null)
+        {
+            return null;
+        }
+
+        NBTTagCompound tag = new NBTTagCompound();
+        morph.toNBT(tag);
+
+        return tag;
     }
 }

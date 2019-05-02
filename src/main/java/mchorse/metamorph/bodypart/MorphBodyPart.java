@@ -4,7 +4,7 @@ import org.lwjgl.opengl.GL11;
 
 import mchorse.mclib.utils.DummyEntity;
 import mchorse.mclib.utils.NBTUtils;
-import mchorse.metamorph.api.MorphManager;
+import mchorse.metamorph.api.Morph;
 import mchorse.metamorph.api.morphs.AbstractMorph;
 import mchorse.metamorph.capabilities.morphing.IMorphing;
 import net.minecraft.client.Minecraft;
@@ -21,7 +21,7 @@ import net.minecraftforge.fml.relauncher.SideOnly;
  */
 public class MorphBodyPart implements IBodyPart
 {
-    public AbstractMorph morph;
+    public Morph morph;
     public ItemStack[] slots = new ItemStack[6];
     public float[] translate = new float[3];
     public float[] scale = new float[] {1, 1, 1};
@@ -86,7 +86,7 @@ public class MorphBodyPart implements IBodyPart
         entity.prevRotationYawHead = entity.prevRotationYawHead - entity.prevRenderYawOffset;
         entity.renderYawOffset = entity.prevRenderYawOffset = 0;
 
-        this.morph.render(entity, 0, 0, 0, 0, partialTicks);
+        this.morph.get().render(entity, 0, 0, 0, 0, partialTicks);
 
         entity.renderYawOffset = rotationYaw;
         entity.prevRenderYawOffset = prevRotationYaw;
@@ -109,9 +109,11 @@ public class MorphBodyPart implements IBodyPart
                 this.entity.ticksExisted++;
             }
 
-            if (this.morph != null)
+            AbstractMorph morph = this.morph.get();
+
+            if (morph != null)
             {
-                this.morph.update(entity, cap);
+                morph.update(entity, cap);
             }
         }
     }
@@ -123,11 +125,7 @@ public class MorphBodyPart implements IBodyPart
         {
             MorphBodyPart morph = (MorphBodyPart) part;
 
-            if (this.morph == null || !this.morph.canMerge(morph.morph, isRemote))
-            {
-                this.morph = morph.morph == null ? null : morph.morph.clone(isRemote);
-            }
-
+            this.morph.set(morph.morph == null ? null : morph.morph.clone(isRemote), isRemote);
             this.translate[0] = morph.translate[0];
             this.translate[1] = morph.translate[1];
             this.translate[2] = morph.translate[2];
@@ -154,7 +152,7 @@ public class MorphBodyPart implements IBodyPart
     {
         MorphBodyPart part = new MorphBodyPart();
 
-        part.morph = this.morph == null ? null : this.morph.clone(isRemote);
+        part.morph.copy(this.morph, isRemote);
         part.translate[0] = this.translate[0];
         part.translate[1] = this.translate[1];
         part.translate[2] = this.translate[2];
@@ -179,7 +177,7 @@ public class MorphBodyPart implements IBodyPart
     {
         if (tag.hasKey("Morph", 10))
         {
-            this.morph = MorphManager.INSTANCE.morphFromNBT(tag.getCompoundTag("Morph"));
+            this.morph.fromNBT(tag.getCompoundTag("Morph"));
         }
 
         if (tag.hasKey("Items", 9))
@@ -205,11 +203,10 @@ public class MorphBodyPart implements IBodyPart
     @Override
     public void toNBT(NBTTagCompound tag)
     {
-        if (this.morph != null)
-        {
-            NBTTagCompound morph = new NBTTagCompound();
+        NBTTagCompound morph = this.morph.toNBT();
 
-            this.morph.toNBT(morph);
+        if (morph != null)
+        {
             tag.setTag("Morph", morph);
         }
 
@@ -235,7 +232,7 @@ public class MorphBodyPart implements IBodyPart
             tag.setTag("T", NBTUtils.writeFloatList(new NBTTagList(), this.translate));
         }
 
-        if (this.scale[0] != 0 || this.scale[1] != 0 || this.scale[2] != 0)
+        if (this.scale[0] != 1 || this.scale[1] != 1 || this.scale[2] != 1)
         {
             tag.setTag("S", NBTUtils.writeFloatList(new NBTTagList(), this.scale));
         }
