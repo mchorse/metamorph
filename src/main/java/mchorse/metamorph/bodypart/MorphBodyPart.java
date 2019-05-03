@@ -21,7 +21,7 @@ import net.minecraftforge.fml.relauncher.SideOnly;
  */
 public class MorphBodyPart implements IBodyPart
 {
-    public Morph morph;
+    public Morph morph = new Morph();
     public ItemStack[] slots = new ItemStack[6];
     public float[] translate = new float[3];
     public float[] scale = new float[] {1, 1, 1};
@@ -63,7 +63,7 @@ public class MorphBodyPart implements IBodyPart
     {
         entity = this.useTarget ? entity : this.entity;
 
-        if (this.morph == null || entity == null)
+        if (this.morph.get() == null || entity == null)
         {
             return;
         }
@@ -125,7 +125,7 @@ public class MorphBodyPart implements IBodyPart
         {
             MorphBodyPart morph = (MorphBodyPart) part;
 
-            this.morph.set(morph.morph == null ? null : morph.morph.clone(isRemote), isRemote);
+            this.morph.copy(morph.morph, isRemote);
             this.translate[0] = morph.translate[0];
             this.translate[1] = morph.translate[1];
             this.translate[2] = morph.translate[2];
