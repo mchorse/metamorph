@@ -103,7 +103,7 @@ public class GuiBodyPartEditor extends GuiMorphPanel<AbstractMorph, GuiAbstractM
                 this.morphPicker.resizer().parent(this.area).set(0, 0, 0, 0).w(1, 0).h(1, 0);
                 this.morphPicker.callback = (morph) ->
                 {
-                    if (this.part != null) this.part.part.morph = morph;
+                    if (this.part != null) this.part.part.morph.setDirect(morph);
                 };
 
                 GuiScreen screen = Minecraft.getMinecraft().currentScreen;
@@ -113,7 +113,7 @@ public class GuiBodyPartEditor extends GuiMorphPanel<AbstractMorph, GuiAbstractM
             }
 
             this.children.unfocus();
-            this.morphPicker.setSelected(this.part.part.morph);
+            this.morphPicker.setSelected(this.part.part.morph.get());
             this.morphPicker.setVisible(true);
         });
 
