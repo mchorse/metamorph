@@ -12,6 +12,7 @@ import net.minecraft.entity.player.EnumPlayerModelParts;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTUtil;
 import net.minecraft.tileentity.TileEntitySkull;
+import net.minecraft.util.EnumHandSide;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.relauncher.Side;
@@ -103,8 +104,10 @@ public class PlayerMorph extends EntityMorph
     protected void updateEntity(EntityLivingBase target)
     {
         EntityPlayer entity = (EntityPlayer) this.entity;
+        EnumHandSide hand = target.getPrimaryHand();
 
-        entity.setPrimaryHand(target.getPrimaryHand().opposite());
+        hand = hand == EnumHandSide.LEFT ? EnumHandSide.RIGHT : EnumHandSide.LEFT;
+        entity.setPrimaryHand(hand);
 
         /* Update the cape */
         entity.prevChasingPosX = entity.chasingPosX;
