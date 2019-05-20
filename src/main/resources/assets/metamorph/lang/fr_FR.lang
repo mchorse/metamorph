@@ -17,6 +17,19 @@ key.metamorph.morph.select=Selectionner le morph actuel
 key.metamorph.morph.demorph=Demorph (Reprendre son apparence normale)
 
 # GUI
+metamorph.gui.x=X
+metamorph.gui.y=Y
+metamorph.gui.z=Z
+metamorph.gui.pick=Choisir un morph
+metamorph.gui.add=Ajouter
+metamorph.gui.remove=Supprimer
+metamorph.gui.use_target=Use target
+metamorph.gui.body_parts=Parties du corps
+metamorph.gui.limbs=Membres
+metamorph.gui.translate=Déplacer
+metamorph.gui.scale=Echelle
+metamorph.gui.rotate=Tourner
+
 metamorph.gui.creative_title=Menu Morph Créatif
 metamorph.gui.survival_title=Menu Morph Survie
 metamorph.gui.morph=Morph
