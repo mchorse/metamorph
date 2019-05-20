@@ -231,7 +231,7 @@ public class MorphBodyPart implements IBodyPart
             NBTTagCompound compound = new NBTTagCompound();
             ItemStack stack = this.slots[i];
 
-            if (stack != null)
+            if (!stack.isEmpty())
             {
                 stack.writeToNBT(compound);
             }
