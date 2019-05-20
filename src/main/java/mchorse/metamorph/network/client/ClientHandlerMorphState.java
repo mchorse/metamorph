@@ -1,5 +1,6 @@
 package mchorse.metamorph.network.client;
 
+import mchorse.mclib.network.ClientMessageHandler;
 import mchorse.metamorph.api.morphs.AbstractMorph;
 import mchorse.metamorph.api.morphs.EntityMorph;
 import mchorse.metamorph.capabilities.morphing.IMorphing;
@@ -17,13 +18,14 @@ public class ClientHandlerMorphState extends ClientMessageHandler<PacketMorphSta
     public void run(EntityPlayerSP player, PacketMorphState message)
     {
         IMorphing capability = Morphing.get(player);
-        
+
         AbstractMorph morph = capability.getCurrentMorph();
-        if (morph instanceof EntityMorph) {
-            Entity entity = ((EntityMorph)morph).getEntity(player.worldObj);
+        if (morph instanceof EntityMorph)
+        {
+            Entity entity = ((EntityMorph) morph).getEntity(player.worldObj);
             entity.setEntityId(message.entityID);
         }
-        
+
         capability.setHasSquidAir(message.hasSquidAir);
         capability.setSquidAir(message.squidAir);
     }

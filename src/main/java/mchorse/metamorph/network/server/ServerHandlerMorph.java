@@ -1,5 +1,6 @@
 package mchorse.metamorph.network.server;
 
+import mchorse.mclib.network.ServerMessageHandler;
 import mchorse.metamorph.api.MorphAPI;
 import mchorse.metamorph.network.common.PacketMorph;
 import net.minecraft.entity.player.EntityPlayerMP;

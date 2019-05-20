@@ -38,7 +38,7 @@ public class MorphAPI
     {
         return morph(player, null, false);
     }
-    
+
     /**
      * Morph a player into given morph with given force flag. 
      * 
@@ -52,14 +52,12 @@ public class MorphAPI
         {
             return false;
         }
-        
-        if (!force && !player.noClip &&
-                !Metamorph.proxy.config.morph_in_tight_spaces &&
-                !EntityUtils.canPlayerMorphFit(player, morphing.getCurrentMorph(), morph))
+
+        if (!force && !player.noClip && !Metamorph.proxy.config.morph_in_tight_spaces && !EntityUtils.canPlayerMorphFit(player, morphing.getCurrentMorph(), morph))
         {
             if (!player.worldObj.isRemote)
             {
-                ((EntityPlayerMP)player).connection.sendPacket(new SPacketChat(new TextComponentTranslation("metamorph.gui.status.tight_space"), (byte)2));
+                ((EntityPlayerMP) player).connection.sendPacket(new SPacketChat(new TextComponentTranslation("metamorph.gui.status.tight_space"), (byte) 2));
             }
             return false;
         }
@@ -76,7 +74,7 @@ public class MorphAPI
         if (!player.worldObj.isRemote && morphed)
         {
             Dispatcher.sendTo(new PacketMorph(morph), (EntityPlayerMP) player);
-            Dispatcher.updateTrackers(player, new PacketMorphPlayer(player.getEntityId(), morph));
+            Dispatcher.sendToTracked(player, new PacketMorphPlayer(player.getEntityId(), morph));
             Dispatcher.sendTo(new PacketMorphState(player, morphing), (EntityPlayerMP) player);
         }
 

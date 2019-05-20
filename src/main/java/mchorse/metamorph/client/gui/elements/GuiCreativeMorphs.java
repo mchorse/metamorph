@@ -155,7 +155,7 @@ public class GuiCreativeMorphs extends GuiElement
         this.search.resizer().parent(this.area).set(10, 10, 0, 20).w(1, -105);
         this.children.add(this.picker, this.edit, this.search, this.top, this.editor);
 
-        this.scroll.scrollSpeed = 15;
+        this.scroll.scrollSpeed = 40;
     }
 
     public GuiCreativeMorphs(Minecraft mc, int perRow, AbstractMorph selected)

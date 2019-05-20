@@ -2,6 +2,7 @@ package mchorse.metamorph.network.server;
 
 import java.util.List;
 
+import mchorse.mclib.network.ServerMessageHandler;
 import mchorse.metamorph.api.MorphAPI;
 import mchorse.metamorph.api.morphs.AbstractMorph;
 import mchorse.metamorph.capabilities.morphing.IMorphing;
