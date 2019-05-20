@@ -292,7 +292,7 @@ public class GuiCreativeMorphs extends GuiElement
             if (category == null)
             {
                 category = new MorphCategory(name, key, variant);
-                categories.put(name, category);
+                categories.put(key, category);
             }
 
             category.cells.add(cell);
@@ -820,7 +820,7 @@ public class GuiCreativeMorphs extends GuiElement
 
             if (!variant.isEmpty())
             {
-                this.title += "(" + variant + ")";
+                this.title += " (" + variant + ")";
             }
         }
     }

@@ -99,7 +99,7 @@ public class MorphList
         }
         else
         {
-            this.addMorph(name, category, variant, categoryVariant, morph);
+            this.addMorph(name, category, categoryVariant, variant, morph);
         }
     }
 
