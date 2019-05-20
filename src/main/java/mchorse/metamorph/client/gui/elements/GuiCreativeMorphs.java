@@ -275,22 +275,24 @@ public class GuiCreativeMorphs extends GuiElement
             }
 
             MorphCell cell = new MorphCell();
-            String categoryName = morphs.get(0).category;
+            String name = morphs.get(0).category;
+            String variant = morphs.get(0).categoryVariant;
+            String key = name + "#" + variant;
 
             for (MorphList.MorphCell morph : morphs)
             {
-                String variant = morph.variant.isEmpty() ? morph.variant : " (" + morph.variant + ")";
-                String title = MorphManager.INSTANCE.morphDisplayNameFromMorph(morph.morph) + variant;
+                String morphVariant = morph.variant.isEmpty() ? morph.variant : " (" + morph.variant + ")";
+                String title = MorphManager.INSTANCE.morphDisplayNameFromMorph(morph.morph) + morphVariant;
 
                 cell.variants.add(new MorphVariant(title, morph.morph));
             }
 
-            MorphCategory category = categories.get(categoryName);
+            MorphCategory category = categories.get(key);
 
             if (category == null)
             {
-                category = new MorphCategory(categoryName, categoryName);
-                categories.put(categoryName, category);
+                category = new MorphCategory(name, key, variant);
+                categories.put(name, category);
             }
 
             category.cells.add(cell);
@@ -312,7 +314,7 @@ public class GuiCreativeMorphs extends GuiElement
         tag.setString("Name", "metamorph.Block");
         tag.setString("Block", "minecraft:stone");
 
-        this.acquired = new MorphCategory("acquired", "acquired");
+        this.acquired = new MorphCategory("acquired", "acquired", "");
         this.acquired.cells.add(this.selectedCell = new MorphCell());
         this.selectedCell.variants.add(new MorphVariant("Selected", MorphManager.INSTANCE.morphFromNBT(tag)));
         this.categories.add(0, this.acquired);
@@ -800,7 +802,7 @@ public class GuiCreativeMorphs extends GuiElement
         public int height;
         public int y;
 
-        public MorphCategory(String title, String key)
+        public MorphCategory(String title, String key, String variant)
         {
             String result = I18n.format(KEY + title);
 
@@ -815,6 +817,11 @@ public class GuiCreativeMorphs extends GuiElement
 
             this.title = result;
             this.key = key;
+
+            if (!variant.isEmpty())
+            {
+                this.title += "(" + variant + ")";
+            }
         }
     }
 
