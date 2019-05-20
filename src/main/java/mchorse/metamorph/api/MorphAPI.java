@@ -75,7 +75,7 @@ public class MorphAPI
         if (!player.world.isRemote && morphed)
         {
             Dispatcher.sendTo(new PacketMorph(morph), (EntityPlayerMP) player);
-            Dispatcher.updateTrackers(player, new PacketMorphPlayer(player.getEntityId(), morph));
+            Dispatcher.sendToTracked(player, new PacketMorphPlayer(player.getEntityId(), morph));
             Dispatcher.sendTo(new PacketMorphState(player, morphing), (EntityPlayerMP) player);
         }
 

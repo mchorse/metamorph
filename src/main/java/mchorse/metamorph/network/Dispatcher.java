@@ -1,5 +1,6 @@
 package mchorse.metamorph.network;
 
+import mchorse.mclib.network.AbstractDispatcher;
 import mchorse.metamorph.Metamorph;
 import mchorse.metamorph.network.client.ClientHandlerAcquireMorph;
 import mchorse.metamorph.network.client.ClientHandlerAcquiredMorphs;
@@ -28,46 +29,69 @@ import mchorse.metamorph.network.server.ServerHandlerMorph;
 import mchorse.metamorph.network.server.ServerHandlerRemoveMorph;
 import mchorse.metamorph.network.server.ServerHandlerSelectMorph;
 import net.minecraft.entity.Entity;
-import net.minecraft.entity.EntityTracker;
-import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
-import net.minecraft.world.WorldServer;
-import net.minecraftforge.fml.common.network.NetworkRegistry;
 import net.minecraftforge.fml.common.network.simpleimpl.IMessage;
-import net.minecraftforge.fml.common.network.simpleimpl.IMessageHandler;
-import net.minecraftforge.fml.common.network.simpleimpl.SimpleNetworkWrapper;
 import net.minecraftforge.fml.relauncher.Side;
 
 /**
  * Network dispatcher
- *
- * @author Ernio (Ernest Sadowski)
  */
 public class Dispatcher
 {
-    private static final SimpleNetworkWrapper DISPATCHER = NetworkRegistry.INSTANCE.newSimpleChannel(Metamorph.MODID);
-    private static byte PACKET_ID;
-
-    public static SimpleNetworkWrapper get()
+    public static final AbstractDispatcher DISPATCHER = new AbstractDispatcher(Metamorph.MODID)
     {
-        return DISPATCHER;
-    }
-
-    public static void updateTrackers(Entity entity, IMessage message)
-    {
-        EntityTracker et = ((WorldServer) entity.world).getEntityTracker();
-
-        for (EntityPlayer player : et.getTrackingPlayers(entity))
+        @Override
+        public void register()
         {
-            DISPATCHER.sendTo(message, (EntityPlayerMP) player);
+            /* Action */
+            register(PacketAction.class, ServerHandlerAction.class, Side.SERVER);
+
+            /* Morphing */
+            register(PacketMorph.class, ClientHandlerMorph.class, Side.CLIENT);
+            register(PacketMorph.class, ServerHandlerMorph.class, Side.SERVER);
+            register(PacketMorphPlayer.class, ClientHandlerMorphPlayer.class, Side.CLIENT);
+
+            register(PacketAcquireMorph.class, ClientHandlerAcquireMorph.class, Side.CLIENT);
+            register(PacketAcquireMorph.class, ServerHandlerAcquireMorph.class, Side.SERVER);
+            register(PacketAcquiredMorphs.class, ClientHandlerAcquiredMorphs.class, Side.CLIENT);
+
+            register(PacketSelectMorph.class, ServerHandlerSelectMorph.class, Side.SERVER);
+
+            /* Morph state */
+            register(PacketMorphState.class, ClientHandlerMorphState.class, Side.CLIENT);
+
+            /* Managing morphs */
+            register(PacketFavoriteMorph.class, ClientHandlerFavoriteMorph.class, Side.CLIENT);
+            register(PacketFavoriteMorph.class, ServerHandlerFavoriteMorph.class, Side.SERVER);
+
+            register(PacketRemoveMorph.class, ClientHandlerRemoveMorph.class, Side.CLIENT);
+            register(PacketRemoveMorph.class, ServerHandlerRemoveMorph.class, Side.SERVER);
+
+            /* Syncing data */
+            register(PacketBlacklist.class, ClientHandlerBlacklist.class, Side.CLIENT);
+            register(PacketSettings.class, ClientHandlerSettings.class, Side.CLIENT);
         }
+    };
+
+    /**
+     * Send message to players who are tracking given entity
+     */
+    public static void sendToTracked(Entity entity, IMessage message)
+    {
+        DISPATCHER.sendToTracked(entity, message);
     }
 
+    /**
+     * Send message to given player
+     */
     public static void sendTo(IMessage message, EntityPlayerMP player)
     {
         DISPATCHER.sendTo(message, player);
     }
 
+    /**
+     * Send message to the server
+     */
     public static void sendToServer(IMessage message)
     {
         DISPATCHER.sendToServer(message);
@@ -78,37 +102,6 @@ public class Dispatcher
      */
     public static void register()
     {
-        /* Action */
-        register(PacketAction.class, ServerHandlerAction.class, Side.SERVER);
-
-        /* Morphing */
-        register(PacketMorph.class, ClientHandlerMorph.class, Side.CLIENT);
-        register(PacketMorph.class, ServerHandlerMorph.class, Side.SERVER);
-        register(PacketMorphPlayer.class, ClientHandlerMorphPlayer.class, Side.CLIENT);
-
-        register(PacketAcquireMorph.class, ClientHandlerAcquireMorph.class, Side.CLIENT);
-        register(PacketAcquireMorph.class, ServerHandlerAcquireMorph.class, Side.SERVER);
-        register(PacketAcquiredMorphs.class, ClientHandlerAcquiredMorphs.class, Side.CLIENT);
-
-        register(PacketSelectMorph.class, ServerHandlerSelectMorph.class, Side.SERVER);
-        
-        /* Morph state */
-        register(PacketMorphState.class, ClientHandlerMorphState.class, Side.CLIENT);
-
-        /* Managing morphs */
-        register(PacketFavoriteMorph.class, ClientHandlerFavoriteMorph.class, Side.CLIENT);
-        register(PacketFavoriteMorph.class, ServerHandlerFavoriteMorph.class, Side.SERVER);
-
-        register(PacketRemoveMorph.class, ClientHandlerRemoveMorph.class, Side.CLIENT);
-        register(PacketRemoveMorph.class, ServerHandlerRemoveMorph.class, Side.SERVER);
-
-        /* Syncing data */
-        register(PacketBlacklist.class, ClientHandlerBlacklist.class, Side.CLIENT);
-        register(PacketSettings.class, ClientHandlerSettings.class, Side.CLIENT);
-    }
-
-    private static <REQ extends IMessage, REPLY extends IMessage> void register(Class<REQ> message, Class<? extends IMessageHandler<REQ, REPLY>> handler, Side side)
-    {
-        DISPATCHER.registerMessage(handler, message, PACKET_ID++, side);
+        DISPATCHER.register();
     }
 }

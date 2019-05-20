@@ -1,5 +1,6 @@
 package mchorse.metamorph.network.client;
 
+import mchorse.mclib.network.ClientMessageHandler;
 import mchorse.metamorph.capabilities.morphing.IMorphing;
 import mchorse.metamorph.capabilities.morphing.Morphing;
 import mchorse.metamorph.network.common.PacketMorph;
