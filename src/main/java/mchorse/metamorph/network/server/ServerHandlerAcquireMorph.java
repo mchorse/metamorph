@@ -1,5 +1,6 @@
 package mchorse.metamorph.network.server;
 
+import mchorse.mclib.network.ServerMessageHandler;
 import mchorse.metamorph.api.MorphAPI;
 import mchorse.metamorph.network.common.PacketAcquireMorph;
 import net.minecraft.entity.player.EntityPlayerMP;
@@ -15,7 +16,7 @@ public class ServerHandlerAcquireMorph extends ServerMessageHandler<PacketAcquir
     @Override
     public void run(EntityPlayerMP player, PacketAcquireMorph message)
     {
-        if (player.isCreative())
+        if (player.isCreative() || player.isSpectator())
         {
             MorphAPI.acquire(player, message.morph);
         }

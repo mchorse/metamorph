@@ -48,10 +48,18 @@ public class MorphList
 
     /**
      * Add a morph to this list with name, category and variant name
+     */
+    public void addMorph(String name, String category, String variant, AbstractMorph morph)
+    {
+        this.addMorph(name, category, "", variant, morph);
+    }
+
+    /**
+     * Add a morph to this list with name, category, category variant and variant name
      * 
      * This method is responsible for adding a morph variant
      */
-    public void addMorph(String name, String category, String variant, AbstractMorph morph)
+    public void addMorph(String name, String category, String categoryVariant, String variant, AbstractMorph morph)
     {
         if (MorphManager.isBlacklisted(name) || this.hasMorph(name))
         {
@@ -60,8 +68,16 @@ public class MorphList
 
         List<MorphCell> list = new ArrayList<MorphCell>();
 
-        list.add(new MorphCell(morph, category, variant));
+        list.add(new MorphCell(morph, category, categoryVariant, variant));
         this.morphs.put(name, list);
+    }
+
+    /**
+     * Add a morph variant to this morph list
+     */
+    public void addMorphVariant(String name, String category, String variant, AbstractMorph morph)
+    {
+        this.addMorphVariant(name, category, "", variant, morph);
     }
 
     /**
@@ -70,7 +86,7 @@ public class MorphList
      * This is like {@link #addMorph(String, AbstractMorph)}, but it appends 
      * another morph. Basically, it adds a morph variant.
      */
-    public void addMorphVariant(String name, String category, String variant, AbstractMorph morph)
+    public void addMorphVariant(String name, String category, String categoryVariant, String variant, AbstractMorph morph)
     {
         if (MorphManager.isBlacklisted(name))
         {
@@ -79,11 +95,11 @@ public class MorphList
 
         if (this.hasMorph(name))
         {
-            this.morphs.get(name).add(new MorphCell(morph, category, variant));
+            this.morphs.get(name).add(new MorphCell(morph, category, categoryVariant, variant));
         }
         else
         {
-            this.addMorph(name, category, variant, morph);
+            this.addMorph(name, category, categoryVariant, variant, morph);
         }
     }
 
@@ -114,12 +130,14 @@ public class MorphList
     {
         public AbstractMorph morph;
         public String category;
+        public String categoryVariant;
         public String variant;
 
-        public MorphCell(AbstractMorph morph, String category, String variant)
+        public MorphCell(AbstractMorph morph, String category, String categoryVariant, String variant)
         {
             this.morph = morph;
             this.category = category;
+            this.categoryVariant = categoryVariant;
             this.variant = variant;
         }
     }

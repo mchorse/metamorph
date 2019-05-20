@@ -17,6 +17,19 @@ key.metamorph.morph.select=Выбрать текущий морф
 key.metamorph.morph.demorph=Сбросить морф (превратиться обратно в игрока)
 
 # GUI
+metamorph.gui.x=X
+metamorph.gui.y=Y
+metamorph.gui.z=Z
+metamorph.gui.pick=Выбрать морф
+metamorph.gui.add=Добавить
+metamorph.gui.remove=Удалить
+metamorph.gui.use_target=Использовать цель
+metamorph.gui.body_parts=Части тела
+metamorph.gui.limbs=Конечности
+metamorph.gui.translate=Перемещение
+metamorph.gui.scale=Масштаб
+metamorph.gui.rotate=Вращение
+
 metamorph.gui.creative_title=Меню морфов креатива
 metamorph.gui.survival_title=Меню морфов выживания
 metamorph.gui.morph=Морф

@@ -113,7 +113,21 @@ public class MorphBodyPart implements IBodyPart
 
             if (morph != null)
             {
+                float rotationYaw = entity.renderYawOffset;
+                float prevRotationYaw = entity.prevRenderYawOffset;
+                float rotationYawHead = entity.rotationYawHead;
+                float prevRotationYawHead = entity.prevRotationYawHead;
+
+                entity.rotationYawHead = entity.rotationYawHead - entity.renderYawOffset;
+                entity.prevRotationYawHead = entity.prevRotationYawHead - entity.prevRenderYawOffset;
+                entity.renderYawOffset = entity.prevRenderYawOffset = 0;
+
                 morph.update(entity, cap);
+
+                entity.renderYawOffset = rotationYaw;
+                entity.prevRenderYawOffset = prevRotationYaw;
+                entity.rotationYawHead = rotationYawHead;
+                entity.prevRotationYawHead = prevRotationYawHead;
             }
         }
     }
@@ -217,7 +231,7 @@ public class MorphBodyPart implements IBodyPart
             NBTTagCompound compound = new NBTTagCompound();
             ItemStack stack = this.slots[i];
 
-            if (stack != null)
+            if (!stack.isEmpty())
             {
                 stack.writeToNBT(compound);
             }

@@ -1,5 +1,15 @@
 # Metamorph Change Log
 
+## Metamorph 1.1.8
+
+This is a small patch update which is mostly oriented toward Blockbuster's compatibility, but also has some internal changes and few bug fixes.
+
+* Added morph sounds (implemented thanks to asanetargoss)
+* Added item stack support to body part system
+* Added morph editor panel API based on McLib's panel base GUI
+* Extracted body part system from Blockbuster
+* Fixed ender dragon morph attacking itself (implemented thanks to asanetargoss)
+
 ## Metamorph 1.1.7
 
 This is a small patch update which is mostly oriented toward Blockbuster's compatibility.
