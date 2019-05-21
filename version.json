@@ -1,23 +1,26 @@
 {
     "homepage":"https://minecraft.curseforge.com/projects/metamorph",
     "1.10.2":{
+        "1.1.8": "This is a small patch update which is mostly oriented toward Blockbuster's compatibility, but also has some internal changes and few bug fixes.",
         "1.1.7": "This is a small patch update which is mostly oriented toward Blockbuster's compatibility.",
         "1.1.5": "This is a small, quick and dirty patch that provides several bugfixes (mainly for Blockbuster's update)."
     },
     "1.11.2":{
+                "1.1.8": "This is a small patch update which is mostly oriented toward Blockbuster's compatibility, but also has some internal changes and few bug fixes.",
         "1.1.7": "This is a small patch update which is mostly oriented toward Blockbuster's compatibility.",
         "1.1.5": "This is a small, quick and dirty patch that provides several bugfixes (mainly for Blockbuster's update)."
     },
     "1.12.2":{
+                "1.1.8": "This is a small patch update which is mostly oriented toward Blockbuster's compatibility, but also has some internal changes and few bug fixes.",
         "1.1.7": "This is a small patch update which is mostly oriented toward Blockbuster's compatibility.",
         "1.1.5": "This is a small, quick and dirty patch that provides several bugfixes (mainly for Blockbuster's update)."
     },
     "promos":{
-        "1.10.2-latest":"1.1.7",
-        "1.10.2-recommended":"1.1.7",
-        "1.11.2-latest":"1.1.7",
-        "1.11.2-recommended":"1.1.7",
-        "1.12.2-latest":"1.1.7",
-        "1.12.2-recommended":"1.1.7"
+        "1.10.2-latest":"1.1.8",
+        "1.10.2-recommended":"1.1.8",
+        "1.11.2-latest":"1.1.8",
+        "1.11.2-recommended":"1.1.8",
+        "1.12.2-latest":"1.1.8",
+        "1.12.2-recommended":"1.1.8"
    }
 }
