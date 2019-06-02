@@ -120,7 +120,7 @@ public abstract class AbstractMorph
      */
     public void morph(EntityLivingBase target)
     {
-        this.lastHealth = target.getMaxHealth();
+        this.lastHealth = (float)target.getEntityAttribute(SharedMonsterAttributes.MAX_HEALTH).getBaseValue();
         this.setHealth(target, this.settings.health);
 
         for (IAbility ability : this.settings.abilities)
@@ -138,7 +138,7 @@ public abstract class AbstractMorph
     public void demorph(EntityLivingBase target)
     {
         /* 20 is default player's health */
-        this.setHealth(target, this.lastHealth < 20 ? 20 : this.lastHealth);
+        this.setHealth(target, this.lastHealth <= 0.0F ? 20.0F : this.lastHealth);
 
         for (IAbility ability : this.settings.abilities)
         {
@@ -224,8 +224,8 @@ public abstract class AbstractMorph
         // We need to retrieve the max health of the target after modifiers are
         // applied
         // to get a sensible value
-        float proportionalHealth = Math.round(target.getMaxHealth() * ratio);
-        target.setHealth(proportionalHealth <= 0 ? 1 : proportionalHealth);
+        float proportionalHealth = target.getMaxHealth() * ratio;
+        target.setHealth(proportionalHealth <= 0.0F ? Float.MIN_VALUE : proportionalHealth);
     }
 
     /**
