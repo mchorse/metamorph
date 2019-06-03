@@ -161,11 +161,24 @@ public abstract class AbstractMorph
 
     public static void updateSizeDefault(EntityLivingBase target, float width, float height)
     {
+        /* Any lower than this, and the morph will take damage when hitting the ceiling.
+         * Likewise, an eye height less than this will cause suffocation damage when standing
+         * on the ground.
+         * This is hard-coded in vanilla.
+         */
+        float minEyeToHeadDifference = 0.1F;
+        height = Math.max(height, minEyeToHeadDifference * 2);
+        
         if (target instanceof EntityPlayer && !Metamorph.proxy.config.disable_pov)
         {
-            ((EntityPlayer) target).eyeHeight = height * 0.9F;
+            float eyeHeight = height * 0.9F;
+            if (eyeHeight + minEyeToHeadDifference > height)
+            {
+                eyeHeight = height - minEyeToHeadDifference;
+            }
+            ((EntityPlayer) target).eyeHeight = eyeHeight;
         }
-
+        
         /* This is a total rip-off of EntityPlayer#setSize method */
         if (width != target.width || height != target.height)
         {
