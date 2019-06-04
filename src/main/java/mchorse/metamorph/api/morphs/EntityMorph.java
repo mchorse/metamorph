@@ -782,8 +782,8 @@ public class EntityMorph extends AbstractMorph
 
         try
         {
-            Method methodHurtSound = InvokeUtil.getPrivateMethod(entity.getClass(), EntityLivingBase.class, SoundHandler.GET_HURT_SOUND.getName());
-            SoundEvent hurtSound = (SoundEvent) methodHurtSound.invoke(entity);
+            Method methodHurtSound = InvokeUtil.getPrivateMethod(entity.getClass(), EntityLivingBase.class, SoundHandler.GET_HURT_SOUND.getName(), DamageSource.class);
+            SoundEvent hurtSound = (SoundEvent) methodHurtSound.invoke(entity, damageSource);
             if (hurtSound == null)
             {
                 hurtSound = SoundHandler.NO_SOUND;
