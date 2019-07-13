@@ -16,7 +16,7 @@ buildscript
 apply plugin: 'net.minecraftforge.gradle.forge'
 
 group = "mchorse.metamorph"
-archivesBaseName = "metamorph"
+archivesBaseName = "changeling"
 sourceCompatibility = targetCompatibility = "1.8"
 
 compileJava 

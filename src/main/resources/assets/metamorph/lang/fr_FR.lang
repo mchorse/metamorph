@@ -3,7 +3,7 @@
 entity.metamorph.Morph.name=Morph
 
 # Keyboard bindings strings
-key.metamorph=Metamorph
+key.metamorph=Changeling
 
 key.metamorph.action=Use action
 key.metamorph.creative_menu=Ouvrir le menu morph créatif
@@ -72,7 +72,7 @@ metamorph.config.morph_in_tight_spaces=Autoriser le morphing dans des espaces re
 # Commands
 metamorph.commands.morph=Commande morph. Cette commande permet au joueur de se transformer en un morph.\n\n/morph <username> [morph_name] [data_tag]
 metamorph.commands.acquire_morph=Commande pour l'acquisition de morph. Cette commande permet d'attribuer au joueur un morph parmis les morphs acquis.\n\n/morph <username> <morph_name> [data_tag]
-metamorph.commands.metamorph=Commande Metamorph serveur. Cette commande permet la gestion de Metamoprh côté serveur.\n\n/metamorph reload <blacklist|morphs> - reloads Metamorph's blacklist or morph configuration
+metamorph.commands.metamorph=Commande Changeling serveur. Cette commande permet la gestion de Metamoprh côté serveur.\n\n/metamorph reload <blacklist|morphs> - reloads Changeling's blacklist or morph configuration
 
 metamorph.error.morph.not_player=L'entité %s n'est pas un joueur!
 metamorph.error.morph.nbt=Une erreur est surnevue lors de l'analyse des balises de données:\n%s

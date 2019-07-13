@@ -3,7 +3,7 @@
 entity.metamorph.Morph.name=Морф
 
 # Keyboard bindings strings
-key.metamorph=Метаморф
+key.metamorph=Changeling
 
 key.metamorph.action=Использовать действие
 key.metamorph.creative_menu=Открыть меню морфов креатива
@@ -72,7 +72,7 @@ metamorph.config.morph_in_tight_spaces=Разрешить превращение
 # Commands
 metamorph.commands.morph=Команда морфа. Эта команда отвечает за превращение игрока в какой-либо конкретный морф.\n\n/morph <username> [morph_name] [data_tag]
 metamorph.commands.acquire_morph=Команда приобретения морфа. Эта команда отвечает за добавление морфа в список приобретённых игроком.\n\n/morph <username> <morph_name> [data_tag]
-metamorph.commands.metamorph=Серверные команды Метаморфа. Эти команды позволяют вам руководить серверными параметрами Метаморфа.\n\n/metamorph reload <blacklist|morphs> - перезагрузить черный список Метаморфа или конфигурацию морфа
+metamorph.commands.metamorph=Серверные команды Changeling. Эти команды позволяют вам руководить серверными параметрами Changeling.\n\n/metamorph reload <blacklist|morphs> - перезагрузить черный список Changeling или конфигурацию морфа
 
 metamorph.error.morph.not_player=Существо %s не является игроком!
 metamorph.error.morph.nbt=Возникла ошибка во время анализа дата-тэга:\n%s

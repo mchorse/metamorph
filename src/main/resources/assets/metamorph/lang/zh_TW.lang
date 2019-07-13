@@ -3,7 +3,7 @@
 entity.metamorph.Morph.name=Morph
 
 # Keyboard bindings strings
-key.metamorph=Metamorph
+key.metamorph=Changeling
 
 key.metamorph.action=使用動作
 key.metamorph.creative_menu=打開創造模式偽裝菜單
@@ -72,7 +72,7 @@ metamorph.config.morph_in_tight_spaces=允許在狹窄的地區偽裝
 # Commands
 metamorph.commands.morph=偽裝命令。這個命令可以讓玩家獲取偽裝。\n\n/morph <username> [morph_name] [data_tag]
 metamorph.commands.acquire_morph=用於獲取偽裝的命令。這個命令可以用來獲取一個指定玩家的偽裝。\n\n/morph <username> <morph_name> [data_tag]
-metamorph.commands.metamorph=Metamorph 伺服器命令。這個命令可以用於伺服器上管理 Metamorph 的事物。\n\n/metamorph reload <blacklist|morphs> - 重新載入 Metamorph 的黑名單或偽裝配置
+metamorph.commands.metamorph=Changeling 伺服器命令。這個命令可以用於伺服器上管理 Changeling 的事物。\n\n/metamorph reload <blacklist|morphs> - 重新載入 Changeling 的黑名單或偽裝配置
 
 metamorph.error.morph.not_player=實體 %s 不是玩家！
 metamorph.error.morph.nbt=在解析資料標籤：\n%s 時出現錯誤。

@@ -3,7 +3,7 @@
 entity.metamorph.Morph.name=Morph
 
 # Keyboard bindings strings
-key.metamorph=Metamorph
+key.metamorph=Changeling
 
 key.metamorph.action=Aktion verwenden
 key.metamorph.creative_menu=Kreativ-Morphmenü öffnen

@@ -3,7 +3,7 @@
 entity.metamorph.Morph.name=Morph
 
 # Keyboard bindings strings
-key.metamorph=Metamorph
+key.metamorph=Changeling
 
 key.metamorph.action=Use action
 key.metamorph.creative_menu=Open creative morph menu
@@ -72,7 +72,7 @@ metamorph.config.morph_in_tight_spaces=Allow morphing in tight spaces
 # Commands
 metamorph.commands.morph=Morph command. This command is responsible for morphing player into specified morph.\n\n/morph <username> [morph_name] [data_tag]
 metamorph.commands.acquire_morph=Acquire morph command. This command is responsible for sending a morph to a player in acquired morphs.\n\n/morph <username> <morph_name> [data_tag]
-metamorph.commands.metamorph=Metamorph server command. This command allows to manage Metamorph stuff on the server side.\n\n/metamorph reload <blacklist|morphs> - reloads Metamorph's blacklist or morph configuration
+metamorph.commands.metamorph=Changeling server command. This command allows to manage Changeling stuff on the server side.\n\n/metamorph reload <blacklist|morphs> - reloads Changeling's blacklist or morph configuration
 
 metamorph.error.morph.not_player=Entity %s isn't not a player!
 metamorph.error.morph.nbt=Error occurred during data tag parsing:\n%s
