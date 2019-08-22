@@ -9,7 +9,6 @@ import mchorse.metamorph.client.NetworkHandler;
 import mchorse.metamorph.client.RenderingHandler;
 import mchorse.metamorph.client.gui.elements.GuiHud;
 import mchorse.metamorph.client.gui.elements.GuiOverlay;
-import mchorse.metamorph.client.gui.elements.GuiSurvivalMorphs;
 import mchorse.metamorph.client.render.RenderMorph;
 import mchorse.metamorph.entity.EntityMorph;
 import net.minecraft.client.Minecraft;
@@ -36,11 +35,6 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 @SideOnly(Side.CLIENT)
 public class ClientProxy extends CommonProxy
 {
-    /**
-     * GUI menu which is responsible for choosing morphs 
-     */
-    public static GuiSurvivalMorphs overlay = new GuiSurvivalMorphs();
-
     /**
      * GUI overlay which is responsible for showing up acquired morphs
      */
@@ -72,8 +66,8 @@ public class ClientProxy extends CommonProxy
         super.load();
 
         /* Register client event handlers */
-        MinecraftForge.EVENT_BUS.register(new RenderingHandler(overlay, morphOverlay, hud));
-        MinecraftForge.EVENT_BUS.register(keys = new KeyboardHandler(overlay));
+        MinecraftForge.EVENT_BUS.register(new RenderingHandler(morphOverlay, hud));
+        MinecraftForge.EVENT_BUS.register(keys = new KeyboardHandler());
 
         /* Register client morph manager */
         MorphManager.INSTANCE.registerClient();
