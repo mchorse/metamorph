@@ -1,7 +1,6 @@
 package mchorse.metamorph.network.client;
 
 import mchorse.mclib.network.ClientMessageHandler;
-import mchorse.metamorph.ClientProxy;
 import mchorse.metamorph.capabilities.morphing.Morphing;
 import mchorse.metamorph.network.common.PacketRemoveMorph;
 import net.minecraft.client.entity.EntityPlayerSP;
@@ -15,6 +14,5 @@ public class ClientHandlerRemoveMorph extends ClientMessageHandler<PacketRemoveM
     public void run(EntityPlayerSP player, PacketRemoveMorph message)
     {
         Morphing.get(player).remove(message.index);
-        ClientProxy.overlay.remove(message.index);
     }
 }
