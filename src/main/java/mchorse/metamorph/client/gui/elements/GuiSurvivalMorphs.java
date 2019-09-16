@@ -92,7 +92,7 @@ public class GuiSurvivalMorphs extends Gui
     /**
      * "Fade out" timer 
      */
-    public int timer = 0;
+    public long lastTime;
 
     /**
      * Setup morphs
@@ -180,14 +180,12 @@ public class GuiSurvivalMorphs extends Gui
     public void skip(int factor)
     {
         int length = this.getMorphCount();
-        this.timer = this.getDelay();
+        this.resetTime();
 
         if (length == 0)
         {
             return;
         }
-
-        this.timer = this.getDelay();
 
         if (factor > 0)
         {
@@ -206,13 +204,13 @@ public class GuiSurvivalMorphs extends Gui
     public void advance(int factor)
     {
         int length = this.getMorphCount();
+        this.resetTime();
 
         if (length == 0)
         {
             return;
         }
 
-        this.timer = this.getDelay();
         this.index += factor;
         this.index = MathHelper.clamp(this.index, -1, length - 1);
     }
@@ -229,7 +227,7 @@ public class GuiSurvivalMorphs extends Gui
             if (type.morphs.size() > 1)
             {
                 type.up();
-                this.timer = this.getDelay();
+                this.resetTime();
             }
         }
     }
@@ -246,9 +244,14 @@ public class GuiSurvivalMorphs extends Gui
             if (type.morphs.size() > 1)
             {
                 type.down();
-                this.timer = this.getDelay();
+                this.resetTime();
             }
         }
+    }
+
+    public void resetTime()
+    {
+        this.lastTime = System.currentTimeMillis() + 2000;
     }
 
     /**
@@ -308,17 +311,6 @@ public class GuiSurvivalMorphs extends Gui
     }
 
     /**
-     * Get delay for the timer
-     * 
-     * Delay is about 2 seconds, however you may never know which is it since 
-     * the game may lag. 
-     */
-    private int getDelay()
-    {
-        return this.mc.gameSettings.limitFramerate * 2;
-    }
-
-    /**
      * Get how much player has acquired morphs 
      */
     private int getMorphCount()
@@ -349,7 +341,7 @@ public class GuiSurvivalMorphs extends Gui
         if (!isSame)
         {
             Dispatcher.sendToServer(new PacketSelectMorph(index));
-            this.timer = 0;
+            this.lastTime = 0;
         }
     }
 
@@ -375,7 +367,7 @@ public class GuiSurvivalMorphs extends Gui
 
     public void exitGUI()
     {
-        this.timer = 0;
+        this.lastTime = 0;
         this.inGUI = false;
     }
 
@@ -425,12 +417,10 @@ public class GuiSurvivalMorphs extends Gui
      */
     public void render(int width, int height)
     {
-        if (!this.inGUI && this.timer <= 0)
+        if (!this.inGUI && this.lastTime < System.currentTimeMillis())
         {
             return;
         }
-
-        this.timer--;
 
         /* GUI size */
         int w = (int) (width * 0.8F);
