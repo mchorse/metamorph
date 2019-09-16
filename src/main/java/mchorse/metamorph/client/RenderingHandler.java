@@ -35,14 +35,12 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 @SideOnly(Side.CLIENT)
 public class RenderingHandler
 {
-    private GuiSurvivalMorphs overlay;
     private GuiOverlay morphOverlay;
     private GuiHud hud;
     private RenderManager manager;
 
-    public RenderingHandler(GuiSurvivalMorphs overlay, GuiOverlay morphOverlay, GuiHud hud)
+    public RenderingHandler(GuiOverlay morphOverlay, GuiHud hud)
     {
-        this.overlay = overlay;
         this.morphOverlay = morphOverlay;
         this.hud = hud;
         this.manager = Minecraft.getMinecraft().getRenderManager();
@@ -58,15 +56,20 @@ public class RenderingHandler
 
         if (event.getType() == RenderGameOverlayEvent.ElementType.ALL)
         {
-            if (this.overlay.inGUI == false)
+            IMorphing morphing = Morphing.get(Minecraft.getMinecraft().player);
+            if (morphing != null)
             {
-                this.overlay.render(resolution.getScaledWidth(), resolution.getScaledHeight());
+                GuiSurvivalMorphs overlay = morphing.getOverlay();
+                if (!overlay.inGUI)
+                {
+                    overlay.render(resolution.getScaledWidth(), resolution.getScaledHeight());
+                }
             }
 
             this.morphOverlay.render(resolution.getScaledWidth(), resolution.getScaledHeight());
         }
     }
-    
+
     /**
      * Draw replacement air bar for morphs that can't breathe on land
      */
@@ -77,11 +80,11 @@ public class RenderingHandler
         {
             return;
         }
-        
+
         if (this.hud.renderSquidAir)
         {
             event.setCanceled(true);
-            
+
             ScaledResolution resolution = event.getResolution();
             this.hud.renderSquidAir(resolution.getScaledWidth(), resolution.getScaledHeight());
         }

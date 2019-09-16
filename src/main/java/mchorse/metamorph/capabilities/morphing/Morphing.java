@@ -6,6 +6,7 @@ import java.util.List;
 import mchorse.metamorph.Metamorph;
 import mchorse.metamorph.api.MorphManager;
 import mchorse.metamorph.api.morphs.AbstractMorph;
+import mchorse.metamorph.client.gui.elements.GuiSurvivalMorphs;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.SoundEvents;
@@ -67,8 +68,27 @@ public class Morphing implements IMorphing
      */
     private int squidAir = 300;
 
+    /**
+     * GUI menu which is responsible for choosing morphs
+     */
+    @SideOnly(Side.CLIENT)
+    private GuiSurvivalMorphs overlay;
+
+    /**
+     * Whether {@link #overlay} is non-null
+     *
+     * This is a separate field because {@link #overlay} is SideOnly(CLIENT), so referring to it on the server (where
+     * it would always be null) is not possible (will result in NoSuchFieldError).
+     */
+    private boolean hasOverlay = false;
+
+
     public static IMorphing get(EntityPlayer player)
     {
+        if (player == null)
+        {
+            return null;
+        }
         return player.getCapability(MorphingProvider.MORPHING_CAP, null);
     }
 
@@ -191,6 +211,11 @@ public class Morphing implements IMorphing
 
         this.acquiredMorphs.add(morph);
 
+        if (this.hasOverlay)
+        {
+            this.overlay.setupMorphs(this);
+        }
+
         return true;
     }
 
@@ -219,6 +244,11 @@ public class Morphing implements IMorphing
     {
         this.acquiredMorphs.clear();
         this.acquiredMorphs.addAll(morphs);
+
+        if (this.hasOverlay)
+        {
+            this.overlay.setupMorphs(this);
+        }
     }
 
     @Override
@@ -301,6 +331,11 @@ public class Morphing implements IMorphing
             AbstractMorph morph = this.acquiredMorphs.get(index);
 
             morph.favorite = !morph.favorite;
+
+            if (this.hasOverlay)
+            {
+                this.overlay.favorite(index);
+            }
         }
 
         return false;
@@ -312,6 +347,11 @@ public class Morphing implements IMorphing
         if (!this.acquiredMorphs.isEmpty() && index >= 0 && index < this.acquiredMorphs.size())
         {
             this.acquiredMorphs.remove(index);
+
+            if (this.hasOverlay)
+            {
+                this.overlay.remove(index);
+            }
 
             return true;
         }
@@ -391,5 +431,17 @@ public class Morphing implements IMorphing
         {
             this.morph.update(player, this);
         }
+    }
+
+    @Override
+    @SideOnly(Side.CLIENT)
+    public GuiSurvivalMorphs getOverlay() {
+        if (this.overlay == null)
+        {
+            this.overlay = new GuiSurvivalMorphs();
+            this.overlay.setupMorphs(this);
+            this.hasOverlay = true;
+        }
+        return this.overlay;
     }
 }

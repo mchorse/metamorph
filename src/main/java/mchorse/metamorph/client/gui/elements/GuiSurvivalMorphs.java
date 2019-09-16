@@ -32,6 +32,8 @@ import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.MathHelper;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 
 /**
  * Morphing survival GUI menu
@@ -44,6 +46,7 @@ import net.minecraft.util.math.MathHelper;
  * 
  * Sorry for this mess.
  */
+@SideOnly(Side.CLIENT)
 public class GuiSurvivalMorphs extends Gui
 {
     /**
@@ -616,11 +619,11 @@ public class GuiSurvivalMorphs extends Gui
 
             if (this.inGUI)
             {
-                this.drawTexturedModalRect(x + w / 2 - 16, y - h / 1.5F, 0, 0, 16, 16);
+                this.drawTexturedModalRect(x + w / 2 - 16, y - h / 1.5F, 32, 0, 16, 16);
             }
             else
             {
-                this.drawTexturedModalRect(x - w / 2, y - 16, 0, 0, 16, 16);
+                this.drawTexturedModalRect(x - w / 2, y - 16, 32, 0, 16, 16);
             }
         }
     }

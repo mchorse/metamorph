@@ -101,6 +101,9 @@ public class EntityUtils
         /* Zombie pigmen stripping */
         tag.removeTag("Anger");
         tag.removeTag("HurtBy");
+        
+        /* Chicken de-egging */
+        tag.removeTag("EggLayTime");
 
         return tag;
     }

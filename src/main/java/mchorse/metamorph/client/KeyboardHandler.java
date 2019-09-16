@@ -42,9 +42,6 @@ public class KeyboardHandler
     public KeyBinding keySelectMorph;
     public KeyBinding keyDemorph;
 
-    /* Survival morphing menu */
-    private GuiSurvivalMorphs overlay;
-
     public KeyboardHandler()
     {
         String category = "key.metamorph";
@@ -74,28 +71,23 @@ public class KeyboardHandler
         ClientRegistry.registerKeyBinding(keyDemorph);
     }
 
-    public KeyboardHandler(GuiSurvivalMorphs overlay)
-    {
-        this();
-        this.overlay = overlay;
-    }
-
     @SubscribeEvent
     public void onKey(InputEvent.KeyInputEvent event)
     {
         final Minecraft mc = Minecraft.getMinecraft();
+
+        EntityPlayer player = Minecraft.getMinecraft().player;
+        IMorphing morphing = Morphing.get(player);
+        GuiSurvivalMorphs overlay = morphing == null ? null : morphing.getOverlay();
 
         /* Action */
         if (keyAction.isPressed())
         {
             Dispatcher.sendToServer(new PacketAction());
 
-            EntityPlayer player = Minecraft.getMinecraft().player;
-            IMorphing capability = Morphing.get(player);
-
-            if (capability != null & capability.isMorphed())
+            if (morphing != null && morphing.isMorphed())
             {
-                capability.getCurrentMorph().action(player);
+                morphing.getCurrentMorph().action(player);
             }
         }
 
@@ -110,54 +102,52 @@ public class KeyboardHandler
         }
 
         /* Survival morphing key handling */
-        if (keySurvivalMenu.isPressed())
+        if (keySurvivalMenu.isPressed() && overlay != null)
         {
-            mc.displayGuiScreen(new GuiSurvivalMenu(this.overlay));
+            mc.displayGuiScreen(new GuiSurvivalMenu(overlay));
         }
 
         boolean prev = keyPrevMorph.isPressed();
         boolean next = keyNextMorph.isPressed();
 
         /* Selecting a morph */
-        if (prev || next)
+        if ((prev || next) && overlay != null)
         {
             int factor = prev ? -1 : 1;
 
             /* If any of alts is pressed, then skip to the end or beginning */
             if (Keyboard.isKeyDown(Keyboard.KEY_LMENU) || Keyboard.isKeyDown(Keyboard.KEY_LMENU))
             {
-                this.overlay.skip(factor);
+                overlay.skip(factor);
             }
             /* Then advance one or two indices forward or backward */
             else
             {
                 int skip = factor * (Keyboard.isKeyDown(Keyboard.KEY_LSHIFT) || Keyboard.isKeyDown(Keyboard.KEY_RSHIFT) ? 2 : 1);
 
-                this.overlay.advance(skip);
+                overlay.advance(skip);
             }
         }
 
-        if (keyNextVarMorph.isPressed())
+        if (keyNextVarMorph.isPressed() && overlay != null)
         {
-            this.overlay.up();
+            overlay.up();
         }
-        else if (keyPrevVarMorph.isPressed())
+        else if (keyPrevVarMorph.isPressed() && overlay != null)
         {
-            this.overlay.down();
+            overlay.down();
         }
 
         /* Apply selected morph */
-        if (keySelectMorph.isPressed())
+        if (keySelectMorph.isPressed() && overlay != null)
         {
-            this.overlay.selectCurrent();
+            overlay.selectCurrent();
         }
 
         /* Demorph from current morph */
         if (keyDemorph.isPressed())
         {
-            IMorphing morph = Morphing.get(mc.player);
-
-            if (morph != null && morph.isMorphed())
+            if (morphing != null && morphing.isMorphed())
             {
                 Dispatcher.sendToServer(new PacketSelectMorph(-1));
             }

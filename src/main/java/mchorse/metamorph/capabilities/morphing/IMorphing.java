@@ -3,6 +3,7 @@ package mchorse.metamorph.capabilities.morphing;
 import java.util.List;
 
 import mchorse.metamorph.api.morphs.AbstractMorph;
+import mchorse.metamorph.client.gui.elements.GuiSurvivalMorphs;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.util.DamageSource;
 import net.minecraftforge.fml.relauncher.Side;
@@ -145,4 +146,10 @@ public interface IMorphing
      * Update the player 
      */
     public void update(EntityPlayer player);
+
+    /**
+     * Gets the GUI menu which is responsible for choosing morphs
+     */
+    @SideOnly(Side.CLIENT)
+    public GuiSurvivalMorphs getOverlay();
 }
