@@ -120,7 +120,7 @@ public abstract class AbstractMorph
      */
     public void morph(EntityLivingBase target)
     {
-        this.lastHealth = target.getMaxHealth();
+        this.lastHealth = (float)target.getEntityAttribute(SharedMonsterAttributes.MAX_HEALTH).getBaseValue();
         this.setHealth(target, this.settings.health);
 
         for (IAbility ability : this.settings.abilities)
@@ -138,7 +138,7 @@ public abstract class AbstractMorph
     public void demorph(EntityLivingBase target)
     {
         /* 20 is default player's health */
-        this.setHealth(target, this.lastHealth < 20 ? 20 : this.lastHealth);
+        this.setHealth(target, this.lastHealth <= 0.0F ? 20.0F : this.lastHealth);
 
         for (IAbility ability : this.settings.abilities)
         {
@@ -161,11 +161,24 @@ public abstract class AbstractMorph
 
     public static void updateSizeDefault(EntityLivingBase target, float width, float height)
     {
+        /* Any lower than this, and the morph will take damage when hitting the ceiling.
+         * Likewise, an eye height less than this will cause suffocation damage when standing
+         * on the ground.
+         * This is hard-coded in vanilla.
+         */
+        float minEyeToHeadDifference = 0.1F;
+        height = Math.max(height, minEyeToHeadDifference * 2);
+        
         if (target instanceof EntityPlayer && !Metamorph.proxy.config.disable_pov)
         {
-            ((EntityPlayer) target).eyeHeight = height * 0.9F;
+            float eyeHeight = height * 0.9F;
+            if (eyeHeight + minEyeToHeadDifference > height)
+            {
+                eyeHeight = height - minEyeToHeadDifference;
+            }
+            ((EntityPlayer) target).eyeHeight = eyeHeight;
         }
-
+        
         /* This is a total rip-off of EntityPlayer#setSize method */
         if (width != target.width || height != target.height)
         {
@@ -224,8 +237,8 @@ public abstract class AbstractMorph
         // We need to retrieve the max health of the target after modifiers are
         // applied
         // to get a sensible value
-        float proportionalHealth = Math.round(target.getMaxHealth() * ratio);
-        target.setHealth(proportionalHealth <= 0 ? 1 : proportionalHealth);
+        float proportionalHealth = target.getMaxHealth() * ratio;
+        target.setHealth(proportionalHealth <= 0.0F ? Float.MIN_VALUE : proportionalHealth);
     }
 
     /**

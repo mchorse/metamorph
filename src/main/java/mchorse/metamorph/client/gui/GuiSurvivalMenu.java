@@ -147,11 +147,12 @@ public class GuiSurvivalMenu extends GuiBase
         this.mc.displayGuiScreen(null);
     }
 
-    private void updateButtons()
+    public void updateButtons()
     {
         int index = this.morphs.index;
 
         this.favorite.button.enabled = index >= 0;
+        this.favorite.button.displayString = I18n.format("metamorph.gui.favorite");
         this.remove.button.enabled = index >= 0;
 
         if (this.favorite.button.enabled)
