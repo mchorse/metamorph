@@ -28,6 +28,8 @@ public class RenderSubPlayer extends RenderPlayer
     {
         super(renderManager, smallArms);
         this.original = original;
+        // This improves compat with render override code that thinks this is the original RenderPlayer
+        this.layerRenderers = original.layerRenderers;
     }
 
     /**
