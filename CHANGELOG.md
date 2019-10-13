@@ -1,8 +1,21 @@
 # Metamorph Change Log
 
+## Metamorph 1.1.9
+
+This is a small patch update with lots of awesome bug fixes pull requests from asanetargoss and Johni0702!
+
+* Fixed increasing health when morphing with modifier, and other cases. Fixed by **asanetargoss**
+* Fixed small morphs suffocating in ceiling. Fixed by **asanetargoss**
+* Fixed player having multiple chicken morphs. Fixed by **asanetargoss**
+* Fixed bugs for BetterPortals compatibility. Fixed by **Johni0702**
+* Fixed buttons syncrhonization in survival morph menu
+* Fixed survival morph overlay disappearing on vsync/unlimited frame rates  
+
 ## Metamorph 1.1.8
 
 This is a small patch update which is mostly oriented toward Blockbuster's compatibility, but also has some internal changes and few bug fixes.
+
+**Compatible** with McLib `1.0.1`. It doesn't mean that future versions of McLib would be incompatible, but older versions are most likely incompatible.
 
 * Added morph sounds (implemented thanks to asanetargoss)
 * Added item stack support to body part system
@@ -13,6 +26,8 @@ This is a small patch update which is mostly oriented toward Blockbuster's compa
 ## Metamorph 1.1.7
 
 This is a small patch update which is mostly oriented toward Blockbuster's compatibility.
+
+**Compatible** with McLib `1.0`. It doesn't mean that future versions of McLib would be incompatible, but older versions are most likely incompatible.
 
 * Added `mclib` library mod as a dependency
 * Added morph merging API
