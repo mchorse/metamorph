@@ -70,7 +70,17 @@ public class SoundHandler
             return;
         }
 
-        String soundType = event.getSound().getRegistryName().getResourcePath();
+        SoundEvent sound = event.getSound();
+        if (sound == null) {
+            // Sounds can be null, apparently
+            return;
+        }
+        ResourceLocation soundResource = sound.getRegistryName();
+        if (soundResource == null) {
+            return;
+        }
+        String soundType = soundResource.getResourcePath();
+        
         if (soundType.endsWith(".hurt"))
         {
             SoundEvent newSound = morph.getHurtSound(player, morphing.getLastDamageSource());
