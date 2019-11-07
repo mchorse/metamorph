@@ -35,33 +35,33 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 @SideOnly(Side.CLIENT)
 public class GuiBodyPartEditor extends GuiMorphPanel<AbstractMorph, GuiAbstractMorph> implements IInventoryPicker
 {
-    private GuiBodyPartListElement bodyParts;
-    private GuiButtonElement<GuiButton> pickMorph;
-    private GuiButtonElement<GuiCheckBox> useTarget;
-    private GuiCreativeMorphs morphPicker;
+    protected GuiBodyPartListElement bodyParts;
+    protected GuiButtonElement<GuiButton> pickMorph;
+    protected GuiButtonElement<GuiCheckBox> useTarget;
+    protected GuiCreativeMorphs morphPicker;
 
-    private GuiButtonElement<GuiButton> addPart;
-    private GuiButtonElement<GuiButton> removePart;
+    protected GuiButtonElement<GuiButton> addPart;
+    protected GuiButtonElement<GuiButton> removePart;
 
-    private GuiTrackpadElement tx;
-    private GuiTrackpadElement ty;
-    private GuiTrackpadElement tz;
-    private GuiTrackpadElement sx;
-    private GuiTrackpadElement sy;
-    private GuiTrackpadElement sz;
-    private GuiTrackpadElement rx;
-    private GuiTrackpadElement ry;
-    private GuiTrackpadElement rz;
+    protected GuiTrackpadElement tx;
+    protected GuiTrackpadElement ty;
+    protected GuiTrackpadElement tz;
+    protected GuiTrackpadElement sx;
+    protected GuiTrackpadElement sy;
+    protected GuiTrackpadElement sz;
+    protected GuiTrackpadElement rx;
+    protected GuiTrackpadElement ry;
+    protected GuiTrackpadElement rz;
 
-    private GuiStringListElement limbs;
-    private GuiElements<IGuiElement> elements = new GuiElements<IGuiElement>();
+    protected GuiStringListElement limbs;
+    protected GuiElements<IGuiElement> elements = new GuiElements<IGuiElement>();
 
-    private BodyPartManager parts;
-    private BodyPart part;
+    protected BodyPartManager parts;
+    protected BodyPart part;
 
-    private GuiInventory inventory;
-    private GuiSlot[] slots = new GuiSlot[6];
-    private GuiSlot active;
+    protected GuiInventory inventory;
+    protected GuiSlot[] slots = new GuiSlot[6];
+    protected GuiSlot active;
 
     public GuiBodyPartEditor(Minecraft mc, GuiAbstractMorph editor)
     {
