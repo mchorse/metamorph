@@ -70,7 +70,6 @@ public class WaterBreath extends Ability
      * On demorph, show regular player air again
      */
     @Override
-    @SideOnly(Side.CLIENT)
     public void onDemorph(EntityLivingBase target)
     {
         IMorphing morphing = Morphing.get((EntityPlayer) target);
