@@ -28,7 +28,6 @@ public class BodyPart implements IBodyPart
     }
 
     @Override
-    @SideOnly(Side.CLIENT)
     public void update(EntityLivingBase entity, IMorphing cap)
     {
         if (this.part != null) this.part.update(entity, cap);
