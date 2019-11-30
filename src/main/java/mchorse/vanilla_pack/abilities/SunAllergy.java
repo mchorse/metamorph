@@ -53,7 +53,7 @@ public class SunAllergy extends Ability
                     if (itemstack.getItemDamage() >= itemstack.getMaxDamage())
                     {
                         target.renderBrokenItemStack(itemstack);
-                        target.setItemStackToSlot(EntityEquipmentSlot.HEAD, (ItemStack) null);
+                        target.setItemStackToSlot(EntityEquipmentSlot.HEAD, ItemStack.EMPTY);
                     }
                 }
 
