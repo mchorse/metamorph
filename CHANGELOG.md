@@ -1,8 +1,20 @@
 # Metamorph Change Log
 
+## Metamorph 1.1.10
+
+This is a small patch update with a couple of bug fixes (mainly by asanetargoss).
+
+**Compatible** with McLib `1.0.4`. It doesn't mean that future versions of McLib would be incompatible, but older versions are most likely incompatible.
+
+* Fixed acquired morphs getting overwritten by canMerge
+* Fixed crash when `null` sound proceeds in `SoundHandler` (fixed by asanetargoss)
+* Fixed wrong air HUD when demorphed from air breathing mob (fixed by asanetargoss)
+
 ## Metamorph 1.1.9
 
 This is a small patch update with lots of awesome bug fixes pull requests from asanetargoss and Johni0702!
+
+**Compatible** with McLib `1.0.3`. It doesn't mean that future versions of McLib would be incompatible, but older versions are most likely incompatible.
 
 * Fixed increasing health when morphing with modifier, and other cases. Fixed by **asanetargoss**
 * Fixed small morphs suffocating in ceiling. Fixed by **asanetargoss**
