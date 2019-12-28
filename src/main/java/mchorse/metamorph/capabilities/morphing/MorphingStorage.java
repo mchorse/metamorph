@@ -31,9 +31,11 @@ public class MorphingStorage implements IStorage<IMorphing>
     {
         NBTTagCompound tag = new NBTTagCompound();
         NBTTagList acquired = new NBTTagList();
-        tag.setTag("lastHealthRatio", new NBTTagFloat(instance.getLastHealthRatio()));
-        tag.setTag("HasSquidAir", new NBTTagByte(instance.getHasSquidAir() ? (byte)1 : (byte)0));
-        tag.setTag("SquidAir", new NBTTagInt(instance.getSquidAir()));
+
+        tag.setFloat("lastHealthRatio", instance.getLastHealthRatio());
+        tag.setBoolean("HasSquidAir", instance.getHasSquidAir());
+        tag.setInteger("SquidAir", instance.getSquidAir());
+        tag.setFloat("lastHealth", instance.getLastHealth());
 
         if (instance.getCurrentMorph() != null)
         {
@@ -63,11 +65,12 @@ public class MorphingStorage implements IStorage<IMorphing>
         {
             NBTTagCompound tag = (NBTTagCompound) nbt;
             NBTTagList acquired = tag.getTagList("Morphs", 10);
-            NBTTagList favorites = tag.getTagList("Favorites", 3);
             NBTTagCompound morphTag = tag.getCompoundTag("Morph");
+
             instance.setLastHealthRatio(tag.getFloat("LastHealthRatio"));
-            instance.setHasSquidAir(tag.getByte("HasSquidAir") == 1);
+            instance.setHasSquidAir(tag.getBoolean("HasSquidAir"));
             instance.setSquidAir(tag.getInteger("SquidAir"));
+            instance.setLastHealth(tag.getFloat("lastHealth"));
 
             if (!tag.hasNoTags())
             {
@@ -90,19 +93,6 @@ public class MorphingStorage implements IStorage<IMorphing>
                 }
 
                 instance.setAcquiredMorphs(acquiredMorphs);
-            }
-
-            if (!favorites.hasNoTags())
-            {
-                for (int i = 0; i < favorites.tagCount(); i++)
-                {
-                    int index = favorites.getIntAt(i);
-
-                    if (index >= 0 && index < acquiredMorphs.size())
-                    {
-                        acquiredMorphs.get(index).favorite = true;
-                    }
-                }
             }
         }
     }

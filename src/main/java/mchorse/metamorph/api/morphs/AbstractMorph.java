@@ -30,13 +30,6 @@ import net.minecraftforge.fml.relauncher.SideOnly;
  */
 public abstract class AbstractMorph
 {
-    /* Abilities */
-
-    /**
-     * Morph settings 
-     */
-    public MorphSettings settings = MorphSettings.DEFAULT;
-
     /* Meta information */
 
     /**
@@ -49,10 +42,12 @@ public abstract class AbstractMorph
      */
     public boolean favorite = false;
 
+    /* Abilities */
+
     /**
-     * Health when the player morphed into this morph 
+     * Morph settings
      */
-    protected float lastHealth;
+    public MorphSettings settings = MorphSettings.DEFAULT;
 
     /* Rendering */
 
@@ -62,6 +57,15 @@ public abstract class AbstractMorph
      */
     @SideOnly(Side.CLIENT)
     public Render<? extends Entity> renderer;
+
+    /* Clone code */
+
+    public static void copyBase(AbstractMorph from, AbstractMorph to)
+    {
+        to.name = from.name;
+        to.favorite = from.favorite;
+        to.settings = from.settings;
+    }
 
     /* Render methods */
 
@@ -94,11 +98,6 @@ public abstract class AbstractMorph
      */
     public void update(EntityLivingBase target, IMorphing cap)
     {
-        if (!Metamorph.proxy.config.disable_health)
-        {
-            this.setMaxHealth(target, this.settings.health);
-        }
-
         if (this.settings.speed != 0.1F)
         {
             target.getEntityAttribute(SharedMonsterAttributes.MOVEMENT_SPEED).setBaseValue(this.settings.speed);
@@ -120,9 +119,6 @@ public abstract class AbstractMorph
      */
     public void morph(EntityLivingBase target)
     {
-        this.lastHealth = (float)target.getEntityAttribute(SharedMonsterAttributes.MAX_HEALTH).getBaseValue();
-        this.setHealth(target, this.settings.health);
-
         for (IAbility ability : this.settings.abilities)
         {
             ability.onMorph(target);
@@ -137,9 +133,6 @@ public abstract class AbstractMorph
      */
     public void demorph(EntityLivingBase target)
     {
-        /* 20 is default player's health */
-        this.setHealth(target, this.lastHealth <= 0.0F ? 20.0F : this.lastHealth);
-
         for (IAbility ability : this.settings.abilities)
         {
             ability.onDemorph(target);
@@ -190,68 +183,6 @@ public abstract class AbstractMorph
         }
     }
 
-    /* Adjusting health */
-
-    /**
-     * Set player's health proportional to the current health with given max 
-     * health.
-     * 
-     * @author asanetargoss
-     */
-    protected void setHealth(EntityLivingBase target, float health)
-    {
-        if (Metamorph.proxy.config.disable_health)
-        {
-            return;
-        }
-
-        float maxHealth = target.getMaxHealth();
-        float currentHealth = target.getHealth();
-        float ratio = currentHealth / maxHealth;
-
-        // A sanity check to prevent "healing" health when morphing to and from
-        // a mob
-        // with essentially zero health
-        if (target instanceof EntityPlayer)
-        {
-            IMorphing capability = Morphing.get((EntityPlayer) target);
-            if (capability != null)
-            {
-                // Check if a health ratio makes sense for the old health value
-                if (maxHealth > IMorphing.REASONABLE_HEALTH_VALUE)
-                {
-                    // If it makes sense, store that ratio in the capability
-                    capability.setLastHealthRatio(ratio);
-                }
-                else if (health > IMorphing.REASONABLE_HEALTH_VALUE)
-                {
-                    // If it doesn't make sense, BUT the new max health makes
-                    // sense, retrieve the
-                    // ratio from the capability and use that instead
-                    ratio = capability.getLastHealthRatio();
-                }
-            }
-        }
-
-        this.setMaxHealth(target, health);
-        // We need to retrieve the max health of the target after modifiers are
-        // applied
-        // to get a sensible value
-        float proportionalHealth = target.getMaxHealth() * ratio;
-        target.setHealth(proportionalHealth <= 0.0F ? Float.MIN_VALUE : proportionalHealth);
-    }
-
-    /**
-     * Set player's max health
-     */
-    protected void setMaxHealth(EntityLivingBase target, float health)
-    {
-        if (target.getMaxHealth() != health)
-        {
-            target.getEntityAttribute(SharedMonsterAttributes.MAX_HEALTH).setBaseValue(health);
-        }
-    }
-
     /* Safe shortcuts for activating action and attack */
 
     /**
@@ -281,9 +212,7 @@ public abstract class AbstractMorph
      * 
      * <p>
      * <b>IMPORTANT</b>: when you subclass other morphs, don't forget to override 
-     * their method with your own, because otherwise its going to create 
-     * another {@link CustomMorph} instance, for example, instead of 
-     * MyCustomMorph instance.
+     * their method with your own.
      * </p>
      */
     public abstract AbstractMorph clone(boolean isRemote);
@@ -404,7 +333,6 @@ public abstract class AbstractMorph
     public void toNBT(NBTTagCompound tag)
     {
         tag.setString("Name", this.name);
-        tag.setFloat("LastHealth", this.lastHealth);
 
         if (this.favorite) tag.setBoolean("Favorite", this.favorite);
     }
@@ -417,7 +345,6 @@ public abstract class AbstractMorph
         this.reset();
 
         this.name = tag.getString("Name");
-        this.lastHealth = tag.getFloat("LastHealth");
 
         if (tag.hasKey("Favorite")) this.favorite = tag.getBoolean("Favorite");
     }

@@ -163,8 +163,8 @@ public class PlayerMorph extends EntityMorph
     {
         PlayerMorph morph = new PlayerMorph();
 
-        morph.name = this.name;
-        morph.settings = this.settings;
+        AbstractMorph.copyBase(this, morph);
+
         morph.entityData = this.entityData.copy();
         morph.profile = this.profile;
 
