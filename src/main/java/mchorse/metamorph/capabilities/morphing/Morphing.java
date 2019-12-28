@@ -278,6 +278,11 @@ public class Morphing implements IMorphing
 
         if (force || creative || this.acquiredMorph(morph))
         {
+            if (this.morph == null)
+            {
+                this.lastHealth = (float) player.getEntityAttribute(SharedMonsterAttributes.MAX_HEALTH).getBaseValue();
+            }
+
             if (player != null && this.morph != null)
             {
                 this.morph.demorph(player);
@@ -287,7 +292,6 @@ public class Morphing implements IMorphing
 
             if (player != null)
             {
-                this.lastHealth = (float) player.getEntityAttribute(SharedMonsterAttributes.MAX_HEALTH).getBaseValue();
                 this.setHealth(player, this.morph.settings.health);
 
                 this.morph.morph(player);
@@ -307,8 +311,11 @@ public class Morphing implements IMorphing
             this.morph.demorph(player);
         }
 
-        /* 20 is default player's health */
-        this.setHealth(player, this.lastHealth <= 0.0F ? 20.0F : this.lastHealth);
+        if (player != null)
+        {
+            /* 20 is default player's health */
+            this.setHealth(player, this.lastHealth <= 0.0F ? 20.0F : this.lastHealth);
+        }
 
         this.setMorph(null, player == null ? false : player.worldObj.isRemote);
     }
