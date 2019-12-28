@@ -750,8 +750,7 @@ public class EntityMorph extends AbstractMorph
     {
         EntityMorph morph = new EntityMorph();
 
-        morph.name = this.name;
-        morph.settings = this.settings;
+        AbstractMorph.copyBase(this, morph);
         morph.entityData = this.entityData.copy();
 
         return morph;

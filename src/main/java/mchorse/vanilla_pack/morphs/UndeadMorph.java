@@ -51,8 +51,7 @@ public class UndeadMorph extends EntityMorph
     {
         UndeadMorph morph = new UndeadMorph();
 
-        morph.name = this.name;
-        morph.settings = this.settings;
+        AbstractMorph.copyBase(this, morph);
         morph.entityData = this.entityData.copy();
 
         return morph;
