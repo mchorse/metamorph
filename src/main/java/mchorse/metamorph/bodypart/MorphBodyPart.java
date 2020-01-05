@@ -97,7 +97,6 @@ public class MorphBodyPart implements IBodyPart
     }
 
     @Override
-    @SideOnly(Side.CLIENT)
     public void update(EntityLivingBase entity, IMorphing cap)
     {
         entity = this.useTarget ? entity : this.entity;
