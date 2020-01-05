@@ -123,13 +123,7 @@ public class BlockMorph extends AbstractMorph
     {
         BlockMorph morph = new BlockMorph();
 
-        morph.name = this.name;
-        morph.settings = this.settings;
-
-        if (isRemote)
-        {
-            morph.renderer = this.renderer;
-        }
+        AbstractMorph.copyBase(this, morph);
 
         /* Data relevant only to this morph */
         morph.block = this.block;

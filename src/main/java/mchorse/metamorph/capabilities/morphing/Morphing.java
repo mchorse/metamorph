@@ -8,6 +8,8 @@ import mchorse.metamorph.api.MorphManager;
 import mchorse.metamorph.api.morphs.AbstractMorph;
 import mchorse.metamorph.client.gui.elements.GuiSurvivalMorphs;
 import net.minecraft.client.renderer.GlStateManager;
+import net.minecraft.entity.EntityLivingBase;
+import net.minecraft.entity.SharedMonsterAttributes;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.SoundEvents;
 import net.minecraft.nbt.NBTTagCompound;
@@ -67,6 +69,11 @@ public class Morphing implements IMorphing
      * player air
      */
     private int squidAir = 300;
+
+    /**
+     * Last health that player had before morphing, should fix issue that people complain about
+     */
+    private float lastHealth;
 
     /**
      * GUI menu which is responsible for choosing morphs
@@ -271,6 +278,11 @@ public class Morphing implements IMorphing
 
         if (force || creative || this.acquiredMorph(morph))
         {
+            if (this.morph == null)
+            {
+                this.lastHealth = (float) player.getEntityAttribute(SharedMonsterAttributes.MAX_HEALTH).getBaseValue();
+            }
+
             if (player != null && this.morph != null)
             {
                 this.morph.demorph(player);
@@ -280,6 +292,8 @@ public class Morphing implements IMorphing
 
             if (player != null)
             {
+                this.setHealth(player, this.morph.settings.health);
+
                 this.morph.morph(player);
             }
 
@@ -295,6 +309,12 @@ public class Morphing implements IMorphing
         if (player != null && this.morph != null)
         {
             this.morph.demorph(player);
+        }
+
+        if (player != null)
+        {
+            /* 20 is default player's health */
+            this.setHealth(player, this.lastHealth <= 0.0F ? 20.0F : this.lastHealth);
         }
 
         this.setMorph(null, player == null ? false : player.world.isRemote);
@@ -412,6 +432,18 @@ public class Morphing implements IMorphing
     }
 
     @Override
+    public float getLastHealth()
+    {
+        return this.lastHealth;
+    }
+
+    @Override
+    public void setLastHealth(float lastHealth)
+    {
+        this.lastHealth = lastHealth;
+    }
+
+    @Override
     public void update(EntityPlayer player)
     {
         if (this.animation >= 0)
@@ -429,19 +461,85 @@ public class Morphing implements IMorphing
 
         if (this.morph != null)
         {
+            if (!Metamorph.proxy.config.disable_health)
+            {
+                this.setMaxHealth(player, this.morph.settings.health);
+            }
+
             this.morph.update(player, this);
+        }
+    }
+
+    /* Adjusting health */
+
+    /**
+     * Set player's health proportional to the current health with given max
+     * health.
+     *
+     * @author asanetargoss
+     */
+    protected void setHealth(EntityLivingBase target, float health)
+    {
+        if (Metamorph.proxy.config.disable_health)
+        {
+            return;
+        }
+
+        float maxHealth = target.getMaxHealth();
+        float currentHealth = target.getHealth();
+        float ratio = currentHealth / maxHealth;
+
+        // A sanity check to prevent "healing" health when morphing to and from
+        // a mob with essentially zero health
+        if (target instanceof EntityPlayer)
+        {
+            IMorphing capability = Morphing.get((EntityPlayer) target);
+            if (capability != null)
+            {
+                // Check if a health ratio makes sense for the old health value
+                if (maxHealth > IMorphing.REASONABLE_HEALTH_VALUE)
+                {
+                    // If it makes sense, store that ratio in the capability
+                    capability.setLastHealthRatio(ratio);
+                }
+                else if (health > IMorphing.REASONABLE_HEALTH_VALUE)
+                {
+                    // If it doesn't make sense, BUT the new max health makes
+                    // sense, retrieve the ratio from the capability and use that instead
+                    ratio = capability.getLastHealthRatio();
+                }
+            }
+        }
+
+        this.setMaxHealth(target, health);
+        // We need to retrieve the max health of the target after modifiers are
+        // applied to get a sensible value
+        float proportionalHealth = target.getMaxHealth() * ratio;
+        target.setHealth(proportionalHealth <= 0.0F ? Float.MIN_VALUE : proportionalHealth);
+    }
+
+    /**
+     * Set player's max health
+     */
+    protected void setMaxHealth(EntityLivingBase target, float health)
+    {
+        if (target.getMaxHealth() != health)
+        {
+            target.getEntityAttribute(SharedMonsterAttributes.MAX_HEALTH).setBaseValue(health);
         }
     }
 
     @Override
     @SideOnly(Side.CLIENT)
-    public GuiSurvivalMorphs getOverlay() {
+    public GuiSurvivalMorphs getOverlay()
+    {
         if (this.overlay == null)
         {
             this.overlay = new GuiSurvivalMorphs();
             this.overlay.setupMorphs(this);
             this.hasOverlay = true;
         }
+
         return this.overlay;
     }
 }
