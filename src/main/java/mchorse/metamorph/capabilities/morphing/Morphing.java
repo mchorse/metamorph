@@ -278,14 +278,16 @@ public class Morphing implements IMorphing
 
         if (force || creative || this.acquiredMorph(morph))
         {
-            if (this.morph == null)
+            if (player != null)
             {
-                this.lastHealth = (float) player.getEntityAttribute(SharedMonsterAttributes.MAX_HEALTH).getBaseValue();
-            }
-
-            if (player != null && this.morph != null)
-            {
-                this.morph.demorph(player);
+                if (this.morph == null)
+                {
+                    this.lastHealth = (float) player.getEntityAttribute(SharedMonsterAttributes.MAX_HEALTH).getBaseValue();
+                }
+                else
+                {
+                    this.morph.demorph(player);
+                }
             }
 
             this.setMorph(morph, player == null ? false : player.worldObj.isRemote);
