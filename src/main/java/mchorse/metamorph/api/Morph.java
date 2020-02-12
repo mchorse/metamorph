@@ -22,6 +22,11 @@ public class Morph
         this.morph = morph;
     }
 
+    public boolean isEmpty()
+    {
+        return this.morph == null;
+    }
+
     public boolean set(AbstractMorph morph, boolean isRemote)
     {
         if (this.morph == null || !this.morph.canMerge(morph, isRemote))
