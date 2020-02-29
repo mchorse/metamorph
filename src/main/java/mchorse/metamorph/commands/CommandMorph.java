@@ -4,6 +4,7 @@ import java.util.List;
 
 import mchorse.metamorph.api.MorphAPI;
 import mchorse.metamorph.api.MorphManager;
+import mchorse.metamorph.api.morphs.AbstractMorph;
 import net.minecraft.command.CommandBase;
 import net.minecraft.command.CommandException;
 import net.minecraft.command.ICommandSender;
@@ -74,12 +75,14 @@ public class CommandMorph extends CommandBase
         else
         {
             NBTTagCompound tag = null;
+            String mergedTagArgs = "";
 
             if (args.length >= 3)
             {
                 try
                 {
-                    tag = JsonToNBT.getTagFromJson(mergeArgs(args, 2));
+                    mergedTagArgs = mergeArgs(args, 2);
+                    tag = JsonToNBT.getTagFromJson(mergedTagArgs);
                 }
                 catch (Exception e)
                 {
@@ -94,7 +97,15 @@ public class CommandMorph extends CommandBase
 
             tag.setString("Name", args[1]);
 
-            MorphAPI.morph(player, MorphManager.INSTANCE.morphFromNBT(tag), true);
+            AbstractMorph newMorph = MorphManager.INSTANCE.morphFromNBT(tag);
+            boolean morphFound = newMorph != null;
+            
+            if (!morphFound)
+            {
+                throw new CommandException("metamorph.error.morph.factory", args[0], args[1], mergedTagArgs);
+            }
+            
+            MorphAPI.morph(player, newMorph, true);
             sender.addChatMessage(new TextComponentTranslation("metamorph.success.morph", args[0], args[1]));
         }
     }
