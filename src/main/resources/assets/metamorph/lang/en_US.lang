@@ -76,6 +76,7 @@ metamorph.commands.metamorph=Metamorph server command. This command allows to ma
 
 metamorph.error.morph.not_player=Entity %s isn't not a player!
 metamorph.error.morph.nbt=Error occurred during data tag parsing:\n%s
+metamorph.error.morph.factory=Could not morph into %2$s with given data tag
 metamorph.error.acquire=Couldn't acquire a morph by name %s!
 metamorph.success.morph=Player by username %s was successfully morphed into %s!
 metamorph.success.demorph=Player by username %s was successfully demorphed!
