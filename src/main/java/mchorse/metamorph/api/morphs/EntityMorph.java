@@ -499,7 +499,12 @@ public class EntityMorph extends AbstractMorph
     {
         if (this.settings.updates)
         {
+            if (!Metamorph.proxy.config.show_morph_idle_sounds)
+            {
+                this.entity.setSilent(true);
+            }
             this.entity.onUpdate();
+            this.entity.setSilent(false);
         }
     }
 
