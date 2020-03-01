@@ -70,7 +70,10 @@ public class CommandMorph extends CommandBase
         if (args.length < 2)
         {
             MorphAPI.demorph(player);
-            sender.addChatMessage(new TextComponentTranslation("metamorph.success.demorph", args[0]));
+            if (sender.sendCommandFeedback())
+            {
+                sender.addChatMessage(new TextComponentTranslation("metamorph.success.demorph", args[0]));
+            }
         }
         else
         {
@@ -106,7 +109,10 @@ public class CommandMorph extends CommandBase
             }
             
             MorphAPI.morph(player, newMorph, true);
-            sender.addChatMessage(new TextComponentTranslation("metamorph.success.morph", args[0], args[1]));
+            if (sender.sendCommandFeedback())
+            {
+                sender.addChatMessage(new TextComponentTranslation("metamorph.success.morph", args[0], args[1]));
+            }
         }
     }
 
