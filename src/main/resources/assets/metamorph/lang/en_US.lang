@@ -68,6 +68,7 @@ metamorph.config.disable_morph_animation=Disable morph animation
 metamorph.config.disable_morph_disguise=Disable morph hostility
 metamorph.config.acquire_immediately=Acquire morph immediately
 metamorph.config.morph_in_tight_spaces=Allow morphing in tight spaces
+metamorph.config.show_morph_idle_sounds=Show morph idle sounds
 
 # Commands
 metamorph.commands.morph=Morph command. This command is responsible for morphing player into specified morph.\n\n/morph <username> [morph_name] [data_tag]
@@ -76,6 +77,7 @@ metamorph.commands.metamorph=Changeling server command. This command allows to m
 
 metamorph.error.morph.not_player=Entity %s isn't not a player!
 metamorph.error.morph.nbt=Error occurred during data tag parsing:\n%s
+metamorph.error.morph.factory=Could not morph into %2$s with given data tag
 metamorph.error.acquire=Couldn't acquire a morph by name %s!
 metamorph.success.morph=Player by username %s was successfully morphed into %s!
 metamorph.success.demorph=Player by username %s was successfully demorphed!

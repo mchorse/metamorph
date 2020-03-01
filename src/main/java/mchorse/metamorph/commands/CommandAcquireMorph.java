@@ -93,7 +93,11 @@ public class CommandAcquireMorph extends CommandBase
             throw new CommandException("metamorph.error.acquire", args[1]);
         }
 
-        sender.addChatMessage(new TextComponentTranslation("metamorph.success.acquire", args[0], args[1]));
+
+        if (sender.sendCommandFeedback())
+        {
+            sender.addChatMessage(new TextComponentTranslation("metamorph.success.acquire", args[0], args[1]));
+        }
     }
 
     /**
