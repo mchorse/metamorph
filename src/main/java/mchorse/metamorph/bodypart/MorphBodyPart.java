@@ -28,7 +28,6 @@ public class MorphBodyPart implements IBodyPart
     public float[] rotate = new float[] {180F, 0F, 0F};
     public boolean useTarget = false;
 
-    @SideOnly(Side.CLIENT)
     private EntityLivingBase entity;
 
     @Override
@@ -97,7 +96,6 @@ public class MorphBodyPart implements IBodyPart
     }
 
     @Override
-    @SideOnly(Side.CLIENT)
     public void update(EntityLivingBase entity, IMorphing cap)
     {
         entity = this.useTarget ? entity : this.entity;

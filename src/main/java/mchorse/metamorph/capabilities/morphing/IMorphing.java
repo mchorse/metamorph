@@ -143,6 +143,16 @@ public interface IMorphing
     public void setSquidAir(int squidAir);
 
     /**
+     * Get last health
+     */
+    public float getLastHealth();
+
+    /**
+     * Set last health
+     */
+    public void setLastHealth(float lastHealth);
+
+    /**
      * Update the player 
      */
     public void update(EntityPlayer player);

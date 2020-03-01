@@ -63,7 +63,6 @@ public class BodyPartManager
     /**
      * Update body limbs 
      */
-    @SideOnly(Side.CLIENT)
     public void updateBodyLimbs(EntityLivingBase target, IMorphing cap)
     {
         for (BodyPart part : this.parts)

@@ -17,7 +17,6 @@ public interface IBodyPart
     @SideOnly(Side.CLIENT)
     public void render(EntityLivingBase entity, float partialTicks);
 
-    @SideOnly(Side.CLIENT)
     public void update(EntityLivingBase entity, IMorphing cap);
 
     public boolean canMerge(IBodyPart part, boolean isRemote);

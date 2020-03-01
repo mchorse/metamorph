@@ -4,10 +4,13 @@ import java.util.ArrayList;
 import java.util.List;
 
 import mchorse.metamorph.Metamorph;
+import mchorse.metamorph.api.Morph;
 import mchorse.metamorph.api.MorphManager;
 import mchorse.metamorph.api.morphs.AbstractMorph;
 import mchorse.metamorph.client.gui.elements.GuiSurvivalMorphs;
 import net.minecraft.client.renderer.GlStateManager;
+import net.minecraft.entity.EntityLivingBase;
+import net.minecraft.entity.SharedMonsterAttributes;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.SoundEvents;
 import net.minecraft.nbt.NBTTagCompound;
@@ -33,7 +36,7 @@ public class Morphing implements IMorphing
     /**
      * Current used morph
      */
-    private AbstractMorph morph;
+    private Morph morph = new Morph();
 
     /**
      * Used for animation
@@ -67,6 +70,11 @@ public class Morphing implements IMorphing
      * player air
      */
     private int squidAir = 300;
+
+    /**
+     * Last health that player had before morphing, should fix issue that people complain about
+     */
+    private float lastHealth;
 
     /**
      * GUI menu which is responsible for choosing morphs
@@ -122,19 +130,19 @@ public class Morphing implements IMorphing
     @SideOnly(Side.CLIENT)
     public boolean renderPlayer(EntityPlayer player, double x, double y, double z, float yaw, float partialTick)
     {
-        if (this.morph == null && !this.isAnimating())
+        if (this.morph.isEmpty() && !this.isAnimating())
         {
             return false;
         }
 
-        if (this.morph == null && this.animation <= 10 || this.previousMorph == null && this.animation > 10)
+        if (this.morph.isEmpty() && this.animation <= 10 || this.previousMorph == null && this.animation > 10)
         {
             return false;
         }
 
         if (!this.isAnimating())
         {
-            this.morph.render(player, x, y, z, yaw, partialTick);
+            this.morph.get().render(player, x, y, z, yaw, partialTick);
 
             return true;
         }
@@ -160,7 +168,7 @@ public class Morphing implements IMorphing
                 GlStateManager.scale(1 - anim, 1 - anim, 1 - anim);
             }
 
-            this.morph.render(player, 0, 0, 0, yaw, partialTick);
+            this.morph.get().render(player, 0, 0, 0, yaw, partialTick);
         }
         else if (this.previousMorph != null)
         {
@@ -254,7 +262,7 @@ public class Morphing implements IMorphing
     @Override
     public AbstractMorph getCurrentMorph()
     {
-        return this.morph;
+        return this.morph.get();
     }
 
     @Override
@@ -271,16 +279,26 @@ public class Morphing implements IMorphing
 
         if (force || creative || this.acquiredMorph(morph))
         {
-            if (player != null && this.morph != null)
+            if (player != null)
             {
-                this.morph.demorph(player);
+                if (this.morph.isEmpty())
+                {
+                    this.lastHealth = (float) player.getEntityAttribute(SharedMonsterAttributes.MAX_HEALTH).getBaseValue();
+                }
+                else
+                {
+                    this.morph.get().demorph(player);
+                }
             }
 
             this.setMorph(morph, player == null ? false : player.worldObj.isRemote);
 
-            if (player != null)
+            if (player != null && !this.morph.isEmpty())
             {
-                this.morph.morph(player);
+                AbstractMorph current = this.morph.get();
+
+                this.setHealth(player, current.settings.health);
+                current.morph(player);
             }
 
             return true;
@@ -292,9 +310,15 @@ public class Morphing implements IMorphing
     @Override
     public void demorph(EntityPlayer player)
     {
-        if (player != null && this.morph != null)
+        if (player != null && !this.morph.isEmpty())
         {
-            this.morph.demorph(player);
+            this.morph.get().demorph(player);
+        }
+
+        if (player != null)
+        {
+            /* 20 is default player's health */
+            this.setHealth(player, this.lastHealth <= 0.0F ? 20.0F : this.lastHealth);
         }
 
         this.setMorph(null, player == null ? false : player.worldObj.isRemote);
@@ -305,22 +329,23 @@ public class Morphing implements IMorphing
      */
     protected void setMorph(AbstractMorph morph, boolean isRemote)
     {
-        if (this.morph == null || (this.morph != null && !this.morph.canMerge(morph, isRemote)))
+        AbstractMorph previous = this.morph.get();
+
+        if (this.morph.set(morph, isRemote))
         {
             if (!Metamorph.proxy.config.disable_morph_animation)
             {
                 this.animation = 20;
             }
 
-            this.previousMorph = this.morph;
-            this.morph = morph;
+            this.previousMorph = previous;
         }
     }
 
     @Override
     public boolean isMorphed()
     {
-        return this.morph != null;
+        return !this.morph.isEmpty();
     }
 
     @Override
@@ -363,11 +388,10 @@ public class Morphing implements IMorphing
     public void copy(IMorphing morphing, EntityPlayer player)
     {
         this.acquiredMorphs.addAll(morphing.getAcquiredMorphs());
+
         if (morphing.getCurrentMorph() != null)
         {
-            NBTTagCompound morphNBT = new NBTTagCompound();
-            morphing.getCurrentMorph().toNBT(morphNBT);
-            this.setCurrentMorph(MorphManager.INSTANCE.morphFromNBT(morphNBT), player, true);
+            this.setCurrentMorph(morphing.getCurrentMorph().clone(player.worldObj.isRemote), player, true);
         }
         else
         {
@@ -412,6 +436,18 @@ public class Morphing implements IMorphing
     }
 
     @Override
+    public float getLastHealth()
+    {
+        return this.lastHealth;
+    }
+
+    @Override
+    public void setLastHealth(float lastHealth)
+    {
+        this.lastHealth = lastHealth;
+    }
+
+    @Override
     public void update(EntityPlayer player)
     {
         if (this.animation >= 0)
@@ -427,21 +463,89 @@ public class Morphing implements IMorphing
             player.playSound(SoundEvents.ENTITY_ITEM_PICKUP, 1.0F, 1.0F);
         }
 
-        if (this.morph != null)
+        if (!this.morph.isEmpty())
         {
-            this.morph.update(player, this);
+            AbstractMorph morph = this.morph.get();
+
+            if (!Metamorph.proxy.config.disable_health)
+            {
+                this.setMaxHealth(player, morph.settings.health);
+            }
+
+            morph.update(player, this);
+        }
+    }
+
+    /* Adjusting health */
+
+    /**
+     * Set player's health proportional to the current health with given max
+     * health.
+     *
+     * @author asanetargoss
+     */
+    protected void setHealth(EntityLivingBase target, float health)
+    {
+        if (Metamorph.proxy.config.disable_health)
+        {
+            return;
+        }
+
+        float maxHealth = target.getMaxHealth();
+        float currentHealth = target.getHealth();
+        float ratio = currentHealth / maxHealth;
+
+        // A sanity check to prevent "healing" health when morphing to and from
+        // a mob with essentially zero health
+        if (target instanceof EntityPlayer)
+        {
+            IMorphing capability = Morphing.get((EntityPlayer) target);
+            if (capability != null)
+            {
+                // Check if a health ratio makes sense for the old health value
+                if (maxHealth > IMorphing.REASONABLE_HEALTH_VALUE)
+                {
+                    // If it makes sense, store that ratio in the capability
+                    capability.setLastHealthRatio(ratio);
+                }
+                else if (health > IMorphing.REASONABLE_HEALTH_VALUE)
+                {
+                    // If it doesn't make sense, BUT the new max health makes
+                    // sense, retrieve the ratio from the capability and use that instead
+                    ratio = capability.getLastHealthRatio();
+                }
+            }
+        }
+
+        this.setMaxHealth(target, health);
+        // We need to retrieve the max health of the target after modifiers are
+        // applied to get a sensible value
+        float proportionalHealth = target.getMaxHealth() * ratio;
+        target.setHealth(proportionalHealth <= 0.0F ? Float.MIN_VALUE : proportionalHealth);
+    }
+
+    /**
+     * Set player's max health
+     */
+    protected void setMaxHealth(EntityLivingBase target, float health)
+    {
+        if (target.getMaxHealth() != health)
+        {
+            target.getEntityAttribute(SharedMonsterAttributes.MAX_HEALTH).setBaseValue(health);
         }
     }
 
     @Override
     @SideOnly(Side.CLIENT)
-    public GuiSurvivalMorphs getOverlay() {
+    public GuiSurvivalMorphs getOverlay()
+    {
         if (this.overlay == null)
         {
             this.overlay = new GuiSurvivalMorphs();
             this.overlay.setupMorphs(this);
             this.hasOverlay = true;
         }
+
         return this.overlay;
     }
 }
