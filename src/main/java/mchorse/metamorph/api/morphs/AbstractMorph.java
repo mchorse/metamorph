@@ -331,6 +331,12 @@ public abstract class AbstractMorph
     }
 
     /**
+     * Collect the data from previous morph
+     */
+    public void afterMerge(AbstractMorph morph, boolean isRemote)
+    {}
+
+    /**
      * Reset data for editing 
      */
     public void reset()
