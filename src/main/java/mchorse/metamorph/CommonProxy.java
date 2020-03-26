@@ -1,7 +1,5 @@
 package mchorse.metamorph;
 
-import java.io.File;
-
 import mchorse.metamorph.api.MorphHandler;
 import mchorse.metamorph.api.MorphManager;
 import mchorse.metamorph.api.MorphUtils;
@@ -9,7 +7,6 @@ import mchorse.metamorph.capabilities.CapabilityHandler;
 import mchorse.metamorph.capabilities.morphing.IMorphing;
 import mchorse.metamorph.capabilities.morphing.Morphing;
 import mchorse.metamorph.capabilities.morphing.MorphingStorage;
-import mchorse.metamorph.config.MetamorphConfig;
 import mchorse.metamorph.entity.EntityMorph;
 import mchorse.metamorph.entity.SoundHandler;
 import mchorse.metamorph.network.Dispatcher;
@@ -19,10 +16,11 @@ import mchorse.vanilla_pack.RegisterHandler;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.common.capabilities.CapabilityManager;
-import net.minecraftforge.common.config.Configuration;
 import net.minecraftforge.fml.common.event.FMLPostInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
 import net.minecraftforge.fml.common.registry.EntityRegistry;
+
+import java.io.File;
 
 /**
  * Common proxy
@@ -33,17 +31,6 @@ import net.minecraftforge.fml.common.registry.EntityRegistry;
  */
 public class CommonProxy
 {
-
-    /**
-     * Metamorph config filled with cool configuration points
-     */
-    public MetamorphConfig config;
-
-    /**
-     * Forge config
-     */
-    public Configuration forge;
-
     /**
      * Location of a user morph settings
      */
@@ -64,12 +51,9 @@ public class CommonProxy
         MorphManager.INSTANCE.factories.add(new PlayerMorphFactory());
 
         /* Configuration */
-        File config = new File(event.getModConfigurationDirectory(), "metamorph/config.cfg");
         File morphs = new File(event.getModConfigurationDirectory(), "metamorph/morphs.json");
         File blacklist = new File(event.getModConfigurationDirectory(), "metamorph/blacklist.json");
 
-        this.forge = new Configuration(config);
-        this.config = new MetamorphConfig(this.forge);
         this.morphs = morphs;
         this.blacklist = blacklist;
 
@@ -87,7 +71,6 @@ public class CommonProxy
     public void load()
     {
         /* Event listeners */
-        MinecraftForge.EVENT_BUS.register(this.config);
         MinecraftForge.EVENT_BUS.register(new MorphHandler());
         MinecraftForge.EVENT_BUS.register(new SoundHandler());
         MinecraftForge.EVENT_BUS.register(new CapabilityHandler());

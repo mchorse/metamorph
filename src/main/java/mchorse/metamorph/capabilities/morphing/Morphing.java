@@ -5,7 +5,6 @@ import java.util.List;
 
 import mchorse.metamorph.Metamorph;
 import mchorse.metamorph.api.Morph;
-import mchorse.metamorph.api.MorphManager;
 import mchorse.metamorph.api.morphs.AbstractMorph;
 import mchorse.metamorph.client.gui.elements.GuiSurvivalMorphs;
 import net.minecraft.client.renderer.GlStateManager;
@@ -13,7 +12,6 @@ import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.SharedMonsterAttributes;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.SoundEvents;
-import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.DamageSource;
 import net.minecraft.util.EnumParticleTypes;
 import net.minecraft.world.WorldServer;
@@ -104,7 +102,7 @@ public class Morphing implements IMorphing
     @SideOnly(Side.CLIENT)
     public boolean isAnimating()
     {
-        if (Metamorph.proxy.config.disable_morph_animation)
+        if (Metamorph.disableMorphAnimation.get())
         {
             return false;
         }
@@ -333,7 +331,7 @@ public class Morphing implements IMorphing
 
         if (this.morph.set(morph, isRemote))
         {
-            if (!Metamorph.proxy.config.disable_morph_animation)
+            if (!Metamorph.disableMorphAnimation.get())
             {
                 this.animation = 20;
             }
@@ -455,7 +453,7 @@ public class Morphing implements IMorphing
             this.animation--;
         }
 
-        if (this.animation == 16 && !player.world.isRemote && !Metamorph.proxy.config.disable_morph_animation)
+        if (this.animation == 16 && !player.world.isRemote && !Metamorph.disableMorphAnimation.get())
         {
             /* Pop! */
             ((WorldServer) player.world).spawnParticle(EnumParticleTypes.EXPLOSION_NORMAL, false, player.posX, player.posY + 0.5, player.posZ, 25, 0.5, 0.5, 0.5, 0.05);
@@ -467,7 +465,7 @@ public class Morphing implements IMorphing
         {
             AbstractMorph morph = this.morph.get();
 
-            if (!Metamorph.proxy.config.disable_health)
+            if (!Metamorph.disableHealth.get())
             {
                 this.setMaxHealth(player, morph.settings.health);
             }
@@ -486,7 +484,7 @@ public class Morphing implements IMorphing
      */
     protected void setHealth(EntityLivingBase target, float health)
     {
-        if (Metamorph.proxy.config.disable_health)
+        if (Metamorph.disableHealth.get())
         {
             return;
         }

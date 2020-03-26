@@ -35,7 +35,6 @@ metamorph.gui.survival_title=Survival Morph Menu
 metamorph.gui.morph=Morph
 metamorph.gui.acquire=Acquire
 metamorph.gui.close=Close
-metamorph.gui.remove=Remove
 metamorph.gui.favorite=Favorite
 metamorph.gui.unfavorite=Unfavorite
 metamorph.gui.search=Search
@@ -56,19 +55,36 @@ metamorph.gui.panels.updating=Updating...
 metamorph.gui.status.tight_space=There is not enough space to morph here
 
 # Config
+metamorph.config.title=Metamorph
+
 metamorph.config.general.title=General
-metamorph.config.keep_morphs=Retain morphs on death
-metamorph.config.prevent_ghosts=Prevent ghost
-metamorph.config.hide_username=Hide username
-metamorph.config.prevent_kill_acquire=Prevent acquiring by killing
-metamorph.config.show_demorph=Show demorph
-metamorph.config.disable_pov=Disable POV
-metamorph.config.disable_health=Disable health scaling
-metamorph.config.disable_morph_animation=Disable morph animation
-metamorph.config.disable_morph_disguise=Disable morph hostility
-metamorph.config.acquire_immediately=Acquire morph immediately
-metamorph.config.morph_in_tight_spaces=Allow morphing in tight spaces
-metamorph.config.show_morph_idle_sounds=Show morph idle sounds
+metamorph.config.general.tooltip=All the Metamorph properties
+
+metamorph.config.general.keep_morphs=Retain morphs on death
+metamorph.config.general.prevent_ghosts=Prevent ghost
+metamorph.config.general.hide_username=Hide username
+metamorph.config.general.prevent_kill_acquire=Prevent acquiring by killing
+metamorph.config.general.show_demorph=Show demorph
+metamorph.config.general.disable_pov=Disable POV
+metamorph.config.general.disable_health=Disable health scaling
+metamorph.config.general.disable_morph_animation=Disable morph animation
+metamorph.config.general.disable_morph_disguise=Disable morph hostility
+metamorph.config.general.acquire_immediately=Acquire morph immediately
+metamorph.config.general.morph_in_tight_spaces=Allow morphing in tight spaces
+metamorph.config.general.show_morph_idle_sounds=Show morph idle sounds
+
+metamorph.config.comments.general.keep_morphs=Retain morphs when player died
+metamorph.config.comments.general.prevent_ghosts=Prevents ghosts from spawning if the player has already a currently killed mob's morph
+metamorph.config.comments.general.hide_username=Hide username in the survival morphing menu. Added just because, for no reason, if you're asking
+metamorph.config.comments.general.prevent_kill_acquire=Prevent acquiring morphs by killing morphs
+metamorph.config.comments.general.show_demorph=Show demorph as an option in survival morph menu
+metamorph.config.comments.general.disable_pov=Disable modifying Point-of-View. Requested because of MorePlayerModels
+metamorph.config.comments.general.disable_health=Disable modifying health. Requested because of Tough as Nails
+metamorph.config.comments.general.disable_morph_animation=Disables morphing animation
+metamorph.config.comments.general.disable_morph_disguise=Disable the ability of morphs labeled as "hostile" to avoid being attacked by hostile mobs
+metamorph.config.comments.general.acquire_immediately=Acquires morph immediately after player kills an entity instead of spawning a ghost
+metamorph.config.comments.general.morph_in_tight_spaces=Allows morphing even if it could cause suffocation and allow passing through walls
+metamorph.config.comments.general.show_morph_idle_sounds=Whether players make entity idle sounds when morphed
 
 # Commands
 metamorph.commands.morph=Morph command. This command is responsible for morphing player into specified morph.\n\n/morph <username> [morph_name] [data_tag]

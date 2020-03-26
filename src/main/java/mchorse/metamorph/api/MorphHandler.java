@@ -84,7 +84,7 @@ public class MorphHandler
         if (capability == null || !capability.isMorphed())
         {
             /* Restore default eye height */
-            if (!Metamorph.proxy.config.disable_pov)
+            if (!Metamorph.disablePov.get())
             {
                 player.eyeHeight = player.getDefaultEyeHeight();
             }
@@ -141,7 +141,7 @@ public class MorphHandler
             return;
         }
 
-        if (!(source instanceof EntityPlayer) || target instanceof EntityPlayer || Metamorph.proxy.config.prevent_kill_acquire)
+        if (!(source instanceof EntityPlayer) || target instanceof EntityPlayer || Metamorph.preventKillAcquire.get())
         {
             return;
         }
@@ -171,14 +171,14 @@ public class MorphHandler
         AbstractMorph morph = MorphManager.INSTANCE.morphFromNBT(tag);
         boolean acquired = capability.acquiredMorph(morph);
 
-        if (Metamorph.proxy.config.acquire_immediately && !acquired)
+        if (Metamorph.acquireImmediately.get() && !acquired)
         {
             MorphAPI.acquire(player, morph);
 
             return;
         }
 
-        if (!Metamorph.proxy.config.prevent_ghosts || !acquired)
+        if (!Metamorph.preventGhosts.get() || !acquired)
         {
             SpawnGhostEvent spawnGhostEvent = new SpawnGhostEvent.Pre(player, morph);
 
@@ -270,7 +270,7 @@ public class MorphHandler
     @SubscribeEvent
     public void onLivingSetAttackTarget(LivingSetAttackTargetEvent event)
     {
-        if (Metamorph.proxy.config.disable_morph_disguise)
+        if (Metamorph.disableMorphDisguise.get())
         {
             return;
         }

@@ -52,7 +52,7 @@ public class MorphAPI
             return false;
         }
 
-        if (!force && !player.noClip && !Metamorph.proxy.config.morph_in_tight_spaces && !EntityUtils.canPlayerMorphFit(player, morphing.getCurrentMorph(), morph))
+        if (!force && !player.noClip && !Metamorph.morphInTightSpaces.get() && !EntityUtils.canPlayerMorphFit(player, morphing.getCurrentMorph(), morph))
         {
             if (!player.world.isRemote)
             {

@@ -1,5 +1,10 @@
 package mchorse.metamorph;
 
+import mchorse.mclib.McLib;
+import mchorse.mclib.config.ConfigBuilder;
+import mchorse.mclib.config.values.ValueBoolean;
+import mchorse.mclib.events.RegisterConfigEvent;
+import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import org.apache.logging.log4j.Level;
 import org.apache.logging.log4j.Logger;
 
@@ -17,6 +22,8 @@ import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLServerStartingEvent;
 import net.minecraftforge.fml.common.network.FMLEventChannel;
 import net.minecraftforge.fml.common.network.NetworkRegistry;
+
+import java.io.File;
 
 /**
  * Metamorph mod
@@ -58,12 +65,49 @@ public class Metamorph
      */
     public static FMLEventChannel channel;
 
+    /* Metamorph configuration */
+    public static ValueBoolean preventGhosts;
+    public static ValueBoolean keepMorphs;
+    public static ValueBoolean hideUsername;
+    public static ValueBoolean preventKillAcquire;
+    public static ValueBoolean showDemorph;
+    public static ValueBoolean disablePov;
+    public static ValueBoolean disableHealth;
+    public static ValueBoolean disableMorphAnimation;
+    public static ValueBoolean disableMorphDisguise;
+    public static ValueBoolean acquireImmediately;
+    public static ValueBoolean morphInTightSpaces;
+    public static ValueBoolean showMorphIdleSounds;
+
     /* Events */
+
+    @SubscribeEvent
+    public void onConfigRegister(RegisterConfigEvent event)
+    {
+        ConfigBuilder builder = new ConfigBuilder("metamorph", new File(event.configs, "metamorph/config.json"));
+
+        this.preventGhosts = builder.category("general").getBoolean("prevent_ghosts", true);
+        this.keepMorphs = builder.getBoolean("keep_morphs", true);
+        this.hideUsername = builder.getBoolean("hide_username", false);
+        this.preventKillAcquire = builder.getBoolean("prevent_kill_acquire", false);
+        this.showDemorph = builder.getBoolean("show_demorph", true);
+        this.disablePov = builder.getBoolean("disable_pov", false);
+        this.disableHealth = builder.getBoolean("disable_health", false);
+        this.disableMorphAnimation = builder.getBoolean("disable_morph_animation", false);
+        this.disableMorphDisguise = builder.getBoolean("disable_morph_disguise", false);
+        this.acquireImmediately = builder.getBoolean("acquire_immediately", false);
+        this.morphInTightSpaces = builder.getBoolean("morph_in_tight_spaces", false);
+        this.showMorphIdleSounds = builder.getBoolean("show_morph_idle_sounds", true);
+
+        event.modules.add(builder.build());
+    }
+
     @EventHandler
     public void preLoad(FMLPreInitializationEvent event)
     {
         LOGGER = event.getModLog();
         channel = NetworkRegistry.INSTANCE.newEventDrivenChannel("Metamorph");
+        McLib.EVENT_BUS.register(this);
 
         proxy.preLoad(event);
     }

@@ -4,7 +4,6 @@ import mchorse.metamorph.Metamorph;
 import mchorse.metamorph.api.MorphSettings;
 import mchorse.metamorph.api.abilities.IAbility;
 import mchorse.metamorph.capabilities.morphing.IMorphing;
-import mchorse.metamorph.capabilities.morphing.Morphing;
 import mchorse.metamorph.entity.SoundHandler;
 import net.minecraft.client.renderer.entity.Render;
 import net.minecraft.entity.Entity;
@@ -162,7 +161,7 @@ public abstract class AbstractMorph
         float minEyeToHeadDifference = 0.1F;
         height = Math.max(height, minEyeToHeadDifference * 2);
         
-        if (target instanceof EntityPlayer && !Metamorph.proxy.config.disable_pov)
+        if (target instanceof EntityPlayer && !Metamorph.disablePov.get())
         {
             float eyeHeight = height * 0.9F;
             if (eyeHeight + minEyeToHeadDifference > height)
@@ -235,7 +234,7 @@ public abstract class AbstractMorph
      */
     public float getEyeHeight(EntityLivingBase target)
     {
-        if (!Metamorph.proxy.config.disable_pov)
+        if (!Metamorph.disablePov.get())
         {
             return this.getHeight(target) * 0.9F;
         }

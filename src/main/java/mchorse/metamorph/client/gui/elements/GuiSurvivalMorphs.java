@@ -9,7 +9,6 @@ import java.util.List;
 import java.util.Map;
 
 import mchorse.mclib.client.gui.framework.elements.utils.GuiDraw;
-import org.lwjgl.opengl.GL11;
 
 import mchorse.mclib.client.gui.utils.GuiUtils;
 import mchorse.metamorph.Metamorph;
@@ -461,7 +460,7 @@ public class GuiSurvivalMorphs extends Gui
      */
     public void renderMenu(int width, int height, int w, int h)
     {
-        boolean renderDemorph = Metamorph.proxy.config.show_demorph;
+        boolean renderDemorph = Metamorph.showDemorph.get();
 
         EntityPlayer player = this.mc.player;
         String label = "Demorph";
@@ -502,7 +501,7 @@ public class GuiSurvivalMorphs extends Gui
             MorphType type = i != 0 ? this.morphs.get(i - 1) : null;
             AbstractMorph morph = i != 0 ? type.current().morph : null;
 
-            String name = Metamorph.proxy.config.hide_username ? "Demorph" : player.getName();
+            String name = Metamorph.hideUsername.get() ? "Demorph" : player.getName();
 
             if (i != 0)
             {
@@ -649,7 +648,7 @@ public class GuiSurvivalMorphs extends Gui
         int w = width - 20;
         int h = (int) (height * 0.375F);
 
-        boolean renderDemorph = Metamorph.proxy.config.show_demorph;
+        boolean renderDemorph = Metamorph.showDemorph.get();
 
         /* Setup scale and margin */
         int scale = (int) (height * 0.17F / 2);
