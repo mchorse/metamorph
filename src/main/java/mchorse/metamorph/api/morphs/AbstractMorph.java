@@ -1,6 +1,7 @@
 package mchorse.metamorph.api.morphs;
 
 import mchorse.metamorph.Metamorph;
+import mchorse.metamorph.api.MorphManager;
 import mchorse.metamorph.api.MorphSettings;
 import mchorse.metamorph.api.abilities.IAbility;
 import mchorse.metamorph.capabilities.morphing.IMorphing;
@@ -39,6 +40,8 @@ public abstract class AbstractMorph
      */
     public String name = "";
 
+    public String displayName = "";
+
     /**
      * Is this morph is favorite 
      */
@@ -67,15 +70,6 @@ public abstract class AbstractMorph
     public String getDisplayName()
     {
         return this.name;
-    }
-
-    /* Clone code */
-
-    public static void copyBase(AbstractMorph from, AbstractMorph to)
-    {
-        to.name = from.name;
-        to.favorite = from.favorite;
-        to.settings = from.settings;
     }
 
     /* Render methods */
@@ -219,14 +213,26 @@ public abstract class AbstractMorph
     }
 
     /**
-     * <p>Clone a morph.</p>
-     * 
-     * <p>
-     * <b>IMPORTANT</b>: when you subclass other morphs, don't forget to override 
-     * their method with your own.
-     * </p>
+     * Clone a morph
      */
-    public abstract AbstractMorph clone(boolean isRemote);
+    public final AbstractMorph clone(boolean isRemote)
+    {
+        AbstractMorph morph = this.create(isRemote);
+
+        morph.copy(this, isRemote);
+
+        return morph;
+    }
+
+    public abstract AbstractMorph create(boolean isRemote);
+
+    public void copy(AbstractMorph from, boolean isRemote)
+    {
+        this.name = from.name;
+        this.displayName = from.displayName;
+        this.favorite = from.favorite;
+        this.settings = from.settings;
+    }
 
     /* Getting size */
 
@@ -351,6 +357,18 @@ public abstract class AbstractMorph
     {
         tag.setString("Name", this.name);
 
+        if (!MorphManager.INSTANCE.activeSettings.containsKey(this.settings))
+        {
+            NBTTagCompound settings = new NBTTagCompound();
+
+            this.settings.toNBT(settings);
+
+            if (!settings.hasNoTags())
+            {
+                tag.setTag("Settings", settings);
+            }
+        }
+
         if (this.favorite) tag.setBoolean("Favorite", this.favorite);
     }
 
@@ -362,6 +380,12 @@ public abstract class AbstractMorph
         this.reset();
 
         this.name = tag.getString("Name");
+
+        if (tag.hasKey("Settings"))
+        {
+            this.settings = new MorphSettings();
+            this.settings.fromNBT(tag.getCompoundTag("Settings"));
+        }
 
         if (tag.hasKey("Favorite")) this.favorite = tag.getBoolean("Favorite");
     }

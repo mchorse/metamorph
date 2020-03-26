@@ -767,18 +767,23 @@ public class EntityMorph extends AbstractMorph
         }
     }
 
-    /**
-     * Clone this {@link EntityMorph} 
-     */
     @Override
-    public AbstractMorph clone(boolean isRemote)
+    public AbstractMorph create(boolean isRemote)
     {
-        EntityMorph morph = new EntityMorph();
+        return new EntityMorph();
+    }
 
-        AbstractMorph.copyBase(this, morph);
-        morph.entityData = this.entityData.copy();
+    @Override
+    public void copy(AbstractMorph from, boolean isRemote)
+    {
+        super.copy(from, isRemote);
 
-        return morph;
+        if (from instanceof EntityMorph)
+        {
+            EntityMorph morph = (EntityMorph) from;
+
+            this.entityData = morph.entityData == null ? null : morph.entityData.copy();
+        }
     }
 
     @Override

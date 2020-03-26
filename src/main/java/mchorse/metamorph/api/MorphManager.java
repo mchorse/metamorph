@@ -1,20 +1,10 @@
 package mchorse.metamorph.api;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
-import java.util.TreeSet;
-
 import mchorse.metamorph.api.abilities.IAbility;
 import mchorse.metamorph.api.abilities.IAction;
 import mchorse.metamorph.api.abilities.IAttackAbility;
 import mchorse.metamorph.api.morphs.AbstractMorph;
-import mchorse.metamorph.api.morphs.EntityMorph;
 import mchorse.metamorph.client.gui.editor.GuiAbstractMorph;
-import net.minecraft.client.Minecraft;
-import net.minecraft.client.resources.I18n;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityList;
 import net.minecraft.nbt.NBTTagCompound;
@@ -25,6 +15,13 @@ import net.minecraftforge.fml.common.registry.ForgeRegistries;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
+import java.util.TreeSet;
+
 /**
  * Morph manager class
  * 
@@ -33,7 +30,7 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 public class MorphManager
 {
     /**
-     * Default <s>football</s> morph manager 
+     * Default <s>football</s> morph manager
      */
     public static final MorphManager INSTANCE = new MorphManager();
 
@@ -130,7 +127,7 @@ public class MorphManager
     }
 
     /**
-     * That's a singleton, boy! 
+     * That's a singleton, boy!
      */
     private MorphManager()
     {}
@@ -232,6 +229,11 @@ public class MorphManager
      */
     public void applySettings(AbstractMorph morph)
     {
+        if (morph.settings != MorphSettings.DEFAULT)
+        {
+            return;
+        }
+
         if (this.activeSettings.containsKey(morph.name))
         {
             morph.settings = this.activeSettings.get(morph.name);

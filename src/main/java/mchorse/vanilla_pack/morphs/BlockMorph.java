@@ -119,17 +119,23 @@ public class BlockMorph extends AbstractMorph
     }
 
     @Override
-    public AbstractMorph clone(boolean isRemote)
+    public AbstractMorph create(boolean isRemote)
     {
-        BlockMorph morph = new BlockMorph();
+        return new BlockMorph();
+    }
 
-        AbstractMorph.copyBase(this, morph);
+    @Override
+    public void copy(AbstractMorph from, boolean isRemote)
+    {
+        super.copy(from, isRemote);
 
-        /* Data relevant only to this morph */
-        morph.block = this.block;
-        morph.blockPos = this.blockPos;
+        if (from instanceof BlockMorph)
+        {
+            BlockMorph morph = (BlockMorph) from;
 
-        return morph;
+            this.block = morph.block;
+            this.blockPos = morph.blockPos;
+        }
     }
 
     @Override

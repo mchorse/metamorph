@@ -8,6 +8,10 @@ import io.netty.buffer.ByteBuf;
 import mchorse.metamorph.api.abilities.IAbility;
 import mchorse.metamorph.api.abilities.IAction;
 import mchorse.metamorph.api.abilities.IAttackAbility;
+import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.nbt.NBTTagList;
+import net.minecraft.nbt.NBTTagString;
+import net.minecraftforge.common.util.Constants;
 import net.minecraftforge.fml.common.network.ByteBufUtils;
 
 /**
@@ -176,6 +180,117 @@ public class MorphSettings
         this.hostile = buf.readBoolean();
         this.hands = buf.readBoolean();
         this.updates = buf.readBoolean();
+    }
+
+    /**
+     * Save properties to NBT compound
+     */
+    public void toNBT(NBTTagCompound tag)
+    {
+        if (this.abilities.length > 0)
+        {
+            NBTTagList list = new NBTTagList();
+
+            for (IAbility ability : this.abilities)
+            {
+                list.appendTag(new NBTTagString(getKey(MorphManager.INSTANCE.abilities, ability)));
+            }
+
+            tag.setTag("Abilities", list);
+        }
+
+        if (this.attack != null)
+        {
+            tag.setString("Attack", getKey(MorphManager.INSTANCE.attacks, this.attack));
+        }
+
+        if (this.action != null)
+        {
+            tag.setString("Action", getKey(MorphManager.INSTANCE.actions, this.action));
+        }
+
+        if (this.health != 20)
+        {
+            tag.setInteger("HP", this.health);
+        }
+
+        if (this.speed != 0.1F)
+        {
+            tag.setFloat("Speed", this.speed);
+        }
+
+        if (this.hostile)
+        {
+            tag.setBoolean("Hostile", this.hostile);
+        }
+
+        if (this.hands)
+        {
+            tag.setBoolean("Hands", this.hands);
+        }
+
+        if (!this.updates)
+        {
+            tag.setBoolean("Updates", this.updates);
+        }
+    }
+
+    /**
+     * Read properties from NBT compound
+     */
+    public void fromNBT(NBTTagCompound tag)
+    {
+        if (tag.hasKey("Abilities"))
+        {
+            NBTTagList list = tag.getTagList("Abilities", Constants.NBT.TAG_STRING);
+
+            if (list.tagCount() > 0)
+            {
+                IAbility[] abilities = new IAbility[list.tagCount()];
+
+                for (int i = 0; i < abilities.length; i ++)
+                {
+                    abilities[i] = MorphManager.INSTANCE.abilities.get(list.getStringTagAt(i));
+                }
+
+                this.abilities = abilities;
+            }
+        }
+
+        if (tag.hasKey("Attack"))
+        {
+            this.attack = MorphManager.INSTANCE.attacks.get(tag.getString("Attack"));
+        }
+
+        if (tag.hasKey("Action"))
+        {
+            this.action = MorphManager.INSTANCE.actions.get(tag.getString("Action"));
+        }
+
+        if (tag.hasKey("HP"))
+        {
+            this.health = tag.getInteger("HP");
+        }
+
+        if (tag.hasKey("Speed"))
+        {
+            this.speed = tag.getFloat("Speed");
+        }
+
+        if (tag.hasKey("Hostile"))
+        {
+            this.hostile = tag.getBoolean("Hostile");
+        }
+
+        if (tag.hasKey("Hands"))
+        {
+            this.hands = tag.getBoolean("Hands");
+        }
+
+        if (tag.hasKey("Updates"))
+        {
+            this.updates = tag.getBoolean("Updates");
+        }
     }
 
     /**

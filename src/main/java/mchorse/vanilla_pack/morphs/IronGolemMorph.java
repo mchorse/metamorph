@@ -47,15 +47,8 @@ public class IronGolemMorph extends EntityMorph
     }
 
     @Override
-    public AbstractMorph clone()
+    public AbstractMorph create(boolean isRemote)
     {
-        IronGolemMorph morph = new IronGolemMorph();
-
-        morph.name = this.name;
-        morph.settings = this.settings;
-
-        morph.entityData = this.entityData.copy();
-
-        return morph;
+        return new IronGolemMorph();
     }
 }
