@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import mchorse.metamorph.Metamorph;
+import mchorse.metamorph.api.Morph;
 import mchorse.metamorph.api.MorphManager;
 import mchorse.metamorph.api.morphs.AbstractMorph;
 import mchorse.metamorph.client.gui.elements.GuiSurvivalMorphs;
@@ -35,7 +36,7 @@ public class Morphing implements IMorphing
     /**
      * Current used morph
      */
-    private AbstractMorph morph;
+    private Morph morph = new Morph();
 
     /**
      * Used for animation
@@ -129,19 +130,19 @@ public class Morphing implements IMorphing
     @SideOnly(Side.CLIENT)
     public boolean renderPlayer(EntityPlayer player, double x, double y, double z, float yaw, float partialTick)
     {
-        if (this.morph == null && !this.isAnimating())
+        if (this.morph.isEmpty() && !this.isAnimating())
         {
             return false;
         }
 
-        if (this.morph == null && this.animation <= 10 || this.previousMorph == null && this.animation > 10)
+        if (this.morph.isEmpty() && this.animation <= 10 || this.previousMorph == null && this.animation > 10)
         {
             return false;
         }
 
         if (!this.isAnimating())
         {
-            this.morph.render(player, x, y, z, yaw, partialTick);
+            this.morph.get().render(player, x, y, z, yaw, partialTick);
 
             return true;
         }
@@ -167,7 +168,7 @@ public class Morphing implements IMorphing
                 GlStateManager.scale(1 - anim, 1 - anim, 1 - anim);
             }
 
-            this.morph.render(player, 0, 0, 0, yaw, partialTick);
+            this.morph.get().render(player, 0, 0, 0, yaw, partialTick);
         }
         else if (this.previousMorph != null)
         {
@@ -261,7 +262,7 @@ public class Morphing implements IMorphing
     @Override
     public AbstractMorph getCurrentMorph()
     {
-        return this.morph;
+        return this.morph.get();
     }
 
     @Override
@@ -280,23 +281,24 @@ public class Morphing implements IMorphing
         {
             if (player != null)
             {
-                if (this.morph == null)
+                if (this.morph.isEmpty())
                 {
                     this.lastHealth = (float) player.getEntityAttribute(SharedMonsterAttributes.MAX_HEALTH).getBaseValue();
                 }
                 else
                 {
-                    this.morph.demorph(player);
+                    this.morph.get().demorph(player);
                 }
             }
 
             this.setMorph(morph, player == null ? false : player.world.isRemote);
 
-            if (player != null)
+            if (player != null && !this.morph.isEmpty())
             {
-                this.setHealth(player, this.morph.settings.health);
+                AbstractMorph current = this.morph.get();
 
-                this.morph.morph(player);
+                this.setHealth(player, current.settings.health);
+                current.morph(player);
             }
 
             return true;
@@ -308,9 +310,9 @@ public class Morphing implements IMorphing
     @Override
     public void demorph(EntityPlayer player)
     {
-        if (player != null && this.morph != null)
+        if (player != null && !this.morph.isEmpty())
         {
-            this.morph.demorph(player);
+            this.morph.get().demorph(player);
         }
 
         if (player != null)
@@ -327,22 +329,23 @@ public class Morphing implements IMorphing
      */
     protected void setMorph(AbstractMorph morph, boolean isRemote)
     {
-        if (this.morph == null || (this.morph != null && !this.morph.canMerge(morph, isRemote)))
+        AbstractMorph previous = this.morph.get();
+
+        if (this.morph.set(morph, isRemote))
         {
             if (!Metamorph.proxy.config.disable_morph_animation)
             {
                 this.animation = 20;
             }
 
-            this.previousMorph = this.morph;
-            this.morph = morph;
+            this.previousMorph = previous;
         }
     }
 
     @Override
     public boolean isMorphed()
     {
-        return this.morph != null;
+        return !this.morph.isEmpty();
     }
 
     @Override
@@ -385,11 +388,10 @@ public class Morphing implements IMorphing
     public void copy(IMorphing morphing, EntityPlayer player)
     {
         this.acquiredMorphs.addAll(morphing.getAcquiredMorphs());
+
         if (morphing.getCurrentMorph() != null)
         {
-            NBTTagCompound morphNBT = new NBTTagCompound();
-            morphing.getCurrentMorph().toNBT(morphNBT);
-            this.setCurrentMorph(MorphManager.INSTANCE.morphFromNBT(morphNBT), player, true);
+            this.setCurrentMorph(morphing.getCurrentMorph().clone(player.world.isRemote), player, true);
         }
         else
         {
@@ -461,14 +463,16 @@ public class Morphing implements IMorphing
             player.playSound(SoundEvents.ENTITY_ITEM_PICKUP, 1.0F, 1.0F);
         }
 
-        if (this.morph != null)
+        if (!this.morph.isEmpty())
         {
+            AbstractMorph morph = this.morph.get();
+
             if (!Metamorph.proxy.config.disable_health)
             {
-                this.setMaxHealth(player, this.morph.settings.health);
+                this.setMaxHealth(player, morph.settings.health);
             }
 
-            this.morph.update(player, this);
+            morph.update(player, this);
         }
     }
 
