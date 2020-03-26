@@ -16,8 +16,6 @@ import net.minecraftforge.fml.relauncher.SideOnly;
  * Simplifies management of body parts for mods that use it. Besides 
  * that it allows in the future to implement different types of body 
  * parts such as particle body part...
- * 
- * Damn, I want particle body parts...
  */
 public class BodyPartManager
 {

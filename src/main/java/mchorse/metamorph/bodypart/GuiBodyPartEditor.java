@@ -66,15 +66,15 @@ public class GuiBodyPartEditor extends GuiMorphPanel<AbstractMorph, GuiAbstractM
     {
         super(mc, editor);
 
-        this.tx = new GuiTrackpadElement(mc, (value) -> this.part.part.translate[0] = value);
-        this.ty = new GuiTrackpadElement(mc, (value) -> this.part.part.translate[1] = value);
-        this.tz = new GuiTrackpadElement(mc, (value) -> this.part.part.translate[2] = value);
-        this.sx = new GuiTrackpadElement(mc, (value) -> this.part.part.scale[0] = value);
-        this.sy = new GuiTrackpadElement(mc, (value) -> this.part.part.scale[1] = value);
-        this.sz = new GuiTrackpadElement(mc, (value) -> this.part.part.scale[2] = value);
-        this.rx = new GuiTrackpadElement(mc, (value) -> this.part.part.rotate[0] = value);
-        this.ry = new GuiTrackpadElement(mc, (value) -> this.part.part.rotate[1] = value);
-        this.rz = new GuiTrackpadElement(mc, (value) -> this.part.part.rotate[2] = value);
+        this.tx = new GuiTrackpadElement(mc, (value) -> this.part.translate.x = value);
+        this.ty = new GuiTrackpadElement(mc, (value) -> this.part.translate.y = value);
+        this.tz = new GuiTrackpadElement(mc, (value) -> this.part.translate.z = value);
+        this.sx = new GuiTrackpadElement(mc, (value) -> this.part.scale.x = value);
+        this.sy = new GuiTrackpadElement(mc, (value) -> this.part.scale.y = value);
+        this.sz = new GuiTrackpadElement(mc, (value) -> this.part.scale.z = value);
+        this.rx = new GuiTrackpadElement(mc, (value) -> this.part.rotate.x = value);
+        this.ry = new GuiTrackpadElement(mc, (value) -> this.part.rotate.y = value);
+        this.rz = new GuiTrackpadElement(mc, (value) -> this.part.rotate.z = value);
 
         this.tx.tooltip(I18n.format("metamorph.gui.x"), Direction.TOP);
         this.ty.tooltip(I18n.format("metamorph.gui.y"), Direction.TOP);
@@ -111,14 +111,14 @@ public class GuiBodyPartEditor extends GuiMorphPanel<AbstractMorph, GuiAbstractM
                 this.morphPicker.resizer().parent(this.area).set(0, 0, 0, 0).w(1, 0).h(1, 0);
                 this.morphPicker.callback = (morph) ->
                 {
-                    if (this.part != null) this.part.part.morph.setDirect(morph);
+                    if (this.part != null) this.part.morph.setDirect(morph);
                 };
 
                 this.morphPicker.resize();
                 this.add(this.morphPicker);
             }
 
-            this.morphPicker.setSelected(this.part.part.morph.get());
+            this.morphPicker.setSelected(this.part.morph.get());
             this.morphPicker.setVisible(true);
         });
 
@@ -133,7 +133,6 @@ public class GuiBodyPartEditor extends GuiMorphPanel<AbstractMorph, GuiAbstractM
             if (part == null)
             {
                 part = new BodyPart();
-                part.part = new MorphBodyPart();
 
                 if (limb != null)
                 {
@@ -183,7 +182,7 @@ public class GuiBodyPartEditor extends GuiMorphPanel<AbstractMorph, GuiAbstractM
 
         this.useTarget = new GuiToggleElement(mc, I18n.format("metamorph.gui.use_target"), false, (b) ->
         {
-            if (this.part != null) this.part.part.useTarget = b.state;
+            if (this.part != null) this.part.useTarget = b.state;
         });
 
         this.limbs.resizer().parent(this.area).set(0, 80, 105, 90).x(1, -115).h(1, -106);
@@ -227,10 +226,10 @@ public class GuiBodyPartEditor extends GuiMorphPanel<AbstractMorph, GuiAbstractM
         if (this.active != null)
         {
             this.active.stack = stack.isEmpty() ? ItemStack.EMPTY : stack.copy();
-            this.part.part.slots[this.active.slot] = this.active.stack;
+            this.part.slots[this.active.slot] = this.active.stack;
             this.active = null;
             this.inventory.setVisible(false);
-            this.part.part.updateEntity();
+            this.part.updateEntity();
         }
     }
 
@@ -287,7 +286,7 @@ public class GuiBodyPartEditor extends GuiMorphPanel<AbstractMorph, GuiAbstractM
 
         if (this.part != null)
         {
-            this.fillBodyPart(part.part);
+            this.fillBodyPart(part);
             this.limbs.setCurrent(part.limb);
             this.bodyParts.setCurrent(part);
         }
@@ -298,21 +297,21 @@ public class GuiBodyPartEditor extends GuiMorphPanel<AbstractMorph, GuiAbstractM
         this.part.limb = str;
     }
 
-    public void fillBodyPart(MorphBodyPart part)
+    public void fillBodyPart(BodyPart part)
     {
         if (part != null)
         {
-            this.tx.setValue(part.translate[0]);
-            this.ty.setValue(part.translate[1]);
-            this.tz.setValue(part.translate[2]);
+            this.tx.setValue(part.translate.x);
+            this.ty.setValue(part.translate.y);
+            this.tz.setValue(part.translate.z);
 
-            this.sx.setValue(part.scale[0]);
-            this.sy.setValue(part.scale[1]);
-            this.sz.setValue(part.scale[2]);
+            this.sx.setValue(part.scale.x);
+            this.sy.setValue(part.scale.y);
+            this.sz.setValue(part.scale.z);
 
-            this.rx.setValue(part.rotate[0]);
-            this.ry.setValue(part.rotate[1]);
-            this.rz.setValue(part.rotate[2]);
+            this.rx.setValue(part.rotate.x);
+            this.ry.setValue(part.rotate.y);
+            this.rz.setValue(part.rotate.z);
 
             this.useTarget.state = part.useTarget;
 
