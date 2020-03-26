@@ -1,10 +1,11 @@
-package mchorse.metamorph.api;
+package mchorse.metamorph.api.creative;
 
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import mchorse.metamorph.api.MorphManager;
 import mchorse.metamorph.api.morphs.AbstractMorph;
 import mchorse.metamorph.client.gui.GuiCreativeMenu;
 
@@ -12,7 +13,7 @@ import mchorse.metamorph.client.gui.GuiCreativeMenu;
  * Morph list
  * 
  * This class is used in {@link GuiCreativeMenu} for displaying morphs in GUIs. 
- * It's generated in {@link MorphManager}. 
+ * It's generated in {@link MorphManager}.
  */
 public class MorphList
 {

@@ -3,6 +3,7 @@ package mchorse.metamorph.api;
 import mchorse.metamorph.api.abilities.IAbility;
 import mchorse.metamorph.api.abilities.IAction;
 import mchorse.metamorph.api.abilities.IAttackAbility;
+import mchorse.metamorph.api.creative.MorphList;
 import mchorse.metamorph.api.morphs.AbstractMorph;
 import mchorse.metamorph.client.gui.editor.GuiAbstractMorph;
 import net.minecraft.entity.Entity;
@@ -139,18 +140,6 @@ public class MorphManager
         for (int i = this.factories.size() - 1; i >= 0; i--)
         {
             this.factories.get(i).register(this);
-        }
-    }
-
-    /**
-     * Register all morph factories on the client side 
-     */
-    @SideOnly(Side.CLIENT)
-    public void registerClient()
-    {
-        for (int i = this.factories.size() - 1; i >= 0; i--)
-        {
-            this.factories.get(i).registerClient(this);
         }
     }
 

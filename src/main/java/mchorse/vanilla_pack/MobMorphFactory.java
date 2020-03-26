@@ -4,7 +4,7 @@ import java.util.List;
 
 import mchorse.metamorph.api.EntityUtils;
 import mchorse.metamorph.api.IMorphFactory;
-import mchorse.metamorph.api.MorphList;
+import mchorse.metamorph.api.creative.MorphList;
 import mchorse.metamorph.api.MorphManager;
 import mchorse.metamorph.api.morphs.AbstractMorph;
 import mchorse.metamorph.api.morphs.EntityMorph;
@@ -46,11 +46,6 @@ public class MobMorphFactory implements IMorphFactory
      */
     @Override
     public void register(MorphManager manager)
-    {}
-
-    @Override
-    @SideOnly(Side.CLIENT)
-    public void registerClient(MorphManager manager)
     {}
 
     @Override

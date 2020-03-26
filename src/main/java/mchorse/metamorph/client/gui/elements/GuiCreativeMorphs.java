@@ -8,7 +8,7 @@ import mchorse.mclib.client.gui.framework.elements.utils.GuiContext;
 import mchorse.mclib.client.gui.framework.elements.utils.GuiDraw;
 import mchorse.mclib.client.gui.utils.ScrollArea;
 import mchorse.mclib.client.gui.utils.resizers.Resizer;
-import mchorse.metamorph.api.MorphList;
+import mchorse.metamorph.api.creative.MorphList;
 import mchorse.metamorph.api.MorphManager;
 import mchorse.metamorph.api.events.ReloadMorphs;
 import mchorse.metamorph.api.morphs.AbstractMorph;

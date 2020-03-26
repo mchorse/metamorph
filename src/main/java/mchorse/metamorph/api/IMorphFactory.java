@@ -2,6 +2,7 @@ package mchorse.metamorph.api;
 
 import java.util.List;
 
+import mchorse.metamorph.api.creative.MorphList;
 import mchorse.metamorph.api.morphs.AbstractMorph;
 import mchorse.metamorph.client.gui.editor.GuiAbstractMorph;
 import net.minecraft.nbt.NBTTagCompound;
@@ -23,14 +24,6 @@ public interface IMorphFactory
      * Register here everything that doesn't require stuff
      */
     public void register(MorphManager manager);
-
-    /**
-     * Register client method
-     * 
-     * Register here additional stuff that are related to client side
-     */
-    @SideOnly(Side.CLIENT)
-    public void registerClient(MorphManager manager);
 
     /**
      * Register morph editors which will be available in the creative 

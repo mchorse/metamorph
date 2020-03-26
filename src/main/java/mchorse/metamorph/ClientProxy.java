@@ -68,9 +68,6 @@ public class ClientProxy extends CommonProxy
         /* Register client event handlers */
         MinecraftForge.EVENT_BUS.register(new RenderingHandler(morphOverlay, hud));
         MinecraftForge.EVENT_BUS.register(keys = new KeyboardHandler());
-
-        /* Register client morph manager */
-        MorphManager.INSTANCE.registerClient();
     }
 
     /**

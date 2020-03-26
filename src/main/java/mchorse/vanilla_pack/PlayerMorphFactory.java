@@ -3,7 +3,7 @@ package mchorse.vanilla_pack;
 import java.util.List;
 
 import mchorse.metamorph.api.IMorphFactory;
-import mchorse.metamorph.api.MorphList;
+import mchorse.metamorph.api.creative.MorphList;
 import mchorse.metamorph.api.MorphManager;
 import mchorse.metamorph.api.morphs.AbstractMorph;
 import mchorse.metamorph.client.gui.editor.GuiAbstractMorph;
@@ -30,11 +30,6 @@ public class PlayerMorphFactory implements IMorphFactory
 
     @Override
     public void register(MorphManager manager)
-    {}
-
-    @Override
-    @SideOnly(Side.CLIENT)
-    public void registerClient(MorphManager manager)
     {}
 
     @Override
