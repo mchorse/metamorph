@@ -1,13 +1,12 @@
 package mchorse.metamorph.client.gui.editor;
 
-import mchorse.mclib.client.gui.framework.GuiTooltip;
-import mchorse.mclib.client.gui.framework.elements.GuiButtonElement;
 import mchorse.mclib.client.gui.framework.elements.GuiPanelBase;
+import mchorse.mclib.client.gui.framework.elements.buttons.GuiButtonElement;
+import mchorse.mclib.client.gui.framework.elements.utils.GuiContext;
 import mchorse.metamorph.api.morphs.AbstractMorph;
+import mchorse.metamorph.util.MMIcons;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.gui.GuiButton;
 import net.minecraft.client.resources.I18n;
-import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
@@ -15,9 +14,7 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 @SuppressWarnings({"rawtypes", "unchecked"})
 public class GuiAbstractMorph<T extends AbstractMorph> extends GuiPanelBase<GuiMorphPanel>
 {
-    public static final ResourceLocation PANEL_ICONS = new ResourceLocation("metamorph:textures/gui/icons.png");
-
-    public GuiButtonElement<GuiButton> finish;
+    public GuiButtonElement finish;
     public GuiNBTPanel nbt;
 
     protected GuiMorphPanel defaultPanel;
@@ -28,14 +25,12 @@ public class GuiAbstractMorph<T extends AbstractMorph> extends GuiPanelBase<GuiM
     {
         super(mc);
 
-        this.createChildren();
-
-        this.finish = GuiButtonElement.button(mc, I18n.format("metamorph.gui.finish"), null);
+        this.finish = new GuiButtonElement(mc, I18n.format("metamorph.gui.finish"), null);
         this.finish.resizer().parent(this.area).set(0, 10, 55, 20).x(1, -65);
         this.defaultPanel = this.nbt = new GuiNBTPanel(mc, this);
 
-        this.registerPanel(this.nbt, PANEL_ICONS, I18n.format("metamorph.gui.panels.nbt"), 0, 0, 0, 16);
-        this.children.elements.add(2, this.finish);
+        this.registerPanel(this.nbt, I18n.format("metamorph.gui.panels.nbt"), MMIcons.CODE);
+        this.getChildren().add(2, this.finish);
     }
 
     /**
@@ -79,18 +74,18 @@ public class GuiAbstractMorph<T extends AbstractMorph> extends GuiPanelBase<GuiM
     }
 
     @Override
-    public void draw(GuiTooltip tooltip, int mouseX, int mouseY, float partialTicks)
+    public void draw(GuiContext context)
     {
-        this.drawMorph(mouseX, mouseY, partialTicks);
+        this.drawMorph(context);
 
-        super.draw(tooltip, mouseX, mouseY, partialTicks);
+        super.draw(context);
     }
 
-    protected void drawMorph(int mouseX, int mouseY, float partialTicks)
+    protected void drawMorph(GuiContext context)
     {
         try
         {
-            this.morph.renderOnScreen(this.mc.player, this.area.getX(0.5F), this.area.getY(0.66F), this.area.h / 3, 1);
+            this.morph.renderOnScreen(this.mc.player, this.area.mx(), this.area.y(0.66F), this.area.h / 3, 1);
         }
         catch (Exception e)
         {}

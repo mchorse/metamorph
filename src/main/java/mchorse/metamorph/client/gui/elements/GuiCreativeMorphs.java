@@ -1,24 +1,13 @@
 package mchorse.metamorph.client.gui.elements;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Comparator;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.function.Consumer;
-
-import org.lwjgl.input.Keyboard;
-import org.lwjgl.opengl.GL11;
-
-import mchorse.mclib.client.gui.framework.GuiTooltip;
-import mchorse.mclib.client.gui.framework.elements.GuiButtonElement;
 import mchorse.mclib.client.gui.framework.elements.GuiDelegateElement;
 import mchorse.mclib.client.gui.framework.elements.GuiElement;
-import mchorse.mclib.client.gui.framework.elements.GuiTextElement;
-import mchorse.mclib.client.gui.utils.GuiUtils;
-import mchorse.mclib.client.gui.utils.Resizer.Measure;
+import mchorse.mclib.client.gui.framework.elements.buttons.GuiButtonElement;
+import mchorse.mclib.client.gui.framework.elements.input.GuiTextElement;
+import mchorse.mclib.client.gui.framework.elements.utils.GuiContext;
+import mchorse.mclib.client.gui.framework.elements.utils.GuiDraw;
 import mchorse.mclib.client.gui.utils.ScrollArea;
+import mchorse.mclib.client.gui.utils.resizers.Resizer;
 import mchorse.metamorph.api.MorphList;
 import mchorse.metamorph.api.MorphManager;
 import mchorse.metamorph.api.events.ReloadMorphs;
@@ -26,14 +15,22 @@ import mchorse.metamorph.api.morphs.AbstractMorph;
 import mchorse.metamorph.capabilities.morphing.IMorphing;
 import mchorse.metamorph.client.gui.editor.GuiAbstractMorph;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.gui.GuiButton;
-import net.minecraft.client.gui.GuiScreen;
 import net.minecraft.client.resources.I18n;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.world.World;
 import net.minecraftforge.common.MinecraftForge;
+import org.lwjgl.input.Keyboard;
+import org.lwjgl.opengl.GL11;
+
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.function.Consumer;
 
 /**
  * Scroll list of available morphs
@@ -114,8 +111,8 @@ public class GuiCreativeMorphs extends GuiElement
      */
     public GuiDelegateElement<GuiAbstractMorph> editor;
 
-    public GuiButtonElement<GuiButton> top;
-    public GuiButtonElement<GuiButton> edit;
+    public GuiButtonElement top;
+    public GuiButtonElement edit;
     public GuiTextElement search;
 
     /**
@@ -136,12 +133,10 @@ public class GuiCreativeMorphs extends GuiElement
         this.picker.resizer().parent(this.area).set(0, 0, 0, 60).w(1, 0).y(1, -60);
 
         this.editor = new GuiDelegateElement<GuiAbstractMorph>(mc, null);
-        this.editor.resizer().parent(this.area).set(0, 0, 1, 1, Measure.RELATIVE);
+        this.editor.resizer().parent(this.area).set(0, 0, 1, 1, Resizer.Measure.RELATIVE);
 
-        this.createChildren();
-
-        this.top = GuiButtonElement.button(mc, "^", (b) -> this.scroll.scrollTo(0));
-        this.edit = GuiButtonElement.button(mc, I18n.format("metamorph.gui.edit"), (b) ->
+        this.top = new GuiButtonElement(mc, "^", (b) -> this.scroll.scrollTo(0));
+        this.edit = new GuiButtonElement(mc, I18n.format("metamorph.gui.edit"), (b) ->
         {
             this.toggleEditMode();
         });
@@ -153,7 +148,7 @@ public class GuiCreativeMorphs extends GuiElement
         this.top.resizer().relative(this.edit.resizer()).set(60, 0, 20, 20);
 
         this.search.resizer().parent(this.area).set(10, 10, 0, 20).w(1, -105);
-        this.children.add(this.picker, this.edit, this.search, this.top, this.editor);
+        this.add(this.picker, this.edit, this.search, this.top, this.editor);
 
         this.scroll.scrollSpeed = 40;
     }
@@ -164,9 +159,9 @@ public class GuiCreativeMorphs extends GuiElement
     }
 
     @Override
-    public void resize(int width, int height)
+    public void resize()
     {
-        super.resize(width, height);
+        super.resize();
 
         this.scroll.copy(this.area);
     }
@@ -229,7 +224,7 @@ public class GuiCreativeMorphs extends GuiElement
         }
     }
 
-    protected Consumer<GuiButtonElement<GuiButton>> getToggleCallback()
+    protected Consumer<GuiButtonElement> getToggleCallback()
     {
         return this.edit.callback;
     }
@@ -547,9 +542,12 @@ public class GuiCreativeMorphs extends GuiElement
      * simple feature.
      */
     @Override
-    public boolean mouseClicked(int mouseX, int mouseY, int mouseButton)
+    public boolean mouseClicked(GuiContext context)
     {
-        if (this.scroll.mouseClicked(mouseX, mouseY) || super.mouseClicked(mouseX, mouseY, mouseButton))
+        int mouseX = context.mouseX;
+        int mouseY = context.mouseY;
+
+        if (this.scroll.mouseClicked(mouseX, mouseY) || super.mouseClicked(context))
         {
             return true;
         }
@@ -632,16 +630,16 @@ public class GuiCreativeMorphs extends GuiElement
     }
 
     @Override
-    public boolean mouseScrolled(int mouseX, int mouseY, int scroll)
+    public boolean mouseScrolled(GuiContext context)
     {
-        return super.mouseScrolled(mouseX, mouseY, scroll) || this.scroll.mouseScroll(mouseX, mouseY, scroll);
+        return super.mouseScrolled(context) || this.scroll.mouseScroll(context.mouseX, context.mouseY, context.mouseWheel);
     }
 
     @Override
-    public void mouseReleased(int mouseX, int mouseY, int state)
+    public void mouseReleased(GuiContext context)
     {
-        super.mouseReleased(mouseX, mouseY, state);
-        this.scroll.mouseReleased(mouseX, mouseY);
+        super.mouseReleased(context);
+        this.scroll.mouseReleased(context.mouseX, context.mouseY);
     }
 
     /**
@@ -651,54 +649,65 @@ public class GuiCreativeMorphs extends GuiElement
      * screen (left and right arrow keys).
      */
     @Override
-    public void keyTyped(char typedChar, int keyCode)
+    public boolean keyTyped(GuiContext context)
     {
-        super.keyTyped(typedChar, keyCode);
+        if (super.keyTyped(context))
+        {
+            return true;
+        }
 
         if (!this.isEditMode())
         {
-            if (keyCode == Keyboard.KEY_DOWN)
+            if (context.keyCode == Keyboard.KEY_DOWN)
             {
                 this.scroll.scrollBy(30);
+
+                return true;
             }
-            else if (keyCode == Keyboard.KEY_UP)
+            else if (context.keyCode == Keyboard.KEY_UP)
             {
                 this.scroll.scrollBy(-30);
+
+                return true;
             }
-            else if (keyCode == Keyboard.KEY_LEFT)
+            else if (context.keyCode == Keyboard.KEY_LEFT)
             {
                 this.scroll.scrollTo(0);
+
+                return true;
             }
-            else if (keyCode == Keyboard.KEY_RIGHT)
+            else if (context.keyCode == Keyboard.KEY_RIGHT)
             {
                 this.scroll.scrollTo(this.scroll.scrollSize);
+
+                return true;
             }
         }
+
+        return false;
     }
 
     @Override
-    public void draw(GuiTooltip tooltip, int mouseX, int mouseY, float partialTicks)
+    public void draw(GuiContext context)
     {
         if (!this.isEditMode())
         {
-            GuiScreen screen = this.mc.currentScreen;
-
-            this.scroll.drag(mouseX, mouseY);
+            this.scroll.drag(context.mouseX, context.mouseY);
 
             GL11.glPushMatrix();
             GL11.glTranslatef(0, -this.scroll.scroll, 0);
 
-            GuiUtils.scissor(this.scroll.x, this.scroll.y, this.scroll.w, this.scroll.h, screen.width, screen.height);
+            GuiDraw.scissor(this.scroll.x, this.scroll.y, this.scroll.w, this.scroll.h, context.screen.width, context.screen.height);
 
-            this.drawMorphs(mouseX, mouseY);
+            this.drawMorphs(context.mouseX, context.mouseY);
 
-            GL11.glDisable(GL11.GL_SCISSOR_TEST);
+            GuiDraw.unscissor();
             GL11.glPopMatrix();
 
             this.scroll.drawScrollbar();
         }
 
-        super.draw(tooltip, mouseX, mouseY, partialTicks);
+        super.draw(context);
 
         if (!this.isEditMode() && !this.search.field.isFocused() && this.search.field.getText().isEmpty())
         {

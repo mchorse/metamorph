@@ -16,7 +16,6 @@ public class GuiMorphPanel<T extends AbstractMorph, E extends GuiAbstractMorph> 
     public GuiMorphPanel(Minecraft mc, E editor)
     {
         super(mc);
-        this.createChildren();
 
         this.editor = editor;
     }

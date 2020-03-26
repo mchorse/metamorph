@@ -8,6 +8,7 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
+import mchorse.mclib.client.gui.framework.elements.utils.GuiDraw;
 import org.lwjgl.opengl.GL11;
 
 import mchorse.mclib.client.gui.utils.GuiUtils;
@@ -437,14 +438,14 @@ public class GuiSurvivalMorphs extends Gui
 
         if (this.inGUI)
         {
-            GuiUtils.scissor(0, 40, width, height - 40, width, height);
+            GuiDraw.scissor(0, 40, width, height - 40, width, height);
             w = width - 20;
             h = (int) (height * 0.375F);
         }
         else
         {
             Gui.drawRect(x1, y1, x2, y2, 0x99000000);
-            GuiUtils.scissor(x1, y1, w, h, width, height);
+            GuiDraw.scissor(x1, y1, w, h, width, height);
         }
 
         this.renderMenu(width, height, w, h);
@@ -563,7 +564,7 @@ public class GuiSurvivalMorphs extends Gui
         }
 
         /* Disable scissoring */
-        GL11.glDisable(GL11.GL_SCISSOR_TEST);
+        GuiDraw.unscissor();
 
         /* Draw the title */
         int labelY = this.inGUI ? height - 24 : height / 2 + h / 2 + 4;

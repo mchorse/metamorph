@@ -1,7 +1,7 @@
 package mchorse.metamorph.client.gui;
 
 import mchorse.mclib.client.gui.framework.GuiBase;
-import mchorse.mclib.client.gui.framework.elements.GuiButtonElement;
+import mchorse.mclib.client.gui.framework.elements.buttons.GuiButtonElement;
 import mchorse.metamorph.api.morphs.AbstractMorph;
 import mchorse.metamorph.capabilities.morphing.IMorphing;
 import mchorse.metamorph.capabilities.morphing.Morphing;
@@ -12,7 +12,6 @@ import mchorse.metamorph.network.common.PacketAcquireMorph;
 import mchorse.metamorph.network.common.PacketMorph;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.Gui;
-import net.minecraft.client.gui.GuiButton;
 import net.minecraft.client.resources.I18n;
 import net.minecraft.entity.player.EntityPlayer;
 
@@ -33,16 +32,16 @@ import net.minecraft.entity.player.EntityPlayer;
 public class GuiCreativeMenu extends GuiBase
 {
     /* GUI stuff */
-    private GuiButtonElement<GuiButton> morph;
-    private GuiButtonElement<GuiButton> acquire;
-    private GuiButtonElement<GuiButton> close;
+    private GuiButtonElement morph;
+    private GuiButtonElement acquire;
+    private GuiButtonElement close;
     private GuiCreativeMorphs pane;
 
     public GuiCreativeMenu()
     {
         Minecraft mc = Minecraft.getMinecraft();
 
-        this.morph = GuiButtonElement.button(mc, I18n.format("metamorph.gui.morph"), (b) ->
+        this.morph = new GuiButtonElement(mc, I18n.format("metamorph.gui.morph"), (b) ->
         {
             this.pane.finish();
             AbstractMorph morph = this.getMorph();
@@ -54,19 +53,19 @@ public class GuiCreativeMenu extends GuiBase
             }
         });
 
-        this.acquire = GuiButtonElement.button(mc, I18n.format("metamorph.gui.acquire"), (b) ->
+        this.acquire = new GuiButtonElement(mc, I18n.format("metamorph.gui.acquire"), (b) ->
         {
             this.pane.finish();
             Dispatcher.sendToServer(new PacketAcquireMorph(this.getMorph()));
         });
 
-        this.close = GuiButtonElement.button(mc, I18n.format("metamorph.gui.close"), (b) -> this.closeScreen());
+        this.close = new GuiButtonElement(mc, I18n.format("metamorph.gui.close"), (b) -> this.closeScreen());
 
-        this.morph.resizer().parent(this.area).set(0, 10, 60, 20).x(1, -200);
+        this.morph.resizer().parent(this.viewport).set(0, 10, 60, 20).x(1, -200);
         this.acquire.resizer().relative(this.morph.resizer()).set(65, 0, 60, 20);
         this.close.resizer().relative(this.acquire.resizer()).set(65, 0, 60, 20);
 
-        this.elements.add(this.morph, this.acquire, this.close);
+        this.root.add(this.morph, this.acquire, this.close);
     }
 
     /* GUI stuff and input */
@@ -82,10 +81,10 @@ public class GuiCreativeMenu extends GuiBase
             /* Create pane after constructor, because new morphs may 
              * appear during open GUI event */
             this.pane = new GuiCreativeMorphs(this.mc, 6, morphing.getCurrentMorph(), morphing);
-            this.pane.resizer().parent(this.area).set(0, 40, 0, 0).w(1, 0).h(1, -40);
+            this.pane.resizer().parent(this.viewport).set(0, 40, 0, 0).w(1, 0).h(1, -40);
             this.pane.shiftX = 9;
 
-            this.elements.elements.add(0, this.pane);
+            this.root.getChildren().add(0, this.pane);
         }
 
         super.initGui();

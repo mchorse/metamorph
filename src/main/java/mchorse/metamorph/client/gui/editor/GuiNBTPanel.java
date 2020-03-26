@@ -1,7 +1,7 @@
 package mchorse.metamorph.client.gui.editor;
 
-import mchorse.mclib.client.gui.framework.GuiTooltip;
-import mchorse.mclib.client.gui.framework.elements.GuiTextElement;
+import mchorse.mclib.client.gui.framework.elements.input.GuiTextElement;
+import mchorse.mclib.client.gui.framework.elements.utils.GuiContext;
 import mchorse.metamorph.api.morphs.AbstractMorph;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.resources.I18n;
@@ -24,7 +24,7 @@ public class GuiNBTPanel extends GuiMorphPanel<AbstractMorph, GuiAbstractMorph>
         this.data = new GuiTextElement(mc, 1000000, (str) -> this.editNBT(str));
         this.data.resizer().parent(this.area).set(10, 0, 0, 20).w(1, -20).y(1, -30);
 
-        this.children.add(this.data);
+        this.add(this.data);
     }
 
     public void updateNBT()
@@ -57,9 +57,9 @@ public class GuiNBTPanel extends GuiMorphPanel<AbstractMorph, GuiAbstractMorph>
     }
 
     @Override
-    public void draw(GuiTooltip tooltip, int mouseX, int mouseY, float partialTicks)
+    public void draw(GuiContext context)
     {
-        super.draw(tooltip, mouseX, mouseY, partialTicks);
+        super.draw(context);
 
         if (this.data.isVisible())
         {

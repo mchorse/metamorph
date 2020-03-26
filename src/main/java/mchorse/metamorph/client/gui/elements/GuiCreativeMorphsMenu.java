@@ -1,31 +1,29 @@
 package mchorse.metamorph.client.gui.elements;
 
-import org.lwjgl.opengl.GL11;
-
-import mchorse.mclib.client.gui.framework.GuiTooltip;
-import mchorse.mclib.client.gui.framework.elements.GuiButtonElement;
+import mchorse.mclib.client.gui.framework.elements.buttons.GuiButtonElement;
+import mchorse.mclib.client.gui.framework.elements.utils.GuiContext;
 import mchorse.metamorph.api.morphs.AbstractMorph;
 import mchorse.metamorph.capabilities.morphing.IMorphing;
 import mchorse.metamorph.network.Dispatcher;
 import mchorse.metamorph.network.common.PacketAcquireMorph;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.Gui;
-import net.minecraft.client.gui.GuiButton;
 import net.minecraft.client.resources.I18n;
+import org.lwjgl.opengl.GL11;
 
 /**
  * Creative morph menu, but with a close button 
  */
 public class GuiCreativeMorphsMenu extends GuiCreativeMorphs
 {
-    private GuiButtonElement<GuiButton> close;
-    private GuiButtonElement<GuiButton> acquire;
+    private GuiButtonElement close;
+    private GuiButtonElement acquire;
 
     public GuiCreativeMorphsMenu(Minecraft mc, int perRow, AbstractMorph selected, IMorphing morphing)
     {
         super(mc, perRow, selected, morphing);
 
-        this.acquire = GuiButtonElement.button(mc, I18n.format("metamorph.gui.acquire"), (b) ->
+        this.acquire = new GuiButtonElement(mc, I18n.format("metamorph.gui.acquire"), (b) ->
         {
             MorphCell cell = this.getSelected();
 
@@ -35,7 +33,7 @@ public class GuiCreativeMorphsMenu extends GuiCreativeMorphs
             }
         });
 
-        this.close = GuiButtonElement.button(mc, "X", (b) ->
+        this.close = new GuiButtonElement(mc, "X", (b) ->
         {
             if (this.isEditMode())
             {
@@ -48,18 +46,19 @@ public class GuiCreativeMorphsMenu extends GuiCreativeMorphs
         this.acquire.resizer().parent(this.area).set(10, 10, 60, 20);
         this.close.resizer().parent(this.area).set(0, 10, 20, 20).x(1, -30);
         this.edit.resizer().x(1, -35 - 25 - 55);
-        this.children.add(this.acquire, this.close);
+        this.add(this.acquire, this.close);
 
         this.search.resizer().set(75, 10, 0, 20).w(1, -130 - 65);
 
+        this.hideTooltip();
         this.setVisible(false);
         this.shiftX = 8;
     }
 
     @Override
-    public void resize(int width, int height)
+    public void resize()
     {
-        super.resize(width, height);
+        super.resize();
         int perRow = (int) Math.ceil(this.area.w / 50.0F);
 
         this.setPerRow(perRow == 0 ? 1 : perRow);
@@ -89,31 +88,29 @@ public class GuiCreativeMorphsMenu extends GuiCreativeMorphs
     /* Don't let click event pass through the background... */
 
     @Override
-    public boolean mouseClicked(int mouseX, int mouseY, int mouseButton)
+    public boolean mouseClicked(GuiContext context)
     {
-        return super.mouseClicked(mouseX, mouseY, mouseButton) || this.area.isInside(mouseX, mouseY);
+        return super.mouseClicked(context) || this.area.isInside(context.mouseX, context.mouseY);
     }
 
     @Override
-    public boolean mouseScrolled(int mouseX, int mouseY, int scroll)
+    public boolean mouseScrolled(GuiContext context)
     {
-        return super.mouseScrolled(mouseX, mouseY, scroll) || this.area.isInside(mouseX, mouseY);
+        return super.mouseScrolled(context) || this.area.isInside(context.mouseX, context.mouseY);
     }
 
     @Override
-    public void draw(GuiTooltip tooltip, int mouseX, int mouseY, float partialTicks)
+    public void draw(GuiContext context)
     {
-        tooltip.set(null, null);
-
         GL11.glClear(GL11.GL_DEPTH_BUFFER_BIT);
-        Gui.drawRect(this.area.x, this.area.y, this.area.getX(1), this.area.getY(1), 0xaa000000);
+        Gui.drawRect(this.area.x, this.area.y, this.area.ex(), this.area.ey(), 0xaa000000);
 
         MorphCell cell = this.getSelected();
 
         if (cell != null && !this.isEditMode())
         {
             int width = Math.max(this.font.getStringWidth(cell.current().name), this.font.getStringWidth(cell.current().morph.name)) + 6;
-            int center = this.area.getX(0.5F);
+            int center = this.area.mx();
             int y = this.area.y + 40;
 
             Gui.drawRect(center - width / 2, y - 4, center + width / 2, y + 24, 0x88000000);
@@ -122,6 +119,6 @@ public class GuiCreativeMorphsMenu extends GuiCreativeMorphs
             this.drawCenteredString(this.font, cell.current().morph.name, center, y + 14, 0x888888);
         }
 
-        super.draw(tooltip, mouseX, mouseY, partialTicks);
+        super.draw(context);
     }
 }

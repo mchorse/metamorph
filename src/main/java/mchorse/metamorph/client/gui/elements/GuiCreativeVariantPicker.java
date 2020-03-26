@@ -1,5 +1,7 @@
 package mchorse.metamorph.client.gui.elements;
 
+import mchorse.mclib.client.gui.framework.elements.utils.GuiContext;
+import mchorse.mclib.client.gui.framework.elements.utils.GuiDraw;
 import org.lwjgl.opengl.GL11;
 
 import mchorse.mclib.client.gui.framework.GuiTooltip;
@@ -48,9 +50,9 @@ public class GuiCreativeVariantPicker extends GuiElement
     }
 
     @Override
-    public void resize(int width, int height)
+    public void resize()
     {
-        super.resize(width, height);
+        super.resize();
 
         this.scroll.copy(this.area);
     }
@@ -102,20 +104,20 @@ public class GuiCreativeVariantPicker extends GuiElement
      * the current morph variant to a different index. 
      */
     @Override
-    public boolean mouseClicked(int mouseX, int mouseY, int mouseButton)
+    public boolean mouseClicked(GuiContext context)
     {
-        if (this.scroll.mouseClicked(mouseX, mouseY))
+        if (super.mouseClicked(context) || this.scroll.mouseClicked(context.mouseX, context.mouseY))
         {
             return true;
         }
 
-        if (!this.scroll.isInside(mouseX, mouseY) || !this.isActive())
+        if (!this.scroll.isInside(context.mouseX, context.mouseY) || !this.isActive())
         {
             return false;
         }
 
         MorphCell selected = this.morphs.getSelected();
-        int index = (mouseX - this.scroll.x + this.scroll.scroll) / 40;
+        int index = (context.mouseX - this.scroll.x + this.scroll.scroll) / 40;
         int i = 0;
         int j = 0;
 
@@ -128,7 +130,7 @@ public class GuiCreativeVariantPicker extends GuiElement
                     selected.selected = j;
                     this.morphs.setMorph(this.morphs.getSelected().current().morph);
 
-                    break;
+                    return true;
                 }
 
                 i++;
@@ -137,27 +139,28 @@ public class GuiCreativeVariantPicker extends GuiElement
             j++;
         }
 
-        return true;
+        return false;
     }
 
     @Override
-    public boolean mouseScrolled(int mouseX, int mouseY, int scroll)
+    public boolean mouseScrolled(GuiContext context)
     {
         if (this.isActive())
         {
-            return this.scroll.mouseScroll(mouseX, mouseY, scroll);
+            return this.scroll.mouseScroll(context.mouseX, context.mouseY, context.mouseWheel);
         }
 
-        return super.mouseScrolled(mouseX, mouseY, scroll);
+        return super.mouseScrolled(context);
     }
 
     /**
      * When mouse released, just reset the scrolling flag 
      */
     @Override
-    public void mouseReleased(int mouseX, int mouseY, int state)
+    public void mouseReleased(GuiContext context)
     {
-        this.scroll.mouseReleased(mouseX, mouseY);
+        super.mouseReleased(context);
+        this.scroll.mouseReleased(context.mouseX, context.mouseY);
     }
 
     /**
@@ -165,7 +168,7 @@ public class GuiCreativeVariantPicker extends GuiElement
      * selected morph bar, and also responsible for scrolling this view.
      */
     @Override
-    public void draw(GuiTooltip tooltip, int mouseX, int mouseY, float partialTicks)
+    public void draw(GuiContext context)
     {
         if (!this.isActive())
         {
@@ -191,7 +194,7 @@ public class GuiCreativeVariantPicker extends GuiElement
             GlStateManager.translate(0, 0, 200);
             Gui.drawRect(x, y, x + w, y + h, 0xaa000000);
 
-            GuiUtils.scissor(x, y, w, h, screen.width, screen.height);
+            GuiDraw.scissor(x, y, w, h, screen.width, screen.height);
 
             /* Draw morph variants within viewing range */
             for (MorphVariant variant : selected.variants)
@@ -221,13 +224,13 @@ public class GuiCreativeVariantPicker extends GuiElement
                 }
             }
 
-            GL11.glDisable(GL11.GL_SCISSOR_TEST);
+            GuiDraw.unscissor();
             GlStateManager.popMatrix();
 
             /* Scroll bar */
             this.scroll.scrollSize = i * 40;
             this.scroll.clamp();
-            this.scroll.drag(mouseX, mouseY);
+            this.scroll.drag(context.mouseX, context.mouseY);
             this.scroll.drawScrollbar();
         }
     }

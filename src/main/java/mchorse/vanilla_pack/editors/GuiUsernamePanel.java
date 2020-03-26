@@ -1,7 +1,8 @@
 package mchorse.vanilla_pack.editors;
 
 import mchorse.mclib.client.gui.framework.GuiTooltip;
-import mchorse.mclib.client.gui.framework.elements.GuiTextElement;
+import mchorse.mclib.client.gui.framework.elements.input.GuiTextElement;
+import mchorse.mclib.client.gui.framework.elements.utils.GuiContext;
 import mchorse.metamorph.client.gui.editor.GuiMorphPanel;
 import mchorse.vanilla_pack.morphs.PlayerMorph;
 import net.minecraft.client.Minecraft;
@@ -26,7 +27,7 @@ public class GuiUsernamePanel extends GuiMorphPanel<PlayerMorph, GuiPlayerMorph>
         this.username = new GuiTextElement(mc, 120, (str) -> this.editUsername(str));
         this.username.resizer().parent(this.area).set(10, 10, 0, 20).w(1, -20).y(1, -30);
 
-        this.children.add(this.username);
+        this.add(this.username);
     }
 
     private void editUsername(String str)
@@ -48,7 +49,7 @@ public class GuiUsernamePanel extends GuiMorphPanel<PlayerMorph, GuiPlayerMorph>
     }
 
     @Override
-    public void draw(GuiTooltip tooltip, int mouseX, int mouseY, float partialTicks)
+    public void draw(GuiContext context)
     {
         if (this.counter >= 0)
         {
@@ -63,11 +64,11 @@ public class GuiUsernamePanel extends GuiMorphPanel<PlayerMorph, GuiPlayerMorph>
             String updating = I18n.format("metamorph.gui.panels.updating");
             int w = this.font.getStringWidth(updating);
 
-            this.font.drawStringWithShadow(updating, this.username.area.getX(1) - w, this.username.area.y - 12, 0xaaaaaa);
+            this.font.drawStringWithShadow(updating, this.username.area.ex() - w, this.username.area.y - 12, 0xaaaaaa);
             this.counter--;
         }
 
-        super.draw(tooltip, mouseX, mouseY, partialTicks);
+        super.draw(context);
 
         if (this.username.isVisible())
         {

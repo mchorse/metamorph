@@ -1,18 +1,16 @@
 package mchorse.metamorph.client.gui;
 
-import java.io.IOException;
-
-import org.lwjgl.input.Keyboard;
-
 import mchorse.mclib.client.gui.framework.GuiBase;
-import mchorse.mclib.client.gui.framework.elements.GuiButtonElement;
+import mchorse.mclib.client.gui.framework.elements.buttons.GuiButtonElement;
 import mchorse.metamorph.ClientProxy;
 import mchorse.metamorph.client.gui.elements.GuiSurvivalMorphs;
 import mchorse.metamorph.client.gui.elements.GuiSurvivalMorphs.MorphCell;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.Gui;
-import net.minecraft.client.gui.GuiButton;
 import net.minecraft.client.resources.I18n;
+import org.lwjgl.input.Keyboard;
+
+import java.io.IOException;
 
 /**
  * Survival morph menu GUI
@@ -21,11 +19,11 @@ import net.minecraft.client.resources.I18n;
  */
 public class GuiSurvivalMenu extends GuiBase
 {
-    private GuiButtonElement<GuiButton> close;
-    private GuiButtonElement<GuiButton> favorite;
-    private GuiButtonElement<GuiButton> remove;
-    private GuiButtonElement<GuiButton> onlyFavorites;
-    private GuiButtonElement<GuiButton> morph;
+    private GuiButtonElement close;
+    private GuiButtonElement favorite;
+    private GuiButtonElement remove;
+    private GuiButtonElement onlyFavorites;
+    private GuiButtonElement morph;
 
     private GuiSurvivalMorphs morphs;
 
@@ -38,40 +36,40 @@ public class GuiSurvivalMenu extends GuiBase
 
         Minecraft mc = Minecraft.getMinecraft();
 
-        this.remove = GuiButtonElement.button(mc, I18n.format("metamorph.gui.remove"), (b) ->
+        this.remove = new GuiButtonElement(mc, I18n.format("metamorph.gui.remove"), (b) ->
         {
             this.morphs.remove();
             this.updateButtons();
         });
 
-        this.favorite = GuiButtonElement.button(mc, "", (b) ->
+        this.favorite = new GuiButtonElement(mc, "", (b) ->
         {
             this.morphs.favorite(this.morphs.morphs.get(this.morphs.index).current());
             this.updateButtons();
         });
 
-        this.close = GuiButtonElement.button(mc, I18n.format("metamorph.gui.close"), (b) -> this.exit());
+        this.close = new GuiButtonElement(mc, I18n.format("metamorph.gui.close"), (b) -> this.exit());
 
-        this.onlyFavorites = GuiButtonElement.button(mc, "", (b) ->
+        this.onlyFavorites = new GuiButtonElement(mc, "", (b) ->
         {
             this.morphs.toggleFavorites();
             this.updateFavorites();
         });
 
-        this.morph = GuiButtonElement.button(mc, I18n.format("metamorph.gui.morph"), (b) ->
+        this.morph = new GuiButtonElement(mc, I18n.format("metamorph.gui.morph"), (b) ->
         {
             this.morphs.selectCurrent();
             this.exit();
         });
 
-        this.remove.resizer().parent(this.area).set(20, 0, 60, 20).y(1, -30);
-        this.morph.resizer().parent(this.area).set(0, 0, 60, 20).x(1, -80).y(1, -30);
+        this.remove.resizer().parent(this.viewport).set(20, 0, 60, 20).y(1, -30);
+        this.morph.resizer().parent(this.viewport).set(0, 0, 60, 20).x(1, -80).y(1, -30);
         this.favorite.resizer().relative(this.morph.resizer()).set(-65, 0, 60, 20);
 
-        this.close.resizer().parent(this.area).set(0, 10, 60, 20).x(1, -80);
+        this.close.resizer().parent(this.viewport).set(0, 10, 60, 20).x(1, -80);
         this.onlyFavorites.resizer().relative(this.close.resizer()).set(-95, 0, 90, 20);
 
-        this.elements.add(this.remove, this.favorite, this.close, this.onlyFavorites, this.morph);
+        this.root.add(this.remove, this.favorite, this.close, this.onlyFavorites, this.morph);
     }
 
     @Override
@@ -85,7 +83,7 @@ public class GuiSurvivalMenu extends GuiBase
 
     private void updateFavorites()
     {
-        this.onlyFavorites.button.displayString = this.morphs.showFavorites ? I18n.format("metamorph.gui.all_morphs") : I18n.format("metamorph.gui.only_favorites");
+        this.onlyFavorites.label = this.morphs.showFavorites ? I18n.format("metamorph.gui.all_morphs") : I18n.format("metamorph.gui.only_favorites");
     }
 
     @Override
@@ -151,21 +149,21 @@ public class GuiSurvivalMenu extends GuiBase
     {
         int index = this.morphs.index;
 
-        this.favorite.button.enabled = index >= 0;
-        this.favorite.button.displayString = I18n.format("metamorph.gui.favorite");
-        this.remove.button.enabled = index >= 0;
+        this.favorite.setEnabled(index >= 0);
+        this.favorite.label = I18n.format("metamorph.gui.favorite");
+        this.remove.setEnabled(index >= 0);
 
-        if (this.favorite.button.enabled)
+        if (this.favorite.isEnabled())
         {
             MorphCell cell = this.morphs.getCurrent();
 
             if (cell != null)
             {
-                this.favorite.button.displayString = cell.morph.favorite ? I18n.format("metamorph.gui.unfavorite") : I18n.format("metamorph.gui.favorite");
+                this.favorite.label = cell.morph.favorite ? I18n.format("metamorph.gui.unfavorite") : I18n.format("metamorph.gui.favorite");
             }
             else
             {
-                this.favorite.button.enabled = false;
+                this.favorite.setEnabled(false);
             }
         }
     }
