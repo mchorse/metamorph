@@ -1,9 +1,5 @@
 package mchorse.metamorph.api;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
-
 import io.netty.buffer.ByteBuf;
 import mchorse.metamorph.api.abilities.IAbility;
 import mchorse.metamorph.api.abilities.IAction;
@@ -13,6 +9,11 @@ import net.minecraft.nbt.NBTTagList;
 import net.minecraft.nbt.NBTTagString;
 import net.minecraftforge.common.util.Constants;
 import net.minecraftforge.fml.common.network.ByteBufUtils;
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
+import java.util.Objects;
 
 /**
  * Morph settings
@@ -30,7 +31,7 @@ public class MorphSettings
     /**
      * Abilities that are going to be applied on a morph 
      */
-    public IAbility[] abilities = new IAbility[] {};
+    public List<IAbility> abilities = new ArrayList<IAbility>();
 
     /**
      * Attack that is going to be used on a morph
@@ -67,31 +68,23 @@ public class MorphSettings
      */
     public boolean updates = true;
 
-    /**
-     * Merge given morph settings with this settings 
-     */
-    public void merge(MorphSettings setting)
+    @Override
+    public boolean equals(Object obj)
     {
-        if (setting.abilities.length != 0)
+        if (obj instanceof MorphSettings)
         {
-            List<IAbility> abilities = new ArrayList<IAbility>();
+            MorphSettings settings = (MorphSettings) obj;
 
-            for (IAbility ability : setting.abilities)
-            {
-                abilities.add(ability);
-            }
-
-            this.abilities = abilities.toArray(new IAbility[abilities.size()]);
+            return this.abilities.equals(settings.abilities) &&
+                Objects.equals(this.action, settings.action) &&
+                Objects.equals(this.attack, settings.attack) &&
+                this.health == settings.health &&
+                this.speed == settings.speed &&
+                this.hostile == settings.hostile &&
+                this.updates == settings.updates;
         }
 
-        this.action = setting.action;
-        this.attack = setting.attack;
-
-        this.health = setting.health;
-        this.speed = setting.speed;
-        this.hostile = setting.hostile;
-        this.hands = setting.hands;
-        this.updates = setting.updates;
+        return super.equals(obj);
     }
 
     @Override
@@ -105,11 +98,29 @@ public class MorphSettings
     }
 
     /**
+     * Merge given morph settings with this settings
+     */
+    public void merge(MorphSettings setting)
+    {
+        this.abilities.clear();
+        this.abilities.addAll(setting.abilities);
+
+        this.action = setting.action;
+        this.attack = setting.attack;
+
+        this.health = setting.health;
+        this.speed = setting.speed;
+        this.hostile = setting.hostile;
+        this.hands = setting.hands;
+        this.updates = setting.updates;
+    }
+
+    /**
      * Write morph settings to the network buffer
      */
     public void toBytes(ByteBuf buf)
     {
-        buf.writeInt(this.abilities.length);
+        buf.writeInt(this.abilities.size());
 
         for (IAbility ability : this.abilities)
         {
@@ -147,7 +158,7 @@ public class MorphSettings
      */
     public void fromBytes(ByteBuf buf)
     {
-        List<IAbility> abilities = new ArrayList<IAbility>();
+        this.abilities.clear();
 
         for (int i = 0, c = buf.readInt(); i < c; i++)
         {
@@ -155,11 +166,9 @@ public class MorphSettings
 
             if (ability != null)
             {
-                abilities.add(ability);
+                this.abilities.add(ability);
             }
         }
-
-        this.abilities = abilities.toArray(new IAbility[abilities.size()]);
 
         if (buf.readBoolean())
         {
@@ -187,7 +196,7 @@ public class MorphSettings
      */
     public void toNBT(NBTTagCompound tag)
     {
-        if (this.abilities.length > 0)
+        if (!this.abilities.isEmpty())
         {
             NBTTagList list = new NBTTagList();
 
@@ -244,16 +253,16 @@ public class MorphSettings
         {
             NBTTagList list = tag.getTagList("Abilities", Constants.NBT.TAG_STRING);
 
-            if (list.tagCount() > 0)
+            this.abilities.clear();
+
+            for (int i = 0; i < list.tagCount(); i ++)
             {
-                IAbility[] abilities = new IAbility[list.tagCount()];
+                IAbility ability = MorphManager.INSTANCE.abilities.get(list.getStringTagAt(i));
 
-                for (int i = 0; i < abilities.length; i ++)
+                if (ability != null)
                 {
-                    abilities[i] = MorphManager.INSTANCE.abilities.get(list.getStringTagAt(i));
+                    this.abilities.add(ability);
                 }
-
-                this.abilities = abilities;
             }
         }
 

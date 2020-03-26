@@ -38,9 +38,9 @@ public class PlayerMorph extends EntityMorph
 
     @Override
     @SideOnly(Side.CLIENT)
-    public String getDisplayName()
+    protected String getSubclassDisplayName()
     {
-        return this.profile == null ? this.name : this.profile.getName();
+        return this.profile == null ? super.getSubclassDisplayName() : this.profile.getName();
     }
 
     public void setProfile(String username)

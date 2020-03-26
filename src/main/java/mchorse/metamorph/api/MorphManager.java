@@ -122,8 +122,7 @@ public class MorphManager
             newSettings.put(key, setting);
         }
 
-        this.activeSettings.clear();
-        this.activeSettings.putAll(newSettings);
+        this.activeSettings = newSettings;
     }
 
     /**
@@ -251,6 +250,14 @@ public class MorphManager
         for (int i = this.factories.size() - 1; i >= 0; i--)
         {
             this.factories.get(i).getMorphs(morphs, world);
+        }
+
+        for (List<MorphList.MorphCell> cells : morphs.morphs.values())
+        {
+            for (MorphList.MorphCell cell : cells)
+            {
+                this.applySettings(cell.morph);
+            }
         }
 
         return morphs;

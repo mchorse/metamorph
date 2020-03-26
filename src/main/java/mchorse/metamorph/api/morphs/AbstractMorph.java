@@ -6,11 +6,8 @@ import mchorse.metamorph.api.MorphSettings;
 import mchorse.metamorph.api.abilities.IAbility;
 import mchorse.metamorph.capabilities.morphing.IMorphing;
 import mchorse.metamorph.entity.SoundHandler;
-import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.entity.Render;
-import net.minecraft.client.resources.I18n;
 import net.minecraft.entity.Entity;
-import net.minecraft.entity.EntityList;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.SharedMonsterAttributes;
 import net.minecraft.entity.player.EntityPlayer;
@@ -21,6 +18,8 @@ import net.minecraft.util.SoundEvent;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
+
+import java.util.Objects;
 
 /**
  * Base class for all different types of morphs
@@ -40,6 +39,9 @@ public abstract class AbstractMorph
      */
     public String name = "";
 
+    /**
+     * Morph's display name
+     */
     public String displayName = "";
 
     /**
@@ -69,7 +71,33 @@ public abstract class AbstractMorph
     @SideOnly(Side.CLIENT)
     public String getDisplayName()
     {
+        if (this.displayName != null && !this.displayName.isEmpty())
+        {
+            return this.displayName;
+        }
+
+        return this.getSubclassDisplayName();
+    }
+
+    @SideOnly(Side.CLIENT)
+    protected String getSubclassDisplayName()
+    {
         return this.name;
+    }
+
+    public boolean hasCustomSettings()
+    {
+        if (this.settings == MorphSettings.DEFAULT)
+        {
+            return false;
+        }
+
+        if (this.settings == MorphManager.INSTANCE.activeSettings.get(this.name))
+        {
+            return false;
+        }
+
+        return true;
     }
 
     /* Render methods */
@@ -321,7 +349,9 @@ public abstract class AbstractMorph
         {
             AbstractMorph morph = (AbstractMorph) obj;
 
-            return morph.name.equals(this.name);
+            return Objects.equals(this.name, morph.name) &&
+                Objects.equals(this.displayName, morph.displayName) &&
+                Objects.equals(this.settings, morph.settings);
         }
 
         return super.equals(obj);
@@ -357,7 +387,7 @@ public abstract class AbstractMorph
     {
         tag.setString("Name", this.name);
 
-        if (!MorphManager.INSTANCE.activeSettings.containsKey(this.settings))
+        if (this.hasCustomSettings())
         {
             NBTTagCompound settings = new NBTTagCompound();
 
@@ -369,7 +399,15 @@ public abstract class AbstractMorph
             }
         }
 
-        if (this.favorite) tag.setBoolean("Favorite", this.favorite);
+        if (this.displayName != null && !this.displayName.isEmpty())
+        {
+            tag.setString("DisplayName", this.displayName);
+        }
+
+        if (this.favorite)
+        {
+            tag.setBoolean("Favorite", this.favorite);
+        }
     }
 
     /**
@@ -387,6 +425,14 @@ public abstract class AbstractMorph
             this.settings.fromNBT(tag.getCompoundTag("Settings"));
         }
 
-        if (tag.hasKey("Favorite")) this.favorite = tag.getBoolean("Favorite");
+        if (tag.hasKey("DisplayName"))
+        {
+            this.displayName = tag.getString("DisplayName");
+        }
+
+        if (tag.hasKey("Favorite"))
+        {
+            this.favorite = tag.getBoolean("Favorite");
+        }
     }
 }

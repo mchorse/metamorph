@@ -16,6 +16,7 @@ public class GuiAbstractMorph<T extends AbstractMorph> extends GuiPanelBase<GuiM
 {
     public GuiButtonElement finish;
     public GuiNBTPanel nbt;
+    public GuiSettingsPanel settings;
 
     protected GuiMorphPanel defaultPanel;
 
@@ -27,8 +28,10 @@ public class GuiAbstractMorph<T extends AbstractMorph> extends GuiPanelBase<GuiM
 
         this.finish = new GuiButtonElement(mc, I18n.format("metamorph.gui.finish"), null);
         this.finish.resizer().parent(this.area).set(0, 10, 55, 20).x(1, -65);
+        this.settings = new GuiSettingsPanel(mc, this);
         this.defaultPanel = this.nbt = new GuiNBTPanel(mc, this);
 
+        this.registerPanel(this.settings, I18n.format("metamorph.gui.panels.settings"), MMIcons.BOX);
         this.registerPanel(this.nbt, I18n.format("metamorph.gui.panels.nbt"), MMIcons.CODE);
         this.getChildren().add(2, this.finish);
     }

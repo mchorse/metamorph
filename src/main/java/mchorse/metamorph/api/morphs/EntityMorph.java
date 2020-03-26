@@ -107,7 +107,7 @@ public class EntityMorph extends AbstractMorph
 
     @Override
     @SideOnly(Side.CLIENT)
-    public String getDisplayName()
+    protected String getSubclassDisplayName()
     {
         String name = this.name;
 

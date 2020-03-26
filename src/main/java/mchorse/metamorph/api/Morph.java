@@ -31,7 +31,7 @@ public class Morph
     {
         if (this.morph == null || !this.morph.canMerge(morph, isRemote))
         {
-            if (this.morph != null)
+            if (this.morph != null && morph != null)
             {
                 morph.afterMerge(this.morph, isRemote);
             }
