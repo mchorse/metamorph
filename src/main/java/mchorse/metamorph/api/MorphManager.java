@@ -265,39 +265,4 @@ public class MorphManager
     {
         return EntityList.getKey(entity).toString();
     }
-
-    /**
-     * Get display name for morph (only client)
-     */
-    @SideOnly(Side.CLIENT)
-    public String morphDisplayNameFromMorph(AbstractMorph morph)
-    {
-        for (int i = this.factories.size() - 1; i >= 0; i--)
-        {
-            String name = this.factories.get(i).displayNameForMorph(morph);
-
-            if (name != null)
-            {
-                return name;
-            }
-        }
-
-        /* Falling back to default method */
-        String name = morph.name;
-
-        try
-        {
-            if (morph instanceof EntityMorph)
-            {
-                name = EntityList.getEntityString(((EntityMorph) morph).getEntity(Minecraft.getMinecraft().world));
-            }
-        }
-        catch (Exception e)
-        {}
-
-        String key = "entity." + name + ".name";
-        String result = I18n.format(key);
-
-        return key.equals(result) ? name : result;
-    }
 }

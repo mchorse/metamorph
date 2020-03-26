@@ -36,6 +36,13 @@ public class PlayerMorph extends EntityMorph
         this.name = "Player";
     }
 
+    @Override
+    @SideOnly(Side.CLIENT)
+    public String getDisplayName()
+    {
+        return this.profile == null ? this.name : this.profile.getName();
+    }
+
     public void setProfile(String username)
     {
         this.profile = new GameProfile(null, username);

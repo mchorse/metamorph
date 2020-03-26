@@ -505,7 +505,7 @@ public class GuiSurvivalMorphs extends Gui
 
             if (i != 0)
             {
-                name = MorphManager.INSTANCE.morphDisplayNameFromMorph(morph);
+                name = morph.getDisplayName();
             }
 
             /* Render morph itself */

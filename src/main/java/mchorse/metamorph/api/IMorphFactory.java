@@ -40,15 +40,6 @@ public interface IMorphFactory
     public void registerMorphEditors(List<GuiAbstractMorph> editors);
 
     /**
-     * Get display name for morph
-     * 
-     * IMPORTANT: If your factory doesn't override any of the names, please 
-     * return null.
-     */
-    @SideOnly(Side.CLIENT)
-    public String displayNameForMorph(AbstractMorph morph);
-
-    /**
      * Get all available morphs for this morphing factory
      */
     public void getMorphs(MorphList morphs, World world);

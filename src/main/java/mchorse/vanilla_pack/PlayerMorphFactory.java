@@ -44,21 +44,6 @@ public class PlayerMorphFactory implements IMorphFactory
         editors.add(new GuiPlayerMorph(Minecraft.getMinecraft()));
     }
 
-    /**
-     * Return game profile's username as for player's name 
-     */
-    @Override
-    @SideOnly(Side.CLIENT)
-    public String displayNameForMorph(AbstractMorph morph)
-    {
-        if (morph instanceof PlayerMorph)
-        {
-            return ((PlayerMorph) morph).profile.getName();
-        }
-
-        return null;
-    }
-
     @Override
     public void getMorphs(MorphList morphs, World world)
     {

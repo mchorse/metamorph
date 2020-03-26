@@ -60,13 +60,6 @@ public class MobMorphFactory implements IMorphFactory
         editors.add(new GuiAbstractMorph(Minecraft.getMinecraft()));
     }
 
-    @Override
-    @SideOnly(Side.CLIENT)
-    public String displayNameForMorph(AbstractMorph morphName)
-    {
-        return null;
-    }
-
     /**
      * Get all available variation of vanilla mobs and default types of custom 
      * mobs

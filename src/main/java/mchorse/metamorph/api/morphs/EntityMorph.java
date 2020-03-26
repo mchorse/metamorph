@@ -23,6 +23,7 @@ import net.minecraft.client.model.ModelRenderer;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.renderer.entity.Render;
 import net.minecraft.client.renderer.entity.RenderLivingBase;
+import net.minecraft.client.resources.I18n;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityAgeable;
 import net.minecraft.entity.EntityList;
@@ -103,6 +104,25 @@ public class EntityMorph extends AbstractMorph
      */
     @SideOnly(Side.CLIENT)
     public ModelRenderer rightHand;
+
+    @Override
+    @SideOnly(Side.CLIENT)
+    public String getDisplayName()
+    {
+        String name = this.name;
+
+        try
+        {
+            name = EntityList.getEntityString(this.getEntity(Minecraft.getMinecraft().world));
+        }
+        catch (Exception e)
+        {}
+
+        String key = "entity." + name + ".name";
+        String result = I18n.format(key);
+
+        return key.equals(result) ? name : result;
+    }
 
     @Override
     @SideOnly(Side.CLIENT)

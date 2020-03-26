@@ -277,7 +277,7 @@ public class GuiCreativeMorphs extends GuiElement
             for (MorphList.MorphCell morph : morphs)
             {
                 String morphVariant = morph.variant.isEmpty() ? morph.variant : " (" + morph.variant + ")";
-                String title = MorphManager.INSTANCE.morphDisplayNameFromMorph(morph.morph) + morphVariant;
+                String title = morph.morph.getDisplayName() + morphVariant;
 
                 cell.variants.add(new MorphVariant(title, morph.morph));
             }
@@ -320,7 +320,7 @@ public class GuiCreativeMorphs extends GuiElement
             for (AbstractMorph morph : morphing.getAcquiredMorphs())
             {
                 /* Cloning morphs so the survival morphs won't get modified */
-                this.acquired.cells.add(new MorphCell(MorphManager.INSTANCE.morphDisplayNameFromMorph(morph), morph.clone(true)));
+                this.acquired.cells.add(new MorphCell(morph.getDisplayName(), morph.clone(true)));
             }
         }
     }

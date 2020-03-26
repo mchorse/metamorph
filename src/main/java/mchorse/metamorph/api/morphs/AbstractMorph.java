@@ -5,8 +5,11 @@ import mchorse.metamorph.api.MorphSettings;
 import mchorse.metamorph.api.abilities.IAbility;
 import mchorse.metamorph.capabilities.morphing.IMorphing;
 import mchorse.metamorph.entity.SoundHandler;
+import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.entity.Render;
+import net.minecraft.client.resources.I18n;
 import net.minecraft.entity.Entity;
+import net.minecraft.entity.EntityList;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.SharedMonsterAttributes;
 import net.minecraft.entity.player.EntityPlayer;
@@ -56,6 +59,15 @@ public abstract class AbstractMorph
      */
     @SideOnly(Side.CLIENT)
     public Render<? extends Entity> renderer;
+
+    /**
+     * Get display name of this morph
+     */
+    @SideOnly(Side.CLIENT)
+    public String getDisplayName()
+    {
+        return this.name;
+    }
 
     /* Clone code */
 
