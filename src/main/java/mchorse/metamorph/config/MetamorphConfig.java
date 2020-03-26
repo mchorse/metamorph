@@ -74,6 +74,11 @@ public class MetamorphConfig
      */
     public boolean morph_in_tight_spaces;
 
+    /**
+     * Whether players make entity idle sounds when morphed
+     */
+    public boolean show_morph_idle_sounds;
+
     /* End of config options */
 
     /**
@@ -106,6 +111,7 @@ public class MetamorphConfig
         this.disable_morph_disguise = this.config.getBoolean("disable_morph_disguise", cat, false, "Disables the ability of morphs labeled as 'hostile' to avoid being attacked by hostile mobs.", lang + "disable_morph_disguise");
         this.acquire_immediately = this.config.getBoolean("acquire_immediately", cat, false, "Acquires morph immediately after player kills an entity instead of spawning a ghost", lang + "acquire_immediately");
         this.morph_in_tight_spaces = this.config.getBoolean("morph_in_tight_spaces", cat, false, "Allows morphing even if it could cause suffocation and allow passing through walls", lang + "morph_in_tight_spaces");
+        this.show_morph_idle_sounds = this.config.getBoolean("show_morph_idle_sounds", cat, true, "When enabled, morphed players make mob idle sounds", lang + "show_morph_idle_sounds");
 
         this.config.getCategory(cat).setComment("General configuration of Metamorph mod");
 

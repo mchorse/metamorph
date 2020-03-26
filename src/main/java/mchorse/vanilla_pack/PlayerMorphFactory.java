@@ -91,7 +91,7 @@ public class PlayerMorphFactory implements IMorphFactory
 
             player.fromNBT(tag);
 
-            return player;
+            return player.profile != null ? player : null;
         }
 
         return null;

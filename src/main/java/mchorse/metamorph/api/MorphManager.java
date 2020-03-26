@@ -214,10 +214,13 @@ public class MorphManager
             if (this.factories.get(i).hasMorph(name))
             {
                 AbstractMorph morph = this.factories.get(i).getMorphFromNBT(tag);
-
-                this.applySettings(morph);
-
-                return morph;
+                
+                if (morph != null)
+                {
+	                this.applySettings(morph);
+	
+	                return morph;
+                }
             }
         }
 
