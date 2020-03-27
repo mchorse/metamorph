@@ -3,12 +3,11 @@ package mchorse.metamorph;
 import java.lang.reflect.Field;
 import java.util.Map;
 
-import mchorse.metamorph.api.MorphManager;
 import mchorse.metamorph.client.KeyboardHandler;
 import mchorse.metamorph.client.NetworkHandler;
 import mchorse.metamorph.client.RenderingHandler;
-import mchorse.metamorph.client.gui.elements.GuiHud;
-import mchorse.metamorph.client.gui.elements.GuiOverlay;
+import mchorse.metamorph.client.gui.overlays.GuiHud;
+import mchorse.metamorph.client.gui.overlays.GuiOverlay;
 import mchorse.metamorph.client.render.RenderMorph;
 import mchorse.metamorph.entity.EntityMorph;
 import net.minecraft.client.Minecraft;

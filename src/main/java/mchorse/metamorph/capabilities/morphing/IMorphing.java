@@ -3,7 +3,7 @@ package mchorse.metamorph.capabilities.morphing;
 import java.util.List;
 
 import mchorse.metamorph.api.morphs.AbstractMorph;
-import mchorse.metamorph.client.gui.elements.GuiSurvivalMorphs;
+import mchorse.metamorph.client.gui.survival.GuiSurvivalMorphs;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.util.DamageSource;
 import net.minecraftforge.fml.relauncher.Side;

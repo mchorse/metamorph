@@ -5,7 +5,6 @@ import mchorse.metamorph.api.MorphManager;
 import mchorse.metamorph.api.abilities.IAbility;
 import mchorse.metamorph.api.abilities.IAction;
 import mchorse.metamorph.api.abilities.IAttackAbility;
-import mchorse.metamorph.api.creative.UserSection;
 import mchorse.metamorph.api.morphs.AbstractMorph;
 import mchorse.metamorph.api.morphs.EntityMorph;
 import mchorse.metamorph.client.gui.editor.GuiAbstractMorph;

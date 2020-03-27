@@ -1,10 +1,10 @@
-package mchorse.metamorph.client.gui;
+package mchorse.metamorph.client.gui.survival;
 
 import mchorse.mclib.client.gui.framework.GuiBase;
 import mchorse.mclib.client.gui.framework.elements.buttons.GuiButtonElement;
 import mchorse.metamorph.ClientProxy;
-import mchorse.metamorph.client.gui.elements.GuiSurvivalMorphs;
-import mchorse.metamorph.client.gui.elements.GuiSurvivalMorphs.MorphCell;
+import mchorse.metamorph.client.gui.survival.GuiSurvivalMorphs;
+import mchorse.metamorph.client.gui.survival.GuiSurvivalMorphs.MorphCell;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.Gui;
 import net.minecraft.client.resources.I18n;

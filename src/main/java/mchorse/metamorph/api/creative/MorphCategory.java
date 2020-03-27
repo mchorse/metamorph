@@ -30,4 +30,22 @@ public class MorphCategory
 
 		this.morphs.add(morph);
 	}
+
+	public AbstractMorph getEqual(AbstractMorph morph)
+	{
+		for (AbstractMorph child : this.morphs)
+		{
+			if (child.equals(morph))
+			{
+				return child;
+			}
+		}
+
+		return null;
+	}
+
+	public void clear()
+	{
+		this.morphs.clear();
+	}
 }

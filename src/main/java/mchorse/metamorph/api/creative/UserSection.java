@@ -1,7 +1,5 @@
 package mchorse.metamorph.api.creative;
 
-import mchorse.metamorph.api.creative.MorphCategory;
-import mchorse.metamorph.api.creative.MorphSection;
 import mchorse.metamorph.capabilities.morphing.IMorphing;
 import mchorse.metamorph.capabilities.morphing.Morphing;
 import net.minecraft.client.Minecraft;
@@ -11,15 +9,23 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 
 import java.util.Collections;
 
+/**
+ * User morph section
+ *
+ * Here we store acquired morphs, recently edited morphs and custom
+ * categories created by the player
+ */
 public class UserSection extends MorphSection
 {
-	private MorphCategory acquired;
+	public MorphCategory acquired;
+	public MorphCategory recent;
 
 	public UserSection(String title)
 	{
 		super(title);
 
 		this.acquired = new MorphCategory(this, "acquired");
+		this.recent = new RecentCategory(this, "recent");
 	}
 
 	@Override
@@ -32,6 +38,17 @@ public class UserSection extends MorphSection
 
 		this.categories.clear();
 		this.categories.add(this.acquired);
+		this.categories.add(this.recent);
 		this.acquired.morphs = morphing == null ? Collections.emptyList() : morphing.getAcquiredMorphs();
+	}
+
+	@Override
+	public void reset()
+	{
+		super.reset();
+
+		this.categories.clear();
+		this.acquired.clear();
+		this.recent.clear();
 	}
 }

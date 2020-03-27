@@ -6,7 +6,7 @@ import java.util.List;
 import mchorse.metamorph.Metamorph;
 import mchorse.metamorph.api.Morph;
 import mchorse.metamorph.api.morphs.AbstractMorph;
-import mchorse.metamorph.client.gui.elements.GuiSurvivalMorphs;
+import mchorse.metamorph.client.gui.survival.GuiSurvivalMorphs;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.SharedMonsterAttributes;

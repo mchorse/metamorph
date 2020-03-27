@@ -1,9 +1,8 @@
-package mchorse.metamorph.client.gui.elements;
+package mchorse.metamorph.client.gui.creative;
 
 import mchorse.mclib.client.gui.framework.elements.buttons.GuiButtonElement;
 import mchorse.mclib.client.gui.framework.elements.utils.GuiContext;
 import mchorse.metamorph.api.morphs.AbstractMorph;
-import mchorse.metamorph.capabilities.morphing.IMorphing;
 import mchorse.metamorph.network.Dispatcher;
 import mchorse.metamorph.network.common.PacketAcquireMorph;
 import net.minecraft.client.Minecraft;
@@ -55,13 +54,15 @@ public class GuiCreativeMorphsMenu extends GuiCreativeMorphs
     }
 
     @Override
-    public void setSelected(AbstractMorph morph)
+    public AbstractMorph setSelected(AbstractMorph morph)
     {
-        super.setSelected(morph);
+        morph = super.setSelected(morph);
 
         /* The unknown morph that can't be found in the morph picker 
          * will get cloned, so we have to retrieve it */
         this.setMorph(this.getSelected());
+
+        return morph;
     }
 
     @Override

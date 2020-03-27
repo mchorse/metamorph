@@ -1,11 +1,10 @@
-package mchorse.metamorph.client.gui;
+package mchorse.metamorph.client.gui.creative;
 
 import mchorse.mclib.client.gui.framework.GuiBase;
 import mchorse.mclib.client.gui.framework.elements.buttons.GuiButtonElement;
 import mchorse.metamorph.api.morphs.AbstractMorph;
 import mchorse.metamorph.capabilities.morphing.IMorphing;
 import mchorse.metamorph.capabilities.morphing.Morphing;
-import mchorse.metamorph.client.gui.elements.GuiCreativeMorphs;
 import mchorse.metamorph.network.Dispatcher;
 import mchorse.metamorph.network.common.PacketAcquireMorph;
 import mchorse.metamorph.network.common.PacketMorph;
@@ -26,7 +25,7 @@ import net.minecraft.entity.player.EntityPlayer;
  * 
  * This menu also allows player to edit morphs.
  */
-public class GuiCreativeMenu extends GuiBase
+public class GuiCreativeScreen extends GuiBase
 {
     /* GUI stuff */
     private GuiButtonElement morph;
@@ -34,7 +33,7 @@ public class GuiCreativeMenu extends GuiBase
     private GuiButtonElement close;
     private GuiCreativeMorphs pane;
 
-    public GuiCreativeMenu()
+    public GuiCreativeScreen()
     {
         Minecraft mc = Minecraft.getMinecraft();
         EntityPlayer player = mc.player;

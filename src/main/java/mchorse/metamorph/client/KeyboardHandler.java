@@ -5,9 +5,9 @@ import org.lwjgl.input.Keyboard;
 import mchorse.metamorph.ClientProxy;
 import mchorse.metamorph.capabilities.morphing.IMorphing;
 import mchorse.metamorph.capabilities.morphing.Morphing;
-import mchorse.metamorph.client.gui.GuiCreativeMenu;
-import mchorse.metamorph.client.gui.GuiSurvivalMenu;
-import mchorse.metamorph.client.gui.elements.GuiSurvivalMorphs;
+import mchorse.metamorph.client.gui.creative.GuiCreativeScreen;
+import mchorse.metamorph.client.gui.survival.GuiSurvivalMenu;
+import mchorse.metamorph.client.gui.survival.GuiSurvivalMorphs;
 import mchorse.metamorph.network.Dispatcher;
 import mchorse.metamorph.network.common.PacketAction;
 import mchorse.metamorph.network.common.PacketSelectMorph;
@@ -93,7 +93,7 @@ public class KeyboardHandler
 
         if (keyCreativeMenu.isPressed() && mc.player.isCreative())
         {
-            mc.displayGuiScreen(new GuiCreativeMenu());
+            mc.displayGuiScreen(new GuiCreativeScreen());
         }
 
         if (ClientProxy.getGameMode(mc.player) == GameType.ADVENTURE)

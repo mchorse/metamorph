@@ -1,4 +1,4 @@
-package mchorse.metamorph.client.gui.elements;
+package mchorse.metamorph.client.gui.overlays;
 
 import java.util.ArrayList;
 import java.util.Iterator;

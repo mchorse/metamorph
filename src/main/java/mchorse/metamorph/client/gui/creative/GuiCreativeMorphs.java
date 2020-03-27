@@ -1,4 +1,4 @@
-package mchorse.metamorph.client.gui.elements;
+package mchorse.metamorph.client.gui.creative;
 
 import mchorse.mclib.client.gui.framework.GuiBase;
 import mchorse.mclib.client.gui.framework.elements.GuiDelegateElement;
@@ -8,10 +8,10 @@ import mchorse.mclib.client.gui.framework.elements.IGuiElement;
 import mchorse.mclib.client.gui.framework.elements.buttons.GuiButtonElement;
 import mchorse.mclib.client.gui.framework.elements.input.GuiTextElement;
 import mchorse.mclib.client.gui.framework.elements.utils.GuiContext;
-import mchorse.mclib.client.gui.utils.resizers.Resizer;
 import mchorse.metamorph.api.MorphManager;
 import mchorse.metamorph.api.creative.MorphList;
 import mchorse.metamorph.api.creative.MorphSection;
+import mchorse.metamorph.api.creative.UserSection;
 import mchorse.metamorph.api.events.ReloadMorphs;
 import mchorse.metamorph.api.morphs.AbstractMorph;
 import mchorse.metamorph.client.gui.editor.GuiAbstractMorph;
@@ -57,6 +57,8 @@ public class GuiCreativeMorphs extends GuiElement
 
     public GuiScrollElement morphs;
 
+    private UserSection user;
+    private GuiMorphSection userSection;
     private GuiMorphSection selected;
 
     /**
@@ -74,7 +76,7 @@ public class GuiCreativeMorphs extends GuiElement
         MinecraftForge.EVENT_BUS.post(new ReloadMorphs());
 
         this.editor = new GuiDelegateElement<GuiAbstractMorph>(mc, null);
-        this.editor.flex().parent(this.area).set(0, 0, 1, 1, Resizer.Measure.RELATIVE);
+        this.editor.flex().parent(this.area).wh(1F, 1F);
 
         this.search = new GuiTextElement(mc, (filter) -> this.setFilter(filter));
         this.search.focus(GuiBase.getCurrent());
@@ -85,12 +87,18 @@ public class GuiCreativeMorphs extends GuiElement
 
         this.morphs = new GuiScrollElement(mc);
         this.morphs.flex().parent(this.area).wh(1F, 1F);
+        this.setupMorphs(list);
 
-        GuiElement previous = null;
+        this.add(this.morphs, this.edit, this.search, this.editor);
+    }
+
+    private void setupMorphs(MorphList list)
+    {
+        GuiMorphSection previous = null;
 
         for (MorphSection section : list.sections)
         {
-            GuiElement element = section.getGUI(mc, this::setMorph);
+            GuiMorphSection element = section.getGUI(mc, this::setMorph);
 
             if (previous == null)
             {
@@ -103,10 +111,14 @@ public class GuiCreativeMorphs extends GuiElement
 
             previous = element;
 
+            if (section instanceof UserSection)
+            {
+                this.user = (UserSection) section;
+                this.userSection = element;
+            }
+
             this.morphs.add(element);
         }
-
-        this.add(this.morphs, this.edit, this.search, this.editor);
     }
 
     public boolean isEditMode()
@@ -125,6 +137,8 @@ public class GuiCreativeMorphs extends GuiElement
                 morph = morph.clone(true);
             }
 
+            morph = this.setSelected(morph, false, false);
+
             GuiAbstractMorph editor = this.getMorphEditor(morph);
 
             if (editor != null)
@@ -132,7 +146,6 @@ public class GuiCreativeMorphs extends GuiElement
                 editor.finish.callback = this.getToggleCallback();
 
                 this.editor.setDelegate(editor);
-                this.setSelected(morph, false, false);
                 this.setMorph(morph);
             }
         }
@@ -211,29 +224,41 @@ public class GuiCreativeMorphs extends GuiElement
         /* TODO: search */
     }
 
-    public void setSelected(AbstractMorph morph)
+    public AbstractMorph setSelected(AbstractMorph morph)
     {
-        this.setSelected(morph, true, true);
+        return this.setSelected(morph, true, true);
     }
 
     /**
      * Set selected morph 
      */
-    public void setSelected(AbstractMorph morph, boolean restore, boolean compare)
+    public AbstractMorph setSelected(AbstractMorph morph, boolean restore, boolean compare)
     {
-        // this.initiateCategories(morph, compare);
-
-        /* Make sure to restore the state from previous time */
-        if (restore)
+        if (this.selected != null)
         {
-            String prevFilter = this.previousFilter;
-
-            if (!prevFilter.isEmpty())
-            {
-                this.previousFilter = "";
-                this.setFilter(prevFilter, false);
-            }
+            this.selected.reset();
         }
+
+        if (morph != null)
+        {
+            AbstractMorph found = this.user.recent.getEqual(morph);
+
+            if (found == null)
+            {
+                this.user.recent.addMorph(morph);
+                found = morph;
+            }
+
+            this.userSection.morph = found;
+            this.userSection.category = this.user.recent;
+            this.selected = this.userSection;
+        }
+        else
+        {
+            this.selected = null;
+        }
+
+        return this.getSelected();
     }
 
     /**
@@ -248,7 +273,7 @@ public class GuiCreativeMorphs extends GuiElement
     {
         if (this.selected != null && selected != this.selected)
         {
-            this.selected.morph = null;
+            this.selected.reset();
         }
 
         this.selected = selected;
@@ -274,6 +299,7 @@ public class GuiCreativeMorphs extends GuiElement
         int lastY = ((GuiElement) children.get(children.size() - 1)).area.ey();
 
         this.morphs.scroll.scrollSize = lastY - firstY + 30;
+        this.morphs.scroll.clamp();
     }
 
     @Override

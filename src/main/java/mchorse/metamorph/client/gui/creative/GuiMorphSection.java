@@ -1,4 +1,4 @@
-package mchorse.metamorph.client.gui.elements;
+package mchorse.metamorph.client.gui.creative;
 
 import mchorse.mclib.McLib;
 import mchorse.mclib.client.gui.framework.elements.GuiElement;
@@ -23,6 +23,7 @@ public class GuiMorphSection extends GuiElement
 	public int cellHeight = 70;
 
 	public AbstractMorph morph;
+	public MorphCategory category;
 
 	public GuiMorphSection(Minecraft mc, MorphSection section, Consumer<GuiMorphSection> callback)
 	{
@@ -40,10 +41,10 @@ public class GuiMorphSection extends GuiElement
 		return this;
 	}
 
-	@Override
-	public void resize()
+	public void reset()
 	{
-		super.resize();
+		this.morph = null;
+		this.category = null;
 	}
 
 	@Override
@@ -94,6 +95,7 @@ public class GuiMorphSection extends GuiElement
 				if (i >= 0 && i < category.morphs.size())
 				{
 					this.morph = category.morphs.get(i);
+					this.category = category;
 
 					if (this.callback != null)
 					{
@@ -121,7 +123,6 @@ public class GuiMorphSection extends GuiElement
 	public void draw(GuiContext context)
 	{
 		Gui.drawRect(this.area.x, this.area.y, this.area.ex(), this.area.y + 20, 0x88000000);
-		Gui.drawRect(this.area.x, this.area.y + 19, this.area.ex(), this.area.y + 20, 0x44000000);
 
 		this.font.drawStringWithShadow(this.section.title, this.area.x + 7, this.area.y + 10 - this.font.FONT_HEIGHT / 2, 0xffffff);
 		(this.toggled ? Icons.MOVE_UP : Icons.MOVE_DOWN).render(this.area.ex() - 18 - 3, this.area.y + 10 + (this.toggled ? -1 : 1), 0, 0.5F);
@@ -155,10 +156,12 @@ public class GuiMorphSection extends GuiElement
 
 			for (MorphCategory category : this.section.categories)
 			{
-				float x = 0;
+				if (category.morphs.isEmpty())
+				{
+					continue;
+				}
 
-				Gui.drawRect(this.area.x, this.area.y + y, this.area.ex(), this.area.y + y + 16, 0x44000000);
-				Gui.drawRect(this.area.x, this.area.y + y + 15, this.area.ex(), this.area.y + y + 16, 0x44000000);
+				float x = 0;
 
 				this.font.drawStringWithShadow(category.title, this.area.x + 7, this.area.y + y + 8 - this.font.FONT_HEIGHT / 2, 0xcccccc);
 				y += 16;

@@ -18,9 +18,7 @@ import java.util.List;
 public interface IMorphFactory
 {
     /**
-     * Register method
-     * 
-     * Register here everything that doesn't require stuff
+     * Register here everything that is required by morph manager system
      */
     public void register(MorphManager manager);
 

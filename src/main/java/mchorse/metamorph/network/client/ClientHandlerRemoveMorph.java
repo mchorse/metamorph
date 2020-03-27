@@ -2,7 +2,7 @@ package mchorse.metamorph.network.client;
 
 import mchorse.mclib.network.ClientMessageHandler;
 import mchorse.metamorph.capabilities.morphing.Morphing;
-import mchorse.metamorph.client.gui.GuiSurvivalMenu;
+import mchorse.metamorph.client.gui.survival.GuiSurvivalMenu;
 import mchorse.metamorph.network.common.PacketRemoveMorph;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.entity.EntityPlayerSP;

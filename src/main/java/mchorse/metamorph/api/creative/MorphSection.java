@@ -1,7 +1,6 @@
 package mchorse.metamorph.api.creative;
 
-import mchorse.mclib.client.gui.framework.elements.GuiElement;
-import mchorse.metamorph.client.gui.elements.GuiMorphSection;
+import mchorse.metamorph.client.gui.creative.GuiMorphSection;
 import net.minecraft.client.Minecraft;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.relauncher.Side;
@@ -34,7 +33,7 @@ public class MorphSection
 	{}
 
 	@SideOnly(Side.CLIENT)
-	public GuiElement getGUI(Minecraft mc, Consumer<GuiMorphSection> callback)
+	public GuiMorphSection getGUI(Minecraft mc, Consumer<GuiMorphSection> callback)
 	{
 		return new GuiMorphSection(mc, this, callback);
 	}

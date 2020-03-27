@@ -1,4 +1,4 @@
-package mchorse.metamorph.client.gui.elements;
+package mchorse.metamorph.client.gui.overlays;
 
 import net.minecraft.client.gui.Gui;
 import net.minecraft.client.renderer.GlStateManager;
