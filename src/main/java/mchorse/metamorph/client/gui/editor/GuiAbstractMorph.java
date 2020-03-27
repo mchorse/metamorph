@@ -27,7 +27,7 @@ public class GuiAbstractMorph<T extends AbstractMorph> extends GuiPanelBase<GuiM
         super(mc);
 
         this.finish = new GuiButtonElement(mc, I18n.format("metamorph.gui.finish"), null);
-        this.finish.resizer().parent(this.area).set(0, 10, 55, 20).x(1, -65);
+        this.finish.flex().parent(this.area).set(0, 10, 55, 20).x(1, -65);
         this.settings = new GuiSettingsPanel(mc, this);
         this.defaultPanel = this.nbt = new GuiNBTPanel(mc, this);
 

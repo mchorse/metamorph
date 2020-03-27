@@ -57,14 +57,14 @@ public class GuiSettingsPanel extends GuiMorphPanel<AbstractMorph, GuiAbstractMo
 		this.health = new GuiTrackpadElement(mc, (value) -> this.morph.settings.health = value.intValue()).limit(0, Float.POSITIVE_INFINITY, true);
 		this.speed = new GuiTrackpadElement(mc, (value) -> this.morph.settings.speed = value).limit(0, Float.POSITIVE_INFINITY);
 
-		this.reset.resizer().parent(this.area).set(10, 0, 100, 20).y(1, -30);
-		this.displayName.resizer().parent(this.area).set(10, 10, 100, 20);
-		this.health.resizer().relative(this.displayName.getResizer()).y(1, 5).w(1, 0).h(20);
-		this.speed.resizer().relative(this.health.getResizer()).y(1, 5).w(1, 0).h(20);
+		this.reset.flex().parent(this.area).set(10, 0, 100, 20).y(1, -30);
+		this.displayName.flex().parent(this.area).set(10, 10, 100, 20);
+		this.health.flex().relative(this.displayName.resizer()).y(1, 5).w(1, 0).h(20);
+		this.speed.flex().relative(this.health.resizer()).y(1, 5).w(1, 0).h(20);
 		this.speed.values(0.05F, 0.01F, 0.1F).increment(0.25F);
-		this.abilities.resizer().relative(this.displayName.getResizer()).x(1, 5).w(1, 0).h(80);
-		this.attack.resizer().relative(this.speed.getResizer()).y(1, 5).w(1, 0).h(80);
-		this.action.resizer().relative(this.attack.getResizer()).y(1, 5).w(1, 0).h(80);
+		this.abilities.flex().relative(this.displayName.resizer()).x(1, 5).w(1, 0).h(80);
+		this.attack.flex().relative(this.speed.resizer()).y(1, 5).w(1, 0).h(80);
+		this.action.flex().relative(this.attack.resizer()).y(1, 5).w(1, 0).h(80);
 
 		this.add(this.displayName, this.abilities, this.attack, this.action, this.health, this.speed, this.reset);
 	}

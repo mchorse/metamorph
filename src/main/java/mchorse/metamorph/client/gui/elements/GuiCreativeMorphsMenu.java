@@ -19,17 +19,17 @@ public class GuiCreativeMorphsMenu extends GuiCreativeMorphs
     private GuiButtonElement close;
     private GuiButtonElement acquire;
 
-    public GuiCreativeMorphsMenu(Minecraft mc, int perRow, AbstractMorph selected, IMorphing morphing)
+    public GuiCreativeMorphsMenu(Minecraft mc)
     {
-        super(mc, perRow, selected, morphing);
+        super(mc);
 
         this.acquire = new GuiButtonElement(mc, I18n.format("metamorph.gui.acquire"), (b) ->
         {
-            MorphCell cell = this.getSelected();
+            AbstractMorph cell = this.getSelected();
 
             if (cell != null)
             {
-                Dispatcher.sendToServer(new PacketAcquireMorph(cell.current().morph));
+                Dispatcher.sendToServer(new PacketAcquireMorph(cell));
             }
         });
 
@@ -37,31 +37,21 @@ public class GuiCreativeMorphsMenu extends GuiCreativeMorphs
         {
             if (this.isEditMode())
             {
-                this.setMorph(this.getSelected().current().morph);
+                this.setMorph(this.getSelected());
             }
 
             this.setVisible(false);
         });
 
-        this.acquire.resizer().parent(this.area).set(10, 10, 60, 20);
-        this.close.resizer().parent(this.area).set(0, 10, 20, 20).x(1, -30);
-        this.edit.resizer().x(1, -35 - 25 - 55);
+        this.acquire.flex().parent(this.area).set(10, 10, 60, 20);
+        this.close.flex().parent(this.area).set(0, 10, 20, 20).x(1, -30);
+        this.edit.flex().x(1, -35 - 25 - 55);
         this.add(this.acquire, this.close);
 
-        this.search.resizer().set(75, 10, 0, 20).w(1, -130 - 65);
+        this.search.flex().set(75, 10, 0, 20).w(1, -130 - 65);
 
         this.hideTooltip();
         this.setVisible(false);
-        this.shiftX = 8;
-    }
-
-    @Override
-    public void resize()
-    {
-        super.resize();
-        int perRow = (int) Math.ceil(this.area.w / 50.0F);
-
-        this.setPerRow(perRow == 0 ? 1 : perRow);
     }
 
     @Override
@@ -71,9 +61,7 @@ public class GuiCreativeMorphsMenu extends GuiCreativeMorphs
 
         /* The unknown morph that can't be found in the morph picker 
          * will get cloned, so we have to retrieve it */
-        MorphCell cell = this.getSelected();
-
-        this.setMorph(cell == null ? null : cell.current().morph);
+        this.setMorph(this.getSelected());
     }
 
     @Override
@@ -104,20 +92,6 @@ public class GuiCreativeMorphsMenu extends GuiCreativeMorphs
     {
         GL11.glClear(GL11.GL_DEPTH_BUFFER_BIT);
         Gui.drawRect(this.area.x, this.area.y, this.area.ex(), this.area.ey(), 0xaa000000);
-
-        MorphCell cell = this.getSelected();
-
-        if (cell != null && !this.isEditMode())
-        {
-            int width = Math.max(this.font.getStringWidth(cell.current().name), this.font.getStringWidth(cell.current().morph.name)) + 6;
-            int center = this.area.mx();
-            int y = this.area.y + 40;
-
-            Gui.drawRect(center - width / 2, y - 4, center + width / 2, y + 24, 0x88000000);
-
-            this.drawCenteredString(this.font, cell.current().name, center, y, 0xffffff);
-            this.drawCenteredString(this.font, cell.current().morph.name, center, y + 14, 0x888888);
-        }
 
         super.draw(context);
     }

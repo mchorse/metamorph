@@ -121,9 +121,6 @@ public class Metamorph
     @EventHandler
     public void postLoad(FMLPostInitializationEvent event)
     {
-        /* I hope all entities are going to be loaded */
-        MorphManager.initiateMap();
-
         proxy.postLoad(event);
     }
 

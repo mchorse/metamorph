@@ -86,15 +86,15 @@ public class GuiBodyPartEditor extends GuiMorphPanel<AbstractMorph, GuiAbstractM
         this.ry.tooltip(I18n.format("metamorph.gui.y"), Direction.TOP);
         this.rz.tooltip(I18n.format("metamorph.gui.z"), Direction.TOP);
 
-        this.tx.resizer().set(0, 35, 60, 20).parent(this.area).x(0.5F, -95).y(1, -80);
-        this.ty.resizer().set(0, 25, 60, 20).relative(this.tx.resizer());
-        this.tz.resizer().set(0, 25, 60, 20).relative(this.ty.resizer());
-        this.sx.resizer().set(65, 0, 60, 20).relative(this.tx.resizer());
-        this.sy.resizer().set(0, 25, 60, 20).relative(this.sx.resizer());
-        this.sz.resizer().set(0, 25, 60, 20).relative(this.sy.resizer());
-        this.rx.resizer().set(65, 0, 60, 20).relative(this.sx.resizer());
-        this.ry.resizer().set(0, 25, 60, 20).relative(this.rx.resizer());
-        this.rz.resizer().set(0, 25, 60, 20).relative(this.ry.resizer());
+        this.tx.flex().set(0, 35, 60, 20).parent(this.area).x(0.5F, -95).y(1, -80);
+        this.ty.flex().set(0, 25, 60, 20).relative(this.tx.resizer());
+        this.tz.flex().set(0, 25, 60, 20).relative(this.ty.resizer());
+        this.sx.flex().set(65, 0, 60, 20).relative(this.tx.resizer());
+        this.sy.flex().set(0, 25, 60, 20).relative(this.sx.resizer());
+        this.sz.flex().set(0, 25, 60, 20).relative(this.sy.resizer());
+        this.rx.flex().set(65, 0, 60, 20).relative(this.sx.resizer());
+        this.ry.flex().set(0, 25, 60, 20).relative(this.rx.resizer());
+        this.rz.flex().set(0, 25, 60, 20).relative(this.ry.resizer());
 
         this.limbs = new GuiStringListElement(mc, (str) -> this.pickLimb(str.get(0)));
 
@@ -105,10 +105,8 @@ public class GuiBodyPartEditor extends GuiMorphPanel<AbstractMorph, GuiAbstractM
         {
             if (this.morphPicker == null)
             {
-                IMorphing morphing = Morphing.get(this.mc.player);
-
-                this.morphPicker = new GuiCreativeMorphsMenu(mc, 6, null, morphing);
-                this.morphPicker.resizer().parent(this.area).set(0, 0, 0, 0).w(1, 0).h(1, 0);
+                this.morphPicker = new GuiCreativeMorphsMenu(mc);
+                this.morphPicker.flex().parent(this.area).set(0, 0, 0, 0).w(1, 0).h(1, 0);
                 this.morphPicker.callback = (morph) ->
                 {
                     if (this.part != null) this.part.morph.setDirect(morph);
@@ -185,22 +183,22 @@ public class GuiBodyPartEditor extends GuiMorphPanel<AbstractMorph, GuiAbstractM
             if (this.part != null) this.part.useTarget = b.state;
         });
 
-        this.limbs.resizer().parent(this.area).set(0, 80, 105, 90).x(1, -115).h(1, -106);
-        this.pickMorph.resizer().parent(this.area).set(0, 40, 105, 20).x(1, -115);
-        this.addPart.resizer().parent(this.area).set(10, 10, 50, 20);
-        this.removePart.resizer().relative(this.addPart.resizer()).set(55, 0, 50, 20);
-        this.bodyParts.resizer().parent(this.area).set(10, 50, 105, 0).h(1, -55);
-        this.useTarget.resizer().parent(this.area).set(0, 0, 60, 11).x(1, -115).y(1, -21);
+        this.limbs.flex().parent(this.area).set(0, 80, 105, 90).x(1, -115).h(1, -106);
+        this.pickMorph.flex().parent(this.area).set(0, 40, 105, 20).x(1, -115);
+        this.addPart.flex().parent(this.area).set(10, 10, 50, 20);
+        this.removePart.flex().relative(this.addPart.resizer()).set(55, 0, 50, 20);
+        this.bodyParts.flex().parent(this.area).set(10, 50, 105, 0).h(1, -55);
+        this.useTarget.flex().parent(this.area).set(0, 0, 60, 11).x(1, -115).y(1, -21);
 
         this.elements.add(this.tx, this.ty, this.tz, this.sx, this.sy, this.sz, this.rx, this.ry, this.rz, this.limbs, this.pickMorph, this.useTarget);
         this.add(this.addPart, this.removePart, this.bodyParts, this.elements);
 
         /* Inventory */
         this.stacks = new GuiElement(mc);
-        this.stacks.resizer().parent(this.area).x(0.5F, 0).y(10).wh(174, 24);
+        this.stacks.flex().parent(this.area).x(0.5F, 0).y(10).wh(174, 24);
 
         this.inventory = new GuiInventoryElement(mc, this::pickItem);
-        this.inventory.resizer().relative(this.stacks.getResizer()).x(0.5F, 0).y(1, 10).anchor(0.5F, 0).wh(200, 100);
+        this.inventory.flex().relative(this.stacks.resizer()).x(0.5F, 0).y(1, 10).anchor(0.5F, 0).wh(200, 100);
         this.inventory.setVisible(false);
 
         for (int i = 0; i < this.slots.length; i++)
@@ -212,12 +210,12 @@ public class GuiBodyPartEditor extends GuiMorphPanel<AbstractMorph, GuiAbstractM
                 this.inventory.setVisible(true);
             });
 
-            this.slots[i].resizer().wh(24, 24);
+            this.slots[i].flex().wh(24, 24);
 
             this.stacks.add(this.slots[i]);
         }
 
-        this.stacks.setResizer(new RowResizer(this.stacks, 6));
+        this.stacks.resizer(new RowResizer(this.stacks, 6));
         this.add(this.stacks, this.inventory);
     }
 
@@ -230,17 +228,6 @@ public class GuiBodyPartEditor extends GuiMorphPanel<AbstractMorph, GuiAbstractM
             this.active = null;
             this.inventory.setVisible(false);
             this.part.updateEntity();
-        }
-    }
-
-    @Override
-    public void resize()
-    {
-        super.resize();
-
-        if (this.morphPicker != null)
-        {
-            this.morphPicker.setPerRow((int) Math.ceil(this.morphPicker.area.w / 50.0F));
         }
     }
 

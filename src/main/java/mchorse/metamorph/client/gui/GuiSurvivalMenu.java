@@ -62,12 +62,12 @@ public class GuiSurvivalMenu extends GuiBase
             this.exit();
         });
 
-        this.remove.resizer().parent(this.viewport).set(20, 0, 60, 20).y(1, -30);
-        this.morph.resizer().parent(this.viewport).set(0, 0, 60, 20).x(1, -80).y(1, -30);
-        this.favorite.resizer().relative(this.morph.resizer()).set(-65, 0, 60, 20);
+        this.remove.flex().parent(this.viewport).set(20, 0, 60, 20).y(1, -30);
+        this.morph.flex().parent(this.viewport).set(0, 0, 60, 20).x(1, -80).y(1, -30);
+        this.favorite.flex().relative(this.morph.resizer()).set(-65, 0, 60, 20);
 
-        this.close.resizer().parent(this.viewport).set(0, 10, 60, 20).x(1, -80);
-        this.onlyFavorites.resizer().relative(this.close.resizer()).set(-95, 0, 90, 20);
+        this.close.flex().parent(this.viewport).set(0, 10, 60, 20).x(1, -80);
+        this.onlyFavorites.flex().relative(this.close.resizer()).set(-95, 0, 90, 20);
 
         this.root.add(this.remove, this.favorite, this.close, this.onlyFavorites, this.morph);
     }

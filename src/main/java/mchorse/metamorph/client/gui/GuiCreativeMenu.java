@@ -6,7 +6,6 @@ import mchorse.metamorph.api.morphs.AbstractMorph;
 import mchorse.metamorph.capabilities.morphing.IMorphing;
 import mchorse.metamorph.capabilities.morphing.Morphing;
 import mchorse.metamorph.client.gui.elements.GuiCreativeMorphs;
-import mchorse.metamorph.client.gui.elements.GuiCreativeMorphs.MorphCell;
 import mchorse.metamorph.network.Dispatcher;
 import mchorse.metamorph.network.common.PacketAcquireMorph;
 import mchorse.metamorph.network.common.PacketMorph;
@@ -26,8 +25,6 @@ import net.minecraft.entity.player.EntityPlayer;
  * acquired morphs.
  * 
  * This menu also allows player to edit morphs.
- * 
- * TODO: sync edited acquired morphs
  */
 public class GuiCreativeMenu extends GuiBase
 {
@@ -40,11 +37,14 @@ public class GuiCreativeMenu extends GuiBase
     public GuiCreativeMenu()
     {
         Minecraft mc = Minecraft.getMinecraft();
+        EntityPlayer player = mc.player;
+        IMorphing morphing = Morphing.get(player);
 
         this.morph = new GuiButtonElement(mc, I18n.format("metamorph.gui.morph"), (b) ->
         {
             this.pane.finish();
-            AbstractMorph morph = this.getMorph();
+
+            AbstractMorph morph = this.pane.getSelected();
 
             if (morph != null)
             {
@@ -52,91 +52,48 @@ public class GuiCreativeMenu extends GuiBase
                 this.closeScreen();
             }
         });
-
         this.acquire = new GuiButtonElement(mc, I18n.format("metamorph.gui.acquire"), (b) ->
         {
             this.pane.finish();
-            Dispatcher.sendToServer(new PacketAcquireMorph(this.getMorph()));
+
+            AbstractMorph morph = this.pane.getSelected();
+
+            if (morph != null)
+            {
+                Dispatcher.sendToServer(new PacketAcquireMorph(morph));
+            }
         });
-
         this.close = new GuiButtonElement(mc, I18n.format("metamorph.gui.close"), (b) -> this.closeScreen());
+        this.pane = new GuiCreativeMorphs(mc);
+        this.pane.setSelected(morphing.getCurrentMorph());
 
-        this.morph.resizer().parent(this.viewport).set(0, 10, 60, 20).x(1, -200);
-        this.acquire.resizer().relative(this.morph.resizer()).set(65, 0, 60, 20);
-        this.close.resizer().relative(this.acquire.resizer()).set(65, 0, 60, 20);
+        this.morph.flex().parent(this.viewport).set(0, 10, 60, 20).x(1, -200);
+        this.acquire.flex().relative(this.morph.resizer()).set(65, 0, 60, 20);
+        this.close.flex().relative(this.acquire.resizer()).set(65, 0, 60, 20);
+        this.pane.flex().parent(this.viewport).set(0, 40, 0, 0).w(1, 0).h(1, -40);
 
-        this.root.add(this.morph, this.acquire, this.close);
+        this.root.add(this.pane, this.morph, this.acquire, this.close);
     }
 
-    /* GUI stuff and input */
-
-    @Override
-    public void initGui()
-    {
-        if (this.pane == null)
-        {
-            EntityPlayer player = Minecraft.getMinecraft().player;
-            IMorphing morphing = Morphing.get(player);
-
-            /* Create pane after constructor, because new morphs may 
-             * appear during open GUI event */
-            this.pane = new GuiCreativeMorphs(this.mc, 6, morphing.getCurrentMorph(), morphing);
-            this.pane.resizer().parent(this.viewport).set(0, 40, 0, 0).w(1, 0).h(1, -40);
-            this.pane.shiftX = 9;
-
-            this.root.getChildren().add(0, this.pane);
-        }
-
-        super.initGui();
-
-        this.pane.scroll.scrollBy(0);
-        this.pane.setPerRow((int) Math.ceil((this.width - 20) / 50.0F));
-    }
-
-    /**
-     * Get currently selected morph 
-     */
-    public AbstractMorph getMorph()
-    {
-        MorphCell selected = this.pane.getSelected();
-
-        if (selected != null)
-        {
-            return selected.current().morph;
-        }
-
-        return null;
-    }
-
-    /**
-     * Draw screen
-     * 
-     * This method is responsible for number of things. This method renders 
-     * everything, starting from buttons, and ending with morphs.
-     * 
-     * Event though the GUI by itself looks pretty simple, it has a pretty big 
-     * method for rendering everything.
-     */
     @Override
     public void drawScreen(int mouseX, int mouseY, float partialTicks)
     {
         /* Draw panel backgrounds */
         this.drawDefaultBackground();
-        Gui.drawRect(0, 0, this.width, 35, 0x88000000);
-        this.drawGradientRect(0, 35, this.width, 45, 0x88000000, 0x00000000);
+        Gui.drawRect(0, 0, this.width, 40, 0xaa000000);
+        Gui.drawRect(0, 39, this.width, 40, 0x44000000);
 
-        /* Render buttons */
-        super.drawScreen(mouseX, mouseY, partialTicks);
-
-        /* Draw stats about currently selected morph */
-        MorphCell morph = this.pane.getSelected();
-        String selected = morph != null ? morph.current().name : I18n.format("metamorph.gui.no_morph");
+        /* Draw the name of the morph */
+        AbstractMorph morph = this.pane.getSelected();
+        String selected = morph != null ? morph.getDisplayName() : I18n.format("metamorph.gui.no_morph");
 
         this.fontRenderer.drawStringWithShadow(selected, 10, 12, 0xffffffff);
 
         if (morph != null)
         {
-            this.fontRenderer.drawStringWithShadow(morph.current().morph.name, 10, 22, 0x888888);
+            this.fontRenderer.drawStringWithShadow(morph.name, 10, 22, 0x888888);
         }
+
+        super.drawScreen(mouseX, mouseY, partialTicks);
     }
 }

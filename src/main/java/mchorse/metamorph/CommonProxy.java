@@ -3,6 +3,7 @@ package mchorse.metamorph;
 import mchorse.metamorph.api.MorphHandler;
 import mchorse.metamorph.api.MorphManager;
 import mchorse.metamorph.api.MorphUtils;
+import mchorse.metamorph.api.RegisterHandler;
 import mchorse.metamorph.capabilities.CapabilityHandler;
 import mchorse.metamorph.capabilities.morphing.IMorphing;
 import mchorse.metamorph.capabilities.morphing.Morphing;
@@ -10,9 +11,7 @@ import mchorse.metamorph.capabilities.morphing.MorphingStorage;
 import mchorse.metamorph.entity.EntityMorph;
 import mchorse.metamorph.entity.SoundHandler;
 import mchorse.metamorph.network.Dispatcher;
-import mchorse.vanilla_pack.MobMorphFactory;
-import mchorse.vanilla_pack.PlayerMorphFactory;
-import mchorse.vanilla_pack.RegisterHandler;
+import mchorse.vanilla_pack.MetamorphFactory;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.common.capabilities.CapabilityManager;
@@ -46,9 +45,8 @@ public class CommonProxy
         /* Network messages */
         Dispatcher.register();
 
-        /* Attaching morph factories to the morph manager */
-        MorphManager.INSTANCE.factories.add(new MobMorphFactory());
-        MorphManager.INSTANCE.factories.add(new PlayerMorphFactory());
+        /* Attaching morph factory to the morph manager */
+        MorphManager.INSTANCE.factories.add(new MetamorphFactory());
 
         /* Configuration */
         File morphs = new File(event.getModConfigurationDirectory(), "metamorph/morphs.json");
@@ -77,10 +75,9 @@ public class CommonProxy
         MinecraftForge.EVENT_BUS.register(new RegisterHandler());
 
         /* Morphing manager and capabilities */
-        CapabilityManager.INSTANCE.register(IMorphing.class, new MorphingStorage(), Morphing.class);
+        CapabilityManager.INSTANCE.register(IMorphing.class, new MorphingStorage(), Morphing::new);
 
         /* Register morph factories */
-        RegisterHandler.registerAbilities(MorphManager.INSTANCE);
         MorphManager.INSTANCE.register();
 
         /* User configuration */

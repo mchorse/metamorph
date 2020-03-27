@@ -1,4 +1,4 @@
-package mchorse.vanilla_pack;
+package mchorse.metamorph.api;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -63,51 +63,6 @@ public class RegisterHandler
      * GSON instance that is responsible for deserializing morph settings
      */
     private final static Gson GSON = new GsonBuilder().registerTypeAdapter(MorphSettings.class, new MorphSettingsAdapter()).create();
-
-    /**
-     * Register Metamorph's supplied abilities, actions and attacks. 
-     */
-    public static void registerAbilities(MorphManager manager)
-    {
-        /* Define shortcuts */
-        Map<String, IAbility> abilities = manager.abilities;
-        Map<String, IAttackAbility> attacks = manager.attacks;
-        Map<String, IAction> actions = manager.actions;
-
-        /* Register default abilities */
-        abilities.put("climb", new Climb());
-        abilities.put("fire_proof", new FireProof());
-        abilities.put("fly", new Fly());
-        abilities.put("glide", new Glide());
-        abilities.put("hungerless", new Hungerless());
-        abilities.put("jumping", new Jumping());
-        abilities.put("night_vision", new NightVision());
-        abilities.put("prevent_fall", new PreventFall());
-        abilities.put("snow_walk", new SnowWalk());
-        abilities.put("sun_allergy", new SunAllergy());
-        abilities.put("swim", new Swim());
-        abilities.put("water_allergy", new WaterAllergy());
-        abilities.put("water_breath", new WaterBreath());
-
-        /* Register default actions */
-        actions.put("endermite", new Endermite());
-        actions.put("explode", new Explode());
-        actions.put("fireball", new Fireball());
-        actions.put("fire_breath", new FireBreath());
-        actions.put("jump", new Jump());
-        actions.put("potions", new Potions());
-        actions.put("shulker_bullet", new ShulkerBullet());
-        actions.put("silverfish", new Sliverfish());
-        actions.put("small_fireball", new SmallFireball());
-        actions.put("snowball", new Snowball());
-        actions.put("spit", new Spit());
-        actions.put("teleport", new Teleport());
-
-        /* Register default attacks */
-        attacks.put("poison", new PoisonAttack());
-        attacks.put("wither", new WitherAttack());
-        attacks.put("knockback", new KnockbackAttack());
-    }
 
     /**
      * Register morph settings from default morphs configuration that 

@@ -4,15 +4,13 @@ import mchorse.metamorph.api.abilities.IAbility;
 import mchorse.metamorph.api.abilities.IAction;
 import mchorse.metamorph.api.abilities.IAttackAbility;
 import mchorse.metamorph.api.creative.MorphList;
+import mchorse.metamorph.api.creative.UserSection;
 import mchorse.metamorph.api.morphs.AbstractMorph;
 import mchorse.metamorph.client.gui.editor.GuiAbstractMorph;
+import net.minecraft.client.Minecraft;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityList;
 import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.util.ResourceLocation;
-import net.minecraft.world.World;
-import net.minecraftforge.fml.common.registry.EntityEntry;
-import net.minecraftforge.fml.common.registry.ForgeRegistries;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
@@ -34,11 +32,6 @@ public class MorphManager
      * Default <s>football</s> morph manager
      */
     public static final MorphManager INSTANCE = new MorphManager();
-
-    /**
-     * Because FUCK 1.11!
-     */
-    public static final Map<String, ResourceLocation> NAME_TO_RL = new HashMap<String, ResourceLocation>();
 
     /**
      * Registered abilities 
@@ -72,15 +65,9 @@ public class MorphManager
     public Set<String> activeBlacklist = new TreeSet<String>();
 
     /**
-     * Initiate a map of string entity name to its registry name  
+     * Global morph list
      */
-    public static void initiateMap()
-    {
-        for (EntityEntry entity : ForgeRegistries.ENTITIES.getValues())
-        {
-            NAME_TO_RL.put(entity.getName(), entity.getRegistryName());
-        }
-    }
+    public final MorphList list = new MorphList();
 
     /**
      * Check whether morph by the given name is blacklisted 
@@ -137,6 +124,8 @@ public class MorphManager
      */
     public void register()
     {
+        this.list.register(new UserSection("User morphs"));
+
         for (int i = this.factories.size() - 1; i >= 0; i--)
         {
             this.factories.get(i).register(this);
@@ -147,11 +136,11 @@ public class MorphManager
      * Register morph editors 
      */
     @SideOnly(Side.CLIENT)
-    public void registerMorphEditors(List<GuiAbstractMorph> editors)
+    public void registerMorphEditors(Minecraft mc, List<GuiAbstractMorph> editors)
     {
         for (int i = this.factories.size() - 1; i >= 0; i--)
         {
-            this.factories.get(i).registerMorphEditors(editors);
+            this.factories.get(i).registerMorphEditors(mc, editors);
         }
     }
 
@@ -226,30 +215,6 @@ public class MorphManager
         {
             morph.settings = this.activeSettings.get(morph.name);
         }
-    }
-
-    /**
-     * Get all morphs that factories provide. Take in account that this code 
-     * don't apply morph settings.
-     */
-    public MorphList getMorphs(World world)
-    {
-        MorphList morphs = new MorphList();
-
-        for (int i = this.factories.size() - 1; i >= 0; i--)
-        {
-            this.factories.get(i).getMorphs(morphs, world);
-        }
-
-        for (List<MorphList.MorphCell> cells : morphs.morphs.values())
-        {
-            for (MorphList.MorphCell cell : cells)
-            {
-                this.applySettings(cell.morph);
-            }
-        }
-
-        return morphs;
     }
 
     /**

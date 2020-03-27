@@ -88,13 +88,13 @@ public class Morphing implements IMorphing
      */
     private boolean hasOverlay = false;
 
-
     public static IMorphing get(EntityPlayer player)
     {
         if (player == null)
         {
             return null;
         }
+
         return player.getCapability(MorphingProvider.MORPHING_CAP, null);
     }
 

@@ -1,14 +1,13 @@
 package mchorse.metamorph.api;
 
-import java.util.List;
-
-import mchorse.metamorph.api.creative.MorphList;
 import mchorse.metamorph.api.morphs.AbstractMorph;
 import mchorse.metamorph.client.gui.editor.GuiAbstractMorph;
+import net.minecraft.client.Minecraft;
 import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.world.World;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
+
+import java.util.List;
 
 /**
  * Morph factory
@@ -30,12 +29,7 @@ public interface IMorphFactory
      * morphs for editing 
      */
     @SideOnly(Side.CLIENT)
-    public void registerMorphEditors(List<GuiAbstractMorph> editors);
-
-    /**
-     * Get all available morphs for this morphing factory
-     */
-    public void getMorphs(MorphList morphs, World world);
+    public void registerMorphEditors(Minecraft mc, List<GuiAbstractMorph> editors);
 
     /**
      * Does this factory has morph by given name? 

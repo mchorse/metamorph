@@ -33,7 +33,7 @@ public class PlayerMorph extends EntityMorph
 
     public PlayerMorph()
     {
-        this.name = "Player";
+        this.name = "player";
     }
 
     @Override

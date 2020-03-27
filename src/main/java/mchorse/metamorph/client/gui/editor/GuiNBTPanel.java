@@ -22,7 +22,7 @@ public class GuiNBTPanel extends GuiMorphPanel<AbstractMorph, GuiAbstractMorph>
         super(mc, editor);
 
         this.data = new GuiTextElement(mc, 1000000, (str) -> this.editNBT(str));
-        this.data.resizer().parent(this.area).set(10, 0, 0, 20).w(1, -20).y(1, -30);
+        this.data.flex().parent(this.area).set(10, 0, 0, 20).w(1, -20).y(1, -30);
 
         this.add(this.data);
     }

@@ -563,7 +563,7 @@ public class GuiSurvivalMorphs extends Gui
         }
 
         /* Disable scissoring */
-        GuiDraw.unscissor();
+        GuiDraw.unscissor(width, height);
 
         /* Draw the title */
         int labelY = this.inGUI ? height - 24 : height / 2 + h / 2 + 4;

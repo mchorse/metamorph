@@ -1,145 +1,47 @@
 package mchorse.metamorph.api.creative;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import net.minecraft.world.World;
 
-import mchorse.metamorph.api.MorphManager;
-import mchorse.metamorph.api.morphs.AbstractMorph;
-import mchorse.metamorph.client.gui.GuiCreativeMenu;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Morph list
- * 
- * This class is used in {@link GuiCreativeMenu} for displaying morphs in GUIs. 
- * It's generated in {@link MorphManager}.
  */
 public class MorphList
 {
     /**
-     * This field is going to be responsible storing morphs. Feel free to use 
-     * this field directly, but don't abuse this privilege.  
+     * Morph sections
      */
-    public Map<String, List<MorphCell>> morphs = new HashMap<String, List<MorphCell>>();
+    public List<MorphSection> sections = new ArrayList<MorphSection>();
 
     /**
-     * Checks if this list has a morph by given name 
+     * Add a morph section to this list
      */
-    public boolean hasMorph(String name)
+    public void register(MorphSection section)
     {
-        return this.morphs.containsKey(name);
+        this.sections.add(section);
     }
 
     /**
-     * Add a morph to this list with name   
+     * This method gets called when a new morph picker appears
      */
-    public void addMorph(String name, AbstractMorph morph)
+    public void update(World world)
     {
-        this.addMorph(name, "", "", morph);
-    }
-
-    /**
-     * Add a morph to this list with name and category
-     */
-    public void addMorph(String name, String category, AbstractMorph morph)
-    {
-        this.addMorph(name, category, "", morph);
-    }
-
-    /**
-     * Add a morph to this list with name, category and variant name
-     */
-    public void addMorph(String name, String category, String variant, AbstractMorph morph)
-    {
-        this.addMorph(name, category, "", variant, morph);
-    }
-
-    /**
-     * Add a morph to this list with name, category, category variant and variant name
-     * 
-     * This method is responsible for adding a morph variant
-     */
-    public void addMorph(String name, String category, String categoryVariant, String variant, AbstractMorph morph)
-    {
-        if (MorphManager.isBlacklisted(name) || this.hasMorph(name))
+        for (MorphSection section : this.sections)
         {
-            return;
-        }
-
-        List<MorphCell> list = new ArrayList<MorphCell>();
-
-        list.add(new MorphCell(morph, category, categoryVariant, variant));
-        this.morphs.put(name, list);
-    }
-
-    /**
-     * Add a morph variant to this morph list
-     */
-    public void addMorphVariant(String name, String category, String variant, AbstractMorph morph)
-    {
-        this.addMorphVariant(name, category, "", variant, morph);
-    }
-
-    /**
-     * Add a morph variant to this morph list.
-     * 
-     * This is like {@link #addMorph(String, AbstractMorph)}, but it appends 
-     * another morph. Basically, it adds a morph variant.
-     */
-    public void addMorphVariant(String name, String category, String categoryVariant, String variant, AbstractMorph morph)
-    {
-        if (MorphManager.isBlacklisted(name))
-        {
-            return;
-        }
-
-        if (this.hasMorph(name))
-        {
-            this.morphs.get(name).add(new MorphCell(morph, category, categoryVariant, variant));
-        }
-        else
-        {
-            this.addMorph(name, category, categoryVariant, variant, morph);
+            section.update(world);
         }
     }
 
     /**
-     * Remove a morph variant from the morph list 
+     * This method gets called when player exits to the main menu
      */
-    public void removeVariant(String name, int index)
+    public void reset()
     {
-        if (this.hasMorph(name))
+        for (MorphSection section : this.sections)
         {
-            List<MorphCell> list = this.morphs.get(name);
-
-            /* Safe removing technique, avoiding exception basically */
-            if (!list.isEmpty() && index >= 0 && index < list.size())
-            {
-                list.remove(index);
-            }
-        }
-    }
-
-    /**
-     * Morph cell
-     * 
-     * This class is responsible for containing additional information about 
-     * morphs such as its category and variant.
-     */
-    public static class MorphCell
-    {
-        public AbstractMorph morph;
-        public String category;
-        public String categoryVariant;
-        public String variant;
-
-        public MorphCell(AbstractMorph morph, String category, String categoryVariant, String variant)
-        {
-            this.morph = morph;
-            this.category = category;
-            this.categoryVariant = categoryVariant;
-            this.variant = variant;
+            section.reset();
         }
     }
 }
