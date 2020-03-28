@@ -254,6 +254,12 @@ public class GuiMorphSection extends GuiElement
 			Gui.drawRect(x, y, x + w, y + h, 0xaa000000 + McLib.primaryColor.get());
 		}
 
+		int spot = (int) (w * 0.4F);
+		int spotX = x + w / 2;
+		int spotY = y + h / 2;
+
+		GuiDraw.drawDropCircleShadow(spotX, spotY, spot, (int) (spot * 0.65F), 10, 0x44000000, 0x00);
+
 		morph.renderOnScreen(this.mc.player, x + w / 2, y + (int) (h * 0.7F), w * 0.4F, 1);
 
 		if (this.morph == morph)

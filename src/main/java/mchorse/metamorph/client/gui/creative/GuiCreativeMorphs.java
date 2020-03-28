@@ -156,10 +156,7 @@ public class GuiCreativeMorphs extends GuiElement
         }
         else
         {
-            if (this.isAcquiredSelected())
-            {
-                Dispatcher.sendToServer(new PacketSyncAcquiredMorph(morph, this.user.acquired.morphs.indexOf(morph)));
-            }
+            this.syncSelected();
 
             AbstractMorph edited = this.editor.delegate.morph;
 
@@ -181,16 +178,27 @@ public class GuiCreativeMorphs extends GuiElement
         this.morphs.setVisible(hide);
     }
 
-    public boolean isAcquiredSelected()
-    {
-        return this.selected != null && this.selected.category == this.user.acquired;
-    }
-
     public void finish()
     {
         if (this.isEditMode())
         {
             this.editor.delegate.finishEdit();
+            this.syncSelected();
+        }
+    }
+
+    public boolean isAcquiredSelected()
+    {
+        return this.selected != null && this.selected.category == this.user.acquired;
+    }
+
+    public void syncSelected()
+    {
+        AbstractMorph morph = this.getSelected();
+
+        if (this.isAcquiredSelected() && morph != null)
+        {
+            Dispatcher.sendToServer(new PacketSyncAcquiredMorph(morph, this.user.acquired.morphs.indexOf(morph)));
         }
     }
 
