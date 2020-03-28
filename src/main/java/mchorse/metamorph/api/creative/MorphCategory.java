@@ -19,6 +19,11 @@ public class MorphCategory
 		this.title = title;
 	}
 
+	public boolean isHidden()
+	{
+		return this.morphs.isEmpty();
+	}
+
 	public void addMorph(AbstractMorph morph)
 	{
 		if (MorphManager.isBlacklisted(morph.name))

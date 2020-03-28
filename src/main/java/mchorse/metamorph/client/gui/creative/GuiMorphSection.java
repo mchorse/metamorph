@@ -15,6 +15,9 @@ import java.util.function.Consumer;
 
 public class GuiMorphSection extends GuiElement
 {
+	public static final int HEADER_HEIGHT = 20;
+	public static final int CATEGORY_HEIGHT = 16;
+
 	public MorphSection section;
 	public Consumer<GuiMorphSection> callback;
 
@@ -47,19 +50,24 @@ public class GuiMorphSection extends GuiElement
 		this.category = null;
 	}
 
+	public int getPerRow()
+	{
+		return Math.max(this.area.w / this.cellWidth, 1);
+	}
+
 	public int calculateHeight()
 	{
-		int row = this.area.w / this.cellWidth;
-		int h = 20;
+		int row = this.getPerRow();
+		int h = HEADER_HEIGHT;
 
 		for (MorphCategory category : this.section.categories)
 		{
-			if (category.morphs.isEmpty())
+			if (category.isHidden())
 			{
 				continue;
 			}
 
-			h += 16;
+			h += CATEGORY_HEIGHT;
 			h += (category.morphs.size() / row + 1) * this.cellHeight;
 		}
 
@@ -68,17 +76,17 @@ public class GuiMorphSection extends GuiElement
 
 	public int calculateY(AbstractMorph morph)
 	{
-		int row = this.area.w / this.cellWidth;
-		int h = 20;
+		int row = this.getPerRow();
+		int h = HEADER_HEIGHT;
 
 		for (MorphCategory category : this.section.categories)
 		{
-			if (category.morphs.isEmpty())
+			if (category.isHidden())
 			{
 				continue;
 			}
 
-			h += 16;
+			h += CATEGORY_HEIGHT;
 
 			for (int i = 0; i < category.morphs.size(); i ++)
 			{
@@ -106,7 +114,7 @@ public class GuiMorphSection extends GuiElement
 
 		if (this.area.isInside(context.mouseX, context.mouseY))
 		{
-			if (context.mouseY - this.area.y < 20)
+			if (context.mouseY - this.area.y < HEADER_HEIGHT)
 			{
 				this.toggled = !this.toggled;
 
@@ -114,42 +122,25 @@ public class GuiMorphSection extends GuiElement
 			}
 
 			int x = context.mouseX - this.area.x;
-			int y = context.mouseY - this.area.y - 20;
-			int row = this.area.w / this.cellWidth;
-
-			if (row == 0)
-			{
-				row = 1;
-			}
+			int y = context.mouseY - this.area.y - HEADER_HEIGHT;
+			int row = this.getPerRow();
 
 			for (MorphCategory category : this.section.categories)
 			{
-				if (category.morphs.isEmpty())
+				if (category.isHidden())
 				{
 					continue;
 				}
 
-				y -= 16;
+				y -= CATEGORY_HEIGHT;
 
 				int ix = (int) (x / (this.area.w / (float) row));
 				int iy = y / this.cellHeight;
-
-				if (y < 0)
-				{
-					iy = -1;
-				}
-
-				int i = ix + iy * row;
+				int i = ix + (y < 0 ? -1 : iy) * row;
 
 				if (i >= 0 && i < category.morphs.size())
 				{
-					this.morph = category.morphs.get(i);
-					this.category = category;
-
-					if (this.callback != null)
-					{
-						this.callback.accept(this);
-					}
+					this.set(category.morphs.get(i), category);
 
 					return true;
 				}
@@ -157,21 +148,27 @@ public class GuiMorphSection extends GuiElement
 				y -= (category.morphs.size() / row + 1) * this.cellHeight;
 			}
 
-			this.morph = null;
-
-			if (this.callback != null)
-			{
-				this.callback.accept(this);
-			}
+			this.set(null, null);
 		}
 
 		return false;
 	}
 
+	private void set(AbstractMorph morph, MorphCategory category)
+	{
+		this.morph = morph;
+		this.category = category;
+
+		if (this.callback != null)
+		{
+			this.callback.accept(this);
+		}
+	}
+
 	@Override
 	public void draw(GuiContext context)
 	{
-		Gui.drawRect(this.area.x, this.area.y, this.area.ex(), this.area.y + 20, 0x88000000);
+		Gui.drawRect(this.area.x, this.area.y, this.area.ex(), this.area.y + HEADER_HEIGHT, 0x88000000);
 
 		this.font.drawStringWithShadow(this.section.title, this.area.x + 7, this.area.y + 10 - this.font.FONT_HEIGHT / 2, 0xffffff);
 		(this.toggled ? Icons.MOVE_UP : Icons.MOVE_DOWN).render(this.area.ex() - 18 - 3, this.area.y + 10 + (this.toggled ? -1 : 1), 0, 0.5F);
@@ -192,28 +189,23 @@ public class GuiMorphSection extends GuiElement
 	 */
 	protected int drawMorphs(GuiContext context)
 	{
-		int y = 20;
+		int y = HEADER_HEIGHT;
 
 		if (this.toggled)
 		{
-			int row = this.area.w / this.cellWidth;
-
-			if (row == 0)
-			{
-				row = 1;
-			}
+			int row = this.getPerRow();
 
 			for (MorphCategory category : this.section.categories)
 			{
-				if (category.morphs.isEmpty())
+				if (category.isHidden())
 				{
 					continue;
 				}
 
-				float x = 0;
-
 				this.font.drawStringWithShadow(category.title, this.area.x + 7, this.area.y + y + 8 - this.font.FONT_HEIGHT / 2, 0xcccccc);
-				y += 16;
+
+				float x = 0;
+				y += CATEGORY_HEIGHT;
 
 				for (int i = 0; i < category.morphs.size(); i ++)
 				{
@@ -227,9 +219,7 @@ public class GuiMorphSection extends GuiElement
 
 					int mx = this.area.x + Math.round(x);
 					int my = this.area.y + y;
-
 					x += this.area.w / (float) row;
-
 					int w = Math.round(x - (mx - this.area.x));
 
 					GuiDraw.scissor(mx, my, w, this.cellHeight, context);

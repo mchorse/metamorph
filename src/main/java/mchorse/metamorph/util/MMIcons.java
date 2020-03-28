@@ -3,6 +3,9 @@ package mchorse.metamorph.util;
 import mchorse.mclib.client.gui.utils.Icon;
 import net.minecraft.util.ResourceLocation;
 
+/**
+ * Metamorph icons
+ */
 public class MMIcons
 {
 	public static final ResourceLocation PANEL_ICONS = new ResourceLocation("metamorph:textures/gui/icons.png");

@@ -2,12 +2,15 @@ package mchorse.metamorph.api.creative;
 
 import mchorse.metamorph.capabilities.morphing.IMorphing;
 import mchorse.metamorph.capabilities.morphing.Morphing;
+import mchorse.metamorph.client.gui.creative.GuiMorphSection;
+import mchorse.metamorph.client.gui.creative.GuiUserSection;
 import net.minecraft.client.Minecraft;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
 import java.util.Collections;
+import java.util.function.Consumer;
 
 /**
  * User morph section
@@ -50,5 +53,12 @@ public class UserSection extends MorphSection
 		this.categories.clear();
 		this.acquired.clear();
 		this.recent.clear();
+	}
+
+	@Override
+	@SideOnly(Side.CLIENT)
+	public GuiMorphSection getGUI(Minecraft mc, Consumer<GuiMorphSection> callback)
+	{
+		return new GuiUserSection(mc, this, callback);
 	}
 }
