@@ -10,6 +10,8 @@ import net.minecraft.client.gui.Gui;
 import net.minecraft.client.resources.I18n;
 import org.lwjgl.opengl.GL11;
 
+import java.util.function.Consumer;
+
 /**
  * Creative morph menu, but with a close button 
  */
@@ -18,9 +20,9 @@ public class GuiCreativeMorphsMenu extends GuiCreativeMorphs
     private GuiButtonElement close;
     private GuiButtonElement acquire;
 
-    public GuiCreativeMorphsMenu(Minecraft mc)
+    public GuiCreativeMorphsMenu(Minecraft mc, Consumer<AbstractMorph> callback)
     {
-        super(mc);
+        super(mc, callback);
 
         this.acquire = new GuiButtonElement(mc, I18n.format("metamorph.gui.acquire"), (b) ->
         {

@@ -8,6 +8,7 @@ import mchorse.mclib.client.gui.framework.elements.IGuiElement;
 import mchorse.mclib.client.gui.framework.elements.buttons.GuiButtonElement;
 import mchorse.mclib.client.gui.framework.elements.input.GuiTextElement;
 import mchorse.mclib.client.gui.framework.elements.utils.GuiContext;
+import mchorse.mclib.client.gui.utils.Area;
 import mchorse.metamorph.api.MorphManager;
 import mchorse.metamorph.api.creative.MorphCategory;
 import mchorse.metamorph.api.creative.MorphList;
@@ -19,6 +20,7 @@ import mchorse.metamorph.client.gui.editor.GuiAbstractMorph;
 import mchorse.metamorph.network.Dispatcher;
 import mchorse.metamorph.network.common.PacketSyncAcquiredMorph;
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.gui.Gui;
 import net.minecraft.client.resources.I18n;
 import net.minecraftforge.common.MinecraftForge;
 
@@ -70,7 +72,7 @@ public class GuiCreativeMorphs extends GuiElement
      * 
      * Compile the categories list and compute the scroll height of this scroll pane 
      */
-    public GuiCreativeMorphs(Minecraft mc)
+    public GuiCreativeMorphs(Minecraft mc, Consumer<AbstractMorph> callback)
     {
         super(mc);
 
@@ -79,6 +81,7 @@ public class GuiCreativeMorphs extends GuiElement
         list.update(mc.world);
         MinecraftForge.EVENT_BUS.post(new ReloadMorphs());
 
+        this.callback = callback;
         this.editor = new GuiDelegateElement<GuiAbstractMorph>(mc, null);
         this.editor.flex().parent(this.area).wh(1F, 1F);
 
@@ -399,6 +402,27 @@ public class GuiCreativeMorphs extends GuiElement
         {
             this.scrollTo();
             this.scrollTo = false;
+        }
+
+        /* Draw the name of the morph */
+        if (!this.isEditMode())
+        {
+            AbstractMorph morph = this.getSelected();
+            String selected = morph != null ? morph.getDisplayName() : I18n.format("metamorph.gui.no_morph");
+            Area area = this.search.area;
+            int w = Math.max(this.font.getStringWidth(selected), morph != null ? this.font.getStringWidth(morph.name) : 0);
+
+            if (morph != null)
+            {
+                Gui.drawRect(area.x, area.y - 26, area.x + w + 8, area.y, 0x88000000);
+                this.font.drawStringWithShadow(selected, area.x + 4, area.y - 22, 0xffffffff);
+                this.font.drawStringWithShadow(morph.name, area.x + 4, area.y - 11, 0x888888);
+            }
+            else
+            {
+                Gui.drawRect(area.x, area.y - 16, area.x + w + 8, area.y, 0x88000000);
+                this.font.drawStringWithShadow(selected, area.x + 4, area.y - 11, 0xffffffff);
+            }
         }
 
         if (!this.isEditMode() && !this.search.field.isFocused() && this.search.field.getText().isEmpty())

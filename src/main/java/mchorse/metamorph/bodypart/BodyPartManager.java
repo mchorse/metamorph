@@ -61,11 +61,11 @@ public class BodyPartManager
     /**
      * Update body limbs 
      */
-    public void updateBodyLimbs(EntityLivingBase target, IMorphing cap)
+    public void updateBodyLimbs(EntityLivingBase target)
     {
         for (BodyPart part : this.parts)
         {
-            part.update(target, cap);
+            part.update(target);
         }
     }
 

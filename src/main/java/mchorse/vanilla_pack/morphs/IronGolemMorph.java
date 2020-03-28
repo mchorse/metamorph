@@ -15,7 +15,7 @@ import net.minecraft.entity.EntityLivingBase;
 public class IronGolemMorph extends EntityMorph
 {
     @Override
-    public void update(EntityLivingBase target, IMorphing cap)
+    public void update(EntityLivingBase target)
     {
         if (target.motionY > 0)
         {
@@ -32,7 +32,7 @@ public class IronGolemMorph extends EntityMorph
         target.motionX *= 0.5;
         target.motionZ *= 0.5;
 
-        super.update(target, cap);
+        super.update(target);
     }
 
     @Override

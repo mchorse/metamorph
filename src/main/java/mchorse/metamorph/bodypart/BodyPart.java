@@ -97,7 +97,7 @@ public class BodyPart
         GL11.glPopMatrix();
     }
 
-    public void update(EntityLivingBase entity, IMorphing cap)
+    public void update(EntityLivingBase entity)
     {
         entity = this.useTarget ? entity : this.entity;
 
@@ -121,7 +121,7 @@ public class BodyPart
                 entity.prevRotationYawHead = entity.prevRotationYawHead - entity.prevRenderYawOffset;
                 entity.renderYawOffset = entity.prevRenderYawOffset = 0;
 
-                morph.update(entity, cap);
+                morph.update(entity);
 
                 entity.renderYawOffset = rotationYaw;
                 entity.prevRenderYawOffset = prevRotationYaw;

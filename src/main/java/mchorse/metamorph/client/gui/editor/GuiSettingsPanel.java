@@ -49,11 +49,11 @@ public class GuiSettingsPanel extends GuiMorphPanel<AbstractMorph, GuiAbstractMo
 				}
 			}
 		});
-		this.abilities.multi().setBackground();
+		this.abilities.multi().background();
 		this.attack = new GuiStringListElement(mc, (values) -> this.morph.settings.attack = MorphManager.INSTANCE.attacks.get(values.get(0)));
-		this.attack.setBackground();
+		this.attack.background();
 		this.action = new GuiStringListElement(mc, (values) -> this.morph.settings.action = MorphManager.INSTANCE.actions.get(values.get(0)));
-		this.action.setBackground();
+		this.action.background();
 		this.health = new GuiTrackpadElement(mc, (value) -> this.morph.settings.health = value.intValue()).limit(0, Float.POSITIVE_INFINITY, true);
 		this.speed = new GuiTrackpadElement(mc, (value) -> this.morph.settings.speed = value).limit(0, Float.POSITIVE_INFINITY);
 

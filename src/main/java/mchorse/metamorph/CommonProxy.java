@@ -8,6 +8,9 @@ import mchorse.metamorph.capabilities.CapabilityHandler;
 import mchorse.metamorph.capabilities.morphing.IMorphing;
 import mchorse.metamorph.capabilities.morphing.Morphing;
 import mchorse.metamorph.capabilities.morphing.MorphingStorage;
+import mchorse.metamorph.capabilities.render.IModelRenderer;
+import mchorse.metamorph.capabilities.render.ModelRenderer;
+import mchorse.metamorph.capabilities.render.ModelRendererStorage;
 import mchorse.metamorph.entity.EntityMorph;
 import mchorse.metamorph.entity.SoundHandler;
 import mchorse.metamorph.network.Dispatcher;
@@ -31,19 +34,24 @@ import java.io.File;
 public class CommonProxy
 {
     /**
-     * Location of a user morph settings
+     * Location of a user's morph settings
      */
     public File morphs;
 
     /**
-     * Location of a user morph blacklist 
+     * Location of a user's morph blacklist
      */
     public File blacklist;
 
     /**
-     * Location of a user morph ID remapper
+     * Location of a user's morph ID remapper
      */
     public File remap;
+
+    /**
+     * Location of a user's entity selectors
+     */
+    public File selectors;
 
     public void preLoad(FMLPreInitializationEvent event)
     {
@@ -57,6 +65,7 @@ public class CommonProxy
         this.morphs = new File(event.getModConfigurationDirectory(), "metamorph/morphs.json");
         this.blacklist = new File(event.getModConfigurationDirectory(), "metamorph/blacklist.json");
         this.remap = new File(event.getModConfigurationDirectory(), "metamorph/remap.json");
+        this.selectors = new File(event.getModConfigurationDirectory(), "metamorph/selectors.json");
 
         /* Entities */
         EntityRegistry.registerModEntity(new ResourceLocation("metamorph:morph"), EntityMorph.class, "Morph", 0, Metamorph.instance, 64, 3, false);
@@ -79,6 +88,7 @@ public class CommonProxy
 
         /* Morphing manager and capabilities */
         CapabilityManager.INSTANCE.register(IMorphing.class, new MorphingStorage(), Morphing::new);
+        CapabilityManager.INSTANCE.register(IModelRenderer.class, new ModelRendererStorage(), ModelRenderer::new);
 
         /* Register morph factories */
         MorphManager.INSTANCE.register();
@@ -97,6 +107,11 @@ public class CommonProxy
         if (!this.remap.exists())
         {
             MorphUtils.generateFile(this.remap, "{}");
+        }
+
+        if (!this.selectors.exists())
+        {
+            MorphUtils.generateFile(this.selectors, "[]");
         }
     }
 

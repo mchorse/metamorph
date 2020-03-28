@@ -97,18 +97,17 @@ public class GuiBodyPartEditor extends GuiMorphPanel<AbstractMorph, GuiAbstractM
         this.limbs = new GuiStringListElement(mc, (str) -> this.pickLimb(str.get(0)));
 
         this.bodyParts = new GuiBodyPartListElement(mc, (part) -> this.setPart(part.isEmpty() ? null : part.get(0)));
-        this.bodyParts.setBackground();
+        this.bodyParts.background();
 
         this.pickMorph = new GuiButtonElement(mc, I18n.format("metamorph.gui.pick"), (b) ->
         {
             if (this.morphPicker == null)
             {
-                this.morphPicker = new GuiCreativeMorphsMenu(mc);
-                this.morphPicker.flex().parent(this.area).set(0, 0, 0, 0).w(1, 0).h(1, 0);
-                this.morphPicker.callback = (morph) ->
+                this.morphPicker = new GuiCreativeMorphsMenu(mc,  (morph) ->
                 {
                     if (this.part != null) this.part.morph.setDirect(morph);
-                };
+                });
+                this.morphPicker.flex().parent(this.area).set(0, 0, 0, 0).w(1, 0).h(1, 0);
 
                 this.morphPicker.resize();
                 this.add(this.morphPicker);
@@ -178,7 +177,7 @@ public class GuiBodyPartEditor extends GuiMorphPanel<AbstractMorph, GuiAbstractM
 
         this.useTarget = new GuiToggleElement(mc, I18n.format("metamorph.gui.use_target"), false, (b) ->
         {
-            if (this.part != null) this.part.useTarget = b.state;
+            if (this.part != null) this.part.useTarget = b.isToggled();
         });
 
         this.limbs.flex().parent(this.area).set(0, 80, 105, 90).x(1, -115).h(1, -106);
@@ -298,7 +297,7 @@ public class GuiBodyPartEditor extends GuiMorphPanel<AbstractMorph, GuiAbstractM
             this.ry.setValue(part.rotate.y);
             this.rz.setValue(part.rotate.z);
 
-            this.useTarget.state = part.useTarget;
+            this.useTarget.toggled(part.useTarget);
 
             for (int i = 0; i < this.slots.length; i++)
             {
@@ -338,16 +337,9 @@ public class GuiBodyPartEditor extends GuiMorphPanel<AbstractMorph, GuiAbstractM
         }
 
         @Override
-        public void drawElement(BodyPart bodyPart, int i, int x, int y, boolean hover, boolean selected)
+        protected String elementToString(BodyPart element, int i, int x, int y, boolean hover, boolean selected)
         {
-            if (selected)
-            {
-                Gui.drawRect(x, y, x + this.scroll.w, y + this.scroll.scrollItemSize, 0x880088ff);
-            }
-
-            String label = i + (!bodyPart.limb.isEmpty() ? " - " + bodyPart.limb : "");
-
-            this.font.drawStringWithShadow(label, x + 4, y + 4, hover ? 16777120 : 0xffffff);
+            return i + (!element.limb.isEmpty() ? " - " + element.limb : "");
         }
     }
 }

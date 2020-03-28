@@ -106,9 +106,9 @@ public class BlockMorph extends AbstractMorph
      * it has the block position.
      */
     @Override
-    public void update(EntityLivingBase target, IMorphing cap)
+    public void update(EntityLivingBase target)
     {
-        super.update(target, cap);
+        super.update(target);
 
         if (this.blockPos != null)
         {

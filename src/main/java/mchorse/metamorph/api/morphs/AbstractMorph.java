@@ -129,7 +129,7 @@ public abstract class AbstractMorph
      * Update the player based on its morph abilities and properties. This 
      * method also responsible for updating AABB size. 
      */
-    public void update(EntityLivingBase target, IMorphing cap)
+    public void update(EntityLivingBase target)
     {
         if (this.settings.speed != 0.1F)
         {
@@ -379,6 +379,15 @@ public abstract class AbstractMorph
     {}
 
     /* Reading / writing to NBT */
+
+    public final NBTTagCompound toNBT()
+    {
+        NBTTagCompound tag = new NBTTagCompound();
+
+        this.toNBT(tag);
+
+        return tag;
+    }
 
     /**
      * Save abstract morph's properties to NBT compound 

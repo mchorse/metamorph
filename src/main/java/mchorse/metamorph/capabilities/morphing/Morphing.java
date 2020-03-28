@@ -470,7 +470,7 @@ public class Morphing implements IMorphing
                 this.setMaxHealth(player, morph.settings.health);
             }
 
-            morph.update(player, this);
+            morph.update(player);
         }
     }
 

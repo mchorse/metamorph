@@ -5,6 +5,7 @@ import mchorse.metamorph.api.MorphManager;
 import mchorse.metamorph.capabilities.morphing.IMorphing;
 import mchorse.metamorph.capabilities.morphing.Morphing;
 import mchorse.metamorph.capabilities.morphing.MorphingProvider;
+import mchorse.metamorph.capabilities.render.ModelProvider;
 import mchorse.metamorph.network.Dispatcher;
 import mchorse.metamorph.network.common.PacketAcquiredMorphs;
 import mchorse.metamorph.network.common.PacketBlacklist;
@@ -13,6 +14,7 @@ import mchorse.metamorph.network.common.PacketMorphPlayer;
 import mchorse.metamorph.network.common.PacketMorphState;
 import mchorse.metamorph.network.common.PacketSettings;
 import net.minecraft.entity.Entity;
+import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.util.ResourceLocation;
@@ -32,19 +34,23 @@ import net.minecraftforge.fml.common.gameevent.PlayerEvent.PlayerLoggedInEvent;
 public class CapabilityHandler
 {
     public static final ResourceLocation MORPHING_CAP = new ResourceLocation(Metamorph.MODID, "morphing_capability");
+    public static final ResourceLocation MODEL_CAP = new ResourceLocation(Metamorph.MODID, "model");
 
     /**
-     * Attach capabilities (well, only one, right now)
+     * Attach capabilities
      */
     @SubscribeEvent
     public void attachCapability(AttachCapabilitiesEvent<Entity> event)
     {
-        if (!(event.getObject() instanceof EntityPlayer))
+        if (event.getObject() instanceof EntityLivingBase)
         {
-            return;
+            event.addCapability(MODEL_CAP, new ModelProvider());
         }
 
-        event.addCapability(MORPHING_CAP, new MorphingProvider());
+        if (event.getObject() instanceof EntityPlayer)
+        {
+            event.addCapability(MORPHING_CAP, new MorphingProvider());
+        }
     }
 
     /**

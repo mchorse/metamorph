@@ -12,6 +12,7 @@ import mchorse.metamorph.api.EntityUtils;
 import mchorse.metamorph.api.MorphSettings;
 import mchorse.metamorph.api.models.IHandProvider;
 import mchorse.metamorph.capabilities.morphing.IMorphing;
+import mchorse.metamorph.capabilities.morphing.Morphing;
 import mchorse.metamorph.entity.SoundHandler;
 import mchorse.metamorph.util.InvokeUtil;
 import net.minecraft.block.Block;
@@ -360,7 +361,7 @@ public class EntityMorph extends AbstractMorph
     }
 
     @Override
-    public void update(EntityLivingBase target, IMorphing cap)
+    public void update(EntityLivingBase target)
     {
         if (entity == null)
         {
@@ -386,7 +387,7 @@ public class EntityMorph extends AbstractMorph
         /* Update player */
         this.updateSize(target, this.entity.width, this.entity.height);
 
-        super.update(target, cap);
+        super.update(target);
 
         /* Update entity's inventory */
         if (target.world.isRemote)
@@ -458,9 +459,14 @@ public class EntityMorph extends AbstractMorph
         /* Fighting with death of entities like zombies */
         this.entity.setHealth(target.getHealth());
 
-        if (cap != null)
+        if (target instanceof EntityPlayer)
         {
-            this.entity.setAir(cap.getHasSquidAir() ? cap.getSquidAir() : target.getAir());
+            IMorphing cap = Morphing.get((EntityPlayer) target);
+
+            if (cap != null)
+            {
+                this.entity.setAir(cap.getHasSquidAir() ? cap.getSquidAir() : target.getAir());
+            }
         }
 
         /* Now goes the code responsible for achieving somewhat riding 

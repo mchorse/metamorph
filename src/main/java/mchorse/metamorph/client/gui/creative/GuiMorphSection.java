@@ -68,7 +68,7 @@ public class GuiMorphSection extends GuiElement
 			}
 
 			h += CATEGORY_HEIGHT;
-			h += (category.morphs.size() / row + 1) * this.cellHeight;
+			h += (int) Math.ceil(category.morphs.size() / (float) row) * this.cellHeight;
 		}
 
 		return h;
@@ -98,7 +98,7 @@ public class GuiMorphSection extends GuiElement
 				}
 			}
 
-			h += (category.morphs.size() / row + 1) * this.cellHeight;
+			h += (int) Math.ceil(category.morphs.size() / (float) row) * this.cellHeight;
 		}
 
 		return -1;
@@ -112,7 +112,7 @@ public class GuiMorphSection extends GuiElement
 			return true;
 		}
 
-		if (this.area.isInside(context.mouseX, context.mouseY))
+		if (this.area.isInside(context.mouseX, context.mouseY) && context.mouseButton == 0)
 		{
 			if (context.mouseY - this.area.y < HEADER_HEIGHT)
 			{
@@ -145,7 +145,7 @@ public class GuiMorphSection extends GuiElement
 					return true;
 				}
 
-				y -= (category.morphs.size() / row + 1) * this.cellHeight;
+				y -= (int) Math.ceil(category.morphs.size() / (float) row) * this.cellHeight;
 			}
 
 			this.set(null, null);

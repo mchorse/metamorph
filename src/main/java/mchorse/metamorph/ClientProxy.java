@@ -1,8 +1,10 @@
 package mchorse.metamorph;
 
+import java.io.File;
 import java.lang.reflect.Field;
 import java.util.Map;
 
+import mchorse.metamorph.client.EntityModelHandler;
 import mchorse.metamorph.client.KeyboardHandler;
 import mchorse.metamorph.client.NetworkHandler;
 import mchorse.metamorph.client.RenderingHandler;
@@ -11,6 +13,7 @@ import mchorse.metamorph.client.gui.overlays.GuiOverlay;
 import mchorse.metamorph.client.render.RenderMorph;
 import mchorse.metamorph.entity.EntityMorph;
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.multiplayer.ServerData;
 import net.minecraft.client.network.NetworkPlayerInfo;
 import net.minecraft.client.renderer.entity.RenderManager;
 import net.minecraft.client.renderer.entity.RenderPlayer;
@@ -46,6 +49,11 @@ public class ClientProxy extends CommonProxy
      */
     public static KeyboardHandler keys;
 
+    /**
+     * Entity model handler
+     */
+    public static EntityModelHandler models;
+
     @Override
     public void preLoad(FMLPreInitializationEvent event)
     {
@@ -67,6 +75,9 @@ public class ClientProxy extends CommonProxy
         /* Register client event handlers */
         MinecraftForge.EVENT_BUS.register(new RenderingHandler(morphOverlay, hud));
         MinecraftForge.EVENT_BUS.register(keys = new KeyboardHandler());
+        MinecraftForge.EVENT_BUS.register(models = new EntityModelHandler());
+
+        models.loadSelectors();
     }
 
     /**

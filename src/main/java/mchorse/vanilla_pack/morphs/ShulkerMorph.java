@@ -40,7 +40,7 @@ public class ShulkerMorph extends EntityMorph
      * morphed block position, and also aligns the body to the north.
      */
     @Override
-    public void update(EntityLivingBase target, IMorphing cap)
+    public void update(EntityLivingBase target)
     {
         if (this.blockPos != null)
         {
@@ -48,7 +48,7 @@ public class ShulkerMorph extends EntityMorph
             target.setPosition(this.blockPos.getX() + 0.5, this.blockPos.getY(), this.blockPos.getZ() + 0.5);
         }
 
-        super.update(target, cap);
+        super.update(target);
 
         this.entity.renderYawOffset = this.entity.prevRenderYawOffset = 0;
     }
