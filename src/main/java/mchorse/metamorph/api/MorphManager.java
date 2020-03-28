@@ -65,6 +65,11 @@ public class MorphManager
     public Set<String> activeBlacklist = new TreeSet<String>();
 
     /**
+     * Active morph ID remapper
+     */
+    public Map<String, String> activeMap = new HashMap<String, String>();
+
+    /**
      * Global morph list
      */
     public final MorphList list = new MorphList();
@@ -78,7 +83,7 @@ public class MorphManager
     }
 
     /**
-     * Set currently blacklist for usage 
+     * Set currently used morph ID blacklist
      */
     public void setActiveBlacklist(Set<String> blacklist)
     {
@@ -87,7 +92,7 @@ public class MorphManager
     }
 
     /**
-     * Set currently blacklist for usage 
+     * Set currently used morph settings
      */
     public void setActiveSettings(Map<String, MorphSettings> settings)
     {
@@ -111,6 +116,15 @@ public class MorphManager
         }
 
         this.activeSettings = newSettings;
+    }
+
+    /**
+     * Set current morph ID remapper
+     */
+    public void setActiveMap(Map<String, String> map)
+    {
+        this.activeMap.clear();
+        this.activeMap.putAll(map);
     }
 
     /**
@@ -152,6 +166,8 @@ public class MorphManager
      */
     public boolean hasMorph(String name)
     {
+        name = this.remap(name);
+
         if (isBlacklisted(name))
         {
             return false;
@@ -176,6 +192,11 @@ public class MorphManager
      */
     public AbstractMorph morphFromNBT(NBTTagCompound tag)
     {
+        if (tag.hasKey("Name"))
+        {
+            tag.setString("Name", this.remap(tag.getString("Name")));
+        }
+
         String name = tag.getString("Name");
 
         if (isBlacklisted(name))
@@ -227,5 +248,15 @@ public class MorphManager
     public String morphNameFromEntity(Entity entity)
     {
         return EntityList.getKey(entity).toString();
+    }
+
+    /**
+     * Remap morph name
+     */
+    public String remap(String name)
+    {
+        String remapped = this.activeMap.get(name);
+
+        return remapped == null ? name : remapped;
     }
 }

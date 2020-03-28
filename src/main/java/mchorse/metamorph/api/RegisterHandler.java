@@ -1,5 +1,15 @@
 package mchorse.metamorph.api;
 
+import com.google.common.reflect.TypeToken;
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
+import mchorse.metamorph.Metamorph;
+import mchorse.metamorph.api.events.RegisterBlacklistEvent;
+import mchorse.metamorph.api.events.RegisterRemapEvent;
+import mchorse.metamorph.api.events.RegisterSettingsEvent;
+import mchorse.metamorph.api.json.MorphSettingsAdapter;
+import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
+
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.InputStream;
@@ -8,49 +18,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.Scanner;
 import java.util.Set;
-
-import com.google.common.reflect.TypeToken;
-import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
-
-import mchorse.metamorph.Metamorph;
-import mchorse.metamorph.api.MorphManager;
-import mchorse.metamorph.api.MorphSettings;
-import mchorse.metamorph.api.abilities.IAbility;
-import mchorse.metamorph.api.abilities.IAction;
-import mchorse.metamorph.api.abilities.IAttackAbility;
-import mchorse.metamorph.api.events.RegisterBlacklistEvent;
-import mchorse.metamorph.api.events.RegisterSettingsEvent;
-import mchorse.metamorph.api.json.MorphSettingsAdapter;
-import mchorse.vanilla_pack.abilities.Climb;
-import mchorse.vanilla_pack.abilities.FireProof;
-import mchorse.vanilla_pack.abilities.Fly;
-import mchorse.vanilla_pack.abilities.Glide;
-import mchorse.vanilla_pack.abilities.Hungerless;
-import mchorse.vanilla_pack.abilities.Jumping;
-import mchorse.vanilla_pack.abilities.NightVision;
-import mchorse.vanilla_pack.abilities.PreventFall;
-import mchorse.vanilla_pack.abilities.SnowWalk;
-import mchorse.vanilla_pack.abilities.SunAllergy;
-import mchorse.vanilla_pack.abilities.Swim;
-import mchorse.vanilla_pack.abilities.WaterAllergy;
-import mchorse.vanilla_pack.abilities.WaterBreath;
-import mchorse.vanilla_pack.actions.Endermite;
-import mchorse.vanilla_pack.actions.Explode;
-import mchorse.vanilla_pack.actions.FireBreath;
-import mchorse.vanilla_pack.actions.Fireball;
-import mchorse.vanilla_pack.actions.Jump;
-import mchorse.vanilla_pack.actions.Potions;
-import mchorse.vanilla_pack.actions.ShulkerBullet;
-import mchorse.vanilla_pack.actions.Sliverfish;
-import mchorse.vanilla_pack.actions.SmallFireball;
-import mchorse.vanilla_pack.actions.Snowball;
-import mchorse.vanilla_pack.actions.Spit;
-import mchorse.vanilla_pack.actions.Teleport;
-import mchorse.vanilla_pack.attacks.KnockbackAttack;
-import mchorse.vanilla_pack.attacks.PoisonAttack;
-import mchorse.vanilla_pack.attacks.WitherAttack;
-import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 
 /**
  * Register handler 
@@ -148,6 +115,40 @@ public class RegisterHandler
             List<String> data = GSON.fromJson(scanner.useDelimiter("\\A").next(), type);
 
             set.addAll(data);
+            scanner.close();
+        }
+        catch (Exception e)
+        {
+            e.printStackTrace();
+        }
+    }
+
+    /**
+     * Registers remapper
+     */
+    @SubscribeEvent
+    public void onRegisterRemapper(RegisterRemapEvent event)
+    {
+        event.map.put("metamorph.Block", "block");
+
+        this.loadMappings(event.map, Metamorph.proxy.remap);
+    }
+
+    /**
+     * Load user provided morph ID mappings using the safe way.
+     */
+    private void loadMappings(Map<String, String> map, File remap)
+    {
+        try
+        {
+            Scanner scanner = new Scanner(new FileInputStream(remap), "UTF-8");
+
+            @SuppressWarnings("serial")
+            Type type = new TypeToken<Map<String, String>>()
+            {}.getType();
+            Map<String, String> data = GSON.fromJson(scanner.useDelimiter("\\A").next(), type);
+
+            map.putAll(data);
             scanner.close();
         }
         catch (Exception e)

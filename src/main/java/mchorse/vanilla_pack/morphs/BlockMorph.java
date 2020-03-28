@@ -44,7 +44,7 @@ public class BlockMorph extends AbstractMorph
      */
     public BlockMorph()
     {
-        this.name = "metamorph.Block";
+        this.name = "block";
     }
 
     /**

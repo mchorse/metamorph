@@ -7,6 +7,7 @@ import java.util.Map;
 import java.util.Set;
 
 import mchorse.metamorph.api.events.RegisterBlacklistEvent;
+import mchorse.metamorph.api.events.RegisterRemapEvent;
 import mchorse.metamorph.api.events.RegisterSettingsEvent;
 import mchorse.metamorph.api.morphs.AbstractMorph;
 import net.minecraft.nbt.NBTTagCompound;
@@ -53,6 +54,17 @@ public class MorphUtils
         MinecraftForge.EVENT_BUS.post(event);
 
         return event.settings;
+    }
+
+    /**
+     * Reload morph ID mappings using event
+     */
+    public static Map<String, String> reloadRemapper()
+    {
+        RegisterRemapEvent event = new RegisterRemapEvent();
+        MinecraftForge.EVENT_BUS.post(event);
+
+        return event.map;
     }
 
     /**

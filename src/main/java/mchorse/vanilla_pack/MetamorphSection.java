@@ -45,7 +45,7 @@ public class MetamorphSection extends MorphSection
 
 		for (ResourceLocation rl : EntityList.getEntityNameList())
 		{
-			String name = rl.toString();
+			String name = MorphManager.INSTANCE.remap(rl.toString());
 
 			if (this.factory.hasMorph(name))
 			{

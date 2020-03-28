@@ -40,6 +40,11 @@ public class CommonProxy
      */
     public File blacklist;
 
+    /**
+     * Location of a user morph ID remapper
+     */
+    public File remap;
+
     public void preLoad(FMLPreInitializationEvent event)
     {
         /* Network messages */
@@ -49,11 +54,9 @@ public class CommonProxy
         MorphManager.INSTANCE.factories.add(new MetamorphFactory());
 
         /* Configuration */
-        File morphs = new File(event.getModConfigurationDirectory(), "metamorph/morphs.json");
-        File blacklist = new File(event.getModConfigurationDirectory(), "metamorph/blacklist.json");
-
-        this.morphs = morphs;
-        this.blacklist = blacklist;
+        this.morphs = new File(event.getModConfigurationDirectory(), "metamorph/morphs.json");
+        this.blacklist = new File(event.getModConfigurationDirectory(), "metamorph/blacklist.json");
+        this.remap = new File(event.getModConfigurationDirectory(), "metamorph/remap.json");
 
         /* Entities */
         EntityRegistry.registerModEntity(new ResourceLocation("metamorph:morph"), EntityMorph.class, "Morph", 0, Metamorph.instance, 64, 3, false);
@@ -81,14 +84,19 @@ public class CommonProxy
         MorphManager.INSTANCE.register();
 
         /* User configuration */
-        if (!morphs.exists())
+        if (!this.morphs.exists())
         {
-            MorphUtils.generateFile(morphs, "{}");
+            MorphUtils.generateFile(this.morphs, "{}");
         }
 
-        if (!blacklist.exists())
+        if (!this.blacklist.exists())
         {
-            MorphUtils.generateFile(blacklist, "[]");
+            MorphUtils.generateFile(this.blacklist, "[]");
+        }
+
+        if (!this.remap.exists())
+        {
+            MorphUtils.generateFile(this.remap, "{}");
         }
     }
 

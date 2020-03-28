@@ -134,7 +134,7 @@ public class MetamorphFactory implements IMorphFactory
             return true;
         }
 
-        if (name.equals("metamorph.Block"))
+        if (name.equals("block"))
         {
             return true;
         }
@@ -171,7 +171,7 @@ public class MetamorphFactory implements IMorphFactory
             return player.profile != null ? player : null;
         }
 
-        if (name.equals("metamorph.Block"))
+        if (name.equals("block"))
         {
             morph = new BlockMorph();
         }

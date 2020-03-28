@@ -128,9 +128,9 @@ public class Metamorph
     public void serverStarting(FMLServerStartingEvent event)
     {
         /* Setting up the blacklist */
-
         MorphManager.INSTANCE.setActiveBlacklist(MorphUtils.reloadBlacklist());
         MorphManager.INSTANCE.setActiveSettings(MorphUtils.reloadMorphSettings());
+        MorphManager.INSTANCE.setActiveMap(MorphUtils.reloadRemapper());
 
         /* Register commands */
         event.registerServerCommand(new CommandMorph());
