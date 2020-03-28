@@ -9,12 +9,15 @@ import mchorse.mclib.client.gui.framework.elements.buttons.GuiButtonElement;
 import mchorse.mclib.client.gui.framework.elements.input.GuiTextElement;
 import mchorse.mclib.client.gui.framework.elements.utils.GuiContext;
 import mchorse.metamorph.api.MorphManager;
+import mchorse.metamorph.api.creative.MorphCategory;
 import mchorse.metamorph.api.creative.MorphList;
 import mchorse.metamorph.api.creative.MorphSection;
 import mchorse.metamorph.api.creative.UserSection;
 import mchorse.metamorph.api.events.ReloadMorphs;
 import mchorse.metamorph.api.morphs.AbstractMorph;
 import mchorse.metamorph.client.gui.editor.GuiAbstractMorph;
+import mchorse.metamorph.network.Dispatcher;
+import mchorse.metamorph.network.common.PacketSyncAcquiredMorph;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.resources.I18n;
 import net.minecraftforge.common.MinecraftForge;
@@ -60,6 +63,7 @@ public class GuiCreativeMorphs extends GuiElement
     private UserSection user;
     private GuiMorphSection userSection;
     private GuiMorphSection selected;
+    private boolean scrollTo;
 
     /**
      * Initiate this GUI.
@@ -132,12 +136,13 @@ public class GuiCreativeMorphs extends GuiElement
 
         if (!this.isEditMode())
         {
-            if (morph != null)
+            if (!this.isAcquiredSelected())
             {
-                morph = morph.clone(true);
+                if (morph != null)
+                {
+                    morph = morph.clone(true);
+                }
             }
-
-            morph = this.setSelected(morph, false, false);
 
             GuiAbstractMorph editor = this.getMorphEditor(morph);
 
@@ -151,6 +156,18 @@ public class GuiCreativeMorphs extends GuiElement
         }
         else
         {
+            if (this.isAcquiredSelected())
+            {
+                Dispatcher.sendToServer(new PacketSyncAcquiredMorph(morph, this.user.acquired.morphs.indexOf(morph)));
+            }
+
+            AbstractMorph edited = this.editor.delegate.morph;
+
+            if (edited != null)
+            {
+                this.setSelected(edited);
+            }
+
             this.editor.delegate.finishEdit();
             this.editor.setDelegate(null);
 
@@ -162,6 +179,11 @@ public class GuiCreativeMorphs extends GuiElement
         this.search.setVisible(hide);
         this.edit.setVisible(hide);
         this.morphs.setVisible(hide);
+    }
+
+    public boolean isAcquiredSelected()
+    {
+        return this.selected != null && this.selected.category == this.user.acquired;
     }
 
     public void finish()
@@ -242,16 +264,41 @@ public class GuiCreativeMorphs extends GuiElement
         if (morph != null)
         {
             AbstractMorph found = this.user.recent.getEqual(morph);
+            MorphCategory selectedCategory = null;
+            GuiMorphSection selectedSection = null;
+
+            searchForMorph:
+            for (IGuiElement element : this.morphs.getChildren())
+            {
+                GuiMorphSection section = (GuiMorphSection) element;
+
+                for (MorphCategory category : section.section.categories)
+                {
+                    found = category.getEqual(morph);
+
+                    if (found != null)
+                    {
+                        selectedCategory = category;
+                        selectedSection = section;
+
+                        break searchForMorph;
+                    }
+                }
+            }
 
             if (found == null)
             {
                 this.user.recent.addMorph(morph);
                 found = morph;
+                selectedCategory = this.user.recent;
+                selectedSection = this.userSection;
             }
 
-            this.userSection.morph = found;
-            this.userSection.category = this.user.recent;
-            this.selected = this.userSection;
+            this.selected = selectedSection;
+            selectedSection.morph = found;
+            selectedSection.category = selectedCategory;
+
+            this.scrollTo = true;
         }
         else
         {
@@ -261,11 +308,44 @@ public class GuiCreativeMorphs extends GuiElement
         return this.getSelected();
     }
 
+    public void scrollTo()
+    {
+        int y = 0;
+
+        for (IGuiElement element : this.morphs.getChildren())
+        {
+            GuiMorphSection section = (GuiMorphSection) element;
+
+            int h = section.calculateY(this.getSelected());
+
+            if (h == -1)
+            {
+                y += section.calculateHeight();
+            }
+            else
+            {
+                this.morphs.scroll.scrollIntoView(y + h, section.cellHeight + 30);
+
+                break;
+            }
+        }
+    }
+
     /**
      * Get currently selected morph 
      */
     public AbstractMorph getSelected()
     {
+        if (this.isEditMode())
+        {
+            AbstractMorph morph = this.editor.delegate.morph;
+
+            if (morph != null)
+            {
+                return morph;
+            }
+        }
+
         return this.selected == null ? null : this.selected.morph;
     }
 
@@ -306,6 +386,12 @@ public class GuiCreativeMorphs extends GuiElement
     public void draw(GuiContext context)
     {
         super.draw(context);
+
+        if (this.scrollTo)
+        {
+            this.scrollTo();
+            this.scrollTo = false;
+        }
 
         if (!this.isEditMode() && !this.search.field.isFocused() && this.search.field.getText().isEmpty())
         {

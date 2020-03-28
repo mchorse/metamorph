@@ -47,6 +47,55 @@ public class GuiMorphSection extends GuiElement
 		this.category = null;
 	}
 
+	public int calculateHeight()
+	{
+		int row = this.area.w / this.cellWidth;
+		int h = 20;
+
+		for (MorphCategory category : this.section.categories)
+		{
+			if (category.morphs.isEmpty())
+			{
+				continue;
+			}
+
+			h += 16;
+			h += (category.morphs.size() / row + 1) * this.cellHeight;
+		}
+
+		return h;
+	}
+
+	public int calculateY(AbstractMorph morph)
+	{
+		int row = this.area.w / this.cellWidth;
+		int h = 20;
+
+		for (MorphCategory category : this.section.categories)
+		{
+			if (category.morphs.isEmpty())
+			{
+				continue;
+			}
+
+			h += 16;
+
+			for (int i = 0; i < category.morphs.size(); i ++)
+			{
+				AbstractMorph child = category.morphs.get(i);
+
+				if (child == morph)
+				{
+					return h + (i / row) * this.cellHeight;
+				}
+			}
+
+			h += (category.morphs.size() / row + 1) * this.cellHeight;
+		}
+
+		return -1;
+	}
+
 	@Override
 	public boolean mouseClicked(GuiContext context)
 	{

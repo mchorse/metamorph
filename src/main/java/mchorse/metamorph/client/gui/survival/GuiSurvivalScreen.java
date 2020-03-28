@@ -17,7 +17,7 @@ import java.io.IOException;
  * 
  * This is menu which allows users to manage their acquired morphs.
  */
-public class GuiSurvivalMenu extends GuiBase
+public class GuiSurvivalScreen extends GuiBase
 {
     private GuiButtonElement close;
     private GuiButtonElement favorite;
@@ -29,7 +29,7 @@ public class GuiSurvivalMenu extends GuiBase
 
     /* Initiate GUI */
 
-    public GuiSurvivalMenu(GuiSurvivalMorphs morphs)
+    public GuiSurvivalScreen(GuiSurvivalMorphs morphs)
     {
         this.morphs = morphs;
         this.morphs.inGUI = true;

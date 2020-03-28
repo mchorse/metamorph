@@ -11,7 +11,6 @@ import mchorse.metamorph.network.common.PacketMorph;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.Gui;
 import net.minecraft.client.resources.I18n;
-import net.minecraft.entity.player.EntityPlayer;
 
 /**
  * Creative morphs GUI
@@ -32,12 +31,11 @@ public class GuiCreativeScreen extends GuiBase
     private GuiButtonElement acquire;
     private GuiButtonElement close;
     private GuiCreativeMorphs pane;
+    private boolean selected;
 
     public GuiCreativeScreen()
     {
         Minecraft mc = Minecraft.getMinecraft();
-        EntityPlayer player = mc.player;
-        IMorphing morphing = Morphing.get(player);
 
         this.morph = new GuiButtonElement(mc, I18n.format("metamorph.gui.morph"), (b) ->
         {
@@ -64,7 +62,7 @@ public class GuiCreativeScreen extends GuiBase
         });
         this.close = new GuiButtonElement(mc, I18n.format("metamorph.gui.close"), (b) -> this.closeScreen());
         this.pane = new GuiCreativeMorphs(mc);
-        this.pane.setSelected(morphing.getCurrentMorph());
+        this.pane.setSelected(Morphing.get(mc.player).getCurrentMorph());
 
         this.morph.flex().parent(this.viewport).set(0, 10, 60, 20).x(1, -200);
         this.acquire.flex().relative(this.morph.resizer()).set(65, 0, 60, 20);

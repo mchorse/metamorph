@@ -6,7 +6,7 @@ import mchorse.metamorph.ClientProxy;
 import mchorse.metamorph.capabilities.morphing.IMorphing;
 import mchorse.metamorph.capabilities.morphing.Morphing;
 import mchorse.metamorph.client.gui.creative.GuiCreativeScreen;
-import mchorse.metamorph.client.gui.survival.GuiSurvivalMenu;
+import mchorse.metamorph.client.gui.survival.GuiSurvivalScreen;
 import mchorse.metamorph.client.gui.survival.GuiSurvivalMorphs;
 import mchorse.metamorph.network.Dispatcher;
 import mchorse.metamorph.network.common.PacketAction;
@@ -104,7 +104,7 @@ public class KeyboardHandler
         /* Survival morphing key handling */
         if (keySurvivalMenu.isPressed() && overlay != null)
         {
-            mc.displayGuiScreen(new GuiSurvivalMenu(overlay));
+            mc.displayGuiScreen(new GuiSurvivalScreen(overlay));
         }
 
         boolean prev = keyPrevMorph.isPressed();

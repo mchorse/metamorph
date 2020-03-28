@@ -2,7 +2,7 @@ package mchorse.metamorph.network.client;
 
 import mchorse.mclib.network.ClientMessageHandler;
 import mchorse.metamorph.capabilities.morphing.Morphing;
-import mchorse.metamorph.client.gui.survival.GuiSurvivalMenu;
+import mchorse.metamorph.client.gui.survival.GuiSurvivalScreen;
 import mchorse.metamorph.network.common.PacketRemoveMorph;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.entity.EntityPlayerSP;
@@ -17,9 +17,9 @@ public class ClientHandlerRemoveMorph extends ClientMessageHandler<PacketRemoveM
     {
         Morphing.get(player).remove(message.index);
 
-        if (Minecraft.getMinecraft().currentScreen instanceof GuiSurvivalMenu)
+        if (Minecraft.getMinecraft().currentScreen instanceof GuiSurvivalScreen)
         {
-            ((GuiSurvivalMenu) Minecraft.getMinecraft().currentScreen).updateButtons();
+            ((GuiSurvivalScreen) Minecraft.getMinecraft().currentScreen).updateButtons();
         }
     }
 }

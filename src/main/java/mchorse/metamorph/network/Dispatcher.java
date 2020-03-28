@@ -22,12 +22,14 @@ import mchorse.metamorph.network.common.PacketMorphState;
 import mchorse.metamorph.network.common.PacketRemoveMorph;
 import mchorse.metamorph.network.common.PacketSelectMorph;
 import mchorse.metamorph.network.common.PacketSettings;
+import mchorse.metamorph.network.common.PacketSyncAcquiredMorph;
 import mchorse.metamorph.network.server.ServerHandlerAcquireMorph;
 import mchorse.metamorph.network.server.ServerHandlerAction;
 import mchorse.metamorph.network.server.ServerHandlerFavoriteMorph;
 import mchorse.metamorph.network.server.ServerHandlerMorph;
 import mchorse.metamorph.network.server.ServerHandlerRemoveMorph;
 import mchorse.metamorph.network.server.ServerHandlerSelectMorph;
+import mchorse.metamorph.network.server.ServerHandlerSyncAcquiredMorph;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraftforge.fml.common.network.simpleimpl.IMessage;
@@ -54,6 +56,7 @@ public class Dispatcher
             register(PacketAcquireMorph.class, ClientHandlerAcquireMorph.class, Side.CLIENT);
             register(PacketAcquireMorph.class, ServerHandlerAcquireMorph.class, Side.SERVER);
             register(PacketAcquiredMorphs.class, ClientHandlerAcquiredMorphs.class, Side.CLIENT);
+            register(PacketSyncAcquiredMorph.class, ServerHandlerSyncAcquiredMorph.class, Side.SERVER);
 
             register(PacketSelectMorph.class, ServerHandlerSelectMorph.class, Side.SERVER);
 
