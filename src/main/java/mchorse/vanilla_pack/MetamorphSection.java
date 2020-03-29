@@ -1,10 +1,9 @@
 package mchorse.vanilla_pack;
 
-import mchorse.metamorph.Metamorph;
 import mchorse.metamorph.api.EntityUtils;
 import mchorse.metamorph.api.MorphManager;
-import mchorse.metamorph.api.creative.MorphCategory;
-import mchorse.metamorph.api.creative.MorphSection;
+import mchorse.metamorph.api.creative.categories.MorphCategory;
+import mchorse.metamorph.api.creative.sections.MorphSection;
 import mchorse.metamorph.api.morphs.EntityMorph;
 import mchorse.vanilla_pack.morphs.BlockMorph;
 import mchorse.vanilla_pack.morphs.PlayerMorph;
@@ -141,12 +140,12 @@ public class MetamorphSection extends MorphSection
 		PlayerMorph notch = new PlayerMorph();
 		NBTTagCompound tag = new NBTTagCompound();
 
-		tag.setString("Name", "Player");
+		tag.setString("Name", "player");
 		tag.setString("Username", "Notch");
 		notch.fromNBT(tag);
 
-		this.get("generic").addMorph(block);
-		this.get("generic").addMorph(notch);
+		this.get("generic").add(block);
+		this.get("generic").add(notch);
 
 		/* Add categories to the main list */
 		Iterator<MorphCategory> it = this.categoryMap.values().iterator();
@@ -207,7 +206,7 @@ public class MetamorphSection extends MorphSection
 			EntityUtils.stripEntityNBT(data);
 			morph.setEntityData(data);
 
-			this.get(category).addMorph(morph);
+			this.get(category).add(morph);
 		}
 		catch (Exception e)
 		{

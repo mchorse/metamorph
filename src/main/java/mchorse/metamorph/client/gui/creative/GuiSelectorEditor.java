@@ -170,6 +170,11 @@ public class GuiSelectorEditor extends GuiElement
 
 	public void setMorph(AbstractMorph morph)
 	{
+		if (!this.isVisible() || this.selector == null)
+		{
+			return;
+		}
+
 		if (this.selecting && this.selector != null)
 		{
 			this.selector.morph = morph == null ? null : morph.clone(true);

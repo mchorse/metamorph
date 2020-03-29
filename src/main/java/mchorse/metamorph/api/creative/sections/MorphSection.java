@@ -1,5 +1,7 @@
-package mchorse.metamorph.api.creative;
+package mchorse.metamorph.api.creative.sections;
 
+import mchorse.metamorph.api.creative.categories.MorphCategory;
+import mchorse.metamorph.client.gui.creative.GuiCreativeMorphs;
 import mchorse.metamorph.client.gui.creative.GuiMorphSection;
 import net.minecraft.client.Minecraft;
 import net.minecraft.world.World;
@@ -20,6 +22,16 @@ public class MorphSection
 		this.title = title;
 	}
 
+	public void add(MorphCategory category)
+	{
+		this.categories.add(category);
+	}
+
+	public void remove(MorphCategory category)
+	{
+		this.categories.remove(category);
+	}
+
 	/**
 	 * This method gets called when a new morph picker appears
 	 */
@@ -33,8 +45,8 @@ public class MorphSection
 	{}
 
 	@SideOnly(Side.CLIENT)
-	public GuiMorphSection getGUI(Minecraft mc, Consumer<GuiMorphSection> callback)
+	public GuiMorphSection getGUI(Minecraft mc, GuiCreativeMorphs parent, Consumer<GuiMorphSection> callback)
 	{
-		return new GuiMorphSection(mc, this, callback);
+		return new GuiMorphSection(mc, parent, this, callback);
 	}
 }

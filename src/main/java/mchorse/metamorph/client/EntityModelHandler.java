@@ -2,7 +2,9 @@ package mchorse.metamorph.client;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
+import com.google.gson.JsonElement;
 import com.google.gson.reflect.TypeToken;
+import mchorse.mclib.utils.JsonUtils;
 import mchorse.metamorph.Metamorph;
 import mchorse.metamorph.capabilities.render.EntitySelector;
 import mchorse.metamorph.capabilities.render.EntitySelectorAdapter;
@@ -20,6 +22,7 @@ import org.apache.commons.io.FileUtils;
 
 import java.io.File;
 import java.io.IOException;
+import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -86,8 +89,8 @@ public class EntityModelHandler
         {
             try
             {
-                List<EntitySelector> selectors = this.entitySelector.fromJson(FileUtils.readFileToString(selectorsFile), new TypeToken<List<EntitySelector>>()
-                {}.getType());
+                Type token = (new TypeToken<List<EntitySelector>>() {}).getType();
+                List<EntitySelector> selectors = this.entitySelector.fromJson(FileUtils.readFileToString(selectorsFile), token);
 
                 EntityModelHandler.selectors.clear();
                 EntityModelHandler.selectors.addAll(selectors);
@@ -103,7 +106,9 @@ public class EntityModelHandler
     {
         try
         {
-            FileUtils.writeStringToFile(Metamorph.proxy.selectors, this.entitySelector.toJson(selectors));
+            JsonElement element = this.entitySelector.toJsonTree(selectors);
+
+            FileUtils.writeStringToFile(Metamorph.proxy.selectors, JsonUtils.jsonToPretty(element));
         }
         catch (IOException e)
         {

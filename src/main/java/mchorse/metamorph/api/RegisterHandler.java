@@ -66,9 +66,7 @@ public class RegisterHandler
         Scanner scanner = new Scanner(input, "UTF-8");
 
         @SuppressWarnings("serial")
-        Type type = new TypeToken<Map<String, MorphSettings>>()
-        {}.getType();
-
+        Type type = (new TypeToken<Map<String, MorphSettings>>() {}).getType();
         Map<String, MorphSettings> data = GSON.fromJson(scanner.useDelimiter("\\A").next(), type);
 
         scanner.close();
@@ -110,8 +108,7 @@ public class RegisterHandler
             Scanner scanner = new Scanner(new FileInputStream(blacklist), "UTF-8");
 
             @SuppressWarnings("serial")
-            Type type = new TypeToken<List<String>>()
-            {}.getType();
+            Type type = (new TypeToken<List<String>>() {}).getType();
             List<String> data = GSON.fromJson(scanner.useDelimiter("\\A").next(), type);
 
             set.addAll(data);
@@ -144,8 +141,7 @@ public class RegisterHandler
             Scanner scanner = new Scanner(new FileInputStream(remap), "UTF-8");
 
             @SuppressWarnings("serial")
-            Type type = new TypeToken<Map<String, String>>()
-            {}.getType();
+            Type type = (new TypeToken<Map<String, String>>() {}).getType();
             Map<String, String> data = GSON.fromJson(scanner.useDelimiter("\\A").next(), type);
 
             map.putAll(data);

@@ -4,7 +4,7 @@ import mchorse.metamorph.api.abilities.IAbility;
 import mchorse.metamorph.api.abilities.IAction;
 import mchorse.metamorph.api.abilities.IAttackAbility;
 import mchorse.metamorph.api.creative.MorphList;
-import mchorse.metamorph.api.creative.UserSection;
+import mchorse.metamorph.api.creative.sections.UserSection;
 import mchorse.metamorph.api.morphs.AbstractMorph;
 import mchorse.metamorph.client.gui.editor.GuiAbstractMorph;
 import net.minecraft.client.Minecraft;

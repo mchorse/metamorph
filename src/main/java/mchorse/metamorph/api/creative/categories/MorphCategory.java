@@ -1,6 +1,7 @@
-package mchorse.metamorph.api.creative;
+package mchorse.metamorph.api.creative.categories;
 
 import mchorse.metamorph.api.MorphManager;
+import mchorse.metamorph.api.creative.sections.MorphSection;
 import mchorse.metamorph.api.morphs.AbstractMorph;
 
 import java.util.ArrayList;
@@ -24,18 +25,6 @@ public class MorphCategory
 		return this.morphs.isEmpty();
 	}
 
-	public void addMorph(AbstractMorph morph)
-	{
-		if (MorphManager.isBlacklisted(morph.name))
-		{
-			return;
-		}
-
-		MorphManager.INSTANCE.applySettings(morph);
-
-		this.morphs.add(morph);
-	}
-
 	public AbstractMorph getEqual(AbstractMorph morph)
 	{
 		for (AbstractMorph child : this.morphs)
@@ -53,4 +42,24 @@ public class MorphCategory
 	{
 		this.morphs.clear();
 	}
+
+	public void add(AbstractMorph morph)
+	{
+		if (MorphManager.isBlacklisted(morph.name))
+		{
+			return;
+		}
+
+		MorphManager.INSTANCE.applySettings(morph);
+
+		this.morphs.add(morph);
+	}
+
+	public boolean remove(AbstractMorph morph)
+	{
+		return this.morphs.remove(morph);
+	}
+
+	public void edit(AbstractMorph morph)
+	{}
 }

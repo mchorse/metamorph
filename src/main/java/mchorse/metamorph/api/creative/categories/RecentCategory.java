@@ -1,6 +1,7 @@
-package mchorse.metamorph.api.creative;
+package mchorse.metamorph.api.creative.categories;
 
 import mchorse.metamorph.api.MorphManager;
+import mchorse.metamorph.api.creative.sections.MorphSection;
 import mchorse.metamorph.api.morphs.AbstractMorph;
 
 public class RecentCategory extends MorphCategory
@@ -11,7 +12,7 @@ public class RecentCategory extends MorphCategory
 	}
 
 	@Override
-	public void addMorph(AbstractMorph morph)
+	public void add(AbstractMorph morph)
 	{
 		if (MorphManager.isBlacklisted(morph.name))
 		{

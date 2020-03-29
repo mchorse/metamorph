@@ -1,0 +1,25 @@
+package mchorse.metamorph.api.creative.categories;
+
+import mchorse.metamorph.api.creative.sections.MorphSection;
+import mchorse.metamorph.api.morphs.AbstractMorph;
+import mchorse.metamorph.network.Dispatcher;
+import mchorse.metamorph.network.common.PacketSyncAcquiredMorph;
+
+public class AcquiredCategory extends MorphCategory
+{
+	public AcquiredCategory(MorphSection parent, String title)
+	{
+		super(parent, title);
+	}
+
+	@Override
+	public void edit(AbstractMorph morph)
+	{
+		int index = this.morphs.indexOf(morph);
+
+		if (index >= 0)
+		{
+			Dispatcher.sendToServer(new PacketSyncAcquiredMorph(morph, index));
+		}
+	}
+}

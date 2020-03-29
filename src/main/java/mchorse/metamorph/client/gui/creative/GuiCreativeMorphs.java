@@ -8,17 +8,16 @@ import mchorse.mclib.client.gui.framework.elements.IGuiElement;
 import mchorse.mclib.client.gui.framework.elements.buttons.GuiButtonElement;
 import mchorse.mclib.client.gui.framework.elements.input.GuiTextElement;
 import mchorse.mclib.client.gui.framework.elements.utils.GuiContext;
+import mchorse.mclib.client.gui.framework.elements.utils.GuiDrawable;
 import mchorse.mclib.client.gui.utils.Area;
 import mchorse.metamorph.api.MorphManager;
-import mchorse.metamorph.api.creative.MorphCategory;
+import mchorse.metamorph.api.creative.categories.MorphCategory;
 import mchorse.metamorph.api.creative.MorphList;
-import mchorse.metamorph.api.creative.MorphSection;
-import mchorse.metamorph.api.creative.UserSection;
+import mchorse.metamorph.api.creative.sections.MorphSection;
+import mchorse.metamorph.api.creative.sections.UserSection;
 import mchorse.metamorph.api.events.ReloadMorphs;
 import mchorse.metamorph.api.morphs.AbstractMorph;
 import mchorse.metamorph.client.gui.editor.GuiAbstractMorph;
-import mchorse.metamorph.network.Dispatcher;
-import mchorse.metamorph.network.common.PacketSyncAcquiredMorph;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.Gui;
 import net.minecraft.client.resources.I18n;
@@ -62,7 +61,7 @@ public class GuiCreativeMorphs extends GuiElement
 
     public GuiScrollElement morphs;
 
-    private UserSection user;
+    public UserSection user;
     private GuiMorphSection userSection;
     private GuiMorphSection selected;
     private boolean scrollTo;
@@ -96,7 +95,7 @@ public class GuiCreativeMorphs extends GuiElement
         this.morphs.flex().parent(this.area).wh(1F, 1F);
         this.setupMorphs(list);
 
-        this.add(this.morphs, this.edit, this.search, this.editor);
+        this.add(this.morphs, this.search, new GuiDrawable(this::drawOverlay), this.edit, this.editor);
     }
 
     private void setupMorphs(MorphList list)
@@ -105,7 +104,7 @@ public class GuiCreativeMorphs extends GuiElement
 
         for (MorphSection section : list.sections)
         {
-            GuiMorphSection element = section.getGUI(mc, this::setMorph);
+            GuiMorphSection element = section.getGUI(this.mc, this, this::setMorph);
 
             if (previous == null)
             {
@@ -139,7 +138,7 @@ public class GuiCreativeMorphs extends GuiElement
 
         if (!this.isEditMode())
         {
-            if (!this.isAcquiredSelected())
+            if (!this.isUserSectionSelected())
             {
                 if (morph != null)
                 {
@@ -159,8 +158,6 @@ public class GuiCreativeMorphs extends GuiElement
         }
         else
         {
-            this.syncSelected();
-
             AbstractMorph edited = this.editor.delegate.morph;
 
             if (edited != null)
@@ -169,8 +166,9 @@ public class GuiCreativeMorphs extends GuiElement
             }
 
             this.editor.delegate.finishEdit();
-            this.editor.setDelegate(null);
+            this.syncSelected();
 
+            this.editor.setDelegate(null);
             this.setMorph(morph);
         }
 
@@ -190,18 +188,18 @@ public class GuiCreativeMorphs extends GuiElement
         }
     }
 
-    public boolean isAcquiredSelected()
+    public boolean isUserSectionSelected()
     {
-        return this.selected != null && this.selected.category == this.user.acquired;
+        return this.selected == this.userSection;
     }
 
     public void syncSelected()
     {
         AbstractMorph morph = this.getSelected();
 
-        if (this.isAcquiredSelected() && morph != null)
+        if (morph != null)
         {
-            Dispatcher.sendToServer(new PacketSyncAcquiredMorph(morph, this.user.acquired.morphs.indexOf(morph)));
+            this.selected.category.edit(morph);
         }
     }
 
@@ -299,7 +297,7 @@ public class GuiCreativeMorphs extends GuiElement
 
             if (found == null)
             {
-                this.user.recent.addMorph(morph);
+                this.user.recent.add(morph);
                 found = morph;
                 selectedCategory = this.user.recent;
                 selectedSection = this.userSection;
@@ -403,7 +401,10 @@ public class GuiCreativeMorphs extends GuiElement
             this.scrollTo();
             this.scrollTo = false;
         }
+    }
 
+    private void drawOverlay(GuiContext context)
+    {
         /* Draw the name of the morph */
         if (!this.isEditMode())
         {

@@ -4,6 +4,7 @@ import java.io.File;
 import java.lang.reflect.Field;
 import java.util.Map;
 
+import mchorse.metamorph.api.MorphUtils;
 import mchorse.metamorph.client.EntityModelHandler;
 import mchorse.metamorph.client.KeyboardHandler;
 import mchorse.metamorph.client.NetworkHandler;
@@ -78,6 +79,16 @@ public class ClientProxy extends CommonProxy
         MinecraftForge.EVENT_BUS.register(models = new EntityModelHandler());
 
         models.loadSelectors();
+
+        if (!this.selectors.exists())
+        {
+            MorphUtils.generateFile(this.selectors, "[]");
+        }
+
+        if (!this.list.exists())
+        {
+            MorphUtils.generateFile(this.selectors, "[]");
+        }
     }
 
     /**

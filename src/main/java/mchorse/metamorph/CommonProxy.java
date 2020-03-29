@@ -49,9 +49,14 @@ public class CommonProxy
     public File remap;
 
     /**
-     * Location of a user's entity selectors
+     * Location of a user's entity selectors (client side)
      */
     public File selectors;
+
+    /**
+     * Location of a user's custom global morph list (client side)
+     */
+    public File list;
 
     public void preLoad(FMLPreInitializationEvent event)
     {
@@ -66,6 +71,7 @@ public class CommonProxy
         this.blacklist = new File(event.getModConfigurationDirectory(), "metamorph/blacklist.json");
         this.remap = new File(event.getModConfigurationDirectory(), "metamorph/remap.json");
         this.selectors = new File(event.getModConfigurationDirectory(), "metamorph/selectors.json");
+        this.list = new File(event.getModConfigurationDirectory(), "metamorph/list.json");
 
         /* Entities */
         EntityRegistry.registerModEntity(new ResourceLocation("metamorph:morph"), EntityMorph.class, "Morph", 0, Metamorph.instance, 64, 3, false);
@@ -107,11 +113,6 @@ public class CommonProxy
         if (!this.remap.exists())
         {
             MorphUtils.generateFile(this.remap, "{}");
-        }
-
-        if (!this.selectors.exists())
-        {
-            MorphUtils.generateFile(this.selectors, "[]");
         }
     }
 
