@@ -90,7 +90,7 @@ public class UserSection extends MorphSection
 		this.categories.clear();
 		this.categories.add(this.acquired);
 		this.categories.add(this.recent);
-		this.acquired.morphs = morphing == null ? Collections.emptyList() : morphing.getAcquiredMorphs();
+		this.acquired.setMorph(morphing == null ? Collections.emptyList() : morphing.getAcquiredMorphs());
 
 		if (!this.loaded)
 		{
@@ -109,9 +109,9 @@ public class UserSection extends MorphSection
 		this.categories.clear();
 		this.acquired.clear();
 		this.recent.clear();
+		this.global.clear();
 
 		this.loaded = false;
-		this.global.clear();
 	}
 
 	@Override
@@ -181,7 +181,7 @@ public class UserSection extends MorphSection
 			cat.addProperty("title", category.title);
 			cat.add("morphs", morphs);
 
-			for (AbstractMorph morph : category.morphs)
+			for (AbstractMorph morph : category.getMorphs())
 			{
 				if (morph != null)
 				{

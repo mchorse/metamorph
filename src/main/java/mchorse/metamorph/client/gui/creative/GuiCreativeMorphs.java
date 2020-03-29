@@ -11,8 +11,8 @@ import mchorse.mclib.client.gui.framework.elements.utils.GuiContext;
 import mchorse.mclib.client.gui.framework.elements.utils.GuiDrawable;
 import mchorse.mclib.client.gui.utils.Area;
 import mchorse.metamorph.api.MorphManager;
-import mchorse.metamorph.api.creative.categories.MorphCategory;
 import mchorse.metamorph.api.creative.MorphList;
+import mchorse.metamorph.api.creative.categories.MorphCategory;
 import mchorse.metamorph.api.creative.sections.MorphSection;
 import mchorse.metamorph.api.creative.sections.UserSection;
 import mchorse.metamorph.api.events.ReloadMorphs;
@@ -62,6 +62,7 @@ public class GuiCreativeMorphs extends GuiElement
     public GuiScrollElement morphs;
 
     public UserSection user;
+    private List<GuiMorphSection> sections = new ArrayList<GuiMorphSection>();
     private GuiMorphSection userSection;
     private GuiMorphSection selected;
     private boolean scrollTo;
@@ -123,6 +124,7 @@ public class GuiCreativeMorphs extends GuiElement
                 this.userSection = element;
             }
 
+            this.sections.add(element);
             this.morphs.add(element);
         }
     }
@@ -250,20 +252,20 @@ public class GuiCreativeMorphs extends GuiElement
             return;
         }
 
-        String lcfilter = filter.toLowerCase();
+        String lcfilter = filter.toLowerCase().trim();
 
-        /* TODO: search */
-    }
+        for (GuiMorphSection section : this.sections)
+        {
+            section.setFilter(lcfilter);
+        }
 
-    public AbstractMorph setSelected(AbstractMorph morph)
-    {
-        return this.setSelected(morph, true, true);
+        this.previousFilter = lcfilter;
     }
 
     /**
      * Set selected morph 
      */
-    public AbstractMorph setSelected(AbstractMorph morph, boolean restore, boolean compare)
+    public AbstractMorph setSelected(AbstractMorph morph)
     {
         if (this.selected != null)
         {

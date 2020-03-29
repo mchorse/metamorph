@@ -18,9 +18,9 @@ public class UserCategory extends MorphCategory
 	}
 
 	@Override
-	public void add(AbstractMorph morph)
+	public void addMorph(AbstractMorph morph)
 	{
-		super.add(morph);
+		super.addMorph(morph);
 
 		if (this.parent instanceof UserSection)
 		{

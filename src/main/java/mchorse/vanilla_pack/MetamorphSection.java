@@ -152,7 +152,7 @@ public class MetamorphSection extends MorphSection
 
 		while (it.hasNext())
 		{
-			if (it.next().morphs.isEmpty())
+			if (it.next().getMorphs().isEmpty())
 			{
 				it.remove();
 			}

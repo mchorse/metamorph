@@ -5,11 +5,18 @@ import mchorse.metamorph.api.morphs.AbstractMorph;
 import mchorse.metamorph.network.Dispatcher;
 import mchorse.metamorph.network.common.PacketSyncAcquiredMorph;
 
+import java.util.List;
+
 public class AcquiredCategory extends MorphCategory
 {
 	public AcquiredCategory(MorphSection parent, String title)
 	{
 		super(parent, title);
+	}
+
+	public void setMorph(List<AbstractMorph> morphs)
+	{
+		this.morphs = morphs;
 	}
 
 	@Override

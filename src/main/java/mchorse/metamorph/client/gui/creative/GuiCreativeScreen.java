@@ -39,7 +39,6 @@ public class GuiCreativeScreen extends GuiBase
     private GuiButtonElement acquire;
     private GuiButtonElement close;
     private GuiCreativeMorphs pane;
-    private boolean selected;
 
     public GuiCreativeScreen()
     {

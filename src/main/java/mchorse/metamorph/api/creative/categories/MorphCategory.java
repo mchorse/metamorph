@@ -12,12 +12,17 @@ public class MorphCategory
 	public MorphSection parent;
 
 	public String title;
-	public List<AbstractMorph> morphs = new ArrayList<AbstractMorph>();
+	protected List<AbstractMorph> morphs = new ArrayList<AbstractMorph>();
 
 	public MorphCategory(MorphSection parent, String title)
 	{
 		this.parent = parent;
 		this.title = title;
+	}
+
+	public List<AbstractMorph> getMorphs()
+	{
+		return this.morphs;
 	}
 
 	public boolean isHidden()
@@ -43,7 +48,7 @@ public class MorphCategory
 		this.morphs.clear();
 	}
 
-	public void add(AbstractMorph morph)
+	public final void add(AbstractMorph morph)
 	{
 		if (MorphManager.isBlacklisted(morph.name))
 		{
@@ -52,6 +57,11 @@ public class MorphCategory
 
 		MorphManager.INSTANCE.applySettings(morph);
 
+		this.addMorph(morph);
+	}
+
+	protected void addMorph(AbstractMorph morph)
+	{
 		this.morphs.add(morph);
 	}
 

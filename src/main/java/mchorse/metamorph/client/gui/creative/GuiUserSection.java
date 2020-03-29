@@ -42,14 +42,14 @@ public class GuiUserSection extends GuiMorphSection
 			contextMenu = new GuiSimpleContextMenu(this.mc);
 		}
 
-		contextMenu.action(Icons.ADD, "Add a new category", this::addCategory);
+		contextMenu.action(Icons.ADD, "Add a new category", () -> section.add(new UserCategory(this.section, "User category")));
 
 		if (this.hoverCategory instanceof UserCategory)
 		{
 			MorphCategory category = this.hoverCategory;
 
 			contextMenu.action(Icons.EDIT, "Rename category", () -> this.renameCategory(category));
-			contextMenu.action(Icons.REMOVE, "Remove category", () -> this.removeCategory(category));
+			contextMenu.action(Icons.REMOVE, "Remove category", () -> this.section.remove(category));
 
 			if (this.hoverMorph != null)
 			{
@@ -60,13 +60,6 @@ public class GuiUserSection extends GuiMorphSection
 		}
 
 		return contextMenu;
-	}
-
-	private void addCategory()
-	{
-		UserSection section = (UserSection) this.section;
-
-		section.add(new UserCategory(this.section, "User category"));
 	}
 
 	private void renameCategory(MorphCategory category)
@@ -90,12 +83,5 @@ public class GuiUserSection extends GuiMorphSection
 		modal.resize();
 
 		this.parent.add(modal);
-	}
-
-	private void removeCategory(MorphCategory category)
-	{
-		UserSection section = (UserSection) this.section;
-
-		section.remove(category);
 	}
 }

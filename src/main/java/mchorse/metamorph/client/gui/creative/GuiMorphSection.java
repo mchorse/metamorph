@@ -37,6 +37,8 @@ public class GuiMorphSection extends GuiElement
 	protected AbstractMorph hoverMorph;
 	protected MorphCategory hoverCategory;
 
+	private String filter = "";
+
 	public GuiMorphSection(Minecraft mc, GuiCreativeMorphs parent, MorphSection section, Consumer<GuiMorphSection> callback)
 	{
 		super(mc);
@@ -60,6 +62,42 @@ public class GuiMorphSection extends GuiElement
 		this.category = null;
 	}
 
+	/* Searching methods */
+
+	public void setFilter(String filter)
+	{
+		this.filter = filter;
+	}
+
+	public boolean isMatching(AbstractMorph morph)
+	{
+		if (this.filter.isEmpty())
+		{
+			return true;
+		}
+
+		return morph.name.toLowerCase().contains(this.filter) || morph.getDisplayName().toLowerCase().contains(this.filter);
+	}
+
+	/* Calculation methods */
+
+	public int getMorphsSize(MorphCategory category)
+	{
+		if (this.filter.isEmpty())
+		{
+			return category.getMorphs().size();
+		}
+
+		int count = 0;
+
+		for (AbstractMorph morph : category.getMorphs())
+		{
+			count += this.isMatching(morph) ? 1 : 0;
+		}
+
+		return count;
+	}
+
 	public int getPerRow()
 	{
 		return Math.max(this.area.w / this.cellWidth, 1);
@@ -67,7 +105,12 @@ public class GuiMorphSection extends GuiElement
 
 	public int getCategoryHeight(MorphCategory category)
 	{
-		int size = Math.max(category.morphs.size(), 1);
+		return this.getCategoryHeight(category, this.getMorphsSize(category));
+	}
+
+	public int getCategoryHeight(MorphCategory category, int given)
+	{
+		int size = Math.max(given, 1);
 
 		return (int) Math.ceil(size / (float) this.getPerRow()) * this.cellHeight;
 	}
@@ -78,13 +121,15 @@ public class GuiMorphSection extends GuiElement
 
 		for (MorphCategory category : this.section.categories)
 		{
-			if (category.isHidden())
+			int size = this.getMorphsSize(category);
+
+			if (category.isHidden() || size == 0)
 			{
 				continue;
 			}
 
 			h += CATEGORY_HEIGHT;
-			h += this.getCategoryHeight(category);
+			h += this.getCategoryHeight(category, size);
 		}
 
 		return h;
@@ -97,24 +142,32 @@ public class GuiMorphSection extends GuiElement
 
 		for (MorphCategory category : this.section.categories)
 		{
-			if (category.isHidden())
+			int size = this.getMorphsSize(category);
+			int exclude = 0;
+
+			if (category.isHidden() || size == 0)
 			{
 				continue;
 			}
 
 			h += CATEGORY_HEIGHT;
 
-			for (int i = 0; i < category.morphs.size(); i ++)
+			for (int i = 0; i < category.getMorphs().size(); i ++)
 			{
-				AbstractMorph child = category.morphs.get(i);
+				AbstractMorph child = category.getMorphs().get(i);
+
+				if (!this.isMatching(child))
+				{
+					exclude += 1;
+				}
 
 				if (child == morph)
 				{
-					return h + (i / row) * this.cellHeight;
+					return h + ((i - exclude) / row) * this.cellHeight;
 				}
 			}
 
-			h += this.getCategoryHeight(category);
+			h += this.getCategoryHeight(category, category.getMorphs().size() - size);
 		}
 
 		return -1;
@@ -143,7 +196,9 @@ public class GuiMorphSection extends GuiElement
 
 			for (MorphCategory category : this.section.categories)
 			{
-				if (category.isHidden())
+				int count = this.getMorphsSize(category);
+
+				if (category.isHidden() || count == 0)
 				{
 					continue;
 				}
@@ -154,14 +209,38 @@ public class GuiMorphSection extends GuiElement
 				int iy = y / this.cellHeight;
 				int i = ix + (y < 0 ? -1 : iy) * row;
 
-				if (i >= 0 && i < category.morphs.size())
+				if (i >= 0 && i < count)
 				{
-					this.set(category.morphs.get(i), category);
+					int real = category.getMorphs().size();
 
-					return true;
+					if (count == real)
+					{
+						this.set(category.getMorphs().get(i), category);
+
+						return true;
+					}
+					else
+					{
+						for (int j = 0, k = -1; j < real; j ++)
+						{
+							AbstractMorph morph = category.getMorphs().get(j);
+
+							if (this.isMatching(morph))
+							{
+								k ++;
+							}
+
+							if (i == k)
+							{
+								this.set(morph, category);
+
+								return true;
+							}
+						}
+					}
 				}
 
-				y -= this.getCategoryHeight(category);
+				y -= this.getCategoryHeight(category, count);
 			}
 
 			this.set(null, null);
@@ -250,7 +329,9 @@ public class GuiMorphSection extends GuiElement
 
 			for (MorphCategory category : this.section.categories)
 			{
-				if (category.isHidden())
+				int count = this.getMorphsSize(category);
+
+				if (category.isHidden() || count == 0)
 				{
 					continue;
 				}
@@ -269,11 +350,16 @@ public class GuiMorphSection extends GuiElement
 				float x = 0;
 				y += CATEGORY_HEIGHT;
 
-				for (int i = 0; i < category.morphs.size(); i ++)
+				for (int i = 0, j = 0; i < category.getMorphs().size(); i ++)
 				{
-					AbstractMorph morph = category.morphs.get(i);
+					AbstractMorph morph = category.getMorphs().get(i);
 
-					if (i != 0 && i % row == 0)
+					if (!this.isMatching(morph))
+					{
+						continue;
+					}
+
+					if (j != 0 && j % row == 0)
 					{
 						x = 0;
 						y += this.cellHeight;
@@ -294,6 +380,8 @@ public class GuiMorphSection extends GuiElement
 					GuiDraw.scissor(mx, my, w, this.cellHeight, context);
 					this.drawMorph(context, morph, mx, my, w, this.cellHeight);
 					GuiDraw.unscissor(context);
+
+					j ++;
 				}
 
 				y += this.cellHeight;
