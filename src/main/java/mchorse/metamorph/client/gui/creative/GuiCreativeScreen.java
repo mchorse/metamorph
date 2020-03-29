@@ -4,6 +4,7 @@ import mchorse.mclib.client.gui.framework.GuiBase;
 import mchorse.mclib.client.gui.framework.elements.buttons.GuiButtonElement;
 import mchorse.mclib.client.gui.framework.elements.buttons.GuiIconElement;
 import mchorse.mclib.client.gui.utils.Area;
+import mchorse.mclib.client.gui.utils.Icons;
 import mchorse.mclib.utils.Direction;
 import mchorse.metamorph.api.morphs.AbstractMorph;
 import mchorse.metamorph.capabilities.morphing.Morphing;
@@ -13,7 +14,9 @@ import mchorse.metamorph.network.common.PacketMorph;
 import mchorse.metamorph.util.MMIcons;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.Gui;
+import net.minecraft.client.gui.GuiScreen;
 import net.minecraft.client.resources.I18n;
+import net.minecraft.nbt.NBTTagCompound;
 
 /**
  * Creative morphs GUI
@@ -32,6 +35,7 @@ public class GuiCreativeScreen extends GuiBase
     /* GUI stuff */
     private GuiSelectorEditor selectors;
     private GuiIconElement icon;
+    private GuiIconElement copy;
     private GuiButtonElement morph;
     private GuiButtonElement acquire;
     private GuiButtonElement close;
@@ -47,6 +51,8 @@ public class GuiCreativeScreen extends GuiBase
 
         this.icon = new GuiIconElement(mc, MMIcons.BOX, this::toggleEntitySelector);
         this.icon.tooltip("Entity selectors", Direction.BOTTOM);
+        this.copy = new GuiIconElement(mc, Icons.COPY, this::copyMorphCommand);
+        this.copy.tooltip("Copy /morph command for selected morph", Direction.BOTTOM);
         this.morph = new GuiButtonElement(mc, I18n.format("metamorph.gui.morph"), (b) ->
         {
             this.pane.finish();
@@ -79,9 +85,26 @@ public class GuiCreativeScreen extends GuiBase
         this.acquire.flex().relative(this.morph.resizer()).set(65, 0, 60, 20);
         this.close.flex().relative(this.acquire.resizer()).set(65, 0, 60, 20);
         this.icon.flex().relative(this.morph.resizer()).set(-18, 2, 16, 16);
+        this.copy.flex().relative(this.icon.resizer()).set(-20, 0, 16, 16);
         this.pane.flex().parent(this.viewport).set(0, 40, 0, 0).w(1, 0).h(1, -40);
 
-        this.root.add(this.pane, this.icon, this.morph, this.acquire, this.close, this.selectors);
+        this.root.add(this.pane, this.icon, this.copy, this.morph, this.acquire, this.close, this.selectors);
+    }
+
+    private void copyMorphCommand(GuiIconElement button)
+    {
+        AbstractMorph morph = this.pane.getSelected();
+
+        if (morph != null)
+        {
+            NBTTagCompound nbt = morph.toNBT();
+
+            nbt.removeTag("Name");
+
+            String command = "/morph @p " + morph.name + " " + nbt.toString();
+
+            GuiScreen.setClipboardString(command);
+        }
     }
 
     private void toggleEntitySelector(GuiIconElement button)
