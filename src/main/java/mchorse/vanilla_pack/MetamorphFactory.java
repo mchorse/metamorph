@@ -36,6 +36,7 @@ import mchorse.vanilla_pack.actions.Teleport;
 import mchorse.vanilla_pack.attacks.KnockbackAttack;
 import mchorse.vanilla_pack.attacks.PoisonAttack;
 import mchorse.vanilla_pack.attacks.WitherAttack;
+import mchorse.vanilla_pack.editors.GuiBlockMorph;
 import mchorse.vanilla_pack.editors.GuiPlayerMorph;
 import mchorse.vanilla_pack.morphs.BlockMorph;
 import mchorse.vanilla_pack.morphs.IronGolemMorph;
@@ -118,6 +119,7 @@ public class MetamorphFactory implements IMorphFactory
     @SideOnly(Side.CLIENT)
     public void registerMorphEditors(Minecraft mc, List<GuiAbstractMorph> editors)
     {
+        editors.add(new GuiBlockMorph(mc));
         editors.add(new GuiPlayerMorph(mc));
         editors.add(new GuiAbstractMorph(mc));
     }

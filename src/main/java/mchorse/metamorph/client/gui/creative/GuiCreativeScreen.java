@@ -3,7 +3,6 @@ package mchorse.metamorph.client.gui.creative;
 import mchorse.mclib.client.gui.framework.GuiBase;
 import mchorse.mclib.client.gui.framework.elements.buttons.GuiButtonElement;
 import mchorse.mclib.client.gui.framework.elements.buttons.GuiIconElement;
-import mchorse.mclib.client.gui.utils.Area;
 import mchorse.mclib.client.gui.utils.Icons;
 import mchorse.mclib.utils.Direction;
 import mchorse.metamorph.api.morphs.AbstractMorph;
@@ -49,7 +48,7 @@ public class GuiCreativeScreen extends GuiBase
         this.selectors = new GuiSelectorEditor(mc);
         this.selectors.setVisible(false);
 
-        this.icon = new GuiIconElement(mc, MMIcons.BOX, this::toggleEntitySelector);
+        this.icon = new GuiIconElement(mc, MMIcons.PROPERTIES, this::toggleEntitySelector);
         this.icon.tooltip("Entity selectors", Direction.BOTTOM);
         this.copy = new GuiIconElement(mc, Icons.COPY, this::copyMorphCommand);
         this.copy.tooltip("Copy /morph command for selected morph", Direction.BOTTOM);
@@ -77,7 +76,7 @@ public class GuiCreativeScreen extends GuiBase
             }
         });
         this.close = new GuiButtonElement(mc, I18n.format("metamorph.gui.close"), (b) -> this.closeScreen());
-        this.pane = new GuiCreativeMorphs(mc, this.selectors::setMorph);
+        this.pane = new GuiCreativeMorphs(mc, this::setMorph);
         this.pane.setSelected(Morphing.get(mc.player).getCurrentMorph());
 
         this.selectors.flex().parent(this.viewport).wh(0.5F, 1F);
@@ -123,10 +122,24 @@ public class GuiCreativeScreen extends GuiBase
         this.pane.resize();
     }
 
+    private void setMorph(AbstractMorph morph)
+    {
+        this.selectors.setMorph(morph);
+        this.copy.setVisible(morph != null);
+    }
+
     @Override
     public boolean doesGuiPauseGame()
     {
         return false;
+    }
+
+    @Override
+    protected void closeScreen()
+    {
+        this.pane.finish();
+
+        super.closeScreen();
     }
 
     @Override
