@@ -6,6 +6,7 @@ import mchorse.metamorph.api.creative.categories.MorphCategory;
 import mchorse.metamorph.api.creative.sections.MorphSection;
 import mchorse.metamorph.api.morphs.EntityMorph;
 import mchorse.vanilla_pack.morphs.BlockMorph;
+import mchorse.vanilla_pack.morphs.ItemMorph;
 import mchorse.vanilla_pack.morphs.PlayerMorph;
 import net.minecraft.entity.EntityList;
 import net.minecraft.entity.EntityLivingBase;
@@ -136,7 +137,6 @@ public class MetamorphSection extends MorphSection
 		 */
 
 		/* Miscellaneous morphs */
-		BlockMorph block = new BlockMorph();
 		PlayerMorph notch = new PlayerMorph();
 		NBTTagCompound tag = new NBTTagCompound();
 
@@ -144,7 +144,8 @@ public class MetamorphSection extends MorphSection
 		tag.setString("Username", "Notch");
 		notch.fromNBT(tag);
 
-		this.get("generic").add(block);
+		this.get("generic").add(new BlockMorph());
+		this.get("generic").add(new ItemMorph());
 		this.get("generic").add(notch);
 
 		/* Add categories to the main list */

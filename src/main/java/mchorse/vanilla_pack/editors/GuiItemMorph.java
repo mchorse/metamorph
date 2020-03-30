@@ -4,33 +4,38 @@ import mchorse.mclib.client.gui.framework.elements.utils.GuiContext;
 import mchorse.metamorph.api.morphs.AbstractMorph;
 import mchorse.metamorph.client.gui.editor.GuiAbstractMorph;
 import mchorse.metamorph.util.MMIcons;
-import mchorse.vanilla_pack.morphs.BlockMorph;
+import mchorse.vanilla_pack.morphs.ItemMorph;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.resources.I18n;
 import org.lwjgl.opengl.GL11;
 
-public class GuiBlockMorph extends GuiAbstractMorph<BlockMorph>
+public class GuiItemMorph extends GuiAbstractMorph<ItemMorph>
 {
 	public GuiItemStackEditor block;
 
-	public GuiBlockMorph(Minecraft mc)
+	public GuiItemMorph(Minecraft mc)
 	{
 		super(mc);
 
 		this.defaultPanel = this.block = new GuiItemStackEditor(mc, this);
-		this.registerPanel(this.block, I18n.format("metamorph.gui.panels.block"), MMIcons.BLOCK);
+		this.registerPanel(this.block, I18n.format("metamorph.gui.panels.item"), MMIcons.ITEM);
 	}
 
 	@Override
 	public boolean canEdit(AbstractMorph morph)
 	{
-		return morph instanceof BlockMorph;
+		return morph instanceof ItemMorph;
 	}
 
 	@Override
 	protected void drawMorph(GuiContext context)
 	{
-		super.drawMorph(context);
+		try
+		{
+			this.morph.renderOnScreen(this.mc.player, this.area.mx(), this.area.my(), this.area.h / 3, 1);
+		}
+		catch (Exception e)
+		{}
 
 		GL11.glClear(GL11.GL_DEPTH_BUFFER_BIT);
 	}

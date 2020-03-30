@@ -2,18 +2,17 @@ package mchorse.vanilla_pack.editors;
 
 import mchorse.mclib.client.gui.framework.elements.buttons.GuiSlotElement;
 import mchorse.mclib.client.gui.framework.elements.utils.GuiInventoryElement;
+import mchorse.metamorph.client.gui.editor.GuiAbstractMorph;
 import mchorse.metamorph.client.gui.editor.GuiMorphPanel;
-import mchorse.vanilla_pack.morphs.BlockMorph;
+import mchorse.vanilla_pack.morphs.ItemStackMorph;
 import net.minecraft.client.Minecraft;
-import net.minecraft.item.ItemBlock;
-import net.minecraft.item.ItemStack;
 
-public class GuiBlockEditor extends GuiMorphPanel<BlockMorph, GuiBlockMorph>
+public class GuiItemStackEditor extends GuiMorphPanel<ItemStackMorph, GuiAbstractMorph<? extends ItemStackMorph>>
 {
 	public GuiSlotElement slot;
 	public GuiInventoryElement inventory;
 
-	public GuiBlockEditor(Minecraft mc, GuiBlockMorph editor)
+	public GuiItemStackEditor(Minecraft mc, GuiAbstractMorph<? extends ItemStackMorph> editor)
 	{
 		super(mc, editor);
 
@@ -28,11 +27,8 @@ public class GuiBlockEditor extends GuiMorphPanel<BlockMorph, GuiBlockMorph>
 			this.slot.selected = false;
 			this.slot.stack = stack;
 
-			if (stack.getItem() instanceof ItemBlock)
-			{
-				this.morph.block = ((ItemBlock) stack.getItem()).getBlock().getStateFromMeta(stack.getItemDamage());
-				this.inventory.setVisible(false);
-			}
+			this.morph.setStack(stack);
+			this.inventory.setVisible(false);
 		});
 		this.inventory.setVisible(false);
 
@@ -43,10 +39,10 @@ public class GuiBlockEditor extends GuiMorphPanel<BlockMorph, GuiBlockMorph>
 	}
 
 	@Override
-	public void fillData(BlockMorph morph)
+	public void fillData(ItemStackMorph morph)
 	{
 		super.fillData(morph);
 
-		this.slot.stack = new ItemStack(morph.block.getBlock(), 1, morph.block.getBlock().getMetaFromState(morph.block));
+		this.slot.stack = morph.getStack();
 	}
 }

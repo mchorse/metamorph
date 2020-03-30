@@ -14,6 +14,8 @@ import net.minecraft.client.renderer.texture.TextureMap;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
+import net.minecraft.item.ItemBlock;
+import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.BlockPos;
@@ -26,7 +28,7 @@ import net.minecraftforge.fml.relauncher.SideOnly;
  * 
  * This morph allows players to disguise themselves as blocks.
  */
-public class BlockMorph extends AbstractMorph
+public class BlockMorph extends ItemStackMorph
 {
     /**
      * Block state to render, doesn't really mean anything on the server 
@@ -45,6 +47,21 @@ public class BlockMorph extends AbstractMorph
     public BlockMorph()
     {
         this.name = "block";
+    }
+
+    @Override
+    public void setStack(ItemStack stack)
+    {
+        if (stack.getItem() instanceof ItemBlock)
+        {
+            this.block = ((ItemBlock) stack.getItem()).getBlock().getStateFromMeta(stack.getItemDamage());
+        }
+    }
+
+    @Override
+    public ItemStack getStack()
+    {
+        return new ItemStack(this.block.getBlock(), 1, this.block.getBlock().getMetaFromState(this.block));
     }
 
     /**
