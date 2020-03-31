@@ -10,13 +10,13 @@ import mchorse.mclib.client.gui.framework.elements.list.GuiListElement;
 import mchorse.mclib.client.gui.framework.elements.list.GuiStringListElement;
 import mchorse.mclib.client.gui.framework.elements.utils.GuiContext;
 import mchorse.mclib.client.gui.framework.elements.utils.GuiInventoryElement;
-import mchorse.mclib.client.gui.utils.resizers.RowResizer;
+import mchorse.mclib.client.gui.utils.resizers.layout.RowResizer;
 import mchorse.mclib.utils.Direction;
 import mchorse.metamorph.api.morphs.AbstractMorph;
-import mchorse.metamorph.client.gui.editor.GuiAbstractMorph;
-import mchorse.metamorph.client.gui.editor.GuiMorphPanel;
 import mchorse.metamorph.client.gui.creative.GuiCreativeMorphs;
 import mchorse.metamorph.client.gui.creative.GuiCreativeMorphsMenu;
+import mchorse.metamorph.client.gui.editor.GuiAbstractMorph;
+import mchorse.metamorph.client.gui.editor.GuiMorphPanel;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.Gui;
 import net.minecraft.client.resources.I18n;
@@ -212,7 +212,7 @@ public class GuiBodyPartEditor extends GuiMorphPanel<AbstractMorph, GuiAbstractM
             this.stacks.add(this.slots[i]);
         }
 
-        this.stacks.resizer(new RowResizer(this.stacks, 6));
+        this.stacks.flex().post(new RowResizer(this.stacks, 6));
         this.add(this.stacks, this.inventory);
     }
 

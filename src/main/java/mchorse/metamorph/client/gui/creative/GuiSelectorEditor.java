@@ -9,7 +9,7 @@ import mchorse.mclib.client.gui.framework.elements.list.GuiListElement;
 import mchorse.mclib.client.gui.framework.elements.utils.GuiContext;
 import mchorse.mclib.client.gui.framework.elements.utils.GuiLabel;
 import mchorse.mclib.client.gui.utils.Icons;
-import mchorse.mclib.client.gui.utils.resizers.ColumnResizer;
+import mchorse.mclib.client.gui.utils.resizers.layout.ColumnResizer;
 import mchorse.mclib.utils.Direction;
 import mchorse.mclib.utils.Timer;
 import mchorse.metamorph.ClientProxy;
@@ -85,7 +85,7 @@ public class GuiSelectorEditor extends GuiElement
 
 		this.selectors.flex().parent(this.area).set(0, 0, 0, 0).anchor(1, 0).x(0.5F, 0).w(0.5F, 0).h(1, 0);
 		this.form.flex().parent(this.area).set(0, 0, 0, 0).x(0.5F, 0).w(0.5F, 0).h(1, 0);
-		this.form.resizer(new ColumnResizer(this.form, 5).stretch().dontCollect().padding(10));
+		this.form.flex().post(new ColumnResizer(this.form, 5).vertical().stretch().padding(10));
 
 		GuiLabel title = new GuiLabel(mc, "Entity Selectors");
 
