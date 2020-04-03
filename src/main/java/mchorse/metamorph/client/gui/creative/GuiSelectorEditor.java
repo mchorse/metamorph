@@ -43,8 +43,7 @@ public class GuiSelectorEditor extends GuiElement
 		this.selectors.sorting().background(0xff000000).setList(EntityModelHandler.selectors);
 		this.selectors.context(() ->
 		{
-			GuiSimpleContextMenu menu = new GuiSimpleContextMenu(mc)
-				.action(Icons.ADD, "Add a selector", this::addSelector);
+			GuiSimpleContextMenu menu = new GuiSimpleContextMenu(mc).action(Icons.ADD, "Add a selector", this::addSelector);
 
 			if (!this.selectors.getCurrent().isEmpty())
 			{
@@ -61,31 +60,26 @@ public class GuiSelectorEditor extends GuiElement
 			this.selector.updateTime();
 			this.timer.mark();
 		});
-		this.name.flex().h(20);
 		this.type = new GuiTextElement(mc, (name) ->
 		{
 			this.selector.type = name;
 			this.selector.updateTime();
 			this.timer.mark();
 		});
-		this.type.flex().h(20);
 		this.active = new GuiToggleElement(mc, "Enabled", (toggle) ->
 		{
 			this.selector.enabled = toggle.isToggled();
 			this.selector.updateTime();
 			this.timer.mark();
 		});
-		this.active.flex().h(20);
 		this.pick = new GuiButtonElement(mc, "Pick morph", (button) ->
 		{
 			this.selecting = true;
 			button.setEnabled(false);
 		});
-		this.pick.flex().h(20);
 
-		this.selectors.flex().parent(this.area).set(0, 0, 0, 0).anchor(1, 0).x(0.5F, 0).w(0.5F, 0).h(1, 0);
-		this.form.flex().parent(this.area).set(0, 0, 0, 0).x(0.5F, 0).w(0.5F, 0).h(1, 0);
-		this.form.flex().post(new ColumnResizer(this.form, 5).vertical().stretch().padding(10));
+		this.form.flex().parent(this.area).w(1F);
+		this.selectors.flex().relative(this.form.resizer()).y(1F).w(1F).hTo(this.flex(), 1F);
 
 		GuiLabel title = new GuiLabel(mc, "Entity Selectors");
 
@@ -101,6 +95,7 @@ public class GuiSelectorEditor extends GuiElement
 
 		this.form.add(title, name, this.name, type, this.type, this.active,this.pick);
 
+		ColumnResizer.apply(this.form, 5).vertical().stretch().height(20).padding(10);
 		this.markContainer().add(this.form, this.selectors);
 
 		this.selectors.setIndex(0);
@@ -112,6 +107,9 @@ public class GuiSelectorEditor extends GuiElement
 		EntityModelHandler.selectors.add(new EntitySelector());
 		this.selectors.update();
 		this.timer.mark();
+
+		this.selectors.setIndex(this.selectors.getList().size() - 1);
+		this.fillData(this.selectors.getCurrent());
 	}
 
 	private void removeSelector()
@@ -166,6 +164,11 @@ public class GuiSelectorEditor extends GuiElement
 		this.area.draw(0xaa000000);
 
 		super.draw(context);
+
+		if (this.selectors.getList().isEmpty())
+		{
+			this.drawCenteredString(this.font, "Right click here...", this.selectors.area.mx(), this.selectors.area.my(), 0x888888);
+		}
 	}
 
 	public void setMorph(AbstractMorph morph)
