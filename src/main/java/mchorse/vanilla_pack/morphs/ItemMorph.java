@@ -43,6 +43,7 @@ public class ItemMorph extends ItemStackMorph
 	public void renderOnScreen(EntityPlayer player, int x, int y, float scale, float alpha)
 	{
 		GlStateManager.disableCull();
+		GlStateManager.enableDepth();
 		RenderHelper.enableGUIStandardItemLighting();
 		OpenGlHelper.setLightmapTextureCoords(OpenGlHelper.lightmapTexUnit, 240.0F, 240.0F);
 

@@ -25,22 +25,7 @@ public class GuiUserSection extends GuiMorphSection
 	@Override
 	public GuiContextMenu createContextMenu(GuiContext context)
 	{
-		GuiSimpleContextMenu contextMenu = null;
-
-		if (!(this.hoverCategory instanceof UserCategory))
-		{
-			GuiContextMenu superMenu = super.createContextMenu(context);
-
-			if (superMenu instanceof GuiSimpleContextMenu)
-			{
-				contextMenu = (GuiSimpleContextMenu) superMenu;
-			}
-		}
-
-		if (contextMenu == null)
-		{
-			contextMenu = new GuiSimpleContextMenu(this.mc);
-		}
+		GuiSimpleContextMenu contextMenu = (GuiSimpleContextMenu) super.createContextMenu(context);
 
 		contextMenu.action(Icons.ADD, "Add a new category", () -> section.add(new UserCategory(this.section, "User category")));
 

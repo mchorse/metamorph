@@ -123,7 +123,7 @@ public class GuiMorphSection extends GuiElement
 		{
 			int size = this.getMorphsSize(category);
 
-			if (category.isHidden() || size == 0)
+			if (category.isHidden())
 			{
 				continue;
 			}
@@ -198,7 +198,7 @@ public class GuiMorphSection extends GuiElement
 			{
 				int count = this.getMorphsSize(category);
 
-				if (category.isHidden() || count == 0)
+				if (category.isHidden() || (count == 0 && !this.filter.isEmpty()))
 				{
 					continue;
 				}
@@ -263,17 +263,24 @@ public class GuiMorphSection extends GuiElement
 	@Override
 	public GuiContextMenu createContextMenu(GuiContext context)
 	{
-		if (this.hoverMorph != null && this.parent.user.global.size() > 0)
+		GuiSimpleContextMenu contextMenu = new GuiSimpleContextMenu(this.mc);
+		AbstractMorph morph = this.hoverMorph;
+
+		if (this.hoverMorph != null)
 		{
-			GuiSimpleContextMenu contextMenu = new GuiSimpleContextMenu(this.mc);
-			AbstractMorph morph = this.hoverMorph;
+			if (this.parent.user.global.size() > 0 && !(this.hoverCategory instanceof UserCategory))
+			{
+				contextMenu.action(Icons.UPLOAD, "Add to global morphs...", () -> this.showGlobalMorphs(morph));
+			}
 
-			contextMenu.action(Icons.UPLOAD, "Add to global morphs...", () -> this.showGlobalMorphs(morph));
-
-			return contextMenu;
+			contextMenu.action(Icons.EDIT, "Edit morph...", () ->
+			{
+				this.parent.setSelected(morph);
+				this.parent.toggleEditMode();
+			});
 		}
 
-		return super.createContextMenu(context);
+		return contextMenu;
 	}
 
 	private void showGlobalMorphs(AbstractMorph morph)
@@ -331,7 +338,7 @@ public class GuiMorphSection extends GuiElement
 			{
 				int count = this.getMorphsSize(category);
 
-				if (category.isHidden() || count == 0)
+				if (category.isHidden() || (count == 0 && !this.filter.isEmpty()))
 				{
 					continue;
 				}

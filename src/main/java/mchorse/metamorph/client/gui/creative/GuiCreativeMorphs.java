@@ -10,6 +10,7 @@ import mchorse.mclib.client.gui.framework.elements.input.GuiTextElement;
 import mchorse.mclib.client.gui.framework.elements.utils.GuiContext;
 import mchorse.mclib.client.gui.framework.elements.utils.GuiDrawable;
 import mchorse.mclib.client.gui.utils.Area;
+import mchorse.mclib.client.gui.utils.resizers.layout.RowResizer;
 import mchorse.metamorph.api.MorphManager;
 import mchorse.metamorph.api.creative.MorphList;
 import mchorse.metamorph.api.creative.categories.MorphCategory;
@@ -57,7 +58,7 @@ public class GuiCreativeMorphs extends GuiElement
     public GuiDelegateElement<GuiAbstractMorph> editor;
 
     public GuiTextElement search;
-    public GuiButtonElement edit;
+    public GuiElement bar;
 
     public GuiScrollElement morphs;
 
@@ -85,18 +86,19 @@ public class GuiCreativeMorphs extends GuiElement
         this.editor = new GuiDelegateElement<GuiAbstractMorph>(mc, null);
         this.editor.flex().parent(this.area).wh(1F, 1F);
 
+        this.bar = new GuiElement(mc);
         this.search = new GuiTextElement(mc, (filter) -> this.setFilter(filter));
         this.search.focus(GuiBase.getCurrent());
-        this.search.flex().parent(this.area).set(10, 0, 0, 20).w(1, -85).y(1, -30);
 
-        this.edit = new GuiButtonElement(mc, I18n.format("metamorph.gui.edit"), (b) -> this.toggleEditMode());
-        this.edit.flex().parent(this.area).set(0, 0, 60, 20).x(1, -70).y(1, - 30);
+        this.bar.flex().parent(this.area).set(10, 0, 0, 20).y(1, -30).w(1, -20);
+        RowResizer.apply(this.bar, 5).preferred(1).height(20);
+        this.bar.add(this.search);
 
         this.morphs = new GuiScrollElement(mc);
         this.morphs.flex().parent(this.area).wh(1F, 1F);
         this.setupMorphs(list);
 
-        this.add(this.morphs, this.search, new GuiDrawable(this::drawOverlay), this.edit, this.editor);
+        this.add(this.morphs, this.bar, new GuiDrawable(this::drawOverlay), this.editor);
     }
 
     private void setupMorphs(MorphList list)
@@ -177,7 +179,6 @@ public class GuiCreativeMorphs extends GuiElement
         boolean hide = this.editor.delegate == null;
 
         this.search.setVisible(hide);
-        this.edit.setVisible(hide);
         this.morphs.setVisible(hide);
     }
 
@@ -207,7 +208,7 @@ public class GuiCreativeMorphs extends GuiElement
 
     protected Consumer<GuiButtonElement> getToggleCallback()
     {
-        return this.edit.callback;
+        return (button) -> this.toggleEditMode();
     }
 
     private GuiAbstractMorph getMorphEditor(AbstractMorph morph)

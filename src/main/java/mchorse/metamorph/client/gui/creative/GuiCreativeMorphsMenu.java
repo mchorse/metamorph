@@ -44,12 +44,12 @@ public class GuiCreativeMorphsMenu extends GuiCreativeMorphs
             this.setVisible(false);
         });
 
-        this.acquire.flex().parent(this.area).set(10, 10, 60, 20);
-        this.close.flex().parent(this.area).set(0, 10, 20, 20).x(1, -30);
-        this.edit.flex().x(1, -35 - 25 - 55);
-        this.add(this.acquire, this.close);
+        this.acquire.flex().wh(60, 20);
+        this.close.flex().wh(20, 20);
 
-        this.search.flex().set(75, 10, 0, 20).w(1, -130 - 65);
+        this.bar.prepend(this.acquire);
+        this.bar.add(this.close);
+        this.bar.flex().set(10, 10, 0, 20);
 
         this.hideTooltip();
         this.setVisible(false);

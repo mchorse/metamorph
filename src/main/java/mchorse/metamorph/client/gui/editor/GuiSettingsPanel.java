@@ -74,8 +74,11 @@ public class GuiSettingsPanel extends GuiMorphPanel<AbstractMorph, GuiAbstractMo
 	{
 		super.fillData(morph);
 
+		this.abilities.clear();
 		this.abilities.add(MorphManager.INSTANCE.abilities.keySet());
+		this.attack.clear();
 		this.attack.add(MorphManager.INSTANCE.attacks.keySet());
+		this.action.clear();
 		this.action.add(MorphManager.INSTANCE.actions.keySet());
 	}
 

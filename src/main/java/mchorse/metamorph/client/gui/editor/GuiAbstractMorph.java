@@ -3,6 +3,7 @@ package mchorse.metamorph.client.gui.editor;
 import mchorse.mclib.client.gui.framework.elements.GuiPanelBase;
 import mchorse.mclib.client.gui.framework.elements.buttons.GuiButtonElement;
 import mchorse.mclib.client.gui.framework.elements.utils.GuiContext;
+import mchorse.mclib.client.gui.framework.elements.utils.GuiDraw;
 import mchorse.metamorph.api.morphs.AbstractMorph;
 import mchorse.metamorph.util.MMIcons;
 import net.minecraft.client.Minecraft;
@@ -86,11 +87,15 @@ public class GuiAbstractMorph<T extends AbstractMorph> extends GuiPanelBase<GuiM
 
     protected void drawMorph(GuiContext context)
     {
+        GuiDraw.scissor(this.area.x, this.area.y, this.area.w, this.area.h, context);
+
         try
         {
             this.morph.renderOnScreen(this.mc.player, this.area.mx(), this.area.y(0.66F), this.area.h / 3, 1);
         }
         catch (Exception e)
         {}
+
+        GuiDraw.unscissor(context);
     }
 }
