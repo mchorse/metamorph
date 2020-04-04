@@ -212,7 +212,7 @@ public class GuiBodyPartEditor extends GuiMorphPanel<AbstractMorph, GuiAbstractM
             this.stacks.add(this.slots[i]);
         }
 
-        this.stacks.flex().post(new RowResizer(this.stacks, 6));
+        RowResizer.apply(this.stacks, 6);
         this.add(this.stacks, this.inventory);
     }
 

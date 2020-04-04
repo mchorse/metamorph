@@ -37,6 +37,7 @@ import mchorse.vanilla_pack.attacks.KnockbackAttack;
 import mchorse.vanilla_pack.attacks.PoisonAttack;
 import mchorse.vanilla_pack.attacks.WitherAttack;
 import mchorse.vanilla_pack.editors.GuiBlockMorph;
+import mchorse.vanilla_pack.editors.GuiEntityMorph;
 import mchorse.vanilla_pack.editors.GuiItemMorph;
 import mchorse.vanilla_pack.editors.GuiPlayerMorph;
 import mchorse.vanilla_pack.morphs.BlockMorph;
@@ -124,6 +125,7 @@ public class MetamorphFactory implements IMorphFactory
         editors.add(new GuiItemMorph(mc));
         editors.add(new GuiBlockMorph(mc));
         editors.add(new GuiPlayerMorph(mc));
+        editors.add(new GuiEntityMorph(mc));
         editors.add(new GuiAbstractMorph(mc));
     }
 

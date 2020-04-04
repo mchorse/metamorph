@@ -23,6 +23,7 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.Gui;
 import net.minecraft.client.resources.I18n;
 import net.minecraftforge.common.MinecraftForge;
+import org.lwjgl.input.Keyboard;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -57,9 +58,10 @@ public class GuiCreativeMorphs extends GuiElement
      */
     public GuiDelegateElement<GuiAbstractMorph> editor;
 
-    public GuiTextElement search;
     public GuiElement bar;
+    public GuiTextElement search;
 
+    public GuiQuickEditor quickEditor;
     public GuiScrollElement morphs;
 
     public UserSection user;
@@ -86,19 +88,41 @@ public class GuiCreativeMorphs extends GuiElement
         this.editor = new GuiDelegateElement<GuiAbstractMorph>(mc, null);
         this.editor.flex().parent(this.area).wh(1F, 1F);
 
-        this.bar = new GuiElement(mc);
-        this.search = new GuiTextElement(mc, (filter) -> this.setFilter(filter));
-        this.search.focus(GuiBase.getCurrent());
+        /* Create quick editor */
+        this.quickEditor = new GuiQuickEditor(mc, this);
+        this.quickEditor.flex().parent(this.area).x(1F, -200).wTo(this.flex(), 1F).h(1F);
+        this.quickEditor.setVisible(false);
 
-        this.bar.flex().parent(this.area).set(10, 0, 0, 20).y(1, -30).w(1, -20);
-        RowResizer.apply(this.bar, 5).preferred(1).height(20);
-        this.bar.add(this.search);
-
+        /* Create morph panels */
         this.morphs = new GuiScrollElement(mc);
         this.morphs.flex().parent(this.area).wh(1F, 1F);
         this.setupMorphs(list);
 
-        this.add(this.morphs, this.bar, new GuiDrawable(this::drawOverlay), this.editor);
+        /* Initiate bottom bar */
+        this.bar = new GuiElement(mc);
+        this.search = new GuiTextElement(mc, (filter) -> this.setFilter(filter));
+        this.search.focus(GuiBase.getCurrent());
+
+        this.bar.flex().parent(this.morphs.area).set(10, 0, 0, 20).y(1, -30).w(1, -20);
+        RowResizer.apply(this.bar, 5).preferred(1).height(20);
+        this.bar.add(this.search);
+
+        this.add(this.morphs, this.bar, this.quickEditor, new GuiDrawable(this::drawOverlay), this.editor);
+
+        /* Morph editor keybinds */
+        this.morphs.keys()
+            .register("Edit", Keyboard.KEY_E, () ->
+            {
+                this.toggleEditMode();
+
+                return true;
+            })
+            .register("Quick edit", Keyboard.KEY_Q, () ->
+            {
+                this.toggleQuickEdit();
+
+                return true;
+            });
     }
 
     private void setupMorphs(MorphList list)
@@ -134,6 +158,31 @@ public class GuiCreativeMorphs extends GuiElement
     public boolean isEditMode()
     {
         return this.editor.delegate != null;
+    }
+
+    public void toggleQuickEdit()
+    {
+        AbstractMorph morph = this.getSelected();
+
+        if (this.isEditMode() || morph == null)
+        {
+            return;
+        }
+
+        this.quickEditor.toggleVisible();
+
+        if (this.quickEditor.isVisible())
+        {
+            this.morphs.flex().wTo(this.quickEditor.flex());
+
+            this.quickEditor.setMorph(morph, this.getMorphEditor(morph));
+        }
+        else
+        {
+            this.morphs.flex().w(1F);
+        }
+
+        this.resize();
     }
 
     public void toggleEditMode()
@@ -178,8 +227,9 @@ public class GuiCreativeMorphs extends GuiElement
 
         boolean hide = this.editor.delegate == null;
 
-        this.search.setVisible(hide);
+        this.bar.setVisible(hide);
         this.morphs.setVisible(hide);
+        this.quickEditor.setVisible(hide);
     }
 
     public void finish()
@@ -370,6 +420,20 @@ public class GuiCreativeMorphs extends GuiElement
 
         this.selected = selected;
         this.setMorph(selected.morph);
+
+        if (this.quickEditor.isVisible())
+        {
+            AbstractMorph morph = this.getSelected();
+
+            if (morph != null)
+            {
+                this.quickEditor.setMorph(morph, this.getMorphEditor(morph));
+            }
+            else
+            {
+                this.toggleQuickEdit();
+            }
+        }
     }
 
     public void setMorph(AbstractMorph morph)

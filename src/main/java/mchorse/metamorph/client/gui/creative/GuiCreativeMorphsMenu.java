@@ -36,12 +36,8 @@ public class GuiCreativeMorphsMenu extends GuiCreativeMorphs
 
         this.close = new GuiButtonElement(mc, "X", (b) ->
         {
-            if (this.isEditMode())
-            {
-                this.setMorph(this.getSelected());
-            }
-
-            this.setVisible(false);
+            this.finish();
+            this.removeFromParent();
         });
 
         this.acquire.flex().wh(60, 20);
@@ -49,31 +45,8 @@ public class GuiCreativeMorphsMenu extends GuiCreativeMorphs
 
         this.bar.prepend(this.acquire);
         this.bar.add(this.close);
-        this.bar.flex().set(10, 10, 0, 20);
 
-        this.hideTooltip();
-        this.setVisible(false);
-    }
-
-    @Override
-    public AbstractMorph setSelected(AbstractMorph morph)
-    {
-        morph = super.setSelected(morph);
-
-        /* The unknown morph that can't be found in the morph picker 
-         * will get cloned, so we have to retrieve it */
-        this.setMorph(this.getSelected());
-
-        return morph;
-    }
-
-    @Override
-    public void toggleEditMode()
-    {
-        super.toggleEditMode();
-
-        this.acquire.setVisible(this.editor.delegate == null);
-        this.close.setVisible(this.editor.delegate == null);
+        this.markContainer();
     }
 
     /* Don't let click event pass through the background... */
