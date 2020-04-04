@@ -194,7 +194,7 @@ public class UserSection extends MorphSection
 
 		try
 		{
-			FileUtils.writeStringToFile(Metamorph.proxy.list, JsonUtils.jsonToPretty(array));
+			FileUtils.writeStringToFile(Metamorph.proxy.list, JsonUtils.jsonToPretty(array), Charset.defaultCharset());
 		}
 		catch (Exception e)
 		{

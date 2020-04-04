@@ -16,6 +16,7 @@ import net.minecraft.client.gui.Gui;
 import net.minecraft.client.gui.GuiScreen;
 import net.minecraft.client.resources.I18n;
 import net.minecraft.nbt.NBTTagCompound;
+import org.lwjgl.input.Keyboard;
 
 /**
  * Creative morphs GUI
@@ -31,7 +32,6 @@ import net.minecraft.nbt.NBTTagCompound;
  */
 public class GuiCreativeScreen extends GuiBase
 {
-    /* GUI stuff */
     private GuiSelectorEditor selectors;
     private GuiIconElement icon;
     private GuiIconElement copy;
@@ -87,6 +87,13 @@ public class GuiCreativeScreen extends GuiBase
         this.selectors.flex().parent(this.viewport).wTo(this.pane.flex()).h(1F);
 
         this.root.add(this.pane, this.icon, this.copy, this.morph, this.acquire, this.close, this.selectors);
+
+        this.root.keys().register("Entity Selectors", Keyboard.KEY_S, () ->
+        {
+            this.toggleEntitySelector(this.icon);
+
+            return true;
+        });
     }
 
     private void copyMorphCommand(GuiIconElement button)
@@ -99,9 +106,7 @@ public class GuiCreativeScreen extends GuiBase
 
             nbt.removeTag("Name");
 
-            String command = "/morph @p " + morph.name + " " + nbt.toString();
-
-            GuiScreen.setClipboardString(command);
+            GuiScreen.setClipboardString("/morph @p " + morph.name + " " + nbt.toString());
         }
     }
 
@@ -148,7 +153,6 @@ public class GuiCreativeScreen extends GuiBase
         /* Draw panel backgrounds */
         this.drawDefaultBackground();
         Gui.drawRect(this.pane.area.x, 0, this.width, 40, 0xaa000000);
-        Gui.drawRect(this.pane.area.x, 39, this.width, 40, 0x44000000);
 
         super.drawScreen(mouseX, mouseY, partialTicks);
     }

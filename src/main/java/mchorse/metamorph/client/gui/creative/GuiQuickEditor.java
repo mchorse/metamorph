@@ -15,6 +15,12 @@ import net.minecraft.nbt.NBTTagCompound;
 
 import java.util.List;
 
+/**
+ * Quick morph editor
+ *
+ * This GUI is responsible for providing quick access editing of the most used
+ * fields in the morph editor
+ */
 public class GuiQuickEditor extends GuiElement
 {
 	public GuiCreativeMorphs parent;
@@ -24,7 +30,6 @@ public class GuiQuickEditor extends GuiElement
 
 	public GuiLabelListElement<NBTTagCompound> presets;
 	public GuiScrollElement quickAccess;
-
 	public GuiQuickEditor(Minecraft mc, GuiCreativeMorphs parent)
 	{
 		super(mc);
@@ -70,6 +75,7 @@ public class GuiQuickEditor extends GuiElement
 
 	public void setMorph(AbstractMorph morph, GuiAbstractMorph<AbstractMorph> editor)
 	{
+		/* Fill quick access */
 		this.quickAccess.clear();
 
 		for (GuiElement element : editor.getFields(this.mc, this.parent, morph))
@@ -77,10 +83,16 @@ public class GuiQuickEditor extends GuiElement
 			this.quickAccess.add(element);
 		}
 
-		this.presets.clear();
-		this.presets.add(editor.getPresets(morph));
-		this.toggleVisibility(this.presets.isVisible() ? this.presetsButton : this.quickAccessButton);
+		/* Fill presets */
+		List<Label<NBTTagCompound>> presets = editor.getPresets(morph);
 
+		if (!presets.equals(this.presets.getList()))
+		{
+			this.presets.clear();
+			this.presets.add(presets);
+		}
+
+		this.toggleVisibility(this.presets.isVisible() ? this.presetsButton : this.quickAccessButton);
 		this.resize();
 	}
 
@@ -99,6 +111,11 @@ public class GuiQuickEditor extends GuiElement
 	public void draw(GuiContext context)
 	{
 		this.area.draw(0xaa000000);
+
+		if (this.presets.isVisible() && this.presets.getList().isEmpty())
+		{
+			this.drawCenteredString(this.font, "No factory presets found...", this.presets.area.mx(), this.presets.area.my() - this.font.FONT_HEIGHT / 2, 0xffffff);
+		}
 
 		super.draw(context);
 	}

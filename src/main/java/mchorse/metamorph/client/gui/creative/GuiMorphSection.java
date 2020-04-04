@@ -37,6 +37,10 @@ public class GuiMorphSection extends GuiElement
 	protected AbstractMorph hoverMorph;
 	protected MorphCategory hoverCategory;
 
+	public int selectedX;
+	public int selectedY;
+	public int height;
+
 	private String filter = "";
 
 	public GuiMorphSection(Minecraft mc, GuiCreativeMorphs parent, MorphSection section, Consumer<GuiMorphSection> callback)
@@ -113,64 +117,6 @@ public class GuiMorphSection extends GuiElement
 		int size = Math.max(given, 1);
 
 		return (int) Math.ceil(size / (float) this.getPerRow()) * this.cellHeight;
-	}
-
-	public int calculateHeight()
-	{
-		int h = HEADER_HEIGHT;
-
-		for (MorphCategory category : this.section.categories)
-		{
-			int size = this.getMorphsSize(category);
-
-			if (category.isHidden())
-			{
-				continue;
-			}
-
-			h += CATEGORY_HEIGHT;
-			h += this.getCategoryHeight(category, size);
-		}
-
-		return h;
-	}
-
-	public int calculateY(AbstractMorph morph)
-	{
-		int row = this.getPerRow();
-		int h = HEADER_HEIGHT;
-
-		for (MorphCategory category : this.section.categories)
-		{
-			int size = this.getMorphsSize(category);
-			int exclude = 0;
-
-			if (category.isHidden() || size == 0)
-			{
-				continue;
-			}
-
-			h += CATEGORY_HEIGHT;
-
-			for (int i = 0; i < category.getMorphs().size(); i ++)
-			{
-				AbstractMorph child = category.getMorphs().get(i);
-
-				if (!this.isMatching(child))
-				{
-					exclude += 1;
-				}
-
-				if (child == morph)
-				{
-					return h + ((i - exclude) / row) * this.cellHeight;
-				}
-			}
-
-			h += this.getCategoryHeight(category, category.getMorphs().size() - size);
-		}
-
-		return -1;
 	}
 
 	@Override
@@ -313,6 +259,7 @@ public class GuiMorphSection extends GuiElement
 
 		if (this.area.h != y)
 		{
+			this.height = y;
 			this.flex().h(y);
 			this.getParent().getParent().resize();
 		}
@@ -329,6 +276,8 @@ public class GuiMorphSection extends GuiElement
 
 		this.hoverMorph = null;
 		this.hoverCategory = null;
+		this.selectedX = 0;
+		this.selectedY = 0;
 
 		if (this.toggled)
 		{
@@ -374,6 +323,13 @@ public class GuiMorphSection extends GuiElement
 
 					int mx = this.area.x + Math.round(x);
 					int my = this.area.y + y;
+
+					if (this.morph == morph)
+					{
+						this.selectedX = Math.round(x);
+						this.selectedY = y;
+					}
+
 					x += this.area.w / (float) row;
 					int w = Math.round(x - (mx - this.area.x));
 
@@ -385,7 +341,7 @@ public class GuiMorphSection extends GuiElement
 					}
 
 					GuiDraw.scissor(mx, my, w, this.cellHeight, context);
-					this.drawMorph(context, morph, mx, my, w, this.cellHeight);
+					this.drawMorph(context, morph, mx, my, w, this.cellHeight, this.hoverMorph == morph, this.morph == morph);
 					GuiDraw.unscissor(context);
 
 					j ++;
@@ -401,13 +357,13 @@ public class GuiMorphSection extends GuiElement
 	/**
 	 * Draw individual morph
 	 */
-	protected void drawMorph(GuiContext context, AbstractMorph morph, int x, int y, int w, int h)
+	protected void drawMorph(GuiContext context, AbstractMorph morph, int x, int y, int w, int h, boolean hover, boolean selected)
 	{
-		if (this.morph == morph)
+		if (selected)
 		{
 			Gui.drawRect(x, y, x + w, y + h, 0xaa000000 + McLib.primaryColor.get());
 		}
-		else if (this.hoverMorph == morph)
+		else if (hover)
 		{
 			Gui.drawRect(x, y, x + w, y + h, 0x44000000);
 		}

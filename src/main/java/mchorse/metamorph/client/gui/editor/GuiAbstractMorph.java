@@ -6,6 +6,7 @@ import mchorse.mclib.client.gui.framework.elements.buttons.GuiButtonElement;
 import mchorse.mclib.client.gui.framework.elements.input.GuiTextElement;
 import mchorse.mclib.client.gui.framework.elements.utils.GuiContext;
 import mchorse.mclib.client.gui.framework.elements.utils.GuiDraw;
+import mchorse.mclib.client.gui.framework.elements.utils.GuiLabel;
 import mchorse.mclib.client.gui.utils.Label;
 import mchorse.metamorph.api.morphs.AbstractMorph;
 import mchorse.metamorph.client.gui.creative.GuiCreativeMorphs;
@@ -71,9 +72,14 @@ public class GuiAbstractMorph<T extends AbstractMorph> extends GuiPanelBase<GuiM
     public List<GuiElement> getFields(Minecraft mc, GuiCreativeMorphs morphs, T morph)
     {
         List<GuiElement> elements = new ArrayList<GuiElement>();
-        GuiTextElement displayName = new GuiTextElement(mc, (name) -> morphs.getSelected().displayName = name);
+        GuiTextElement displayName = new GuiTextElement(mc, (name) ->
+        {
+            morphs.getSelected().displayName = name;
+            morphs.markDirty();
+        });
 
         displayName.setText(morph.displayName);
+        elements.add(GuiLabel.create("Display name", this.font.FONT_HEIGHT));
         elements.add(displayName);
 
         return elements;

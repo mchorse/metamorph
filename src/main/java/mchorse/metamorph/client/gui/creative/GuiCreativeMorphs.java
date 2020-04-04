@@ -10,7 +10,9 @@ import mchorse.mclib.client.gui.framework.elements.input.GuiTextElement;
 import mchorse.mclib.client.gui.framework.elements.utils.GuiContext;
 import mchorse.mclib.client.gui.framework.elements.utils.GuiDrawable;
 import mchorse.mclib.client.gui.utils.Area;
+import mchorse.mclib.client.gui.utils.resizers.layout.ColumnResizer;
 import mchorse.mclib.client.gui.utils.resizers.layout.RowResizer;
+import mchorse.mclib.utils.Timer;
 import mchorse.metamorph.api.MorphManager;
 import mchorse.metamorph.api.creative.MorphList;
 import mchorse.metamorph.api.creative.categories.MorphCategory;
@@ -70,6 +72,8 @@ public class GuiCreativeMorphs extends GuiElement
     private GuiMorphSection selected;
     private boolean scrollTo;
 
+    private Timer timer = new Timer(100);
+
     /**
      * Initiate this GUI.
      * 
@@ -96,11 +100,12 @@ public class GuiCreativeMorphs extends GuiElement
         /* Create morph panels */
         this.morphs = new GuiScrollElement(mc);
         this.morphs.flex().parent(this.area).wh(1F, 1F);
+        ColumnResizer.apply(this.morphs, 0).vertical().stretch().scroll();
         this.setupMorphs(list);
 
         /* Initiate bottom bar */
         this.bar = new GuiElement(mc);
-        this.search = new GuiTextElement(mc, (filter) -> this.setFilter(filter));
+        this.search = new GuiTextElement(mc, this::setFilter);
         this.search.focus(GuiBase.getCurrent());
 
         this.bar.flex().parent(this.morphs.area).set(10, 0, 0, 20).y(1, -30).w(1, -20);
@@ -114,35 +119,20 @@ public class GuiCreativeMorphs extends GuiElement
             .register("Edit", Keyboard.KEY_E, () ->
             {
                 this.toggleEditMode();
-
                 return true;
             })
             .register("Quick edit", Keyboard.KEY_Q, () ->
             {
                 this.toggleQuickEdit();
-
                 return true;
             });
     }
 
     private void setupMorphs(MorphList list)
     {
-        GuiMorphSection previous = null;
-
         for (MorphSection section : list.sections)
         {
             GuiMorphSection element = section.getGUI(this.mc, this, this::setMorph);
-
-            if (previous == null)
-            {
-                element.flex().parent(this.morphs.area).w(1, 0);
-            }
-            else
-            {
-                element.flex().relative(previous.resizer()).y(1, 0).w(1, 0);
-            }
-
-            previous = element;
 
             if (section instanceof UserSection)
             {
@@ -150,10 +140,27 @@ public class GuiCreativeMorphs extends GuiElement
                 this.userSection = element;
             }
 
+            element.flex();
             this.sections.add(element);
             this.morphs.add(element);
         }
     }
+
+    public void markDirty()
+    {
+        this.timer.mark();
+    }
+
+    public void disableDirty()
+    {
+        if (this.timer.enabled)
+        {
+            this.timer.enabled = false;
+            this.syncSelected();
+        }
+    }
+
+    /* Editing modes */
 
     public boolean isEditMode()
     {
@@ -162,9 +169,7 @@ public class GuiCreativeMorphs extends GuiElement
 
     public void toggleQuickEdit()
     {
-        AbstractMorph morph = this.getSelected();
-
-        if (this.isEditMode() || morph == null)
+        if (this.isEditMode())
         {
             return;
         }
@@ -173,9 +178,18 @@ public class GuiCreativeMorphs extends GuiElement
 
         if (this.quickEditor.isVisible())
         {
-            this.morphs.flex().wTo(this.quickEditor.flex());
+            AbstractMorph morph = this.getSelected();
 
-            this.quickEditor.setMorph(morph, this.getMorphEditor(morph));
+            if (morph != null)
+            {
+                this.quickEditor.setMorph(morph, this.getMorphEditor(morph));
+            }
+            else
+            {
+                return;
+            }
+
+            this.morphs.flex().wTo(this.quickEditor.flex());
         }
         else
         {
@@ -191,6 +205,8 @@ public class GuiCreativeMorphs extends GuiElement
 
         if (!this.isEditMode())
         {
+            this.disableDirty();
+
             if (!this.isUserSectionSelected())
             {
                 if (morph != null)
@@ -234,6 +250,8 @@ public class GuiCreativeMorphs extends GuiElement
 
     public void finish()
     {
+        this.disableDirty();
+
         if (this.isEditMode())
         {
             this.editor.delegate.finishEdit();
@@ -282,6 +300,48 @@ public class GuiCreativeMorphs extends GuiElement
         return null;
     }
 
+    /* Morph selection and filtering */
+
+    /**
+     * Get currently selected morph
+     */
+    public AbstractMorph getSelected()
+    {
+        if (this.isEditMode())
+        {
+            AbstractMorph morph = this.editor.delegate.morph;
+
+            if (morph != null)
+            {
+                return morph;
+            }
+        }
+
+        return this.selected == null ? null : this.selected.morph;
+    }
+
+    public void setMorph(GuiMorphSection selected)
+    {
+        this.disableDirty();
+
+        if (this.selected != null && selected != this.selected)
+        {
+            this.selected.reset();
+        }
+
+        this.selected = selected;
+        this.setMorph(selected.morph);
+        this.syncQuickEditor();
+    }
+
+    public void setMorph(AbstractMorph morph)
+    {
+        if (this.callback != null)
+        {
+            this.callback.accept(morph);
+        }
+    }
+
     /**
      * Added for compatibility 
      */
@@ -318,6 +378,8 @@ public class GuiCreativeMorphs extends GuiElement
      */
     public AbstractMorph setSelected(AbstractMorph morph)
     {
+        this.disableDirty();
+
         if (this.selected != null)
         {
             this.selected.reset();
@@ -330,10 +392,8 @@ public class GuiCreativeMorphs extends GuiElement
             GuiMorphSection selectedSection = null;
 
             searchForMorph:
-            for (IGuiElement element : this.morphs.getChildren())
+            for (GuiMorphSection section : this.sections)
             {
-                GuiMorphSection section = (GuiMorphSection) element;
-
                 for (MorphCategory category : section.section.categories)
                 {
                     found = category.getEqual(morph);
@@ -367,60 +427,13 @@ public class GuiCreativeMorphs extends GuiElement
             this.selected = null;
         }
 
+        this.syncQuickEditor();
+
         return this.getSelected();
     }
 
-    public void scrollTo()
+    protected void syncQuickEditor()
     {
-        int y = 0;
-
-        for (IGuiElement element : this.morphs.getChildren())
-        {
-            GuiMorphSection section = (GuiMorphSection) element;
-
-            int h = section.calculateY(this.getSelected());
-
-            if (h == -1)
-            {
-                y += section.calculateHeight();
-            }
-            else
-            {
-                this.morphs.scroll.scrollIntoView(y + h, section.cellHeight + 30);
-
-                break;
-            }
-        }
-    }
-
-    /**
-     * Get currently selected morph 
-     */
-    public AbstractMorph getSelected()
-    {
-        if (this.isEditMode())
-        {
-            AbstractMorph morph = this.editor.delegate.morph;
-
-            if (morph != null)
-            {
-                return morph;
-            }
-        }
-
-        return this.selected == null ? null : this.selected.morph;
-    }
-
-    public void setMorph(GuiMorphSection selected)
-    {
-        if (this.selected != null && selected != this.selected)
-        {
-            this.selected.reset();
-        }
-
-        this.selected = selected;
-        this.setMorph(selected.morph);
-
         if (this.quickEditor.isVisible())
         {
             AbstractMorph morph = this.getSelected();
@@ -436,31 +449,45 @@ public class GuiCreativeMorphs extends GuiElement
         }
     }
 
-    public void setMorph(AbstractMorph morph)
+    /**
+     * Scroll to the selected morph
+     *
+     * This method heavily relies on the elements drawn before hand
+     */
+    public void scrollTo()
     {
-        if (this.callback != null)
+        AbstractMorph morph = this.getSelected();
+
+        if (morph == null)
         {
-            this.callback.accept(morph);
+            return;
+        }
+
+        int y = 0;
+
+        for (GuiMorphSection section : this.sections)
+        {
+            if (section.morph == morph)
+            {
+                this.morphs.scroll.scrollIntoView(y + section.selectedY, section.cellHeight + 30);
+
+                break;
+            }
+
+            y += section.height;
         }
     }
 
-    @Override
-    public void resize()
-    {
-        super.resize();
-
-        List<IGuiElement> children = this.morphs.getChildren();
-
-        int firstY = ((GuiElement) children.get(0)).area.y;
-        int lastY = ((GuiElement) children.get(children.size() - 1)).area.ey();
-
-        this.morphs.scroll.scrollSize = lastY - firstY + 30;
-        this.morphs.scroll.clamp();
-    }
+    /* Element overrides */
 
     @Override
     public void draw(GuiContext context)
     {
+        if (this.timer.checkReset())
+        {
+            this.syncSelected();
+        }
+
         super.draw(context);
 
         if (this.scrollTo)

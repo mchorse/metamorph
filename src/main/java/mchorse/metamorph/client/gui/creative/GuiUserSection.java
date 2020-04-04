@@ -6,6 +6,7 @@ import mchorse.mclib.client.gui.framework.elements.context.GuiSimpleContextMenu;
 import mchorse.mclib.client.gui.framework.elements.modals.GuiPromptModal;
 import mchorse.mclib.client.gui.framework.elements.utils.GuiContext;
 import mchorse.mclib.client.gui.utils.Icons;
+import mchorse.metamorph.api.creative.categories.RecentCategory;
 import mchorse.metamorph.api.creative.sections.MorphSection;
 import mchorse.metamorph.api.creative.sections.UserSection;
 import mchorse.metamorph.api.creative.categories.MorphCategory;
@@ -42,6 +43,16 @@ public class GuiUserSection extends GuiMorphSection
 
 				contextMenu.action(Icons.CLOSE, "Remove morph", () -> category.remove(morph));
 			}
+		}
+		else if (this.hoverCategory instanceof RecentCategory)
+		{
+			MorphCategory category = this.hoverCategory;
+
+			contextMenu.action(Icons.REMOVE, "Clear", () ->
+			{
+				category.clear();
+				this.parent.setSelected(null);
+			});
 		}
 
 		return contextMenu;

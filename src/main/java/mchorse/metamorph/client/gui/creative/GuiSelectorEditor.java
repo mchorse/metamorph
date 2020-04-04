@@ -81,19 +81,11 @@ public class GuiSelectorEditor extends GuiElement
 		this.form.flex().parent(this.area).w(1F);
 		this.selectors.flex().relative(this.form.resizer()).y(1F).w(1F).hTo(this.flex(), 1F);
 
-		GuiLabel title = new GuiLabel(mc, "Entity Selectors");
+		GuiLabel title = GuiLabel.create("Entity Selectors", this.font.FONT_HEIGHT);
+		GuiLabel name = GuiLabel.create("Name", 16).anchor(0, 1);
+		GuiLabel type = GuiLabel.create("Type", 16).anchor(0, 1);
 
-		title.tooltip("With this feature, you can add morphs to entities by specific name or their type...", Direction.BOTTOM).flex().h(this.font.FONT_HEIGHT);
-
-		GuiLabel name = new GuiLabel(mc, "Name").anchor(0, 1);
-
-		name.flex().h(16);
-
-		GuiLabel type = new GuiLabel(mc, "Type").anchor(0, 1);
-
-		type.flex().h(16);
-
-		this.form.add(title, name, this.name, type, this.type, this.active,this.pick);
+		this.form.add(title.tooltip("With this feature, you can add morphs to entities by specific name or their type...", Direction.BOTTOM), name, this.name, type, this.type, this.active,this.pick);
 
 		ColumnResizer.apply(this.form, 5).vertical().stretch().height(20).padding(10);
 		this.markContainer().add(this.form, this.selectors);
