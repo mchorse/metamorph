@@ -2,17 +2,17 @@ package mchorse.metamorph.network.client;
 
 import mchorse.mclib.network.ClientMessageHandler;
 import mchorse.metamorph.capabilities.morphing.Morphing;
-import mchorse.metamorph.network.common.PacketFavoriteMorph;
+import mchorse.metamorph.network.common.PacketKeybind;
 import net.minecraft.client.entity.EntityPlayerSP;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
-public class ClientHandlerFavoriteMorph extends ClientMessageHandler<PacketFavoriteMorph>
+public class ClientHandlerKeybind extends ClientMessageHandler<PacketKeybind>
 {
     @Override
     @SideOnly(Side.CLIENT)
-    public void run(EntityPlayerSP player, PacketFavoriteMorph message)
+    public void run(EntityPlayerSP player, PacketKeybind message)
     {
-        Morphing.get(player).favorite(message.index);
+        Morphing.get(player).keybind(message.index, message.keybind);
     }
 }

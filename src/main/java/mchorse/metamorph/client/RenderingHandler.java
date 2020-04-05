@@ -1,12 +1,12 @@
 package mchorse.metamorph.client;
 
+import mchorse.metamorph.ClientProxy;
 import mchorse.metamorph.api.MorphManager;
 import mchorse.metamorph.api.morphs.EntityMorph;
 import mchorse.metamorph.capabilities.morphing.IMorphing;
 import mchorse.metamorph.capabilities.morphing.Morphing;
 import mchorse.metamorph.client.gui.overlays.GuiHud;
 import mchorse.metamorph.client.gui.overlays.GuiOverlay;
-import mchorse.metamorph.client.gui.survival.GuiSurvivalMorphs;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.entity.EntityPlayerSP;
 import net.minecraft.client.gui.GuiMainMenu;
@@ -59,16 +59,6 @@ public class RenderingHandler
 
         if (event.getType() == RenderGameOverlayEvent.ElementType.ALL)
         {
-            IMorphing morphing = Morphing.get(Minecraft.getMinecraft().player);
-            if (morphing != null)
-            {
-                GuiSurvivalMorphs overlay = morphing.getOverlay();
-                if (!overlay.inGUI)
-                {
-                    overlay.render(resolution.getScaledWidth(), resolution.getScaledHeight());
-                }
-            }
-
             this.morphOverlay.render(resolution.getScaledWidth(), resolution.getScaledHeight());
         }
     }
@@ -243,6 +233,7 @@ public class RenderingHandler
         if (event.getGui() instanceof GuiMainMenu)
         {
             MorphManager.INSTANCE.list.reset();
+            ClientProxy.survivalScreen = null;
         }
     }
 }

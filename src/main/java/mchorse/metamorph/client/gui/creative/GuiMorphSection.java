@@ -13,8 +13,10 @@ import mchorse.metamorph.api.creative.categories.MorphCategory;
 import mchorse.metamorph.api.creative.sections.MorphSection;
 import mchorse.metamorph.api.creative.categories.UserCategory;
 import mchorse.metamorph.api.morphs.AbstractMorph;
+import mchorse.metamorph.util.MMIcons;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.Gui;
+import net.minecraft.client.renderer.GlStateManager;
 
 import java.util.function.Consumer;
 
@@ -31,6 +33,7 @@ public class GuiMorphSection extends GuiElement
 	public int cellWidth = 55;
 	public int cellHeight = 70;
 	public boolean last;
+	public boolean favorite;
 
 	public AbstractMorph morph;
 	public MorphCategory category;
@@ -74,8 +77,18 @@ public class GuiMorphSection extends GuiElement
 		this.filter = filter;
 	}
 
+	public boolean noFilter()
+	{
+		return this.filter.isEmpty() && this.favorite == false;
+	}
+
 	public boolean isMatching(AbstractMorph morph)
 	{
+		if (this.favorite)
+		{
+			return morph.favorite;
+		}
+
 		if (this.filter.isEmpty())
 		{
 			return true;
@@ -88,7 +101,7 @@ public class GuiMorphSection extends GuiElement
 
 	public int getMorphsSize(MorphCategory category)
 	{
-		if (this.filter.isEmpty())
+		if (this.noFilter())
 		{
 			return category.getMorphs().size();
 		}
@@ -128,7 +141,7 @@ public class GuiMorphSection extends GuiElement
 			return true;
 		}
 
-		if (this.area.isInside(context.mouseX, context.mouseY) && context.mouseButton == 0)
+		if (this.area.isInside(context) && context.mouseButton == 0)
 		{
 			if (context.mouseY - this.area.y < HEADER_HEIGHT)
 			{
@@ -145,7 +158,7 @@ public class GuiMorphSection extends GuiElement
 			{
 				int count = this.getMorphsSize(category);
 
-				if (category.isHidden() || (count == 0 && !this.filter.isEmpty()))
+				if (category.isHidden() || (count == 0 && !this.noFilter()))
 				{
 					continue;
 				}
@@ -210,6 +223,11 @@ public class GuiMorphSection extends GuiElement
 	@Override
 	public GuiContextMenu createContextMenu(GuiContext context)
 	{
+		if (this.parent == null)
+		{
+			return super.createContextMenu(context);
+		}
+
 		GuiSimpleContextMenu contextMenu = new GuiSimpleContextMenu(this.mc);
 		AbstractMorph morph = this.hoverMorph;
 
@@ -291,7 +309,7 @@ public class GuiMorphSection extends GuiElement
 		{
 			int count = this.getMorphsSize(category);
 
-			if (category.isHidden() || (count == 0 && !this.filter.isEmpty()))
+			if (category.isHidden() || (count == 0 && !this.noFilter()))
 			{
 				continue;
 			}
@@ -382,6 +400,11 @@ public class GuiMorphSection extends GuiElement
 		if (this.morph == morph)
 		{
 			GuiDraw.drawOutline(x, y, x + w, y + h, 0xff000000 + McLib.primaryColor.get(), 2);
+		}
+
+		if (morph.favorite)
+		{
+			GuiDraw.drawOutlinedIcon(MMIcons.FAVORITE, x + 2, y + 2, 0xffffffff);
 		}
 	}
 }

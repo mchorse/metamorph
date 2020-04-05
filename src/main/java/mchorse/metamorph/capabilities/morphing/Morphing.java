@@ -6,7 +6,6 @@ import java.util.List;
 import mchorse.metamorph.Metamorph;
 import mchorse.metamorph.api.Morph;
 import mchorse.metamorph.api.morphs.AbstractMorph;
-import mchorse.metamorph.client.gui.survival.GuiSurvivalMorphs;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.SharedMonsterAttributes;
@@ -73,20 +72,6 @@ public class Morphing implements IMorphing
      * Last health that player had before morphing, should fix issue that people complain about
      */
     private float lastHealth;
-
-    /**
-     * GUI menu which is responsible for choosing morphs
-     */
-    @SideOnly(Side.CLIENT)
-    private GuiSurvivalMorphs overlay;
-
-    /**
-     * Whether {@link #overlay} is non-null
-     *
-     * This is a separate field because {@link #overlay} is SideOnly(CLIENT), so referring to it on the server (where
-     * it would always be null) is not possible (will result in NoSuchFieldError).
-     */
-    private boolean hasOverlay = false;
 
     public static IMorphing get(EntityPlayer player)
     {
@@ -217,11 +202,6 @@ public class Morphing implements IMorphing
 
         this.acquiredMorphs.add(morph);
 
-        if (this.hasOverlay)
-        {
-            this.overlay.setupMorphs(this);
-        }
-
         return true;
     }
 
@@ -250,11 +230,6 @@ public class Morphing implements IMorphing
     {
         this.acquiredMorphs.clear();
         this.acquiredMorphs.addAll(morphs);
-
-        if (this.hasOverlay)
-        {
-            this.overlay.setupMorphs(this);
-        }
     }
 
     @Override
@@ -347,21 +322,25 @@ public class Morphing implements IMorphing
     }
 
     @Override
-    public boolean favorite(int index)
+    public void favorite(int index)
     {
         if (index >= 0 && index < this.acquiredMorphs.size())
         {
             AbstractMorph morph = this.acquiredMorphs.get(index);
 
             morph.favorite = !morph.favorite;
-
-            if (this.hasOverlay)
-            {
-                this.overlay.favorite(index);
-            }
         }
+    }
 
-        return false;
+    @Override
+    public void keybind(int index, int keycode)
+    {
+        if (index >= 0 && index < this.acquiredMorphs.size())
+        {
+            AbstractMorph morph = this.acquiredMorphs.get(index);
+
+            morph.keybind = keycode;
+        }
     }
 
     @Override
@@ -370,11 +349,6 @@ public class Morphing implements IMorphing
         if (!this.acquiredMorphs.isEmpty() && index >= 0 && index < this.acquiredMorphs.size())
         {
             this.acquiredMorphs.remove(index);
-
-            if (this.hasOverlay)
-            {
-                this.overlay.remove(index);
-            }
 
             return true;
         }
@@ -531,19 +505,5 @@ public class Morphing implements IMorphing
         {
             target.getEntityAttribute(SharedMonsterAttributes.MAX_HEALTH).setBaseValue(health);
         }
-    }
-
-    @Override
-    @SideOnly(Side.CLIENT)
-    public GuiSurvivalMorphs getOverlay()
-    {
-        if (this.overlay == null)
-        {
-            this.overlay = new GuiSurvivalMorphs();
-            this.overlay.setupMorphs(this);
-            this.hasOverlay = true;
-        }
-
-        return this.overlay;
     }
 }

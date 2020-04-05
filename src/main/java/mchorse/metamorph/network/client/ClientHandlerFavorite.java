@@ -2,17 +2,17 @@ package mchorse.metamorph.network.client;
 
 import mchorse.mclib.network.ClientMessageHandler;
 import mchorse.metamorph.capabilities.morphing.Morphing;
-import mchorse.metamorph.network.common.PacketRemoveMorph;
+import mchorse.metamorph.network.common.PacketFavorite;
 import net.minecraft.client.entity.EntityPlayerSP;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
-public class ClientHandlerRemoveMorph extends ClientMessageHandler<PacketRemoveMorph>
+public class ClientHandlerFavorite extends ClientMessageHandler<PacketFavorite>
 {
     @Override
     @SideOnly(Side.CLIENT)
-    public void run(EntityPlayerSP player, PacketRemoveMorph message)
+    public void run(EntityPlayerSP player, PacketFavorite message)
     {
-        Morphing.get(player).remove(message.index);
+        Morphing.get(player).favorite(message.index);
     }
 }

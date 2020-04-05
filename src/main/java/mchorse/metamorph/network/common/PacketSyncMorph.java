@@ -3,14 +3,14 @@ package mchorse.metamorph.network.common;
 import io.netty.buffer.ByteBuf;
 import mchorse.metamorph.api.morphs.AbstractMorph;
 
-public class PacketSyncAcquiredMorph extends PacketMorph
+public class PacketSyncMorph extends PacketMorph
 {
 	public int index;
 
-	public PacketSyncAcquiredMorph()
+	public PacketSyncMorph()
 	{}
 
-	public PacketSyncAcquiredMorph(AbstractMorph morph, int index)
+	public PacketSyncMorph(AbstractMorph morph, int index)
 	{
 		super(morph);
 		this.index = index;

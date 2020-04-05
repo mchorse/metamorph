@@ -4,7 +4,6 @@ import mchorse.metamorph.Metamorph;
 import mchorse.metamorph.api.MorphManager;
 import mchorse.metamorph.api.MorphSettings;
 import mchorse.metamorph.api.abilities.IAbility;
-import mchorse.metamorph.capabilities.morphing.IMorphing;
 import mchorse.metamorph.entity.SoundHandler;
 import net.minecraft.client.renderer.entity.Render;
 import net.minecraft.entity.Entity;
@@ -44,10 +43,17 @@ public abstract class AbstractMorph
      */
     public String displayName = "";
 
+    /* Survival morph properties */
+
     /**
      * Is this morph is favorite 
      */
     public boolean favorite = false;
+
+    /**
+     * Is this morph is favorite
+     */
+    public int keybind = -1;
 
     /* Abilities */
 
@@ -259,6 +265,7 @@ public abstract class AbstractMorph
         this.name = from.name;
         this.displayName = from.displayName;
         this.favorite = from.favorite;
+        this.keybind = from.keybind;
         this.settings = from.settings;
     }
 
@@ -417,6 +424,11 @@ public abstract class AbstractMorph
         {
             tag.setBoolean("Favorite", this.favorite);
         }
+
+        if (this.keybind >= 0)
+        {
+            tag.setInteger("Keybind", this.keybind);
+        }
     }
 
     /**
@@ -442,6 +454,11 @@ public abstract class AbstractMorph
         if (tag.hasKey("Favorite"))
         {
             this.favorite = tag.getBoolean("Favorite");
+        }
+
+        if (tag.hasKey("Keybind"))
+        {
+            this.keybind = tag.getInteger("Keybind");
         }
     }
 }

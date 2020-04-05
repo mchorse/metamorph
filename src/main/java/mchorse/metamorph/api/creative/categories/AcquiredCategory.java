@@ -3,7 +3,7 @@ package mchorse.metamorph.api.creative.categories;
 import mchorse.metamorph.api.creative.sections.MorphSection;
 import mchorse.metamorph.api.morphs.AbstractMorph;
 import mchorse.metamorph.network.Dispatcher;
-import mchorse.metamorph.network.common.PacketSyncAcquiredMorph;
+import mchorse.metamorph.network.common.PacketSyncMorph;
 
 import java.util.List;
 
@@ -26,7 +26,7 @@ public class AcquiredCategory extends MorphCategory
 
 		if (index >= 0)
 		{
-			Dispatcher.sendToServer(new PacketSyncAcquiredMorph(morph, index));
+			Dispatcher.sendToServer(new PacketSyncMorph(morph, index));
 		}
 	}
 }

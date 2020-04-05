@@ -1,16 +1,30 @@
 package mchorse.metamorph.client.gui.survival;
 
 import mchorse.mclib.client.gui.framework.GuiBase;
+import mchorse.mclib.client.gui.framework.elements.GuiElement;
+import mchorse.mclib.client.gui.framework.elements.GuiScrollElement;
 import mchorse.mclib.client.gui.framework.elements.buttons.GuiButtonElement;
-import mchorse.metamorph.ClientProxy;
-import mchorse.metamorph.client.gui.survival.GuiSurvivalMorphs;
-import mchorse.metamorph.client.gui.survival.GuiSurvivalMorphs.MorphCell;
+import mchorse.mclib.client.gui.framework.elements.buttons.GuiToggleElement;
+import mchorse.mclib.client.gui.framework.elements.input.GuiKeybindElement;
+import mchorse.mclib.client.gui.utils.Elements;
+import mchorse.mclib.client.gui.utils.resizers.layout.ColumnResizer;
+import mchorse.metamorph.api.creative.categories.AcquiredCategory;
+import mchorse.metamorph.api.creative.sections.MorphSection;
+import mchorse.metamorph.api.morphs.AbstractMorph;
+import mchorse.metamorph.capabilities.morphing.IMorphing;
+import mchorse.metamorph.capabilities.morphing.Morphing;
+import mchorse.metamorph.client.gui.creative.GuiMorphSection;
+import mchorse.metamorph.network.Dispatcher;
+import mchorse.metamorph.network.common.PacketFavorite;
+import mchorse.metamorph.network.common.PacketKeybind;
+import mchorse.metamorph.network.common.PacketRemoveMorph;
+import mchorse.metamorph.network.common.PacketSelectMorph;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.Gui;
-import net.minecraft.client.resources.I18n;
 import org.lwjgl.input.Keyboard;
 
-import java.io.IOException;
+import java.util.Collections;
+import java.util.List;
 
 /**
  * Survival morph menu GUI
@@ -19,167 +33,201 @@ import java.io.IOException;
  */
 public class GuiSurvivalScreen extends GuiBase
 {
-    private GuiButtonElement close;
-    private GuiButtonElement favorite;
-    private GuiButtonElement remove;
-    private GuiButtonElement onlyFavorites;
-    private GuiButtonElement morph;
+    public GuiScrollElement morphs;
+    public GuiElement sidebar;
+    public GuiToggleElement onlyFavorite;
 
-    private GuiSurvivalMorphs morphs;
+    public GuiButtonElement morph;
+    public GuiButtonElement remove;
+    public GuiKeybindElement keybind;
+    public GuiToggleElement favorite;
 
-    /* Initiate GUI */
+    private GuiMorphSection selected;
+    private AcquiredCategory acquired;
 
-    public GuiSurvivalScreen(GuiSurvivalMorphs morphs)
+    public GuiSurvivalScreen()
     {
-        this.morphs = morphs;
-        this.morphs.inGUI = true;
+        super();
 
+        Minecraft mc = this.context.mc;
+
+        this.morph = new GuiButtonElement(mc, "Morph", this::morph);
+        this.remove = new GuiButtonElement(mc, "Remove", this::remove);
+        this.keybind = new GuiKeybindElement(mc, this::setKeybind);
+        this.favorite = new GuiToggleElement(mc, "Favorite", this::setFavorite);
+        this.favorite.flex().h(12);
+
+        this.sidebar = new GuiScrollElement(mc);
+        this.sidebar.flex().relative(this.root.resizer()).y(20).w(140).hTo(this.root.resizer(), 1F);
+        ColumnResizer.apply(this.sidebar, 5).stretch().height(20).padding(10);
+        this.sidebar.add(Elements.row(mc, 5, 0, 20, this.morph, this.remove), this.keybind, this.favorite);
+
+        this.onlyFavorite = new GuiToggleElement(mc, "Only favorites", this::toggleOnlyFavorite);
+        this.onlyFavorite.flex().relative(this.root.resizer()).x(1F).wh(100, 20).anchor(1F, 0F);
+
+        this.morphs = new GuiScrollElement(mc);
+        this.morphs.flex().relative(this.root.resizer()).x(140).y(20).wTo(this.root.resizer(), 1F).hTo(this.root.resizer(), 1F);
+        ColumnResizer.apply(this.morphs, 0).vertical().stretch().scroll();
+        this.setupMorphs();
+
+        this.root.flex().xy(0.5F, 0.5F).wh(1F, 1F).anchor(0.5F, 0.5F).maxW(500).maxH(300);
+        this.root.add(this.morphs, this.sidebar, this.onlyFavorite);
+    }
+
+    public GuiSurvivalScreen open()
+    {
+        IMorphing cap = Morphing.get(Minecraft.getMinecraft().player);
+
+        this.setSelected(cap.getCurrentMorph());
+
+        return this;
+    }
+
+    private void morph(GuiButtonElement button)
+    {
+        AbstractMorph morph = this.getSelected();
+
+        if (morph != null)
+        {
+            Dispatcher.sendToServer(new PacketSelectMorph(this.indexOf(morph)));
+
+            this.closeScreen();
+        }
+    }
+
+    private void remove(GuiButtonElement button)
+    {
+        AbstractMorph morph = this.getSelected();
+
+        if (morph != null)
+        {
+            Dispatcher.sendToServer(new PacketRemoveMorph(this.indexOf(morph)));
+        }
+    }
+
+    private void setKeybind(int keybind)
+    {
+        AbstractMorph morph = this.getSelected();
+
+        if (morph != null)
+        {
+            keybind = keybind == Keyboard.KEY_ESCAPE ? -1 : keybind;
+
+            morph.keybind = keybind;
+
+            if (keybind == -1)
+            {
+                this.keybind.setKeybind(Keyboard.KEY_NONE);
+            }
+
+            Dispatcher.sendToServer(new PacketKeybind(this.indexOf(morph), keybind));
+        }
+    }
+
+    private void setFavorite(GuiToggleElement button)
+    {
+        AbstractMorph morph = this.getSelected();
+
+        if (morph != null)
+        {
+            Dispatcher.sendToServer(new PacketFavorite(this.indexOf(morph)));
+        }
+    }
+
+    private int indexOf(AbstractMorph morph)
+    {
+        return this.acquired.getMorphs().indexOf(morph);
+    }
+
+    private void toggleOnlyFavorite(GuiToggleElement button)
+    {
+        this.selected.favorite = button.isToggled();
+    }
+
+    private void setupMorphs()
+    {
         Minecraft mc = Minecraft.getMinecraft();
+        IMorphing cap = Morphing.get(mc.player);
+        MorphSection section = new MorphSection("User morphs");
+        AcquiredCategory category = new AcquiredCategory(section, "acquired");
 
-        this.remove = new GuiButtonElement(mc, I18n.format("metamorph.gui.remove"), (b) ->
-        {
-            this.morphs.remove();
-            this.updateButtons();
-        });
+        category.setMorph(cap == null ? Collections.emptyList() : cap.getAcquiredMorphs());
+        section.add(category);
 
-        this.favorite = new GuiButtonElement(mc, "", (b) ->
-        {
-            this.morphs.favorite(this.morphs.morphs.get(this.morphs.index).current());
-            this.updateButtons();
-        });
+        GuiMorphSection element = section.getGUI(mc, null, this::setMorph);
 
-        this.close = new GuiButtonElement(mc, I18n.format("metamorph.gui.close"), (b) -> this.exit());
+        element.flex();
 
-        this.onlyFavorites = new GuiButtonElement(mc, "", (b) ->
-        {
-            this.morphs.toggleFavorites();
-            this.updateFavorites();
-        });
-
-        this.morph = new GuiButtonElement(mc, I18n.format("metamorph.gui.morph"), (b) ->
-        {
-            this.morphs.selectCurrent();
-            this.exit();
-        });
-
-        this.remove.flex().relative(this.viewport).set(20, 0, 60, 20).y(1, -30);
-        this.morph.flex().relative(this.viewport).set(0, 0, 60, 20).x(1, -80).y(1, -30);
-        this.favorite.flex().relative(this.morph.resizer()).set(-65, 0, 60, 20);
-
-        this.close.flex().relative(this.viewport).set(0, 10, 60, 20).x(1, -80);
-        this.onlyFavorites.flex().relative(this.close.resizer()).set(-95, 0, 90, 20);
-
-        this.root.add(this.remove, this.favorite, this.close, this.onlyFavorites, this.morph);
+        this.morphs.add(element);
+        this.selected = element;
+        this.acquired = category;
     }
 
-    @Override
-    public void initGui()
+    private void setMorph(GuiMorphSection section)
     {
-        super.initGui();
-
-        this.updateFavorites();
-        this.updateButtons();
+        this.fill(section.morph);
     }
 
-    private void updateFavorites()
+    public AbstractMorph getSelected()
     {
-        this.onlyFavorites.label = this.morphs.showFavorites ? I18n.format("metamorph.gui.all_morphs") : I18n.format("metamorph.gui.only_favorites");
+        return this.selected == null ? null : this.selected.morph;
     }
 
-    @Override
-    protected void mouseClicked(int mouseX, int mouseY, int mouseButton) throws IOException
+    public void setSelected(AbstractMorph morph)
     {
-        super.mouseClicked(mouseX, mouseY, mouseButton);
-        this.morphs.clickMorph(mouseX, mouseY, this.width, this.height);
-        this.updateButtons();
-    }
-
-    @Override
-    protected void keyTyped(char typedChar, int keyCode) throws IOException
-    {
-        if (keyCode == Keyboard.KEY_ESCAPE)
+        if (this.selected != null)
         {
-            this.exit();
+            this.selected.reset();
         }
 
-        super.keyTyped(typedChar, keyCode);
+        if (morph != null)
+        {
+            AbstractMorph found = this.acquired.getEqual(morph);
 
-        if (ClientProxy.keys.keyPrevVarMorph.getKeyCode() == keyCode)
-        {
-            this.morphs.down();
-            this.updateButtons();
-        }
-        else if (ClientProxy.keys.keyNextVarMorph.getKeyCode() == keyCode)
-        {
-            this.morphs.up();
-            this.updateButtons();
-        }
-        else if (ClientProxy.keys.keyPrevMorph.getKeyCode() == keyCode)
-        {
-            this.morphs.advance(-1);
-            this.updateButtons();
-        }
-        else if (ClientProxy.keys.keyNextMorph.getKeyCode() == keyCode)
-        {
-            this.morphs.advance(1);
-            this.updateButtons();
-        }
-        else if (ClientProxy.keys.keyDemorph.getKeyCode() == keyCode)
-        {
-            this.morphs.skip(-1);
-            this.updateButtons();
-        }
-        else if (ClientProxy.keys.keySelectMorph.getKeyCode() == keyCode)
-        {
-            this.morphs.selectCurrent();
-            this.exit();
-        }
-    }
-
-    /**
-     * Exit from this GUI 
-     */
-    private void exit()
-    {
-        this.morphs.exitGUI();
-        this.mc.displayGuiScreen(null);
-    }
-
-    public void updateButtons()
-    {
-        int index = this.morphs.index;
-
-        this.favorite.setEnabled(index >= 0);
-        this.favorite.label = I18n.format("metamorph.gui.favorite");
-        this.remove.setEnabled(index >= 0);
-
-        if (this.favorite.isEnabled())
-        {
-            MorphCell cell = this.morphs.getCurrent();
-
-            if (cell != null)
+            if (found != null)
             {
-                this.favorite.label = cell.morph.favorite ? I18n.format("metamorph.gui.unfavorite") : I18n.format("metamorph.gui.favorite");
-            }
-            else
-            {
-                this.favorite.setEnabled(false);
+                this.selected.category = this.acquired;
+                this.selected.morph = found;
+                this.fill(found);
             }
         }
     }
 
-    /* Drawing code */
+    public void fill(AbstractMorph morph)
+    {
+        if (morph != null)
+        {
+            this.favorite.toggled(morph.favorite);
+            this.keybind.setKeybind(morph.keybind);
+        }
+    }
+
+    @Override
+    public void keyPressed(char typedChar, int keyCode)
+    {
+        List<AbstractMorph> morphs = this.acquired.getMorphs();
+
+        for (int i = 0; i < morphs.size(); i ++)
+        {
+            AbstractMorph morph = morphs.get(i);
+
+            if (morph.keybind == keyCode)
+            {
+                Dispatcher.sendToServer(new PacketSelectMorph(i));
+                this.closeScreen();
+
+                return;
+            }
+        }
+    }
 
     @Override
     public void drawScreen(int mouseX, int mouseY, float partialTicks)
     {
-        /* Background and stuff */
-        this.drawDefaultBackground();
-
-        Gui.drawRect(0, 0, width, 40, 0x88000000);
-        this.drawString(this.fontRenderer, I18n.format("metamorph.gui.survival_title"), 20, 16, 0xffffff);
-
-        this.morphs.render(this.width, this.height);
+        this.root.area.draw(0xaa000000);
+        this.sidebar.area.draw(0x88000000);
+        Gui.drawRect(this.root.area.x, this.root.area.y, this.root.area.ex(), this.root.area.y + 20, 0xcc000000);
+        this.context.font.drawStringWithShadow("Survival morphs", this.root.area.x + 6, this.root.area.y + 10 - this.context.font.FONT_HEIGHT / 2, 0xffffff);
 
         super.drawScreen(mouseX, mouseY, partialTicks);
     }

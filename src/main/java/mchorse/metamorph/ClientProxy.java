@@ -11,6 +11,7 @@ import mchorse.metamorph.client.NetworkHandler;
 import mchorse.metamorph.client.RenderingHandler;
 import mchorse.metamorph.client.gui.overlays.GuiHud;
 import mchorse.metamorph.client.gui.overlays.GuiOverlay;
+import mchorse.metamorph.client.gui.survival.GuiSurvivalScreen;
 import mchorse.metamorph.client.render.RenderMorph;
 import mchorse.metamorph.entity.EntityMorph;
 import net.minecraft.client.Minecraft;
@@ -42,6 +43,11 @@ public class ClientProxy extends CommonProxy
      * GUI overlay which is responsible for showing up acquired morphs
      */
     public static GuiOverlay morphOverlay = new GuiOverlay();
+
+    /**
+     * Cached survival screen
+     */
+    public static GuiSurvivalScreen survivalScreen;
     
     public static GuiHud hud = new GuiHud();
 
@@ -54,6 +60,16 @@ public class ClientProxy extends CommonProxy
      * Entity model handler
      */
     public static EntityModelHandler models;
+
+    public static GuiSurvivalScreen getSurvivalScreen()
+    {
+        if (survivalScreen == null)
+        {
+            survivalScreen = new GuiSurvivalScreen();
+        }
+
+        return survivalScreen;
+    }
 
     @Override
     public void preLoad(FMLPreInitializationEvent event)

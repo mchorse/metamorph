@@ -5,7 +5,8 @@ import mchorse.metamorph.Metamorph;
 import mchorse.metamorph.network.client.ClientHandlerAcquireMorph;
 import mchorse.metamorph.network.client.ClientHandlerAcquiredMorphs;
 import mchorse.metamorph.network.client.ClientHandlerBlacklist;
-import mchorse.metamorph.network.client.ClientHandlerFavoriteMorph;
+import mchorse.metamorph.network.client.ClientHandlerFavorite;
+import mchorse.metamorph.network.client.ClientHandlerKeybind;
 import mchorse.metamorph.network.client.ClientHandlerMorph;
 import mchorse.metamorph.network.client.ClientHandlerMorphPlayer;
 import mchorse.metamorph.network.client.ClientHandlerMorphState;
@@ -15,21 +16,23 @@ import mchorse.metamorph.network.common.PacketAcquireMorph;
 import mchorse.metamorph.network.common.PacketAcquiredMorphs;
 import mchorse.metamorph.network.common.PacketAction;
 import mchorse.metamorph.network.common.PacketBlacklist;
-import mchorse.metamorph.network.common.PacketFavoriteMorph;
+import mchorse.metamorph.network.common.PacketFavorite;
+import mchorse.metamorph.network.common.PacketKeybind;
 import mchorse.metamorph.network.common.PacketMorph;
 import mchorse.metamorph.network.common.PacketMorphPlayer;
 import mchorse.metamorph.network.common.PacketMorphState;
 import mchorse.metamorph.network.common.PacketRemoveMorph;
 import mchorse.metamorph.network.common.PacketSelectMorph;
 import mchorse.metamorph.network.common.PacketSettings;
-import mchorse.metamorph.network.common.PacketSyncAcquiredMorph;
+import mchorse.metamorph.network.common.PacketSyncMorph;
 import mchorse.metamorph.network.server.ServerHandlerAcquireMorph;
 import mchorse.metamorph.network.server.ServerHandlerAction;
-import mchorse.metamorph.network.server.ServerHandlerFavoriteMorph;
+import mchorse.metamorph.network.server.ServerHandlerFavorite;
+import mchorse.metamorph.network.server.ServerHandlerKeybind;
 import mchorse.metamorph.network.server.ServerHandlerMorph;
 import mchorse.metamorph.network.server.ServerHandlerRemoveMorph;
 import mchorse.metamorph.network.server.ServerHandlerSelectMorph;
-import mchorse.metamorph.network.server.ServerHandlerSyncAcquiredMorph;
+import mchorse.metamorph.network.server.ServerHandlerSyncMorph;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraftforge.fml.common.network.simpleimpl.IMessage;
@@ -56,7 +59,7 @@ public class Dispatcher
             register(PacketAcquireMorph.class, ClientHandlerAcquireMorph.class, Side.CLIENT);
             register(PacketAcquireMorph.class, ServerHandlerAcquireMorph.class, Side.SERVER);
             register(PacketAcquiredMorphs.class, ClientHandlerAcquiredMorphs.class, Side.CLIENT);
-            register(PacketSyncAcquiredMorph.class, ServerHandlerSyncAcquiredMorph.class, Side.SERVER);
+            register(PacketSyncMorph.class, ServerHandlerSyncMorph.class, Side.SERVER);
 
             register(PacketSelectMorph.class, ServerHandlerSelectMorph.class, Side.SERVER);
 
@@ -64,8 +67,11 @@ public class Dispatcher
             register(PacketMorphState.class, ClientHandlerMorphState.class, Side.CLIENT);
 
             /* Managing morphs */
-            register(PacketFavoriteMorph.class, ClientHandlerFavoriteMorph.class, Side.CLIENT);
-            register(PacketFavoriteMorph.class, ServerHandlerFavoriteMorph.class, Side.SERVER);
+            register(PacketFavorite.class, ClientHandlerFavorite.class, Side.CLIENT);
+            register(PacketFavorite.class, ServerHandlerFavorite.class, Side.SERVER);
+
+            register(PacketKeybind.class, ClientHandlerKeybind.class, Side.CLIENT);
+            register(PacketKeybind.class, ServerHandlerKeybind.class, Side.SERVER);
 
             register(PacketRemoveMorph.class, ClientHandlerRemoveMorph.class, Side.CLIENT);
             register(PacketRemoveMorph.class, ServerHandlerRemoveMorph.class, Side.SERVER);
