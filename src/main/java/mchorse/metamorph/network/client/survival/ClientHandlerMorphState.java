@@ -1,11 +1,11 @@
-package mchorse.metamorph.network.client;
+package mchorse.metamorph.network.client.survival;
 
 import mchorse.mclib.network.ClientMessageHandler;
 import mchorse.metamorph.api.morphs.AbstractMorph;
 import mchorse.metamorph.api.morphs.EntityMorph;
 import mchorse.metamorph.capabilities.morphing.IMorphing;
 import mchorse.metamorph.capabilities.morphing.Morphing;
-import mchorse.metamorph.network.common.PacketMorphState;
+import mchorse.metamorph.network.common.survival.PacketMorphState;
 import net.minecraft.client.entity.EntityPlayerSP;
 import net.minecraft.entity.Entity;
 import net.minecraftforge.fml.relauncher.Side;

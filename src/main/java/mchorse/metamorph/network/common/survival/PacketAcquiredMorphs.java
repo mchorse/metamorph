@@ -1,4 +1,4 @@
-package mchorse.metamorph.network.common;
+package mchorse.metamorph.network.common.survival;
 
 import java.util.ArrayList;
 import java.util.List;

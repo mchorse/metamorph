@@ -1,9 +1,9 @@
-package mchorse.metamorph.network.client;
+package mchorse.metamorph.network.client.creative;
 
 import mchorse.mclib.network.ClientMessageHandler;
 import mchorse.metamorph.capabilities.morphing.IMorphing;
 import mchorse.metamorph.capabilities.morphing.Morphing;
-import mchorse.metamorph.network.common.PacketMorph;
+import mchorse.metamorph.network.common.creative.PacketMorph;
 import net.minecraft.client.entity.EntityPlayerSP;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;

@@ -4,7 +4,7 @@ import mchorse.mclib.client.gui.framework.elements.buttons.GuiButtonElement;
 import mchorse.mclib.client.gui.framework.elements.utils.GuiContext;
 import mchorse.metamorph.api.morphs.AbstractMorph;
 import mchorse.metamorph.network.Dispatcher;
-import mchorse.metamorph.network.common.PacketAcquireMorph;
+import mchorse.metamorph.network.common.creative.PacketAcquireMorph;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.Gui;
 import net.minecraft.client.resources.I18n;

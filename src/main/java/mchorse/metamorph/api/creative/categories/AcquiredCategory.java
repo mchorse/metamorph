@@ -3,7 +3,7 @@ package mchorse.metamorph.api.creative.categories;
 import mchorse.metamorph.api.creative.sections.MorphSection;
 import mchorse.metamorph.api.morphs.AbstractMorph;
 import mchorse.metamorph.network.Dispatcher;
-import mchorse.metamorph.network.common.PacketSyncMorph;
+import mchorse.metamorph.network.common.creative.PacketSyncMorph;
 
 import java.util.List;
 

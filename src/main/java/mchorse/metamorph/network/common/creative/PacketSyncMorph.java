@@ -1,4 +1,4 @@
-package mchorse.metamorph.network.common;
+package mchorse.metamorph.network.common.creative;
 
 import io.netty.buffer.ByteBuf;
 import mchorse.metamorph.api.morphs.AbstractMorph;

@@ -1,4 +1,4 @@
-package mchorse.metamorph.network.server;
+package mchorse.metamorph.network.server.survival;
 
 import java.util.List;
 
@@ -7,7 +7,7 @@ import mchorse.metamorph.api.MorphAPI;
 import mchorse.metamorph.api.morphs.AbstractMorph;
 import mchorse.metamorph.capabilities.morphing.IMorphing;
 import mchorse.metamorph.capabilities.morphing.Morphing;
-import mchorse.metamorph.network.common.PacketSelectMorph;
+import mchorse.metamorph.network.common.survival.PacketSelectMorph;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.world.GameType;
 

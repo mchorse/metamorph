@@ -1,9 +1,9 @@
-package mchorse.metamorph.network.client;
+package mchorse.metamorph.network.client.survival;
 
 import mchorse.mclib.network.ClientMessageHandler;
 import mchorse.metamorph.capabilities.morphing.IMorphing;
 import mchorse.metamorph.capabilities.morphing.MorphingProvider;
-import mchorse.metamorph.network.common.PacketMorphPlayer;
+import mchorse.metamorph.network.common.survival.PacketMorphPlayer;
 import net.minecraft.client.entity.EntityPlayerSP;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;

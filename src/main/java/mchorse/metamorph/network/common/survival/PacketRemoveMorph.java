@@ -1,4 +1,4 @@
-package mchorse.metamorph.network.common;
+package mchorse.metamorph.network.common.survival;
 
 public class PacketRemoveMorph extends PacketIndex
 {

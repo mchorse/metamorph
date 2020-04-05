@@ -1,8 +1,8 @@
-package mchorse.metamorph.network.server;
+package mchorse.metamorph.network.server.creative;
 
 import mchorse.mclib.network.ServerMessageHandler;
 import mchorse.metamorph.api.MorphAPI;
-import mchorse.metamorph.network.common.PacketMorph;
+import mchorse.metamorph.network.common.creative.PacketMorph;
 import net.minecraft.entity.player.EntityPlayerMP;
 
 public class ServerHandlerMorph extends ServerMessageHandler<PacketMorph>

@@ -1,8 +1,8 @@
-package mchorse.metamorph.network.client;
+package mchorse.metamorph.network.client.survival;
 
 import mchorse.mclib.network.ClientMessageHandler;
 import mchorse.metamorph.capabilities.morphing.Morphing;
-import mchorse.metamorph.network.common.PacketRemoveMorph;
+import mchorse.metamorph.network.common.survival.PacketRemoveMorph;
 import net.minecraft.client.entity.EntityPlayerSP;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;

@@ -1,4 +1,4 @@
-package mchorse.metamorph.network.common;
+package mchorse.metamorph.network.common.creative;
 
 import mchorse.metamorph.api.morphs.AbstractMorph;
 
