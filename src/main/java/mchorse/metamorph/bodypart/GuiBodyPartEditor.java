@@ -84,7 +84,7 @@ public class GuiBodyPartEditor extends GuiMorphPanel<AbstractMorph, GuiAbstractM
         this.ry.tooltip(I18n.format("metamorph.gui.y"), Direction.TOP);
         this.rz.tooltip(I18n.format("metamorph.gui.z"), Direction.TOP);
 
-        this.tx.flex().set(0, 35, 60, 20).parent(this.area).x(0.5F, -95).y(1, -80);
+        this.tx.flex().set(0, 35, 60, 20).relative(this.area).x(0.5F, -95).y(1, -80);
         this.ty.flex().set(0, 25, 60, 20).relative(this.tx.resizer());
         this.tz.flex().set(0, 25, 60, 20).relative(this.ty.resizer());
         this.sx.flex().set(65, 0, 60, 20).relative(this.tx.resizer());
@@ -107,7 +107,7 @@ public class GuiBodyPartEditor extends GuiMorphPanel<AbstractMorph, GuiAbstractM
                 {
                     if (this.part != null) this.part.morph.setDirect(morph);
                 });
-                this.morphPicker.flex().parent(this.area).set(0, 0, 0, 0).w(1, 0).h(1, 0);
+                this.morphPicker.flex().relative(this.area).set(0, 0, 0, 0).w(1, 0).h(1, 0);
 
                 this.morphPicker.resize();
                 this.add(this.morphPicker);
@@ -180,19 +180,19 @@ public class GuiBodyPartEditor extends GuiMorphPanel<AbstractMorph, GuiAbstractM
             if (this.part != null) this.part.useTarget = b.isToggled();
         });
 
-        this.limbs.flex().parent(this.area).set(0, 80, 105, 90).x(1, -115).h(1, -106);
-        this.pickMorph.flex().parent(this.area).set(0, 40, 105, 20).x(1, -115);
-        this.addPart.flex().parent(this.area).set(10, 10, 50, 20);
+        this.limbs.flex().relative(this.area).set(0, 80, 105, 90).x(1, -115).h(1, -106);
+        this.pickMorph.flex().relative(this.area).set(0, 40, 105, 20).x(1, -115);
+        this.addPart.flex().relative(this.area).set(10, 10, 50, 20);
         this.removePart.flex().relative(this.addPart.resizer()).set(55, 0, 50, 20);
-        this.bodyParts.flex().parent(this.area).set(10, 50, 105, 0).h(1, -55);
-        this.useTarget.flex().parent(this.area).set(0, 0, 60, 11).x(1, -115).y(1, -21);
+        this.bodyParts.flex().relative(this.area).set(10, 50, 105, 0).h(1, -55);
+        this.useTarget.flex().relative(this.area).set(0, 0, 60, 11).x(1, -115).y(1, -21);
 
         this.elements.add(this.tx, this.ty, this.tz, this.sx, this.sy, this.sz, this.rx, this.ry, this.rz, this.limbs, this.pickMorph, this.useTarget);
         this.add(this.addPart, this.removePart, this.bodyParts, this.elements);
 
         /* Inventory */
         this.stacks = new GuiElement(mc);
-        this.stacks.flex().parent(this.area).x(0.5F, 0).y(10).wh(174, 24);
+        this.stacks.flex().relative(this.area).x(0.5F, 0).y(10).wh(174, 24);
 
         this.inventory = new GuiInventoryElement(mc, this::pickItem);
         this.inventory.flex().relative(this.stacks.resizer()).x(0.5F, 0).y(1, 10).anchor(0.5F, 0).wh(200, 100);

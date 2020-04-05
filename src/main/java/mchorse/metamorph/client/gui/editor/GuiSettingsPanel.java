@@ -1,20 +1,29 @@
 package mchorse.metamorph.client.gui.editor;
 
+import mchorse.mclib.client.gui.framework.elements.GuiScrollElement;
 import mchorse.mclib.client.gui.framework.elements.buttons.GuiButtonElement;
 import mchorse.mclib.client.gui.framework.elements.input.GuiTextElement;
 import mchorse.mclib.client.gui.framework.elements.input.GuiTrackpadElement;
 import mchorse.mclib.client.gui.framework.elements.list.GuiStringListElement;
+import mchorse.mclib.client.gui.framework.elements.utils.GuiContext;
+import mchorse.mclib.client.gui.framework.elements.utils.GuiLabel;
+import mchorse.mclib.client.gui.utils.resizers.layout.ColumnResizer;
 import mchorse.metamorph.api.MorphManager;
 import mchorse.metamorph.api.MorphSettings;
 import mchorse.metamorph.api.abilities.IAbility;
 import mchorse.metamorph.api.morphs.AbstractMorph;
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.resources.I18n;
+import net.minecraft.nbt.JsonToNBT;
+import net.minecraft.nbt.NBTTagCompound;
 
 import java.util.ArrayList;
 import java.util.List;
 
 public class GuiSettingsPanel extends GuiMorphPanel<AbstractMorph, GuiAbstractMorph>
 {
+	public GuiScrollElement element;
+
 	public GuiButtonElement reset;
 	public GuiTextElement displayName;
 	public GuiStringListElement abilities;
@@ -23,9 +32,17 @@ public class GuiSettingsPanel extends GuiMorphPanel<AbstractMorph, GuiAbstractMo
 	public GuiTrackpadElement health;
 	public GuiTrackpadElement speed;
 
+	public GuiTextElement data;
+	public boolean error;
+
 	public GuiSettingsPanel(Minecraft mc, GuiAbstractMorph editor)
 	{
 		super(mc, editor);
+
+		this.element = new GuiScrollElement(mc);
+		this.element.scroll.opposite = true;
+		this.element.flex().relative(this.area).w(120).h(1F);
+		ColumnResizer.apply(this.element, 5).vertical().stretch().scroll().height(20).padding(10);
 
 		this.reset = new GuiButtonElement(mc, "Reset", (button) ->
 		{
@@ -37,6 +54,7 @@ public class GuiSettingsPanel extends GuiMorphPanel<AbstractMorph, GuiAbstractMo
 		this.displayName = new GuiTextElement(mc, (string) -> this.morph.displayName = string);
 		this.abilities = new GuiStringListElement(mc, (values) ->
 		{
+			this.ensureCustomSettings();
 			this.morph.settings.abilities.clear();
 
 			for (String value : values)
@@ -50,23 +68,60 @@ public class GuiSettingsPanel extends GuiMorphPanel<AbstractMorph, GuiAbstractMo
 			}
 		});
 		this.abilities.multi().background();
-		this.attack = new GuiStringListElement(mc, (values) -> this.morph.settings.attack = MorphManager.INSTANCE.attacks.get(values.get(0)));
+		this.attack = new GuiStringListElement(mc, (values) ->
+		{
+			this.ensureCustomSettings();
+			this.morph.settings.attack = MorphManager.INSTANCE.attacks.get(values.get(0));
+		});
 		this.attack.background();
-		this.action = new GuiStringListElement(mc, (values) -> this.morph.settings.action = MorphManager.INSTANCE.actions.get(values.get(0)));
+		this.action = new GuiStringListElement(mc, (values) ->
+		{
+			this.ensureCustomSettings();
+			this.morph.settings.action = MorphManager.INSTANCE.actions.get(values.get(0));
+		});
 		this.action.background();
-		this.health = new GuiTrackpadElement(mc, (value) -> this.morph.settings.health = value.intValue()).limit(0, Float.POSITIVE_INFINITY, true);
-		this.speed = new GuiTrackpadElement(mc, (value) -> this.morph.settings.speed = value).limit(0, Float.POSITIVE_INFINITY);
+		this.health = new GuiTrackpadElement(mc, (value) ->
+		{
+			this.ensureCustomSettings();
+			this.morph.settings.health = value.intValue();
+		})
+			.limit(0, Float.POSITIVE_INFINITY, true);
+		this.speed = new GuiTrackpadElement(mc, (value) ->
+		{
+			this.ensureCustomSettings();
+			this.morph.settings.speed = value;
+		})
+			.limit(0, Float.POSITIVE_INFINITY)
+			.values(0.05F, 0.01F, 0.1F)
+			.increment(0.25F);
+		this.data = new GuiTextElement(mc, 1000000, this::editNBT);
 
-		this.reset.flex().parent(this.area).set(10, 0, 100, 20).y(1, -30);
-		this.displayName.flex().parent(this.area).set(10, 10, 100, 20);
-		this.health.flex().relative(this.displayName.resizer()).y(1, 5).w(1, 0).h(20);
-		this.speed.flex().relative(this.health.resizer()).y(1, 5).w(1, 0).h(20);
-		this.speed.values(0.05F, 0.01F, 0.1F).increment(0.25F);
-		this.abilities.flex().relative(this.displayName.resizer()).x(1, 5).w(1, 0).h(80);
-		this.attack.flex().relative(this.speed.resizer()).y(1, 5).w(1, 0).h(80);
-		this.action.flex().relative(this.attack.resizer()).y(1, 5).w(1, 0).h(80);
+		this.abilities.flex().h(80);
+		this.attack.flex().h(80);
+		this.action.flex().h(80);
 
-		this.add(this.displayName, this.abilities, this.attack, this.action, this.health, this.speed, this.reset);
+		this.data.flex().relative(this.area).relative(this.element.resizer()).x(1F, 10).y(1, -30).wTo(this.flex(), 1F, -10).h(20);
+
+		this.element.add(this.reset);
+		this.element.add(GuiLabel.create("Display name", 16).anchor(0, 1F), this.displayName);
+		this.element.add(GuiLabel.create("Health", 16).anchor(0, 1F), this.health);
+		this.element.add(GuiLabel.create("Speed", 16).anchor(0, 1F), this.speed);
+		this.element.add(GuiLabel.create("Abilities", 16).anchor(0, 1F), this.abilities);
+		this.element.add(GuiLabel.create("Attack", 16).anchor(0, 1F), this.attack);
+		this.element.add(GuiLabel.create("Action", 16).anchor(0, 1F), this.action);
+
+		this.add(this.element, this.data);
+	}
+
+	private void ensureCustomSettings()
+	{
+		if (!this.morph.hasCustomSettings())
+		{
+			MorphSettings old = this.morph.settings;
+
+			this.morph.settings = new MorphSettings();
+			this.morph.settings.merge(old);
+		}
 	}
 
 	@Override
@@ -82,18 +137,35 @@ public class GuiSettingsPanel extends GuiMorphPanel<AbstractMorph, GuiAbstractMo
 		this.action.add(MorphManager.INSTANCE.actions.keySet());
 	}
 
+	public void updateNBT()
+	{
+		NBTTagCompound tag = new NBTTagCompound();
+
+		this.morph.toNBT(tag);
+		this.data.setText(tag.toString());
+	}
+
+	public void editNBT(String str)
+	{
+		try
+		{
+			this.morph.fromNBT(JsonToNBT.getTagFromJson(str));
+			this.error = false;
+		}
+		catch (Exception e)
+		{
+			this.error = true;
+		}
+	}
+
 	@Override
 	public void startEditing()
 	{
 		super.startEditing();
 
-		if (!morph.hasCustomSettings())
-		{
-			MorphSettings settings = morph.settings;
+		this.error = false;
 
-			morph.settings = new MorphSettings();
-			morph.settings.merge(settings);
-		}
+		this.updateNBT();
 
 		this.displayName.setText(morph.displayName);
 		this.health.setValue(morph.settings.health);
@@ -118,5 +190,16 @@ public class GuiSettingsPanel extends GuiMorphPanel<AbstractMorph, GuiAbstractMo
 		this.abilities.setCurrent(abilities);
 		this.attack.setCurrent(MorphSettings.getKey(MorphManager.INSTANCE.attacks, morph.settings.attack));
 		this.action.setCurrent(MorphSettings.getKey(MorphManager.INSTANCE.actions, morph.settings.action));
+	}
+
+	@Override
+	public void draw(GuiContext context)
+	{
+		super.draw(context);
+
+		if (this.data.isVisible())
+		{
+			this.font.drawStringWithShadow(I18n.format("metamorph.gui.panels.nbt_data"), this.data.area.x, this.data.area.y - 12, this.error ? 0xffff3355 : 0xffffff);
+		}
 	}
 }

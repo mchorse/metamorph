@@ -78,7 +78,7 @@ public class GuiSelectorEditor extends GuiElement
 			button.setEnabled(false);
 		});
 
-		this.form.flex().parent(this.area).w(1F);
+		this.form.flex().relative(this.area).w(1F);
 		this.selectors.flex().relative(this.form.resizer()).y(1F).w(1F).hTo(this.flex(), 1F);
 
 		GuiLabel title = GuiLabel.create("Entity Selectors", this.font.FONT_HEIGHT);

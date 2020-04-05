@@ -75,7 +75,7 @@ public class GuiUserSection extends GuiMorphSection
 		});
 
 		modal.setValue(category.title);
-		modal.flex().parent(this.parent.area).xy(0.5F, 0.5F).wh(160, 180).anchor(0.5F, 0.5F);
+		modal.flex().relative(this.parent.area).xy(0.5F, 0.5F).wh(160, 180).anchor(0.5F, 0.5F);
 		modal.resize();
 
 		this.parent.add(modal);

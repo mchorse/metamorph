@@ -78,13 +78,13 @@ public class GuiCreativeScreen extends GuiBase
         this.pane = new GuiCreativeMorphs(mc, this::setMorph);
         this.pane.setSelected(Morphing.get(mc.player).getCurrentMorph());
 
-        this.morph.flex().parent(this.viewport).set(0, 10, 60, 20).x(1, -200);
+        this.morph.flex().relative(this.viewport).set(0, 10, 60, 20).x(1, -200);
         this.acquire.flex().relative(this.morph.resizer()).set(65, 0, 60, 20);
         this.close.flex().relative(this.acquire.resizer()).set(65, 0, 60, 20);
         this.icon.flex().relative(this.morph.resizer()).set(-18, 2, 16, 16);
         this.copy.flex().relative(this.icon.resizer()).set(-20, 0, 16, 16);
-        this.pane.flex().parent(this.viewport).set(0, 40, 0, 0).w(1, 0).h(1, -40);
-        this.selectors.flex().parent(this.viewport).wTo(this.pane.flex()).h(1F);
+        this.pane.flex().relative(this.viewport).set(0, 40, 0, 0).w(1, 0).h(1, -40);
+        this.selectors.flex().relative(this.viewport).wTo(this.pane.flex()).h(1F);
 
         this.root.add(this.pane, this.icon, this.copy, this.morph, this.acquire, this.close, this.selectors);
 

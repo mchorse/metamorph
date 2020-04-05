@@ -1,5 +1,6 @@
 package mchorse.metamorph.client.gui.editor;
 
+import mchorse.mclib.client.gui.framework.GuiBase;
 import mchorse.mclib.client.gui.framework.elements.GuiElement;
 import mchorse.mclib.client.gui.framework.elements.GuiPanelBase;
 import mchorse.mclib.client.gui.framework.elements.buttons.GuiButtonElement;
@@ -17,6 +18,7 @@ import net.minecraft.nbt.JsonToNBT;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
+import org.lwjgl.input.Keyboard;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -27,7 +29,6 @@ import java.util.List;
 public class GuiAbstractMorph<T extends AbstractMorph> extends GuiPanelBase<GuiMorphPanel>
 {
     public GuiButtonElement finish;
-    public GuiNBTPanel nbt;
     public GuiSettingsPanel settings;
 
     protected GuiMorphPanel defaultPanel;
@@ -39,13 +40,17 @@ public class GuiAbstractMorph<T extends AbstractMorph> extends GuiPanelBase<GuiM
         super(mc);
 
         this.finish = new GuiButtonElement(mc, I18n.format("metamorph.gui.finish"), null);
-        this.finish.flex().parent(this.area).set(0, 10, 55, 20).x(1, -65);
-        this.settings = new GuiSettingsPanel(mc, this);
-        this.defaultPanel = this.nbt = new GuiNBTPanel(mc, this);
+        this.finish.flex().relative(this.area).set(0, 0, 60, 20).y(1F, -20);
+        this.defaultPanel = this.settings = new GuiSettingsPanel(mc, this);
 
         this.registerPanel(this.settings, I18n.format("metamorph.gui.panels.settings"), MMIcons.PROPERTIES);
-        this.registerPanel(this.nbt, I18n.format("metamorph.gui.panels.nbt"), MMIcons.CODE);
         this.getChildren().add(2, this.finish);
+
+        this.keys().register("Finish editing", Keyboard.KEY_F, () ->
+        {
+            this.finish.clickItself(GuiBase.getCurrent());
+            return true;
+        });
     }
 
     /**

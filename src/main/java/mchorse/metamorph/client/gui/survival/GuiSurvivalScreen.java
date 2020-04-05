@@ -62,11 +62,11 @@ public class GuiSurvivalScreen extends GuiBase
             this.exit();
         });
 
-        this.remove.flex().parent(this.viewport).set(20, 0, 60, 20).y(1, -30);
-        this.morph.flex().parent(this.viewport).set(0, 0, 60, 20).x(1, -80).y(1, -30);
+        this.remove.flex().relative(this.viewport).set(20, 0, 60, 20).y(1, -30);
+        this.morph.flex().relative(this.viewport).set(0, 0, 60, 20).x(1, -80).y(1, -30);
         this.favorite.flex().relative(this.morph.resizer()).set(-65, 0, 60, 20);
 
-        this.close.flex().parent(this.viewport).set(0, 10, 60, 20).x(1, -80);
+        this.close.flex().relative(this.viewport).set(0, 10, 60, 20).x(1, -80);
         this.onlyFavorites.flex().relative(this.close.resizer()).set(-95, 0, 90, 20);
 
         this.root.add(this.remove, this.favorite, this.close, this.onlyFavorites, this.morph);

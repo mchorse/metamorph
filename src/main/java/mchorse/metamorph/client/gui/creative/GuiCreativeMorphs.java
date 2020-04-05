@@ -1,10 +1,8 @@
 package mchorse.metamorph.client.gui.creative;
 
-import mchorse.mclib.client.gui.framework.GuiBase;
 import mchorse.mclib.client.gui.framework.elements.GuiDelegateElement;
 import mchorse.mclib.client.gui.framework.elements.GuiElement;
 import mchorse.mclib.client.gui.framework.elements.GuiScrollElement;
-import mchorse.mclib.client.gui.framework.elements.IGuiElement;
 import mchorse.mclib.client.gui.framework.elements.buttons.GuiButtonElement;
 import mchorse.mclib.client.gui.framework.elements.input.GuiTextElement;
 import mchorse.mclib.client.gui.framework.elements.utils.GuiContext;
@@ -90,25 +88,24 @@ public class GuiCreativeMorphs extends GuiElement
 
         this.callback = callback;
         this.editor = new GuiDelegateElement<GuiAbstractMorph>(mc, null);
-        this.editor.flex().parent(this.area).wh(1F, 1F);
+        this.editor.flex().relative(this.area).wh(1F, 1F);
 
         /* Create quick editor */
         this.quickEditor = new GuiQuickEditor(mc, this);
-        this.quickEditor.flex().parent(this.area).x(1F, -200).wTo(this.flex(), 1F).h(1F);
+        this.quickEditor.flex().relative(this.area).x(1F, -200).wTo(this.flex(), 1F).h(1F);
         this.quickEditor.setVisible(false);
 
         /* Create morph panels */
         this.morphs = new GuiScrollElement(mc);
-        this.morphs.flex().parent(this.area).wh(1F, 1F);
+        this.morphs.flex().relative(this.area).wh(1F, 1F);
         ColumnResizer.apply(this.morphs, 0).vertical().stretch().scroll();
         this.setupMorphs(list);
 
         /* Initiate bottom bar */
         this.bar = new GuiElement(mc);
         this.search = new GuiTextElement(mc, this::setFilter);
-        this.search.focus(GuiBase.getCurrent());
 
-        this.bar.flex().parent(this.morphs.area).set(10, 0, 0, 20).y(1, -30).w(1, -20);
+        this.bar.flex().relative(this.morphs.area).set(10, 0, 0, 20).y(1, -30).w(1, -20);
         RowResizer.apply(this.bar, 5).preferred(1).height(20);
         this.bar.add(this.search);
 
