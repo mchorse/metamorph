@@ -61,6 +61,7 @@ public class GuiCreativeMorphs extends GuiElement
     public GuiElement bar;
     public GuiTextElement search;
 
+    public GuiElement screen;
     public GuiQuickEditor quickEditor;
     public GuiScrollElement morphs;
 
@@ -90,6 +91,9 @@ public class GuiCreativeMorphs extends GuiElement
         this.editor = new GuiDelegateElement<GuiAbstractMorph>(mc, null);
         this.editor.flex().relative(this.area).wh(1F, 1F);
 
+        this.screen = new GuiElement(mc);
+        this.screen.flex().relative(this.area).wh(1F, 1F);
+
         /* Create quick editor */
         this.quickEditor = new GuiQuickEditor(mc, this);
         this.quickEditor.flex().relative(this.area).x(1F, -200).wTo(this.flex(), 1F).h(1F);
@@ -109,7 +113,8 @@ public class GuiCreativeMorphs extends GuiElement
         RowResizer.apply(this.bar, 5).preferred(1).height(20);
         this.bar.add(this.search);
 
-        this.add(this.morphs, this.bar, this.quickEditor, new GuiDrawable(this::drawOverlay), this.editor);
+        this.screen.add(this.morphs, this.bar, this.quickEditor);
+        this.add(this.screen, new GuiDrawable(this::drawOverlay), this.editor);
 
         /* Morph editor keybinds */
         this.morphs.keys()
@@ -141,6 +146,8 @@ public class GuiCreativeMorphs extends GuiElement
             this.sections.add(element);
             this.morphs.add(element);
         }
+
+        this.sections.get(this.sections.size() - 1).last = true;
     }
 
     public void markDirty()
@@ -240,9 +247,7 @@ public class GuiCreativeMorphs extends GuiElement
 
         boolean hide = this.editor.delegate == null;
 
-        this.bar.setVisible(hide);
-        this.morphs.setVisible(hide);
-        this.quickEditor.setVisible(hide);
+        this.screen.setVisible(hide);
     }
 
     public void finish()

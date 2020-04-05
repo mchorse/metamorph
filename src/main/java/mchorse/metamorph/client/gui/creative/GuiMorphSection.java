@@ -30,6 +30,7 @@ public class GuiMorphSection extends GuiElement
 	public boolean toggled = true;
 	public int cellWidth = 55;
 	public int cellHeight = 70;
+	public boolean last;
 
 	public AbstractMorph morph;
 	public MorphCategory category;
@@ -255,7 +256,7 @@ public class GuiMorphSection extends GuiElement
 		this.font.drawStringWithShadow(this.section.title, this.area.x + 7, this.area.y + 10 - this.font.FONT_HEIGHT / 2, 0xffffff);
 		(this.toggled ? Icons.MOVE_UP : Icons.MOVE_DOWN).render(this.area.ex() - 18 - 3, this.area.y + 10 + (this.toggled ? -1 : 1), 0, 0.5F);
 
-		int y = this.drawMorphs(context);
+		int y = this.drawMorphs(context) + (this.last ? 30 : 0);
 
 		if (this.area.h != y)
 		{
@@ -279,76 +280,78 @@ public class GuiMorphSection extends GuiElement
 		this.selectedX = 0;
 		this.selectedY = 0;
 
-		if (this.toggled)
+		if (!this.toggled)
 		{
-			int row = this.getPerRow();
+			return y;
+		}
 
-			for (MorphCategory category : this.section.categories)
+		int row = this.getPerRow();
+
+		for (MorphCategory category : this.section.categories)
+		{
+			int count = this.getMorphsSize(category);
+
+			if (category.isHidden() || (count == 0 && !this.filter.isEmpty()))
 			{
-				int count = this.getMorphsSize(category);
+				continue;
+			}
 
-				if (category.isHidden() || (count == 0 && !this.filter.isEmpty()))
+			this.font.drawStringWithShadow(category.title, this.area.x + 7, this.area.y + y + 8 - this.font.FONT_HEIGHT / 2, 0xcccccc);
+
+			Area.SHARED.copy(this.area);
+			Area.SHARED.y = this.area.y + y;
+			Area.SHARED.h = CATEGORY_HEIGHT + this.getCategoryHeight(category);
+
+			if (Area.SHARED.isInside(context.mouseX, context.mouseY))
+			{
+				this.hoverCategory = category;
+			}
+
+			float x = 0;
+			y += CATEGORY_HEIGHT;
+
+			for (int i = 0, j = 0; i < category.getMorphs().size(); i ++)
+			{
+				AbstractMorph morph = category.getMorphs().get(i);
+
+				if (!this.isMatching(morph))
 				{
 					continue;
 				}
 
-				this.font.drawStringWithShadow(category.title, this.area.x + 7, this.area.y + y + 8 - this.font.FONT_HEIGHT / 2, 0xcccccc);
+				if (j != 0 && j % row == 0)
+				{
+					x = 0;
+					y += this.cellHeight;
+				}
 
-				Area.SHARED.copy(this.area);
-				Area.SHARED.y = this.area.y + y;
-				Area.SHARED.h = CATEGORY_HEIGHT + this.getCategoryHeight(category);
+				int mx = this.area.x + Math.round(x);
+				int my = this.area.y + y;
+
+				if (this.morph == morph)
+				{
+					this.selectedX = Math.round(x);
+					this.selectedY = y;
+				}
+
+				x += this.area.w / (float) row;
+				int w = Math.round(x - (mx - this.area.x));
+
+				Area.SHARED.set(mx, my, w, this.cellHeight);
 
 				if (Area.SHARED.isInside(context.mouseX, context.mouseY))
 				{
-					this.hoverCategory = category;
+					this.hoverMorph = morph;
 				}
 
-				float x = 0;
-				y += CATEGORY_HEIGHT;
+				GuiDraw.scissor(mx, my, w, this.cellHeight, context);
+				this.drawMorph(context, morph, mx, my, w, this.cellHeight, this.hoverMorph == morph, this.morph == morph);
+				GuiDraw.unscissor(context);
 
-				for (int i = 0, j = 0; i < category.getMorphs().size(); i ++)
-				{
-					AbstractMorph morph = category.getMorphs().get(i);
-
-					if (!this.isMatching(morph))
-					{
-						continue;
-					}
-
-					if (j != 0 && j % row == 0)
-					{
-						x = 0;
-						y += this.cellHeight;
-					}
-
-					int mx = this.area.x + Math.round(x);
-					int my = this.area.y + y;
-
-					if (this.morph == morph)
-					{
-						this.selectedX = Math.round(x);
-						this.selectedY = y;
-					}
-
-					x += this.area.w / (float) row;
-					int w = Math.round(x - (mx - this.area.x));
-
-					Area.SHARED.set(mx, my, w, this.cellHeight);
-
-					if (Area.SHARED.isInside(context.mouseX, context.mouseY))
-					{
-						this.hoverMorph = morph;
-					}
-
-					GuiDraw.scissor(mx, my, w, this.cellHeight, context);
-					this.drawMorph(context, morph, mx, my, w, this.cellHeight, this.hoverMorph == morph, this.morph == morph);
-					GuiDraw.unscissor(context);
-
-					j ++;
-				}
-
-				y += this.cellHeight;
+				j ++;
 			}
+
+			y += this.cellHeight;
 		}
 
 		return y;
