@@ -8,19 +8,28 @@ import mchorse.mclib.client.gui.framework.elements.buttons.GuiToggleElement;
 import mchorse.mclib.client.gui.framework.elements.input.GuiKeybindElement;
 import mchorse.mclib.client.gui.utils.Elements;
 import mchorse.mclib.client.gui.utils.resizers.layout.ColumnResizer;
+import mchorse.metamorph.ClientProxy;
+import mchorse.metamorph.api.Morph;
+import mchorse.metamorph.api.MorphManager;
+import mchorse.metamorph.api.creative.MorphList;
 import mchorse.metamorph.api.creative.categories.AcquiredCategory;
+import mchorse.metamorph.api.creative.categories.MorphCategory;
+import mchorse.metamorph.api.creative.categories.UserCategory;
 import mchorse.metamorph.api.creative.sections.MorphSection;
+import mchorse.metamorph.api.creative.sections.UserSection;
 import mchorse.metamorph.api.morphs.AbstractMorph;
 import mchorse.metamorph.capabilities.morphing.IMorphing;
 import mchorse.metamorph.capabilities.morphing.Morphing;
 import mchorse.metamorph.client.gui.creative.GuiMorphSection;
 import mchorse.metamorph.network.Dispatcher;
+import mchorse.metamorph.network.common.creative.PacketMorph;
 import mchorse.metamorph.network.common.survival.PacketFavorite;
 import mchorse.metamorph.network.common.survival.PacketKeybind;
 import mchorse.metamorph.network.common.survival.PacketRemoveMorph;
 import mchorse.metamorph.network.common.survival.PacketSelectMorph;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.Gui;
+import net.minecraft.entity.player.EntityPlayer;
 import org.lwjgl.input.Keyboard;
 
 import java.util.Collections;
@@ -44,6 +53,7 @@ public class GuiSurvivalScreen extends GuiBase
 
     private GuiMorphSection selected;
     private AcquiredCategory acquired;
+    private boolean creative;
 
     public GuiSurvivalScreen()
     {
@@ -76,7 +86,15 @@ public class GuiSurvivalScreen extends GuiBase
 
     public GuiSurvivalScreen open()
     {
-        IMorphing cap = Morphing.get(Minecraft.getMinecraft().player);
+        EntityPlayer player = Minecraft.getMinecraft().player;
+        IMorphing cap = Morphing.get(player);
+        boolean creative = player.isCreative();
+
+        if (this.creative != creative || creative)
+        {
+            this.creative = creative;
+            this.setupMorphs();
+        }
 
         this.setSelected(cap.getCurrentMorph());
 
@@ -99,9 +117,12 @@ public class GuiSurvivalScreen extends GuiBase
     {
         AbstractMorph morph = this.getSelected();
 
-        if (morph != null)
+        if (morph != null && !(this.selected.category instanceof UserCategory))
         {
-            Dispatcher.sendToServer(new PacketRemoveMorph(this.indexOf(morph)));
+            int index = this.indexOf(morph);
+
+            Dispatcher.sendToServer(new PacketRemoveMorph(index));
+            this.setSelected(null);
         }
     }
 
@@ -111,8 +132,14 @@ public class GuiSurvivalScreen extends GuiBase
 
         if (morph != null)
         {
-            keybind = keybind == Keyboard.KEY_ESCAPE ? -1 : keybind;
+            if (keybind == ClientProxy.keys.keyDemorph.getKeyCode())
+            {
+                this.keybind.setKeybind(morph.keybind);
 
+                return;
+            }
+
+            keybind = keybind == Keyboard.KEY_ESCAPE ? -1 : keybind;
             morph.keybind = keybind;
 
             if (keybind == -1)
@@ -120,7 +147,14 @@ public class GuiSurvivalScreen extends GuiBase
                 this.keybind.setKeybind(Keyboard.KEY_NONE);
             }
 
-            Dispatcher.sendToServer(new PacketKeybind(this.indexOf(morph), keybind));
+            if (this.selected.category instanceof UserCategory)
+            {
+                this.selected.category.edit(morph);
+            }
+            else
+            {
+                Dispatcher.sendToServer(new PacketKeybind(this.indexOf(morph), keybind));
+            }
         }
     }
 
@@ -130,7 +164,14 @@ public class GuiSurvivalScreen extends GuiBase
 
         if (morph != null)
         {
-            Dispatcher.sendToServer(new PacketFavorite(this.indexOf(morph)));
+            if (this.selected.category instanceof UserCategory)
+            {
+                this.selected.category.edit(morph);
+            }
+            else
+            {
+                Dispatcher.sendToServer(new PacketFavorite(this.indexOf(morph)));
+            }
         }
     }
 
@@ -147,17 +188,34 @@ public class GuiSurvivalScreen extends GuiBase
     private void setupMorphs()
     {
         Minecraft mc = Minecraft.getMinecraft();
+        MorphList list = MorphManager.INSTANCE.list;
         IMorphing cap = Morphing.get(mc.player);
-        MorphSection section = new MorphSection("User morphs");
-        AcquiredCategory category = new AcquiredCategory(section, "acquired");
 
-        category.setMorph(cap == null ? Collections.emptyList() : cap.getAcquiredMorphs());
-        section.add(category);
+        MorphSection section;
+        AcquiredCategory category;
+
+        if (this.creative)
+        {
+            UserSection user = (UserSection) list.sections.get(0);
+
+            section = user;
+            section.update(mc.world);
+            category = user.acquired;
+        }
+        else
+        {
+            section = new MorphSection("User morphs");
+            category = new AcquiredCategory(section, "acquired");
+
+            category.setMorph(cap == null ? Collections.emptyList() : cap.getAcquiredMorphs());
+            section.add(category);
+        }
 
         GuiMorphSection element = section.getGUI(mc, null, this::setMorph);
 
         element.flex();
 
+        this.morphs.clear();
         this.morphs.add(element);
         this.selected = element;
         this.acquired = category;
@@ -188,15 +246,26 @@ public class GuiSurvivalScreen extends GuiBase
             {
                 this.selected.category = this.acquired;
                 this.selected.morph = found;
-                this.fill(found);
             }
+
+            this.fill(found);
         }
     }
 
     public void fill(AbstractMorph morph)
     {
+        this.morph.setEnabled(morph != null);
+        this.remove.setEnabled(morph != null);
+        this.keybind.setEnabled(morph != null);
+        this.favorite.setEnabled(morph != null);
+
         if (morph != null)
         {
+            if (!(this.selected.category instanceof AcquiredCategory))
+            {
+                this.remove.setEnabled(false);
+            }
+
             this.favorite.toggled(morph.favorite);
             this.keybind.setKeybind(morph.keybind);
         }
@@ -205,18 +274,37 @@ public class GuiSurvivalScreen extends GuiBase
     @Override
     public void keyPressed(char typedChar, int keyCode)
     {
-        List<AbstractMorph> morphs = this.acquired.getMorphs();
-
-        for (int i = 0; i < morphs.size(); i ++)
+        if (keyCode == ClientProxy.keys.keyDemorph.getKeyCode())
         {
-            AbstractMorph morph = morphs.get(i);
+            Dispatcher.sendToServer(new PacketSelectMorph(-1));
+            this.closeScreen();
 
-            if (morph.keybind == keyCode)
+            return;
+        }
+
+        for (MorphCategory category : this.selected.section.categories)
+        {
+            List<AbstractMorph> morphs = category.getMorphs();
+
+            for (int i = 0; i < morphs.size(); i ++)
             {
-                Dispatcher.sendToServer(new PacketSelectMorph(i));
-                this.closeScreen();
+                AbstractMorph morph = morphs.get(i);
 
-                return;
+                if (morph.keybind == keyCode)
+                {
+                    if (category == this.acquired)
+                    {
+                        Dispatcher.sendToServer(new PacketSelectMorph(i));
+                    }
+                    else
+                    {
+                        Dispatcher.sendToServer(new PacketMorph(morph));
+                    }
+
+                    this.closeScreen();
+
+                    return;
+                }
             }
         }
     }

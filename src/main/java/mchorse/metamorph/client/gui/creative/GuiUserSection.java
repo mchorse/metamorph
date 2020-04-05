@@ -28,6 +28,11 @@ public class GuiUserSection extends GuiMorphSection
 	{
 		GuiSimpleContextMenu contextMenu = (GuiSimpleContextMenu) super.createContextMenu(context);
 
+		if (this.parent == null)
+		{
+			return contextMenu;
+		}
+
 		contextMenu.action(Icons.ADD, "Add a new category", () -> section.add(new UserCategory(this.section, "User category")));
 
 		if (this.hoverCategory instanceof UserCategory)
