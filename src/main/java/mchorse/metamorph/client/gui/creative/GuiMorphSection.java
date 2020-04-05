@@ -17,6 +17,8 @@ import mchorse.metamorph.util.MMIcons;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.Gui;
 import net.minecraft.client.renderer.GlStateManager;
+import org.lwjgl.input.Keyboard;
+import org.lwjgl.opengl.GL11;
 
 import java.util.function.Consumer;
 
@@ -397,13 +399,26 @@ public class GuiMorphSection extends GuiElement
 
 		morph.renderOnScreen(this.mc.player, x + w / 2, y + (int) (h * 0.7F), w * 0.4F, 1);
 
-		if (this.morph == morph)
+		if (selected)
 		{
 			GuiDraw.drawOutline(x, y, x + w, y + h, 0xff000000 + McLib.primaryColor.get(), 2);
 		}
 
+		if (morph.keybind != -1)
+		{
+			String key = Keyboard.getKeyName(morph.keybind);
+			int kw = this.font.getStringWidth(key);
+			int kx = x + w - 6 - kw;
+			int ky = y + h - 6 - this.font.FONT_HEIGHT;
+
+			Gui.drawRect(kx - 3, ky - 2, kx + kw + 3, ky + this.font.FONT_HEIGHT + 2, 0xff000000);
+			this.font.drawStringWithShadow(key, kx, ky, 0xffffff);
+		}
+
 		if (morph.favorite)
 		{
+			/* Stupid hack because the morph seems to change the blend function or something */
+			GlStateManager.blendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
 			GuiDraw.drawOutlinedIcon(MMIcons.FAVORITE, x + 2, y + 2, 0xffffffff);
 		}
 	}

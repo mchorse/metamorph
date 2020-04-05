@@ -1,6 +1,7 @@
 package mchorse.metamorph.api.creative;
 
 import mchorse.metamorph.api.creative.sections.MorphSection;
+import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.world.World;
 
 import java.util.ArrayList;
@@ -44,5 +45,21 @@ public class MorphList
         {
             section.reset();
         }
+    }
+
+    /**
+     * If any of the morphs have keybind attached, use it
+     */
+    public boolean keyTyped(EntityPlayer player, int keycode)
+    {
+        for (MorphSection section : this.sections)
+        {
+            if (section.keyTyped(player, keycode))
+            {
+                return true;
+            }
+        }
+
+        return false;
     }
 }

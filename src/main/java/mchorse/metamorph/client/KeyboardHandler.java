@@ -1,6 +1,7 @@
 package mchorse.metamorph.client;
 
 import mchorse.metamorph.ClientProxy;
+import mchorse.metamorph.api.MorphManager;
 import mchorse.metamorph.capabilities.morphing.IMorphing;
 import mchorse.metamorph.capabilities.morphing.Morphing;
 import mchorse.metamorph.client.gui.creative.GuiCreativeScreen;
@@ -57,9 +58,9 @@ public class KeyboardHandler
     public void onKey(InputEvent.KeyInputEvent event)
     {
         Minecraft mc = Minecraft.getMinecraft();
-
         EntityPlayer player = mc.player;
         IMorphing morphing = Morphing.get(player);
+        boolean wasUsed = false;
 
         /* Action */
         if (keyAction.isPressed())
@@ -69,12 +70,14 @@ public class KeyboardHandler
             if (morphing != null && morphing.isMorphed())
             {
                 morphing.getCurrentMorph().action(player);
+                wasUsed = true;
             }
         }
 
         if (keyCreativeMenu.isPressed() && player.isCreative())
         {
             mc.displayGuiScreen(new GuiCreativeScreen());
+            wasUsed = true;
         }
 
         if (ClientProxy.getGameMode(player) == GameType.ADVENTURE)
@@ -86,6 +89,7 @@ public class KeyboardHandler
         if (keySurvivalMenu.isPressed())
         {
             mc.displayGuiScreen(ClientProxy.getSurvivalScreen().open());
+            wasUsed = true;
         }
 
         /* Demorph from current morph */
@@ -94,7 +98,15 @@ public class KeyboardHandler
             if (morphing != null && morphing.isMorphed())
             {
                 Dispatcher.sendToServer(new PacketSelectMorph(-1));
+                wasUsed = true;
             }
+        }
+
+        if (!wasUsed && Keyboard.getEventKeyState())
+        {
+            int key = Keyboard.getEventKey() == 0 ? Keyboard.getEventCharacter() + 256 : Keyboard.getEventKey();
+
+            MorphManager.INSTANCE.list.keyTyped(player, key);
         }
     }
 }

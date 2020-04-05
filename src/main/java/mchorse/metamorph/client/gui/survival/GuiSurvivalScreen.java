@@ -9,11 +9,9 @@ import mchorse.mclib.client.gui.framework.elements.input.GuiKeybindElement;
 import mchorse.mclib.client.gui.utils.Elements;
 import mchorse.mclib.client.gui.utils.resizers.layout.ColumnResizer;
 import mchorse.metamorph.ClientProxy;
-import mchorse.metamorph.api.Morph;
 import mchorse.metamorph.api.MorphManager;
 import mchorse.metamorph.api.creative.MorphList;
 import mchorse.metamorph.api.creative.categories.AcquiredCategory;
-import mchorse.metamorph.api.creative.categories.MorphCategory;
 import mchorse.metamorph.api.creative.categories.UserCategory;
 import mchorse.metamorph.api.creative.sections.MorphSection;
 import mchorse.metamorph.api.creative.sections.UserSection;
@@ -22,7 +20,6 @@ import mchorse.metamorph.capabilities.morphing.IMorphing;
 import mchorse.metamorph.capabilities.morphing.Morphing;
 import mchorse.metamorph.client.gui.creative.GuiMorphSection;
 import mchorse.metamorph.network.Dispatcher;
-import mchorse.metamorph.network.common.creative.PacketMorph;
 import mchorse.metamorph.network.common.survival.PacketFavorite;
 import mchorse.metamorph.network.common.survival.PacketKeybind;
 import mchorse.metamorph.network.common.survival.PacketRemoveMorph;
@@ -33,7 +30,6 @@ import net.minecraft.entity.player.EntityPlayer;
 import org.lwjgl.input.Keyboard;
 
 import java.util.Collections;
-import java.util.List;
 
 /**
  * Survival morph menu GUI
@@ -64,7 +60,8 @@ public class GuiSurvivalScreen extends GuiBase
         this.morph = new GuiButtonElement(mc, "Morph", this::morph);
         this.remove = new GuiButtonElement(mc, "Remove", this::remove);
         this.keybind = new GuiKeybindElement(mc, this::setKeybind);
-        this.favorite = new GuiToggleElement(mc, "Favorite", this::setFavorite);
+        this.keybind.tooltip("With this field, you can bind a key which will morph you into this particular morph (when you press it either in this menu or in the world)");
+        this.favorite = new GuiToggleElement(mc, "Favorite", this::favorite);
         this.favorite.flex().h(12);
 
         this.sidebar = new GuiScrollElement(mc);
@@ -82,6 +79,28 @@ public class GuiSurvivalScreen extends GuiBase
 
         this.root.flex().xy(0.5F, 0.5F).wh(1F, 1F).anchor(0.5F, 0.5F).maxW(500).maxH(300);
         this.root.add(this.morphs, this.sidebar, this.onlyFavorite);
+
+        this.root.keys()
+            .register("Morph", Keyboard.KEY_M, () ->
+            {
+                this.morph.clickItself(GuiBase.getCurrent());
+                return true;
+            })
+            .register("Remove", Keyboard.KEY_R, () ->
+            {
+                this.remove.clickItself(GuiBase.getCurrent());
+                return true;
+            })
+            .register("Favorite", Keyboard.KEY_F, () ->
+            {
+                this.favorite.clickItself(GuiBase.getCurrent());
+                return true;
+            })
+            .register("Toggle favorite morphs", Keyboard.KEY_O, () ->
+            {
+                this.onlyFavorite.clickItself(GuiBase.getCurrent());
+                return true;
+            });
     }
 
     public GuiSurvivalScreen open()
@@ -96,6 +115,7 @@ public class GuiSurvivalScreen extends GuiBase
             this.setupMorphs();
         }
 
+        this.fill(null);
         this.setSelected(cap.getCurrentMorph());
 
         return this;
@@ -158,7 +178,7 @@ public class GuiSurvivalScreen extends GuiBase
         }
     }
 
-    private void setFavorite(GuiToggleElement button)
+    private void favorite(GuiToggleElement button)
     {
         AbstractMorph morph = this.getSelected();
 
@@ -257,6 +277,7 @@ public class GuiSurvivalScreen extends GuiBase
         this.morph.setEnabled(morph != null);
         this.remove.setEnabled(morph != null);
         this.keybind.setEnabled(morph != null);
+        this.keybind.setKeybind(Keyboard.KEY_NONE);
         this.favorite.setEnabled(morph != null);
 
         if (morph != null)
@@ -277,36 +298,13 @@ public class GuiSurvivalScreen extends GuiBase
         if (keyCode == ClientProxy.keys.keyDemorph.getKeyCode())
         {
             Dispatcher.sendToServer(new PacketSelectMorph(-1));
-            this.closeScreen();
-
+        }
+        else if (!MorphManager.INSTANCE.list.keyTyped(this.mc.player, keyCode))
+        {
             return;
         }
 
-        for (MorphCategory category : this.selected.section.categories)
-        {
-            List<AbstractMorph> morphs = category.getMorphs();
-
-            for (int i = 0; i < morphs.size(); i ++)
-            {
-                AbstractMorph morph = morphs.get(i);
-
-                if (morph.keybind == keyCode)
-                {
-                    if (category == this.acquired)
-                    {
-                        Dispatcher.sendToServer(new PacketSelectMorph(i));
-                    }
-                    else
-                    {
-                        Dispatcher.sendToServer(new PacketMorph(morph));
-                    }
-
-                    this.closeScreen();
-
-                    return;
-                }
-            }
-        }
+        this.closeScreen();
     }
 
     @Override

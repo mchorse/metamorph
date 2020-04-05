@@ -3,6 +3,9 @@ package mchorse.metamorph.api.creative.categories;
 import mchorse.metamorph.api.MorphManager;
 import mchorse.metamorph.api.creative.sections.MorphSection;
 import mchorse.metamorph.api.morphs.AbstractMorph;
+import mchorse.metamorph.network.Dispatcher;
+import mchorse.metamorph.network.common.creative.PacketMorph;
+import net.minecraft.entity.player.EntityPlayer;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -72,4 +75,29 @@ public class MorphCategory
 
 	public void edit(AbstractMorph morph)
 	{}
+
+	public boolean keyTyped(EntityPlayer player, int keycode)
+	{
+		for (AbstractMorph morph : this.morphs)
+		{
+			if (morph.keybind == keycode && this.morph(player, morph))
+			{
+				return true;
+			}
+		}
+
+		return false;
+	}
+
+	protected boolean morph(EntityPlayer player, AbstractMorph morph)
+	{
+		if (player.isCreative())
+		{
+			Dispatcher.sendToServer(new PacketMorph(morph));
+
+			return true;
+		}
+
+		return false;
+	}
 }

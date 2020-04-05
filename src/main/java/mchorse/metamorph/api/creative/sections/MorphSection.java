@@ -4,6 +4,7 @@ import mchorse.metamorph.api.creative.categories.MorphCategory;
 import mchorse.metamorph.client.gui.creative.GuiCreativeMorphs;
 import mchorse.metamorph.client.gui.creative.GuiMorphSection;
 import net.minecraft.client.Minecraft;
+import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
@@ -48,5 +49,18 @@ public class MorphSection
 	public GuiMorphSection getGUI(Minecraft mc, GuiCreativeMorphs parent, Consumer<GuiMorphSection> callback)
 	{
 		return new GuiMorphSection(mc, parent, this, callback);
+	}
+
+	public boolean keyTyped(EntityPlayer player, int keycode)
+	{
+		for (MorphCategory category : this.categories)
+		{
+			if (category.keyTyped(player, keycode))
+			{
+				return true;
+			}
+		}
+
+		return false;
 	}
 }
