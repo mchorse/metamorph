@@ -15,4 +15,5 @@ public class MMIcons
 	public static final Icon PROPERTIES = new Icon(PANEL_ICONS, 32, 0);
 	public static final Icon BLOCK = new Icon(PANEL_ICONS, 48, 0);
 	public static final Icon ITEM = new Icon(PANEL_ICONS, 64, 0);
+	public static final Icon LABEL = new Icon(PANEL_ICONS, 80, 0);
 }

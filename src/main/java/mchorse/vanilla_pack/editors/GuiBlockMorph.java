@@ -5,24 +5,28 @@ import mchorse.mclib.client.gui.utils.Label;
 import mchorse.metamorph.api.morphs.AbstractMorph;
 import mchorse.metamorph.client.gui.editor.GuiAbstractMorph;
 import mchorse.metamorph.util.MMIcons;
+import mchorse.vanilla_pack.editors.panels.GuiItemStackPanel;
 import mchorse.vanilla_pack.morphs.BlockMorph;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.resources.I18n;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 import org.lwjgl.opengl.GL11;
 
 import java.util.ArrayList;
 import java.util.List;
 
+@SideOnly(Side.CLIENT)
 public class GuiBlockMorph extends GuiAbstractMorph<BlockMorph>
 {
-	public GuiItemStackEditor block;
+	public GuiItemStackPanel block;
 
 	public GuiBlockMorph(Minecraft mc)
 	{
 		super(mc);
 
-		this.defaultPanel = this.block = new GuiItemStackEditor(mc, this);
+		this.defaultPanel = this.block = new GuiItemStackPanel(mc, this);
 		this.registerPanel(this.block, I18n.format("metamorph.gui.panels.block"), MMIcons.BLOCK);
 	}
 

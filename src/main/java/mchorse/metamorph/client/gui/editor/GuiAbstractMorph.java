@@ -13,6 +13,7 @@ import mchorse.metamorph.api.morphs.AbstractMorph;
 import mchorse.metamorph.client.gui.creative.GuiCreativeMorphs;
 import mchorse.metamorph.util.MMIcons;
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.gui.Gui;
 import net.minecraft.client.resources.I18n;
 import net.minecraft.nbt.JsonToNBT;
 import net.minecraft.nbt.NBTTagCompound;
@@ -134,6 +135,7 @@ public class GuiAbstractMorph<T extends AbstractMorph> extends GuiPanelBase<GuiM
     public void draw(GuiContext context)
     {
         this.drawMorph(context);
+        Gui.drawRect(this.area.x, this.area.ey() - 20, this.area.ex(), this.area.ey(), 0xee000000);
 
         super.draw(context);
     }

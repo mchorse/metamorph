@@ -39,10 +39,12 @@ import mchorse.vanilla_pack.attacks.WitherAttack;
 import mchorse.vanilla_pack.editors.GuiBlockMorph;
 import mchorse.vanilla_pack.editors.GuiEntityMorph;
 import mchorse.vanilla_pack.editors.GuiItemMorph;
+import mchorse.vanilla_pack.editors.GuiLabelMorph;
 import mchorse.vanilla_pack.editors.GuiPlayerMorph;
 import mchorse.vanilla_pack.morphs.BlockMorph;
 import mchorse.vanilla_pack.morphs.IronGolemMorph;
 import mchorse.vanilla_pack.morphs.ItemMorph;
+import mchorse.vanilla_pack.morphs.LabelMorph;
 import mchorse.vanilla_pack.morphs.PlayerMorph;
 import mchorse.vanilla_pack.morphs.ShulkerMorph;
 import mchorse.vanilla_pack.morphs.UndeadMorph;
@@ -122,6 +124,7 @@ public class MetamorphFactory implements IMorphFactory
     @SideOnly(Side.CLIENT)
     public void registerMorphEditors(Minecraft mc, List<GuiAbstractMorph> editors)
     {
+        editors.add(new GuiLabelMorph(mc));
         editors.add(new GuiItemMorph(mc));
         editors.add(new GuiBlockMorph(mc));
         editors.add(new GuiPlayerMorph(mc));
@@ -141,7 +144,7 @@ public class MetamorphFactory implements IMorphFactory
             return true;
         }
 
-        if (name.equals("block") || name.equals("item"))
+        if (name.equals("block") || name.equals("item") || name.equals("label"))
         {
             return true;
         }
@@ -185,6 +188,10 @@ public class MetamorphFactory implements IMorphFactory
         else if (name.equals("item"))
         {
             morph = new ItemMorph();
+        }
+        else if (name.equals("label"))
+        {
+            morph = new LabelMorph();
         }
         else
         {

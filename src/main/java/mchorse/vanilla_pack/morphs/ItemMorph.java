@@ -15,6 +15,8 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 
 import java.util.Objects;
 
@@ -40,6 +42,7 @@ public class ItemMorph extends ItemStackMorph
 	}
 
 	@Override
+	@SideOnly(Side.CLIENT)
 	public void renderOnScreen(EntityPlayer player, int x, int y, float scale, float alpha)
 	{
 		GlStateManager.disableCull();
@@ -74,6 +77,7 @@ public class ItemMorph extends ItemStackMorph
 	}
 
 	@Override
+	@SideOnly(Side.CLIENT)
 	public void render(EntityLivingBase entity, double x, double y, double z, float entityYaw, float partialTicks)
 	{
 		GlStateManager.pushMatrix();

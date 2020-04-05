@@ -3,6 +3,7 @@ package mchorse.vanilla_pack.editors;
 import mchorse.metamorph.api.morphs.AbstractMorph;
 import mchorse.metamorph.client.gui.editor.GuiAbstractMorph;
 import mchorse.metamorph.util.MMIcons;
+import mchorse.vanilla_pack.editors.panels.GuiUsernamePanel;
 import mchorse.vanilla_pack.morphs.PlayerMorph;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.resources.I18n;

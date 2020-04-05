@@ -6,11 +6,14 @@ import mchorse.metamorph.client.gui.editor.GuiAbstractMorph;
 import net.minecraft.client.Minecraft;
 import net.minecraft.nbt.JsonToNBT;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
+@SideOnly(Side.CLIENT)
 public class GuiEntityMorph extends GuiAbstractMorph<EntityMorph>
 {
 	public static final List<String> animals = Arrays.asList("minecraft:pig", "minecraft:chicken", "minecraft:cow", "minecraft:mooshroom", "minecraft:polar_bear", "minecraft:sheep", "minecraft:ocelot");

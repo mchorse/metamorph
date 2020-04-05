@@ -1,4 +1,4 @@
-package mchorse.vanilla_pack.editors;
+package mchorse.vanilla_pack.editors.panels;
 
 import mchorse.mclib.client.gui.framework.elements.buttons.GuiSlotElement;
 import mchorse.mclib.client.gui.framework.elements.utils.GuiInventoryElement;
@@ -6,13 +6,16 @@ import mchorse.metamorph.client.gui.editor.GuiAbstractMorph;
 import mchorse.metamorph.client.gui.editor.GuiMorphPanel;
 import mchorse.vanilla_pack.morphs.ItemStackMorph;
 import net.minecraft.client.Minecraft;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 
-public class GuiItemStackEditor extends GuiMorphPanel<ItemStackMorph, GuiAbstractMorph<? extends ItemStackMorph>>
+@SideOnly(Side.CLIENT)
+public class GuiItemStackPanel extends GuiMorphPanel<ItemStackMorph, GuiAbstractMorph<? extends ItemStackMorph>>
 {
 	public GuiSlotElement slot;
 	public GuiInventoryElement inventory;
 
-	public GuiItemStackEditor(Minecraft mc, GuiAbstractMorph<? extends ItemStackMorph> editor)
+	public GuiItemStackPanel(Minecraft mc, GuiAbstractMorph<? extends ItemStackMorph> editor)
 	{
 		super(mc, editor);
 

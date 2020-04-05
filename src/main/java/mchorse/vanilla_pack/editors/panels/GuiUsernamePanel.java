@@ -1,9 +1,9 @@
-package mchorse.vanilla_pack.editors;
+package mchorse.vanilla_pack.editors.panels;
 
-import mchorse.mclib.client.gui.framework.GuiTooltip;
 import mchorse.mclib.client.gui.framework.elements.input.GuiTextElement;
 import mchorse.mclib.client.gui.framework.elements.utils.GuiContext;
 import mchorse.metamorph.client.gui.editor.GuiMorphPanel;
+import mchorse.vanilla_pack.editors.GuiPlayerMorph;
 import mchorse.vanilla_pack.morphs.PlayerMorph;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.resources.I18n;
