@@ -1,9 +1,5 @@
 package mchorse.metamorph;
 
-import java.io.File;
-import java.lang.reflect.Field;
-import java.util.Map;
-
 import mchorse.metamorph.api.MorphUtils;
 import mchorse.metamorph.client.EntityModelHandler;
 import mchorse.metamorph.client.KeyboardHandler;
@@ -15,7 +11,6 @@ import mchorse.metamorph.client.gui.survival.GuiSurvivalScreen;
 import mchorse.metamorph.client.render.RenderMorph;
 import mchorse.metamorph.entity.EntityMorph;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.multiplayer.ServerData;
 import net.minecraft.client.network.NetworkPlayerInfo;
 import net.minecraft.client.renderer.entity.RenderManager;
 import net.minecraft.client.renderer.entity.RenderPlayer;
@@ -28,6 +23,9 @@ import net.minecraftforge.fml.common.event.FMLPostInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
+
+import java.lang.reflect.Field;
+import java.util.Map;
 
 /**
  * Client proxy

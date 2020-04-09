@@ -23,8 +23,6 @@ import net.minecraftforge.fml.common.event.FMLServerStartingEvent;
 import net.minecraftforge.fml.common.network.FMLEventChannel;
 import net.minecraftforge.fml.common.network.NetworkRegistry;
 
-import java.io.File;
-
 /**
  * Metamorph mod
  * 
@@ -40,24 +38,22 @@ import java.io.File;
  * they're outdated), however, iChun saying that he's working on Morph for 
  * 1.10.2, this is really exciting! :D
  */
-@Mod(modid = Metamorph.MODID, name = Metamorph.MODNAME, version = Metamorph.VERSION, guiFactory = Metamorph.GUI_FACTORY, updateJSON = "https://raw.githubusercontent.com/mchorse/metamorph/master/version.json", dependencies = "after:moreplayermodels;required-after:mclib@[%MCLIB%,)")
+@Mod(modid = Metamorph.MOD_ID, name = Metamorph.MODNAME, version = Metamorph.VERSION, updateJSON = "https://raw.githubusercontent.com/mchorse/metamorph/master/version.json", dependencies = "after:moreplayermodels;required-after:mclib@[%MCLIB%,)")
 public class Metamorph
 {
     /* Metadata fields */
-    public static final String MODID = "metamorph";
+    public static final String MOD_ID = "metamorph";
     public static final String MODNAME = "Metamorph";
     public static final String VERSION = "%VERSION%";
 
     public static final String CLIENT_PROXY = "mchorse.metamorph.ClientProxy";
     public static final String SERVER_PROXY = "mchorse.metamorph.CommonProxy";
 
-    public static final String GUI_FACTORY = "mchorse.metamorph.config.gui.GuiFactory";
-
     /* Forge stuff classes */
     @SidedProxy(clientSide = CLIENT_PROXY, serverSide = SERVER_PROXY)
     public static CommonProxy proxy;
 
-    @Mod.Instance(MODID)
+    @Mod.Instance(MOD_ID)
     public static Metamorph instance;
 
     /**
@@ -84,7 +80,7 @@ public class Metamorph
     @SubscribeEvent
     public void onConfigRegister(RegisterConfigEvent event)
     {
-        ConfigBuilder builder = new ConfigBuilder("metamorph", new File(event.configs, "metamorph/config.json"));
+        ConfigBuilder builder = event.createBuilder(MOD_ID);
 
         this.preventGhosts = builder.category("general").getBoolean("prevent_ghosts", true);
         this.keepMorphs = builder.getBoolean("keep_morphs", true);

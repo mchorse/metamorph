@@ -58,7 +58,6 @@ public class GuiBodyPartEditor extends GuiMorphPanel<AbstractMorph, GuiAbstractM
     protected GuiInventoryElement inventory;
     protected GuiElement stacks;
     protected GuiSlotElement[] slots = new GuiSlotElement[6];
-    protected GuiSlotElement active;
 
     public GuiBodyPartEditor(Minecraft mc, GuiAbstractMorph editor)
     {
@@ -200,15 +199,8 @@ public class GuiBodyPartEditor extends GuiMorphPanel<AbstractMorph, GuiAbstractM
 
         for (int i = 0; i < this.slots.length; i++)
         {
-            this.slots[i] = new GuiSlotElement(mc, i, (slot) ->
-            {
-                this.active = slot;
-                this.active.selected = true;
-                this.inventory.setVisible(true);
-            });
-
+            this.slots[i] = new GuiSlotElement(mc, i, this.inventory::link);
             this.slots[i].flex().wh(24, 24);
-
             this.stacks.add(this.slots[i]);
         }
 
@@ -218,14 +210,12 @@ public class GuiBodyPartEditor extends GuiMorphPanel<AbstractMorph, GuiAbstractM
 
     public void pickItem(ItemStack stack)
     {
-        if (this.active != null)
-        {
-            this.active.stack = stack.isEmpty() ? ItemStack.EMPTY : stack.copy();
-            this.part.slots[this.active.slot] = this.active.stack;
-            this.active = null;
-            this.inventory.setVisible(false);
-            this.part.updateEntity();
-        }
+        GuiSlotElement element = this.inventory.linked;
+
+        element.stack = stack.isEmpty() ? ItemStack.EMPTY : stack.copy();
+        this.part.slots[element.slot] = element.stack;
+        this.inventory.unlink();
+        this.part.updateEntity();
     }
 
     @Override

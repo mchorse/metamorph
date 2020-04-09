@@ -43,7 +43,7 @@ import net.minecraftforge.fml.relauncher.Side;
  */
 public class Dispatcher
 {
-    public static final AbstractDispatcher DISPATCHER = new AbstractDispatcher(Metamorph.MODID)
+    public static final AbstractDispatcher DISPATCHER = new AbstractDispatcher(Metamorph.MOD_ID)
     {
         @Override
         public void register()

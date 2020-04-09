@@ -26,7 +26,7 @@ public class SoundHandler
 
     public static final DamageSource GENERIC_DAMAGE = DamageSource.GENERIC;
 
-    public static final SoundEvent NO_SOUND = new SoundEvent(new ResourceLocation(Metamorph.MODID, "no_sound"));
+    public static final SoundEvent NO_SOUND = new SoundEvent(new ResourceLocation(Metamorph.MOD_ID, "no_sound"));
 
     @SubscribeEvent(priority = EventPriority.LOWEST)
     public void onPlayerHurt(LivingAttackEvent event)

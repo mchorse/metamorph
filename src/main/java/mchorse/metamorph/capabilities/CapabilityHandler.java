@@ -33,8 +33,8 @@ import net.minecraftforge.fml.common.gameevent.PlayerEvent.PlayerLoggedInEvent;
  */
 public class CapabilityHandler
 {
-    public static final ResourceLocation MORPHING_CAP = new ResourceLocation(Metamorph.MODID, "morphing_capability");
-    public static final ResourceLocation MODEL_CAP = new ResourceLocation(Metamorph.MODID, "model");
+    public static final ResourceLocation MORPHING_CAP = new ResourceLocation(Metamorph.MOD_ID, "morphing_capability");
+    public static final ResourceLocation MODEL_CAP = new ResourceLocation(Metamorph.MOD_ID, "model");
 
     /**
      * Attach capabilities
