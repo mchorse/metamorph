@@ -36,12 +36,12 @@ minecraft
     serverJvmArgs = ["-Xmx1G"]
     
     replace "%VERSION%", project.version
-    replace "%MCLIB%", project.mclib
+    replace "%DOMINIONLIB%", project.dominionlib
 }
 
 dependencies 
 {
-	compile files("run/libs/mclib-${mclib}-${project.minecraft.version}-dev.jar")
+	compile files("run/libs/dominionlib-${dominionlib}-${project.minecraft.version}-dev.jar")
 }
 
 eclipse
@@ -64,8 +64,8 @@ eclipse
                 	] as org.gradle.plugins.ide.eclipse.model.FileReference
                 }
                 
-                def lib = entries.find { it.path.contains "mclib-${mclib}" } 
-                lib.sourcePath = getMeReference(file("run/libs/mclib-${mclib}-${ver}-sources.jar"))
+                def lib = entries.find { it.path.contains "dominionlib-${dominionlib}" } 
+                lib.sourcePath = getMeReference(file("run/libs/dominionlib-${dominionlib}-${ver}-sources.jar"))
             }
         }
     }

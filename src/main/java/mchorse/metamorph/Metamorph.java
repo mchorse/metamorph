@@ -33,7 +33,7 @@ import net.minecraftforge.fml.common.network.NetworkRegistry;
  * they're outdated), however, iChun saying that he's working on Morph for 
  * 1.10.2, this is really exciting! :D
  */
-@Mod(modid = Metamorph.MODID, name = Metamorph.MODNAME, version = Metamorph.VERSION, guiFactory = Metamorph.GUI_FACTORY, updateJSON = "", dependencies = "after:moreplayermodels;required-after:mclib@[%MCLIB%,)")
+@Mod(modid = Metamorph.MODID, name = Metamorph.MODNAME, version = Metamorph.VERSION, guiFactory = Metamorph.GUI_FACTORY, updateJSON = "", dependencies = "after:moreplayermodels;required-after:mclib@[%DOMINIONLIB%,)")
 public class Metamorph
 {
     /* Metadata fields */
