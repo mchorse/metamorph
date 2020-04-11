@@ -26,13 +26,13 @@ import net.minecraft.util.text.TextComponentTranslation;
 public class CommandMorph extends CommandBase
 {
     @Override
-    public String getCommandName()
+    public String getName()
     {
         return "morph";
     }
 
     @Override
-    public String getCommandUsage(ICommandSender sender)
+    public String getUsage(ICommandSender sender)
     {
         return "metamorph.commands.morph";
     }
@@ -55,7 +55,7 @@ public class CommandMorph extends CommandBase
     {
         if (args.length < 1)
         {
-            throw new WrongUsageException(this.getCommandUsage(sender));
+            throw new WrongUsageException(this.getUsage(sender));
         }
 
         Entity entity = getEntity(server, sender, args[0]);
@@ -72,7 +72,7 @@ public class CommandMorph extends CommandBase
             MorphAPI.demorph(player);
             if (sender.sendCommandFeedback())
             {
-                sender.addChatMessage(new TextComponentTranslation("metamorph.success.demorph", args[0]));
+                sender.sendMessage(new TextComponentTranslation("metamorph.success.demorph", args[0]));
             }
         }
         else
@@ -111,7 +111,7 @@ public class CommandMorph extends CommandBase
             MorphAPI.morph(player, newMorph, true);
             if (sender.sendCommandFeedback())
             {
-                sender.addChatMessage(new TextComponentTranslation("metamorph.success.morph", args[0], args[1]));
+                sender.sendMessage(new TextComponentTranslation("metamorph.success.morph", args[0], args[1]));
             }
         }
     }
@@ -120,14 +120,14 @@ public class CommandMorph extends CommandBase
      * Provide completion for player usernames for first argument
      */
     @Override
-    public List<String> getTabCompletionOptions(MinecraftServer server, ICommandSender sender, String[] args, BlockPos pos)
+    public List<String> getTabCompletions(MinecraftServer server, ICommandSender sender, String[] args, BlockPos pos)
     {
         if (args.length == 1)
         {
-            return getListOfStringsMatchingLastWord(args, server.getAllUsernames());
+            return getListOfStringsMatchingLastWord(args, server.getOnlinePlayerNames());
         }
 
-        return super.getTabCompletionOptions(server, sender, args, pos);
+        return super.getTabCompletions(server, sender, args, pos);
     }
 
     /**

@@ -270,7 +270,7 @@ public class MorphManager
         {
             if (morph instanceof EntityMorph)
             {
-                name = EntityList.getEntityString(((EntityMorph) morph).getEntity(Minecraft.getMinecraft().theWorld));
+                name = EntityList.getEntityString(((EntityMorph) morph).getEntity(Minecraft.getMinecraft().world));
             }
         }
         catch (Exception e)

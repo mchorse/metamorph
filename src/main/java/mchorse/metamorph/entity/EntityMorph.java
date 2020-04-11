@@ -100,7 +100,7 @@ public class EntityMorph extends EntityLivingBase implements IEntityAdditionalSp
     {
         if (morph != null)
         {
-            this.setSize(MathHelper.clamp_float(morph.getWidth(this), 0, 1.5F), MathHelper.clamp_float(morph.getHeight(this), 0, 2.0F));
+            this.setSize(MathHelper.clamp(morph.getWidth(this), 0, 1.5F), MathHelper.clamp(morph.getHeight(this), 0, 2.0F));
         }
     }
 
@@ -152,7 +152,7 @@ public class EntityMorph extends EntityLivingBase implements IEntityAdditionalSp
         }
 
         /* Find an owner */
-        if (!this.worldObj.isRemote && !this.isDead)
+        if (!this.world.isRemote && !this.isDead)
         {
             if (this.lifetime > 0)
             {
@@ -178,7 +178,7 @@ public class EntityMorph extends EntityLivingBase implements IEntityAdditionalSp
         /* Grant ownerless morph to the first collided player */
         if (this.ownerless)
         {
-            for (EntityPlayer player : this.worldObj.getEntitiesWithinAABB(EntityPlayer.class, this.getEntityBoundingBox()))
+            for (EntityPlayer player : this.world.getEntitiesWithinAABB(EntityPlayer.class, this.getEntityBoundingBox()))
             {
                 this.grantMorph(player);
 
@@ -192,11 +192,11 @@ public class EntityMorph extends EntityLivingBase implements IEntityAdditionalSp
             {
                 if (this.owner != null)
                 {
-                    this.player = this.worldObj.getPlayerEntityByUUID(this.owner);
+                    this.player = this.world.getPlayerEntityByUUID(this.owner);
                 }
                 else if (this.username != null)
                 {
-                    this.player = this.worldObj.getPlayerEntityByName(this.username);
+                    this.player = this.world.getPlayerEntityByName(this.username);
                 }
             }
 
@@ -215,17 +215,17 @@ public class EntityMorph extends EntityLivingBase implements IEntityAdditionalSp
      */
     protected void grantMorph(EntityPlayer player)
     {
-        if (this.worldObj.isRemote)
+        if (this.world.isRemote)
         {
             return;
         }
 
         if (MorphAPI.acquire(player, this.morph))
         {
-            this.worldObj.playSound(player, this.posX, this.posY, this.posZ, SoundEvents.ENTITY_ITEM_PICKUP, SoundCategory.AMBIENT, 1.0F, 1.0F);
+            this.world.playSound(player, this.posX, this.posY, this.posZ, SoundEvents.ENTITY_ITEM_PICKUP, SoundCategory.AMBIENT, 1.0F, 1.0F);
 
             /* Make the pickup animation */
-            ((WorldServer) this.worldObj).getEntityTracker().sendToAllTrackingEntity(this, new SPacketCollectItem(this.getEntityId(), player.getEntityId()));
+            ((WorldServer) this.world).getEntityTracker().sendToTracking(this, new SPacketCollectItem(this.getEntityId(), player.getEntityId()));
         }
 
         this.setDead();

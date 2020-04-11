@@ -55,7 +55,7 @@ public class MorphAPI
 
         if (!force && !player.noClip && !Metamorph.proxy.config.morph_in_tight_spaces && !EntityUtils.canPlayerMorphFit(player, morphing.getCurrentMorph(), morph))
         {
-            if (!player.worldObj.isRemote)
+            if (!player.world.isRemote)
             {
                 ((EntityPlayerMP) player).connection.sendPacket(new SPacketChat(new TextComponentTranslation("metamorph.gui.status.tight_space"), (byte) 2));
             }
@@ -71,7 +71,7 @@ public class MorphAPI
 
         boolean morphed = morphing.setCurrentMorph(event.morph, player, event.force);
 
-        if (!player.worldObj.isRemote && morphed)
+        if (!player.world.isRemote && morphed)
         {
             Dispatcher.sendTo(new PacketMorph(morph), (EntityPlayerMP) player);
             Dispatcher.sendToTracked(player, new PacketMorphPlayer(player.getEntityId(), morph));
@@ -108,7 +108,7 @@ public class MorphAPI
 
         boolean acquired = Morphing.get(player).acquireMorph(event.morph);
 
-        if (!player.worldObj.isRemote && acquired)
+        if (!player.world.isRemote && acquired)
         {
             Dispatcher.sendTo(new PacketAcquireMorph(event.morph), (EntityPlayerMP) player);
         }

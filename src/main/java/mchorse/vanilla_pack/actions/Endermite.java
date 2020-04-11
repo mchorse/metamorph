@@ -30,7 +30,7 @@ public class Endermite implements IAction
         if (target.attemptTeleport(x, y, z))
         {
             target.playSound(SoundEvents.ENTITY_ENDERMEN_TELEPORT, 1.0F, 1.0F);
-            target.worldObj.playSound((EntityPlayer) null, target.prevPosX, target.prevPosY, target.prevPosZ, SoundEvents.ENTITY_ENDERMEN_TELEPORT, target.getSoundCategory(), 1.0F, 1.0F);
+            target.world.playSound((EntityPlayer) null, target.prevPosX, target.prevPosY, target.prevPosZ, SoundEvents.ENTITY_ENDERMEN_TELEPORT, target.getSoundCategory(), 1.0F, 1.0F);
         }
     }
 }

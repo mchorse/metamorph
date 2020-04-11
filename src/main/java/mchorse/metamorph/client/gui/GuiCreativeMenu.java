@@ -76,7 +76,7 @@ public class GuiCreativeMenu extends GuiBase
     {
         if (this.pane == null)
         {
-            EntityPlayer player = Minecraft.getMinecraft().thePlayer;
+            EntityPlayer player = Minecraft.getMinecraft().player;
             IMorphing morphing = Morphing.get(player);
 
             /* Create pane after constructor, because new morphs may 

@@ -56,7 +56,7 @@ public class RenderingHandler
 
         if (event.getType() == RenderGameOverlayEvent.ElementType.ALL)
         {
-            IMorphing morphing = Morphing.get(Minecraft.getMinecraft().thePlayer);
+            IMorphing morphing = Morphing.get(Minecraft.getMinecraft().player);
             if (morphing != null)
             {
                 GuiSurvivalMorphs overlay = morphing.getOverlay();
@@ -175,7 +175,7 @@ public class RenderingHandler
      */
     protected boolean canRenderName(EntityLivingBase host)
     {
-        EntityPlayerSP entityplayersp = Minecraft.getMinecraft().thePlayer;
+        EntityPlayerSP entityplayersp = Minecraft.getMinecraft().player;
         boolean flag = !host.isInvisibleToPlayer(entityplayersp);
 
         if (host != entityplayersp)

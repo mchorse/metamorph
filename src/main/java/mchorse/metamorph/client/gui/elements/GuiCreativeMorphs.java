@@ -264,7 +264,7 @@ public class GuiCreativeMorphs extends GuiElement
     protected void compileCategories(IMorphing morphing)
     {
         Map<String, MorphCategory> categories = new HashMap<String, MorphCategory>();
-        World world = Minecraft.getMinecraft().theWorld;
+        World world = Minecraft.getMinecraft().world;
 
         /* Compile categories */
         for (List<MorphList.MorphCell> morphs : MorphManager.INSTANCE.getMorphs(world).morphs.values())
@@ -361,7 +361,7 @@ public class GuiCreativeMorphs extends GuiElement
             });
 
             /* Calculate the scroll height and per category height */
-            category.height = MathHelper.ceiling_float_int((float) category.cells.size() / (float) this.perRow);
+            category.height = MathHelper.ceil((float) category.cells.size() / (float) this.perRow);
             category.y = this.scroll.scrollSize + 10;
 
             this.scroll.scrollSize += category.height * CELL_HEIGHT + 40;
@@ -485,7 +485,7 @@ public class GuiCreativeMorphs extends GuiElement
                 }
             }
 
-            cat.height = MathHelper.ceiling_float_int((float) i / (float) this.perRow);
+            cat.height = MathHelper.ceil((float) i / (float) this.perRow);
             cat.y = this.scroll.scrollSize + 10;
 
             this.scroll.scrollSize += i == 0 ? 0 : cat.height * CELL_HEIGHT + 40;
@@ -714,7 +714,7 @@ public class GuiCreativeMorphs extends GuiElement
         /* Render morphs */
         for (MorphCategory category : this.categories)
         {
-            int h = (MathHelper.ceiling_float_int(category.cells.size() / this.perRow) + 1) * CELL_HEIGHT;
+            int h = (MathHelper.ceil(category.cells.size() / this.perRow) + 1) * CELL_HEIGHT;
 
             if (category.height == 0 || category.y < this.scroll.scroll - h || category.y > this.scroll.scroll + this.scroll.h)
             {
@@ -749,7 +749,7 @@ public class GuiCreativeMorphs extends GuiElement
 
                 float scale = hover ? 28F : 21.5F;
 
-                variant.render(Minecraft.getMinecraft().thePlayer, x + m / 2, y + 50, scale);
+                variant.render(Minecraft.getMinecraft().player, x + m / 2, y + 50, scale);
 
                 if (j == this.selected && cell.index == this.selectedMorph)
                 {

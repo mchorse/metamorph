@@ -129,8 +129,8 @@ public class RenderSubPlayer extends RenderPlayer
     }
 
     @Override
-    protected void rotateCorpse(AbstractClientPlayer entityLiving, float p_77043_2_, float p_77043_3_, float partialTicks)
+    protected void applyRotations(AbstractClientPlayer entityLiving, float p_77043_2_, float p_77043_3_, float partialTicks)
     {
-        this.original.rotateCorpse(entityLiving, p_77043_2_, p_77043_3_, partialTicks);
+        this.original.applyRotations(entityLiving, p_77043_2_, p_77043_3_, partialTicks);
     }
 }

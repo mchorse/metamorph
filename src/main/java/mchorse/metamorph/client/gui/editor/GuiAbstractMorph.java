@@ -90,7 +90,7 @@ public class GuiAbstractMorph<T extends AbstractMorph> extends GuiPanelBase<GuiM
     {
         try
         {
-            this.morph.renderOnScreen(this.mc.thePlayer, this.area.getX(0.5F), this.area.getY(0.66F), this.area.h / 3, 1);
+            this.morph.renderOnScreen(this.mc.player, this.area.getX(0.5F), this.area.getY(0.66F), this.area.h / 3, 1);
         }
         catch (Exception e)
         {}

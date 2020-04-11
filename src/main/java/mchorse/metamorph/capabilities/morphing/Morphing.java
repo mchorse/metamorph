@@ -291,7 +291,7 @@ public class Morphing implements IMorphing
                 }
             }
 
-            this.setMorph(morph, player == null ? false : player.worldObj.isRemote);
+            this.setMorph(morph, player == null ? false : player.world.isRemote);
 
             if (player != null && !this.morph.isEmpty())
             {
@@ -321,7 +321,7 @@ public class Morphing implements IMorphing
             this.setHealth(player, this.lastHealth <= 0.0F ? 20.0F : this.lastHealth);
         }
 
-        this.setMorph(null, player == null ? false : player.worldObj.isRemote);
+        this.setMorph(null, player == null ? false : player.world.isRemote);
     }
 
     /**
@@ -391,7 +391,7 @@ public class Morphing implements IMorphing
 
         if (morphing.getCurrentMorph() != null)
         {
-            this.setCurrentMorph(morphing.getCurrentMorph().clone(player.worldObj.isRemote), player, true);
+            this.setCurrentMorph(morphing.getCurrentMorph().clone(player.world.isRemote), player, true);
         }
         else
         {
@@ -455,10 +455,10 @@ public class Morphing implements IMorphing
             this.animation--;
         }
 
-        if (this.animation == 16 && !player.worldObj.isRemote && !Metamorph.proxy.config.disable_morph_animation)
+        if (this.animation == 16 && !player.world.isRemote && !Metamorph.proxy.config.disable_morph_animation)
         {
             /* Pop! */
-            ((WorldServer) player.worldObj).spawnParticle(EnumParticleTypes.EXPLOSION_NORMAL, false, player.posX, player.posY + 0.5, player.posZ, 25, 0.5, 0.5, 0.5, 0.05);
+            ((WorldServer) player.world).spawnParticle(EnumParticleTypes.EXPLOSION_NORMAL, false, player.posX, player.posY + 0.5, player.posZ, 25, 0.5, 0.5, 0.5, 0.05);
 
             player.playSound(SoundEvents.ENTITY_ITEM_PICKUP, 1.0F, 1.0F);
         }

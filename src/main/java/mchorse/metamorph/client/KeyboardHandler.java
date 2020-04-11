@@ -76,7 +76,7 @@ public class KeyboardHandler
     {
         final Minecraft mc = Minecraft.getMinecraft();
 
-        EntityPlayer player = Minecraft.getMinecraft().thePlayer;
+        EntityPlayer player = Minecraft.getMinecraft().player;
         IMorphing morphing = Morphing.get(player);
         GuiSurvivalMorphs overlay = morphing == null ? null : morphing.getOverlay();
 
@@ -91,12 +91,12 @@ public class KeyboardHandler
             }
         }
 
-        if (keyCreativeMenu.isPressed() && mc.thePlayer.isCreative())
+        if (keyCreativeMenu.isPressed() && mc.player.isCreative())
         {
             mc.displayGuiScreen(new GuiCreativeMenu());
         }
 
-        if (ClientProxy.getGameMode(mc.thePlayer) == GameType.ADVENTURE)
+        if (ClientProxy.getGameMode(mc.player) == GameType.ADVENTURE)
         {
             return;
         }
