@@ -23,8 +23,8 @@ public class GuiHud extends Gui
             int left = width/2 + 91;
             int top = height - GuiIngameForge.right_height;
             
-            int full = MathHelper.ceiling_double_int((double)(squidAir - 2) * 10.0D / 300.0D);
-            int partial = MathHelper.ceiling_double_int((double)squidAir * 10.0D / 300.0D) - full;
+            int full = MathHelper.ceil((double)(squidAir - 2) * 10.0D / 300.0D);
+            int partial = MathHelper.ceil((double)squidAir * 10.0D / 300.0D) - full;
             for (int i = 0; i < full + partial; ++i)
             {
                 drawTexturedModalRect(left - i * 8 - 9, top, (i < full ? 16 : 25), 18, 9, 9);

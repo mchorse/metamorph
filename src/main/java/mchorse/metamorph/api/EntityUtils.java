@@ -253,7 +253,7 @@ public class EntityUtils
 
         float area = 1.0F;
 
-        List<Entity> list = input.worldObj.getEntitiesInAABBexcluding(input, input.getEntityBoundingBox().addCoord(look.xCoord * maxReach, look.yCoord * maxReach, look.zCoord * maxReach).expand(area, area, area), new Predicate<Entity>()
+        List<Entity> list = input.world.getEntitiesInAABBexcluding(input, input.getEntityBoundingBox().addCoord(look.xCoord * maxReach, look.yCoord * maxReach, look.zCoord * maxReach).expand(area, area, area), new Predicate<Entity>()
         {
             @Override
             public boolean apply(@Nullable Entity entity)
@@ -319,7 +319,7 @@ public class EntityUtils
         Vec3d eyeDir = input.getLook(partialTicks);
         Vec3d eyeReach = eyePos.addVector(eyeDir.xCoord * blockReachDistance, eyeDir.yCoord * blockReachDistance, eyeDir.zCoord * blockReachDistance);
 
-        return input.worldObj.rayTraceBlocks(eyePos, eyeReach, false, false, true);
+        return input.world.rayTraceBlocks(eyePos, eyeReach, false, false, true);
     }
     
     public static void forceUpdateSize(EntityPlayer player, AbstractMorph morph)
@@ -361,7 +361,7 @@ public class EntityUtils
     {
         boolean canFit;
         forceUpdateSize(player, newMorph);
-        canFit = player.worldObj.getCollisionBoxes(player.getEntityBoundingBox()).isEmpty();
+        canFit = player.world.getCollisionBoxes(player.getEntityBoundingBox()).isEmpty();
         forceUpdateSize(player, currentMorph);
         return canFit;
     }

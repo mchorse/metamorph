@@ -22,7 +22,7 @@ public class PacketMorphState implements IMessage
         {
             AbstractMorph morph = morphing.getCurrentMorph();
             if (morph instanceof EntityMorph) {
-                entityID = ((EntityMorph)morph).getEntity(player.worldObj).getEntityId();
+                entityID = ((EntityMorph)morph).getEntity(player.world).getEntityId();
             }
             
             this.hasSquidAir = morphing.getHasSquidAir();

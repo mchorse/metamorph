@@ -175,7 +175,7 @@ public class GuiCreativeVariantPicker extends GuiElement
         MorphCell selected = this.morphs.getSelected();
         Minecraft mc = Minecraft.getMinecraft();
 
-        EntityPlayer player = mc.thePlayer;
+        EntityPlayer player = mc.player;
         GuiScreen screen = mc.currentScreen;
 
         if (selected != null && selected.hasVisible)

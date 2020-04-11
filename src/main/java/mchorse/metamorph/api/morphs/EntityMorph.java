@@ -108,7 +108,7 @@ public class EntityMorph extends AbstractMorph
     @SideOnly(Side.CLIENT)
     public void renderOnScreen(EntityPlayer player, int x, int y, float scale, float alpha)
     {
-        EntityLivingBase entity = this.getEntity(player.worldObj);
+        EntityLivingBase entity = this.getEntity(player.world);
 
         if (entity.height > 2)
         {
@@ -221,7 +221,7 @@ public class EntityMorph extends AbstractMorph
 
         if (render == null)
         {
-            this.getEntity(entity.worldObj);
+            this.getEntity(entity.world);
 
             /* Make transformation seamless... */
             this.entity.rotationYaw = entity.rotationYaw;
@@ -306,7 +306,7 @@ public class EntityMorph extends AbstractMorph
             ((EntityLiving) entity).setNoAI(true);
         }
 
-        if (entity instanceof EntityAgeable && !entity.worldObj.isRemote)
+        if (entity instanceof EntityAgeable && !entity.world.isRemote)
         {
             ((EntityAgeable) entity).setScaleForAge(entity.isChild());
         }
@@ -344,7 +344,7 @@ public class EntityMorph extends AbstractMorph
     {
         if (entity == null)
         {
-            this.setupEntity(target.worldObj);
+            this.setupEntity(target.world);
         }
 
         /* Update entity */
@@ -369,7 +369,7 @@ public class EntityMorph extends AbstractMorph
         super.update(target, cap);
 
         /* Update entity's inventory */
-        if (target.worldObj.isRemote)
+        if (target.world.isRemote)
         {
             int i = 0;
 
@@ -450,7 +450,7 @@ public class EntityMorph extends AbstractMorph
 
         if (targetRiding && !entityRiding)
         {
-            this.entity.startRiding(new EntityPig(this.entity.worldObj));
+            this.entity.startRiding(new EntityPig(this.entity.world));
         }
         else if (!targetRiding && entityRiding)
         {
@@ -524,7 +524,7 @@ public class EntityMorph extends AbstractMorph
          * animals on the client, but on the server it doesn't change anything 
          * thus I have to rely on proivded NBT data for figuring out if an 
          * animal entity is being a baby */
-        if (!target.worldObj.isRemote && isAnimalChild)
+        if (!target.world.isRemote && isAnimalChild)
         {
             width *= 0.5;
             height *= 0.5;
@@ -737,7 +737,7 @@ public class EntityMorph extends AbstractMorph
     {
         if (this.entity != null)
         {
-            if (this.entity.worldObj.isRemote)
+            if (this.entity.world.isRemote)
             {
                 this.renderer = null;
                 this.triedHands = false;
@@ -766,7 +766,7 @@ public class EntityMorph extends AbstractMorph
     {
         if (this.entity == null)
         {
-            this.setupEntity(target.worldObj);
+            this.setupEntity(target.world);
         }
 
         return this.entity.width;
@@ -777,7 +777,7 @@ public class EntityMorph extends AbstractMorph
     {
         if (this.entity == null)
         {
-            this.setupEntity(target.worldObj);
+            this.setupEntity(target.world);
         }
 
         return this.entity.height;
@@ -786,7 +786,7 @@ public class EntityMorph extends AbstractMorph
     @Override
     public SoundEvent getHurtSound(EntityLivingBase target, DamageSource damageSource)
     {
-        EntityLivingBase entity = this.getEntity(target.worldObj);
+        EntityLivingBase entity = this.getEntity(target.world);
         try
         {
             Method methodHurtSound = InvokeUtil.getPrivateMethod(entity.getClass(), EntityLivingBase.class, SoundHandler.GET_HURT_SOUND.getName());
@@ -808,7 +808,7 @@ public class EntityMorph extends AbstractMorph
     @Override
     public SoundEvent getDeathSound(EntityLivingBase target)
     {
-        EntityLivingBase entity = this.getEntity(target.worldObj);
+        EntityLivingBase entity = this.getEntity(target.world);
         try
         {
             Method methodDeathSound = InvokeUtil.getPrivateMethod(entity.getClass(), EntityLivingBase.class, SoundHandler.GET_DEATH_SOUND.getName());
@@ -836,16 +836,16 @@ public class EntityMorph extends AbstractMorph
     @Override
     public void playStepSound(EntityLivingBase target)
     {
-        EntityLivingBase entity = this.getEntity(target.worldObj);
+        EntityLivingBase entity = this.getEntity(target.world);
         try
         {
             Method methodPlayStep = InvokeUtil.getPrivateMethod(entity.getClass(), Entity.class, SoundHandler.PLAY_STEP_SOUND.getName(), BlockPos.class, Block.class);
 
-            int x = MathHelper.floor_double(entity.posX);
-            int y = MathHelper.floor_double(entity.posY - 0.20000000298023224D);
-            int z = MathHelper.floor_double(entity.posZ);
+            int x = MathHelper.floor(entity.posX);
+            int y = MathHelper.floor(entity.posY - 0.20000000298023224D);
+            int z = MathHelper.floor(entity.posZ);
             BlockPos pos = new BlockPos(x, y, z);
-            Block block = entity.worldObj.getBlockState(pos).getBlock();
+            Block block = entity.world.getBlockState(pos).getBlock();
 
             methodPlayStep.invoke(entity, pos, block);
         }
@@ -860,7 +860,7 @@ public class EntityMorph extends AbstractMorph
     {
         if (this.entity != null)
         {
-            this.entity.worldObj = player.worldObj;
+            this.entity.world = player.world;
         }
     }
 

@@ -169,7 +169,7 @@ public class GuiSurvivalMorphs extends Gui
             }
         });
 
-        this.index = MathHelper.clamp_int(this.index, -1, this.getMorphCount() - 1);
+        this.index = MathHelper.clamp(this.index, -1, this.getMorphCount() - 1);
     }
 
     /**
@@ -210,7 +210,7 @@ public class GuiSurvivalMorphs extends Gui
         }
 
         this.index += factor;
-        this.index = MathHelper.clamp_int(this.index, -1, length - 1);
+        this.index = MathHelper.clamp(this.index, -1, length - 1);
     }
 
     /**
@@ -303,8 +303,8 @@ public class GuiSurvivalMorphs extends Gui
             }
 
             this.toRemove.remove(index);
-            this.setupMorphs(Morphing.get(this.mc.thePlayer));
-            this.index = MathHelper.clamp_int(this.index, -1, this.getMorphCount() - 1);
+            this.setupMorphs(Morphing.get(this.mc.player));
+            this.index = MathHelper.clamp(this.index, -1, this.getMorphCount() - 1);
         }
     }
 
@@ -318,7 +318,7 @@ public class GuiSurvivalMorphs extends Gui
 
     public void selectCurrent()
     {
-        IMorphing morphing = Morphing.get(mc.thePlayer);
+        IMorphing morphing = Morphing.get(mc.player);
 
         /* Checking if we're morphing in the same thing */
         boolean isSame = false;
@@ -407,7 +407,7 @@ public class GuiSurvivalMorphs extends Gui
     public void toggleFavorites()
     {
         this.showFavorites = !this.showFavorites;
-        this.setupMorphs(Morphing.get(this.mc.thePlayer));
+        this.setupMorphs(Morphing.get(this.mc.player));
     }
 
     /**
@@ -460,7 +460,7 @@ public class GuiSurvivalMorphs extends Gui
     {
         boolean renderDemorph = Metamorph.proxy.config.show_demorph;
 
-        EntityPlayer player = this.mc.thePlayer;
+        EntityPlayer player = this.mc.player;
         String label = "Demorph";
 
         /* Setup scale and margin */
@@ -481,7 +481,7 @@ public class GuiSurvivalMorphs extends Gui
         int offset = this.index * margin;
         int maxScroll = this.getMorphCount() * margin - w / 2 - margin / 2 + 2 - (renderDemorph ? 0 : margin);
 
-        offset = (int) MathHelper.clamp_float(offset, 0, maxScroll);
+        offset = (int) MathHelper.clamp(offset, 0, maxScroll);
 
         /* Render morphs */
         for (int i = 0, c = this.morphs.size(); i <= c; i++)
@@ -666,7 +666,7 @@ public class GuiSurvivalMorphs extends Gui
         int offset = this.index * margin;
         int maxScroll = this.getMorphCount() * margin - w / 2 - margin / 2 + 2;
 
-        offset = (int) MathHelper.clamp_float(offset, 0, maxScroll);
+        offset = (int) MathHelper.clamp(offset, 0, maxScroll);
 
         int x = mouseX - 10;
         int y = mouseY - (height / 2 - h / 2);
@@ -762,7 +762,7 @@ public class GuiSurvivalMorphs extends Gui
 
         public void clamp()
         {
-            this.index = MathHelper.clamp_int(this.index, 0, this.morphs.size() - 1);
+            this.index = MathHelper.clamp(this.index, 0, this.morphs.size() - 1);
         }
     }
 

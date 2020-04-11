@@ -90,7 +90,7 @@ public class MorphHandler
         /* Keep client gui state up-to-date for morphs with the
          * Swim ability.
          */
-        if (player.worldObj.isRemote)
+        if (player.world.isRemote)
         {
             boolean hasSquidAir = false;
             int squidAir = 300;
@@ -110,7 +110,7 @@ public class MorphHandler
         {
             e.printStackTrace();
 
-            if (!player.worldObj.isRemote)
+            if (!player.world.isRemote)
             {
                 MorphAPI.demorph(player);
             }
@@ -130,7 +130,7 @@ public class MorphHandler
         Entity source = event.getSource().getEntity();
         Entity target = event.getEntity();
 
-        if (target.worldObj.isRemote || source instanceof FakePlayer)
+        if (target.world.isRemote || source instanceof FakePlayer)
         {
             return;
         }
@@ -182,10 +182,10 @@ public class MorphHandler
             }
             morph = spawnGhostEvent.morph;
 
-            EntityMorph morphEntity = new EntityMorph(player.worldObj, player.getUniqueID(), morph);
+            EntityMorph morphEntity = new EntityMorph(player.world, player.getUniqueID(), morph);
 
             morphEntity.setPositionAndRotation(target.posX, target.posY + target.height / 2, target.posZ, target.rotationYaw, target.rotationPitch);
-            player.worldObj.spawnEntityInWorld(morphEntity);
+            player.world.spawnEntity(morphEntity);
 
             MinecraftForge.EVENT_BUS.post(new SpawnGhostEvent.Post(player, morph));
         }
@@ -311,12 +311,12 @@ public class MorphHandler
      */
     private void runFutureTasks(EntityPlayer player)
     {
-        if (player.worldObj.isRemote && !FUTURE_TASKS_CLIENT.isEmpty())
+        if (player.world.isRemote && !FUTURE_TASKS_CLIENT.isEmpty())
         {
             FUTURE_TASKS_CLIENT.remove(0).run();
         }
 
-        if (!player.worldObj.isRemote && !FUTURE_TASKS_SERVER.isEmpty())
+        if (!player.world.isRemote && !FUTURE_TASKS_SERVER.isEmpty())
         {
             FUTURE_TASKS_SERVER.remove(0).run();
         }

@@ -9,7 +9,7 @@ import net.minecraftforge.fml.common.eventhandler.Event;
  * Morph event
  * 
  * {@link MorphEvent.Pre} occurs when player gets morphed or demorphed. If player gets 
- * demorphed then {@link #morph} is null. Check for player's worldObj property 
+ * demorphed then {@link #morph} is null. Check for player's world property 
  * to get on which side this event is triggered.
  * 
  * This event is cancelable. If it's get canceled, then player won't demorph 

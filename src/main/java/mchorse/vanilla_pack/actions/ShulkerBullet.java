@@ -18,7 +18,7 @@ public class ShulkerBullet implements IAction
     @Override
     public void execute(EntityLivingBase target, @Nullable AbstractMorph morph)
     {
-        World world = target.worldObj;
+        World world = target.world;
 
         if (world.isRemote)
         {
@@ -41,7 +41,7 @@ public class ShulkerBullet implements IAction
             fireball.posX = target.posX;
             fireball.posZ = target.posZ;
 
-            world.spawnEntityInWorld(fireball);
+            world.spawnEntity(fireball);
         }
 
         if (target instanceof EntityPlayer)

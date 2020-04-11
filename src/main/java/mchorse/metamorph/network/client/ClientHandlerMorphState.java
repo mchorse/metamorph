@@ -22,7 +22,7 @@ public class ClientHandlerMorphState extends ClientMessageHandler<PacketMorphSta
         AbstractMorph morph = capability.getCurrentMorph();
         if (morph instanceof EntityMorph)
         {
-            Entity entity = ((EntityMorph) morph).getEntity(player.worldObj);
+            Entity entity = ((EntityMorph) morph).getEntity(player.world);
             entity.setEntityId(message.entityID);
         }
 
