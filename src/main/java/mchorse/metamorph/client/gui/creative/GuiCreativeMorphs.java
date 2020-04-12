@@ -27,6 +27,7 @@ import org.lwjgl.input.Keyboard;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Stack;
 import java.util.function.Consumer;
 
 /**
@@ -72,6 +73,7 @@ public class GuiCreativeMorphs extends GuiElement
     private boolean scrollTo;
 
     private Timer timer = new Timer(100);
+    private Stack<NestedEdit> nestedEdits = new Stack<NestedEdit>();
 
     /**
      * Initiate this GUI.
@@ -166,11 +168,6 @@ public class GuiCreativeMorphs extends GuiElement
 
     /* Editing modes */
 
-    public boolean isEditMode()
-    {
-        return this.editor.delegate != null;
-    }
-
     public void toggleQuickEdit()
     {
         if (this.isEditMode())
@@ -203,6 +200,21 @@ public class GuiCreativeMorphs extends GuiElement
         this.resize();
     }
 
+    public void nestEdit(Consumer<AbstractMorph> callback)
+    {
+
+    }
+
+    public void restoreEdit()
+    {
+
+    }
+
+    public boolean isEditMode()
+    {
+        return this.editor.delegate != null;
+    }
+
     public void toggleEditMode()
     {
         AbstractMorph morph = this.getSelected();
@@ -211,7 +223,7 @@ public class GuiCreativeMorphs extends GuiElement
         {
             this.disableDirty();
 
-            if (!this.isUserSectionSelected())
+            if (!this.isSelectedMorphIsEditable())
             {
                 if (morph != null)
                 {
@@ -261,9 +273,9 @@ public class GuiCreativeMorphs extends GuiElement
         }
     }
 
-    public boolean isUserSectionSelected()
+    public boolean isSelectedMorphIsEditable()
     {
-        return this.selected == this.userSection;
+        return this.selected != null && this.selected.category != null && this.selected.category.isEditable(this.getSelected());
     }
 
     public void syncSelected()
@@ -293,6 +305,7 @@ public class GuiCreativeMorphs extends GuiElement
         {
             if (editor.canEdit(morph))
             {
+                editor.setMorphs(this);
                 editor.startEdit(morph);
 
                 return editor;
@@ -525,6 +538,20 @@ public class GuiCreativeMorphs extends GuiElement
         if (!this.isEditMode() && !this.search.field.isFocused() && this.search.field.getText().isEmpty())
         {
             this.font.drawStringWithShadow(I18n.format("metamorph.gui.search"), this.search.area.x + 5, this.search.area.y + 6, 0x888888);
+        }
+    }
+
+    public static class NestedEdit
+    {
+        public String filter;
+        public AbstractMorph selected;
+        public Consumer<AbstractMorph> callback;
+
+        public NestedEdit(String filter, AbstractMorph selected, Consumer<AbstractMorph> callback)
+        {
+            this.filter = filter;
+            this.selected = selected;
+            this.callback = callback;
         }
     }
 }

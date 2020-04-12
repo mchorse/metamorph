@@ -20,4 +20,10 @@ public class RecentCategory extends MorphCategory
 
 		this.morphs.add(0, morph);
 	}
+
+	@Override
+	public boolean isEditable(AbstractMorph morph)
+	{
+		return this.morphs.indexOf(morph) != -1;
+	}
 }

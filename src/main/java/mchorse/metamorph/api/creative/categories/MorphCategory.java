@@ -68,13 +68,18 @@ public class MorphCategory
 		this.morphs.add(morph);
 	}
 
-	public boolean remove(AbstractMorph morph)
+	public boolean isEditable(AbstractMorph morph)
 	{
-		return this.morphs.remove(morph);
+		return false;
 	}
 
 	public void edit(AbstractMorph morph)
 	{}
+
+	public boolean remove(AbstractMorph morph)
+	{
+		return this.morphs.remove(morph);
+	}
 
 	public boolean keyTyped(EntityPlayer player, int keycode)
 	{

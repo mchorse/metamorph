@@ -1,6 +1,5 @@
 package mchorse.vanilla_pack.editors;
 
-import mchorse.mclib.client.gui.framework.elements.utils.GuiContext;
 import mchorse.mclib.client.gui.utils.Label;
 import mchorse.metamorph.api.morphs.AbstractMorph;
 import mchorse.metamorph.client.gui.editor.GuiAbstractMorph;
@@ -12,7 +11,6 @@ import net.minecraft.client.resources.I18n;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
-import org.lwjgl.opengl.GL11;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -51,13 +49,5 @@ public class GuiBlockMorph extends GuiAbstractMorph<BlockMorph>
 		this.addPreset(presets, "Deadbush", "{Block:\"minecraft:deadbush\"}");
 
 		return presets;
-	}
-
-	@Override
-	protected void drawMorph(GuiContext context)
-	{
-		super.drawMorph(context);
-
-		GL11.glClear(GL11.GL_DEPTH_BUFFER_BIT);
 	}
 }

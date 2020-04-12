@@ -1,8 +1,11 @@
 package mchorse.vanilla_pack.editors;
 
+import mchorse.mclib.client.gui.utils.Icons;
 import mchorse.mclib.client.gui.utils.Label;
 import mchorse.metamorph.api.morphs.EntityMorph;
+import mchorse.metamorph.bodypart.GuiBodyPartEditor;
 import mchorse.metamorph.client.gui.editor.GuiAbstractMorph;
+import mchorse.vanilla_pack.editors.panels.GuiEntityBodyPartPanel;
 import net.minecraft.client.Minecraft;
 import net.minecraft.nbt.JsonToNBT;
 import net.minecraft.nbt.NBTTagCompound;
@@ -18,9 +21,28 @@ public class GuiEntityMorph extends GuiAbstractMorph<EntityMorph>
 {
 	public static final List<String> animals = Arrays.asList("minecraft:pig", "minecraft:chicken", "minecraft:cow", "minecraft:mooshroom", "minecraft:polar_bear", "minecraft:sheep", "minecraft:ocelot");
 
+	public GuiEntityBodyPartPanel bodyPart;
+
 	public GuiEntityMorph(Minecraft mc)
 	{
 		super(mc);
+
+		this.registerPanel(this.bodyPart = new GuiEntityBodyPartPanel(mc, this), "Body parts", Icons.LIMB);
+	}
+
+	@Override
+	public void startEdit(EntityMorph morph)
+	{
+		if (morph.getEntity() == null)
+		{
+			morph.setupEntity(this.mc.world);
+		}
+
+		morph.parts.reinitBodyParts();
+		morph.setupLimbs();
+		this.bodyPart.setLimbs(morph.limbs.keySet());
+
+		super.startEdit(morph);
 	}
 
 	@Override

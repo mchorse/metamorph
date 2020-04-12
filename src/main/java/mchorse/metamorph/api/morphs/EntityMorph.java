@@ -1,16 +1,12 @@
 package mchorse.metamorph.api.morphs;
 
-import java.lang.reflect.Method;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Comparator;
-import java.util.List;
-
 import mchorse.mclib.client.gui.utils.GuiUtils;
 import mchorse.metamorph.Metamorph;
 import mchorse.metamorph.api.EntityUtils;
 import mchorse.metamorph.api.MorphSettings;
-import mchorse.metamorph.api.models.IHandProvider;
+import mchorse.metamorph.bodypart.BodyPart;
+import mchorse.metamorph.bodypart.BodyPartManager;
+import mchorse.metamorph.bodypart.IBodyPartProvider;
 import mchorse.metamorph.capabilities.morphing.IMorphing;
 import mchorse.metamorph.capabilities.morphing.Morphing;
 import mchorse.metamorph.entity.SoundHandler;
@@ -24,6 +20,7 @@ import net.minecraft.client.model.ModelRenderer;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.renderer.entity.Render;
 import net.minecraft.client.renderer.entity.RenderLivingBase;
+import net.minecraft.client.renderer.entity.layers.LayerRenderer;
 import net.minecraft.client.resources.I18n;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityAgeable;
@@ -38,6 +35,7 @@ import net.minecraft.entity.passive.EntityRabbit;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.nbt.NBTTagList;
 import net.minecraft.util.DamageSource;
 import net.minecraft.util.EnumHand;
 import net.minecraft.util.ResourceLocation;
@@ -47,18 +45,39 @@ import net.minecraft.util.math.MathHelper;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
+import org.apache.commons.lang3.reflect.FieldUtils;
+
+import java.lang.reflect.Field;
+import java.lang.reflect.Method;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.Objects;
 
 /**
  * Entity morph class
- * 
- * This morph class is based on 
  */
-public class EntityMorph extends AbstractMorph
+public class EntityMorph extends AbstractMorph implements IBodyPartProvider
 {
     /**
      * Target entity which is going to be used for nametag rendering
      */
-    public static EntityLivingBase renderEntity = null;
+    @SideOnly(Side.CLIENT)
+    public static EntityLivingBase renderEntity;
+
+    /**
+     * Cache map for registered body part layers
+     */
+    @SideOnly(Side.CLIENT)
+    public static Map<Render, LayerBodyPart> bodyPartMap;
+
+    /**
+     * Body part manager
+     */
+    public BodyPartManager parts = new BodyPartManager();
 
     /**
      * Entity used by this morph to power morphing
@@ -89,6 +108,12 @@ public class EntityMorph extends AbstractMorph
     /* Rendering */
 
     /**
+     * Linked body part layer
+     */
+    @SideOnly(Side.CLIENT)
+    public LayerBodyPart layer;
+
+    /**
      * Texture of the entity 
      */
     @SideOnly(Side.CLIENT)
@@ -105,6 +130,15 @@ public class EntityMorph extends AbstractMorph
      */
     @SideOnly(Side.CLIENT)
     public ModelRenderer rightHand;
+
+    @SideOnly(Side.CLIENT)
+    public Map<String, ModelRenderer> limbs;
+
+    @Override
+    public BodyPartManager getBodyPart()
+    {
+        return this.parts;
+    }
 
     @Override
     @SideOnly(Side.CLIENT)
@@ -149,6 +183,14 @@ public class EntityMorph extends AbstractMorph
             scale *= 1 / entity.height;
         }
 
+        this.parts.initBodyParts();
+
+        if (!this.parts.parts.isEmpty())
+        {
+            this.setupLimbs();
+        }
+
+        this.setupBodyPart();
         GuiUtils.drawEntityOnScreen(x, y, scale, entity, alpha);
     }
 
@@ -260,6 +302,13 @@ public class EntityMorph extends AbstractMorph
 
         if (render != null)
         {
+            this.parts.initBodyParts();
+
+            if (!this.parts.parts.isEmpty())
+            {
+                this.setupLimbs();
+            }
+
             if (render instanceof RenderLivingBase)
             {
                 ModelBase model = ((RenderLivingBase) render).getMainModel();
@@ -271,6 +320,7 @@ public class EntityMorph extends AbstractMorph
             }
 
             renderEntity = entity;
+            this.setupBodyPart();
 
             if (this.entity instanceof EntityDragon)
             {
@@ -289,6 +339,43 @@ public class EntityMorph extends AbstractMorph
 
             renderEntity = null;
         }
+    }
+
+    @SideOnly(Side.CLIENT)
+    protected void setupBodyPart()
+    {
+        if (this.layer == null)
+        {
+            return;
+        }
+
+        this.layer.morph = this;
+    }
+
+    @SideOnly(Side.CLIENT)
+    protected void renderBodyParts(EntityLivingBase target, float partialTicks)
+    {
+        GlStateManager.pushMatrix();
+
+        final float scale = 1 / 16F;
+
+        for (BodyPart part : this.parts.parts)
+        {
+            for (Map.Entry<String, ModelRenderer> entry : this.limbs.entrySet())
+            {
+                if (entry.getKey().equals(part.limb))
+                {
+                    GlStateManager.pushMatrix();
+                    entry.getValue().postRender(scale);
+                    part.render(target, partialTicks);
+                    GlStateManager.popMatrix();
+
+                    break;
+                }
+            }
+        }
+
+        GlStateManager.popMatrix();
     }
 
     /* Other stuff */
@@ -519,6 +606,8 @@ public class EntityMorph extends AbstractMorph
                 ride.prevRenderYawOffset = target.prevRenderYawOffset;
             }
         }
+
+        this.parts.updateBodyLimbs(target);
     }
 
     protected void updateEntity(EntityLivingBase target)
@@ -568,11 +657,14 @@ public class EntityMorph extends AbstractMorph
     {
         EntityLivingBase created = (EntityLivingBase) EntityList.createEntityByIDFromName(new ResourceLocation(this.name), world);
 
-        try {
+        try
+        {
             created.deserializeNBT(this.entityData);
-        } catch (Exception e) {
+        }
+        catch (Exception e) {
             e.printStackTrace();
         }
+
         created.deathTime = 0;
         created.hurtTime = 0;
         created.limbSwing = 0;
@@ -599,11 +691,25 @@ public class EntityMorph extends AbstractMorph
 
         if (this.renderer instanceof RenderLivingBase<?>)
         {
-            ModelBase model = ((RenderLivingBase<?>) renderer).getMainModel();
+            RenderLivingBase<?> renderer = (RenderLivingBase<?>) this.renderer;
+            ModelBase model = renderer.getMainModel();
 
             if (this.customSettings && model instanceof ModelBiped || model instanceof ModelQuadruped)
             {
                 this.settings.hands = true;
+            }
+
+            if (bodyPartMap == null)
+            {
+                bodyPartMap = new HashMap<Render, LayerBodyPart>();
+            }
+
+            this.layer = bodyPartMap.get(renderer);
+
+            if (this.layer == null)
+            {
+                bodyPartMap.put(renderer, this.layer = new LayerBodyPart());
+                renderer.addLayer(layer);
             }
         }
     }
@@ -649,10 +755,6 @@ public class EntityMorph extends AbstractMorph
      * 
      * This guy is responsible for finding {@link ModelRenderer} in renderer's  
      * main model.
-     * 
-     * See {@link IHandProvider} for more information about support for hand 
-     * rendering for third party support for your custom mob models who aren't 
-     * {@link ModelBiped} or {@link ModelQuadruped}. 
      */
     @SideOnly(Side.CLIENT)
     @SuppressWarnings("rawtypes")
@@ -662,12 +764,7 @@ public class EntityMorph extends AbstractMorph
 
         model.setRotationAngles(0, 0, 0, 0, 0, 0.0625F, this.entity);
 
-        if (model instanceof IHandProvider)
-        {
-            this.leftHand = ((IHandProvider) model).getLeft();
-            this.rightHand = ((IHandProvider) model).getRight();
-        }
-        else if (model instanceof ModelBiped)
+        if (model instanceof ModelBiped)
         {
             this.leftHand = ((ModelBiped) model).bipedLeftArm;
             this.rightHand = ((ModelBiped) model).bipedRightArm;
@@ -709,6 +806,39 @@ public class EntityMorph extends AbstractMorph
         }
     }
 
+    @SideOnly(Side.CLIENT)
+    public void setupLimbs()
+    {
+        if (this.limbs != null)
+        {
+            return;
+        }
+
+        ModelBase model = ((RenderLivingBase) this.renderer).getMainModel();
+
+        /* Setup model limbs map */
+        this.limbs = new HashMap<String, ModelRenderer>();
+
+        Field[] fields = FieldUtils.getAllFields(model.getClass());
+
+        for (Field field : fields)
+        {
+            field.setAccessible(true);
+
+            if (field.getType().isAssignableFrom(ModelRenderer.class))
+            {
+                try
+                {
+                    ModelRenderer renderer = (ModelRenderer) field.get(model);
+
+                    this.limbs.put(field.getName(), renderer);
+                }
+                catch (Exception e)
+                {}
+            }
+        }
+    }
+
     /**
      * Set entity data 
      */
@@ -738,9 +868,11 @@ public class EntityMorph extends AbstractMorph
 
         if (obj instanceof EntityMorph)
         {
-            boolean theSame = EntityUtils.compareData(((EntityMorph) obj).entityData, this.entityData);
+            EntityMorph morph = (EntityMorph) obj;
+            boolean theSame = EntityUtils.compareData(morph.entityData, this.entityData);
 
-            return result && theSame;
+            result = result && theSame;
+            result = result && Objects.equals(morph.parts, this.parts);
         }
 
         return result;
@@ -749,6 +881,7 @@ public class EntityMorph extends AbstractMorph
     @Override
     public void reset()
     {
+        this.parts.reset();
         this.resetEntity();
         this.entityData = null;
 
@@ -789,6 +922,7 @@ public class EntityMorph extends AbstractMorph
             EntityMorph morph = (EntityMorph) from;
 
             this.entityData = morph.entityData == null ? null : morph.entityData.copy();
+            this.parts.copy(morph.parts, isRemote);
         }
     }
 
@@ -902,6 +1036,13 @@ public class EntityMorph extends AbstractMorph
         super.toNBT(tag);
 
         tag.setTag("EntityData", this.entityData);
+
+        NBTTagList bodyParts = this.parts.toNBT();
+
+        if (bodyParts != null)
+        {
+            tag.setTag("BodyParts", bodyParts);
+        }
     }
 
     @Override
@@ -910,5 +1051,31 @@ public class EntityMorph extends AbstractMorph
         super.fromNBT(tag);
 
         this.entityData = tag.getCompoundTag("EntityData");
+
+        if (tag.hasKey("BodyParts", 9))
+        {
+            this.parts.fromNBT(tag.getTagList("BodyParts", 10));
+        }
+    }
+
+    @SideOnly(Side.CLIENT)
+    public static class LayerBodyPart implements LayerRenderer<EntityLivingBase>
+    {
+        public EntityMorph morph;
+
+        @Override
+        public void doRenderLayer(EntityLivingBase entity, float limbSwing, float limbSwingAmount, float partialTicks, float ageInTicks, float netHeadYaw, float headPitch, float scale)
+        {
+            if (this.morph != null)
+            {
+                this.morph.renderBodyParts(entity, 1F);
+            }
+        }
+
+        @Override
+        public boolean shouldCombineTextures()
+        {
+            return false;
+        }
     }
 }

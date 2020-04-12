@@ -104,16 +104,18 @@ public class GuiBodyPartEditor extends GuiMorphPanel<AbstractMorph, GuiAbstractM
             {
                 this.morphPicker = new GuiCreativeMorphsMenu(mc,  (morph) ->
                 {
-                    if (this.part != null) this.part.morph.setDirect(morph);
+                    if (this.part != null)
+                    {
+                        this.part.morph.setDirect(morph == null ? null : morph.clone(true));
+                    }
                 });
                 this.morphPicker.flex().relative(this.area).set(0, 0, 0, 0).w(1, 0).h(1, 0);
-
-                this.morphPicker.resize();
-                this.add(this.morphPicker);
             }
 
+            this.morphPicker.resize();
             this.morphPicker.setSelected(this.part.morph.get());
-            this.morphPicker.setVisible(true);
+
+            this.add(this.morphPicker);
         });
 
         this.addPart = new GuiButtonElement(mc, I18n.format("metamorph.gui.add"), (b) ->
@@ -184,14 +186,14 @@ public class GuiBodyPartEditor extends GuiMorphPanel<AbstractMorph, GuiAbstractM
         this.addPart.flex().relative(this.area).set(10, 10, 50, 20);
         this.removePart.flex().relative(this.addPart.resizer()).set(55, 0, 50, 20);
         this.bodyParts.flex().relative(this.area).set(10, 50, 105, 0).h(1, -55);
-        this.useTarget.flex().relative(this.area).set(0, 0, 60, 11).x(1, -115).y(1, -21);
+        this.useTarget.flex().relative(this.area).set(0, 0, 105, 11).x(1, -115).y(1, -21);
 
         this.elements.add(this.tx, this.ty, this.tz, this.sx, this.sy, this.sz, this.rx, this.ry, this.rz, this.limbs, this.pickMorph, this.useTarget);
         this.add(this.addPart, this.removePart, this.bodyParts, this.elements);
 
         /* Inventory */
         this.stacks = new GuiElement(mc);
-        this.stacks.flex().relative(this.area).x(0.5F, 0).y(10).wh(174, 24);
+        this.stacks.flex().relative(this.area).x(0.5F, 0).y(10).wh(174, 24).anchor(0.5F, 0);
 
         this.inventory = new GuiInventoryElement(mc, this::pickItem);
         this.inventory.flex().relative(this.stacks.resizer()).x(0.5F, 0).y(1, 10).anchor(0.5F, 0).wh(200, 100);

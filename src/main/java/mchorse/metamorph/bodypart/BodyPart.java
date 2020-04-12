@@ -162,7 +162,7 @@ public class BodyPart
 
             result = result && Objects.equal(this.morph, part.morph);
             result = result && Objects.equal(this.translate, part.translate);
-            result = result && Objects.equal(this.scale, part.rotate);
+            result = result && Objects.equal(this.scale, part.scale);
             result = result && Objects.equal(this.rotate, part.rotate);
             result = result && this.useTarget == part.useTarget;
 

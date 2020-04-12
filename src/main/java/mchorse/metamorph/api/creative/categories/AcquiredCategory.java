@@ -22,6 +22,12 @@ public class AcquiredCategory extends MorphCategory
 	}
 
 	@Override
+	public boolean isEditable(AbstractMorph morph)
+	{
+		return this.morphs.indexOf(morph) != -1;
+	}
+
+	@Override
 	public void edit(AbstractMorph morph)
 	{
 		int index = this.morphs.indexOf(morph);

@@ -29,16 +29,9 @@ public class UserCategory extends MorphCategory
 	}
 
 	@Override
-	public boolean remove(AbstractMorph morph)
+	public boolean isEditable(AbstractMorph morph)
 	{
-		boolean result = super.remove(morph);
-
-		if (result && this.parent instanceof UserSection)
-		{
-			((UserSection) this.parent).save();
-		}
-
-		return result;
+		return this.morphs.indexOf(morph) != -1;
 	}
 
 	@Override
@@ -50,5 +43,18 @@ public class UserCategory extends MorphCategory
 		{
 			((UserSection) this.parent).save();
 		}
+	}
+
+	@Override
+	public boolean remove(AbstractMorph morph)
+	{
+		boolean result = super.remove(morph);
+
+		if (result && this.parent instanceof UserSection)
+		{
+			((UserSection) this.parent).save();
+		}
+
+		return result;
 	}
 }

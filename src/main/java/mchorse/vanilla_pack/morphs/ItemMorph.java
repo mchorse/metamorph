@@ -10,6 +10,7 @@ import net.minecraft.client.renderer.OpenGlHelper;
 import net.minecraft.client.renderer.RenderHelper;
 import net.minecraft.client.renderer.RenderItem;
 import net.minecraft.client.renderer.block.model.IBakedModel;
+import net.minecraft.client.renderer.texture.TextureMap;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Items;
@@ -53,22 +54,10 @@ public class ItemMorph extends ItemStackMorph
 		scale = scale / 16F;
 
 		GlStateManager.pushMatrix();
-		GlStateManager.translate(x, y - 12, -200);
+		GlStateManager.translate(x, y - 12, 0);
 		GlStateManager.scale(scale, scale, scale);
 
-		RenderItem itemRender = Minecraft.getMinecraft().getRenderItem();
-		FontRenderer font = null;
-		if (!this.stack.isEmpty()) {
-			font = this.stack.getItem().getFontRenderer(this.stack);
-		}
-
-		if (font == null) {
-			font = Minecraft.getMinecraft().fontRenderer;
-		}
-
-		itemRender.renderItemAndEffectIntoGUI(this.stack, -8, -8);
-		itemRender.renderItemOverlayIntoGUI(font, this.stack, -8, -8, null);
-
+		GuiInventoryElement.drawItemStack(this.stack, -8, -8, 0, null);
 		GlStateManager.popMatrix();
 
 		RenderHelper.disableStandardItemLighting();
@@ -83,6 +72,7 @@ public class ItemMorph extends ItemStackMorph
 		GlStateManager.pushMatrix();
 		GlStateManager.translate(x, y, z);
 
+		Minecraft.getMinecraft().renderEngine.bindTexture(TextureMap.LOCATION_BLOCKS_TEXTURE);
 		RenderItem render = Minecraft.getMinecraft().getRenderItem();
 		IBakedModel model = render.getItemModelWithOverrides(stack, entity.world, entity);
 

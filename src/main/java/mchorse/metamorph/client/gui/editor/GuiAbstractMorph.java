@@ -2,15 +2,17 @@ package mchorse.metamorph.client.gui.editor;
 
 import mchorse.mclib.client.gui.framework.GuiBase;
 import mchorse.mclib.client.gui.framework.elements.GuiElement;
+import mchorse.mclib.client.gui.framework.elements.GuiModelRenderer;
 import mchorse.mclib.client.gui.framework.elements.GuiPanelBase;
 import mchorse.mclib.client.gui.framework.elements.buttons.GuiButtonElement;
 import mchorse.mclib.client.gui.framework.elements.input.GuiTextElement;
 import mchorse.mclib.client.gui.framework.elements.utils.GuiContext;
-import mchorse.mclib.client.gui.framework.elements.utils.GuiDraw;
+import mchorse.mclib.client.gui.framework.elements.utils.GuiDrawable;
 import mchorse.mclib.client.gui.framework.elements.utils.GuiLabel;
 import mchorse.mclib.client.gui.utils.Label;
 import mchorse.metamorph.api.morphs.AbstractMorph;
 import mchorse.metamorph.client.gui.creative.GuiCreativeMorphs;
+import mchorse.metamorph.client.gui.creative.GuiMorphRenderer;
 import mchorse.metamorph.util.MMIcons;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.Gui;
@@ -30,9 +32,11 @@ import java.util.List;
 public class GuiAbstractMorph<T extends AbstractMorph> extends GuiPanelBase<GuiMorphPanel>
 {
     public GuiButtonElement finish;
+    public GuiModelRenderer renderer;
     public GuiSettingsPanel settings;
 
     protected GuiMorphPanel defaultPanel;
+    protected GuiCreativeMorphs morphs;
 
     public T morph;
 
@@ -42,16 +46,30 @@ public class GuiAbstractMorph<T extends AbstractMorph> extends GuiPanelBase<GuiM
 
         this.finish = new GuiButtonElement(mc, I18n.format("metamorph.gui.finish"), null);
         this.finish.flex().relative(this.area).set(0, 0, 60, 20).y(1F, -20);
+        this.renderer = this.createMorphRenderer(mc);
+        this.renderer.flex().relative(this.area).wh(1F, 1F);
         this.defaultPanel = this.settings = new GuiSettingsPanel(mc, this);
 
         this.registerPanel(this.settings, I18n.format("metamorph.gui.panels.settings"), MMIcons.PROPERTIES);
-        this.getChildren().add(2, this.finish);
+        this.prepend(new GuiDrawable(this::drawOverlay));
+        this.prepend(this.renderer);
+        this.add(this.finish);
 
         this.keys().register("Finish editing", Keyboard.KEY_F, () ->
         {
             this.finish.clickItself(GuiBase.getCurrent());
             return true;
         });
+    }
+
+    protected GuiModelRenderer createMorphRenderer(Minecraft mc)
+    {
+        return new GuiMorphRenderer(mc);
+    }
+
+    public void setMorphs(GuiCreativeMorphs morphs)
+    {
+        this.morphs = morphs;
     }
 
     /**
@@ -114,6 +132,7 @@ public class GuiAbstractMorph<T extends AbstractMorph> extends GuiPanelBase<GuiM
     public void startEdit(T morph)
     {
         this.morph = morph;
+        this.setupRenderer(morph);
 
         for (GuiMorphPanel panel : this.panels)
         {
@@ -121,6 +140,14 @@ public class GuiAbstractMorph<T extends AbstractMorph> extends GuiPanelBase<GuiM
         }
 
         this.setPanel(this.defaultPanel);
+    }
+
+    protected void setupRenderer(T morph)
+    {
+        if (this.renderer instanceof GuiMorphRenderer)
+        {
+            ((GuiMorphRenderer) this.renderer).morph = morph;
+        }
     }
 
     public void finishEdit()
@@ -131,26 +158,8 @@ public class GuiAbstractMorph<T extends AbstractMorph> extends GuiPanelBase<GuiM
         }
     }
 
-    @Override
-    public void draw(GuiContext context)
+    protected void drawOverlay(GuiContext context)
     {
-        this.drawMorph(context);
         Gui.drawRect(this.area.x, this.area.ey() - 20, this.area.ex(), this.area.ey(), 0xee000000);
-
-        super.draw(context);
-    }
-
-    protected void drawMorph(GuiContext context)
-    {
-        GuiDraw.scissor(this.area.x, this.area.y, this.area.w, this.area.h, context);
-
-        try
-        {
-            this.morph.renderOnScreen(this.mc.player, this.area.mx(), this.area.y(0.66F), this.area.h / 3, 1);
-        }
-        catch (Exception e)
-        {}
-
-        GuiDraw.unscissor(context);
     }
 }
