@@ -4,6 +4,7 @@ import mchorse.metamorph.api.creative.sections.MorphSection;
 import mchorse.metamorph.api.morphs.AbstractMorph;
 import mchorse.metamorph.network.Dispatcher;
 import mchorse.metamorph.network.common.creative.PacketSyncMorph;
+import mchorse.metamorph.network.common.survival.PacketRemoveMorph;
 import mchorse.metamorph.network.common.survival.PacketSelectMorph;
 import net.minecraft.entity.player.EntityPlayer;
 
@@ -36,6 +37,20 @@ public class AcquiredCategory extends MorphCategory
 		{
 			Dispatcher.sendToServer(new PacketSyncMorph(morph, index));
 		}
+	}
+
+	@Override
+	public boolean remove(AbstractMorph morph)
+	{
+		int index = this.morphs.indexOf(morph);
+		boolean has = index != -1;
+
+		if (has)
+		{
+			Dispatcher.sendToServer(new PacketRemoveMorph(index));
+		}
+
+		return has;
 	}
 
 	@Override

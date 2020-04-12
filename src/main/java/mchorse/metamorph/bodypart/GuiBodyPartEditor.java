@@ -34,7 +34,6 @@ public class GuiBodyPartEditor extends GuiMorphPanel<AbstractMorph, GuiAbstractM
     protected GuiBodyPartListElement bodyParts;
     protected GuiButtonElement pickMorph;
     protected GuiToggleElement useTarget;
-    protected GuiCreativeMorphs morphPicker;
 
     protected GuiButtonElement addPart;
     protected GuiButtonElement removePart;
@@ -100,22 +99,13 @@ public class GuiBodyPartEditor extends GuiMorphPanel<AbstractMorph, GuiAbstractM
 
         this.pickMorph = new GuiButtonElement(mc, I18n.format("metamorph.gui.pick"), (b) ->
         {
-            if (this.morphPicker == null)
+            this.editor.morphs.nestEdit(this.part.morph.get(), (morph) ->
             {
-                this.morphPicker = new GuiCreativeMorphsMenu(mc,  (morph) ->
+                if (this.part != null)
                 {
-                    if (this.part != null)
-                    {
-                        this.part.morph.setDirect(morph == null ? null : morph.clone(true));
-                    }
-                });
-                this.morphPicker.flex().relative(this.area).set(0, 0, 0, 0).w(1, 0).h(1, 0);
-            }
-
-            this.morphPicker.resize();
-            this.morphPicker.setSelected(this.part.morph.get());
-
-            this.add(this.morphPicker);
+                    this.part.morph.setDirect(morph == null ? null : morph.clone(true));
+                }
+            });
         });
 
         this.addPart = new GuiButtonElement(mc, I18n.format("metamorph.gui.add"), (b) ->

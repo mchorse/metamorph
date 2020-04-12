@@ -41,13 +41,6 @@ public class GuiUserSection extends GuiMorphSection
 
 			contextMenu.action(Icons.EDIT, "Rename category", () -> this.renameCategory(category));
 			contextMenu.action(Icons.REMOVE, "Remove category", () -> this.section.remove(category));
-
-			if (this.hoverMorph != null)
-			{
-				AbstractMorph morph = this.hoverMorph;
-
-				contextMenu.action(Icons.CLOSE, "Remove morph", () -> category.remove(morph));
-			}
 		}
 		else if (this.hoverCategory instanceof RecentCategory)
 		{
@@ -58,6 +51,14 @@ public class GuiUserSection extends GuiMorphSection
 				category.clear();
 				this.parent.setSelected(null);
 			});
+		}
+
+		if (this.hoverMorph != null && this.hoverCategory != null)
+		{
+			MorphCategory category = this.hoverCategory;
+			AbstractMorph morph = this.hoverMorph;
+
+			contextMenu.action(Icons.CLOSE, "Remove morph", () -> category.remove(morph));
 		}
 
 		return contextMenu;

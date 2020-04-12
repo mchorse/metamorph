@@ -200,14 +200,34 @@ public class GuiCreativeMorphs extends GuiElement
         this.resize();
     }
 
-    public void nestEdit(Consumer<AbstractMorph> callback)
+    public void nestEdit(AbstractMorph selected, Consumer<AbstractMorph> callback)
     {
+        NestedEdit edit = new NestedEdit(this.previousFilter, this.selected, callback);
 
+        this.nestedEdits.add(edit);
+        this.callback = callback;
     }
 
     public void restoreEdit()
     {
+        if (this.nestedEdits.isEmpty())
+        {
+            return;
+        }
 
+        NestedEdit edit = this.nestedEdits.pop();
+
+        if (this.selected != null)
+        {
+            this.selected.reset();
+        }
+
+        this.setFilter(this.previousFilter);
+
+        this.selected = edit.selected;
+        this.selected.morph = edit.selectedMorph;
+        this.selected.category = edit.selectedCategory;
+        this.scrollTo = true;
     }
 
     public boolean isEditMode()
@@ -245,7 +265,7 @@ public class GuiCreativeMorphs extends GuiElement
         {
             AbstractMorph edited = this.editor.delegate.morph;
 
-            if (edited != null)
+            if (edited != null && !this.isSelectedMorphIsEditable())
             {
                 this.setSelected(edited);
             }
@@ -505,7 +525,7 @@ public class GuiCreativeMorphs extends GuiElement
 
         super.draw(context);
 
-        if (this.scrollTo)
+        if (this.scrollTo && !this.isEditMode())
         {
             this.scrollTo();
             this.scrollTo = false;
@@ -544,14 +564,20 @@ public class GuiCreativeMorphs extends GuiElement
     public static class NestedEdit
     {
         public String filter;
-        public AbstractMorph selected;
         public Consumer<AbstractMorph> callback;
 
-        public NestedEdit(String filter, AbstractMorph selected, Consumer<AbstractMorph> callback)
+        public GuiMorphSection selected;
+        public MorphCategory selectedCategory;
+        public AbstractMorph selectedMorph;
+
+        public NestedEdit(String filter, GuiMorphSection selected, Consumer<AbstractMorph> callback)
         {
             this.filter = filter;
-            this.selected = selected;
             this.callback = callback;
+
+            this.selected = selected;
+            this.selectedCategory = selected.category;
+            this.selectedMorph = selected.morph;
         }
     }
 }

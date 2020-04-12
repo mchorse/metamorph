@@ -138,14 +138,11 @@ public class GuiMorphSection extends GuiElement
 	@Override
 	public boolean mouseClicked(GuiContext context)
 	{
-		if (super.mouseClicked(context))
-		{
-			return true;
-		}
+		boolean result = false;
 
-		if (this.area.isInside(context) && context.mouseButton == 0)
+		if (this.area.isInside(context))
 		{
-			if (context.mouseY - this.area.y < HEADER_HEIGHT)
+			if (context.mouseY - this.area.y < HEADER_HEIGHT && context.mouseButton == 0)
 			{
 				this.toggled = !this.toggled;
 
@@ -156,6 +153,7 @@ public class GuiMorphSection extends GuiElement
 			int y = context.mouseY - this.area.y - HEADER_HEIGHT;
 			int row = this.getPerRow();
 
+			category:
 			for (MorphCategory category : this.section.categories)
 			{
 				int count = this.getMorphsSize(category);
@@ -179,7 +177,9 @@ public class GuiMorphSection extends GuiElement
 					{
 						this.set(category.getMorphs().get(i), category);
 
-						return true;
+						result = true;
+
+						break;
 					}
 					else
 					{
@@ -196,7 +196,8 @@ public class GuiMorphSection extends GuiElement
 							{
 								this.set(morph, category);
 
-								return true;
+								result = true;
+								break category;
 							}
 						}
 					}
@@ -205,10 +206,13 @@ public class GuiMorphSection extends GuiElement
 				y -= this.getCategoryHeight(category, count);
 			}
 
-			this.set(null, null);
+			if (!result)
+			{
+				this.set(null, null);
+			}
 		}
 
-		return false;
+		return super.mouseClicked(context) || result;
 	}
 
 	private void set(AbstractMorph morph, MorphCategory category)

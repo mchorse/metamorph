@@ -99,11 +99,8 @@ public class GuiQuickEditor extends GuiElement
 	protected void setPreset(List<Label<NBTTagCompound>> label)
 	{
 		AbstractMorph morph = this.parent.getSelected().clone(true);
-		NBTTagCompound tag = morph.toNBT();
 
-		tag.merge(label.get(0).value);
-		morph.fromNBT(tag);
-
+		morph.fromNBT(label.get(0).value);
 		this.parent.setSelected(morph);
 	}
 
