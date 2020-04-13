@@ -5,12 +5,12 @@ import mchorse.mclib.client.gui.utils.Label;
 import mchorse.metamorph.api.morphs.EntityMorph;
 import mchorse.metamorph.bodypart.GuiBodyPartEditor;
 import mchorse.metamorph.client.gui.editor.GuiAbstractMorph;
-import mchorse.vanilla_pack.editors.panels.GuiEntityBodyPartPanel;
 import net.minecraft.client.Minecraft;
 import net.minecraft.nbt.JsonToNBT;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
+import org.lwjgl.input.Keyboard;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -21,13 +21,14 @@ public class GuiEntityMorph extends GuiAbstractMorph<EntityMorph>
 {
 	public static final List<String> animals = Arrays.asList("minecraft:pig", "minecraft:chicken", "minecraft:cow", "minecraft:mooshroom", "minecraft:polar_bear", "minecraft:sheep", "minecraft:ocelot");
 
-	public GuiEntityBodyPartPanel bodyPart;
+	public GuiBodyPartEditor bodyPart;
 
 	public GuiEntityMorph(Minecraft mc)
 	{
 		super(mc);
 
-		this.registerPanel(this.bodyPart = new GuiEntityBodyPartPanel(mc, this), "Body parts", Icons.LIMB);
+		this.bodyPart = new GuiBodyPartEditor(mc, this);
+		this.registerKeybind(this.registerPanel(this.bodyPart, "Body parts", Icons.LIMB), "Open body parts", Keyboard.KEY_B);
 	}
 
 	@Override

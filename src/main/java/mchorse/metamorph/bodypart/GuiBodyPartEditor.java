@@ -1,5 +1,6 @@
 package mchorse.metamorph.bodypart;
 
+import mchorse.mclib.client.gui.framework.GuiBase;
 import mchorse.mclib.client.gui.framework.elements.GuiElement;
 import mchorse.mclib.client.gui.framework.elements.GuiElements;
 import mchorse.mclib.client.gui.framework.elements.buttons.GuiButtonElement;
@@ -20,6 +21,7 @@ import net.minecraft.client.resources.I18n;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
+import org.lwjgl.input.Keyboard;
 
 import java.util.Collection;
 import java.util.List;
@@ -137,6 +139,12 @@ public class GuiBodyPartEditor extends GuiMorphPanel<AbstractMorph, GuiAbstractM
 
         RowResizer.apply(this.stacks, 6);
         this.add(this.stacks, this.inventory);
+
+        this.pickMorph.keys().register("Pick morph", Keyboard.KEY_P, () ->
+        {
+            this.pickMorph.clickItself(GuiBase.getCurrent());
+            return true;
+        });
     }
 
     protected void addPart(GuiButtonElement b)
