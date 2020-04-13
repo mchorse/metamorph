@@ -76,7 +76,7 @@ public class GuiCreativeMorphs extends GuiElement
     private Timer timer = new Timer(100);
     private Stack<NestedEdit> nestedEdits = new Stack<NestedEdit>();
 
-    private Keybind exitKey;
+    protected Keybind exitKey;
 
     /**
      * Initiate this GUI.
@@ -124,15 +124,7 @@ public class GuiCreativeMorphs extends GuiElement
         /* Morph editor keybinds */
         this.exitKey = this.keys().register("Exit", Keyboard.KEY_ESCAPE, () ->
         {
-            if (this.isEditMode())
-            {
-                this.exitEditMorph();
-            }
-            else
-            {
-                this.restoreEdit();
-            }
-
+            this.exit();
             return true;
         });
         this.exitKey.active = false;
@@ -168,6 +160,18 @@ public class GuiCreativeMorphs extends GuiElement
         }
 
         this.sections.get(this.sections.size() - 1).last = true;
+    }
+
+    protected void exit()
+    {
+        if (this.isEditMode())
+        {
+            this.exitEditMorph();
+        }
+        else
+        {
+            this.restoreEdit();
+        }
     }
 
     public void markDirty()
@@ -219,6 +223,11 @@ public class GuiCreativeMorphs extends GuiElement
     }
 
     /* Nested editing */
+
+    public boolean isNested()
+    {
+        return !this.nestedEdits.isEmpty();
+    }
 
     public void nestEdit(AbstractMorph selected, Consumer<AbstractMorph> callback)
     {
@@ -299,9 +308,7 @@ public class GuiCreativeMorphs extends GuiElement
         {
             editor.finish.callback = this.getToggleCallback();
 
-            this.editor.setDelegate(editor);
-            this.screen.setVisible(false);
-            this.exitKey.active = this.editor.delegate != null || !this.nestedEdits.isEmpty();
+            this.setEditor(editor);
         }
     }
 
@@ -322,8 +329,13 @@ public class GuiCreativeMorphs extends GuiElement
             this.setSelected(edited);
         }
 
-        this.editor.setDelegate(null);
-        this.screen.setVisible(true);
+        this.setEditor(null);
+    }
+
+    protected void setEditor(GuiAbstractMorph editor)
+    {
+        this.editor.setDelegate(editor);
+        this.screen.setVisible(editor == null);
         this.exitKey.active = this.editor.delegate != null || !this.nestedEdits.isEmpty();
     }
 

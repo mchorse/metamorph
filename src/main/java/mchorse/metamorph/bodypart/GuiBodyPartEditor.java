@@ -6,15 +6,12 @@ import mchorse.mclib.client.gui.framework.elements.buttons.GuiButtonElement;
 import mchorse.mclib.client.gui.framework.elements.buttons.GuiSlotElement;
 import mchorse.mclib.client.gui.framework.elements.buttons.GuiToggleElement;
 import mchorse.mclib.client.gui.framework.elements.input.GuiTrackpadElement;
-import mchorse.mclib.client.gui.framework.elements.list.GuiListElement;
 import mchorse.mclib.client.gui.framework.elements.list.GuiStringListElement;
 import mchorse.mclib.client.gui.framework.elements.utils.GuiContext;
 import mchorse.mclib.client.gui.framework.elements.utils.GuiInventoryElement;
 import mchorse.mclib.client.gui.utils.resizers.layout.RowResizer;
 import mchorse.mclib.utils.Direction;
 import mchorse.metamorph.api.morphs.AbstractMorph;
-import mchorse.metamorph.client.gui.creative.GuiCreativeMorphs;
-import mchorse.metamorph.client.gui.creative.GuiCreativeMorphsMenu;
 import mchorse.metamorph.client.gui.editor.GuiAbstractMorph;
 import mchorse.metamorph.client.gui.editor.GuiMorphPanel;
 import net.minecraft.client.Minecraft;
@@ -26,7 +23,6 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 
 import java.util.Collection;
 import java.util.List;
-import java.util.function.Consumer;
 
 @SideOnly(Side.CLIENT)
 public class GuiBodyPartEditor extends GuiMorphPanel<AbstractMorph, GuiAbstractMorph>
@@ -110,71 +106,9 @@ public class GuiBodyPartEditor extends GuiMorphPanel<AbstractMorph, GuiAbstractM
             });
         });
 
-        this.addPart = new GuiButtonElement(mc, I18n.format("metamorph.gui.add"), (b) ->
-        {
-            List<BodyPart> currentPart = this.bodyParts.getCurrent();
-            List<String> currentLimb = this.limbs.getCurrent();
-
-            BodyPart part = currentPart.isEmpty() ? null : currentPart.get(0);
-            String limb = currentLimb.isEmpty() ? null : currentLimb.get(0);
-
-            if (part == null)
-            {
-                part = new BodyPart();
-
-                if (limb != null)
-                {
-                    part.limb = limb;
-                }
-            }
-            else
-            {
-                part = part.clone(true);
-            }
-
-            part.init();
-
-            this.parts.parts.add(part);
-            this.bodyParts.update();
-            this.bodyParts.setCurrent(part);
-            this.part = part;
-            this.setPart(part);
-        });
-
-        this.removePart = new GuiButtonElement(mc, I18n.format("metamorph.gui.remove"), (b) ->
-        {
-            if (this.part == null)
-            {
-                return;
-            }
-
-            List<BodyPart> parts = this.parts.parts;
-            int index = parts.indexOf(this.part);
-
-            if (index != -1)
-            {
-                parts.remove(this.part);
-                this.bodyParts.update();
-                index--;
-
-                if (parts.size() >= 1)
-                {
-                    this.setPart(parts.get(index >= 0 ? index : 0));
-                }
-                else
-                {
-                    this.setPart(null);
-                }
-            }
-        });
-
-        this.useTarget = new GuiToggleElement(mc, I18n.format("metamorph.gui.use_target"), false, (b) ->
-        {
-            if (this.part != null)
-            {
-                this.part.useTarget = b.isToggled();
-            }
-        });
+        this.addPart = new GuiButtonElement(mc, I18n.format("metamorph.gui.add"), this::addPart);
+        this.removePart = new GuiButtonElement(mc, I18n.format("metamorph.gui.remove"), this::removePart);
+        this.useTarget = new GuiToggleElement(mc, I18n.format("metamorph.gui.use_target"), false, this::toggleTarget);
 
         this.limbs.flex().relative(this.area).set(0, 80, 105, 90).x(1, -115).h(1, -106);
         this.pickMorph.flex().relative(this.area).set(0, 40, 105, 20).x(1, -115);
@@ -196,7 +130,7 @@ public class GuiBodyPartEditor extends GuiMorphPanel<AbstractMorph, GuiAbstractM
 
         for (int i = 0; i < this.slots.length; i++)
         {
-            this.slots[i] = new GuiSlotElement(mc, i, this.inventory::link);
+            this.slots[i] = new GuiSlotElement(mc, i, this.inventory);
             this.slots[i].flex().wh(24, 24);
             this.stacks.add(this.slots[i]);
         }
@@ -205,7 +139,73 @@ public class GuiBodyPartEditor extends GuiMorphPanel<AbstractMorph, GuiAbstractM
         this.add(this.stacks, this.inventory);
     }
 
-    public void pickItem(ItemStack stack)
+    protected void addPart(GuiButtonElement b)
+    {
+        List<BodyPart> currentPart = this.bodyParts.getCurrent();
+        List<String> currentLimb = this.limbs.getCurrent();
+
+        BodyPart part = currentPart.isEmpty() ? null : currentPart.get(0);
+        String limb = currentLimb.isEmpty() ? null : currentLimb.get(0);
+
+        if (part == null)
+        {
+            part = new BodyPart();
+
+            if (limb != null)
+            {
+                part.limb = limb;
+            }
+        }
+        else
+        {
+            part = part.clone(true);
+        }
+
+        part.init();
+
+        this.parts.parts.add(part);
+        this.bodyParts.update();
+        this.bodyParts.setCurrent(part);
+        this.part = part;
+        this.setPart(part);
+    }
+
+    protected void removePart(GuiButtonElement b)
+    {
+        if (this.part == null)
+        {
+            return;
+        }
+
+        List<BodyPart> parts = this.parts.parts;
+        int index = parts.indexOf(this.part);
+
+        if (index != -1)
+        {
+            parts.remove(this.part);
+            this.bodyParts.update();
+            index--;
+
+            if (parts.size() >= 1)
+            {
+                this.setPart(parts.get(index >= 0 ? index : 0));
+            }
+            else
+            {
+                this.setPart(null);
+            }
+        }
+    }
+
+    protected void toggleTarget(GuiToggleElement b)
+    {
+        if (this.part != null)
+        {
+            this.part.useTarget = b.isToggled();
+        }
+    }
+
+    protected void pickItem(ItemStack stack)
     {
         GuiSlotElement element = this.inventory.linked;
 
@@ -309,24 +309,5 @@ public class GuiBodyPartEditor extends GuiMorphPanel<AbstractMorph, GuiAbstractM
         }
 
         super.draw(context);
-    }
-
-    /**
-     * Body part list which displays body parts 
-     */
-    public static class GuiBodyPartListElement extends GuiListElement<BodyPart>
-    {
-        public GuiBodyPartListElement(Minecraft mc, Consumer<List<BodyPart>> callback)
-        {
-            super(mc, callback);
-
-            this.scroll.scrollItemSize = 16;
-        }
-
-        @Override
-        protected String elementToString(BodyPart element, int i, int x, int y, boolean hover, boolean selected)
-        {
-            return i + (!element.limb.isEmpty() ? " - " + element.limb : "");
-        }
     }
 }

@@ -3,6 +3,7 @@ package mchorse.metamorph.client.gui.creative;
 import mchorse.mclib.client.gui.framework.elements.buttons.GuiButtonElement;
 import mchorse.mclib.client.gui.framework.elements.utils.GuiContext;
 import mchorse.metamorph.api.morphs.AbstractMorph;
+import mchorse.metamorph.client.gui.editor.GuiAbstractMorph;
 import mchorse.metamorph.network.Dispatcher;
 import mchorse.metamorph.network.common.creative.PacketAcquireMorph;
 import net.minecraft.client.Minecraft;
@@ -46,7 +47,30 @@ public class GuiCreativeMorphsMenu extends GuiCreativeMorphs
         this.bar.prepend(this.acquire);
         this.bar.add(this.close);
 
+        this.exitKey.active = true;
         this.markContainer();
+    }
+
+    @Override
+    protected void exit()
+    {
+        if (!this.isEditMode() && !this.isNested())
+        {
+            this.finish();
+            this.removeFromParent();
+        }
+        else
+        {
+            super.exit();
+        }
+    }
+
+    @Override
+    protected void setEditor(GuiAbstractMorph editor)
+    {
+        super.setEditor(editor);
+        
+        this.exitKey.active = true;
     }
 
     /* Don't let click event pass through the background... */
