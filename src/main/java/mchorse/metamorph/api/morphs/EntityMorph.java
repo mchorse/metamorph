@@ -286,6 +286,11 @@ public class EntityMorph extends AbstractMorph implements IBodyPartProvider
         {
             this.getEntity(entity.world);
 
+            render = this.renderer;
+        }
+
+        if (render != null)
+        {
             /* Make transformation seamless... */
             this.entity.rotationYaw = entity.rotationYaw;
             this.entity.rotationPitch = entity.rotationPitch;
@@ -297,11 +302,6 @@ public class EntityMorph extends AbstractMorph implements IBodyPartProvider
             this.entity.prevRotationYawHead = entity.prevRotationYawHead;
             this.entity.prevRenderYawOffset = entity.prevRenderYawOffset;
 
-            render = this.renderer;
-        }
-
-        if (render != null)
-        {
             this.parts.initBodyParts();
 
             if (!this.parts.parts.isEmpty())
@@ -504,22 +504,17 @@ public class EntityMorph extends AbstractMorph implements IBodyPartProvider
 
         this.entity.rotationYaw = target.rotationYaw;
         this.entity.rotationPitch = target.rotationPitch;
+        this.entity.rotationYawHead = target.rotationYawHead;
+        this.entity.renderYawOffset = target.renderYawOffset;
 
         this.entity.motionX = target.motionX;
         this.entity.motionY = target.motionY;
         this.entity.motionZ = target.motionZ;
 
-        this.entity.rotationYawHead = target.rotationYawHead;
-        this.entity.renderYawOffset = target.renderYawOffset;
-
         this.entity.isSwingInProgress = target.isSwingInProgress;
         this.entity.swingProgress = target.swingProgress;
         this.entity.limbSwing = target.limbSwing;
         this.entity.limbSwingAmount = target.limbSwingAmount;
-
-        this.entity.prevPosX = target.prevPosX;
-        this.entity.prevPosY = target.prevPosY;
-        this.entity.prevPosZ = target.prevPosZ;
 
         this.entity.prevRotationYaw = target.prevRotationYaw;
         this.entity.prevRotationPitch = target.prevRotationPitch;

@@ -53,12 +53,6 @@ public class GuiAbstractMorph<T extends AbstractMorph> extends GuiPanelBase<GuiM
         this.registerPanel(this.settings, I18n.format("metamorph.gui.panels.settings"), MMIcons.PROPERTIES);
         this.prepend(this.renderer);
         this.add(this.finish);
-
-        this.keys().register("Finish editing", Keyboard.KEY_F, () ->
-        {
-            this.finish.clickItself(GuiBase.getCurrent());
-            return true;
-        });
     }
 
     protected GuiModelRenderer createMorphRenderer(Minecraft mc)

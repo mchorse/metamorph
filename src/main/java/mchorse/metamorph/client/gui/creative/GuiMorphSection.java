@@ -81,7 +81,7 @@ public class GuiMorphSection extends GuiElement
 
 	public boolean noFilter()
 	{
-		return this.filter.isEmpty() && this.favorite == false;
+		return this.filter.isEmpty() && !this.favorite;
 	}
 
 	public boolean isMatching(AbstractMorph morph)
@@ -246,8 +246,7 @@ public class GuiMorphSection extends GuiElement
 
 			contextMenu.action(Icons.EDIT, "Edit morph...", () ->
 			{
-				this.parent.setSelected(morph);
-				this.parent.toggleEditMode();
+				this.parent.enterEditMorph(morph);
 			});
 		}
 

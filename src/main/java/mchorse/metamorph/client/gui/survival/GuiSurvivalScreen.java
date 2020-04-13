@@ -80,27 +80,29 @@ public class GuiSurvivalScreen extends GuiBase
         this.root.flex().xy(0.5F, 0.5F).wh(1F, 1F).anchor(0.5F, 0.5F).maxW(500).maxH(300);
         this.root.add(this.morphs, this.sidebar, this.onlyFavorite);
 
-        this.root.keys()
-            .register("Morph", Keyboard.KEY_M, () ->
-            {
-                this.morph.clickItself(GuiBase.getCurrent());
-                return true;
-            })
-            .register("Remove", Keyboard.KEY_R, () ->
-            {
-                this.remove.clickItself(GuiBase.getCurrent());
-                return true;
-            })
-            .register("Favorite", Keyboard.KEY_F, () ->
-            {
-                this.favorite.clickItself(GuiBase.getCurrent());
-                return true;
-            })
-            .register("Toggle favorite morphs", Keyboard.KEY_O, () ->
-            {
-                this.onlyFavorite.clickItself(GuiBase.getCurrent());
-                return true;
-            });
+        this.root.keys().register("Morph", Keyboard.KEY_M, () ->
+        {
+            this.morph.clickItself(GuiBase.getCurrent());
+            return true;
+        });
+
+        this.root.keys().register("Remove", Keyboard.KEY_R, () ->
+        {
+            this.remove.clickItself(GuiBase.getCurrent());
+            return true;
+        });
+
+        this.root.keys().register("Favorite", Keyboard.KEY_F, () ->
+        {
+            this.favorite.clickItself(GuiBase.getCurrent());
+            return true;
+        });
+
+        this.root.keys().register("Toggle favorite morphs", Keyboard.KEY_O, () ->
+        {
+            this.onlyFavorite.clickItself(GuiBase.getCurrent());
+            return true;
+        });
     }
 
     public GuiSurvivalScreen open()

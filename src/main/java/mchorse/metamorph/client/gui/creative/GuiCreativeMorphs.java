@@ -8,6 +8,7 @@ import mchorse.mclib.client.gui.framework.elements.input.GuiTextElement;
 import mchorse.mclib.client.gui.framework.elements.utils.GuiContext;
 import mchorse.mclib.client.gui.framework.elements.utils.GuiDrawable;
 import mchorse.mclib.client.gui.utils.Area;
+import mchorse.mclib.client.gui.utils.Keybind;
 import mchorse.mclib.client.gui.utils.resizers.layout.ColumnResizer;
 import mchorse.mclib.client.gui.utils.resizers.layout.RowResizer;
 import mchorse.mclib.utils.Timer;
@@ -42,7 +43,7 @@ public class GuiCreativeMorphs extends GuiElement
     /**
      * Cached previous filter. Used for avoiding double recalculations 
      */
-    private String previousFilter = "";
+    private String filter = "";
 
     /**
      * Morph consumer 
@@ -74,6 +75,8 @@ public class GuiCreativeMorphs extends GuiElement
 
     private Timer timer = new Timer(100);
     private Stack<NestedEdit> nestedEdits = new Stack<NestedEdit>();
+
+    private Keybind exitKey;
 
     /**
      * Initiate this GUI.
@@ -119,24 +122,39 @@ public class GuiCreativeMorphs extends GuiElement
         this.add(this.screen, new GuiDrawable(this::drawOverlay), this.editor);
 
         /* Morph editor keybinds */
-        this.morphs.keys()
-            .register("Edit", Keyboard.KEY_E, () ->
+        this.exitKey = this.keys().register("Exit", Keyboard.KEY_ESCAPE, () ->
+        {
+            if (this.isEditMode())
             {
-                this.toggleEditMode();
-                return true;
-            })
-            .register("Quick edit", Keyboard.KEY_Q, () ->
+                this.exitEditMorph();
+            }
+            else
             {
-                this.toggleQuickEdit();
-                return true;
-            });
+                this.restoreEdit();
+            }
+
+            return true;
+        });
+        this.exitKey.active = false;
+
+        this.morphs.keys().register("Edit", Keyboard.KEY_E, () ->
+        {
+            this.enterEditMorph();
+            return true;
+        });
+
+        this.morphs.keys().register("Quick edit", Keyboard.KEY_Q, () ->
+        {
+            this.toggleQuickEdit();
+            return true;
+        });
     }
 
     private void setupMorphs(MorphList list)
     {
         for (MorphSection section : list.sections)
         {
-            GuiMorphSection element = section.getGUI(this.mc, this, this::setMorph);
+            GuiMorphSection element = section.getGUI(this.mc, this, this::pickMorph);
 
             if (section instanceof UserSection)
             {
@@ -166,7 +184,7 @@ public class GuiCreativeMorphs extends GuiElement
         }
     }
 
-    /* Editing modes */
+    /* Quick mode */
 
     public void toggleQuickEdit()
     {
@@ -200,12 +218,18 @@ public class GuiCreativeMorphs extends GuiElement
         this.resize();
     }
 
+    /* Nested editing */
+
     public void nestEdit(AbstractMorph selected, Consumer<AbstractMorph> callback)
     {
-        NestedEdit edit = new NestedEdit(this.previousFilter, this.selected, callback);
+        NestedEdit edit = new NestedEdit(this.filter, this.editor.delegate.morph, this.callback, this.selected);
+
+        this.callback = callback;
+        this.exitEditMorph();
+        this.setFilter("");
+        this.setSelected(selected);
 
         this.nestedEdits.add(edit);
-        this.callback = callback;
     }
 
     public void restoreEdit()
@@ -216,70 +240,91 @@ public class GuiCreativeMorphs extends GuiElement
         }
 
         NestedEdit edit = this.nestedEdits.pop();
+        AbstractMorph morph = this.getSelected();
 
         if (this.selected != null)
         {
             this.selected.reset();
         }
 
-        this.setFilter(this.previousFilter);
+        this.pickMorph(morph);
+        this.setFilter(this.filter);
 
+        this.callback = edit.callback;
         this.selected = edit.selected;
         this.selected.morph = edit.selectedMorph;
         this.selected.category = edit.selectedCategory;
         this.scrollTo = true;
+
+        this.enterEditMorph(edit.editMorph);
     }
+
+    /* Edit mode */
 
     public boolean isEditMode()
     {
         return this.editor.delegate != null;
     }
 
-    public void toggleEditMode()
+    public void enterEditMorph()
     {
         AbstractMorph morph = this.getSelected();
 
+        if (morph == null)
+        {
+            return;
+        }
+
+        if (!this.isSelectedMorphIsEditable() || !this.nestedEdits.isEmpty())
+        {
+            morph = morph.clone(true);
+            this.pickMorph(morph);
+        }
+
+        this.enterEditMorph(morph);
+    }
+
+    public void enterEditMorph(AbstractMorph morph)
+    {
+        if (morph == null)
+        {
+            return;
+        }
+
+        this.disableDirty();
+
+        GuiAbstractMorph editor = this.getMorphEditor(morph);
+
+        if (editor != null)
+        {
+            editor.finish.callback = this.getToggleCallback();
+
+            this.editor.setDelegate(editor);
+            this.screen.setVisible(false);
+            this.exitKey.active = this.editor.delegate != null || !this.nestedEdits.isEmpty();
+        }
+    }
+
+    public void exitEditMorph()
+    {
         if (!this.isEditMode())
         {
-            this.disableDirty();
-
-            if (!this.isSelectedMorphIsEditable())
-            {
-                if (morph != null)
-                {
-                    morph = morph.clone(true);
-                }
-            }
-
-            GuiAbstractMorph editor = this.getMorphEditor(morph);
-
-            if (editor != null)
-            {
-                editor.finish.callback = this.getToggleCallback();
-
-                this.editor.setDelegate(editor);
-                this.setMorph(morph);
-            }
+            return;
         }
-        else
+
+        AbstractMorph edited = this.editor.delegate.morph;
+
+        this.editor.delegate.finishEdit();
+        this.syncSelected();
+
+        if (edited != null && !this.isSelectedMorphIsEditable())
         {
-            AbstractMorph edited = this.editor.delegate.morph;
-
-            if (edited != null && !this.isSelectedMorphIsEditable())
-            {
-                this.setSelected(edited);
-            }
-
-            this.editor.delegate.finishEdit();
-            this.syncSelected();
-
-            this.editor.setDelegate(null);
-            this.setMorph(morph);
+            this.setSelected(edited);
         }
 
-        boolean hide = this.editor.delegate == null;
-
-        this.screen.setVisible(hide);
+        this.editor.setDelegate(null);
+        this.screen.setVisible(true);
+        this.exitKey.active = this.editor.delegate != null || !this.nestedEdits.isEmpty();
     }
 
     public void finish()
@@ -310,7 +355,7 @@ public class GuiCreativeMorphs extends GuiElement
 
     protected Consumer<GuiButtonElement> getToggleCallback()
     {
-        return (button) -> this.toggleEditMode();
+        return (button) -> this.exitEditMorph();
     }
 
     private GuiAbstractMorph getMorphEditor(AbstractMorph morph)
@@ -355,7 +400,7 @@ public class GuiCreativeMorphs extends GuiElement
         return this.selected == null ? null : this.selected.morph;
     }
 
-    public void setMorph(GuiMorphSection selected)
+    public void pickMorph(GuiMorphSection selected)
     {
         this.disableDirty();
 
@@ -365,11 +410,11 @@ public class GuiCreativeMorphs extends GuiElement
         }
 
         this.selected = selected;
-        this.setMorph(selected.morph);
+        this.pickMorph(selected.morph);
         this.syncQuickEditor();
     }
 
-    public void setMorph(AbstractMorph morph)
+    public void pickMorph(AbstractMorph morph)
     {
         if (this.callback != null)
         {
@@ -393,7 +438,7 @@ public class GuiCreativeMorphs extends GuiElement
      */
     public void setFilter(String filter, boolean select)
     {
-        if (filter.equals(this.previousFilter))
+        if (filter.equals(this.filter))
         {
             return;
         }
@@ -405,7 +450,7 @@ public class GuiCreativeMorphs extends GuiElement
             section.setFilter(lcfilter);
         }
 
-        this.previousFilter = lcfilter;
+        this.filter = lcfilter;
     }
 
     /**
@@ -561,6 +606,9 @@ public class GuiCreativeMorphs extends GuiElement
         }
     }
 
+    /**
+     * Data stored about currently nested editing
+     */
     public static class NestedEdit
     {
         public String filter;
@@ -569,10 +617,12 @@ public class GuiCreativeMorphs extends GuiElement
         public GuiMorphSection selected;
         public MorphCategory selectedCategory;
         public AbstractMorph selectedMorph;
+        public AbstractMorph editMorph;
 
-        public NestedEdit(String filter, GuiMorphSection selected, Consumer<AbstractMorph> callback)
+        public NestedEdit(String filter, AbstractMorph editMorph, Consumer<AbstractMorph> callback, GuiMorphSection selected)
         {
             this.filter = filter;
+            this.editMorph = editMorph;
             this.callback = callback;
 
             this.selected = selected;
