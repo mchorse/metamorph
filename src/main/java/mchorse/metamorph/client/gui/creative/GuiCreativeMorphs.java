@@ -3,7 +3,6 @@ package mchorse.metamorph.client.gui.creative;
 import mchorse.mclib.client.gui.framework.elements.GuiDelegateElement;
 import mchorse.mclib.client.gui.framework.elements.GuiElement;
 import mchorse.mclib.client.gui.framework.elements.GuiScrollElement;
-import mchorse.mclib.client.gui.framework.elements.buttons.GuiButtonElement;
 import mchorse.mclib.client.gui.framework.elements.input.GuiTextElement;
 import mchorse.mclib.client.gui.framework.elements.utils.GuiContext;
 import mchorse.mclib.client.gui.framework.elements.utils.GuiDrawable;
@@ -127,7 +126,8 @@ public class GuiCreativeMorphs extends GuiElement
             this.exit();
             return true;
         });
-        this.exitKey.active = false;
+
+        this.updateExitKey();
 
         this.morphs.keys().register("Edit", Keyboard.KEY_E, () ->
         {
@@ -172,6 +172,11 @@ public class GuiCreativeMorphs extends GuiElement
         {
             this.restoreEdit();
         }
+    }
+
+    protected void updateExitKey()
+    {
+        this.exitKey.active = this.editor.delegate != null || !this.nestedEdits.isEmpty();
     }
 
     public void markDirty()
@@ -239,6 +244,7 @@ public class GuiCreativeMorphs extends GuiElement
         this.setSelected(selected);
 
         this.nestedEdits.add(edit);
+        this.updateExitKey();
     }
 
     public void restoreEdit()
@@ -306,8 +312,6 @@ public class GuiCreativeMorphs extends GuiElement
 
         if (editor != null)
         {
-            editor.finish.callback = this.getToggleCallback();
-
             this.setEditor(editor);
         }
     }
@@ -336,7 +340,7 @@ public class GuiCreativeMorphs extends GuiElement
     {
         this.editor.setDelegate(editor);
         this.screen.setVisible(editor == null);
-        this.exitKey.active = this.editor.delegate != null || !this.nestedEdits.isEmpty();
+        this.updateExitKey();
     }
 
     public void finish()
@@ -363,11 +367,6 @@ public class GuiCreativeMorphs extends GuiElement
         {
             this.selected.category.edit(morph);
         }
-    }
-
-    protected Consumer<GuiButtonElement> getToggleCallback()
-    {
-        return (button) -> this.exitEditMorph();
     }
 
     private GuiAbstractMorph getMorphEditor(AbstractMorph morph)

@@ -1,13 +1,13 @@
 package mchorse.metamorph.client.gui.editor;
 
-import mchorse.mclib.client.gui.framework.GuiBase;
 import mchorse.mclib.client.gui.framework.elements.GuiElement;
 import mchorse.mclib.client.gui.framework.elements.GuiModelRenderer;
 import mchorse.mclib.client.gui.framework.elements.GuiPanelBase;
-import mchorse.mclib.client.gui.framework.elements.buttons.GuiButtonElement;
+import mchorse.mclib.client.gui.framework.elements.buttons.GuiIconElement;
 import mchorse.mclib.client.gui.framework.elements.input.GuiTextElement;
 import mchorse.mclib.client.gui.framework.elements.utils.GuiContext;
 import mchorse.mclib.client.gui.framework.elements.utils.GuiLabel;
+import mchorse.mclib.client.gui.utils.Icons;
 import mchorse.mclib.client.gui.utils.Label;
 import mchorse.metamorph.api.morphs.AbstractMorph;
 import mchorse.metamorph.client.gui.creative.GuiCreativeMorphs;
@@ -20,7 +20,6 @@ import net.minecraft.nbt.JsonToNBT;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
-import org.lwjgl.input.Keyboard;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -32,7 +31,7 @@ public class GuiAbstractMorph<T extends AbstractMorph> extends GuiPanelBase<GuiM
 {
     public GuiCreativeMorphs morphs;
 
-    public GuiButtonElement finish;
+    public GuiIconElement finish;
     public GuiModelRenderer renderer;
     public GuiSettingsPanel settings;
 
@@ -44,8 +43,8 @@ public class GuiAbstractMorph<T extends AbstractMorph> extends GuiPanelBase<GuiM
     {
         super(mc);
 
-        this.finish = new GuiButtonElement(mc, I18n.format("metamorph.gui.finish"), null);
-        this.finish.flex().relative(this.area).set(0, 0, 60, 20).y(1F, -20);
+        this.finish = new GuiIconElement(mc, Icons.CLOSE, (b) -> this.morphs.exitEditMorph());
+        this.finish.flex().relative(this.area).set(0, 0, 20, 20).y(1F, -20);
         this.renderer = this.createMorphRenderer(mc);
         this.renderer.flex().relative(this.area).wh(1F, 1F);
         this.defaultPanel = this.settings = new GuiSettingsPanel(mc, this);
@@ -100,6 +99,8 @@ public class GuiAbstractMorph<T extends AbstractMorph> extends GuiPanelBase<GuiM
 
     protected void setupRenderer(T morph)
     {
+        this.renderer.reset();
+
         if (this.renderer instanceof GuiMorphRenderer)
         {
             ((GuiMorphRenderer) this.renderer).morph = morph;

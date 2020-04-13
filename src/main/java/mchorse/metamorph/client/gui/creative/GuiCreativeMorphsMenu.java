@@ -66,10 +66,8 @@ public class GuiCreativeMorphsMenu extends GuiCreativeMorphs
     }
 
     @Override
-    protected void setEditor(GuiAbstractMorph editor)
+    protected void updateExitKey()
     {
-        super.setEditor(editor);
-        
         this.exitKey.active = true;
     }
 
