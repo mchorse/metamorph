@@ -77,6 +77,7 @@ public class Metamorph
     public static ValueBoolean disableFirstPersonHand;
     public static ValueBoolean morphInTightSpaces;
     public static ValueBoolean showMorphIdleSounds;
+    public static ValueBoolean spawnParticlesFirstPerson;
     public static ValueBoolean pauseGUIInSP;
     public static ValueBoolean renderBodyPartAxis;
     public static ValueInt maxRecentMorphs;
@@ -107,6 +108,7 @@ public class Metamorph
         disableFirstPersonHand.clientSide();
         morphInTightSpaces = builder.getBoolean("morph_in_tight_spaces", false);
         showMorphIdleSounds = builder.getBoolean("show_morph_idle_sounds", true);
+        spawnParticlesFirstPerson = builder.getBoolean("spawn_particles_first_person", false);
         pauseGUIInSP = builder.getBoolean("pause_gui_in_sp", true);
         pauseGUIInSP.clientSide();
         renderBodyPartAxis = builder.getBoolean("render_bodypart_axis", true);

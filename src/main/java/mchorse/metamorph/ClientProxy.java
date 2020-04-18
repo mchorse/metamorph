@@ -187,4 +187,9 @@ public class ClientProxy extends CommonProxy
     {
         return OpHelper.isPlayerOp() || Metamorph.opEntitySelector.get();
     }
+
+    public boolean isDedicatedServer()
+    {
+        return false;
+    }
 }

@@ -1,5 +1,7 @@
 package mchorse.metamorph;
 
+import java.io.File;
+
 import mchorse.metamorph.api.MorphHandler;
 import mchorse.metamorph.api.MorphManager;
 import mchorse.metamorph.api.MorphUtils;
@@ -14,6 +16,7 @@ import mchorse.metamorph.capabilities.render.ModelRendererStorage;
 import mchorse.metamorph.entity.EntityMorph;
 import mchorse.metamorph.entity.SoundHandler;
 import mchorse.metamorph.network.Dispatcher;
+import mchorse.metamorph.world.WorldHandler;
 import mchorse.vanilla_pack.MetamorphFactory;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.util.ResourceLocation;
@@ -22,8 +25,6 @@ import net.minecraftforge.common.capabilities.CapabilityManager;
 import net.minecraftforge.fml.common.event.FMLPostInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
 import net.minecraftforge.fml.common.registry.EntityRegistry;
-
-import java.io.File;
 
 /**
  * Common proxy
@@ -90,6 +91,7 @@ public class CommonProxy
         /* Event listeners */
         MinecraftForge.EVENT_BUS.register(new MorphHandler());
         MinecraftForge.EVENT_BUS.register(new SoundHandler());
+        MinecraftForge.EVENT_BUS.register(new WorldHandler());
         MinecraftForge.EVENT_BUS.register(new CapabilityHandler());
         MinecraftForge.EVENT_BUS.register(new RegisterHandler());
 
@@ -129,6 +131,14 @@ public class CommonProxy
     }
 
     public boolean canEditSelectors()
+    {
+        return true;
+    }
+    
+    /**
+     * Changed to false in ClientProxy
+     */
+    public boolean isDedicatedServer()
     {
         return true;
     }
