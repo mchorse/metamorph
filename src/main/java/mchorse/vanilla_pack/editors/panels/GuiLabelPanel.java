@@ -6,7 +6,6 @@ import mchorse.mclib.client.gui.framework.elements.input.GuiColorElement;
 import mchorse.mclib.client.gui.framework.elements.input.GuiTextElement;
 import mchorse.mclib.client.gui.framework.elements.input.GuiTrackpadElement;
 import mchorse.mclib.client.gui.framework.elements.utils.GuiLabel;
-import mchorse.mclib.client.gui.utils.resizers.layout.ColumnResizer;
 import mchorse.metamorph.client.gui.editor.GuiMorphPanel;
 import mchorse.vanilla_pack.editors.GuiLabelMorph;
 import mchorse.vanilla_pack.morphs.LabelMorph;
@@ -49,8 +48,7 @@ public class GuiLabelPanel extends GuiMorphPanel<LabelMorph, GuiLabelMorph>
 
 		this.element = new GuiScrollElement(mc);
 		this.element.scroll.opposite = true;
-		this.element.flex().relative(this.area).w(120).h(1F);
-		ColumnResizer.apply(this.element, 5).vertical().stretch().scroll().height(20).padding(10);
+		this.element.flex().relative(this.area).w(120).h(1F).column(5).vertical().stretch().scroll().height(20).padding(10);
 
 		this.element.add(GuiLabel.create("Label", 16).anchor(0, 1F), this.label);
 		this.element.add(GuiLabel.create("Max width", 16).anchor(0, 1F), this.max);

@@ -10,7 +10,6 @@ import mchorse.mclib.client.gui.framework.elements.input.GuiTrackpadElement;
 import mchorse.mclib.client.gui.framework.elements.list.GuiStringListElement;
 import mchorse.mclib.client.gui.framework.elements.utils.GuiContext;
 import mchorse.mclib.client.gui.framework.elements.utils.GuiInventoryElement;
-import mchorse.mclib.client.gui.utils.resizers.layout.RowResizer;
 import mchorse.mclib.utils.Direction;
 import mchorse.metamorph.api.morphs.AbstractMorph;
 import mchorse.metamorph.client.gui.editor.GuiAbstractMorph;
@@ -127,7 +126,7 @@ public class GuiBodyPartEditor extends GuiMorphPanel<AbstractMorph, GuiAbstractM
         this.stacks.flex().relative(this.area).x(0.5F, 0).y(10).wh(174, 24).anchor(0.5F, 0);
 
         this.inventory = new GuiInventoryElement(mc, this::pickItem);
-        this.inventory.flex().relative(this.stacks.resizer()).x(0.5F, 0).y(1, 10).anchor(0.5F, 0).wh(200, 100);
+        this.inventory.flex().relative(this.stacks.resizer()).x(0.5F, 0).y(1, 10).anchor(0.5F, 0).wh(200, 100).row(6);
         this.inventory.setVisible(false);
 
         for (int i = 0; i < this.slots.length; i++)
@@ -137,7 +136,6 @@ public class GuiBodyPartEditor extends GuiMorphPanel<AbstractMorph, GuiAbstractM
             this.stacks.add(this.slots[i]);
         }
 
-        RowResizer.apply(this.stacks, 6);
         this.add(this.stacks, this.inventory);
 
         this.pickMorph.keys().register("Pick morph", Keyboard.KEY_P, () ->

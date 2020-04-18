@@ -9,7 +9,6 @@ import mchorse.mclib.client.gui.framework.elements.list.GuiListElement;
 import mchorse.mclib.client.gui.framework.elements.utils.GuiContext;
 import mchorse.mclib.client.gui.framework.elements.utils.GuiLabel;
 import mchorse.mclib.client.gui.utils.Icons;
-import mchorse.mclib.client.gui.utils.resizers.layout.ColumnResizer;
 import mchorse.mclib.utils.Direction;
 import mchorse.mclib.utils.Timer;
 import mchorse.metamorph.ClientProxy;
@@ -78,7 +77,7 @@ public class GuiSelectorEditor extends GuiElement
 			button.setEnabled(false);
 		});
 
-		this.form.flex().relative(this.area).w(1F);
+		this.form.flex().relative(this.area).w(1F).column(5).vertical().stretch().height(20).padding(10);
 		this.selectors.flex().relative(this.form.resizer()).y(1F).w(1F).hTo(this.flex(), 1F);
 
 		GuiLabel title = GuiLabel.create("Entity Selectors", this.font.FONT_HEIGHT);
@@ -86,8 +85,6 @@ public class GuiSelectorEditor extends GuiElement
 		GuiLabel type = GuiLabel.create("Type", 16).anchor(0, 1);
 
 		this.form.add(title.tooltip("With this feature, you can add morphs to entities by specific name or their type...", Direction.BOTTOM), name, this.name, type, this.type, this.active,this.pick);
-
-		ColumnResizer.apply(this.form, 5).vertical().stretch().height(20).padding(10);
 		this.markContainer().add(this.form, this.selectors);
 
 		this.selectors.setIndex(0);

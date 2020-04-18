@@ -8,8 +8,6 @@ import mchorse.mclib.client.gui.framework.elements.utils.GuiContext;
 import mchorse.mclib.client.gui.framework.elements.utils.GuiDrawable;
 import mchorse.mclib.client.gui.utils.Area;
 import mchorse.mclib.client.gui.utils.Keybind;
-import mchorse.mclib.client.gui.utils.resizers.layout.ColumnResizer;
-import mchorse.mclib.client.gui.utils.resizers.layout.RowResizer;
 import mchorse.mclib.utils.Timer;
 import mchorse.metamorph.api.MorphManager;
 import mchorse.metamorph.api.creative.MorphList;
@@ -105,16 +103,14 @@ public class GuiCreativeMorphs extends GuiElement
 
         /* Create morph panels */
         this.morphs = new GuiScrollElement(mc);
-        this.morphs.flex().relative(this.area).wh(1F, 1F);
-        ColumnResizer.apply(this.morphs, 0).vertical().stretch().scroll();
+        this.morphs.flex().relative(this.area).wh(1F, 1F).column(0).vertical().stretch().scroll();
         this.setupMorphs(list);
 
         /* Initiate bottom bar */
         this.bar = new GuiElement(mc);
         this.search = new GuiTextElement(mc, this::setFilter);
 
-        this.bar.flex().relative(this.morphs.area).set(10, 0, 0, 20).y(1, -30).w(1, -20);
-        RowResizer.apply(this.bar, 5).preferred(1).height(20);
+        this.bar.flex().relative(this.morphs.area).set(10, 0, 0, 20).y(1, -30).w(1, -20).row(5).preferred(1).height(20);
         this.bar.add(this.search);
 
         this.screen.add(this.morphs, this.bar, this.quickEditor);

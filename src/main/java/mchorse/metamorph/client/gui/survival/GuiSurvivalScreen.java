@@ -7,7 +7,6 @@ import mchorse.mclib.client.gui.framework.elements.buttons.GuiButtonElement;
 import mchorse.mclib.client.gui.framework.elements.buttons.GuiToggleElement;
 import mchorse.mclib.client.gui.framework.elements.input.GuiKeybindElement;
 import mchorse.mclib.client.gui.utils.Elements;
-import mchorse.mclib.client.gui.utils.resizers.layout.ColumnResizer;
 import mchorse.metamorph.ClientProxy;
 import mchorse.metamorph.api.MorphManager;
 import mchorse.metamorph.api.creative.MorphList;
@@ -65,16 +64,14 @@ public class GuiSurvivalScreen extends GuiBase
         this.favorite.flex().h(12);
 
         this.sidebar = new GuiScrollElement(mc);
-        this.sidebar.flex().relative(this.root.resizer()).y(20).w(140).hTo(this.root.resizer(), 1F);
-        ColumnResizer.apply(this.sidebar, 5).stretch().height(20).padding(10);
+        this.sidebar.flex().relative(this.root.resizer()).y(20).w(140).hTo(this.root.resizer(), 1F).column(5).stretch().height(20).padding(10);
         this.sidebar.add(Elements.row(mc, 5, 0, 20, this.morph, this.remove), this.keybind, this.favorite);
 
         this.onlyFavorite = new GuiToggleElement(mc, "Only favorites", this::toggleOnlyFavorite);
         this.onlyFavorite.flex().relative(this.root.resizer()).x(1F).wh(100, 20).anchor(1F, 0F);
 
         this.morphs = new GuiScrollElement(mc);
-        this.morphs.flex().relative(this.root.resizer()).x(140).y(20).wTo(this.root.resizer(), 1F).hTo(this.root.resizer(), 1F);
-        ColumnResizer.apply(this.morphs, 0).vertical().stretch().scroll();
+        this.morphs.flex().relative(this.root.resizer()).x(140).y(20).wTo(this.root.resizer(), 1F).hTo(this.root.resizer(), 1F).column(0).vertical().stretch().scroll();
         this.setupMorphs();
 
         this.root.flex().xy(0.5F, 0.5F).wh(1F, 1F).anchor(0.5F, 0.5F).maxW(500).maxH(300);

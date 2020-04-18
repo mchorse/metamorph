@@ -7,7 +7,6 @@ import mchorse.mclib.client.gui.framework.elements.list.GuiLabelListElement;
 import mchorse.mclib.client.gui.framework.elements.utils.GuiContext;
 import mchorse.mclib.client.gui.utils.Elements;
 import mchorse.mclib.client.gui.utils.Label;
-import mchorse.mclib.client.gui.utils.resizers.layout.ColumnResizer;
 import mchorse.metamorph.api.morphs.AbstractMorph;
 import mchorse.metamorph.client.gui.editor.GuiAbstractMorph;
 import net.minecraft.client.Minecraft;
@@ -44,8 +43,7 @@ public class GuiQuickEditor extends GuiElement
 
 		this.quickAccess = new GuiScrollElement(mc);
 		this.quickAccess.setVisible(false);
-		this.quickAccess.flex().relative(this.area).y(20).w(1F).h(1F, -20);
-		ColumnResizer.apply(this.quickAccess, 5).vertical().stretch().scroll().padding(10).height(20);
+		this.quickAccess.flex().relative(this.area).y(20).w(1F).h(1F, -20).column(5).vertical().stretch().scroll().padding(10).height(20);
 
 		GuiElement row = Elements.row(mc, 0, this.presetsButton, this.quickAccessButton);
 		row.flex().relative(this.area).w(1F).h(20);

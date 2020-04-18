@@ -7,7 +7,6 @@ import mchorse.mclib.client.gui.framework.elements.input.GuiTrackpadElement;
 import mchorse.mclib.client.gui.framework.elements.list.GuiStringListElement;
 import mchorse.mclib.client.gui.framework.elements.utils.GuiContext;
 import mchorse.mclib.client.gui.framework.elements.utils.GuiLabel;
-import mchorse.mclib.client.gui.utils.resizers.layout.ColumnResizer;
 import mchorse.metamorph.api.MorphManager;
 import mchorse.metamorph.api.MorphSettings;
 import mchorse.metamorph.api.abilities.IAbility;
@@ -41,8 +40,7 @@ public class GuiSettingsPanel extends GuiMorphPanel<AbstractMorph, GuiAbstractMo
 
 		this.element = new GuiScrollElement(mc);
 		this.element.scroll.opposite = true;
-		this.element.flex().relative(this.area).w(120).h(1F);
-		ColumnResizer.apply(this.element, 5).vertical().stretch().scroll().height(20).padding(10);
+		this.element.flex().relative(this.area).w(120).h(1F).column(5).vertical().stretch().scroll().height(20).padding(10);
 
 		this.reset = new GuiButtonElement(mc, "Reset", (button) ->
 		{
