@@ -79,6 +79,12 @@ public class MetamorphConfig
      */
     public boolean show_morph_idle_sounds;
 
+    /**
+     * Whether the player's current morph should spawn particles while
+     * the player is in first person mode
+     */
+    public boolean spawn_particles_first_person;
+
     /* End of config options */
 
     /**
@@ -112,6 +118,7 @@ public class MetamorphConfig
         this.acquire_immediately = this.config.getBoolean("acquire_immediately", cat, false, "Acquires morph immediately after player kills an entity instead of spawning a ghost", lang + "acquire_immediately");
         this.morph_in_tight_spaces = this.config.getBoolean("morph_in_tight_spaces", cat, false, "Allows morphing even if it could cause suffocation and allow passing through walls", lang + "morph_in_tight_spaces");
         this.show_morph_idle_sounds = this.config.getBoolean("show_morph_idle_sounds", cat, true, "When enabled, morphed players make mob idle sounds", lang + "show_morph_idle_sounds");
+        this.spawn_particles_first_person = this.config.getBoolean("spawn_particles_first_person", cat, false, "When enabled, morphed players spawn particles in first person", lang + "spawn_particles_first_person");
 
         this.config.getCategory(cat).setComment("General configuration of Metamorph mod");
 

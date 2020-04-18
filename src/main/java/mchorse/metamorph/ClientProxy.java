@@ -148,4 +148,10 @@ public class ClientProxy extends CommonProxy
 
         return networkplayerinfo != null ? networkplayerinfo.getGameType() : GameType.CREATIVE;
     }
+
+    @Override
+    public boolean isDedicatedServer()
+    {
+        return false;
+    }
 }
