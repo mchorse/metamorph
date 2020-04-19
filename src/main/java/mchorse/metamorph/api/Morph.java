@@ -54,14 +54,14 @@ public class Morph
         return this.morph;
     }
 
-    public AbstractMorph clone(boolean isRemote)
+    public AbstractMorph copy(boolean isRemote)
     {
-        return MorphUtils.clone(this.morph, isRemote);
+        return MorphUtils.copy(this.morph, isRemote);
     }
 
     public void copy(Morph morph, boolean isRemote)
     {
-        this.set(morph.clone(isRemote), isRemote);
+        this.set(morph.copy(isRemote), isRemote);
     }
 
     public void fromNBT(NBTTagCompound tag)

@@ -363,7 +363,7 @@ public class Morphing implements IMorphing
 
         if (morphing.getCurrentMorph() != null)
         {
-            this.setCurrentMorph(morphing.getCurrentMorph().clone(player.world.isRemote), player, true);
+            this.setCurrentMorph(morphing.getCurrentMorph().copy(player.world.isRemote), player, true);
         }
         else
         {

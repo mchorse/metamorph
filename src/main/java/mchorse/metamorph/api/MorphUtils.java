@@ -68,11 +68,11 @@ public class MorphUtils
     }
 
     /**
-     * Clone a morph 
+     * Copy a morph
      */
-    public static AbstractMorph clone(AbstractMorph morph, boolean isRemote)
+    public static AbstractMorph copy(AbstractMorph morph, boolean isRemote)
     {
-        return morph == null ? null : morph.clone(isRemote);
+        return morph == null ? null : morph.copy(isRemote);
     }
 
     /**

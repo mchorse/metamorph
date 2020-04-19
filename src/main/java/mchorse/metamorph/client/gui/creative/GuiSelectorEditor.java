@@ -169,7 +169,7 @@ public class GuiSelectorEditor extends GuiElement
 
 		if (this.selecting && this.selector != null)
 		{
-			this.selector.morph = morph == null ? null : morph.clone(true);
+			this.selector.morph = morph == null ? null : morph.copy(true);
 		}
 
 		this.pick.setEnabled(true);

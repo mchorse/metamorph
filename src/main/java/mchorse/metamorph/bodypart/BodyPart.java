@@ -177,7 +177,7 @@ public class BodyPart
         return result;
     }
 
-    public BodyPart clone(boolean isRemote)
+    public BodyPart copy(boolean isRemote)
     {
         BodyPart part = new BodyPart();
 

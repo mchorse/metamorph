@@ -102,7 +102,7 @@ public class GuiBodyPartEditor extends GuiMorphPanel<AbstractMorph, GuiAbstractM
             {
                 if (part != null)
                 {
-                    part.morph.setDirect(morph == null ? null : morph.clone(true));
+                    part.morph.setDirect(morph == null ? null : morph.copy(true));
                 }
             });
         });
@@ -164,7 +164,7 @@ public class GuiBodyPartEditor extends GuiMorphPanel<AbstractMorph, GuiAbstractM
         }
         else
         {
-            part = part.clone(true);
+            part = part.copy(true);
         }
 
         part.init();

@@ -78,7 +78,7 @@ public class RegisterHandler
 
             if (settings.containsKey(key))
             {
-                settings.get(key).merge(morphSettings);
+                settings.get(key).copy(morphSettings);
             }
             else
             {

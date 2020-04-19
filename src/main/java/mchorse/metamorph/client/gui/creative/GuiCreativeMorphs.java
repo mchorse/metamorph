@@ -288,7 +288,7 @@ public class GuiCreativeMorphs extends GuiElement
 
         if (!this.isSelectedMorphIsEditable() || !this.nestedEdits.isEmpty())
         {
-            morph = morph.clone(true);
+            morph = morph.copy(true);
             this.pickMorph(morph);
         }
 

@@ -109,7 +109,7 @@ public class MorphManager
             }
             else
             {
-                setting.merge(entry.getValue());
+                setting.copy(entry.getValue());
             }
 
             newSettings.put(key, setting);

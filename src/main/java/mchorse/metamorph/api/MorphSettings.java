@@ -87,12 +87,11 @@ public class MorphSettings
         return super.equals(obj);
     }
 
-    @Override
-    public MorphSettings clone()
+    public MorphSettings copy()
     {
         MorphSettings settings = new MorphSettings();
 
-        settings.merge(this);
+        settings.copy(this);
 
         return settings;
     }
@@ -100,7 +99,7 @@ public class MorphSettings
     /**
      * Merge given morph settings with this settings
      */
-    public void merge(MorphSettings setting)
+    public void copy(MorphSettings setting)
     {
         this.abilities.clear();
         this.abilities.addAll(setting.abilities);

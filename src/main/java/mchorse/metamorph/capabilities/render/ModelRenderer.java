@@ -54,7 +54,7 @@ public class ModelRenderer implements IModelRenderer
                 {
                     this.selector = selector;
                     this.selectorTime = selector.time;
-                    this.morph = this.selector.morph == null ? null : this.selector.morph.clone(target.world.isRemote);
+                    this.morph = this.selector.morph == null ? null : this.selector.morph.copy(target.world.isRemote);
 
                     break;
                 }

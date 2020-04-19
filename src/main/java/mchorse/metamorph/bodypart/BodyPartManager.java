@@ -3,7 +3,6 @@ package mchorse.metamorph.bodypart;
 import java.util.ArrayList;
 import java.util.List;
 
-import mchorse.metamorph.capabilities.morphing.IMorphing;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
@@ -89,7 +88,7 @@ public class BodyPartManager
 
         for (BodyPart part : manager.parts)
         {
-            this.parts.add(part.clone(isRemote));
+            this.parts.add(part.copy(isRemote));
         }
     }
 
@@ -109,7 +108,7 @@ public class BodyPartManager
 
             if (!part.canMerge(other, isRemote))
             {
-                this.parts.set(i, other.clone(isRemote));
+                this.parts.set(i, other.copy(isRemote));
             }
         }
     }

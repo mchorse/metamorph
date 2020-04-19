@@ -249,7 +249,7 @@ public abstract class AbstractMorph
     /**
      * Clone a morph
      */
-    public final AbstractMorph clone(boolean isRemote)
+    public final AbstractMorph copy(boolean isRemote)
     {
         AbstractMorph morph = this.create(isRemote);
 

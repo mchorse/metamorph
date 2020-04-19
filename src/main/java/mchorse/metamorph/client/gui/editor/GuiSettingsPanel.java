@@ -118,7 +118,7 @@ public class GuiSettingsPanel extends GuiMorphPanel<AbstractMorph, GuiAbstractMo
 			MorphSettings old = this.morph.settings;
 
 			this.morph.settings = new MorphSettings();
-			this.morph.settings.merge(old);
+			this.morph.settings.copy(old);
 		}
 	}
 
