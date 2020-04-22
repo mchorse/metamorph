@@ -6,12 +6,14 @@ import java.io.PrintWriter;
 import java.util.Map;
 import java.util.Set;
 
+import io.netty.buffer.ByteBuf;
 import mchorse.metamorph.api.events.RegisterBlacklistEvent;
 import mchorse.metamorph.api.events.RegisterRemapEvent;
 import mchorse.metamorph.api.events.RegisterSettingsEvent;
 import mchorse.metamorph.api.morphs.AbstractMorph;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraftforge.common.MinecraftForge;
+import net.minecraftforge.fml.common.network.ByteBufUtils;
 
 public class MorphUtils
 {
@@ -76,7 +78,7 @@ public class MorphUtils
     }
 
     /**
-     * Morph to NBT 
+     * Morph to NBT
      */
     public static NBTTagCompound toNBT(AbstractMorph morph)
     {
@@ -85,9 +87,44 @@ public class MorphUtils
             return null;
         }
 
-        NBTTagCompound tag = new NBTTagCompound();
-        morph.toNBT(tag);
+        return morph.toNBT();
+    }
 
-        return tag;
+    /**
+     * Write a morph to {@link ByteBuf}
+     *
+     * This method will simply write a boolean indicating whether a morph was
+     * saved and morph's data.
+     *
+     * Important: use this method in conjunction with
+     * {@link #morphFromBuf(ByteBuf)}
+     */
+    public static void morphToBuf(ByteBuf buffer, AbstractMorph morph)
+    {
+        buffer.writeBoolean(morph != null);
+
+        if (morph != null)
+        {
+            ByteBufUtils.writeTag(buffer, morph.toNBT());
+        }
+    }
+
+    /**
+     * Create a morph from {@link ByteBuf}
+     *
+     * This method will read a morph from {@link ByteBuf} which should contain
+     * a boolean indicating whether a morph was written and the morph data.
+     *
+     * Important: use this method in conjunction with
+     * {@link #morphToBuf(ByteBuf, AbstractMorph)}!
+     */
+    public static AbstractMorph morphFromBuf(ByteBuf buffer)
+    {
+        if (buffer.readBoolean())
+        {
+            return MorphManager.INSTANCE.morphFromNBT(ByteBufUtils.readTag(buffer));
+        }
+
+        return null;
     }
 }
