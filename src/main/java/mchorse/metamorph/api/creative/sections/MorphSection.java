@@ -4,6 +4,7 @@ import mchorse.metamorph.api.creative.categories.MorphCategory;
 import mchorse.metamorph.client.gui.creative.GuiCreativeMorphs;
 import mchorse.metamorph.client.gui.creative.GuiMorphSection;
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.resources.I18n;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.relauncher.Side;
@@ -21,6 +22,12 @@ public class MorphSection
 	public MorphSection(String title)
 	{
 		this.title = title;
+	}
+
+	@SideOnly(Side.CLIENT)
+	public String getTitle()
+	{
+		return I18n.format("morph.section." + this.title);
 	}
 
 	public void add(MorphCategory category)

@@ -91,51 +91,38 @@ public class GuiCreativeMorphs extends GuiElement
 
         this.callback = callback;
         this.editor = new GuiDelegateElement<GuiAbstractMorph>(mc, null);
-        this.editor.flex().relative(this.area).wh(1F, 1F);
+        this.editor.flex().relative(this).wh(1F, 1F);
 
         this.screen = new GuiElement(mc);
-        this.screen.flex().relative(this.area).wh(1F, 1F);
+        this.screen.flex().relative(this).wh(1F, 1F);
 
         /* Create quick editor */
         this.quickEditor = new GuiQuickEditor(mc, this);
-        this.quickEditor.flex().relative(this.area).x(1F, -200).wTo(this.flex(), 1F).h(1F);
+        this.quickEditor.flex().relative(this).x(1F, -200).wTo(this.flex(), 1F).h(1F);
         this.quickEditor.setVisible(false);
 
         /* Create morph panels */
         this.morphs = new GuiScrollElement(mc);
-        this.morphs.flex().relative(this.area).wh(1F, 1F).column(0).vertical().stretch().scroll();
+        this.morphs.flex().relative(this).wh(1F, 1F).column(0).vertical().stretch().scroll();
         this.setupMorphs(list);
 
         /* Initiate bottom bar */
         this.bar = new GuiElement(mc);
         this.search = new GuiTextElement(mc, this::setFilter);
 
-        this.bar.flex().relative(this.morphs.area).set(10, 0, 0, 20).y(1, -30).w(1, -20).row(5).preferred(1).height(20);
+        this.bar.flex().relative(this.morphs).set(10, 0, 0, 20).y(1, -30).w(1, -20).row(5).preferred(1).height(20);
         this.bar.add(this.search);
 
         this.screen.add(this.morphs, this.bar, this.quickEditor);
         this.add(this.screen, new GuiDrawable(this::drawOverlay), this.editor);
 
         /* Morph editor keybinds */
-        this.exitKey = this.keys().register("Exit", Keyboard.KEY_ESCAPE, () ->
-        {
-            this.exit();
-            return true;
-        });
+        this.exitKey = this.keys().register("Exit", Keyboard.KEY_ESCAPE, this::exit);
 
         this.updateExitKey();
 
-        this.morphs.keys().register("Edit", Keyboard.KEY_E, () ->
-        {
-            this.enterEditMorph();
-            return true;
-        });
-
-        this.morphs.keys().register("Quick edit", Keyboard.KEY_Q, () ->
-        {
-            this.toggleQuickEdit();
-            return true;
-        });
+        this.morphs.keys().register("Edit", Keyboard.KEY_E, this::enterEditMorph);
+        this.morphs.keys().register("Quick edit", Keyboard.KEY_Q, this::toggleQuickEdit);
     }
 
     private void setupMorphs(MorphList list)

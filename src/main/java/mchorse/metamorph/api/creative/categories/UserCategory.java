@@ -3,12 +3,21 @@ package mchorse.metamorph.api.creative.categories;
 import mchorse.metamorph.api.creative.sections.MorphSection;
 import mchorse.metamorph.api.creative.sections.UserSection;
 import mchorse.metamorph.api.morphs.AbstractMorph;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 
 public class UserCategory extends MorphCategory
 {
 	public UserCategory(MorphSection parent, String title)
 	{
 		super(parent, title);
+	}
+
+	@Override
+	@SideOnly(Side.CLIENT)
+	public String getTitle()
+	{
+		return this.title;
 	}
 
 	@Override

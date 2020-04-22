@@ -259,7 +259,7 @@ public class GuiMorphSection extends GuiElement
 
 		for (UserCategory category : this.parent.user.global)
 		{
-			contextMenu.action(category.title, () ->
+			contextMenu.action(category.getTitle(), () ->
 			{
 				AbstractMorph added = morph.copy(true);
 
@@ -276,7 +276,7 @@ public class GuiMorphSection extends GuiElement
 	{
 		Gui.drawRect(this.area.x, this.area.y, this.area.ex(), this.area.y + HEADER_HEIGHT, 0x88000000);
 
-		this.font.drawStringWithShadow(this.section.title, this.area.x + 7, this.area.y + 10 - this.font.FONT_HEIGHT / 2, 0xffffff);
+		this.font.drawStringWithShadow(this.section.getTitle(), this.area.x + 7, this.area.y + 10 - this.font.FONT_HEIGHT / 2, 0xffffff);
 		(this.toggled ? Icons.MOVE_UP : Icons.MOVE_DOWN).render(this.area.ex() - 18 - 3, this.area.y + 10 + (this.toggled ? -1 : 1), 0, 0.5F);
 
 		int y = this.drawMorphs(context) + (this.last ? 30 : 0);
@@ -319,7 +319,7 @@ public class GuiMorphSection extends GuiElement
 				continue;
 			}
 
-			this.font.drawStringWithShadow(category.title, this.area.x + 7, this.area.y + y + 8 - this.font.FONT_HEIGHT / 2, 0xcccccc);
+			this.font.drawStringWithShadow(category.getTitle(), this.area.x + 7, this.area.y + y + 8 - this.font.FONT_HEIGHT / 2, 0xcccccc);
 
 			Area.SHARED.copy(this.area);
 			Area.SHARED.y = this.area.y + y;

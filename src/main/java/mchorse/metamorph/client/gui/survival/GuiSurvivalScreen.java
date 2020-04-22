@@ -64,42 +64,23 @@ public class GuiSurvivalScreen extends GuiBase
         this.favorite.flex().h(12);
 
         this.sidebar = new GuiScrollElement(mc);
-        this.sidebar.flex().relative(this.root.resizer()).y(20).w(140).hTo(this.root.resizer(), 1F).column(5).stretch().height(20).padding(10);
+        this.sidebar.flex().relative(this.root).y(20).w(140).hTo(this.root.resizer(), 1F).column(5).stretch().height(20).padding(10);
         this.sidebar.add(Elements.row(mc, 5, 0, 20, this.morph, this.remove), this.keybind, this.favorite);
 
         this.onlyFavorite = new GuiToggleElement(mc, "Only favorites", this::toggleOnlyFavorite);
-        this.onlyFavorite.flex().relative(this.root.resizer()).x(1F).wh(100, 20).anchor(1F, 0F);
+        this.onlyFavorite.flex().relative(this.root).x(1F).wh(100, 20).anchor(1F, 0F);
 
         this.morphs = new GuiScrollElement(mc);
-        this.morphs.flex().relative(this.root.resizer()).x(140).y(20).wTo(this.root.resizer(), 1F).hTo(this.root.resizer(), 1F).column(0).vertical().stretch().scroll();
+        this.morphs.flex().relative(this.root).x(140).y(20).wTo(this.root.resizer(), 1F).hTo(this.root.resizer(), 1F).column(0).vertical().stretch().scroll();
         this.setupMorphs();
 
         this.root.flex().xy(0.5F, 0.5F).wh(1F, 1F).anchor(0.5F, 0.5F).maxW(500).maxH(300);
         this.root.add(this.morphs, this.sidebar, this.onlyFavorite);
 
-        this.root.keys().register("Morph", Keyboard.KEY_M, () ->
-        {
-            this.morph.clickItself(GuiBase.getCurrent());
-            return true;
-        });
-
-        this.root.keys().register("Remove", Keyboard.KEY_R, () ->
-        {
-            this.remove.clickItself(GuiBase.getCurrent());
-            return true;
-        });
-
-        this.root.keys().register("Favorite", Keyboard.KEY_F, () ->
-        {
-            this.favorite.clickItself(GuiBase.getCurrent());
-            return true;
-        });
-
-        this.root.keys().register("Toggle favorite morphs", Keyboard.KEY_O, () ->
-        {
-            this.onlyFavorite.clickItself(GuiBase.getCurrent());
-            return true;
-        });
+        this.root.keys().register("Morph", Keyboard.KEY_M, () -> this.morph.clickItself(GuiBase.getCurrent()));
+        this.root.keys().register("Remove", Keyboard.KEY_R, () -> this.remove.clickItself(GuiBase.getCurrent()));
+        this.root.keys().register("Favorite", Keyboard.KEY_F, () -> this.favorite.clickItself(GuiBase.getCurrent()));
+        this.root.keys().register("Toggle favorite morphs", Keyboard.KEY_O, () -> this.onlyFavorite.clickItself(GuiBase.getCurrent()));
     }
 
     public GuiSurvivalScreen open()
@@ -223,7 +204,7 @@ public class GuiSurvivalScreen extends GuiBase
         }
         else
         {
-            section = new MorphSection("User morphs");
+            section = new MorphSection("user");
             category = new AcquiredCategory(section, "acquired");
 
             category.setMorph(cap == null ? Collections.emptyList() : cap.getAcquiredMorphs());

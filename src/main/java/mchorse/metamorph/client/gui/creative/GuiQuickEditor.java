@@ -39,14 +39,14 @@ public class GuiQuickEditor extends GuiElement
 		this.quickAccessButton = new GuiButtonElement(mc, "Quick edit", this::toggleVisibility);
 
 		this.presets = new GuiLabelListElement<NBTTagCompound>(mc, this::setPreset);
-		this.presets.flex().relative(this.area).set(10, 30, 0, 0).w(1F, -20).h(1F, -40);
+		this.presets.flex().relative(this).set(10, 30, 0, 0).w(1F, -20).h(1F, -40);
 
 		this.quickAccess = new GuiScrollElement(mc);
 		this.quickAccess.setVisible(false);
-		this.quickAccess.flex().relative(this.area).y(20).w(1F).h(1F, -20).column(5).vertical().stretch().scroll().padding(10).height(20);
+		this.quickAccess.flex().relative(this).y(20).w(1F).h(1F, -20).column(5).vertical().stretch().scroll().padding(10).height(20);
 
 		GuiElement row = Elements.row(mc, 0, this.presetsButton, this.quickAccessButton);
-		row.flex().relative(this.area).w(1F).h(20);
+		row.flex().relative(this).w(1F).h(20);
 
 		this.add(row, this.presets, this.quickAccess);
 	}

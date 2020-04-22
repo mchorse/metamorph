@@ -25,7 +25,7 @@ public class GuiUsernamePanel extends GuiMorphPanel<PlayerMorph, GuiPlayerMorph>
         super(mc, editor);
 
         this.username = new GuiTextElement(mc, 120, (str) -> this.editUsername(str));
-        this.username.flex().relative(this.area).set(10, 10, 0, 20).w(1, -20).y(1, -30);
+        this.username.flex().relative(this).set(10, 10, 0, 20).w(1, -20).y(1, -30);
 
         this.add(this.username);
     }

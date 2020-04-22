@@ -100,12 +100,13 @@ metamorph.success.demorph=Player by username %s was successfully demorphed!
 metamorph.success.acquire=Player by username %s was successfully acquired %s morph!
 
 # Morph categories
-morph.category.unknown=Unknown morphs
-morph.category.unsorted=Unsorted morphs
+morph.category.generic=Unsorted morphs
 morph.category.animal=Animal morphs
-morph.category.blocks=Blocks morphs
 morph.category.boss=Boss morphs
 morph.category.acquired=Your morphs
 morph.category.hostile=Hostile morphs
-morph.category.players=Player morphs
 morph.category.modded=Morphs from %s
+
+# Morph sections and categories
+morph.section.entity=Entity morphs (Metamorph)
+morph.section.user=User morphs

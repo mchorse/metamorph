@@ -29,8 +29,8 @@ public class GuiItemStackPanel extends GuiMorphPanel<ItemStackMorph, GuiAbstract
 
 		this.slot = new GuiSlotElement(mc, 0, this.inventory::link);
 
-		this.inventory.flex().relative(this.slot.area).x(0.5F, 0).y(-5).wh(200, 100).anchor(0.5F, 1);
-		this.slot.flex().relative(this.area).x(0.5F, 0).y(1, -10).wh(32, 32).anchor(0.5F, 1);
+		this.inventory.flex().relative(this.slot).x(0.5F, 0).y(-5).wh(200, 100).anchor(0.5F, 1);
+		this.slot.flex().relative(this).x(0.5F, 0).y(1, -10).wh(32, 32).anchor(0.5F, 1);
 
 		this.add(this.slot, this.inventory);
 	}

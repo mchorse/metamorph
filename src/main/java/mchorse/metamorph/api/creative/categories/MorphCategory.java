@@ -5,7 +5,10 @@ import mchorse.metamorph.api.creative.sections.MorphSection;
 import mchorse.metamorph.api.morphs.AbstractMorph;
 import mchorse.metamorph.network.Dispatcher;
 import mchorse.metamorph.network.common.creative.PacketMorph;
+import net.minecraft.client.resources.I18n;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -21,6 +24,12 @@ public class MorphCategory
 	{
 		this.parent = parent;
 		this.title = title;
+	}
+
+	@SideOnly(Side.CLIENT)
+	public String getTitle()
+	{
+		return I18n.format("morph.category." + this.title);
 	}
 
 	public List<AbstractMorph> getMorphs()

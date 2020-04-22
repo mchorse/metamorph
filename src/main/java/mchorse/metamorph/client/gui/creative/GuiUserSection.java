@@ -80,8 +80,8 @@ public class GuiUserSection extends GuiMorphSection
 			((UserSection) this.section).save();
 		});
 
-		modal.setValue(category.title);
-		modal.flex().relative(this.parent.area).xy(0.5F, 0.5F).wh(160, 180).anchor(0.5F, 0.5F);
+		modal.setValue(category.getTitle());
+		modal.flex().relative(this.parent).xy(0.5F, 0.5F).wh(160, 180).anchor(0.5F, 0.5F);
 		modal.resize();
 
 		this.parent.add(modal);

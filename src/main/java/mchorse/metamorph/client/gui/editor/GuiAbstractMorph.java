@@ -44,9 +44,9 @@ public class GuiAbstractMorph<T extends AbstractMorph> extends GuiPanelBase<GuiM
         super(mc);
 
         this.finish = new GuiIconElement(mc, Icons.CLOSE, (b) -> this.morphs.exitEditMorph());
-        this.finish.flex().relative(this.area).set(0, 0, 20, 20).y(1F, -20);
+        this.finish.flex().relative(this).set(0, 0, 20, 20).y(1F, -20);
         this.renderer = this.createMorphRenderer(mc);
-        this.renderer.flex().relative(this.area).wh(1F, 1F);
+        this.renderer.flex().relative(this).wh(1F, 1F);
         this.defaultPanel = this.settings = new GuiSettingsPanel(mc, this);
 
         this.registerPanel(this.settings, I18n.format("metamorph.gui.panels.settings"), MMIcons.PROPERTIES);

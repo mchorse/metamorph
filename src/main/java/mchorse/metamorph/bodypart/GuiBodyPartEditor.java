@@ -79,15 +79,15 @@ public class GuiBodyPartEditor extends GuiMorphPanel<AbstractMorph, GuiAbstractM
         this.ry.tooltip(I18n.format("metamorph.gui.y"), Direction.TOP);
         this.rz.tooltip(I18n.format("metamorph.gui.z"), Direction.TOP);
 
-        this.tx.flex().set(0, 35, 60, 20).relative(this.area).x(0.5F, -95).y(1, -80);
-        this.ty.flex().set(0, 25, 60, 20).relative(this.tx.resizer());
-        this.tz.flex().set(0, 25, 60, 20).relative(this.ty.resizer());
-        this.sx.flex().set(65, 0, 60, 20).relative(this.tx.resizer());
-        this.sy.flex().set(0, 25, 60, 20).relative(this.sx.resizer());
-        this.sz.flex().set(0, 25, 60, 20).relative(this.sy.resizer());
-        this.rx.flex().set(65, 0, 60, 20).relative(this.sx.resizer());
-        this.ry.flex().set(0, 25, 60, 20).relative(this.rx.resizer());
-        this.rz.flex().set(0, 25, 60, 20).relative(this.ry.resizer());
+        this.tx.flex().set(0, 35, 60, 20).relative(this).x(0.5F, -95).y(1, -80);
+        this.ty.flex().set(0, 25, 60, 20).relative(this.tx);
+        this.tz.flex().set(0, 25, 60, 20).relative(this.ty);
+        this.sx.flex().set(65, 0, 60, 20).relative(this.tx);
+        this.sy.flex().set(0, 25, 60, 20).relative(this.sx);
+        this.sz.flex().set(0, 25, 60, 20).relative(this.sy);
+        this.rx.flex().set(65, 0, 60, 20).relative(this.sx);
+        this.ry.flex().set(0, 25, 60, 20).relative(this.rx);
+        this.rz.flex().set(0, 25, 60, 20).relative(this.ry);
 
         this.limbs = new GuiStringListElement(mc, (str) -> this.pickLimb(str.get(0)));
 
@@ -111,22 +111,22 @@ public class GuiBodyPartEditor extends GuiMorphPanel<AbstractMorph, GuiAbstractM
         this.removePart = new GuiButtonElement(mc, I18n.format("metamorph.gui.remove"), this::removePart);
         this.useTarget = new GuiToggleElement(mc, I18n.format("metamorph.gui.use_target"), false, this::toggleTarget);
 
-        this.limbs.flex().relative(this.area).set(0, 80, 105, 90).x(1, -115).h(1, -106);
-        this.pickMorph.flex().relative(this.area).set(0, 40, 105, 20).x(1, -115);
-        this.addPart.flex().relative(this.area).set(10, 10, 50, 20);
-        this.removePart.flex().relative(this.addPart.resizer()).set(55, 0, 50, 20);
-        this.bodyParts.flex().relative(this.area).set(10, 50, 105, 0).h(1, -55);
-        this.useTarget.flex().relative(this.area).set(0, 0, 105, 11).x(1, -115).y(1, -21);
+        this.limbs.flex().relative(this).set(0, 80, 105, 90).x(1, -115).h(1, -106);
+        this.pickMorph.flex().relative(this).set(0, 40, 105, 20).x(1, -115);
+        this.addPart.flex().relative(this).set(10, 10, 50, 20);
+        this.removePart.flex().relative(this.addPart).set(55, 0, 50, 20);
+        this.bodyParts.flex().relative(this).set(10, 50, 105, 0).h(1, -55);
+        this.useTarget.flex().relative(this).set(0, 0, 105, 11).x(1, -115).y(1, -21);
 
         this.elements.add(this.tx, this.ty, this.tz, this.sx, this.sy, this.sz, this.rx, this.ry, this.rz, this.limbs, this.pickMorph, this.useTarget);
         this.add(this.addPart, this.removePart, this.bodyParts, this.elements);
 
         /* Inventory */
         this.stacks = new GuiElement(mc);
-        this.stacks.flex().relative(this.area).x(0.5F, 0).y(10).wh(174, 24).anchor(0.5F, 0);
+        this.stacks.flex().relative(this).x(0.5F).y(10).anchor(0.5F, 0).row(5).resize();
 
         this.inventory = new GuiInventoryElement(mc, this::pickItem);
-        this.inventory.flex().relative(this.stacks.resizer()).x(0.5F, 0).y(1, 10).anchor(0.5F, 0).wh(200, 100).row(6);
+        this.inventory.flex().relative(this.stacks).x(0.5F, 0).y(1, 10).anchor(0.5F, 0).wh(200, 100).row(6);
         this.inventory.setVisible(false);
 
         for (int i = 0; i < this.slots.length; i++)
@@ -138,11 +138,7 @@ public class GuiBodyPartEditor extends GuiMorphPanel<AbstractMorph, GuiAbstractM
 
         this.add(this.stacks, this.inventory);
 
-        this.pickMorph.keys().register("Pick morph", Keyboard.KEY_P, () ->
-        {
-            this.pickMorph.clickItself(GuiBase.getCurrent());
-            return true;
-        });
+        this.pickMorph.keys().register("Pick morph", Keyboard.KEY_P, () -> this.pickMorph.clickItself(GuiBase.getCurrent()));
     }
 
     protected void addPart(GuiButtonElement b)

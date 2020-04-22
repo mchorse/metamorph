@@ -138,7 +138,7 @@ public class MorphManager
      */
     public void register()
     {
-        this.list.register(new UserSection("User morphs"));
+        this.list.register(new UserSection("user"));
 
         for (int i = this.factories.size() - 1; i >= 0; i--)
         {

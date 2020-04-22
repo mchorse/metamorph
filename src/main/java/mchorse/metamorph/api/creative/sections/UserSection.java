@@ -178,7 +178,7 @@ public class UserSection extends MorphSection
 			JsonObject cat = new JsonObject();
 			JsonArray morphs = new JsonArray();
 
-			cat.addProperty("title", category.title);
+			cat.addProperty("title", category.getTitle());
 			cat.add("morphs", morphs);
 
 			for (AbstractMorph morph : category.getMorphs())

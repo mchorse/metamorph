@@ -117,7 +117,7 @@ public class MetamorphFactory implements IMorphFactory
         attacks.put("knockback", new KnockbackAttack());
 
         /* Register main section */
-        manager.list.register(new MetamorphSection(this, "Entity morphs"));
+        manager.list.register(new MetamorphSection(this, "entity"));
     }
 
     @Override

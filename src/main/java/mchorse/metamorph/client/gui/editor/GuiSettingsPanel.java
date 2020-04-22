@@ -40,7 +40,7 @@ public class GuiSettingsPanel extends GuiMorphPanel<AbstractMorph, GuiAbstractMo
 
 		this.element = new GuiScrollElement(mc);
 		this.element.scroll.opposite = true;
-		this.element.flex().relative(this.area).w(120).h(1F).column(5).vertical().stretch().scroll().height(20).padding(10);
+		this.element.flex().relative(this).w(120).h(1F).column(5).vertical().stretch().scroll().height(20).padding(10);
 
 		this.reset = new GuiButtonElement(mc, "Reset", (button) ->
 		{
@@ -98,7 +98,7 @@ public class GuiSettingsPanel extends GuiMorphPanel<AbstractMorph, GuiAbstractMo
 		this.attack.flex().h(80);
 		this.action.flex().h(80);
 
-		this.data.flex().relative(this.area).relative(this.element.resizer()).x(1F, 10).y(1, -30).wTo(this.flex(), 1F, -10).h(20);
+		this.data.flex().relative(this).relative(this.element).x(1F, 10).y(1, -30).wTo(this.flex(), 1F, -10).h(20);
 
 		this.element.add(this.reset);
 		this.element.add(GuiLabel.create("Display name", 16).anchor(0, 1F), this.displayName);
