@@ -47,7 +47,7 @@ public class IronGolemMorph extends EntityMorph
     }
 
     @Override
-    public AbstractMorph create(boolean isRemote)
+    public AbstractMorph create()
     {
         return new IronGolemMorph();
     }

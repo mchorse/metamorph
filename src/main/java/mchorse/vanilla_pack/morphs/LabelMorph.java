@@ -148,15 +148,15 @@ public class LabelMorph extends AbstractMorph
 	}
 
 	@Override
-	public AbstractMorph create(boolean isRemote)
+	public AbstractMorph create()
 	{
 		return new LabelMorph();
 	}
 
 	@Override
-	public void copy(AbstractMorph from, boolean isRemote)
+	public void copy(AbstractMorph from)
 	{
-		super.copy(from, isRemote);
+		super.copy(from);
 
 		if (from instanceof LabelMorph)
 		{

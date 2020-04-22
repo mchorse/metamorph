@@ -4,6 +4,7 @@ import java.util.List;
 
 import mchorse.mclib.network.ServerMessageHandler;
 import mchorse.metamorph.api.MorphAPI;
+import mchorse.metamorph.api.MorphUtils;
 import mchorse.metamorph.api.morphs.AbstractMorph;
 import mchorse.metamorph.capabilities.morphing.IMorphing;
 import mchorse.metamorph.capabilities.morphing.Morphing;
@@ -32,6 +33,6 @@ public class ServerHandlerSelectMorph extends ServerMessageHandler<PacketSelectM
             morph = morphs.get(index);
         }
 
-        MorphAPI.morph(player, morph == null ? morph : morph.copy(false), false);
+        MorphAPI.morph(player, MorphUtils.copy(morph), false);
     }
 }

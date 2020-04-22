@@ -1,5 +1,6 @@
 package mchorse.metamorph.capabilities.render;
 
+import mchorse.metamorph.api.MorphUtils;
 import mchorse.metamorph.api.morphs.AbstractMorph;
 import mchorse.metamorph.client.EntityModelHandler;
 import net.minecraft.entity.Entity;
@@ -54,7 +55,7 @@ public class ModelRenderer implements IModelRenderer
                 {
                     this.selector = selector;
                     this.selectorTime = selector.time;
-                    this.morph = this.selector.morph == null ? null : this.selector.morph.copy(target.world.isRemote);
+                    this.morph = MorphUtils.copy(this.selector.morph);
 
                     break;
                 }

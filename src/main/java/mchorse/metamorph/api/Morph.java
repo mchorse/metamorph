@@ -27,13 +27,13 @@ public class Morph
         return this.morph == null;
     }
 
-    public boolean set(AbstractMorph morph, boolean isRemote)
+    public boolean set(AbstractMorph morph)
     {
-        if (this.morph == null || !this.morph.canMerge(morph, isRemote))
+        if (this.morph == null || !this.morph.canMerge(morph))
         {
             if (this.morph != null && morph != null)
             {
-                morph.afterMerge(this.morph, isRemote);
+                morph.afterMerge(this.morph);
             }
 
             this.morph = morph;
@@ -54,14 +54,14 @@ public class Morph
         return this.morph;
     }
 
-    public AbstractMorph copy(boolean isRemote)
+    public AbstractMorph copy()
     {
-        return MorphUtils.copy(this.morph, isRemote);
+        return MorphUtils.copy(this.morph);
     }
 
-    public void copy(Morph morph, boolean isRemote)
+    public void copy(Morph morph)
     {
-        this.set(morph.copy(isRemote), isRemote);
+        this.set(morph.copy());
     }
 
     public void fromNBT(NBTTagCompound tag)

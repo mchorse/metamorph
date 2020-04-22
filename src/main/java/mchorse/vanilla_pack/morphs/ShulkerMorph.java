@@ -54,7 +54,7 @@ public class ShulkerMorph extends EntityMorph
     }
 
     @Override
-    public AbstractMorph create(boolean isRemote)
+    public AbstractMorph create()
     {
         return new ShulkerMorph();
     }

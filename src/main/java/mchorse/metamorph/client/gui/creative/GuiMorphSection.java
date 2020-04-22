@@ -261,7 +261,7 @@ public class GuiMorphSection extends GuiElement
 		{
 			contextMenu.action(category.getTitle(), () ->
 			{
-				AbstractMorph added = morph.copy(true);
+				AbstractMorph added = morph.copy();
 
 				category.add(added);
 				this.parent.setSelected(added);

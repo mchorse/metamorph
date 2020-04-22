@@ -248,7 +248,7 @@ public class Morphing implements IMorphing
             return true;
         }
 
-        boolean creative = player != null ? player.isCreative() : false;
+        boolean creative = player != null && player.isCreative();
 
         if (force || creative || this.acquiredMorph(morph))
         {
@@ -264,7 +264,7 @@ public class Morphing implements IMorphing
                 }
             }
 
-            this.setMorph(morph, player == null ? false : player.world.isRemote);
+            this.setMorph(morph);
 
             if (player != null && !this.morph.isEmpty())
             {
@@ -294,17 +294,17 @@ public class Morphing implements IMorphing
             this.setHealth(player, this.lastHealth <= 0.0F ? 20.0F : this.lastHealth);
         }
 
-        this.setMorph(null, player == null ? false : player.world.isRemote);
+        this.setMorph(null);
     }
 
     /**
      * Set current morph, as well as update animation information  
      */
-    protected void setMorph(AbstractMorph morph, boolean isRemote)
+    protected void setMorph(AbstractMorph morph)
     {
         AbstractMorph previous = this.morph.get();
 
-        if (this.morph.set(morph, isRemote))
+        if (this.morph.set(morph))
         {
             if (!Metamorph.disableMorphAnimation.get())
             {
@@ -363,7 +363,7 @@ public class Morphing implements IMorphing
 
         if (morphing.getCurrentMorph() != null)
         {
-            this.setCurrentMorph(morphing.getCurrentMorph().copy(player.world.isRemote), player, true);
+            this.setCurrentMorph(morphing.getCurrentMorph().copy(), player, true);
         }
         else
         {

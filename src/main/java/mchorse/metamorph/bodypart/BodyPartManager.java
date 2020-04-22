@@ -81,22 +81,22 @@ public class BodyPartManager
         return super.equals(obj);
     }
 
-    public void copy(BodyPartManager manager, boolean isRemote)
+    public void copy(BodyPartManager manager)
     {
         this.reset();
         this.parts.clear();
 
         for (BodyPart part : manager.parts)
         {
-            this.parts.add(part.copy(isRemote));
+            this.parts.add(part.copy());
         }
     }
 
-    public void merge(BodyPartManager manager, boolean isRemote)
+    public void merge(BodyPartManager manager)
     {
         if (manager.parts.size() != this.parts.size())
         {
-            this.copy(manager, isRemote);
+            this.copy(manager);
 
             return;
         }
@@ -106,9 +106,9 @@ public class BodyPartManager
             BodyPart part = this.parts.get(i);
             BodyPart other = manager.parts.get(i);
 
-            if (!part.canMerge(other, isRemote))
+            if (!part.canMerge(other))
             {
-                this.parts.set(i, other.copy(isRemote));
+                this.parts.set(i, other.copy());
             }
         }
     }

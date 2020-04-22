@@ -70,9 +70,9 @@ public class MorphUtils
     /**
      * Copy a morph
      */
-    public static AbstractMorph copy(AbstractMorph morph, boolean isRemote)
+    public static AbstractMorph copy(AbstractMorph morph)
     {
-        return morph == null ? null : morph.copy(isRemote);
+        return morph == null ? null : morph.copy();
     }
 
     /**

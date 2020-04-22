@@ -131,11 +131,11 @@ public class BodyPart
         }
     }
 
-    public boolean canMerge(BodyPart part, boolean isRemote)
+    public boolean canMerge(BodyPart part)
     {
         BodyPart morph = (BodyPart) part;
 
-        this.morph.copy(morph.morph, isRemote);
+        this.morph.copy(morph.morph);
         this.translate.set(part.translate);
         this.scale.set(part.scale);
         this.rotate.set(part.rotate);
@@ -177,11 +177,11 @@ public class BodyPart
         return result;
     }
 
-    public BodyPart copy(boolean isRemote)
+    public BodyPart copy()
     {
         BodyPart part = new BodyPart();
 
-        part.morph.copy(this.morph, isRemote);
+        part.morph.copy(this.morph);
         part.translate.set(this.translate);
         part.scale.set(this.scale);
         part.rotate.set(this.rotate);

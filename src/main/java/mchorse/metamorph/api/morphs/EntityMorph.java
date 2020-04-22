@@ -99,13 +99,16 @@ public class EntityMorph extends AbstractMorph implements IBodyPartProvider
      */
     protected boolean updatingEntity = false;
 
+    /* Rendering */
+
+    @SideOnly(Side.CLIENT)
+    public RenderLivingBase renderer;
+
     /**
-     * Did this instance already tried to setup first-person hands 
+     * Did this instance already tried to setup first-person hands
      */
     @SideOnly(Side.CLIENT)
     public boolean triedHands;
-
-    /* Rendering */
 
     /**
      * Linked body part layer
@@ -217,7 +220,7 @@ public class EntityMorph extends AbstractMorph implements IBodyPartProvider
         }
 
         Minecraft.getMinecraft().renderEngine.bindTexture(this.texture);
-        ModelBase model = ((RenderLivingBase) this.renderer).getMainModel();
+        ModelBase model = this.renderer.getMainModel();
 
         model.swingProgress = 0.0F;
         model.setRotationAngles(0.0F, 0.0F, 0.0F, 0.0F, 0.0F, 0.0625F, this.entity);
@@ -280,7 +283,7 @@ public class EntityMorph extends AbstractMorph implements IBodyPartProvider
             return;
         }
 
-        Render render = this.renderer;
+        RenderLivingBase render = this.renderer;
 
         if (render == null)
         {
@@ -309,14 +312,11 @@ public class EntityMorph extends AbstractMorph implements IBodyPartProvider
                 this.setupLimbs();
             }
 
-            if (render instanceof RenderLivingBase)
-            {
-                ModelBase model = ((RenderLivingBase) render).getMainModel();
+            ModelBase model = render.getMainModel();
 
-                if (model instanceof ModelBiped)
-                {
-                    ((ModelBiped) model).isSneak = entity.isSneaking();
-                }
+            if (model instanceof ModelBiped)
+            {
+                ((ModelBiped) model).isSneak = entity.isSneaking();
             }
 
             renderEntity = entity;
@@ -682,12 +682,12 @@ public class EntityMorph extends AbstractMorph implements IBodyPartProvider
     @SideOnly(Side.CLIENT)
     protected void setupRenderer()
     {
-        this.renderer = Minecraft.getMinecraft().getRenderManager().getEntityRenderObject(this.entity);
+        Render renderer = Minecraft.getMinecraft().getRenderManager().getEntityRenderObject(this.entity);
 
-        if (this.renderer instanceof RenderLivingBase<?>)
+        if (renderer instanceof RenderLivingBase)
         {
-            RenderLivingBase<?> renderer = (RenderLivingBase<?>) this.renderer;
-            ModelBase model = renderer.getMainModel();
+            this.renderer = (RenderLivingBase) renderer;
+            ModelBase model = this.renderer.getMainModel();
 
             if (this.customSettings && model instanceof ModelBiped || model instanceof ModelQuadruped)
             {
@@ -703,8 +703,8 @@ public class EntityMorph extends AbstractMorph implements IBodyPartProvider
 
             if (this.layer == null)
             {
-                bodyPartMap.put(renderer, this.layer = new LayerBodyPart());
-                renderer.addLayer(layer);
+                bodyPartMap.put(this.renderer, this.layer = new LayerBodyPart());
+                this.renderer.addLayer(layer);
             }
         }
     }
@@ -718,7 +718,7 @@ public class EntityMorph extends AbstractMorph implements IBodyPartProvider
     @SuppressWarnings({"unchecked", "rawtypes"})
     protected void setupTexture()
     {
-        Class<Render> clazz = (Class<Render>) this.renderer.getClass();
+        Class<RenderLivingBase> clazz = (Class<RenderLivingBase>) this.renderer.getClass();
 
         for (Method method : clazz.getDeclaredMethods())
         {
@@ -755,7 +755,7 @@ public class EntityMorph extends AbstractMorph implements IBodyPartProvider
     @SuppressWarnings("rawtypes")
     protected void setupHands()
     {
-        ModelBase model = ((RenderLivingBase) this.renderer).getMainModel();
+        ModelBase model = this.renderer.getMainModel();
 
         model.setRotationAngles(0, 0, 0, 0, 0, 0.0625F, this.entity);
 
@@ -809,7 +809,7 @@ public class EntityMorph extends AbstractMorph implements IBodyPartProvider
             return;
         }
 
-        ModelBase model = ((RenderLivingBase) this.renderer).getMainModel();
+        ModelBase model = this.renderer.getMainModel();
 
         /* Setup model limbs map */
         this.limbs = new HashMap<String, ModelRenderer>();
@@ -902,22 +902,22 @@ public class EntityMorph extends AbstractMorph implements IBodyPartProvider
     }
 
     @Override
-    public AbstractMorph create(boolean isRemote)
+    public AbstractMorph create()
     {
         return new EntityMorph();
     }
 
     @Override
-    public void copy(AbstractMorph from, boolean isRemote)
+    public void copy(AbstractMorph from)
     {
-        super.copy(from, isRemote);
+        super.copy(from);
 
         if (from instanceof EntityMorph)
         {
             EntityMorph morph = (EntityMorph) from;
 
             this.entityData = morph.entityData == null ? null : morph.entityData.copy();
-            this.parts.copy(morph.parts, isRemote);
+            this.parts.copy(morph.parts);
         }
     }
 

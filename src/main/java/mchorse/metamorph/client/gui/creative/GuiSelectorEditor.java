@@ -12,6 +12,7 @@ import mchorse.mclib.client.gui.utils.Icons;
 import mchorse.mclib.utils.Direction;
 import mchorse.mclib.utils.Timer;
 import mchorse.metamorph.ClientProxy;
+import mchorse.metamorph.api.MorphUtils;
 import mchorse.metamorph.api.morphs.AbstractMorph;
 import mchorse.metamorph.capabilities.render.EntitySelector;
 import mchorse.metamorph.client.EntityModelHandler;
@@ -169,7 +170,7 @@ public class GuiSelectorEditor extends GuiElement
 
 		if (this.selecting && this.selector != null)
 		{
-			this.selector.morph = morph == null ? null : morph.copy(true);
+			this.selector.morph = MorphUtils.copy(morph);
 		}
 
 		this.pick.setEnabled(true);

@@ -62,15 +62,6 @@ public abstract class AbstractMorph
      */
     public MorphSettings settings = MorphSettings.DEFAULT;
 
-    /* Rendering */
-
-    /**
-     * Client morph renderer. It's for {@link EntityPlayer} only, don't try 
-     * using it with other types of entities.
-     */
-    @SideOnly(Side.CLIENT)
-    public Render<? extends Entity> renderer;
-
     /**
      * Get display name of this morph
      */
@@ -249,18 +240,18 @@ public abstract class AbstractMorph
     /**
      * Clone a morph
      */
-    public final AbstractMorph copy(boolean isRemote)
+    public final AbstractMorph copy()
     {
-        AbstractMorph morph = this.create(isRemote);
+        AbstractMorph morph = this.create();
 
-        morph.copy(this, isRemote);
+        morph.copy(this);
 
         return morph;
     }
 
-    public abstract AbstractMorph create(boolean isRemote);
+    public abstract AbstractMorph create();
 
-    public void copy(AbstractMorph from, boolean isRemote)
+    public void copy(AbstractMorph from)
     {
         this.name = from.name;
         this.displayName = from.displayName;
@@ -368,7 +359,7 @@ public abstract class AbstractMorph
      * Check whether the morph can be merged (this should allow 
      * overwriting of a morph instead of completely replacing it)
      */
-    public boolean canMerge(AbstractMorph morph, boolean isRemote)
+    public boolean canMerge(AbstractMorph morph)
     {
         return false;
     }
@@ -376,7 +367,7 @@ public abstract class AbstractMorph
     /**
      * Collect the data from previous morph
      */
-    public void afterMerge(AbstractMorph morph, boolean isRemote)
+    public void afterMerge(AbstractMorph morph)
     {}
 
     /**

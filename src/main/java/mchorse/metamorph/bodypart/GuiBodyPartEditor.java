@@ -11,6 +11,7 @@ import mchorse.mclib.client.gui.framework.elements.list.GuiStringListElement;
 import mchorse.mclib.client.gui.framework.elements.utils.GuiContext;
 import mchorse.mclib.client.gui.framework.elements.utils.GuiInventoryElement;
 import mchorse.mclib.utils.Direction;
+import mchorse.metamorph.api.MorphUtils;
 import mchorse.metamorph.api.morphs.AbstractMorph;
 import mchorse.metamorph.client.gui.editor.GuiAbstractMorph;
 import mchorse.metamorph.client.gui.editor.GuiMorphPanel;
@@ -102,7 +103,7 @@ public class GuiBodyPartEditor extends GuiMorphPanel<AbstractMorph, GuiAbstractM
             {
                 if (part != null)
                 {
-                    part.morph.setDirect(morph == null ? null : morph.copy(true));
+                    part.morph.setDirect(MorphUtils.copy(morph));
                 }
             });
         });
@@ -160,7 +161,7 @@ public class GuiBodyPartEditor extends GuiMorphPanel<AbstractMorph, GuiAbstractM
         }
         else
         {
-            part = part.copy(true);
+            part = part.copy();
         }
 
         part.init();

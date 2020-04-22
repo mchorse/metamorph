@@ -166,15 +166,15 @@ public class PlayerMorph extends EntityMorph
     }
 
     @Override
-    public AbstractMorph create(boolean isRemote)
+    public AbstractMorph create()
     {
         return new PlayerMorph();
     }
 
     @Override
-    public void copy(AbstractMorph from, boolean isRemote)
+    public void copy(AbstractMorph from)
     {
-        super.copy(from, isRemote);
+        super.copy(from);
 
         if (from instanceof PlayerMorph)
         {

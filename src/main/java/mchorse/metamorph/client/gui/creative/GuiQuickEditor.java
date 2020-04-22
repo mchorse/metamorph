@@ -96,7 +96,7 @@ public class GuiQuickEditor extends GuiElement
 
 	protected void setPreset(List<Label<NBTTagCompound>> label)
 	{
-		AbstractMorph morph = this.parent.getSelected().copy(true);
+		AbstractMorph morph = this.parent.getSelected().copy();
 
 		morph.fromNBT(label.get(0).value);
 		this.parent.setSelected(morph);
