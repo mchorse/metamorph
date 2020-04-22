@@ -106,6 +106,7 @@ morph.category.boss=Boss morphs
 morph.category.acquired=Your morphs
 morph.category.hostile=Hostile morphs
 morph.category.modded=Morphs from %s
+morph.category.recent=Recent morphs
 
 # Morph sections and categories
 morph.section.entity=Entity morphs (Metamorph)
