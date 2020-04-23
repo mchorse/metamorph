@@ -11,6 +11,7 @@ import mchorse.metamorph.capabilities.render.EntitySelectorAdapter;
 import mchorse.metamorph.capabilities.render.IModelRenderer;
 import mchorse.metamorph.capabilities.render.ModelRenderer;
 import net.minecraft.client.Minecraft;
+import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraftforge.client.event.RenderLivingEvent;
 import net.minecraftforge.event.entity.living.LivingEvent.LivingUpdateEvent;
@@ -44,6 +45,8 @@ public class EntityModelHandler
      */
     public Gson entitySelector;
 
+    public Entity currentRendering;
+
     public EntityModelHandler()
     {
         /* Create GSON builder */
@@ -61,12 +64,16 @@ public class EntityModelHandler
         EntityLivingBase entity = event.getEntity();
         IModelRenderer cap = ModelRenderer.get(entity);
 
-        if (cap != null)
+        if (cap != null && currentRendering == null)
         {
+            currentRendering = entity;
+
             if (cap.render(entity, event.getX(), event.getY(), event.getZ(), Minecraft.getMinecraft().getRenderPartialTicks()))
             {
                 event.setCanceled(true);
             }
+
+            currentRendering = null;
         }
     }
 
