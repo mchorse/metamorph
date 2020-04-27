@@ -2,6 +2,7 @@ package mchorse.vanilla_pack.editors;
 
 import mchorse.mclib.client.gui.utils.Icons;
 import mchorse.mclib.client.gui.utils.Label;
+import mchorse.mclib.client.gui.utils.keys.IKey;
 import mchorse.metamorph.api.morphs.EntityMorph;
 import mchorse.metamorph.bodypart.GuiBodyPartEditor;
 import mchorse.metamorph.client.gui.editor.GuiAbstractMorph;
@@ -28,7 +29,7 @@ public class GuiEntityMorph extends GuiAbstractMorph<EntityMorph>
 		super(mc);
 
 		this.bodyPart = new GuiBodyPartEditor(mc, this);
-		this.registerKeybind(this.registerPanel(this.bodyPart, "Body parts", Icons.LIMB), "Open body parts", Keyboard.KEY_B);
+		this.registerKeybind(this.registerPanel(this.bodyPart, IKey.lang("metamorph.gui.body_parts.parts"), Icons.LIMB), IKey.lang("metamorph.gui.body_parts.open"), Keyboard.KEY_B);
 	}
 
 	@Override
@@ -152,7 +153,7 @@ public class GuiEntityMorph extends GuiAbstractMorph<EntityMorph>
 
 			entity.setTag("EntityData", tag);
 
-			list.add(new Label<NBTTagCompound>(label, entity));
+			list.add(new Label<NBTTagCompound>(IKey.str(label), entity));
 		}
 		catch (Exception e)
 		{}

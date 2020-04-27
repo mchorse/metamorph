@@ -8,6 +8,7 @@ import mchorse.mclib.client.gui.framework.elements.utils.GuiContext;
 import mchorse.mclib.client.gui.framework.elements.utils.GuiDrawable;
 import mchorse.mclib.client.gui.utils.Area;
 import mchorse.mclib.client.gui.utils.Keybind;
+import mchorse.mclib.client.gui.utils.keys.IKey;
 import mchorse.mclib.utils.Timer;
 import mchorse.metamorph.api.MorphManager;
 import mchorse.metamorph.api.creative.MorphList;
@@ -117,12 +118,12 @@ public class GuiCreativeMorphs extends GuiElement
         this.add(this.screen, new GuiDrawable(this::drawOverlay), this.editor);
 
         /* Morph editor keybinds */
-        this.exitKey = this.keys().register("Exit", Keyboard.KEY_ESCAPE, this::exit);
+        this.exitKey = this.keys().register(IKey.lang("metamorph.gui.creative.exit"), Keyboard.KEY_ESCAPE, this::exit);
 
         this.updateExitKey();
 
-        this.morphs.keys().register("Edit", Keyboard.KEY_E, this::enterEditMorph);
-        this.morphs.keys().register("Quick edit", Keyboard.KEY_Q, this::toggleQuickEdit);
+        this.morphs.keys().register(IKey.lang("metamorph.gui.creative.edit"), Keyboard.KEY_E, this::enterEditMorph);
+        this.morphs.keys().register(IKey.lang("metamorph.gui.creative.quick"), Keyboard.KEY_Q, this::toggleQuickEdit);
     }
 
     private void setupMorphs(MorphList list)

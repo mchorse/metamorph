@@ -7,6 +7,7 @@ import mchorse.mclib.client.gui.framework.elements.buttons.GuiButtonElement;
 import mchorse.mclib.client.gui.framework.elements.buttons.GuiToggleElement;
 import mchorse.mclib.client.gui.framework.elements.input.GuiKeybindElement;
 import mchorse.mclib.client.gui.utils.Elements;
+import mchorse.mclib.client.gui.utils.keys.IKey;
 import mchorse.metamorph.ClientProxy;
 import mchorse.metamorph.api.MorphManager;
 import mchorse.metamorph.api.creative.MorphList;
@@ -25,6 +26,7 @@ import mchorse.metamorph.network.common.survival.PacketRemoveMorph;
 import mchorse.metamorph.network.common.survival.PacketSelectMorph;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.Gui;
+import net.minecraft.client.resources.I18n;
 import net.minecraft.entity.player.EntityPlayer;
 import org.lwjgl.input.Keyboard;
 
@@ -56,18 +58,18 @@ public class GuiSurvivalScreen extends GuiBase
 
         Minecraft mc = this.context.mc;
 
-        this.morph = new GuiButtonElement(mc, "Morph", this::morph);
-        this.remove = new GuiButtonElement(mc, "Remove", this::remove);
+        this.morph = new GuiButtonElement(mc, IKey.lang("metamorph.gui.morph"), this::morph);
+        this.remove = new GuiButtonElement(mc, IKey.lang("metamorph.gui.remove"), this::remove);
         this.keybind = new GuiKeybindElement(mc, this::setKeybind);
-        this.keybind.tooltip("With this field, you can bind a key which will morph you into this particular morph (when you press it either in this menu or in the world)");
-        this.favorite = new GuiToggleElement(mc, "Favorite", this::favorite);
+        this.keybind.tooltip(IKey.lang("metamorph.gui.survival.keybind_tooltip"));
+        this.favorite = new GuiToggleElement(mc, IKey.lang("metamorph.gui.survival.favorite"), this::favorite);
         this.favorite.flex().h(12);
 
         this.sidebar = new GuiScrollElement(mc);
         this.sidebar.flex().relative(this.root).y(20).w(140).hTo(this.root.resizer(), 1F).column(5).stretch().height(20).padding(10);
         this.sidebar.add(Elements.row(mc, 5, 0, 20, this.morph, this.remove), this.keybind, this.favorite);
 
-        this.onlyFavorite = new GuiToggleElement(mc, "Only favorites", this::toggleOnlyFavorite);
+        this.onlyFavorite = new GuiToggleElement(mc, IKey.lang("metamorph.gui.survival.only_favorites"), this::toggleOnlyFavorite);
         this.onlyFavorite.flex().relative(this.root).x(1F).wh(100, 20).anchor(1F, 0F);
 
         this.morphs = new GuiScrollElement(mc);
@@ -77,10 +79,10 @@ public class GuiSurvivalScreen extends GuiBase
         this.root.flex().xy(0.5F, 0.5F).wh(1F, 1F).anchor(0.5F, 0.5F).maxW(500).maxH(300);
         this.root.add(this.morphs, this.sidebar, this.onlyFavorite);
 
-        this.root.keys().register("Morph", Keyboard.KEY_M, () -> this.morph.clickItself(GuiBase.getCurrent()));
-        this.root.keys().register("Remove", Keyboard.KEY_R, () -> this.remove.clickItself(GuiBase.getCurrent()));
-        this.root.keys().register("Favorite", Keyboard.KEY_F, () -> this.favorite.clickItself(GuiBase.getCurrent()));
-        this.root.keys().register("Toggle favorite morphs", Keyboard.KEY_O, () -> this.onlyFavorite.clickItself(GuiBase.getCurrent()));
+        this.root.keys().register(this.morph.label, Keyboard.KEY_M, () -> this.morph.clickItself(GuiBase.getCurrent()));
+        this.root.keys().register(this.remove.label, Keyboard.KEY_R, () -> this.remove.clickItself(GuiBase.getCurrent()));
+        this.root.keys().register(this.favorite.label, Keyboard.KEY_F, () -> this.favorite.clickItself(GuiBase.getCurrent()));
+        this.root.keys().register(IKey.lang("metamorph.gui.survival.toggle_favorites"), Keyboard.KEY_O, () -> this.onlyFavorite.clickItself(GuiBase.getCurrent()));
     }
 
     public GuiSurvivalScreen open()
@@ -293,7 +295,7 @@ public class GuiSurvivalScreen extends GuiBase
         this.root.area.draw(0xaa000000);
         this.sidebar.area.draw(0x88000000);
         Gui.drawRect(this.root.area.x, this.root.area.y, this.root.area.ex(), this.root.area.y + 20, 0xcc000000);
-        this.context.font.drawStringWithShadow("Survival morphs", this.root.area.x + 6, this.root.area.y + 10 - this.context.font.FONT_HEIGHT / 2, 0xffffff);
+        this.context.font.drawStringWithShadow(I18n.format("metamorph.gui.survival.title"), this.root.area.x + 6, this.root.area.y + 10 - this.context.font.FONT_HEIGHT / 2, 0xffffff);
 
         super.drawScreen(mouseX, mouseY, partialTicks);
     }

@@ -8,8 +8,9 @@ import mchorse.mclib.client.gui.framework.elements.input.GuiTextElement;
 import mchorse.mclib.client.gui.framework.elements.list.GuiListElement;
 import mchorse.mclib.client.gui.framework.elements.utils.GuiContext;
 import mchorse.mclib.client.gui.framework.elements.utils.GuiLabel;
+import mchorse.mclib.client.gui.utils.Elements;
 import mchorse.mclib.client.gui.utils.Icons;
-import mchorse.mclib.utils.Direction;
+import mchorse.mclib.client.gui.utils.keys.IKey;
 import mchorse.mclib.utils.Timer;
 import mchorse.metamorph.ClientProxy;
 import mchorse.metamorph.api.MorphUtils;
@@ -43,11 +44,11 @@ public class GuiSelectorEditor extends GuiElement
 		this.selectors.sorting().background(0xff000000).setList(EntityModelHandler.selectors);
 		this.selectors.context(() ->
 		{
-			GuiSimpleContextMenu menu = new GuiSimpleContextMenu(mc).action(Icons.ADD, "Add a selector", this::addSelector);
+			GuiSimpleContextMenu menu = new GuiSimpleContextMenu(mc).action(Icons.ADD, IKey.lang("metamorph.gui.selectors.add"), this::addSelector);
 
 			if (!this.selectors.getCurrent().isEmpty())
 			{
-				menu.action(Icons.REMOVE, "Remove a selector", this::removeSelector);
+				menu.action(Icons.REMOVE, IKey.lang("metamorph.gui.selectors.remove"), this::removeSelector);
 			}
 
 			return menu;
@@ -66,13 +67,13 @@ public class GuiSelectorEditor extends GuiElement
 			this.selector.updateTime();
 			this.timer.mark();
 		});
-		this.active = new GuiToggleElement(mc, "Enabled", (toggle) ->
+		this.active = new GuiToggleElement(mc, IKey.lang("metamorph.gui.selectors.enabled"), (toggle) ->
 		{
 			this.selector.enabled = toggle.isToggled();
 			this.selector.updateTime();
 			this.timer.mark();
 		});
-		this.pick = new GuiButtonElement(mc, "Pick morph", (button) ->
+		this.pick = new GuiButtonElement(mc, IKey.lang("metamorph.gui.body_parts.pick"), (button) ->
 		{
 			this.selecting = true;
 			button.setEnabled(false);
@@ -81,11 +82,11 @@ public class GuiSelectorEditor extends GuiElement
 		this.form.flex().relative(this).w(1F).column(5).vertical().stretch().height(20).padding(10);
 		this.selectors.flex().relative(this.form).y(1F).w(1F).hTo(this.flex(), 1F);
 
-		GuiLabel title = GuiLabel.create("Entity Selectors", this.font.FONT_HEIGHT);
-		GuiLabel name = GuiLabel.create("Name", 16).anchor(0, 1);
-		GuiLabel type = GuiLabel.create("Type", 16).anchor(0, 1);
+		GuiLabel title = Elements.label(IKey.lang("metamorph.gui.selectors.title"), this.font.FONT_HEIGHT);
+		GuiLabel name = Elements.label(IKey.lang("metamorph.gui.selectors.name"), 16).anchor(0, 1);
+		GuiLabel type = Elements.label(IKey.lang("metamorph.gui.selectors.type"), 16).anchor(0, 1);
 
-		this.form.add(title.tooltip("With this feature, you can add morphs to entities by specific name or their type...", Direction.BOTTOM), name, this.name, type, this.type, this.active,this.pick);
+		this.form.add(title.tooltip(IKey.lang("metamorph.gui.selectors.tooltip")), name, this.name, type, this.type, this.active,this.pick);
 		this.markContainer().add(this.form, this.selectors);
 
 		this.selectors.setIndex(0);
@@ -189,7 +190,7 @@ public class GuiSelectorEditor extends GuiElement
 		}
 
 		@Override
-		protected String elementToString(EntitySelector element, int i, int x, int y, boolean hover, boolean selected)
+		protected String elementToString(EntitySelector element)
 		{
 			return element.name + " (" + element.type + ") - " + (element.morph == null ? "null" : element.morph.getDisplayName());
 		}

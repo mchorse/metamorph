@@ -1,6 +1,7 @@
 package mchorse.vanilla_pack.editors;
 
 import mchorse.mclib.client.gui.utils.Label;
+import mchorse.mclib.client.gui.utils.keys.IKey;
 import mchorse.metamorph.api.morphs.AbstractMorph;
 import mchorse.metamorph.client.gui.editor.GuiAbstractMorph;
 import mchorse.metamorph.util.MMIcons;
@@ -25,7 +26,7 @@ public class GuiBlockMorph extends GuiAbstractMorph<BlockMorph>
 		super(mc);
 
 		this.defaultPanel = this.block = new GuiItemStackPanel(mc, this);
-		this.registerPanel(this.block, I18n.format("metamorph.gui.panels.block"), MMIcons.BLOCK);
+		this.registerPanel(this.block, IKey.lang("metamorph.gui.panels.block"), MMIcons.BLOCK);
 	}
 
 	@Override

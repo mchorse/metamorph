@@ -1,5 +1,6 @@
 package mchorse.vanilla_pack.editors;
 
+import mchorse.mclib.client.gui.utils.keys.IKey;
 import mchorse.metamorph.api.morphs.AbstractMorph;
 import mchorse.metamorph.client.gui.editor.GuiAbstractMorph;
 import mchorse.metamorph.util.MMIcons;
@@ -20,7 +21,7 @@ public class GuiPlayerMorph extends GuiAbstractMorph<PlayerMorph>
         super(mc);
 
         this.defaultPanel = this.username = new GuiUsernamePanel(mc, this);
-        this.registerPanel(this.username, I18n.format("metamorph.gui.panels.username"), MMIcons.USER);
+        this.registerPanel(this.username, IKey.lang("metamorph.gui.panels.username"), MMIcons.USER);
     }
 
     @Override

@@ -10,6 +10,7 @@ import mchorse.mclib.client.gui.framework.elements.input.GuiTrackpadElement;
 import mchorse.mclib.client.gui.framework.elements.list.GuiStringListElement;
 import mchorse.mclib.client.gui.framework.elements.utils.GuiContext;
 import mchorse.mclib.client.gui.framework.elements.utils.GuiInventoryElement;
+import mchorse.mclib.client.gui.utils.keys.IKey;
 import mchorse.mclib.utils.Direction;
 import mchorse.metamorph.api.MorphUtils;
 import mchorse.metamorph.api.morphs.AbstractMorph;
@@ -70,15 +71,15 @@ public class GuiBodyPartEditor extends GuiMorphPanel<AbstractMorph, GuiAbstractM
         this.ry = new GuiTrackpadElement(mc, (value) -> this.part.rotate.y = value);
         this.rz = new GuiTrackpadElement(mc, (value) -> this.part.rotate.z = value);
 
-        this.tx.tooltip(I18n.format("metamorph.gui.x"), Direction.TOP);
-        this.ty.tooltip(I18n.format("metamorph.gui.y"), Direction.TOP);
-        this.tz.tooltip(I18n.format("metamorph.gui.z"), Direction.TOP);
-        this.sx.tooltip(I18n.format("metamorph.gui.x"), Direction.TOP);
-        this.sy.tooltip(I18n.format("metamorph.gui.y"), Direction.TOP);
-        this.sz.tooltip(I18n.format("metamorph.gui.z"), Direction.TOP);
-        this.rx.tooltip(I18n.format("metamorph.gui.x"), Direction.TOP);
-        this.ry.tooltip(I18n.format("metamorph.gui.y"), Direction.TOP);
-        this.rz.tooltip(I18n.format("metamorph.gui.z"), Direction.TOP);
+        this.tx.tooltip(IKey.lang("metamorph.gui.body_parts.x"), Direction.TOP);
+        this.ty.tooltip(IKey.lang("metamorph.gui.body_parts.y"), Direction.TOP);
+        this.tz.tooltip(IKey.lang("metamorph.gui.body_parts.z"), Direction.TOP);
+        this.sx.tooltip(IKey.lang("metamorph.gui.body_parts.x"), Direction.TOP);
+        this.sy.tooltip(IKey.lang("metamorph.gui.body_parts.y"), Direction.TOP);
+        this.sz.tooltip(IKey.lang("metamorph.gui.body_parts.z"), Direction.TOP);
+        this.rx.tooltip(IKey.lang("metamorph.gui.body_parts.x"), Direction.TOP);
+        this.ry.tooltip(IKey.lang("metamorph.gui.body_parts.y"), Direction.TOP);
+        this.rz.tooltip(IKey.lang("metamorph.gui.body_parts.z"), Direction.TOP);
 
         this.tx.flex().set(0, 35, 60, 20).relative(this).x(0.5F, -95).y(1, -80);
         this.ty.flex().set(0, 25, 60, 20).relative(this.tx);
@@ -95,7 +96,7 @@ public class GuiBodyPartEditor extends GuiMorphPanel<AbstractMorph, GuiAbstractM
         this.bodyParts = new GuiBodyPartListElement(mc, (part) -> this.setPart(part.isEmpty() ? null : part.get(0)));
         this.bodyParts.background();
 
-        this.pickMorph = new GuiButtonElement(mc, I18n.format("metamorph.gui.pick"), (b) ->
+        this.pickMorph = new GuiButtonElement(mc, IKey.lang("metamorph.gui.body_parts.pick"), (b) ->
         {
             BodyPart part = this.part;
 
@@ -108,12 +109,12 @@ public class GuiBodyPartEditor extends GuiMorphPanel<AbstractMorph, GuiAbstractM
             });
         });
 
-        this.addPart = new GuiButtonElement(mc, I18n.format("metamorph.gui.add"), this::addPart);
-        this.removePart = new GuiButtonElement(mc, I18n.format("metamorph.gui.remove"), this::removePart);
-        this.useTarget = new GuiToggleElement(mc, I18n.format("metamorph.gui.use_target"), false, this::toggleTarget);
+        this.addPart = new GuiButtonElement(mc, IKey.lang("metamorph.gui.add"), this::addPart);
+        this.removePart = new GuiButtonElement(mc, IKey.lang("metamorph.gui.remove"), this::removePart);
+        this.useTarget = new GuiToggleElement(mc, IKey.lang("metamorph.gui.body_parts.use_target"), false, this::toggleTarget);
 
-        this.limbs.flex().relative(this).set(0, 80, 105, 90).x(1, -115).h(1, -106);
-        this.pickMorph.flex().relative(this).set(0, 40, 105, 20).x(1, -115);
+        this.limbs.flex().relative(this).set(0, 50, 105, 90).x(1, -115).h(1, -80);
+        this.pickMorph.flex().relative(this).set(0, 10, 105, 20).x(1, -115);
         this.addPart.flex().relative(this).set(10, 10, 50, 20);
         this.removePart.flex().relative(this.addPart).set(55, 0, 50, 20);
         this.bodyParts.flex().relative(this).set(10, 50, 105, 0).h(1, -55);
@@ -139,7 +140,7 @@ public class GuiBodyPartEditor extends GuiMorphPanel<AbstractMorph, GuiAbstractM
 
         this.add(this.stacks, this.inventory);
 
-        this.pickMorph.keys().register("Pick morph", Keyboard.KEY_P, () -> this.pickMorph.clickItself(GuiBase.getCurrent()));
+        this.pickMorph.keys().register(this.pickMorph.label, Keyboard.KEY_P, () -> this.pickMorph.clickItself(GuiBase.getCurrent()));
     }
 
     protected void addPart(GuiButtonElement b)
@@ -299,16 +300,16 @@ public class GuiBodyPartEditor extends GuiMorphPanel<AbstractMorph, GuiAbstractM
     @Override
     public void draw(GuiContext context)
     {
-        this.font.drawStringWithShadow(I18n.format("metamorph.gui.body_parts"), this.bodyParts.area.x, this.bodyParts.area.y - 12, 0xffffff);
+        this.font.drawStringWithShadow(I18n.format("metamorph.gui.body_parts.parts"), this.bodyParts.area.x, this.bodyParts.area.y - 12, 0xffffff);
 
         if (this.elements.isVisible())
         {
             Gui.drawRect(this.limbs.area.x, this.limbs.area.y, this.limbs.area.ex(), this.limbs.area.ey(), 0x88000000);
-            this.font.drawStringWithShadow(I18n.format("metamorph.gui.limbs"), this.limbs.area.x, this.limbs.area.y - 12, 0xffffff);
+            this.font.drawStringWithShadow(I18n.format("metamorph.gui.body_parts.limbs"), this.limbs.area.x, this.limbs.area.y - 12, 0xffffff);
 
-            this.font.drawStringWithShadow(I18n.format("metamorph.gui.translate"), this.tx.area.x, this.tx.area.y - 12, 0xffffff);
-            this.font.drawStringWithShadow(I18n.format("metamorph.gui.scale"), this.sx.area.x, this.sx.area.y - 12, 0xffffff);
-            this.font.drawStringWithShadow(I18n.format("metamorph.gui.rotate"), this.rx.area.x, this.rx.area.y - 12, 0xffffff);
+            this.font.drawStringWithShadow(I18n.format("metamorph.gui.body_parts.translate"), this.tx.area.x, this.tx.area.y - 12, 0xffffff);
+            this.font.drawStringWithShadow(I18n.format("metamorph.gui.body_parts.scale"), this.sx.area.x, this.sx.area.y - 12, 0xffffff);
+            this.font.drawStringWithShadow(I18n.format("metamorph.gui.body_parts.rotate"), this.rx.area.x, this.rx.area.y - 12, 0xffffff);
         }
 
         super.draw(context);

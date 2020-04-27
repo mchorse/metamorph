@@ -6,6 +6,7 @@ import mchorse.mclib.client.gui.framework.elements.context.GuiSimpleContextMenu;
 import mchorse.mclib.client.gui.framework.elements.modals.GuiPromptModal;
 import mchorse.mclib.client.gui.framework.elements.utils.GuiContext;
 import mchorse.mclib.client.gui.utils.Icons;
+import mchorse.mclib.client.gui.utils.keys.IKey;
 import mchorse.metamorph.api.creative.categories.RecentCategory;
 import mchorse.metamorph.api.creative.sections.MorphSection;
 import mchorse.metamorph.api.creative.sections.UserSection;
@@ -33,20 +34,20 @@ public class GuiUserSection extends GuiMorphSection
 			return contextMenu;
 		}
 
-		contextMenu.action(Icons.ADD, "Add a new category", () -> section.add(new UserCategory(this.section, "User category")));
+		contextMenu.action(Icons.ADD, IKey.lang("metamorph.gui.creative.context.add_category"), () -> section.add(new UserCategory(this.section, "User category")));
 
 		if (this.hoverCategory instanceof UserCategory)
 		{
 			MorphCategory category = this.hoverCategory;
 
-			contextMenu.action(Icons.EDIT, "Rename category", () -> this.renameCategory(category));
-			contextMenu.action(Icons.REMOVE, "Remove category", () -> this.section.remove(category));
+			contextMenu.action(Icons.EDIT, IKey.lang("metamorph.gui.creative.context.rename_category"), () -> this.renameCategory(category));
+			contextMenu.action(Icons.REMOVE, IKey.lang("metamorph.gui.creative.context.remove_category"), () -> this.section.remove(category));
 		}
 		else if (this.hoverCategory instanceof RecentCategory)
 		{
 			MorphCategory category = this.hoverCategory;
 
-			contextMenu.action(Icons.REMOVE, "Clear", () ->
+			contextMenu.action(Icons.REMOVE, IKey.lang("metamorph.gui.creative.context.clear_category"), () ->
 			{
 				category.clear();
 				this.parent.setSelected(null);
@@ -58,7 +59,7 @@ public class GuiUserSection extends GuiMorphSection
 			MorphCategory category = this.hoverCategory;
 			AbstractMorph morph = this.hoverMorph;
 
-			contextMenu.action(Icons.CLOSE, "Remove morph", () -> category.remove(morph));
+			contextMenu.action(Icons.CLOSE, IKey.lang("metamorph.gui.creative.context.remove_morph"), () -> category.remove(morph));
 		}
 
 		return contextMenu;
@@ -74,7 +75,7 @@ public class GuiUserSection extends GuiMorphSection
 			}
 		}
 
-		GuiPromptModal modal = new GuiPromptModal(this.mc, "Give a new name to given category...", (string) ->
+		GuiPromptModal modal = new GuiPromptModal(this.mc, IKey.lang("metamorph.gui.creative.context.rename_category_tooltip"), (string) ->
 		{
 			category.title = string;
 			((UserSection) this.section).save();

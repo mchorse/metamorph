@@ -2,6 +2,7 @@ package mchorse.metamorph.client.gui.creative;
 
 import mchorse.mclib.client.gui.framework.elements.buttons.GuiButtonElement;
 import mchorse.mclib.client.gui.framework.elements.utils.GuiContext;
+import mchorse.mclib.client.gui.utils.keys.IKey;
 import mchorse.metamorph.api.morphs.AbstractMorph;
 import mchorse.metamorph.client.gui.editor.GuiAbstractMorph;
 import mchorse.metamorph.network.Dispatcher;
@@ -25,7 +26,7 @@ public class GuiCreativeMorphsMenu extends GuiCreativeMorphs
     {
         super(mc, callback);
 
-        this.acquire = new GuiButtonElement(mc, I18n.format("metamorph.gui.acquire"), (b) ->
+        this.acquire = new GuiButtonElement(mc, IKey.lang("metamorph.gui.acquire"), (b) ->
         {
             AbstractMorph cell = this.getSelected();
 
@@ -35,7 +36,7 @@ public class GuiCreativeMorphsMenu extends GuiCreativeMorphs
             }
         });
 
-        this.close = new GuiButtonElement(mc, "X", (b) ->
+        this.close = new GuiButtonElement(mc, IKey.str("X"), (b) ->
         {
             this.finish();
             this.removeFromParent();

@@ -9,6 +9,7 @@ import mchorse.mclib.client.gui.framework.elements.utils.GuiContext;
 import mchorse.mclib.client.gui.framework.elements.utils.GuiDraw;
 import mchorse.mclib.client.gui.utils.Area;
 import mchorse.mclib.client.gui.utils.Icons;
+import mchorse.mclib.client.gui.utils.keys.IKey;
 import mchorse.metamorph.api.creative.categories.MorphCategory;
 import mchorse.metamorph.api.creative.sections.MorphSection;
 import mchorse.metamorph.api.creative.categories.UserCategory;
@@ -241,10 +242,10 @@ public class GuiMorphSection extends GuiElement
 		{
 			if (this.parent.user.global.size() > 0 && !(this.hoverCategory instanceof UserCategory))
 			{
-				contextMenu.action(Icons.UPLOAD, "Add to global morphs...", () -> this.showGlobalMorphs(morph));
+				contextMenu.action(Icons.UPLOAD, IKey.lang("metamorph.gui.creative.context.add_global"), () -> this.showGlobalMorphs(morph));
 			}
 
-			contextMenu.action(Icons.EDIT, "Edit morph...", () ->
+			contextMenu.action(Icons.EDIT, IKey.lang("metamorph.gui.creative.context.edit"), () ->
 			{
 				this.parent.enterEditMorph(morph);
 			});
@@ -259,7 +260,7 @@ public class GuiMorphSection extends GuiElement
 
 		for (UserCategory category : this.parent.user.global)
 		{
-			contextMenu.action(category.getTitle(), () ->
+			contextMenu.action(IKey.str(category.getTitle()), () ->
 			{
 				AbstractMorph added = morph.copy();
 

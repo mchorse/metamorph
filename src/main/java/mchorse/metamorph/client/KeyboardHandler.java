@@ -44,7 +44,7 @@ public class KeyboardHandler
         keyCreativeMenu = new KeyBinding("key.metamorph.creative_menu", Keyboard.KEY_B, category);
         keySurvivalMenu = new KeyBinding("key.metamorph.survival_menu", Keyboard.KEY_X, category);
 
-        keyDemorph = new KeyBinding("key.metamorph.morph.demorph", Keyboard.KEY_PERIOD, category);
+        keyDemorph = new KeyBinding("key.metamorph.demorph", Keyboard.KEY_PERIOD, category);
 
         /* Register them in the client registry */
         ClientRegistry.registerKeyBinding(keyAction);

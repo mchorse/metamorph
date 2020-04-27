@@ -4,6 +4,7 @@ import mchorse.mclib.client.gui.framework.GuiBase;
 import mchorse.mclib.client.gui.framework.elements.buttons.GuiButtonElement;
 import mchorse.mclib.client.gui.framework.elements.buttons.GuiIconElement;
 import mchorse.mclib.client.gui.utils.Icons;
+import mchorse.mclib.client.gui.utils.keys.IKey;
 import mchorse.mclib.utils.Direction;
 import mchorse.metamorph.api.morphs.AbstractMorph;
 import mchorse.metamorph.capabilities.morphing.Morphing;
@@ -48,10 +49,10 @@ public class GuiCreativeScreen extends GuiBase
         this.selectors.setVisible(false);
 
         this.icon = new GuiIconElement(mc, MMIcons.PROPERTIES, this::toggleEntitySelector);
-        this.icon.tooltip("Entity selectors", Direction.BOTTOM);
+        this.icon.tooltip(IKey.lang("metamorph.gui.selectors.title"));
         this.copy = new GuiIconElement(mc, Icons.COPY, this::copyMorphCommand);
-        this.copy.tooltip("Copy /morph command for selected morph", Direction.BOTTOM);
-        this.morph = new GuiButtonElement(mc, I18n.format("metamorph.gui.morph"), (b) ->
+        this.copy.tooltip(IKey.lang("metamorph.gui.creative.command"));
+        this.morph = new GuiButtonElement(mc, IKey.lang("metamorph.gui.morph"), (b) ->
         {
             this.pane.finish();
 
@@ -63,7 +64,7 @@ public class GuiCreativeScreen extends GuiBase
                 this.closeScreen();
             }
         });
-        this.acquire = new GuiButtonElement(mc, I18n.format("metamorph.gui.acquire"), (b) ->
+        this.acquire = new GuiButtonElement(mc, IKey.lang("metamorph.gui.acquire"), (b) ->
         {
             this.pane.finish();
 
@@ -74,7 +75,7 @@ public class GuiCreativeScreen extends GuiBase
                 Dispatcher.sendToServer(new PacketAcquireMorph(morph));
             }
         });
-        this.close = new GuiButtonElement(mc, I18n.format("metamorph.gui.close"), (b) -> this.closeScreen());
+        this.close = new GuiButtonElement(mc, IKey.lang("metamorph.gui.close"), (b) -> this.closeScreen());
         this.pane = new GuiCreativeMorphs(mc, this::setMorph);
         this.pane.setSelected(Morphing.get(mc.player).getCurrentMorph());
 
@@ -88,7 +89,7 @@ public class GuiCreativeScreen extends GuiBase
 
         this.root.add(this.pane, this.morph, this.acquire, this.close, this.selectors, this.icon, this.copy);
 
-        this.root.keys().register("Entity Selectors", Keyboard.KEY_S, () -> this.icon.clickItself(this.context));
+        this.root.keys().register(this.icon.tooltip.label, Keyboard.KEY_S, () -> this.icon.clickItself(this.context));
     }
 
     private void copyMorphCommand(GuiIconElement button)

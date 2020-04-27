@@ -6,16 +6,16 @@ import mchorse.mclib.client.gui.framework.elements.GuiPanelBase;
 import mchorse.mclib.client.gui.framework.elements.buttons.GuiIconElement;
 import mchorse.mclib.client.gui.framework.elements.input.GuiTextElement;
 import mchorse.mclib.client.gui.framework.elements.utils.GuiContext;
-import mchorse.mclib.client.gui.framework.elements.utils.GuiLabel;
+import mchorse.mclib.client.gui.utils.Elements;
 import mchorse.mclib.client.gui.utils.Icons;
 import mchorse.mclib.client.gui.utils.Label;
+import mchorse.mclib.client.gui.utils.keys.IKey;
 import mchorse.metamorph.api.morphs.AbstractMorph;
 import mchorse.metamorph.client.gui.creative.GuiCreativeMorphs;
 import mchorse.metamorph.client.gui.creative.GuiMorphRenderer;
 import mchorse.metamorph.util.MMIcons;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.Gui;
-import net.minecraft.client.resources.I18n;
 import net.minecraft.nbt.JsonToNBT;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraftforge.fml.relauncher.Side;
@@ -49,7 +49,7 @@ public class GuiAbstractMorph<T extends AbstractMorph> extends GuiPanelBase<GuiM
         this.renderer.flex().relative(this).wh(1F, 1F);
         this.defaultPanel = this.settings = new GuiSettingsPanel(mc, this);
 
-        this.registerPanel(this.settings, I18n.format("metamorph.gui.panels.settings"), MMIcons.PROPERTIES);
+        this.registerPanel(this.settings, IKey.lang("metamorph.gui.editor.settings"), MMIcons.PROPERTIES);
         this.prepend(this.renderer);
         this.add(this.finish);
     }
@@ -127,7 +127,7 @@ public class GuiAbstractMorph<T extends AbstractMorph> extends GuiPanelBase<GuiM
     {
         try
         {
-            list.add(new Label<NBTTagCompound>(label, JsonToNBT.getTagFromJson(json)));
+            list.add(new Label<NBTTagCompound>(IKey.str(label), JsonToNBT.getTagFromJson(json)));
         }
         catch (Exception e)
         {}
@@ -146,7 +146,7 @@ public class GuiAbstractMorph<T extends AbstractMorph> extends GuiPanelBase<GuiM
         });
 
         displayName.setText(morph.displayName);
-        elements.add(GuiLabel.create("Display name", this.font.FONT_HEIGHT));
+        elements.add(Elements.label(IKey.lang("metamorph.gui.editor.display_name"), this.font.FONT_HEIGHT));
         elements.add(displayName);
 
         return elements;

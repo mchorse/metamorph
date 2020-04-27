@@ -1,5 +1,6 @@
 package mchorse.vanilla_pack.editors;
 
+import mchorse.mclib.client.gui.utils.keys.IKey;
 import mchorse.metamorph.api.morphs.AbstractMorph;
 import mchorse.metamorph.client.gui.editor.GuiAbstractMorph;
 import mchorse.metamorph.util.MMIcons;
@@ -17,7 +18,7 @@ public class GuiLabelMorph extends GuiAbstractMorph<LabelMorph>
 		super(mc);
 
 		this.defaultPanel = this.label = new GuiLabelPanel(mc, this);
-		this.registerPanel(this.label, I18n.format("metamorph.gui.panels.label"), MMIcons.LABEL);
+		this.registerPanel(this.label, IKey.lang("metamorph.gui.label.label"), MMIcons.LABEL);
 	}
 
 	@Override

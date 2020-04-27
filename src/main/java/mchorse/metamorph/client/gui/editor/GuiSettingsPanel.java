@@ -7,6 +7,8 @@ import mchorse.mclib.client.gui.framework.elements.input.GuiTrackpadElement;
 import mchorse.mclib.client.gui.framework.elements.list.GuiStringListElement;
 import mchorse.mclib.client.gui.framework.elements.utils.GuiContext;
 import mchorse.mclib.client.gui.framework.elements.utils.GuiLabel;
+import mchorse.mclib.client.gui.utils.Elements;
+import mchorse.mclib.client.gui.utils.keys.IKey;
 import mchorse.metamorph.api.MorphManager;
 import mchorse.metamorph.api.MorphSettings;
 import mchorse.metamorph.api.abilities.IAbility;
@@ -42,7 +44,7 @@ public class GuiSettingsPanel extends GuiMorphPanel<AbstractMorph, GuiAbstractMo
 		this.element.scroll.opposite = true;
 		this.element.flex().relative(this).w(120).h(1F).column(5).vertical().stretch().scroll().height(20).padding(10);
 
-		this.reset = new GuiButtonElement(mc, "Reset", (button) ->
+		this.reset = new GuiButtonElement(mc, IKey.lang("metamorph.gui.editor.reset"), (button) ->
 		{
 			this.morph.settings = MorphSettings.DEFAULT;
 
@@ -101,12 +103,12 @@ public class GuiSettingsPanel extends GuiMorphPanel<AbstractMorph, GuiAbstractMo
 		this.data.flex().relative(this).relative(this.element).x(1F, 10).y(1, -30).wTo(this.flex(), 1F, -10).h(20);
 
 		this.element.add(this.reset);
-		this.element.add(GuiLabel.create("Display name", 16).anchor(0, 1F), this.displayName);
-		this.element.add(GuiLabel.create("Health", 16).anchor(0, 1F), this.health);
-		this.element.add(GuiLabel.create("Speed", 16).anchor(0, 1F), this.speed);
-		this.element.add(GuiLabel.create("Abilities", 16).anchor(0, 1F), this.abilities);
-		this.element.add(GuiLabel.create("Attack", 16).anchor(0, 1F), this.attack);
-		this.element.add(GuiLabel.create("Action", 16).anchor(0, 1F), this.action);
+		this.element.add(Elements.label(IKey.lang("metamorph.gui.editor.display_name"), 16).anchor(0, 1F), this.displayName);
+		this.element.add(Elements.label(IKey.lang("metamorph.gui.editor.health"), 16).anchor(0, 1F), this.health);
+		this.element.add(Elements.label(IKey.lang("metamorph.gui.editor.speed"), 16).anchor(0, 1F), this.speed);
+		this.element.add(Elements.label(IKey.lang("metamorph.gui.editor.abilities"), 16).anchor(0, 1F), this.abilities);
+		this.element.add(Elements.label(IKey.lang("metamorph.gui.editor.attack"), 16).anchor(0, 1F), this.attack);
+		this.element.add(Elements.label(IKey.lang("metamorph.gui.editor.action"), 16).anchor(0, 1F), this.action);
 
 		this.add(this.element, this.data);
 	}

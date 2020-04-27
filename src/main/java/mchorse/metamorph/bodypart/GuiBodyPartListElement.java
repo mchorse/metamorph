@@ -19,8 +19,8 @@ public class GuiBodyPartListElement extends GuiListElement<BodyPart>
     }
 
     @Override
-    protected String elementToString(BodyPart element, int i, int x, int y, boolean hover, boolean selected)
+    protected String elementToString(BodyPart element)
     {
-        return i + (!element.limb.isEmpty() ? " - " + element.limb : "");
+        return (!element.limb.isEmpty() ? " - " + element.limb : "");
     }
 }

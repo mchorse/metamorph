@@ -7,6 +7,7 @@ import mchorse.mclib.client.gui.framework.elements.list.GuiLabelListElement;
 import mchorse.mclib.client.gui.framework.elements.utils.GuiContext;
 import mchorse.mclib.client.gui.utils.Elements;
 import mchorse.mclib.client.gui.utils.Label;
+import mchorse.mclib.client.gui.utils.keys.IKey;
 import mchorse.metamorph.api.morphs.AbstractMorph;
 import mchorse.metamorph.client.gui.editor.GuiAbstractMorph;
 import net.minecraft.client.Minecraft;
@@ -35,8 +36,8 @@ public class GuiQuickEditor extends GuiElement
 
 		this.parent = parent;
 
-		this.presetsButton = new GuiButtonElement(mc, "Presets", this::toggleVisibility);
-		this.quickAccessButton = new GuiButtonElement(mc, "Quick edit", this::toggleVisibility);
+		this.presetsButton = new GuiButtonElement(mc, IKey.lang("metamorph.gui.creative.presets"), this::toggleVisibility);
+		this.quickAccessButton = new GuiButtonElement(mc, IKey.lang("metamorph.gui.creative.quick"), this::toggleVisibility);
 
 		this.presets = new GuiLabelListElement<NBTTagCompound>(mc, this::setPreset);
 		this.presets.flex().relative(this).set(10, 30, 0, 0).w(1F, -20).h(1F, -40);
