@@ -18,6 +18,11 @@ public class GuiMorphRenderer extends GuiModelRenderer
 	@Override
 	protected void drawUserModel(GuiContext context)
 	{
+		if (this.morph == null)
+		{
+			return;
+		}
+
 		EntityPlayer player = this.mc.player;
 
 		float yaw = player.rotationYaw;
