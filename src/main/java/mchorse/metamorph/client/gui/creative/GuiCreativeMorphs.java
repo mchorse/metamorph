@@ -85,11 +85,6 @@ public class GuiCreativeMorphs extends GuiElement
     {
         super(mc);
 
-        MorphList list = MorphManager.INSTANCE.list;
-
-        list.update(mc.world);
-        MinecraftForge.EVENT_BUS.post(new ReloadMorphs());
-
         this.callback = callback;
         this.editor = new GuiDelegateElement<GuiAbstractMorph>(mc, null);
         this.editor.flex().relative(this).wh(1F, 1F);
@@ -105,7 +100,7 @@ public class GuiCreativeMorphs extends GuiElement
         /* Create morph panels */
         this.morphs = new GuiScrollElement(mc);
         this.morphs.flex().relative(this).wh(1F, 1F).column(0).vertical().stretch().scroll();
-        this.setupMorphs(list);
+        this.reload();
 
         /* Initiate bottom bar */
         this.bar = new GuiElement(mc);
@@ -126,8 +121,16 @@ public class GuiCreativeMorphs extends GuiElement
         this.morphs.keys().register(IKey.lang("metamorph.gui.creative.quick"), Keyboard.KEY_Q, this::toggleQuickEdit);
     }
 
-    private void setupMorphs(MorphList list)
+    public void reload()
     {
+        MorphList list = MorphManager.INSTANCE.list;
+
+        list.update(this.mc.world);
+        MinecraftForge.EVENT_BUS.post(new ReloadMorphs());
+
+        this.sections.clear();
+        this.morphs.clear();
+
         for (MorphSection section : list.sections)
         {
             GuiMorphSection element = section.getGUI(this.mc, this, this::pickMorph);
