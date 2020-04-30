@@ -171,7 +171,7 @@ public class GuiSelectorEditor extends GuiElement
 
 		if (this.selecting && this.selector != null)
 		{
-			this.selector.morph = MorphUtils.copy(morph);
+			this.selector.morph = morph == null ? null : morph.toNBT();
 		}
 
 		this.pick.setEnabled(true);
@@ -192,7 +192,7 @@ public class GuiSelectorEditor extends GuiElement
 		@Override
 		protected String elementToString(EntitySelector element)
 		{
-			return element.name + " (" + element.type + ") - " + (element.morph == null ? "null" : element.morph.getDisplayName());
+			return element.name + " (" + element.type + ") - " + (element.morph == null ? "null" : element.morph.getString("Name"));
 		}
 	}
 }

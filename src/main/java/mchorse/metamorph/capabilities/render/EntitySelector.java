@@ -1,9 +1,9 @@
 package mchorse.metamorph.capabilities.render;
 
-import mchorse.metamorph.api.morphs.AbstractMorph;
 import net.minecraft.entity.EntityList;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.ResourceLocation;
 
 public class EntitySelector
@@ -11,7 +11,7 @@ public class EntitySelector
     public boolean enabled = true;
     public String name = "";
     public String type = "";
-    public AbstractMorph morph;
+    public NBTTagCompound morph;
 
     public long time = System.currentTimeMillis();
 

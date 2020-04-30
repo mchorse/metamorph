@@ -1,5 +1,6 @@
 package mchorse.metamorph.capabilities.render;
 
+import mchorse.metamorph.api.MorphManager;
 import mchorse.metamorph.api.MorphUtils;
 import mchorse.metamorph.api.morphs.AbstractMorph;
 import mchorse.metamorph.client.EntityModelHandler;
@@ -55,7 +56,7 @@ public class ModelRenderer implements IModelRenderer
                 {
                     this.selector = selector;
                     this.selectorTime = selector.time;
-                    this.morph = MorphUtils.copy(this.selector.morph);
+                    this.morph = MorphManager.INSTANCE.morphFromNBT(this.selector.morph);
 
                     break;
                 }

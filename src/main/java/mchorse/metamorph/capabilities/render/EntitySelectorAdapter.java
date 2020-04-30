@@ -5,10 +5,8 @@ import com.google.gson.JsonDeserializer;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParseException;
-import com.google.gson.JsonPrimitive;
 import com.google.gson.JsonSerializationContext;
 import com.google.gson.JsonSerializer;
-import mchorse.metamorph.api.MorphManager;
 import net.minecraft.nbt.JsonToNBT;
 import net.minecraft.nbt.NBTTagCompound;
 
@@ -49,9 +47,7 @@ public class EntitySelectorAdapter implements JsonDeserializer<EntitySelector>, 
         {
             try
             {
-                NBTTagCompound tag = JsonToNBT.getTagFromJson(object.get("morph").getAsString());
-
-                selector.morph = MorphManager.INSTANCE.morphFromNBT(tag);
+                selector.morph = JsonToNBT.getTagFromJson(object.get("morph").getAsString());
             }
             catch (Exception e)
             {}
@@ -71,9 +67,7 @@ public class EntitySelectorAdapter implements JsonDeserializer<EntitySelector>, 
 
         if (src.morph != null)
         {
-            NBTTagCompound tag = src.morph.toNBT();
-
-            object.addProperty("morph", tag.toString());
+            object.addProperty("morph", src.morph.toString());
         }
 
         return object;

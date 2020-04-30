@@ -192,6 +192,11 @@ public class MorphManager
      */
     public AbstractMorph morphFromNBT(NBTTagCompound tag)
     {
+        if (tag == null)
+        {
+            return null;
+        }
+
         if (tag.hasKey("Name"))
         {
             tag.setString("Name", this.remap(tag.getString("Name")));
