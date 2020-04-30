@@ -18,6 +18,7 @@ public class MorphSection
 {
 	public String title;
 	public List<MorphCategory> categories = new ArrayList<MorphCategory>();
+	public boolean hidden;
 
 	public MorphSection(String title)
 	{

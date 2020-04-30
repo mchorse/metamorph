@@ -32,7 +32,6 @@ public class GuiMorphSection extends GuiElement
 	public MorphSection section;
 	public Consumer<GuiMorphSection> callback;
 
-	public boolean toggled = true;
 	public int cellWidth = 55;
 	public int cellHeight = 70;
 	public boolean last;
@@ -145,7 +144,7 @@ public class GuiMorphSection extends GuiElement
 		{
 			if (context.mouseY - this.area.y < HEADER_HEIGHT && context.mouseButton == 0)
 			{
-				this.toggled = !this.toggled;
+				this.section.hidden = !this.section.hidden;
 
 				return true;
 			}
@@ -278,7 +277,7 @@ public class GuiMorphSection extends GuiElement
 		Gui.drawRect(this.area.x, this.area.y, this.area.ex(), this.area.y + HEADER_HEIGHT, 0x88000000);
 
 		this.font.drawStringWithShadow(this.section.getTitle(), this.area.x + 7, this.area.y + 10 - this.font.FONT_HEIGHT / 2, 0xffffff);
-		(this.toggled ? Icons.MOVE_UP : Icons.MOVE_DOWN).render(this.area.ex() - 18 - 3, this.area.y + 10 + (this.toggled ? -1 : 1), 0, 0.5F);
+		(this.section.hidden ? Icons.MOVE_DOWN : Icons.MOVE_UP).render(this.area.ex() - 18 - 3, this.area.y + 10 + (this.section.hidden ? 1 : -1), 0, 0.5F);
 
 		int y = this.drawMorphs(context) + (this.last ? 30 : 0);
 
@@ -304,7 +303,7 @@ public class GuiMorphSection extends GuiElement
 		this.selectedX = 0;
 		this.selectedY = 0;
 
-		if (!this.toggled)
+		if (this.section.hidden)
 		{
 			return y;
 		}
