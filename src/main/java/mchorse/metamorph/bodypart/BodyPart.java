@@ -133,20 +133,18 @@ public class BodyPart
 
     public boolean canMerge(BodyPart part)
     {
-        BodyPart morph = (BodyPart) part;
-
-        this.morph.copy(morph.morph);
+        this.morph.copy(part.morph);
         this.translate.set(part.translate);
         this.scale.set(part.scale);
         this.rotate.set(part.rotate);
-        this.useTarget = morph.useTarget;
+        this.useTarget = part.useTarget;
 
-        for (int i = 0; i < morph.slots.length; i++)
+        for (int i = 0; i < part.slots.length; i++)
         {
-            this.slots[i] = morph.slots[i];
+            this.slots[i] = part.slots[i];
         }
 
-        this.limb = morph.limb;
+        this.limb = part.limb;
 
         return true;
     }
@@ -160,7 +158,7 @@ public class BodyPart
         {
             BodyPart part = (BodyPart) obj;
 
-            result = result && Objects.equal(this.morph, part.morph);
+            result = Objects.equal(this.morph, part.morph);
             result = result && Objects.equal(this.translate, part.translate);
             result = result && Objects.equal(this.scale, part.scale);
             result = result && Objects.equal(this.rotate, part.rotate);
@@ -168,7 +166,7 @@ public class BodyPart
 
             for (int i = 0; i < this.slots.length; i++)
             {
-                result = result && Objects.equal(this.slots[i], part.slots[i]);
+                result = result && ItemStack.areItemStacksEqual(this.slots[i], part.slots[i]);
             }
 
             result = result && Objects.equal(this.limb, part.limb);

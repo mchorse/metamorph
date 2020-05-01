@@ -3,6 +3,8 @@ package mchorse.metamorph.api;
 import mchorse.metamorph.api.morphs.AbstractMorph;
 import net.minecraft.nbt.NBTTagCompound;
 
+import java.util.Objects;
+
 /**
  * Morph container 
  * 
@@ -52,6 +54,17 @@ public class Morph
     public AbstractMorph get()
     {
         return this.morph;
+    }
+
+    @Override
+    public boolean equals(Object obj)
+    {
+        if (obj instanceof Morph)
+        {
+            return Objects.equals(this.morph, ((Morph) obj).morph);
+        }
+
+        return super.equals(obj);
     }
 
     public AbstractMorph copy()

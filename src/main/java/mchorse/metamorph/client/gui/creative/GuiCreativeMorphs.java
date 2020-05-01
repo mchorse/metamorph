@@ -505,8 +505,8 @@ public class GuiCreativeMorphs extends GuiElement
 
             if (found == null)
             {
-                this.user.recent.add(morph);
-                found = morph;
+                found = morph.copy();
+                this.user.recent.add(found);
                 selectedCategory = this.user.recent;
                 selectedSection = this.userSection;
             }
