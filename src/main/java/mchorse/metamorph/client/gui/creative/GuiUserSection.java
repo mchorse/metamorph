@@ -7,6 +7,7 @@ import mchorse.mclib.client.gui.framework.elements.modals.GuiPromptModal;
 import mchorse.mclib.client.gui.framework.elements.utils.GuiContext;
 import mchorse.mclib.client.gui.utils.Icons;
 import mchorse.mclib.client.gui.utils.keys.IKey;
+import mchorse.metamorph.api.creative.categories.AcquiredCategory;
 import mchorse.metamorph.api.creative.categories.RecentCategory;
 import mchorse.metamorph.api.creative.sections.MorphSection;
 import mchorse.metamorph.api.creative.sections.UserSection;
@@ -53,6 +54,12 @@ public class GuiUserSection extends GuiMorphSection
 				this.parent.setSelected(null);
 			});
 		}
+		else if (this.hoverCategory instanceof AcquiredCategory || this.hoverCategory instanceof UserCategory)
+		{
+			AbstractMorph morph = this.hoverMorph;
+
+			contextMenu.action(Icons.REFRESH, IKey.lang("metamorph.gui.creative.context.to_recent"), () -> this.copyToRecent(morph));
+		}
 
 		if (this.hoverMorph != null && this.hoverCategory != null)
 		{
@@ -86,5 +93,10 @@ public class GuiUserSection extends GuiMorphSection
 		modal.resize();
 
 		this.parent.add(modal);
+	}
+
+	private void copyToRecent(AbstractMorph morph)
+	{
+		((UserSection) this.section).recent.add(morph.copy());
 	}
 }
