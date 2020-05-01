@@ -149,11 +149,11 @@ public class GuiCreativeMorphs extends GuiElement
         this.sections.get(this.sections.size() - 1).last = true;
     }
 
-    protected void exit()
+    public void exit()
     {
         if (this.isEditMode())
         {
-            this.exitEditMorph();
+            this.exitEditMorph(this.nestedEdits.isEmpty(), false);
         }
         else
         {
@@ -221,14 +221,21 @@ public class GuiCreativeMorphs extends GuiElement
         return !this.nestedEdits.isEmpty();
     }
 
-    public void nestEdit(AbstractMorph selected, Consumer<AbstractMorph> callback)
+    public void nestEdit(AbstractMorph selected, boolean editing, Consumer<AbstractMorph> callback)
     {
-        NestedEdit edit = new NestedEdit(this.filter, this.editor.delegate.morph, this.callback, this.selected);
-
+        NestedEdit edit = new NestedEdit(this.filter, this.editor.delegate.morph, this.callback, this.selected, editing);
         this.callback = callback;
-        this.exitEditMorph();
-        this.setFilter("");
-        this.setSelected(selected);
+
+        if (editing)
+        {
+            this.enterEditMorph(selected);
+        }
+        else
+        {
+            this.exitEditMorph(false, true);
+            this.setFilter("");
+            this.setSelected(selected);
+        }
 
         this.nestedEdits.add(edit);
         this.updateExitKey();
@@ -242,16 +249,18 @@ public class GuiCreativeMorphs extends GuiElement
         }
 
         NestedEdit edit = this.nestedEdits.pop();
-        AbstractMorph morph = this.getSelected();
+
+        if (!edit.editing)
+        {
+            this.pickMorph(this.getSelected());
+        }
 
         if (this.selected != null)
         {
             this.selected.reset();
         }
 
-        this.pickMorph(morph);
         this.setFilter(this.filter);
-
         this.callback = edit.callback;
         this.selected = edit.selected;
         this.selected.morph = edit.selectedMorph;
@@ -303,7 +312,7 @@ public class GuiCreativeMorphs extends GuiElement
         }
     }
 
-    public void exitEditMorph()
+    public void exitEditMorph(boolean add, boolean ignore)
     {
         if (!this.isEditMode())
         {
@@ -312,10 +321,18 @@ public class GuiCreativeMorphs extends GuiElement
 
         AbstractMorph edited = this.editor.delegate.morph;
 
+        if (!this.nestedEdits.isEmpty() && !ignore)
+        {
+            this.pickMorph(edited);
+            this.restoreEdit();
+
+            return;
+        }
+
         this.editor.delegate.finishEdit();
         this.syncSelected();
 
-        if (edited != null && !this.isSelectedMorphIsEditable())
+        if (add && edited != null && !this.isSelectedMorphIsEditable())
         {
             this.setSelected(edited);
         }
@@ -350,7 +367,7 @@ public class GuiCreativeMorphs extends GuiElement
     {
         AbstractMorph morph = this.getSelected();
 
-        if (morph != null)
+        if (morph != null && this.selected != null && this.selected.category != null)
         {
             this.selected.category.edit(morph);
         }
@@ -616,12 +633,14 @@ public class GuiCreativeMorphs extends GuiElement
         public MorphCategory selectedCategory;
         public AbstractMorph selectedMorph;
         public AbstractMorph editMorph;
+        public boolean editing;
 
-        public NestedEdit(String filter, AbstractMorph editMorph, Consumer<AbstractMorph> callback, GuiMorphSection selected)
+        public NestedEdit(String filter, AbstractMorph editMorph, Consumer<AbstractMorph> callback, GuiMorphSection selected, boolean editing)
         {
             this.filter = filter;
             this.editMorph = editMorph;
             this.callback = callback;
+            this.editing = editing;
 
             this.selected = selected;
             this.selectedCategory = selected.category;

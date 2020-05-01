@@ -43,7 +43,7 @@ public class GuiAbstractMorph<T extends AbstractMorph> extends GuiPanelBase<GuiM
     {
         super(mc);
 
-        this.finish = new GuiIconElement(mc, Icons.CLOSE, (b) -> this.morphs.exitEditMorph());
+        this.finish = new GuiIconElement(mc, Icons.CLOSE, (b) -> this.morphs.exit());
         this.finish.flex().relative(this).set(0, 0, 20, 20).y(1F, -20);
         this.renderer = this.createMorphRenderer(mc);
         this.renderer.flex().relative(this).wh(1F, 1F);

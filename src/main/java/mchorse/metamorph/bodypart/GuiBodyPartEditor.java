@@ -1,6 +1,5 @@
 package mchorse.metamorph.bodypart;
 
-import mchorse.mclib.client.gui.framework.GuiBase;
 import mchorse.mclib.client.gui.framework.elements.GuiElement;
 import mchorse.mclib.client.gui.framework.elements.GuiElements;
 import mchorse.mclib.client.gui.framework.elements.buttons.GuiButtonElement;
@@ -14,6 +13,7 @@ import mchorse.mclib.client.gui.utils.keys.IKey;
 import mchorse.mclib.utils.Direction;
 import mchorse.metamorph.api.MorphUtils;
 import mchorse.metamorph.api.morphs.AbstractMorph;
+import mchorse.metamorph.client.gui.creative.GuiNestedEdit;
 import mchorse.metamorph.client.gui.editor.GuiAbstractMorph;
 import mchorse.metamorph.client.gui.editor.GuiMorphPanel;
 import net.minecraft.client.Minecraft;
@@ -22,7 +22,6 @@ import net.minecraft.client.resources.I18n;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
-import org.lwjgl.input.Keyboard;
 
 import java.util.Collection;
 import java.util.List;
@@ -31,7 +30,7 @@ import java.util.List;
 public class GuiBodyPartEditor extends GuiMorphPanel<AbstractMorph, GuiAbstractMorph>
 {
     protected GuiBodyPartListElement bodyParts;
-    protected GuiButtonElement pickMorph;
+    protected GuiNestedEdit pickMorph;
     protected GuiToggleElement useTarget;
 
     protected GuiButtonElement addPart;
@@ -96,11 +95,11 @@ public class GuiBodyPartEditor extends GuiMorphPanel<AbstractMorph, GuiAbstractM
         this.bodyParts = new GuiBodyPartListElement(mc, (part) -> this.setPart(part.isEmpty() ? null : part.get(0)));
         this.bodyParts.background();
 
-        this.pickMorph = new GuiButtonElement(mc, IKey.lang("metamorph.gui.body_parts.pick"), (b) ->
+        this.pickMorph = new GuiNestedEdit(mc, (editing) ->
         {
             BodyPart part = this.part;
 
-            this.editor.morphs.nestEdit(part.morph.get(), (morph) ->
+            this.editor.morphs.nestEdit(part.morph.get(), editing, (morph) ->
             {
                 if (part != null)
                 {
@@ -139,8 +138,6 @@ public class GuiBodyPartEditor extends GuiMorphPanel<AbstractMorph, GuiAbstractM
         }
 
         this.add(this.stacks, this.inventory);
-
-        this.pickMorph.keys().register(this.pickMorph.label, Keyboard.KEY_P, () -> this.pickMorph.clickItself(GuiBase.getCurrent()));
     }
 
     protected void addPart(GuiButtonElement b)

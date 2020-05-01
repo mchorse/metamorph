@@ -163,7 +163,7 @@ public class GuiMorphSection extends GuiElement
 					continue;
 				}
 
-				y -= CATEGORY_HEIGHT;
+				y -= CATEGORY_HEIGHT + 5;
 
 				int ix = (int) (x / (this.area.w / (float) row));
 				int iy = y / this.cellHeight;
@@ -203,7 +203,7 @@ public class GuiMorphSection extends GuiElement
 					}
 				}
 
-				y -= this.getCategoryHeight(category, count);
+				y -= this.getCategoryHeight(category, count) + 5;
 			}
 
 			if (!result)

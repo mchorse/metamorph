@@ -21,6 +21,13 @@ public class GuiBodyPartListElement extends GuiListElement<BodyPart>
     @Override
     protected String elementToString(BodyPart element)
     {
-        return (!element.limb.isEmpty() ? " - " + element.limb : "");
+        String label = element.morph.isEmpty() ? "" : element.morph.get().getDisplayName();
+
+        if (!element.limb.isEmpty())
+        {
+            label += (!label.isEmpty() ? " - " + element.limb : element.limb);
+        }
+
+        return label;
     }
 }

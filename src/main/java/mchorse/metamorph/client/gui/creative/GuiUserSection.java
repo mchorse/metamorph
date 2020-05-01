@@ -58,7 +58,10 @@ public class GuiUserSection extends GuiMorphSection
 		{
 			AbstractMorph morph = this.hoverMorph;
 
-			contextMenu.action(Icons.REFRESH, IKey.lang("metamorph.gui.creative.context.to_recent"), () -> this.copyToRecent(morph));
+			if (morph != null)
+			{
+				contextMenu.action(Icons.REFRESH, IKey.lang("metamorph.gui.creative.context.to_recent"), () -> this.copyToRecent(morph));
+			}
 		}
 
 		if (this.hoverMorph != null && this.hoverCategory != null)

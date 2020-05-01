@@ -53,7 +53,7 @@ public class GuiCreativeMorphsMenu extends GuiCreativeMorphs
     }
 
     @Override
-    protected void exit()
+    public void exit()
     {
         if (!this.isEditMode() && !this.isNested())
         {

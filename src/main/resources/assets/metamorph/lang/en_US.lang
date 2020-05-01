@@ -41,6 +41,7 @@ metamorph.gui.selectors.enabled=Enabled
 metamorph.gui.creative.command=Copy /morph command for selected morph
 metamorph.gui.creative.exit=Exit
 metamorph.gui.creative.edit=Edit
+metamorph.gui.creative.pick=Pick
 metamorph.gui.creative.quick=Quick edit
 metamorph.gui.creative.presets=Presets
 metamorph.gui.creative.context.add_global=Add to global morphs...
