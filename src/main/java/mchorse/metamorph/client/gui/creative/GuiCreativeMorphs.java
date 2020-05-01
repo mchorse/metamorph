@@ -587,13 +587,13 @@ public class GuiCreativeMorphs extends GuiElement
 
             if (morph != null)
             {
-                Gui.drawRect(area.x, area.y - 26, area.x + w + 8, area.y, 0x88000000);
+                Gui.drawRect(area.x, area.y - 26, area.x + w + 8, area.y, 0xdd000000);
                 this.font.drawStringWithShadow(selected, area.x + 4, area.y - 22, 0xffffffff);
                 this.font.drawStringWithShadow(morph.name, area.x + 4, area.y - 11, 0x888888);
             }
             else
             {
-                Gui.drawRect(area.x, area.y - 16, area.x + w + 8, area.y, 0x88000000);
+                Gui.drawRect(area.x, area.y - 16, area.x + w + 8, area.y, 0xdd000000);
                 this.font.drawStringWithShadow(selected, area.x + 4, area.y - 11, 0xffffffff);
             }
         }

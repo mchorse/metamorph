@@ -274,7 +274,7 @@ public class GuiMorphSection extends GuiElement
 	@Override
 	public void draw(GuiContext context)
 	{
-		Gui.drawRect(this.area.x, this.area.y, this.area.ex(), this.area.y + HEADER_HEIGHT, 0x88000000);
+		Gui.drawRect(this.area.x, this.area.y, this.area.ex(), this.area.y + HEADER_HEIGHT, 0xbb000000);
 
 		this.font.drawStringWithShadow(this.section.getTitle(), this.area.x + 7, this.area.y + 10 - this.font.FONT_HEIGHT / 2, 0xffffff);
 		(this.section.hidden ? Icons.MOVE_DOWN : Icons.MOVE_UP).render(this.area.ex() - 18 - 3, this.area.y + 10 + (this.section.hidden ? 1 : -1), 0, 0.5F);
@@ -319,7 +319,7 @@ public class GuiMorphSection extends GuiElement
 				continue;
 			}
 
-			this.font.drawStringWithShadow(category.getTitle(), this.area.x + 7, this.area.y + y + 8 - this.font.FONT_HEIGHT / 2, 0xcccccc);
+			GuiDraw.drawTextBackground(this.font, category.getTitle(), this.area.x + 7, this.area.y + y + 8 - this.font.FONT_HEIGHT / 2, 0xeeeeee, 0x88000000, 2);
 
 			Area.SHARED.copy(this.area);
 			Area.SHARED.y = this.area.y + y;
@@ -331,7 +331,7 @@ public class GuiMorphSection extends GuiElement
 			}
 
 			float x = 0;
-			y += CATEGORY_HEIGHT;
+			y += CATEGORY_HEIGHT + 5;
 
 			for (int i = 0, j = 0; i < category.getMorphs().size(); i ++)
 			{
@@ -374,7 +374,7 @@ public class GuiMorphSection extends GuiElement
 				j ++;
 			}
 
-			y += this.cellHeight;
+			y += this.cellHeight + 5;
 		}
 
 		return y;
@@ -391,7 +391,7 @@ public class GuiMorphSection extends GuiElement
 		}
 		else if (hover)
 		{
-			Gui.drawRect(x, y, x + w, y + h, 0x44000000);
+			Gui.drawRect(x, y, x + w, y + h, 0x66000000);
 		}
 
 		int spot = (int) (w * 0.4F);
