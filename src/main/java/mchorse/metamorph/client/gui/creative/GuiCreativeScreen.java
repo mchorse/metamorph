@@ -3,6 +3,7 @@ package mchorse.metamorph.client.gui.creative;
 import mchorse.mclib.client.gui.framework.GuiBase;
 import mchorse.mclib.client.gui.framework.elements.buttons.GuiButtonElement;
 import mchorse.mclib.client.gui.framework.elements.buttons.GuiIconElement;
+import mchorse.mclib.client.gui.framework.elements.utils.GuiDraw;
 import mchorse.mclib.client.gui.utils.Icons;
 import mchorse.mclib.client.gui.utils.keys.IKey;
 import mchorse.mclib.utils.Direction;
@@ -147,7 +148,7 @@ public class GuiCreativeScreen extends GuiBase
     public void drawScreen(int mouseX, int mouseY, float partialTicks)
     {
         /* Draw panel backgrounds */
-        this.drawDefaultBackground();
+        GuiDraw.drawCustomBackground(0, 0, this.width, this.height);
         Gui.drawRect(this.pane.area.x, 0, this.width, 40, 0xaa000000);
 
         super.drawScreen(mouseX, mouseY, partialTicks);
