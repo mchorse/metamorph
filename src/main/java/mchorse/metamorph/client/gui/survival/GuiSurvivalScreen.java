@@ -218,7 +218,7 @@ public class GuiSurvivalScreen extends GuiBase
 
         element.flex();
 
-        this.morphs.clear();
+        this.morphs.removeAll();
         this.morphs.add(element);
         this.selected = element;
         this.acquired = category;

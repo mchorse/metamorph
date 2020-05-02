@@ -75,7 +75,7 @@ public class GuiQuickEditor extends GuiElement
 	public void setMorph(AbstractMorph morph, GuiAbstractMorph<AbstractMorph> editor)
 	{
 		/* Fill quick access */
-		this.quickAccess.clear();
+		this.quickAccess.removeAll();
 
 		for (GuiElement element : editor.getFields(this.mc, this.parent, morph))
 		{

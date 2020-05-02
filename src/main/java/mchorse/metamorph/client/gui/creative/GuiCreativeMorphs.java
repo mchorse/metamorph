@@ -129,7 +129,7 @@ public class GuiCreativeMorphs extends GuiElement
         MinecraftForge.EVENT_BUS.post(new ReloadMorphs());
 
         this.sections.clear();
-        this.morphs.clear();
+        this.morphs.removeAll();
 
         for (MorphSection section : list.sections)
         {
