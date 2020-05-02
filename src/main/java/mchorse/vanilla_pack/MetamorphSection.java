@@ -80,6 +80,11 @@ public class MetamorphSection extends MorphSection
 
 		this.categories.addAll(this.categoryMap.values());
 		this.categoryMap.clear();
+
+		for (MorphCategory category : this.categories)
+		{
+			category.sort();
+		}
 	}
 
 	/**

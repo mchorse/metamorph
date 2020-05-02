@@ -11,6 +11,7 @@ import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 public class MorphCategory
@@ -58,6 +59,11 @@ public class MorphCategory
 	public void clear()
 	{
 		this.morphs.clear();
+	}
+
+	public void sort()
+	{
+		Collections.sort(this.morphs, (a, b) -> a.name.compareToIgnoreCase(b.name));
 	}
 
 	public final void add(AbstractMorph morph)
