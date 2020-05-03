@@ -1,5 +1,6 @@
 package mchorse.metamorph.client.gui.creative;
 
+import mchorse.mclib.client.gui.framework.GuiBase;
 import mchorse.mclib.client.gui.framework.elements.GuiDelegateElement;
 import mchorse.mclib.client.gui.framework.elements.GuiElement;
 import mchorse.mclib.client.gui.framework.elements.GuiScrollElement;
@@ -163,6 +164,8 @@ public class GuiCreativeMorphs extends GuiElement
         {
             this.restoreEdit();
         }
+
+        GuiBase.getCurrent().setContextMenu(null);
     }
 
     protected void updateExitKey()

@@ -1,5 +1,6 @@
 package mchorse.metamorph.client.gui.creative;
 
+import mchorse.mclib.client.gui.framework.GuiBase;
 import mchorse.mclib.client.gui.framework.elements.buttons.GuiButtonElement;
 import mchorse.mclib.client.gui.framework.elements.utils.GuiContext;
 import mchorse.mclib.client.gui.utils.keys.IKey;
@@ -60,6 +61,8 @@ public class GuiCreativeMorphsMenu extends GuiCreativeMorphs
         {
             this.finish();
             this.removeFromParent();
+
+            GuiBase.getCurrent().setContextMenu(null);
         }
         else
         {
