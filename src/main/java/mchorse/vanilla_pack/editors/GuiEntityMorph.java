@@ -62,35 +62,35 @@ public class GuiEntityMorph extends GuiAbstractMorph<EntityMorph>
 
 		if (animals.contains(name))
 		{
-			this.addPreset(presets, "Baby", "{Age:-1}");
+			this.addPreset(morph, presets, "Baby", "{Age:-1}");
 		}
 
 		if (name.equals("minecraft:sheep"))
 		{
-			this.addPreset(presets, "Sheared", "{Sheared:1b}");
-			this.addPreset(presets, "Sheared (baby)", "{Age:-1,Sheared:1b}");
+			this.addPreset(morph, presets, "Sheared", "{Sheared:1b}");
+			this.addPreset(morph, presets, "Sheared (baby)", "{Age:-1,Sheared:1b}");
 
 			for (int i = 1; i < 16; i++)
 			{
-				this.addPreset(presets, "Colored sheep", "{Color:" + i + "}");
+				this.addPreset(morph, presets, "Colored sheep #" + i, "{Color:" + i + "}");
 			}
 
-			this.addPreset(presets, "Jeb", "{CustomName:\"jeb_\"}");
-			this.addPreset(presets, "Baby Jeb", "{Age:-1,CustomName:\"jeb_\"}");
+			this.addPreset(morph, presets, "Jeb", "{CustomName:\"jeb_\"}");
+			this.addPreset(morph, presets, "Baby Jeb", "{Age:-1,CustomName:\"jeb_\"}");
 		}
 
 		if (name.equals("minecraft:slime") || name.equals("minecraft:magma_cube"))
 		{
-			this.addPreset(presets, "Medium", "{Size:1}");
-			this.addPreset(presets, "Big", "{Size:2}");
+			this.addPreset(morph, presets, "Medium", "{Size:1}");
+			this.addPreset(morph, presets, "Big", "{Size:2}");
 		}
 
 		if (name.equals("minecraft:ocelot"))
 		{
 			for (int i = 1; i < 4; i++)
 			{
-				this.addPreset(presets, "Cat " + i, "{CatType:" + i + "}");
-				this.addPreset(presets, "Cat " + i + "(baby)", "{CatType:" + i + ",Age:-1}");
+				this.addPreset(morph, presets, "Cat #" + i, "{CatType:" + i + "}");
+				this.addPreset(morph, presets, "Cat #" + i + " (baby)", "{CatType:" + i + ",Age:-1}");
 			}
 		}
 
@@ -98,7 +98,7 @@ public class GuiEntityMorph extends GuiAbstractMorph<EntityMorph>
 		{
 			for (int i = 1; i <= 4; i++)
 			{
-				this.addPreset(presets, "Parrot " + i, "{Variant:" + i + "}");
+				this.addPreset(morph, presets, "Parrot #" + i, "{Variant:" + i + "}");
 			}
 		}
 
@@ -106,7 +106,7 @@ public class GuiEntityMorph extends GuiAbstractMorph<EntityMorph>
 		{
 			for (int i = 1; i <= 6; i++)
 			{
-				this.addPreset(presets, "Horse " + i, "{Variant:" + i + "}");
+				this.addPreset(morph, presets, "Horse #" + i, "{Variant:" + i + "}");
 			}
 		}
 
@@ -114,53 +114,54 @@ public class GuiEntityMorph extends GuiAbstractMorph<EntityMorph>
 		{
 			for (int i = 1; i < 4; i++)
 			{
-				this.addPreset(presets, "Llama " + i, "{Variant:" + i + "}");
+				this.addPreset(morph, presets, "Llama #" + i, "{Variant:" + i + "}");
 			}
 		}
 
 		if (name.equals("minecraft:bat"))
 		{
-			this.addPreset(presets, "Flying", "{BatFlags:2}");
+			this.addPreset(morph, presets, "Flying", "{BatFlags:2}");
 		}
 
 		if (name.equals("minecraft:rabbit"))
 		{
 			for (int i = 1; i < 6; i++)
 			{
-				this.addPreset(presets, "Rabbit " + i, "{RabbitType:" + i + "}");
+				this.addPreset(morph, presets, "Rabbit #" + i, "{RabbitType:" + i + "}");
 			}
 
-			this.addPreset(presets, "Toast", "{CustomName:\"Toast\"}");
+			this.addPreset(morph, presets, "Toast", "{CustomName:\"Toast\"}");
 		}
 
 		if (name.equals("minecraft:zombie"))
 		{
-			this.addPreset(presets, "Baby", "{IsBaby:1b}");
+			this.addPreset(morph, presets, "Baby", "{IsBaby:1b}");
 		}
 
 		if (name.equals("minecraft:villager") || name.equals("minecraft:zombie_villager"))
 		{
-			this.addPreset(presets, "Librarian", "{ProfessionName:\"minecraft:librarian\"}");
-			this.addPreset(presets, "Priest", "{ProfessionName:\"minecraft:priest\"}");
-			this.addPreset(presets, "Smith", "{ProfessionName:\"minecraft:smith\"}");
-			this.addPreset(presets, "Butcher", "{ProfessionName:\"minecraft:butcher\"}");
-			this.addPreset(presets, "Nitwit", "{ProfessionName:\"minecraft:nitwit\"}");
+			this.addPreset(morph, presets, "Librarian", "{ProfessionName:\"minecraft:librarian\"}");
+			this.addPreset(morph, presets, "Priest", "{ProfessionName:\"minecraft:priest\"}");
+			this.addPreset(morph, presets, "Smith", "{ProfessionName:\"minecraft:smith\"}");
+			this.addPreset(morph, presets, "Butcher", "{ProfessionName:\"minecraft:butcher\"}");
+			this.addPreset(morph, presets, "Nitwit", "{ProfessionName:\"minecraft:nitwit\"}");
 		}
 
 		return presets;
 	}
 
 	@Override
-	protected void addPreset(List<Label<NBTTagCompound>> list, String label, String json)
+	protected void addPreset(AbstractMorph morph, List<Label<NBTTagCompound>> list, String label, String json)
 	{
 		try
 		{
-			NBTTagCompound tag = JsonToNBT.getTagFromJson(json);
+			NBTTagCompound tag = morph.toNBT();
 			NBTTagCompound entity = new NBTTagCompound();
 
-			entity.setTag("EntityData", tag);
-
-			list.add(new Label<NBTTagCompound>(IKey.str(label), entity));
+			tag.removeTag("EntityData");
+			entity.setTag("EntityData", JsonToNBT.getTagFromJson(json));
+			tag.merge(entity);
+			list.add(new Label<NBTTagCompound>(IKey.str(label), tag));
 		}
 		catch (Exception e)
 		{}

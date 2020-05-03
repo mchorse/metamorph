@@ -191,7 +191,7 @@ public class GuiCreativeMorphs extends GuiElement
 
     public void toggleQuickEdit()
     {
-        if (this.isEditMode())
+        if (this.isEditMode() || !this.quickEditor.isVisible() && this.getSelected() == null)
         {
             return;
         }
@@ -202,15 +202,12 @@ public class GuiCreativeMorphs extends GuiElement
         {
             AbstractMorph morph = this.getSelected();
 
-            if (morph != null)
+            if (!this.isSelectedMorphIsEditable())
             {
-                this.quickEditor.setMorph(morph, this.getMorphEditor(morph));
-            }
-            else
-            {
-                return;
+                morph = this.copyToRecent(morph);
             }
 
+            this.quickEditor.setMorph(morph, this.getMorphEditor(morph));
             this.morphs.flex().wTo(this.quickEditor.flex());
         }
         else
@@ -489,7 +486,7 @@ public class GuiCreativeMorphs extends GuiElement
 
         if (morph != null)
         {
-            AbstractMorph found = this.user.recent.getEqual(morph);
+            AbstractMorph found = null;
             MorphCategory selectedCategory = null;
             GuiMorphSection selectedSection = null;
 
@@ -512,17 +509,16 @@ public class GuiCreativeMorphs extends GuiElement
 
             if (found == null)
             {
-                found = morph.copy();
-                this.user.recent.add(found);
-                selectedCategory = this.user.recent;
-                selectedSection = this.userSection;
+                this.copyToRecent(morph);
             }
+            else
+            {
+                this.selected = selectedSection;
+                this.scrollTo = true;
 
-            this.selected = selectedSection;
-            selectedSection.morph = found;
-            selectedSection.category = selectedCategory;
-
-            this.scrollTo = true;
+                selectedSection.morph = found;
+                selectedSection.category = selectedCategory;
+            }
         }
         else
         {
@@ -534,13 +530,32 @@ public class GuiCreativeMorphs extends GuiElement
         return this.getSelected();
     }
 
+    protected AbstractMorph copyToRecent(AbstractMorph morph)
+    {
+        if (this.selected != null)
+        {
+            this.selected.reset();
+        }
+
+        morph = morph.copy();
+
+        this.user.recent.add(morph);
+        this.selected = this.userSection;
+        this.selected.morph = morph;
+        this.selected.category = this.user.recent;
+
+        this.scrollTo = true;
+
+        return morph;
+    }
+
     protected void syncQuickEditor()
     {
         if (this.quickEditor.isVisible())
         {
             AbstractMorph morph = this.getSelected();
 
-            if (morph != null)
+            if (morph != null && this.isSelectedMorphIsEditable())
             {
                 this.quickEditor.setMorph(morph, this.getMorphEditor(morph));
             }

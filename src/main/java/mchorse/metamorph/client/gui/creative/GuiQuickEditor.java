@@ -4,6 +4,7 @@ import mchorse.mclib.client.gui.framework.elements.GuiElement;
 import mchorse.mclib.client.gui.framework.elements.GuiScrollElement;
 import mchorse.mclib.client.gui.framework.elements.buttons.GuiButtonElement;
 import mchorse.mclib.client.gui.framework.elements.list.GuiLabelListElement;
+import mchorse.mclib.client.gui.framework.elements.list.GuiLabelSearchListElement;
 import mchorse.mclib.client.gui.framework.elements.utils.GuiContext;
 import mchorse.mclib.client.gui.utils.Elements;
 import mchorse.mclib.client.gui.utils.Label;
@@ -28,7 +29,7 @@ public class GuiQuickEditor extends GuiElement
 	public GuiButtonElement presetsButton;
 	public GuiButtonElement quickAccessButton;
 
-	public GuiLabelListElement<NBTTagCompound> presets;
+	public GuiLabelSearchListElement<NBTTagCompound> presets;
 	public GuiScrollElement quickAccess;
 	public GuiQuickEditor(Minecraft mc, GuiCreativeMorphs parent)
 	{
@@ -39,7 +40,7 @@ public class GuiQuickEditor extends GuiElement
 		this.presetsButton = new GuiButtonElement(mc, IKey.lang("metamorph.gui.creative.presets"), this::toggleVisibility);
 		this.quickAccessButton = new GuiButtonElement(mc, IKey.lang("metamorph.gui.creative.quick"), this::toggleVisibility);
 
-		this.presets = new GuiLabelListElement<NBTTagCompound>(mc, this::setPreset);
+		this.presets = new GuiLabelSearchListElement<NBTTagCompound>(mc, this::setPreset);
 		this.presets.flex().relative(this).set(10, 30, 0, 0).w(1F, -20).h(1F, -40);
 
 		this.quickAccess = new GuiScrollElement(mc);
@@ -85,11 +86,9 @@ public class GuiQuickEditor extends GuiElement
 		/* Fill presets */
 		List<Label<NBTTagCompound>> presets = editor.getPresets(morph);
 
-		if (!presets.equals(this.presets.getList()))
-		{
-			this.presets.clear();
-			this.presets.add(presets);
-		}
+		this.presets.list.clear();
+		this.presets.list.add(presets);
+		this.presets.filter("", true);
 
 		this.toggleVisibility(this.presets.isVisible() ? this.presetsButton : this.quickAccessButton);
 		this.resize();
@@ -97,10 +96,7 @@ public class GuiQuickEditor extends GuiElement
 
 	protected void setPreset(List<Label<NBTTagCompound>> label)
 	{
-		AbstractMorph morph = this.parent.getSelected().copy();
-
-		morph.fromNBT(label.get(0).value);
-		this.parent.setSelected(morph);
+		this.parent.getSelected().fromNBT(label.get(0).value);
 	}
 
 	@Override
@@ -108,7 +104,7 @@ public class GuiQuickEditor extends GuiElement
 	{
 		this.area.draw(0xaa000000);
 
-		if (this.presets.isVisible() && this.presets.getList().isEmpty())
+		if (this.presets.isVisible() && this.presets.list.getList().isEmpty())
 		{
 			this.drawCenteredString(this.font, "No factory presets found...", this.presets.area.mx(), this.presets.area.my() - this.font.FONT_HEIGHT / 2, 0xffffff);
 		}

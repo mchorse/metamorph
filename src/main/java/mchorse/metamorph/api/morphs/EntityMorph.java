@@ -656,7 +656,8 @@ public class EntityMorph extends AbstractMorph implements IBodyPartProvider
         {
             created.deserializeNBT(this.entityData);
         }
-        catch (Exception e) {
+        catch (Exception e)
+        {
             e.printStackTrace();
         }
 

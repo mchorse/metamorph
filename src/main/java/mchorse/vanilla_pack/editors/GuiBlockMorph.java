@@ -40,14 +40,14 @@ public class GuiBlockMorph extends GuiAbstractMorph<BlockMorph>
 	{
 		List<Label<NBTTagCompound>> presets = new ArrayList<Label<NBTTagCompound>>();
 
-		this.addPreset(presets, "Stone", "{Block:\"minecraft:stone\"}");
-		this.addPreset(presets, "Cobblestone", "{Block:\"minecraft:cobblestone\"}");
-		this.addPreset(presets, "Grass", "{Block:\"minecraft:grass\"}");
-		this.addPreset(presets, "Dirt", "{Block:\"minecraft:dirt\"}");
-		this.addPreset(presets, "Log", "{Block:\"minecraft:log\"}");
-		this.addPreset(presets, "Diamond block", "{Block:\"minecraft:diamond_block\"}");
-		this.addPreset(presets, "Sponge", "{Block:\"minecraft:sponge\"}");
-		this.addPreset(presets, "Deadbush", "{Block:\"minecraft:deadbush\"}");
+		this.addPreset(morph, presets, "Stone", "{Block:\"minecraft:stone\"}");
+		this.addPreset(morph, presets, "Cobblestone", "{Block:\"minecraft:cobblestone\"}");
+		this.addPreset(morph, presets, "Grass", "{Block:\"minecraft:grass\"}");
+		this.addPreset(morph, presets, "Dirt", "{Block:\"minecraft:dirt\"}");
+		this.addPreset(morph, presets, "Log", "{Block:\"minecraft:log\"}");
+		this.addPreset(morph, presets, "Diamond block", "{Block:\"minecraft:diamond_block\"}");
+		this.addPreset(morph, presets, "Sponge", "{Block:\"minecraft:sponge\"}");
+		this.addPreset(morph, presets, "Deadbush", "{Block:\"minecraft:deadbush\"}");
 
 		return presets;
 	}
