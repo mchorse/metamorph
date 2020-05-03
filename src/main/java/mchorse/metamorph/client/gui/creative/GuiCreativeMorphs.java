@@ -3,6 +3,7 @@ package mchorse.metamorph.client.gui.creative;
 import mchorse.mclib.client.gui.framework.elements.GuiDelegateElement;
 import mchorse.mclib.client.gui.framework.elements.GuiElement;
 import mchorse.mclib.client.gui.framework.elements.GuiScrollElement;
+import mchorse.mclib.client.gui.framework.elements.buttons.GuiButtonElement;
 import mchorse.mclib.client.gui.framework.elements.input.GuiTextElement;
 import mchorse.mclib.client.gui.framework.elements.utils.GuiContext;
 import mchorse.mclib.client.gui.framework.elements.utils.GuiDrawable;
@@ -60,6 +61,7 @@ public class GuiCreativeMorphs extends GuiElement
 
     public GuiElement bar;
     public GuiTextElement search;
+    public GuiButtonElement edit;
 
     public GuiElement screen;
     public GuiQuickEditor quickEditor;
@@ -105,9 +107,11 @@ public class GuiCreativeMorphs extends GuiElement
         /* Initiate bottom bar */
         this.bar = new GuiElement(mc);
         this.search = new GuiTextElement(mc, this::setFilter);
+        this.edit = new GuiButtonElement(mc, IKey.lang("metamorph.gui.edit"),  (b) -> this.enterEditMorph());
+        this.edit.flex().w(60);
 
-        this.bar.flex().relative(this.morphs).set(10, 0, 0, 20).y(1, -30).w(1, -20).row(5).preferred(1).height(20);
-        this.bar.add(this.search);
+        this.bar.flex().relative(this.morphs).set(10, 0, 0, 20).y(1, -30).w(1, -20).row(5).preferred(0).height(20);
+        this.bar.add(this.search, this.edit);
 
         this.screen.add(this.morphs, this.bar, this.quickEditor);
         this.add(this.screen, new GuiDrawable(this::drawOverlay), this.editor);

@@ -45,6 +45,7 @@ public class GuiCreativeMorphsMenu extends GuiCreativeMorphs
         this.acquire.flex().wh(60, 20);
         this.close.flex().wh(20, 20);
 
+        this.bar.flex().row(0).preferred(1);
         this.bar.prepend(this.acquire);
         this.bar.add(this.close);
 
