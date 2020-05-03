@@ -88,6 +88,7 @@ public class GuiQuickEditor extends GuiElement
 
 		this.presets.list.clear();
 		this.presets.list.add(presets);
+		this.presets.list.sort();
 		this.presets.filter("", true);
 
 		this.toggleVisibility(this.presets.isVisible() ? this.presetsButton : this.quickAccessButton);
