@@ -193,7 +193,17 @@ public class GuiBodyPartEditor extends GuiMorphPanel<AbstractMorph, GuiAbstractM
 
             this.bodyParts.setList(manager.parts);
             this.bodyParts.update();
-            this.setPart(manager.parts.isEmpty() ? null : manager.parts.get(0));
+        }
+    }
+
+    @Override
+    public void startEditing()
+    {
+        super.startEditing();
+
+        if (this.parts != null)
+        {
+            this.setPart(this.parts.parts.isEmpty() ? null : this.parts.parts.get(0));
         }
     }
 
