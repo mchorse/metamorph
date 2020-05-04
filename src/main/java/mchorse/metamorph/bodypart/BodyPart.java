@@ -1,6 +1,10 @@
 package mchorse.metamorph.bodypart;
 
 import com.google.common.base.Objects;
+import mchorse.mclib.client.Draw;
+import mchorse.mclib.client.gui.framework.elements.GuiModelRenderer;
+import net.minecraft.client.renderer.GlStateManager;
+import net.minecraft.client.renderer.OpenGlHelper;
 import org.lwjgl.opengl.GL11;
 
 import mchorse.mclib.utils.DummyEntity;
@@ -93,6 +97,28 @@ public class BodyPart
         entity.prevRenderYawOffset = prevRotationYaw;
         entity.rotationYawHead = rotationYawHead;
         entity.prevRotationYawHead = prevRotationYawHead;
+
+        /* Draw axis point for body part renderer */
+        if (GuiModelRenderer.isRendering())
+        {
+            GlStateManager.setActiveTexture(OpenGlHelper.lightmapTexUnit);
+            GlStateManager.disableTexture2D();
+            GlStateManager.setActiveTexture(OpenGlHelper.defaultTexUnit);
+            GlStateManager.disableTexture2D();
+
+            GlStateManager.disableDepth();
+            GlStateManager.disableLighting();
+
+            Draw.point(0, 0, 0);
+
+            GlStateManager.enableLighting();
+            GlStateManager.enableDepth();
+
+            GlStateManager.setActiveTexture(OpenGlHelper.lightmapTexUnit);
+            GlStateManager.enableTexture2D();
+            GlStateManager.setActiveTexture(OpenGlHelper.defaultTexUnit);
+            GlStateManager.enableTexture2D();
+        }
 
         GL11.glPopMatrix();
     }

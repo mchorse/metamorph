@@ -5,12 +5,11 @@ import mchorse.mclib.client.gui.framework.elements.GuiElements;
 import mchorse.mclib.client.gui.framework.elements.buttons.GuiButtonElement;
 import mchorse.mclib.client.gui.framework.elements.buttons.GuiSlotElement;
 import mchorse.mclib.client.gui.framework.elements.buttons.GuiToggleElement;
-import mchorse.mclib.client.gui.framework.elements.input.GuiTrackpadElement;
+import mchorse.mclib.client.gui.framework.elements.input.GuiTransformations;
 import mchorse.mclib.client.gui.framework.elements.list.GuiStringListElement;
 import mchorse.mclib.client.gui.framework.elements.utils.GuiContext;
 import mchorse.mclib.client.gui.framework.elements.utils.GuiInventoryElement;
 import mchorse.mclib.client.gui.utils.keys.IKey;
-import mchorse.mclib.utils.Direction;
 import mchorse.metamorph.api.MorphUtils;
 import mchorse.metamorph.api.morphs.AbstractMorph;
 import mchorse.metamorph.client.gui.creative.GuiNestedEdit;
@@ -36,15 +35,7 @@ public class GuiBodyPartEditor extends GuiMorphPanel<AbstractMorph, GuiAbstractM
     protected GuiButtonElement addPart;
     protected GuiButtonElement removePart;
 
-    protected GuiTrackpadElement tx;
-    protected GuiTrackpadElement ty;
-    protected GuiTrackpadElement tz;
-    protected GuiTrackpadElement sx;
-    protected GuiTrackpadElement sy;
-    protected GuiTrackpadElement sz;
-    protected GuiTrackpadElement rx;
-    protected GuiTrackpadElement ry;
-    protected GuiTrackpadElement rz;
+    protected GuiBodyPartTransformations transformations;
 
     protected GuiStringListElement limbs;
     protected GuiElements<GuiElement> elements = new GuiElements<GuiElement>(this);
@@ -59,36 +50,6 @@ public class GuiBodyPartEditor extends GuiMorphPanel<AbstractMorph, GuiAbstractM
     public GuiBodyPartEditor(Minecraft mc, GuiAbstractMorph editor)
     {
         super(mc, editor);
-
-        this.tx = new GuiTrackpadElement(mc, (value) -> this.part.translate.x = value);
-        this.ty = new GuiTrackpadElement(mc, (value) -> this.part.translate.y = value);
-        this.tz = new GuiTrackpadElement(mc, (value) -> this.part.translate.z = value);
-        this.sx = new GuiTrackpadElement(mc, (value) -> this.part.scale.x = value);
-        this.sy = new GuiTrackpadElement(mc, (value) -> this.part.scale.y = value);
-        this.sz = new GuiTrackpadElement(mc, (value) -> this.part.scale.z = value);
-        this.rx = new GuiTrackpadElement(mc, (value) -> this.part.rotate.x = value);
-        this.ry = new GuiTrackpadElement(mc, (value) -> this.part.rotate.y = value);
-        this.rz = new GuiTrackpadElement(mc, (value) -> this.part.rotate.z = value);
-
-        this.tx.tooltip(IKey.lang("metamorph.gui.body_parts.x"), Direction.TOP);
-        this.ty.tooltip(IKey.lang("metamorph.gui.body_parts.y"), Direction.TOP);
-        this.tz.tooltip(IKey.lang("metamorph.gui.body_parts.z"), Direction.TOP);
-        this.sx.tooltip(IKey.lang("metamorph.gui.body_parts.x"), Direction.TOP);
-        this.sy.tooltip(IKey.lang("metamorph.gui.body_parts.y"), Direction.TOP);
-        this.sz.tooltip(IKey.lang("metamorph.gui.body_parts.z"), Direction.TOP);
-        this.rx.tooltip(IKey.lang("metamorph.gui.body_parts.x"), Direction.TOP);
-        this.ry.tooltip(IKey.lang("metamorph.gui.body_parts.y"), Direction.TOP);
-        this.rz.tooltip(IKey.lang("metamorph.gui.body_parts.z"), Direction.TOP);
-
-        this.tx.flex().set(0, 35, 60, 20).relative(this).x(0.5F, -95).y(1, -80);
-        this.ty.flex().set(0, 25, 60, 20).relative(this.tx);
-        this.tz.flex().set(0, 25, 60, 20).relative(this.ty);
-        this.sx.flex().set(65, 0, 60, 20).relative(this.tx);
-        this.sy.flex().set(0, 25, 60, 20).relative(this.sx);
-        this.sz.flex().set(0, 25, 60, 20).relative(this.sy);
-        this.rx.flex().set(65, 0, 60, 20).relative(this.sx);
-        this.ry.flex().set(0, 25, 60, 20).relative(this.rx);
-        this.rz.flex().set(0, 25, 60, 20).relative(this.ry);
 
         this.limbs = new GuiStringListElement(mc, (str) -> this.pickLimb(str.get(0)));
 
@@ -111,15 +72,17 @@ public class GuiBodyPartEditor extends GuiMorphPanel<AbstractMorph, GuiAbstractM
         this.addPart = new GuiButtonElement(mc, IKey.lang("metamorph.gui.add"), this::addPart);
         this.removePart = new GuiButtonElement(mc, IKey.lang("metamorph.gui.remove"), this::removePart);
         this.useTarget = new GuiToggleElement(mc, IKey.lang("metamorph.gui.body_parts.use_target"), false, this::toggleTarget);
+        this.transformations = new GuiBodyPartTransformations(mc);
 
+        this.transformations.flex().relative(this.area).x(0.5F, -95).y(1, -10).wh(190, 70).anchorY(1F);
         this.limbs.flex().relative(this).set(0, 50, 105, 90).x(1, -115).h(1, -80);
         this.pickMorph.flex().relative(this).set(0, 10, 105, 20).x(1, -115);
         this.addPart.flex().relative(this).set(10, 10, 50, 20);
         this.removePart.flex().relative(this.addPart).set(55, 0, 50, 20);
-        this.bodyParts.flex().relative(this).set(10, 50, 105, 0).h(1, -55);
+        this.bodyParts.flex().relative(this).set(10, 50, 105, 0).hTo(this.transformations.flex(), 1F);
         this.useTarget.flex().relative(this).set(0, 0, 105, 11).x(1, -115).y(1, -21);
 
-        this.elements.add(this.tx, this.ty, this.tz, this.sx, this.sy, this.sz, this.rx, this.ry, this.rz, this.limbs, this.pickMorph, this.useTarget);
+        this.elements.add(this.limbs, this.pickMorph, this.useTarget, this.transformations);
         this.add(this.addPart, this.removePart, this.bodyParts, this.elements);
 
         /* Inventory */
@@ -165,10 +128,11 @@ public class GuiBodyPartEditor extends GuiMorphPanel<AbstractMorph, GuiAbstractM
         part.init();
 
         this.parts.parts.add(part);
-        this.bodyParts.update();
-        this.bodyParts.setCurrent(part);
         this.part = part;
         this.setPart(part);
+
+        this.bodyParts.setCurrentDirect(part);
+        this.bodyParts.update();
     }
 
     protected void removePart(GuiButtonElement b)
@@ -225,7 +189,11 @@ public class GuiBodyPartEditor extends GuiMorphPanel<AbstractMorph, GuiAbstractM
         {
             BodyPartManager manager = ((IBodyPartProvider) morph).getBodyPart();
 
-            this.startEditing(manager);
+            this.parts = manager;
+
+            this.bodyParts.setList(manager.parts);
+            this.bodyParts.update();
+            this.setPart(manager.parts.isEmpty() ? null : manager.parts.get(0));
         }
     }
 
@@ -234,21 +202,6 @@ public class GuiBodyPartEditor extends GuiMorphPanel<AbstractMorph, GuiAbstractM
         this.limbs.clear();
         this.limbs.add(limbs);
         this.limbs.sort();
-    }
-
-    public void startEditing(BodyPartManager manager)
-    {
-        this.parts = manager;
-
-        this.bodyParts.setList(manager.parts);
-        this.bodyParts.update();
-        this.setPart(manager.parts.isEmpty() ? null : manager.parts.get(0));
-    }
-
-    public void setupBodyEditor()
-    {
-        this.bodyParts.update();
-        this.setPart(this.parts.parts.isEmpty() ? null : this.parts.parts.get(0));
     }
 
     protected void setPart(BodyPart part)
@@ -260,7 +213,7 @@ public class GuiBodyPartEditor extends GuiMorphPanel<AbstractMorph, GuiAbstractM
         {
             this.fillBodyPart(part);
             this.limbs.setCurrent(part.limb);
-            this.bodyParts.setCurrent(part);
+            this.bodyParts.setCurrentDirect(part);
         }
     }
 
@@ -273,17 +226,7 @@ public class GuiBodyPartEditor extends GuiMorphPanel<AbstractMorph, GuiAbstractM
     {
         if (part != null)
         {
-            this.tx.setValue(part.translate.x);
-            this.ty.setValue(part.translate.y);
-            this.tz.setValue(part.translate.z);
-
-            this.sx.setValue(part.scale.x);
-            this.sy.setValue(part.scale.y);
-            this.sz.setValue(part.scale.z);
-
-            this.rx.setValue(part.rotate.x);
-            this.ry.setValue(part.rotate.y);
-            this.rz.setValue(part.rotate.z);
+            this.transformations.setBodyPart(part);
 
             this.useTarget.toggled(part.useTarget);
 
@@ -303,12 +246,54 @@ public class GuiBodyPartEditor extends GuiMorphPanel<AbstractMorph, GuiAbstractM
         {
             Gui.drawRect(this.limbs.area.x, this.limbs.area.y, this.limbs.area.ex(), this.limbs.area.ey(), 0x88000000);
             this.font.drawStringWithShadow(I18n.format("metamorph.gui.body_parts.limbs"), this.limbs.area.x, this.limbs.area.y - 12, 0xffffff);
-
-            this.font.drawStringWithShadow(I18n.format("metamorph.gui.body_parts.translate"), this.tx.area.x, this.tx.area.y - 12, 0xffffff);
-            this.font.drawStringWithShadow(I18n.format("metamorph.gui.body_parts.scale"), this.sx.area.x, this.sx.area.y - 12, 0xffffff);
-            this.font.drawStringWithShadow(I18n.format("metamorph.gui.body_parts.rotate"), this.rx.area.x, this.rx.area.y - 12, 0xffffff);
         }
 
         super.draw(context);
+    }
+
+    public static class GuiBodyPartTransformations extends GuiTransformations
+    {
+        public BodyPart part;
+
+        public GuiBodyPartTransformations(Minecraft mc)
+        {
+            super(mc);
+        }
+
+        public void setBodyPart(BodyPart part)
+        {
+            this.part = part;
+
+            if (part != null)
+            {
+                this.fillT(part.translate.x, part.translate.y, part.translate.z);
+                this.fillS(part.scale.x, part.scale.y, part.scale.z);
+                this.fillR(part.rotate.x, part.rotate.y, part.rotate.z);
+            }
+        }
+
+        @Override
+        public void setT(float x, float y, float z)
+        {
+            this.part.translate.x = x;
+            this.part.translate.y = y;
+            this.part.translate.z = z;
+        }
+
+        @Override
+        public void setS(float x, float y, float z)
+        {
+            this.part.scale.x = x;
+            this.part.scale.y = y;
+            this.part.scale.z = z;
+        }
+
+        @Override
+        public void setR(float x, float y, float z)
+        {
+            this.part.rotate.x = x;
+            this.part.rotate.y = y;
+            this.part.rotate.z = z;
+        }
     }
 }

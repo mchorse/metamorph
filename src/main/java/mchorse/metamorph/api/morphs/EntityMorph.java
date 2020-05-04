@@ -1064,6 +1064,11 @@ public class EntityMorph extends AbstractMorph implements IBodyPartProvider
         {
             if (this.morph != null)
             {
+                if (entity.isSneaking())
+                {
+                    GlStateManager.translate(0.0F, 0.2F, 0.0F);
+                }
+
                 this.morph.renderBodyParts(entity, 1F);
             }
         }

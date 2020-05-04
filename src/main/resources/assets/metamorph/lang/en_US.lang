@@ -10,16 +10,10 @@ key.metamorph.survival_menu=Open survival morph menu
 key.metamorph.demorph=Demorph (turn back to player)
 
 # GUI
-metamorph.gui.body_parts.x=X
-metamorph.gui.body_parts.y=Y
-metamorph.gui.body_parts.z=Z
 metamorph.gui.body_parts.pick=Pick morph
 metamorph.gui.body_parts.use_target=Use target
 metamorph.gui.body_parts.parts=Body parts
 metamorph.gui.body_parts.limbs=Limbs
-metamorph.gui.body_parts.translate=Translate
-metamorph.gui.body_parts.scale=Scale
-metamorph.gui.body_parts.rotate=Rotate
 metamorph.gui.body_parts.open=Open body parts
 
 metamorph.gui.add=Add
