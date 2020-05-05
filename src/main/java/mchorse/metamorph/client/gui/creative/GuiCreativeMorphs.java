@@ -518,6 +518,7 @@ public class GuiCreativeMorphs extends GuiElement
 
                 selectedSection.morph = found;
                 selectedSection.category = selectedCategory;
+                this.pickMorph(found);
             }
         }
         else
@@ -543,6 +544,7 @@ public class GuiCreativeMorphs extends GuiElement
         this.selected = this.userSection;
         this.selected.morph = morph;
         this.selected.category = this.user.recent;
+        this.pickMorph(morph);
 
         this.scrollTo = true;
 
