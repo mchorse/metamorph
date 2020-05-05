@@ -127,13 +127,18 @@ public class GuiAbstractMorph<T extends AbstractMorph> extends GuiPanelBase<GuiM
     {
         try
         {
-            NBTTagCompound tag = morph.toNBT();
-
-            tag.merge(JsonToNBT.getTagFromJson(json));
-            list.add(new Label<NBTTagCompound>(IKey.str(label), tag));
+            this.addPreset(morph, list, label, JsonToNBT.getTagFromJson(json));
         }
         catch (Exception e)
         {}
+    }
+
+    protected void addPreset(AbstractMorph morph, List<Label<NBTTagCompound>> list, String label, NBTTagCompound tag)
+    {
+        NBTTagCompound morphTag = morph.toNBT();
+
+        morphTag.merge(tag);
+        list.add(new Label<NBTTagCompound>(IKey.str(label), morphTag));
     }
 
     /**
