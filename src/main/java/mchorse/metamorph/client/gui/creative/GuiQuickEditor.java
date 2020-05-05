@@ -15,6 +15,7 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.nbt.NBTTagCompound;
 
 import java.util.List;
+import java.util.Objects;
 
 /**
  * Quick morph editor
@@ -31,6 +32,9 @@ public class GuiQuickEditor extends GuiElement
 
 	public GuiLabelSearchListElement<NBTTagCompound> presets;
 	public GuiScrollElement quickAccess;
+
+	private AbstractMorph last;
+
 	public GuiQuickEditor(Minecraft mc, GuiCreativeMorphs parent)
 	{
 		super(mc);
@@ -75,6 +79,11 @@ public class GuiQuickEditor extends GuiElement
 
 	public void setMorph(AbstractMorph morph, GuiAbstractMorph<AbstractMorph> editor)
 	{
+		if (Objects.equals(this.last, morph))
+		{
+			return;
+		}
+
 		/* Fill quick access */
 		this.quickAccess.removeAll();
 
@@ -93,6 +102,8 @@ public class GuiQuickEditor extends GuiElement
 
 		this.toggleVisibility(this.presets.isVisible() ? this.presetsButton : this.quickAccessButton);
 		this.resize();
+
+		this.last = morph;
 	}
 
 	protected void setPreset(List<Label<NBTTagCompound>> label)
