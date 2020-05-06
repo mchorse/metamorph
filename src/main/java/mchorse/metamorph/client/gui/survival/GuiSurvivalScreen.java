@@ -21,6 +21,7 @@ import mchorse.metamorph.capabilities.morphing.IMorphing;
 import mchorse.metamorph.capabilities.morphing.Morphing;
 import mchorse.metamorph.client.gui.creative.GuiMorphSection;
 import mchorse.metamorph.network.Dispatcher;
+import mchorse.metamorph.network.common.creative.PacketMorph;
 import mchorse.metamorph.network.common.survival.PacketFavorite;
 import mchorse.metamorph.network.common.survival.PacketKeybind;
 import mchorse.metamorph.network.common.survival.PacketRemoveMorph;
@@ -110,7 +111,14 @@ public class GuiSurvivalScreen extends GuiBase
 
         if (morph != null)
         {
-            Dispatcher.sendToServer(new PacketSelectMorph(this.indexOf(morph)));
+            if (this.selected.category == this.acquired)
+            {
+                Dispatcher.sendToServer(new PacketSelectMorph(this.indexOf(morph)));
+            }
+            else if (this.creative)
+            {
+                Dispatcher.sendToServer(new PacketMorph(morph));
+            }
 
             this.closeScreen();
         }
