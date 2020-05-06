@@ -100,7 +100,7 @@ public class GuiBodyPartEditor extends GuiMorphPanel<AbstractMorph, GuiAbstractM
             this.stacks.add(this.slots[i]);
         }
 
-        this.add(this.stacks, this.inventory);
+        this.elements.add(this.stacks, this.inventory);
     }
 
     protected void addPart(GuiButtonElement b)
@@ -172,6 +172,11 @@ public class GuiBodyPartEditor extends GuiMorphPanel<AbstractMorph, GuiAbstractM
 
     protected void pickItem(ItemStack stack)
     {
+        if (this.part == null)
+        {
+            return;
+        }
+
         GuiSlotElement element = this.inventory.linked;
 
         element.stack = stack.isEmpty() ? ItemStack.EMPTY : stack.copy();
