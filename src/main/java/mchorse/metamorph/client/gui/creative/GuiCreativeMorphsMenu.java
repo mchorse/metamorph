@@ -61,7 +61,7 @@ public class GuiCreativeMorphsMenu extends GuiCreativeMorphs
         {
             this.finish();
             this.removeFromParent();
-            
+
             GuiBase.getCurrent().setContextMenu(null);
         }
         else
@@ -74,6 +74,12 @@ public class GuiCreativeMorphsMenu extends GuiCreativeMorphs
     protected void updateExitKey()
     {
         this.exitKey.active = true;
+    }
+
+    @Override
+    public boolean isSelectedMorphIsEditable()
+    {
+        return this.selected != null && this.selected.category == this.user.recent && this.getSelected() != null;
     }
 
     /* Don't let click event pass through the background... */

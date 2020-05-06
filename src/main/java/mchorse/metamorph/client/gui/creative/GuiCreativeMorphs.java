@@ -69,11 +69,11 @@ public class GuiCreativeMorphs extends GuiElement
     public GuiQuickEditor quickEditor;
     public GuiScrollElement morphs;
 
-    public UserSection user;
-    private List<GuiMorphSection> sections = new ArrayList<GuiMorphSection>();
-    private GuiMorphSection userSection;
-    private GuiMorphSection selected;
-    private boolean scrollTo;
+    protected UserSection user;
+    protected List<GuiMorphSection> sections = new ArrayList<GuiMorphSection>();
+    protected GuiMorphSection userSection;
+    protected GuiMorphSection selected;
+    protected boolean scrollTo;
 
     private Timer timer = new Timer(100);
     private Stack<NestedEdit> nestedEdits = new Stack<NestedEdit>();
