@@ -13,6 +13,7 @@ import mchorse.mclib.client.gui.utils.Keybind;
 import mchorse.mclib.client.gui.utils.keys.IKey;
 import mchorse.mclib.utils.Timer;
 import mchorse.metamorph.api.MorphManager;
+import mchorse.metamorph.api.MorphUtils;
 import mchorse.metamorph.api.creative.MorphList;
 import mchorse.metamorph.api.creative.categories.MorphCategory;
 import mchorse.metamorph.api.creative.sections.MorphSection;
@@ -358,8 +359,10 @@ public class GuiCreativeMorphs extends GuiElement
         if (this.isEditMode())
         {
             this.editor.delegate.finishEdit();
-            this.syncSelected();
         }
+
+        this.syncSelected();
+        this.pickMorph(MorphUtils.copy(this.getSelected()));
     }
 
     public boolean isSelectedMorphIsEditable()

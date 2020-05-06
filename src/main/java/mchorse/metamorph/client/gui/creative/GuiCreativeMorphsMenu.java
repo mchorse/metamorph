@@ -61,7 +61,7 @@ public class GuiCreativeMorphsMenu extends GuiCreativeMorphs
         {
             this.finish();
             this.removeFromParent();
-
+            
             GuiBase.getCurrent().setContextMenu(null);
         }
         else
