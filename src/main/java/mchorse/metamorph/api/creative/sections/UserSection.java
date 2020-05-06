@@ -106,12 +106,16 @@ public class UserSection extends MorphSection
 	{
 		super.reset();
 
+		if (this.loaded)
+		{
+			this.loaded = false;
+			this.save();
+		}
+
 		this.categories.clear();
 		this.acquired.clear();
 		this.recent.clear();
 		this.global.clear();
-
-		this.loaded = false;
 	}
 
 	@Override
