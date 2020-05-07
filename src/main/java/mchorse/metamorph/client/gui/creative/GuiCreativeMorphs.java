@@ -670,8 +670,8 @@ public class GuiCreativeMorphs extends GuiElement
             this.editing = editing;
 
             this.selected = selected;
-            this.selectedCategory = selected.category;
-            this.selectedMorph = selected.morph;
+            this.selectedCategory = selected == null ? null : selected.category;
+            this.selectedMorph = selected == null ? null : selected.morph;
         }
     }
 }

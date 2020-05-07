@@ -23,10 +23,6 @@ public class GuiMorphRenderer extends GuiModelRenderer
 			return;
 		}
 
-		this.entity.rotationYaw = this.entity.prevRotationYaw = 0;
-		this.entity.rotationPitch = this.entity.prevRotationPitch = 0;
-		this.entity.rotationYawHead = this.entity.prevRotationYawHead = 0;
-		this.entity.renderYawOffset = this.entity.prevRenderYawOffset = 0;
 		this.morph.render(this.entity, 0, 0, 0, this.yaw, context.partialTicks);
 	}
 }
