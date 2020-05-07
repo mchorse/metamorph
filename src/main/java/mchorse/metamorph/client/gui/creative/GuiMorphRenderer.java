@@ -23,23 +23,10 @@ public class GuiMorphRenderer extends GuiModelRenderer
 			return;
 		}
 
-		EntityPlayer player = this.mc.player;
-
-		float yaw = player.rotationYaw;
-		float head = player.rotationYawHead;
-		float pitch = player.rotationPitch;
-		float yawOffset = player.renderYawOffset;
-
-		player.rotationYaw = player.prevRotationYaw = 0;
-		player.rotationYawHead = player.prevRotationYawHead = 0;
-		player.rotationPitch = player.prevRotationPitch = 0;
-		player.renderYawOffset = player.prevRenderYawOffset = 0;
-
-		this.morph.render(player, 0, 0, 0, this.yaw, context.partialTicks);
-
-		player.rotationYaw = player.prevRotationYaw = yaw;
-		player.rotationYawHead = player.prevRotationYawHead = head;
-		player.rotationPitch = player.prevRotationPitch = pitch;
-		player.renderYawOffset = player.prevRenderYawOffset = yawOffset;
+		this.entity.rotationYaw = this.entity.prevRotationYaw = 0;
+		this.entity.rotationPitch = this.entity.prevRotationPitch = 0;
+		this.entity.rotationYawHead = this.entity.prevRotationYawHead = 0;
+		this.entity.renderYawOffset = this.entity.prevRenderYawOffset = 0;
+		this.morph.render(this.entity, 0, 0, 0, this.yaw, context.partialTicks);
 	}
 }
