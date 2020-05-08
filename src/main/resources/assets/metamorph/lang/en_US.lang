@@ -32,6 +32,12 @@ metamorph.gui.selectors.name=Name
 metamorph.gui.selectors.type=Type
 metamorph.gui.selectors.enabled=Enabled
 
+metamorph.gui.morphs.keys.category=Morph navigation
+metamorph.gui.morphs.keys.up=Select morph above
+metamorph.gui.morphs.keys.down=Select morph below
+metamorph.gui.morphs.keys.right=Select morph to the right
+metamorph.gui.morphs.keys.left=Select morph to the left
+
 metamorph.gui.creative.command=Copy /morph command for selected morph
 metamorph.gui.creative.edit=Edit
 metamorph.gui.creative.pick=Pick

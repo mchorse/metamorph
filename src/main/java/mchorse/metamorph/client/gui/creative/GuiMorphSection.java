@@ -13,6 +13,7 @@ import mchorse.metamorph.api.creative.categories.MorphCategory;
 import mchorse.metamorph.api.creative.categories.UserCategory;
 import mchorse.metamorph.api.creative.sections.MorphSection;
 import mchorse.metamorph.api.morphs.AbstractMorph;
+import mchorse.metamorph.client.gui.GuiMorphs;
 import mchorse.metamorph.util.MMIcons;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.Gui;
@@ -42,8 +43,6 @@ public class GuiMorphSection extends GuiElement
 	protected AbstractMorph hoverMorph;
 	protected MorphCategory hoverCategory;
 
-	public int selectedX;
-	public int selectedY;
 	public int height;
 
 	private String filter = "";
@@ -71,7 +70,7 @@ public class GuiMorphSection extends GuiElement
 		this.category = category;
 	}
 
-	private void pick(AbstractMorph morph, MorphCategory category)
+	public void pick(AbstractMorph morph, MorphCategory category)
 	{
 		this.set(morph, category);
 
@@ -113,6 +112,115 @@ public class GuiMorphSection extends GuiElement
 		return morph.name.toLowerCase().contains(this.filter) || morph.getDisplayName().toLowerCase().contains(this.filter);
 	}
 
+	public void calculateXY(GuiMorphs morphs)
+	{
+		int j = 0;
+
+		for (AbstractMorph morph : this.category.getMorphs())
+		{
+			if (morph == this.morph)
+			{
+				int row = this.getPerRow();
+
+				morphs.x = j % row;
+				morphs.y = j / row;
+
+				return;
+			}
+
+			if (this.isMatching(morph))
+			{
+				j ++;
+			}
+		}
+	}
+
+	public AbstractMorph getMorphAt(GuiMorphs morphs)
+	{
+		int row = this.getPerRow();
+		int size = this.category.getMorphs().size();
+
+		/* Shortcuts */
+		if (morphs.y < 0)
+		{
+			return null;
+		}
+		else if (morphs.y < size / row + 1)
+		{
+			int i = morphs.x + morphs.y * row;
+
+			if (i >= size)
+			{
+				return this.category.getMorphs().get(size - 1);
+			}
+		}
+
+		/* Find the actual morph */
+		int j = 0;
+
+		if (morphs.x < 0) morphs.x = row - 1;
+		if (morphs.x > row - 1) morphs.x = 0;
+
+		for (AbstractMorph morph : this.category.getMorphs())
+		{
+			if (this.isMatching(morph))
+			{
+				if (j % row == morphs.x && j / row == morphs.y)
+				{
+					return morph;
+				}
+
+				j ++;
+			}
+		}
+
+		return null;
+	}
+
+	public int getY(AbstractMorph selected)
+	{
+		int y = HEADER_HEIGHT;
+		int row = this.getPerRow();
+
+		for (MorphCategory category : this.section.categories)
+		{
+			int count = this.getMorphsSize(category);
+
+			if (category.isHidden() || (count == 0 && !this.noFilter()))
+			{
+				continue;
+			}
+
+			y += CATEGORY_HEIGHT + 5;
+
+			for (int i = 0, j = 0; i < category.getMorphs().size(); i ++)
+			{
+				AbstractMorph morph = category.getMorphs().get(i);
+
+				if (!this.isMatching(morph))
+				{
+					continue;
+				}
+
+				if (j != 0 && j % row == 0)
+				{
+					y += this.cellHeight;
+				}
+
+				if (morph == selected)
+				{
+					return y;
+				}
+
+				j ++;
+			}
+
+			y += this.cellHeight + 5;
+		}
+
+		return -1;
+	}
+
 	/* Calculation methods */
 
 	public int getMorphsSize(MorphCategory category)
@@ -139,10 +247,10 @@ public class GuiMorphSection extends GuiElement
 
 	public int getCategoryHeight(MorphCategory category)
 	{
-		return this.getCategoryHeight(category, this.getMorphsSize(category));
+		return this.getCategoryHeight(this.getMorphsSize(category));
 	}
 
-	public int getCategoryHeight(MorphCategory category, int given)
+	public int getCategoryHeight(int given)
 	{
 		int size = Math.max(given, 1);
 
@@ -217,7 +325,7 @@ public class GuiMorphSection extends GuiElement
 					}
 				}
 
-				y -= this.getCategoryHeight(category, count) + 5;
+				y -= this.getCategoryHeight(count) + 5;
 			}
 
 			if (!result)
@@ -287,8 +395,6 @@ public class GuiMorphSection extends GuiElement
 
 		this.hoverMorph = null;
 		this.hoverCategory = null;
-		this.selectedX = 0;
-		this.selectedY = 0;
 
 		if (this.section.hidden)
 		{
@@ -337,12 +443,6 @@ public class GuiMorphSection extends GuiElement
 
 				int mx = this.area.x + Math.round(x);
 				int my = this.area.y + y;
-
-				if (this.morph == morph)
-				{
-					this.selectedX = Math.round(x);
-					this.selectedY = y;
-				}
 
 				x += this.area.w / (float) row;
 				int w = Math.round(x - (mx - this.area.x));
