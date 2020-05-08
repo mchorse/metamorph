@@ -5,12 +5,10 @@ import mchorse.mclib.client.gui.framework.elements.buttons.GuiButtonElement;
 import mchorse.mclib.client.gui.framework.elements.utils.GuiContext;
 import mchorse.mclib.client.gui.utils.keys.IKey;
 import mchorse.metamorph.api.morphs.AbstractMorph;
-import mchorse.metamorph.client.gui.editor.GuiAbstractMorph;
 import mchorse.metamorph.network.Dispatcher;
 import mchorse.metamorph.network.common.creative.PacketAcquireMorph;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.Gui;
-import net.minecraft.client.resources.I18n;
 import org.lwjgl.opengl.GL11;
 
 import java.util.function.Consumer;
@@ -18,7 +16,7 @@ import java.util.function.Consumer;
 /**
  * Creative morph menu, but with a close button 
  */
-public class GuiCreativeMorphsMenu extends GuiCreativeMorphs
+public class GuiCreativeMorphsMenu extends GuiCreativeMorphsList
 {
     private GuiButtonElement close;
     private GuiButtonElement acquire;
@@ -79,7 +77,7 @@ public class GuiCreativeMorphsMenu extends GuiCreativeMorphs
     @Override
     public boolean isSelectedMorphIsEditable()
     {
-        return this.selected != null && this.selected.category == this.user.recent && this.getSelected() != null;
+        return this.morphs.selected != null && this.morphs.selected.category == this.morphs.user.recent;
     }
 
     /* Don't let click event pass through the background... */

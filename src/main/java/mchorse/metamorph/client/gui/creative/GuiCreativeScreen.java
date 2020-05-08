@@ -6,7 +6,6 @@ import mchorse.mclib.client.gui.framework.elements.buttons.GuiIconElement;
 import mchorse.mclib.client.gui.framework.elements.utils.GuiDraw;
 import mchorse.mclib.client.gui.utils.Icons;
 import mchorse.mclib.client.gui.utils.keys.IKey;
-import mchorse.mclib.utils.Direction;
 import mchorse.metamorph.api.morphs.AbstractMorph;
 import mchorse.metamorph.capabilities.morphing.Morphing;
 import mchorse.metamorph.network.Dispatcher;
@@ -16,7 +15,6 @@ import mchorse.metamorph.util.MMIcons;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.Gui;
 import net.minecraft.client.gui.GuiScreen;
-import net.minecraft.client.resources.I18n;
 import net.minecraft.nbt.NBTTagCompound;
 import org.lwjgl.input.Keyboard;
 
@@ -40,7 +38,7 @@ public class GuiCreativeScreen extends GuiBase
     private GuiButtonElement morph;
     private GuiButtonElement acquire;
     private GuiButtonElement close;
-    private GuiCreativeMorphs pane;
+    private GuiCreativeMorphsList pane;
 
     public GuiCreativeScreen()
     {
@@ -77,7 +75,7 @@ public class GuiCreativeScreen extends GuiBase
             }
         });
         this.close = new GuiButtonElement(mc, IKey.lang("metamorph.gui.close"), (b) -> this.closeScreen());
-        this.pane = new GuiCreativeMorphs(mc, this::setMorph);
+        this.pane = new GuiCreativeMorphsList(mc, this::setMorph);
         this.pane.setSelected(Morphing.get(mc.player).getCurrentMorph());
 
         this.morph.flex().relative(this.viewport).set(0, 10, 60, 20).x(1, -200);

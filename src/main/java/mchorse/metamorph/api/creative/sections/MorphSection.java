@@ -1,7 +1,7 @@
 package mchorse.metamorph.api.creative.sections;
 
 import mchorse.metamorph.api.creative.categories.MorphCategory;
-import mchorse.metamorph.client.gui.creative.GuiCreativeMorphs;
+import mchorse.metamorph.client.gui.creative.GuiCreativeMorphsList;
 import mchorse.metamorph.client.gui.creative.GuiMorphSection;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.resources.I18n;
@@ -54,7 +54,7 @@ public class MorphSection
 	{}
 
 	@SideOnly(Side.CLIENT)
-	public GuiMorphSection getGUI(Minecraft mc, GuiCreativeMorphs parent, Consumer<GuiMorphSection> callback)
+	public GuiMorphSection getGUI(Minecraft mc, GuiCreativeMorphsList parent, Consumer<GuiMorphSection> callback)
 	{
 		return new GuiMorphSection(mc, parent, this, callback);
 	}

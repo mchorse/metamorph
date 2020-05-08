@@ -1,7 +1,6 @@
 package mchorse.metamorph.client.gui.creative;
 
 import mchorse.mclib.McLib;
-import mchorse.mclib.client.gui.framework.GuiBase;
 import mchorse.mclib.client.gui.framework.elements.GuiElement;
 import mchorse.mclib.client.gui.framework.elements.context.GuiContextMenu;
 import mchorse.mclib.client.gui.framework.elements.context.GuiSimpleContextMenu;
@@ -11,8 +10,8 @@ import mchorse.mclib.client.gui.utils.Area;
 import mchorse.mclib.client.gui.utils.Icons;
 import mchorse.mclib.client.gui.utils.keys.IKey;
 import mchorse.metamorph.api.creative.categories.MorphCategory;
-import mchorse.metamorph.api.creative.sections.MorphSection;
 import mchorse.metamorph.api.creative.categories.UserCategory;
+import mchorse.metamorph.api.creative.sections.MorphSection;
 import mchorse.metamorph.api.morphs.AbstractMorph;
 import mchorse.metamorph.util.MMIcons;
 import net.minecraft.client.Minecraft;
@@ -28,7 +27,7 @@ public class GuiMorphSection extends GuiElement
 	public static final int HEADER_HEIGHT = 20;
 	public static final int CATEGORY_HEIGHT = 16;
 
-	public GuiCreativeMorphs parent;
+	public GuiCreativeMorphsList parent;
 	public MorphSection section;
 	public Consumer<GuiMorphSection> callback;
 
@@ -49,7 +48,7 @@ public class GuiMorphSection extends GuiElement
 
 	private String filter = "";
 
-	public GuiMorphSection(Minecraft mc, GuiCreativeMorphs parent, MorphSection section, Consumer<GuiMorphSection> callback)
+	public GuiMorphSection(Minecraft mc, GuiCreativeMorphsList parent, MorphSection section, Consumer<GuiMorphSection> callback)
 	{
 		super(mc);
 
@@ -66,10 +65,25 @@ public class GuiMorphSection extends GuiElement
 		return this;
 	}
 
+	public void set(AbstractMorph morph, MorphCategory category)
+	{
+		this.morph = morph;
+		this.category = category;
+	}
+
+	private void pick(AbstractMorph morph, MorphCategory category)
+	{
+		this.set(morph, category);
+
+		if (this.callback != null)
+		{
+			this.callback.accept(this);
+		}
+	}
+
 	public void reset()
 	{
-		this.morph = null;
-		this.category = null;
+		this.set(null, null);
 	}
 
 	/* Searching methods */
@@ -175,7 +189,7 @@ public class GuiMorphSection extends GuiElement
 
 					if (count == real)
 					{
-						this.set(category.getMorphs().get(i), category);
+						this.pick(category.getMorphs().get(i), category);
 
 						result = true;
 
@@ -194,7 +208,7 @@ public class GuiMorphSection extends GuiElement
 
 							if (i == k)
 							{
-								this.set(morph, category);
+								this.pick(morph, category);
 
 								result = true;
 								break category;
@@ -208,22 +222,11 @@ public class GuiMorphSection extends GuiElement
 
 			if (!result)
 			{
-				this.set(null, null);
+				this.pick(null, null);
 			}
 		}
 
 		return super.mouseClicked(context) || result;
-	}
-
-	private void set(AbstractMorph morph, MorphCategory category)
-	{
-		this.morph = morph;
-		this.category = category;
-
-		if (this.callback != null)
-		{
-			this.callback.accept(this);
-		}
 	}
 
 	@Override
@@ -237,38 +240,22 @@ public class GuiMorphSection extends GuiElement
 		GuiSimpleContextMenu contextMenu = new GuiSimpleContextMenu(this.mc);
 		AbstractMorph morph = this.hoverMorph;
 
-		if (this.hoverMorph != null)
+		if (morph != null)
 		{
-			if (this.parent.user.global.size() > 0 && !(this.hoverCategory instanceof UserCategory))
+			if (!(this.hoverCategory instanceof UserCategory))
 			{
-				contextMenu.action(Icons.UPLOAD, IKey.lang("metamorph.gui.creative.context.add_global"), () -> this.showGlobalMorphs(morph));
+				Runnable runnable = this.parent.showGlobalMorphs(morph);
+
+				if (runnable != null)
+				{
+					contextMenu.action(Icons.UPLOAD, IKey.lang("metamorph.gui.creative.context.add_global"), runnable);
+				}
 			}
 
-			contextMenu.action(Icons.EDIT, IKey.lang("metamorph.gui.creative.context.edit"), () ->
-			{
-				this.parent.enterEditMorph(morph);
-			});
+			contextMenu.action(Icons.EDIT, IKey.lang("metamorph.gui.creative.context.edit"), () -> this.parent.enterEditMorph(morph));
 		}
 
 		return contextMenu;
-	}
-
-	private void showGlobalMorphs(AbstractMorph morph)
-	{
-		GuiSimpleContextMenu contextMenu = new GuiSimpleContextMenu(this.mc);
-
-		for (UserCategory category : this.parent.user.global)
-		{
-			contextMenu.action(IKey.str(category.getTitle()), () ->
-			{
-				AbstractMorph added = morph.copy();
-
-				category.add(added);
-				this.parent.setSelected(added);
-			});
-		}
-
-		GuiBase.getCurrent().replaceContextMenu(contextMenu);
 	}
 
 	@Override

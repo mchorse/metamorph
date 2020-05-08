@@ -20,7 +20,7 @@ import java.util.function.Consumer;
 
 public class GuiUserSection extends GuiMorphSection
 {
-	public GuiUserSection(Minecraft mc, GuiCreativeMorphs parent, MorphSection section, Consumer<GuiMorphSection> callback)
+	public GuiUserSection(Minecraft mc, GuiCreativeMorphsList parent, MorphSection section, Consumer<GuiMorphSection> callback)
 	{
 		super(mc, parent, section, callback);
 	}

@@ -14,7 +14,7 @@ import mchorse.metamorph.api.creative.categories.UserCategory;
 import mchorse.metamorph.api.morphs.AbstractMorph;
 import mchorse.metamorph.capabilities.morphing.IMorphing;
 import mchorse.metamorph.capabilities.morphing.Morphing;
-import mchorse.metamorph.client.gui.creative.GuiCreativeMorphs;
+import mchorse.metamorph.client.gui.creative.GuiCreativeMorphsList;
 import mchorse.metamorph.client.gui.creative.GuiMorphSection;
 import mchorse.metamorph.client.gui.creative.GuiUserSection;
 import net.minecraft.client.Minecraft;
@@ -120,7 +120,7 @@ public class UserSection extends MorphSection
 
 	@Override
 	@SideOnly(Side.CLIENT)
-	public GuiMorphSection getGUI(Minecraft mc, GuiCreativeMorphs parent, Consumer<GuiMorphSection> callback)
+	public GuiMorphSection getGUI(Minecraft mc, GuiCreativeMorphsList parent, Consumer<GuiMorphSection> callback)
 	{
 		return new GuiUserSection(mc, parent, this, callback);
 	}

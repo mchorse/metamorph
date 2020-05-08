@@ -11,7 +11,7 @@ import mchorse.mclib.client.gui.utils.Icons;
 import mchorse.mclib.client.gui.utils.Label;
 import mchorse.mclib.client.gui.utils.keys.IKey;
 import mchorse.metamorph.api.morphs.AbstractMorph;
-import mchorse.metamorph.client.gui.creative.GuiCreativeMorphs;
+import mchorse.metamorph.client.gui.creative.GuiCreativeMorphsList;
 import mchorse.metamorph.client.gui.creative.GuiMorphRenderer;
 import mchorse.metamorph.util.MMIcons;
 import net.minecraft.client.Minecraft;
@@ -29,7 +29,7 @@ import java.util.List;
 @SuppressWarnings({"rawtypes", "unchecked"})
 public class GuiAbstractMorph<T extends AbstractMorph> extends GuiPanelBase<GuiMorphPanel>
 {
-    public GuiCreativeMorphs morphs;
+    public GuiCreativeMorphsList morphs;
 
     public GuiIconElement finish;
     public GuiModelRenderer renderer;
@@ -59,7 +59,7 @@ public class GuiAbstractMorph<T extends AbstractMorph> extends GuiPanelBase<GuiM
         return new GuiMorphRenderer(mc);
     }
 
-    public void setMorphs(GuiCreativeMorphs morphs)
+    public void setMorphs(GuiCreativeMorphsList morphs)
     {
         this.morphs = morphs;
     }
@@ -144,7 +144,7 @@ public class GuiAbstractMorph<T extends AbstractMorph> extends GuiPanelBase<GuiM
     /**
      * Get quick access editing fields
      */
-    public List<GuiElement> getFields(Minecraft mc, GuiCreativeMorphs morphs, T morph)
+    public List<GuiElement> getFields(Minecraft mc, GuiCreativeMorphsList morphs, T morph)
     {
         List<GuiElement> elements = new ArrayList<GuiElement>();
         GuiTextElement displayName = new GuiTextElement(mc, (name) ->

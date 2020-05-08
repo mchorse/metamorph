@@ -3,7 +3,6 @@ package mchorse.metamorph.client.gui.creative;
 import mchorse.mclib.client.gui.framework.elements.GuiElement;
 import mchorse.mclib.client.gui.framework.elements.GuiScrollElement;
 import mchorse.mclib.client.gui.framework.elements.buttons.GuiButtonElement;
-import mchorse.mclib.client.gui.framework.elements.list.GuiLabelListElement;
 import mchorse.mclib.client.gui.framework.elements.list.GuiLabelSearchListElement;
 import mchorse.mclib.client.gui.framework.elements.utils.GuiContext;
 import mchorse.mclib.client.gui.utils.Elements;
@@ -25,7 +24,7 @@ import java.util.Objects;
  */
 public class GuiQuickEditor extends GuiElement
 {
-	public GuiCreativeMorphs parent;
+	public GuiCreativeMorphsList parent;
 
 	public GuiButtonElement presetsButton;
 	public GuiButtonElement randomPreset;
@@ -36,7 +35,7 @@ public class GuiQuickEditor extends GuiElement
 
 	private AbstractMorph last;
 
-	public GuiQuickEditor(Minecraft mc, GuiCreativeMorphs parent)
+	public GuiQuickEditor(Minecraft mc, GuiCreativeMorphsList parent)
 	{
 		super(mc);
 
