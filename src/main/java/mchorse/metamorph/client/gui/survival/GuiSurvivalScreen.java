@@ -75,8 +75,8 @@ public class GuiSurvivalScreen extends GuiBase
         /* Setup keybinds */
         IKey category = IKey.lang("metamorph.gui.survival.keys.category");
 
-        this.root.keys().register(this.morph.label, Keyboard.KEY_M, () -> this.morph.clickItself(GuiBase.getCurrent())).category(category);
-        this.root.keys().register(this.remove.label, Keyboard.KEY_R, () -> this.remove.clickItself(GuiBase.getCurrent())).category(category);
+        this.root.keys().register(this.morph.label, Keyboard.KEY_RETURN, () -> this.morph.clickItself(GuiBase.getCurrent())).category(category);
+        this.root.keys().register(this.remove.label, Keyboard.KEY_BACK, () -> this.remove.clickItself(GuiBase.getCurrent())).category(category);
         this.root.keys().register(this.favorite.label, Keyboard.KEY_F, () -> this.favorite.clickItself(GuiBase.getCurrent())).category(category);
         this.root.keys().register(IKey.lang("metamorph.gui.survival.keys.toggle_favorites"), Keyboard.KEY_O, () -> this.onlyFavorite.clickItself(GuiBase.getCurrent())).category(category);
         this.root.keys().register(IKey.lang("metamorph.gui.survival.keys.focus_keybind"), Keyboard.KEY_K, () -> this.keybind.clickItself(GuiBase.getCurrent())).category(category);

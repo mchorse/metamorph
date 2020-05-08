@@ -88,7 +88,9 @@ public class GuiCreativeScreen extends GuiBase
 
         this.root.add(this.pane, this.morph, this.acquire, this.close, this.selectors, this.icon, this.copy);
 
-        this.root.keys().register(this.icon.tooltip.label, Keyboard.KEY_S, () -> this.icon.clickItself(this.context));
+        this.root.keys().register(this.icon.tooltip.label, Keyboard.KEY_S, () -> this.icon.clickItself(this.context)).category(this.pane.exitKey.category);
+        this.root.keys().register(IKey.lang("metamorph.gui.creative.keys.acquire"), Keyboard.KEY_A, () -> this.acquire.clickItself(this.context)).category(this.pane.exitKey.category);
+        this.root.keys().register(IKey.lang("metamorph.gui.creative.keys.morph"), Keyboard.KEY_RETURN, () -> this.morph.clickItself(this.context)).category(this.pane.exitKey.category);
     }
 
     private void copyMorphCommand(GuiIconElement button)

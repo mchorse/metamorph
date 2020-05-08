@@ -9,6 +9,7 @@ import mchorse.metamorph.network.Dispatcher;
 import mchorse.metamorph.network.common.creative.PacketAcquireMorph;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.Gui;
+import org.lwjgl.input.Keyboard;
 import org.lwjgl.opengl.GL11;
 
 import java.util.function.Consumer;
@@ -50,6 +51,8 @@ public class GuiCreativeMorphsMenu extends GuiCreativeMorphsList
 
         this.exitKey.active = true;
         this.markContainer();
+
+        this.keys().register(IKey.lang("metamorph.gui.creative.keys.acquire"), Keyboard.KEY_A, () -> this.acquire.clickItself(GuiBase.getCurrent())).category(this.exitKey.category);
     }
 
     @Override

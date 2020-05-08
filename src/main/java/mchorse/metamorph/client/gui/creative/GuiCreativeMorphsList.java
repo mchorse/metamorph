@@ -250,8 +250,8 @@ public class GuiCreativeMorphsList extends GuiElement
 
 
         this.morphs.setFilter("");
-        this.callback = edit.callback;
         this.morphs.setSelectedDirect(edit.selected, edit.selectedMorph, edit.selectedCategory);
+        this.callback = edit.callback;
         this.scrollTo = true;
 
         this.enterEditMorph(edit.editMorph);
