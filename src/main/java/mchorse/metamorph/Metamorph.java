@@ -63,15 +63,15 @@ public class Metamorph
 
     /* Metamorph configuration */
     public static ValueBoolean preventGhosts;
-    public static ValueBoolean keepMorphs;
-    public static ValueBoolean hideUsername;
     public static ValueBoolean preventKillAcquire;
-    public static ValueBoolean showDemorph;
+    public static ValueBoolean acquireImmediately;
+
+    public static ValueBoolean keepMorphs;
     public static ValueBoolean disablePov;
     public static ValueBoolean disableHealth;
     public static ValueBoolean disableMorphAnimation;
     public static ValueBoolean disableMorphDisguise;
-    public static ValueBoolean acquireImmediately;
+    public static ValueBoolean disableFirstPersonHand;
     public static ValueBoolean morphInTightSpaces;
     public static ValueBoolean showMorphIdleSounds;
 
@@ -82,16 +82,16 @@ public class Metamorph
     {
         ConfigBuilder builder = event.createBuilder(MOD_ID);
 
-        this.preventGhosts = builder.category("general").getBoolean("prevent_ghosts", true);
-        this.keepMorphs = builder.getBoolean("keep_morphs", true);
-        this.hideUsername = builder.getBoolean("hide_username", false);
+        this.preventGhosts = builder.category("acquiring").getBoolean("prevent_ghosts", true);
         this.preventKillAcquire = builder.getBoolean("prevent_kill_acquire", false);
-        this.showDemorph = builder.getBoolean("show_demorph", true);
+        this.acquireImmediately = builder.getBoolean("acquire_immediately", false);
+
+        this.keepMorphs = builder.category("morphs").getBoolean("keep_morphs", true);
         this.disablePov = builder.getBoolean("disable_pov", false);
         this.disableHealth = builder.getBoolean("disable_health", false);
         this.disableMorphAnimation = builder.getBoolean("disable_morph_animation", false);
         this.disableMorphDisguise = builder.getBoolean("disable_morph_disguise", false);
-        this.acquireImmediately = builder.getBoolean("acquire_immediately", false);
+        this.disableFirstPersonHand = builder.getBoolean("disable_first_person_hand", false);
         this.morphInTightSpaces = builder.getBoolean("morph_in_tight_spaces", false);
         this.showMorphIdleSounds = builder.getBoolean("show_morph_idle_sounds", true);
 

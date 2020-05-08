@@ -1,5 +1,6 @@
 package net.minecraft.client.renderer.entity;
 
+import mchorse.metamorph.Metamorph;
 import mchorse.metamorph.capabilities.morphing.IMorphing;
 import mchorse.metamorph.capabilities.morphing.Morphing;
 import net.minecraft.client.entity.AbstractClientPlayer;
@@ -52,6 +53,11 @@ public class RenderSubPlayer extends RenderPlayer
     @Override
     public void renderLeftArm(AbstractClientPlayer clientPlayer)
     {
+        if (Metamorph.disableFirstPersonHand.get())
+        {
+            return;
+        }
+
         IMorphing morph = Morphing.get(clientPlayer);
 
         if (morph != null && morph.isMorphed())
@@ -71,6 +77,11 @@ public class RenderSubPlayer extends RenderPlayer
     @Override
     public void renderRightArm(AbstractClientPlayer clientPlayer)
     {
+        if (Metamorph.disableFirstPersonHand.get())
+        {
+            return;
+        }
+
         IMorphing morph = Morphing.get(clientPlayer);
 
         if (morph != null && morph.isMorphed())
