@@ -60,10 +60,18 @@ public class KeyboardHandler
         Minecraft mc = Minecraft.getMinecraft();
         EntityPlayer player = mc.player;
         IMorphing morphing = Morphing.get(player);
+
         boolean wasUsed = false;
+        boolean spectator = player.isSpectator();
+
+        if (this.keyCreativeMenu.isPressed() && player.isCreative())
+        {
+            mc.displayGuiScreen(new GuiCreativeScreen());
+            wasUsed = true;
+        }
 
         /* Action */
-        if (keyAction.isPressed())
+        if (this.keyAction.isPressed() && !spectator)
         {
             Dispatcher.sendToServer(new PacketAction());
 
@@ -74,26 +82,15 @@ public class KeyboardHandler
             }
         }
 
-        if (keyCreativeMenu.isPressed() && player.isCreative())
-        {
-            mc.displayGuiScreen(new GuiCreativeScreen());
-            wasUsed = true;
-        }
-
-        if (ClientProxy.getGameMode(player) == GameType.ADVENTURE)
-        {
-            return;
-        }
-
         /* Survival morphing key handling */
-        if (keySurvivalMenu.isPressed())
+        if (this.keySurvivalMenu.isPressed() && !spectator)
         {
             mc.displayGuiScreen(ClientProxy.getSurvivalScreen().open());
             wasUsed = true;
         }
 
         /* Demorph from current morph */
-        if (keyDemorph.isPressed())
+        if (this.keyDemorph.isPressed() && !spectator)
         {
             if (morphing != null && morphing.isMorphed())
             {

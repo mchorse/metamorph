@@ -16,7 +16,7 @@ public class ServerHandlerAction extends ServerMessageHandler<PacketAction>
     {
         IMorphing capability = Morphing.get(player);
 
-        if (capability != null && capability.isMorphed())
+        if (capability != null && capability.isMorphed() && !player.isSpectator())
         {
             AbstractMorph morph = capability.getCurrentMorph();
 

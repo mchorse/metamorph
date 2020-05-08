@@ -91,7 +91,7 @@ public class GuiSurvivalScreen extends GuiBase
         IMorphing cap = Morphing.get(player);
         boolean creative = player.isCreative();
 
-        if (this.creative != creative || creative)
+        if (this.creative != creative || creative || this.morphs.sections.isEmpty())
         {
             this.creative = creative;
             this.morphs.setupSections(creative, (section) -> this.fill(section.morph));
