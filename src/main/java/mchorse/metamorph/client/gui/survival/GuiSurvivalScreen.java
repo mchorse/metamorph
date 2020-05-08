@@ -81,10 +81,13 @@ public class GuiSurvivalScreen extends GuiBase
         this.root.flex().xy(0.5F, 0.5F).wh(1F, 1F).anchor(0.5F, 0.5F).maxW(500).maxH(300);
         this.root.add(this.morphs, this.sidebar, this.onlyFavorite);
 
-        this.root.keys().register(this.morph.label, Keyboard.KEY_M, () -> this.morph.clickItself(GuiBase.getCurrent()));
-        this.root.keys().register(this.remove.label, Keyboard.KEY_R, () -> this.remove.clickItself(GuiBase.getCurrent()));
-        this.root.keys().register(this.favorite.label, Keyboard.KEY_F, () -> this.favorite.clickItself(GuiBase.getCurrent()));
-        this.root.keys().register(IKey.lang("metamorph.gui.survival.toggle_favorites"), Keyboard.KEY_O, () -> this.onlyFavorite.clickItself(GuiBase.getCurrent()));
+        IKey category = IKey.lang("metamorph.gui.survival.keys.category");
+
+        this.root.keys().register(this.morph.label, Keyboard.KEY_M, () -> this.morph.clickItself(GuiBase.getCurrent())).category(category);
+        this.root.keys().register(this.remove.label, Keyboard.KEY_R, () -> this.remove.clickItself(GuiBase.getCurrent())).category(category);
+        this.root.keys().register(this.favorite.label, Keyboard.KEY_F, () -> this.favorite.clickItself(GuiBase.getCurrent())).category(category);
+        this.root.keys().register(IKey.lang("metamorph.gui.survival.keys.toggle_favorites"), Keyboard.KEY_O, () -> this.onlyFavorite.clickItself(GuiBase.getCurrent())).category(category);
+        this.root.keys().register(IKey.lang("metamorph.gui.survival.keys.focus_keybind"), Keyboard.KEY_K, () -> this.keybind.clickItself(GuiBase.getCurrent())).category(category);
     }
 
     public GuiSurvivalScreen open()

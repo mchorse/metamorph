@@ -119,12 +119,15 @@ public class GuiCreativeMorphs extends GuiElement
         this.add(this.screen, new GuiDrawable(this::drawOverlay), this.editor);
 
         /* Morph editor keybinds */
-        this.exitKey = this.keys().register(IKey.lang("metamorph.gui.creative.exit"), Keyboard.KEY_ESCAPE, this::exit);
+        IKey category = IKey.lang("metamorph.gui.creative.keys.category");
+
+        this.exitKey = this.keys().register(IKey.lang("metamorph.gui.creative.keys.exit"), Keyboard.KEY_ESCAPE, this::exit).category(category);
 
         this.updateExitKey();
 
-        this.morphs.keys().register(IKey.lang("metamorph.gui.creative.edit"), Keyboard.KEY_E, this::enterEditMorph);
-        this.morphs.keys().register(IKey.lang("metamorph.gui.creative.quick"), Keyboard.KEY_Q, this::toggleQuickEdit);
+        this.morphs.keys().register(IKey.lang("metamorph.gui.creative.keys.edit"), Keyboard.KEY_E, this::enterEditMorph).category(category);
+        this.morphs.keys().register(IKey.lang("metamorph.gui.creative.keys.quick"), Keyboard.KEY_Q, this::toggleQuickEdit).category(category);
+        this.morphs.keys().register(IKey.lang("metamorph.gui.creative.keys.focus"), Keyboard.KEY_L, () -> GuiBase.getCurrent().focus(this.search)).held(Keyboard.KEY_LCONTROL).category(category);
     }
 
     public void reload()

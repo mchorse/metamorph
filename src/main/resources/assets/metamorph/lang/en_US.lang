@@ -33,12 +33,16 @@ metamorph.gui.selectors.type=Type
 metamorph.gui.selectors.enabled=Enabled
 
 metamorph.gui.creative.command=Copy /morph command for selected morph
-metamorph.gui.creative.exit=Exit
 metamorph.gui.creative.edit=Edit
 metamorph.gui.creative.pick=Pick
 metamorph.gui.creative.quick=Quick edit
 metamorph.gui.creative.presets=Presets
 metamorph.gui.creative.random=Random preset
+metamorph.gui.creative.keys.category=Creative morph menu
+metamorph.gui.creative.keys.exit=Exit the morph editor
+metamorph.gui.creative.keys.edit=Edit currently selected morph
+metamorph.gui.creative.keys.focus=Focus search bar
+metamorph.gui.creative.keys.quick=Toggle quick edit menu
 metamorph.gui.creative.context.add_global=Add to global morphs...
 metamorph.gui.creative.context.edit=Edit morph...
 metamorph.gui.creative.context.add_category=Add a new category
@@ -51,9 +55,11 @@ metamorph.gui.creative.context.remove_morph=Remove morph
 
 metamorph.gui.survival.title=Survival Morph Menu
 metamorph.gui.survival.keybind_tooltip=With this field, you can bind a key which will morph you into this particular morph (when you press it either in this menu or in the world)
-metamorph.gui.survival.toggle_favorites=Toggle favorite morphs
 metamorph.gui.survival.only_favorites=Only favorites
 metamorph.gui.survival.favorite=Favorite
+metamorph.gui.survival.keys.category=Survival morph menu
+metamorph.gui.survival.keys.toggle_favorites=Toggle favorite morphs
+metamorph.gui.survival.keys.focus_keybind=Focus keybind
 
 metamorph.gui.editor.settings=Morph settings
 metamorph.gui.editor.display_name=Display name
