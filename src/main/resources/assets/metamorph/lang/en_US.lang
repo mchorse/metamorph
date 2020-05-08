@@ -38,6 +38,7 @@ metamorph.gui.creative.edit=Edit
 metamorph.gui.creative.pick=Pick
 metamorph.gui.creative.quick=Quick edit
 metamorph.gui.creative.presets=Presets
+metamorph.gui.creative.random=Random preset
 metamorph.gui.creative.context.add_global=Add to global morphs...
 metamorph.gui.creative.context.edit=Edit morph...
 metamorph.gui.creative.context.add_category=Add a new category

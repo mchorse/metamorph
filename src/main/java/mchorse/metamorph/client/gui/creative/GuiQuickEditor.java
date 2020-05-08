@@ -28,6 +28,7 @@ public class GuiQuickEditor extends GuiElement
 	public GuiCreativeMorphs parent;
 
 	public GuiButtonElement presetsButton;
+	public GuiButtonElement randomPreset;
 	public GuiButtonElement quickAccessButton;
 
 	public GuiLabelSearchListElement<NBTTagCompound> presets;
@@ -45,7 +46,9 @@ public class GuiQuickEditor extends GuiElement
 		this.quickAccessButton = new GuiButtonElement(mc, IKey.lang("metamorph.gui.creative.quick"), this::toggleVisibility);
 
 		this.presets = new GuiLabelSearchListElement<NBTTagCompound>(mc, this::setPreset);
-		this.presets.flex().relative(this).set(10, 30, 0, 0).w(1F, -20).h(1F, -40);
+		this.presets.flex().relative(this).set(10, 30, 0, 0).w(1F, -20).h(1F, -60);
+		this.randomPreset = new GuiButtonElement(mc, IKey.lang("metamorph.gui.creative.random"), this::pickRandomPreset);
+		this.randomPreset.flex().relative(this.presets).y(1F).w(1F).h(20);
 
 		this.quickAccess = new GuiScrollElement(mc);
 		this.quickAccess.setVisible(false);
@@ -54,6 +57,7 @@ public class GuiQuickEditor extends GuiElement
 		GuiElement row = Elements.row(mc, 0, this.presetsButton, this.quickAccessButton);
 		row.flex().relative(this).w(1F).h(20);
 
+		this.presets.add(this.randomPreset);
 		this.add(row, this.presets, this.quickAccess);
 	}
 
@@ -75,6 +79,14 @@ public class GuiQuickEditor extends GuiElement
 			this.presets.setVisible(false);
 			this.quickAccess.setVisible(true);
 		}
+	}
+
+	private void pickRandomPreset(GuiButtonElement button)
+	{
+		int i = (int) (Math.random() * this.presets.list.getList().size());
+
+		this.presets.list.setIndex(i);
+		this.setPreset(this.presets.list.getCurrent());
 	}
 
 	public void setMorph(AbstractMorph morph, GuiAbstractMorph<AbstractMorph> editor)
@@ -108,7 +120,10 @@ public class GuiQuickEditor extends GuiElement
 
 	protected void setPreset(List<Label<NBTTagCompound>> label)
 	{
-		this.parent.getSelected().fromNBT(label.get(0).value);
+		if (!label.isEmpty())
+		{
+			this.parent.getSelected().fromNBT(label.get(0).value);
+		}
 	}
 
 	@Override
