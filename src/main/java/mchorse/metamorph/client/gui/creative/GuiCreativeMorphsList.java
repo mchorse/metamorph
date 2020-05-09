@@ -336,14 +336,11 @@ public class GuiCreativeMorphsList extends GuiElement
 
     public void finish()
     {
-        this.disableDirty();
-
-        if (this.isEditMode())
+        while (this.isNested() || this.isEditMode())
         {
-            this.editor.delegate.finishEdit();
+            this.exit();
         }
 
-        this.morphs.syncSelected();
         this.pickMorph(MorphUtils.copy(this.getSelected()));
     }
 
