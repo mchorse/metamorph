@@ -92,7 +92,7 @@ public class GuiCreativeMorphsList extends GuiElement
         /* Create morph panels */
         this.morphs = new GuiCreativeMorphs(mc, this);
         this.morphs.flex().relative(this).wh(1F, 1F).column(0).vertical().stretch().scroll();
-        this.morphs.setupSections(this, this::pickMorph);
+        this.reload();
 
         /* Initiate bottom bar */
         this.bar = new GuiElement(mc);
@@ -116,6 +116,11 @@ public class GuiCreativeMorphsList extends GuiElement
         this.morphs.keys().register(IKey.lang("metamorph.gui.creative.keys.edit"), Keyboard.KEY_E, this::enterEditMorph).category(category);
         this.morphs.keys().register(IKey.lang("metamorph.gui.creative.keys.quick"), Keyboard.KEY_Q, this::toggleQuickEdit).category(category);
         this.morphs.keys().register(IKey.lang("metamorph.gui.creative.keys.focus"), Keyboard.KEY_L, () -> GuiBase.getCurrent().focus(this.search)).held(Keyboard.KEY_LCONTROL).category(category);
+    }
+
+    public void reload()
+    {
+        this.morphs.setupSections(this, this::pickMorph);
     }
 
     public void exit()
