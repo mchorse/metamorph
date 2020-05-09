@@ -113,6 +113,11 @@ public class Morphing implements IMorphing
     @SideOnly(Side.CLIENT)
     public boolean renderPlayer(EntityPlayer player, double x, double y, double z, float yaw, float partialTick)
     {
+        if (player.isSpectator())
+        {
+            return false;
+        }
+
         if (this.morph.isEmpty() && !this.isAnimating())
         {
             return false;
