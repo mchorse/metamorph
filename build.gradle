@@ -12,6 +12,11 @@ buildscript
 
 apply plugin: 'net.minecraftforge.gradle.forge'
 
+if (project.hasProperty("dev")) 
+{
+    version += "-dev" + dev
+}
+
 group = "mchorse.metamorph"
 archivesBaseName = "metamorph"
 sourceCompatibility = targetCompatibility = "1.8"

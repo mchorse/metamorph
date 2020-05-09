@@ -17,6 +17,11 @@ public class GuiNestedEdit extends GuiElement
 
 	public GuiNestedEdit(Minecraft mc, Consumer<Boolean> callback)
 	{
+		this(mc, true, callback);
+	}
+
+	public GuiNestedEdit(Minecraft mc, boolean keybinds, Consumer<Boolean> callback)
+	{
 		super(mc);
 
 		this.edit = new GuiButtonElement(mc, IKey.lang("metamorph.gui.creative.edit"), (b) -> callback.accept(true));
@@ -28,8 +33,11 @@ public class GuiNestedEdit extends GuiElement
 		this.flex().h(20).row(0);
 		this.add(this.pick, this.edit);
 
-		this.keys().register(this.pick.label, Keyboard.KEY_P, () -> this.pick.clickItself(GuiBase.getCurrent()));
-		this.keys().register(this.edit.label, Keyboard.KEY_E, () -> this.edit.clickItself(GuiBase.getCurrent()));
+		if (keybinds)
+		{
+			this.keys().register(this.pick.label, Keyboard.KEY_P, () -> this.pick.clickItself(GuiBase.getCurrent()));
+			this.keys().register(this.edit.label, Keyboard.KEY_E, () -> this.edit.clickItself(GuiBase.getCurrent()));
+		}
 	}
 
 	public void setMorph(AbstractMorph morph)
