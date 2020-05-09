@@ -4,6 +4,7 @@ import mchorse.mclib.client.gui.framework.GuiBase;
 import mchorse.mclib.client.gui.framework.elements.GuiElement;
 import mchorse.mclib.client.gui.framework.elements.buttons.GuiButtonElement;
 import mchorse.mclib.client.gui.utils.keys.IKey;
+import mchorse.metamorph.api.morphs.AbstractMorph;
 import net.minecraft.client.Minecraft;
 import org.lwjgl.input.Keyboard;
 
@@ -29,5 +30,10 @@ public class GuiNestedEdit extends GuiElement
 
 		this.keys().register(this.pick.label, Keyboard.KEY_P, () -> this.pick.clickItself(GuiBase.getCurrent()));
 		this.keys().register(this.edit.label, Keyboard.KEY_E, () -> this.edit.clickItself(GuiBase.getCurrent()));
+	}
+
+	public void setMorph(AbstractMorph morph)
+	{
+		this.edit.setEnabled(morph != null);
 	}
 }

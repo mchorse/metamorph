@@ -98,6 +98,7 @@ public class GuiCreativeMorphsList extends GuiElement
         this.bar = new GuiElement(mc);
         this.search = new GuiTextElement(mc, this.morphs::setFilter);
         this.edit = new GuiButtonElement(mc, IKey.lang("metamorph.gui.edit"),  (b) -> this.enterEditMorph());
+        this.edit.setEnabled(false);
         this.edit.flex().w(60);
 
         this.bar.flex().relative(this.morphs).set(10, 0, 0, 20).y(1, -30).w(1, -20).row(5).preferred(0).height(20);
@@ -403,6 +404,8 @@ public class GuiCreativeMorphsList extends GuiElement
 
     public void pickMorph(AbstractMorph morph)
     {
+        this.edit.setEnabled(morph != null);
+
         if (this.callback != null)
         {
             this.callback.accept(morph);
@@ -418,7 +421,11 @@ public class GuiCreativeMorphsList extends GuiElement
         this.morphs.setSelected(morph);
         this.syncQuickEditor();
 
-        return this.getSelected();
+        morph = this.getSelected();
+
+        this.edit.setEnabled(morph != null);
+
+        return morph;
     }
 
     protected void syncQuickEditor()

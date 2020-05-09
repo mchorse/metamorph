@@ -230,6 +230,7 @@ public class GuiBodyPartEditor extends GuiMorphPanel<AbstractMorph, GuiAbstractM
             this.fillBodyPart(part);
             this.limbs.setCurrent(part.limb);
             this.bodyParts.setCurrentDirect(part);
+            this.pickMorph.setMorph(part.morph.get());
         }
     }
 
