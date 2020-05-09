@@ -36,11 +36,7 @@ public class GuiCreativeMorphsMenu extends GuiCreativeMorphsList
             }
         });
 
-        this.close = new GuiButtonElement(mc, IKey.str("X"), (b) ->
-        {
-            this.finish();
-            this.removeFromParent();
-        });
+        this.close = new GuiButtonElement(mc, IKey.str("X"), (b) -> this.exit());
 
         this.acquire.flex().wh(60, 20);
         this.close.flex().wh(20, 20);
