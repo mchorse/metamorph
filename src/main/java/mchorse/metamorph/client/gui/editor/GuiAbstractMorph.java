@@ -165,4 +165,47 @@ public class GuiAbstractMorph<T extends AbstractMorph> extends GuiPanelBase<GuiM
     {
         Gui.drawRect(x, y, x + w, y + h, 0xee000000);
     }
+
+    /* Saving and restoring the store */
+
+    public void fromNBT(NBTTagCompound tag)
+    {
+        /* Restore model renderer's position */
+        this.renderer.setPosition(tag.getFloat("MX"), tag.getFloat("MY"), tag.getFloat("MZ"));
+        this.renderer.setScale(tag.getFloat("MS"));
+        this.renderer.setRotation(tag.getFloat("MRY"), tag.getFloat("MRX"));
+
+        /* Restore panel */
+        int hash = tag.getInteger("PanelHash");
+
+        for (GuiMorphPanel panel : this.panels)
+        {
+            if (panel.hashCode() == hash)
+            {
+                this.setPanel(panel);
+                panel.fromNBT(tag.getCompoundTag("Panel"));
+
+                return;
+            }
+        }
+    }
+
+	public NBTTagCompound toNBT()
+    {
+        NBTTagCompound tag = new NBTTagCompound();
+
+        /* Save model renderer's position */
+        tag.setFloat("MX", this.renderer.pos.x);
+        tag.setFloat("MY", this.renderer.pos.y);
+        tag.setFloat("MZ", this.renderer.pos.z);
+        tag.setFloat("MS", this.renderer.scale);
+        tag.setFloat("MRX", this.renderer.pitch);
+        tag.setFloat("MRY", this.renderer.yaw);
+
+        /* Save panel */
+        tag.setTag("Panel", this.view.delegate.toNBT());
+        tag.setInteger("PanelHash", this.view.delegate.hashCode());
+
+        return tag;
+	}
 }

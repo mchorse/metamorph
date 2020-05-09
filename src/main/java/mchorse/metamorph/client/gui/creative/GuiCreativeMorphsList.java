@@ -21,6 +21,7 @@ import mchorse.metamorph.client.gui.editor.GuiAbstractMorph;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.Gui;
 import net.minecraft.client.resources.I18n;
+import net.minecraft.nbt.NBTTagCompound;
 import org.lwjgl.input.Keyboard;
 
 import java.util.ArrayList;
@@ -216,7 +217,7 @@ public class GuiCreativeMorphsList extends GuiElement
 
     public void nestEdit(AbstractMorph selected, boolean editing, Consumer<AbstractMorph> callback)
     {
-        NestedEdit edit = new NestedEdit(this.morphs.filter, this.editor.delegate.morph, this.callback, this.morphs.selected, editing);
+        NestedEdit edit = new NestedEdit(this.morphs.filter, this.editor.delegate.morph, this.editor.delegate.toNBT(), this.callback, this.morphs.selected, editing);
         this.callback = callback;
 
         if (editing)
@@ -247,14 +248,13 @@ public class GuiCreativeMorphsList extends GuiElement
         {
             this.pickMorph(this.getSelected());
         }
-
-
         this.morphs.setFilter("");
         this.morphs.setSelectedDirect(edit.selected, edit.selectedMorph, edit.selectedCategory);
         this.callback = edit.callback;
         this.scrollTo = true;
 
         this.enterEditMorph(edit.editMorph);
+        this.editor.delegate.fromNBT(edit.data);
     }
 
     /* Edit mode */
@@ -495,6 +495,7 @@ public class GuiCreativeMorphsList extends GuiElement
     public static class NestedEdit
     {
         public String filter;
+        public NBTTagCompound data;
         public Consumer<AbstractMorph> callback;
 
         public GuiMorphSection selected;
@@ -503,9 +504,10 @@ public class GuiCreativeMorphsList extends GuiElement
         public AbstractMorph editMorph;
         public boolean editing;
 
-        public NestedEdit(String filter, AbstractMorph editMorph, Consumer<AbstractMorph> callback, GuiMorphSection selected, boolean editing)
+        public NestedEdit(String filter, AbstractMorph editMorph, NBTTagCompound data, Consumer<AbstractMorph> callback, GuiMorphSection selected, boolean editing)
         {
             this.filter = filter;
+            this.data = data;
             this.editMorph = editMorph;
             this.callback = callback;
             this.editing = editing;

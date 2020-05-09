@@ -19,6 +19,7 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.Gui;
 import net.minecraft.client.resources.I18n;
 import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.NBTTagCompound;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
@@ -264,6 +265,31 @@ public class GuiBodyPartEditor extends GuiMorphPanel<AbstractMorph, GuiAbstractM
         }
 
         super.draw(context);
+    }
+
+    @Override
+    public void fromNBT(NBTTagCompound tag)
+    {
+        super.fromNBT(tag);
+
+        this.bodyParts.setIndex(tag.getInteger("Index"));
+
+        BodyPart part = this.bodyParts.getCurrentFirst();
+
+        if (part != null)
+        {
+            this.setPart(part);
+        }
+    }
+
+    @Override
+    public NBTTagCompound toNBT()
+    {
+        NBTTagCompound tag = super.toNBT();
+
+        tag.setInteger("Index", this.bodyParts.getIndex());
+
+        return tag;
     }
 
     public static class GuiBodyPartTransformations extends GuiTransformations
