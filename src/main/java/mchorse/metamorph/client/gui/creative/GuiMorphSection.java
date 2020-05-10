@@ -141,7 +141,7 @@ public class GuiMorphSection extends GuiElement
 		int size = this.category.getMorphs().size();
 
 		/* Shortcuts */
-		if (morphs.y < 0)
+		if (morphs.y < 0 || size == 0)
 		{
 			return null;
 		}
