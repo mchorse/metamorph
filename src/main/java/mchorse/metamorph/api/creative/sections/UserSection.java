@@ -139,6 +139,7 @@ public class UserSection extends MorphSection
 			List<UserCategory> categories = new ArrayList<UserCategory>();
 			String content = FileUtils.readFileToString(file, Charset.defaultCharset());
 			JsonArray object = new JsonParser().parse(content).getAsJsonArray();
+			int i = 0;
 
 			for (JsonElement entry : object)
 			{
@@ -155,15 +156,20 @@ public class UserSection extends MorphSection
 							if (morph != null)
 							{
 								category.add(morph);
+								i ++;
 							}
 						}
 						catch (Exception e)
-						{}
+						{
+							e.printStackTrace();
+						}
 					}
 				}
 
 				categories.add(category);
 			}
+
+			System.out.println("Loading " + categories.size() + " categories with " + i + " morphs!");
 
 			this.global = categories;
 		}
@@ -176,6 +182,7 @@ public class UserSection extends MorphSection
 	public void save()
 	{
 		JsonArray array = new JsonArray();
+		int i = 0;
 
 		for (UserCategory category : this.global)
 		{
@@ -190,11 +197,15 @@ public class UserSection extends MorphSection
 				if (morph != null)
 				{
 					morphs.add(morph.toNBT().toString());
+
+					i ++;
 				}
 			}
 
 			array.add(cat);
 		}
+
+		System.out.println("Saving " + array.size() + " categories with " + i + " morphs to list.json!");
 
 		try
 		{
