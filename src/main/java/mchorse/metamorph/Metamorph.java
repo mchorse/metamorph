@@ -74,6 +74,7 @@ public class Metamorph
     public static ValueBoolean disableFirstPersonHand;
     public static ValueBoolean morphInTightSpaces;
     public static ValueBoolean showMorphIdleSounds;
+    public static ValueBoolean pauseGUIInSP;
 
     /* Events */
 
@@ -94,6 +95,7 @@ public class Metamorph
         this.disableFirstPersonHand = builder.getBoolean("disable_first_person_hand", false);
         this.morphInTightSpaces = builder.getBoolean("morph_in_tight_spaces", false);
         this.showMorphIdleSounds = builder.getBoolean("show_morph_idle_sounds", true);
+        this.pauseGUIInSP = builder.getBoolean("pause_gui_in_sp", true);
 
         event.modules.add(builder.build());
     }

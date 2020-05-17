@@ -6,6 +6,7 @@ import mchorse.mclib.client.gui.framework.elements.buttons.GuiIconElement;
 import mchorse.mclib.client.gui.framework.elements.utils.GuiDraw;
 import mchorse.mclib.client.gui.utils.Icons;
 import mchorse.mclib.client.gui.utils.keys.IKey;
+import mchorse.metamorph.Metamorph;
 import mchorse.metamorph.api.morphs.AbstractMorph;
 import mchorse.metamorph.capabilities.morphing.Morphing;
 import mchorse.metamorph.network.Dispatcher;
@@ -93,6 +94,12 @@ public class GuiCreativeScreen extends GuiBase
         this.root.keys().register(IKey.lang("metamorph.gui.creative.keys.morph"), Keyboard.KEY_RETURN, () -> this.morph.clickItself(this.context)).category(this.pane.exitKey.category);
     }
 
+    @Override
+    public boolean doesGuiPauseGame()
+    {
+        return Metamorph.pauseGUIInSP.get();
+    }
+
     private void copyMorphCommand(GuiIconElement button)
     {
         AbstractMorph morph = this.pane.getSelected();
@@ -128,12 +135,6 @@ public class GuiCreativeScreen extends GuiBase
     {
         this.selectors.setMorph(morph);
         this.copy.setVisible(morph != null);
-    }
-
-    @Override
-    public boolean doesGuiPauseGame()
-    {
-        return false;
     }
 
     @Override
