@@ -9,6 +9,7 @@ import mchorse.mclib.client.gui.framework.elements.utils.GuiDraw;
 import mchorse.mclib.client.gui.utils.Area;
 import mchorse.mclib.client.gui.utils.Icons;
 import mchorse.mclib.client.gui.utils.keys.IKey;
+import mchorse.metamorph.api.MorphUtils;
 import mchorse.metamorph.api.creative.categories.MorphCategory;
 import mchorse.metamorph.api.creative.categories.UserCategory;
 import mchorse.metamorph.api.creative.sections.MorphSection;
@@ -472,7 +473,7 @@ public class GuiMorphSection extends GuiElement
 	 */
 	protected void drawMorph(GuiContext context, AbstractMorph morph, int x, int y, int w, int h, boolean hover, boolean selected)
 	{
-		if (selected)
+		if (selected && !morph.errorRendering)
 		{
 			Gui.drawRect(x, y, x + w, y + h, 0xaa000000 + McLib.primaryColor.get());
 		}
@@ -487,7 +488,18 @@ public class GuiMorphSection extends GuiElement
 
 		GuiDraw.drawDropCircleShadow(spotX, spotY, spot, (int) (spot * 0.65F), 10, 0x44000000, 0x00);
 
-		morph.renderOnScreen(this.mc.player, x + w / 2, y + (int) (h * 0.7F), w * 0.4F, 1);
+		if (morph.errorRendering)
+		{
+			GuiDraw.drawOutline(x, y, x + w, y + h, 0x88ff0000, 4);
+			GuiDraw.drawOutline(x, y, x + w, y + h, 0xffff0000, 2);
+
+			return;
+		}
+
+		if (!MorphUtils.renderOnScreen(morph, this.mc.player, x + w / 2, y + (int) (h * 0.7F), w * 0.4F, 1))
+		{
+			return;
+		}
 
 		if (selected)
 		{

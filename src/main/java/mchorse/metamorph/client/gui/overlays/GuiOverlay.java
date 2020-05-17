@@ -4,10 +4,12 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
+import mchorse.metamorph.api.MorphUtils;
 import mchorse.metamorph.api.morphs.AbstractMorph;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.FontRenderer;
 import net.minecraft.client.gui.Gui;
+import net.minecraft.client.resources.I18n;
 
 /**
  * GUI acquired morph overlay class
@@ -44,6 +46,7 @@ public class GuiOverlay extends Gui
         while (iterator.hasNext())
         {
             AcquiredMorph morph = iterator.next();
+            String string = I18n.format("metamorph.gui.acquired");
 
             /* Let's calculate some stuff */
             boolean disappear = morph.timer <= this.cap;
@@ -53,10 +56,7 @@ public class GuiOverlay extends Gui
             int y = height - 10 + (disappear ? (int) (40 * (float) progress / this.cap) : 0);
             int color = disappear ? 0x00ffffff + (alpha << 24) : 0xffffffff;
 
-            String string = "Acquired";
-
-            /* Prepare the model */
-            morph.morph.renderOnScreen(mc.player, 15, y, 15, (float) alpha / 255);
+            MorphUtils.renderOnScreen(morph.morph, mc.player, 15, y, 15, (float) alpha / 255);
 
             /* Render overlay */
             font.drawString(string, 30, y - 7, color);

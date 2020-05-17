@@ -1,12 +1,14 @@
 package net.minecraft.client.renderer.entity;
 
 import mchorse.metamorph.Metamorph;
+import mchorse.metamorph.api.morphs.AbstractMorph;
 import mchorse.metamorph.capabilities.morphing.IMorphing;
 import mchorse.metamorph.capabilities.morphing.Morphing;
 import net.minecraft.client.entity.AbstractClientPlayer;
 import net.minecraft.client.model.ModelPlayer;
 import net.minecraft.client.renderer.entity.layers.LayerRenderer;
 import net.minecraft.entity.EntityLivingBase;
+import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.util.EnumHand;
 import net.minecraft.util.ResourceLocation;
 
@@ -53,22 +55,10 @@ public class RenderSubPlayer extends RenderPlayer
     @Override
     public void renderLeftArm(AbstractClientPlayer clientPlayer)
     {
-        if (Metamorph.disableFirstPersonHand.get())
+        if (!this.renderHand(clientPlayer, EnumHand.OFF_HAND))
         {
-            return;
+            this.original.renderLeftArm(clientPlayer);
         }
-
-        IMorphing morph = Morphing.get(clientPlayer);
-
-        if (morph != null && morph.isMorphed())
-        {
-            if (morph.getCurrentMorph().renderHand(clientPlayer, EnumHand.OFF_HAND))
-            {
-                return;
-            }
-        }
-
-        this.original.renderLeftArm(clientPlayer);
     }
 
     /**
@@ -77,22 +67,39 @@ public class RenderSubPlayer extends RenderPlayer
     @Override
     public void renderRightArm(AbstractClientPlayer clientPlayer)
     {
+        if (!this.renderHand(clientPlayer, EnumHand.MAIN_HAND))
+        {
+            this.original.renderRightArm(clientPlayer);
+        }
+    }
+
+    private boolean renderHand(EntityPlayer player, EnumHand hand)
+    {
         if (Metamorph.disableFirstPersonHand.get())
         {
-            return;
+            return false;
         }
 
-        IMorphing morph = Morphing.get(clientPlayer);
+        IMorphing cap = Morphing.get(player);
 
-        if (morph != null && morph.isMorphed())
+        if (cap != null && cap.isMorphed())
         {
-            if (morph.getCurrentMorph().renderHand(clientPlayer, EnumHand.MAIN_HAND))
+            AbstractMorph morph = cap.getCurrentMorph();
+
+            try
             {
-                return;
+                if (!morph.errorRendering && morph.renderHand(player, hand))
+                {
+                    return true;
+                }
+            }
+            catch (Exception e)
+            {
+                morph.errorRendering = true;
             }
         }
 
-        this.original.renderRightArm(clientPlayer);
+        return false;
     }
 
     /* Overriding RenderPlayer methods */

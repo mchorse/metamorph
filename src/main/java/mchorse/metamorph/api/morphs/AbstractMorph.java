@@ -63,6 +63,11 @@ public abstract class AbstractMorph
     public MorphSettings settings = MorphSettings.DEFAULT;
 
     /**
+     * Whether this morph is erroring when rendering
+     */
+    public boolean errorRendering;
+
+    /**
      * Get display name of this morph
      */
     @SideOnly(Side.CLIENT)

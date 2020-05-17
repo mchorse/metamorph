@@ -476,19 +476,26 @@ public class GuiCreativeMorphsList extends GuiElement
         {
             AbstractMorph morph = this.getSelected();
             String selected = morph != null ? morph.getDisplayName() : I18n.format("metamorph.gui.no_morph");
+            boolean error = morph != null && morph.errorRendering;
+
+            if (error)
+            {
+                selected = I18n.format("metamorph.gui.morph_render_error");
+            }
+
             Area area = this.search.area;
             int w = Math.max(this.font.getStringWidth(selected), morph != null ? this.font.getStringWidth(morph.name) : 0);
 
-            if (morph != null)
+            if (morph != null && !morph.errorRendering)
             {
-                Gui.drawRect(area.x, area.y - 26, area.x + w + 8, area.y, 0xdd000000);
-                this.font.drawStringWithShadow(selected, area.x + 4, area.y - 22, 0xffffffff);
-                this.font.drawStringWithShadow(morph.name, area.x + 4, area.y - 11, 0x888888);
+                Gui.drawRect(area.x, area.y - 27, area.x + w + 8, area.y, 0xdd000000);
+                this.font.drawStringWithShadow(selected, area.x + 4, area.y - 23, 0xffffffff);
+                this.font.drawStringWithShadow(morph.name, area.x + 4, area.y - 12, 0x888888);
             }
             else
             {
                 Gui.drawRect(area.x, area.y - 16, area.x + w + 8, area.y, 0xdd000000);
-                this.font.drawStringWithShadow(selected, area.x + 4, area.y - 11, 0xffffffff);
+                this.font.drawStringWithShadow(selected, area.x + 4, area.y - 12, error ? 0xff1833 : 0xffffff);
             }
         }
 

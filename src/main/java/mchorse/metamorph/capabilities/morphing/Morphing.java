@@ -5,6 +5,7 @@ import java.util.List;
 
 import mchorse.metamorph.Metamorph;
 import mchorse.metamorph.api.Morph;
+import mchorse.metamorph.api.MorphUtils;
 import mchorse.metamorph.api.morphs.AbstractMorph;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.entity.EntityLivingBase;
@@ -130,9 +131,10 @@ public class Morphing implements IMorphing
 
         if (!this.isAnimating())
         {
-            this.morph.get().render(player, x, y, z, yaw, partialTick);
-
-            return true;
+            if (MorphUtils.render(this.morph.get(), player, x, y, z, yaw, partialTick))
+            {
+                return true;
+            }
         }
 
         GlStateManager.pushMatrix();
@@ -156,7 +158,7 @@ public class Morphing implements IMorphing
                 GlStateManager.scale(1 - anim, 1 - anim, 1 - anim);
             }
 
-            this.morph.get().render(player, 0, 0, 0, yaw, partialTick);
+            MorphUtils.render(this.morph.get(), player, 0, 0, 0, yaw, partialTick);
         }
         else if (this.previousMorph != null)
         {
@@ -177,7 +179,7 @@ public class Morphing implements IMorphing
                 GlStateManager.scale(anim, anim, anim);
             }
 
-            this.previousMorph.render(player, 0, 0, 0, yaw, partialTick);
+            MorphUtils.render(this.previousMorph, player, 0, 0, 0, yaw, partialTick);
         }
 
         GlStateManager.popMatrix();

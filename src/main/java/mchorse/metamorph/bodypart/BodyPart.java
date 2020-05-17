@@ -3,6 +3,7 @@ package mchorse.metamorph.bodypart;
 import com.google.common.base.Objects;
 import mchorse.mclib.client.Draw;
 import mchorse.mclib.client.gui.framework.elements.GuiModelRenderer;
+import mchorse.metamorph.api.MorphUtils;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.renderer.OpenGlHelper;
 import org.lwjgl.opengl.GL11;
@@ -91,7 +92,7 @@ public class BodyPart
         entity.prevRotationYawHead = entity.prevRotationYawHead - entity.prevRenderYawOffset;
         entity.renderYawOffset = entity.prevRenderYawOffset = 0;
 
-        this.morph.get().render(entity, 0, 0, 0, 0, partialTicks);
+        MorphUtils.render(this.morph.get(), entity, 0, 0, 0, 0, partialTicks);
 
         entity.renderYawOffset = rotationYaw;
         entity.prevRenderYawOffset = prevRotationYaw;

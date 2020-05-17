@@ -20,9 +20,11 @@ metamorph.gui.add=Add
 metamorph.gui.remove=Remove
 metamorph.gui.morph=Morph
 metamorph.gui.acquire=Acquire
+metamorph.gui.acquired=Acquired
 metamorph.gui.close=Close
 metamorph.gui.search=Search
-metamorph.gui.no_morph=No Morph Selected
+metamorph.gui.no_morph=No morph selected...
+metamorph.gui.morph_render_error=Error occurred rendering this morph
 
 metamorph.gui.selectors.title=Entity selectors
 metamorph.gui.selectors.tooltip=With this feature, you can add morphs to entities by specific name or their type...

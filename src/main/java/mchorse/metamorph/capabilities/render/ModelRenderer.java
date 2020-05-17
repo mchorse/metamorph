@@ -70,13 +70,6 @@ public class ModelRenderer implements IModelRenderer
     @Override
     public boolean render(EntityLivingBase entity, double x, double y, double z, float partialTicks)
     {
-        boolean render = this.selector != null && this.morph != null;
-
-        if (render)
-        {
-            this.morph.render(entity, x, y, z, 0, partialTicks);
-        }
-
-        return render;
+        return this.selector != null && MorphUtils.render(this.morph, entity, x, y, z, 0, partialTicks);
     }
 }

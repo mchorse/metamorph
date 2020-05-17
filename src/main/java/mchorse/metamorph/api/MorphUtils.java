@@ -11,9 +11,13 @@ import mchorse.metamorph.api.events.RegisterBlacklistEvent;
 import mchorse.metamorph.api.events.RegisterRemapEvent;
 import mchorse.metamorph.api.events.RegisterSettingsEvent;
 import mchorse.metamorph.api.morphs.AbstractMorph;
+import net.minecraft.entity.EntityLivingBase;
+import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.fml.common.network.ByteBufUtils;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 
 public class MorphUtils
 {
@@ -67,6 +71,56 @@ public class MorphUtils
         MinecraftForge.EVENT_BUS.post(event);
 
         return event.map;
+    }
+
+    /**
+     * Render in the world with morph error handling
+     */
+    @SideOnly(Side.CLIENT)
+    public static boolean render(AbstractMorph morph, EntityLivingBase entity, double x, double y, double z, float yaw, float partialTick)
+    {
+        if (morph == null || morph.errorRendering)
+        {
+            return false;
+        }
+
+        try
+        {
+            morph.render(entity, x, y, z, yaw, partialTick);
+
+            return true;
+        }
+        catch (Exception e)
+        {
+            morph.errorRendering = true;
+        }
+
+        return false;
+    }
+
+    /**
+     * Render on screen with morph error handling
+     */
+    @SideOnly(Side.CLIENT)
+    public static boolean renderOnScreen(AbstractMorph morph, EntityPlayer player, int x, int y, float scale, float alpha)
+    {
+        if (morph == null || morph.errorRendering)
+        {
+            return false;
+        }
+
+        try
+        {
+            morph.renderOnScreen(player, x, y, scale, alpha);
+
+            return true;
+        }
+        catch (Exception e)
+        {
+            morph.errorRendering = true;
+        }
+
+        return false;
     }
 
     /**
