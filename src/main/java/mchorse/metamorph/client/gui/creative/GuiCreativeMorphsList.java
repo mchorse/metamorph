@@ -342,12 +342,19 @@ public class GuiCreativeMorphsList extends GuiElement
 
     public void finish()
     {
+        int i = 0;
+
         while (this.isNested() || this.isEditMode())
         {
             this.exit();
+
+            i ++;
         }
 
-        this.pickMorph(MorphUtils.copy(this.getSelected()));
+        if (i > 0)
+        {
+            this.pickMorph(MorphUtils.copy(this.getSelected()));
+        }
     }
 
     private GuiAbstractMorph getMorphEditor(AbstractMorph morph)
