@@ -55,7 +55,7 @@ public class GuiBodyPartEditor extends GuiMorphPanel<AbstractMorph, GuiAbstractM
         this.limbs = new GuiStringListElement(mc, (str) -> this.pickLimb(str.get(0)));
 
         this.bodyParts = new GuiBodyPartListElement(mc, (part) -> this.setPart(part.isEmpty() ? null : part.get(0)));
-        this.bodyParts.background();
+        this.bodyParts.background().sorting();
 
         this.pickMorph = new GuiNestedEdit(mc, (editing) ->
         {
