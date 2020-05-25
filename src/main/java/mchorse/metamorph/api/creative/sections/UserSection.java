@@ -94,8 +94,8 @@ public class UserSection extends MorphSection
 
 		if (!this.loaded)
 		{
-			this.loaded = true;
 			this.load();
+			this.loaded = true;
 		}
 
 		this.categories.addAll(this.global);
@@ -108,8 +108,8 @@ public class UserSection extends MorphSection
 
 		if (this.loaded)
 		{
-			this.loaded = false;
 			this.save();
+			this.loaded = false;
 		}
 
 		this.categories.clear();
@@ -181,6 +181,11 @@ public class UserSection extends MorphSection
 
 	public void save()
 	{
+		if (!this.loaded)
+		{
+			return;
+		}
+
 		JsonArray array = new JsonArray();
 		int i = 0;
 
