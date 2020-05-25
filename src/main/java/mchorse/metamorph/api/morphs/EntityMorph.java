@@ -30,6 +30,7 @@ import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.boss.EntityDragon;
 import net.minecraft.entity.monster.EntityMob;
 import net.minecraft.entity.passive.EntityAnimal;
+import net.minecraft.entity.passive.EntityHorse;
 import net.minecraft.entity.passive.EntityPig;
 import net.minecraft.entity.passive.EntityRabbit;
 import net.minecraft.entity.player.EntityPlayer;
@@ -600,6 +601,13 @@ public class EntityMorph extends AbstractMorph implements IBodyPartProvider
                 ride.prevRotationYawHead = target.prevRotationYawHead;
                 ride.prevRenderYawOffset = target.prevRenderYawOffset;
             }
+        }
+
+        if (this.entity instanceof EntityHorse)
+        {
+            EntityHorse horse = (EntityHorse) this.entity;
+
+            horse.setHorseSaddled(this.entityData.hasKey("SaddleItem"));
         }
 
         this.parts.updateBodyLimbs(target);
