@@ -89,7 +89,7 @@ public class GuiSettingsPanel extends GuiMorphPanel<AbstractMorph, GuiAbstractMo
 		this.speed = new GuiTrackpadElement(mc, (value) ->
 		{
 			this.ensureCustomSettings();
-			this.morph.settings.speed = value;
+			this.morph.settings.speed = value.floatValue();
 		})
 			.limit(0, Float.POSITIVE_INFINITY)
 			.values(0.05F, 0.01F, 0.1F)

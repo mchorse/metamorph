@@ -315,27 +315,27 @@ public class GuiBodyPartEditor extends GuiMorphPanel<AbstractMorph, GuiAbstractM
         }
 
         @Override
-        public void setT(float x, float y, float z)
+        public void setT(double x, double y, double z)
         {
-            this.part.translate.x = x;
-            this.part.translate.y = y;
-            this.part.translate.z = z;
+            this.part.translate.x = (float) x;
+            this.part.translate.y = (float) y;
+            this.part.translate.z = (float) z;
         }
 
         @Override
-        public void setS(float x, float y, float z)
+        public void setS(double x, double y, double z)
         {
-            this.part.scale.x = x;
-            this.part.scale.y = y;
-            this.part.scale.z = z;
+            this.part.scale.x = (float) x;
+            this.part.scale.y = (float) y;
+            this.part.scale.z = (float) z;
         }
 
         @Override
-        public void setR(float x, float y, float z)
+        public void setR(double x, double y, double z)
         {
-            this.part.rotate.x = x;
-            this.part.rotate.y = y;
-            this.part.rotate.z = z;
+            this.part.rotate.x = (float) x;
+            this.part.rotate.y = (float) y;
+            this.part.rotate.z = (float) z;
         }
     }
 }

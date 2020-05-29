@@ -34,16 +34,16 @@ public class GuiLabelPanel extends GuiMorphPanel<LabelMorph, GuiLabelMorph>
 		this.label = new GuiTextElement(mc, 10000, (label) -> this.morph.label = label);
 		this.max = new GuiTrackpadElement(mc, (value) -> this.morph.max = value.intValue());
 		this.max.limit(-1, Integer.MAX_VALUE, true).increment(10);
-		this.anchorX = new GuiTrackpadElement(mc, (value) -> this.morph.anchorX = value);
+		this.anchorX = new GuiTrackpadElement(mc, (value) -> this.morph.anchorX = value.floatValue());
 		this.anchorX.values(0.01F);
-		this.anchorY = new GuiTrackpadElement(mc, (value) -> this.morph.anchorY = value);
+		this.anchorY = new GuiTrackpadElement(mc, (value) -> this.morph.anchorY = value.floatValue());
 		this.anchorY.values(0.01F);
 		this.color = new GuiColorElement(mc, (value) -> this.morph.color = value);
 
 		this.shadow = new GuiToggleElement(mc, IKey.lang("metamorph.gui.label.shadow"), (button) -> this.morph.shadow = button.isToggled());
-		this.shadowX = new GuiTrackpadElement(mc, (value) -> this.morph.shadowX = value);
+		this.shadowX = new GuiTrackpadElement(mc, (value) -> this.morph.shadowX = value.floatValue());
 		this.shadowX.limit(-100, 100).values(0.1F, 0.01F, 0.5F).increment(0.1F);
-		this.shadowY = new GuiTrackpadElement(mc, (value) -> this.morph.shadowY = value);
+		this.shadowY = new GuiTrackpadElement(mc, (value) -> this.morph.shadowY = value.floatValue());
 		this.shadowY.limit(-100, 100).values(0.1F, 0.01F, 0.5F).increment(0.1F);
 		this.shadowColor = new GuiColorElement(mc, (value) -> this.morph.shadowColor = value);
 
