@@ -47,7 +47,7 @@ public class GuiQuickEditor extends GuiElement
 		this.presets = new GuiLabelSearchListElement<NBTTagCompound>(mc, this::setPreset);
 		this.presets.flex().relative(this).set(10, 30, 0, 0).w(1F, -20).h(1F, -60);
 		this.randomPreset = new GuiButtonElement(mc, IKey.lang("metamorph.gui.creative.random"), this::pickRandomPreset);
-		this.randomPreset.flex().relative(this.presets).y(1F).w(1F).h(20);
+		this.randomPreset.flex().relative(this.presets).y(1F).w(1F);
 
 		this.quickAccess = new GuiScrollElement(mc);
 		this.quickAccess.setVisible(false);

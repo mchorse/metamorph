@@ -100,7 +100,7 @@ public class GuiSettingsPanel extends GuiMorphPanel<AbstractMorph, GuiAbstractMo
 		this.attack.flex().h(80);
 		this.action.flex().h(80);
 
-		this.data.flex().relative(this).relative(this.element).x(1F, 10).y(1, -30).wTo(this.flex(), 1F, -10).h(20);
+		this.data.flex().relative(this).relative(this.element).x(1F, 10).y(1, -30).wTo(this.flex(), 1F, -10);
 
 		this.element.add(this.reset);
 		this.element.add(Elements.label(IKey.lang("metamorph.gui.editor.display_name"), 16).anchor(0, 1F), this.displayName);

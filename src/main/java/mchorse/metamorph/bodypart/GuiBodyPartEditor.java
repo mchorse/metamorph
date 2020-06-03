@@ -91,13 +91,12 @@ public class GuiBodyPartEditor extends GuiMorphPanel<AbstractMorph, GuiAbstractM
         this.stacks.flex().relative(this).x(0.5F).y(10).anchor(0.5F, 0).row(5).resize();
 
         this.inventory = new GuiInventoryElement(mc, this::pickItem);
-        this.inventory.flex().relative(this.stacks).x(0.5F, 0).y(1, 10).anchor(0.5F, 0).wh(200, 100).row(6);
+        this.inventory.flex().relative(this.stacks).x(0.5F, 0).y(1, 10).anchor(0.5F, 0).row(6);
         this.inventory.setVisible(false);
 
         for (int i = 0; i < this.slots.length; i++)
         {
             this.slots[i] = new GuiSlotElement(mc, i, this.inventory);
-            this.slots[i].flex().wh(24, 24);
             this.stacks.add(this.slots[i]);
         }
 

@@ -58,14 +58,13 @@ public class GuiSurvivalScreen extends GuiBase
         this.keybind = new GuiKeybindElement(mc, this::setKeybind);
         this.keybind.tooltip(IKey.lang("metamorph.gui.survival.keybind_tooltip"));
         this.favorite = new GuiToggleElement(mc, IKey.lang("metamorph.gui.survival.favorite"), this::favorite);
-        this.favorite.flex().h(12);
 
         this.sidebar = new GuiScrollElement(mc);
         this.sidebar.flex().relative(this.root).y(20).w(140).hTo(this.root.resizer(), 1F).column(5).stretch().height(20).padding(10);
         this.sidebar.add(Elements.row(mc, 5, 0, 20, this.morph, this.remove), this.keybind, this.favorite);
 
         this.onlyFavorite = new GuiToggleElement(mc, IKey.lang("metamorph.gui.survival.only_favorites"), (button) -> this.morphs.setFavorite(button.isToggled()));
-        this.onlyFavorite.flex().relative(this.root).x(1F).wh(100, 20).anchor(1F, 0F);
+        this.onlyFavorite.flex().relative(this.root).x(1F).w(100).anchor(1F, 0F);
 
         this.morphs = new GuiSurvivalMorphs(mc);
         this.morphs.flex().relative(this.root).x(140).y(20).wTo(this.root.resizer(), 1F).hTo(this.root.resizer(), 1F).column(0).vertical().stretch().scroll();
