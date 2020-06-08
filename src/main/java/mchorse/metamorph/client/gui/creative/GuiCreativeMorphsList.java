@@ -122,6 +122,7 @@ public class GuiCreativeMorphsList extends GuiElement
     public void reload()
     {
         this.morphs.setupSections(this, this::pickMorph);
+        this.search.setText("");
     }
 
     public void exit()
