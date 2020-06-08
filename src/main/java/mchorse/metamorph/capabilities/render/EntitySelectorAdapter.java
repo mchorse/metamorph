@@ -8,7 +8,6 @@ import com.google.gson.JsonParseException;
 import com.google.gson.JsonSerializationContext;
 import com.google.gson.JsonSerializer;
 import net.minecraft.nbt.JsonToNBT;
-import net.minecraft.nbt.NBTTagCompound;
 
 import java.lang.reflect.Type;
 
@@ -43,6 +42,16 @@ public class EntitySelectorAdapter implements JsonDeserializer<EntitySelector>, 
             selector.enabled = object.get("enabled").getAsBoolean();
         }
 
+        if (object.has("match"))
+        {
+            try
+            {
+                selector.match = JsonToNBT.getTagFromJson(object.get("match").getAsString());
+            }
+            catch (Exception e)
+            {}
+        }
+
         if (object.has("morph"))
         {
             try
@@ -64,6 +73,11 @@ public class EntitySelectorAdapter implements JsonDeserializer<EntitySelector>, 
         object.addProperty("name", src.name);
         object.addProperty("type", src.type);
         object.addProperty("enabled", src.enabled);
+
+        if (src.match != null && !src.match.hasNoTags())
+        {
+            object.addProperty("match", src.match.toString());
+        }
 
         if (src.morph != null)
         {

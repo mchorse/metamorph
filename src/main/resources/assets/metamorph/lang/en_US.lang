@@ -32,6 +32,8 @@ metamorph.gui.selectors.add=Add a selector
 metamorph.gui.selectors.remove=Remove a selector
 metamorph.gui.selectors.name=Name
 metamorph.gui.selectors.type=Type
+metamorph.gui.selectors.match=Matching NBT
+metamorph.gui.selectors.match_tooltip=Here you can specify an NBT tag that has to partially match entity's NBT tag
 metamorph.gui.selectors.enabled=Enabled
 
 metamorph.gui.morphs.keys.category=Morph navigation

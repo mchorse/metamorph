@@ -18,6 +18,7 @@ import mchorse.metamorph.api.morphs.AbstractMorph;
 import mchorse.metamorph.capabilities.render.EntitySelector;
 import mchorse.metamorph.client.EntityModelHandler;
 import net.minecraft.client.Minecraft;
+import net.minecraft.nbt.JsonToNBT;
 
 import java.util.List;
 import java.util.function.Consumer;
@@ -29,6 +30,7 @@ public class GuiSelectorEditor extends GuiElement
 	public GuiElement form;
 	public GuiTextElement name;
 	public GuiTextElement type;
+	public GuiTextElement match;
 	public GuiToggleElement active;
 	public GuiButtonElement pick;
 
@@ -67,6 +69,18 @@ public class GuiSelectorEditor extends GuiElement
 			this.selector.updateTime();
 			this.timer.mark();
 		});
+		this.match = new GuiTextElement(mc, 10000, (value) ->
+		{
+			try
+			{
+				this.selector.match = JsonToNBT.getTagFromJson(value);
+				this.selector.updateTime();
+				this.timer.mark();
+			}
+			catch (Exception e)
+			{}
+		});
+		this.match.tooltip(IKey.lang("metamorph.gui.selectors.match_tooltip"));
 		this.active = new GuiToggleElement(mc, IKey.lang("metamorph.gui.selectors.enabled"), (toggle) ->
 		{
 			this.selector.enabled = toggle.isToggled();
@@ -85,8 +99,9 @@ public class GuiSelectorEditor extends GuiElement
 		GuiLabel title = Elements.label(IKey.lang("metamorph.gui.selectors.title"), this.font.FONT_HEIGHT);
 		GuiLabel name = Elements.label(IKey.lang("metamorph.gui.selectors.name"), 16).anchor(0, 1);
 		GuiLabel type = Elements.label(IKey.lang("metamorph.gui.selectors.type"), 16).anchor(0, 1);
+		GuiLabel match = Elements.label(IKey.lang("metamorph.gui.selectors.match"), 16).anchor(0, 1);
 
-		this.form.add(title.tooltip(IKey.lang("metamorph.gui.selectors.tooltip")), name, this.name, type, this.type, this.active,this.pick);
+		this.form.add(title.tooltip(IKey.lang("metamorph.gui.selectors.tooltip")), name, this.name, type, this.type, match, this.match, this.active,this.pick);
 		this.markContainer().add(this.form, this.selectors);
 
 		this.selectors.setIndex(0);
@@ -141,6 +156,7 @@ public class GuiSelectorEditor extends GuiElement
 		this.selector = selector;
 		this.name.setText(selector.name);
 		this.type.setText(selector.type);
+		this.match.setText(selector.match == null ? "" : selector.match.toString());
 		this.active.toggled(selector.enabled);
 	}
 
