@@ -116,7 +116,7 @@ public class GuiCreativeMorphsList extends GuiElement
 
         this.morphs.keys().register(IKey.lang("metamorph.gui.creative.keys.edit"), Keyboard.KEY_E, this::enterEditMorph).category(category);
         this.morphs.keys().register(IKey.lang("metamorph.gui.creative.keys.quick"), Keyboard.KEY_Q, this::toggleQuickEdit).category(category);
-        this.morphs.keys().register(IKey.lang("metamorph.gui.creative.keys.focus"), Keyboard.KEY_F, () -> GuiBase.getCurrent().focus(this.search)).held(Keyboard.KEY_LCONTROL).category(category);
+        this.morphs.keys().register(IKey.lang("metamorph.gui.creative.keys.focus"), Keyboard.KEY_F, () -> GuiBase.getCurrent().focus(this.search, true)).held(Keyboard.KEY_LCONTROL).category(category);
     }
 
     public void reload()
