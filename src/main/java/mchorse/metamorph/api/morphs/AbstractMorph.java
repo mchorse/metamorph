@@ -262,7 +262,7 @@ public abstract class AbstractMorph
         this.displayName = from.displayName;
         this.favorite = from.favorite;
         this.keybind = from.keybind;
-        this.settings = from.settings;
+        this.settings = this.hasCustomSettings() ? from.settings.copy() : from.settings;
     }
 
     /* Getting size */
