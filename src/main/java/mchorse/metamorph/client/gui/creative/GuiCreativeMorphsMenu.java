@@ -48,7 +48,7 @@ public class GuiCreativeMorphsMenu extends GuiCreativeMorphsList
         this.exitKey.active = true;
         this.markContainer();
 
-        this.keys().register(IKey.lang("metamorph.gui.creative.keys.acquire"), Keyboard.KEY_A, () -> this.acquire.clickItself(GuiBase.getCurrent())).category(this.exitKey.category);
+        this.keys().register(IKey.lang("metamorph.gui.creative.keys.acquire"), Keyboard.KEY_A, () -> this.acquire.clickItself(GuiBase.getCurrent())).category(this.exitKey.category).active(() -> !this.isEditMode());
     }
 
     @Override
