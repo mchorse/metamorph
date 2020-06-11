@@ -86,13 +86,18 @@ public class MorphAPI
         return morphed;
     }
 
+    public static boolean acquire(EntityPlayer player, AbstractMorph morph)
+    {
+        return acquire(player, morph, true);
+    }
+
     /**
      * Make given player acquire a given morph. Usable on both sides, but it's 
      * better to use it on the server.
      * 
      * @return true, if player has acquired a morph
      */
-    public static boolean acquire(EntityPlayer player, AbstractMorph morph)
+    public static boolean acquire(EntityPlayer player, AbstractMorph morph, boolean notify)
     {
         if (morph == null)
         {
@@ -108,7 +113,7 @@ public class MorphAPI
 
         boolean acquired = Morphing.get(player).acquireMorph(event.morph);
 
-        if (!player.world.isRemote && acquired)
+        if (notify && !player.world.isRemote && acquired)
         {
             Dispatcher.sendTo(new PacketAcquireMorph(event.morph), (EntityPlayerMP) player);
         }

@@ -18,6 +18,7 @@ import mchorse.metamorph.client.gui.GuiMorphs;
 import mchorse.metamorph.util.MMIcons;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.Gui;
+import net.minecraft.client.gui.GuiScreen;
 import net.minecraft.client.renderer.GlStateManager;
 import org.lwjgl.input.Keyboard;
 import org.lwjgl.opengl.GL11;
@@ -362,6 +363,7 @@ public class GuiMorphSection extends GuiElement
 			}
 
 			contextMenu.action(Icons.EDIT, IKey.lang("metamorph.gui.creative.context.edit"), () -> this.parent.enterEditMorph(morph));
+			contextMenu.action(Icons.COPY, IKey.lang("metamorph.gui.creative.context.copy"), () -> GuiScreen.setClipboardString(morph.toNBT().toString()));
 		}
 
 		return contextMenu;

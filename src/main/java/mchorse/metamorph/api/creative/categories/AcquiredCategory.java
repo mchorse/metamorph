@@ -3,6 +3,7 @@ package mchorse.metamorph.api.creative.categories;
 import mchorse.metamorph.api.creative.sections.MorphSection;
 import mchorse.metamorph.api.morphs.AbstractMorph;
 import mchorse.metamorph.network.Dispatcher;
+import mchorse.metamorph.network.common.creative.PacketAcquireMorph;
 import mchorse.metamorph.network.common.creative.PacketSyncMorph;
 import mchorse.metamorph.network.common.survival.PacketRemoveMorph;
 import mchorse.metamorph.network.common.survival.PacketSelectMorph;
@@ -20,6 +21,14 @@ public class AcquiredCategory extends MorphCategory
 	public void setMorph(List<AbstractMorph> morphs)
 	{
 		this.morphs = morphs;
+	}
+
+	@Override
+	protected void addMorph(AbstractMorph morph)
+	{
+		super.addMorph(morph);
+
+		Dispatcher.sendToServer(new PacketAcquireMorph(morph, false));
 	}
 
 	@Override

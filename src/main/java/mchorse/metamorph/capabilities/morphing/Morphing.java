@@ -353,7 +353,7 @@ public class Morphing implements IMorphing
     @Override
     public boolean remove(int index)
     {
-        if (!this.acquiredMorphs.isEmpty() && index >= 0 && index < this.acquiredMorphs.size())
+        if (index >= 0 && index < this.acquiredMorphs.size())
         {
             this.acquiredMorphs.remove(index);
 
