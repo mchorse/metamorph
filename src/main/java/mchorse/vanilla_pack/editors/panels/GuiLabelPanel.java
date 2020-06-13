@@ -21,6 +21,7 @@ public class GuiLabelPanel extends GuiMorphPanel<LabelMorph, GuiLabelMorph>
 	public GuiTrackpadElement anchorX;
 	public GuiTrackpadElement anchorY;
 	public GuiColorElement color;
+	public GuiToggleElement lighting;
 
 	public GuiToggleElement shadow;
 	public GuiTrackpadElement shadowX;
@@ -39,6 +40,8 @@ public class GuiLabelPanel extends GuiMorphPanel<LabelMorph, GuiLabelMorph>
 		this.anchorY = new GuiTrackpadElement(mc, (value) -> this.morph.anchorY = value.floatValue());
 		this.anchorY.values(0.01F);
 		this.color = new GuiColorElement(mc, (value) -> this.morph.color = value);
+		this.lighting = new GuiToggleElement(mc, IKey.lang("metamorph.gui.label.lighting"), (button) -> this.morph.lighting = button.isToggled());
+		this.lighting.tooltip(IKey.lang("metamorph.gui.label.lighting_tooltip"));
 
 		this.shadow = new GuiToggleElement(mc, IKey.lang("metamorph.gui.label.shadow"), (button) -> this.morph.shadow = button.isToggled());
 		this.shadowX = new GuiTrackpadElement(mc, (value) -> this.morph.shadowX = value.floatValue());
@@ -54,7 +57,7 @@ public class GuiLabelPanel extends GuiMorphPanel<LabelMorph, GuiLabelMorph>
 		this.element.add(Elements.label(IKey.lang("metamorph.gui.label.label"), 16).anchor(0, 1F), this.label);
 		this.element.add(Elements.label(IKey.lang("metamorph.gui.label.max_width"), 16).anchor(0, 1F), this.max);
 		this.element.add(Elements.label(IKey.lang("metamorph.gui.label.anchor"), 16).anchor(0, 1F), this.anchorX, this.anchorY);
-		this.element.add(Elements.label(IKey.lang("metamorph.gui.label.color"), 16).anchor(0, 1F), this.color);
+		this.element.add(Elements.label(IKey.lang("metamorph.gui.label.color"), 16).anchor(0, 1F), this.color, this.lighting);
 
 		this.element.add(this.shadow);
 		this.element.add(Elements.label(IKey.lang("metamorph.gui.label.shadow_offset"), 16).anchor(0, 1F), this.shadowX, this.shadowY);
@@ -73,6 +76,7 @@ public class GuiLabelPanel extends GuiMorphPanel<LabelMorph, GuiLabelMorph>
 		this.anchorX.setValue(morph.anchorX);
 		this.anchorY.setValue(morph.anchorY);
 		this.color.picker.setColor(morph.color);
+		this.lighting.toggled(morph.lighting);
 
 		this.shadow.toggled(morph.shadow);
 		this.shadowX.setValue(morph.shadowX);

@@ -5,6 +5,8 @@ import mchorse.metamorph.api.morphs.AbstractMorph;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.FontRenderer;
 import net.minecraft.client.renderer.GlStateManager;
+import net.minecraft.client.renderer.OpenGlHelper;
+import net.minecraft.client.renderer.RenderHelper;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.nbt.NBTTagCompound;
@@ -23,6 +25,7 @@ public class LabelMorph extends AbstractMorph
 	public float anchorX = 0.5F;
 	public float anchorY = 0.5F;
 	public int color = 0xffffff;
+	public boolean lighting = true;
 
 	/* Shadow properties */
 	public boolean shadow = false;
@@ -54,6 +57,14 @@ public class LabelMorph extends AbstractMorph
 		/* Approximately 16 letters per block */
 		double scale = 1D / 6D / 8D;
 
+		float lastBrightnessX = OpenGlHelper.lastBrightnessX;
+		float lastBrightnessY = OpenGlHelper.lastBrightnessY;
+
+		if (!this.lighting)
+		{
+			OpenGlHelper.setLightmapTextureCoords(OpenGlHelper.lightmapTexUnit, 240, 240);
+		}
+
 		GlStateManager.disableLighting();
 		GlStateManager.disableCull();
 		GlStateManager.pushMatrix();
@@ -65,6 +76,12 @@ public class LabelMorph extends AbstractMorph
 		GlStateManager.popMatrix();
 		GlStateManager.enableCull();
 		GlStateManager.enableLighting();
+
+		if (!this.lighting)
+		{
+			OpenGlHelper.setLightmapTextureCoords(OpenGlHelper.lightmapTexUnit, lastBrightnessX, lastBrightnessY);
+		}
+
 	}
 
 	@SideOnly(Side.CLIENT)
@@ -141,6 +158,7 @@ public class LabelMorph extends AbstractMorph
 			result = result && this.shadowX == label.shadowX;
 			result = result && this.shadowY == label.shadowY;
 			result = result && this.shadowColor == label.shadowColor;
+			result = result && this.lighting == label.lighting;
 		}
 
 		return result;
@@ -170,6 +188,7 @@ public class LabelMorph extends AbstractMorph
 			this.shadowX = label.shadowX;
 			this.shadowY = label.shadowY;
 			this.shadowColor = label.shadowColor;
+			this.lighting = label.lighting;
 		}
 	}
 
@@ -190,50 +209,16 @@ public class LabelMorph extends AbstractMorph
 	{
 		super.toNBT(tag);
 
-		if (!this.label.equals(DEFAULT_LABEL))
-		{
-			tag.setString("Label", this.label);
-		}
-
-		if (this.max > 0)
-		{
-			tag.setInteger("Max", this.max);
-		}
-
-		if (this.anchorX != 0.5F)
-		{
-			tag.setFloat("AnchorX", this.anchorX);
-		}
-
-		if (this.anchorY != 0.5F)
-		{
-			tag.setFloat("AnchorY", this.anchorY);
-		}
-
-		if (this.color != 0xffffff)
-		{
-			tag.setInteger("Color", this.color);
-		}
-
-		if (this.shadow)
-		{
-			tag.setBoolean("Shadow", this.shadow);
-		}
-
-		if (this.shadowX != 1F)
-		{
-			tag.setFloat("ShadowX", this.shadowX);
-		}
-
-		if (this.shadowY != 1F)
-		{
-			tag.setFloat("ShadowY", this.shadowY);
-		}
-
-		if (this.shadowColor != 0x000000)
-		{
-			tag.setInteger("ShadowColor", this.shadowColor);
-		}
+		if (!this.label.equals(DEFAULT_LABEL)) tag.setString("Label", this.label);
+		if (this.max > 0) tag.setInteger("Max", this.max);
+		if (this.anchorX != 0.5F) tag.setFloat("AnchorX", this.anchorX);
+		if (this.anchorY != 0.5F) tag.setFloat("AnchorY", this.anchorY);
+		if (this.color != 0xffffff) tag.setInteger("Color", this.color);
+		if (this.shadow) tag.setBoolean("Shadow", this.shadow);
+		if (this.shadowX != 1F) tag.setFloat("ShadowX", this.shadowX);
+		if (this.shadowY != 1F) tag.setFloat("ShadowY", this.shadowY);
+		if (this.shadowColor != 0x000000) tag.setInteger("ShadowColor", this.shadowColor);
+		if (!this.lighting) tag.setBoolean("Lighting", this.lighting);
 	}
 
 	@Override
@@ -241,49 +226,15 @@ public class LabelMorph extends AbstractMorph
 	{
 		super.fromNBT(tag);
 
-		if (tag.hasKey("Label"))
-		{
-			this.label = tag.getString("Label");
-		}
-
-		if (tag.hasKey("Max"))
-		{
-			this.max = tag.getInteger("Max");
-		}
-
-		if (tag.hasKey("AnchorX"))
-		{
-			this.anchorX = tag.getFloat("AnchorX");
-		}
-
-		if (tag.hasKey("AnchorY"))
-		{
-			this.anchorY = tag.getFloat("AnchorY");
-		}
-
-		if (tag.hasKey("Color"))
-		{
-			this.color = tag.getInteger("Color");
-		}
-
-		if (tag.hasKey("Shadow"))
-		{
-			this.shadow = tag.getBoolean("Shadow");
-		}
-
-		if (tag.hasKey("ShadowX"))
-		{
-			this.shadowX = tag.getFloat("ShadowX");
-		}
-
-		if (tag.hasKey("ShadowY"))
-		{
-			this.shadowY = tag.getFloat("ShadowY");
-		}
-
-		if (tag.hasKey("ShadowColor"))
-		{
-			this.shadowColor = tag.getInteger("ShadowColor");
-		}
+		if (tag.hasKey("Label")) this.label = tag.getString("Label");
+		if (tag.hasKey("Max")) this.max = tag.getInteger("Max");
+		if (tag.hasKey("AnchorX")) this.anchorX = tag.getFloat("AnchorX");
+		if (tag.hasKey("AnchorY")) this.anchorY = tag.getFloat("AnchorY");
+		if (tag.hasKey("Color")) this.color = tag.getInteger("Color");
+		if (tag.hasKey("Shadow")) this.shadow = tag.getBoolean("Shadow");
+		if (tag.hasKey("ShadowX")) this.shadowX = tag.getFloat("ShadowX");
+		if (tag.hasKey("ShadowY")) this.shadowY = tag.getFloat("ShadowY");
+		if (tag.hasKey("ShadowColor")) this.shadowColor = tag.getInteger("ShadowColor");
+		if (tag.hasKey("Lighting")) this.lighting = tag.getBoolean("Lighting");
 	}
 }
