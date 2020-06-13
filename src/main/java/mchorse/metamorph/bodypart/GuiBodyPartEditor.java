@@ -3,13 +3,16 @@ package mchorse.metamorph.bodypart;
 import mchorse.mclib.client.gui.framework.elements.GuiElement;
 import mchorse.mclib.client.gui.framework.elements.GuiElements;
 import mchorse.mclib.client.gui.framework.elements.buttons.GuiButtonElement;
+import mchorse.mclib.client.gui.framework.elements.buttons.GuiIconElement;
 import mchorse.mclib.client.gui.framework.elements.buttons.GuiSlotElement;
 import mchorse.mclib.client.gui.framework.elements.buttons.GuiToggleElement;
 import mchorse.mclib.client.gui.framework.elements.input.GuiTransformations;
 import mchorse.mclib.client.gui.framework.elements.list.GuiStringListElement;
 import mchorse.mclib.client.gui.framework.elements.utils.GuiContext;
 import mchorse.mclib.client.gui.framework.elements.utils.GuiInventoryElement;
+import mchorse.mclib.client.gui.utils.Icons;
 import mchorse.mclib.client.gui.utils.keys.IKey;
+import mchorse.mclib.utils.MathUtils;
 import mchorse.metamorph.api.MorphUtils;
 import mchorse.metamorph.api.morphs.AbstractMorph;
 import mchorse.metamorph.client.gui.creative.GuiNestedEdit;
@@ -23,18 +26,24 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
 @SideOnly(Side.CLIENT)
 public class GuiBodyPartEditor extends GuiMorphPanel<AbstractMorph, GuiAbstractMorph>
 {
+    public static List<BodyPart> buffer = new ArrayList<BodyPart>();
+
     protected GuiBodyPartListElement bodyParts;
     protected GuiNestedEdit pickMorph;
     protected GuiToggleElement useTarget;
 
-    protected GuiButtonElement addPart;
-    protected GuiButtonElement removePart;
+    protected GuiIconElement add;
+    protected GuiIconElement dupe;
+    protected GuiIconElement remove;
+    protected GuiIconElement copy;
+    protected GuiIconElement paste;
 
     protected GuiBodyPartTransformations transformations;
 
@@ -70,21 +79,37 @@ public class GuiBodyPartEditor extends GuiMorphPanel<AbstractMorph, GuiAbstractM
             });
         });
 
-        this.addPart = new GuiButtonElement(mc, IKey.lang("metamorph.gui.add"), this::addPart);
-        this.removePart = new GuiButtonElement(mc, IKey.lang("metamorph.gui.remove"), this::removePart);
+        this.add = new GuiIconElement(mc, Icons.ADD, this::addPart);
+        this.add.tooltip(IKey.lang("metamorph.gui.body_parts.add_tooltip"));
+        this.add.flex().w(20);
+        this.dupe = new GuiIconElement(mc, Icons.DUPE, this::dupePart);
+        this.dupe.tooltip(IKey.lang("metamorph.gui.body_parts.dupe_tooltip"));
+        this.remove = new GuiIconElement(mc, Icons.REMOVE, this::removePart);
+        this.remove.tooltip(IKey.lang("metamorph.gui.body_parts.remove_tooltip"));
+        this.copy = new GuiIconElement(mc, Icons.COPY, this::copyParts);
+        this.copy.tooltip(IKey.lang("metamorph.gui.body_parts.copy_tooltip"));
+        this.paste = new GuiIconElement(mc, Icons.PASTE, this::pasteParts);
+        this.paste.tooltip(IKey.lang("metamorph.gui.body_parts.paste_tooltip"));
+        this.paste.flex().w(20);
+
         this.useTarget = new GuiToggleElement(mc, IKey.lang("metamorph.gui.body_parts.use_target"), false, this::toggleTarget);
         this.transformations = new GuiBodyPartTransformations(mc);
 
+        int width = 110;
+
         this.transformations.flex().relative(this.area).x(0.5F, -95).y(1, -10).wh(190, 70).anchorY(1F);
-        this.limbs.flex().relative(this).set(0, 50, 105, 90).x(1, -115).h(1, -80);
-        this.pickMorph.flex().relative(this).set(0, 10, 105, 20).x(1, -115);
-        this.addPart.flex().relative(this).set(10, 10, 50, 20);
-        this.removePart.flex().relative(this.addPart).set(55, 0, 50, 20);
-        this.bodyParts.flex().relative(this).set(10, 50, 105, 0).hTo(this.transformations.flex(), 1F);
-        this.useTarget.flex().relative(this).set(0, 0, 105, 11).x(1, -115).y(1, -21);
+        this.limbs.flex().relative(this).set(0, 50, width, 90).x(1, -115).h(1, -80);
+        this.pickMorph.flex().relative(this).set(0, 10, width, 20).x(1, -115);
+        this.bodyParts.flex().relative(this).set(10, 22, width, 0).hTo(this.transformations.flex(), 1F, -20);
+        this.useTarget.flex().relative(this).set(0, 0, width, 11).x(1, -115).y(1, -21);
+
+        GuiElement sidebar = new GuiElement(mc);
+
+        sidebar.flex().relative(this).x(10).y(1, -30).wh(width, 20).row(0).height(20);
+        sidebar.add(this.add, this.dupe, this.remove, this.copy, this.paste);
 
         this.elements.add(this.limbs, this.pickMorph, this.useTarget, this.transformations);
-        this.add(this.addPart, this.removePart, this.bodyParts, this.elements);
+        this.add(sidebar, this.bodyParts, this.elements);
 
         /* Inventory */
         this.stacks = new GuiElement(mc);
@@ -103,47 +128,56 @@ public class GuiBodyPartEditor extends GuiMorphPanel<AbstractMorph, GuiAbstractM
         this.elements.add(this.stacks, this.inventory);
     }
 
-    protected void addPart(GuiButtonElement b)
+    protected void addPart(GuiIconElement b)
     {
-        List<BodyPart> currentPart = this.bodyParts.getCurrent();
-        List<String> currentLimb = this.limbs.getCurrent();
-
-        BodyPart part = currentPart.isEmpty() ? null : currentPart.get(0);
-        String limb = currentLimb.isEmpty() ? null : currentLimb.get(0);
-
-        if (part == null)
-        {
-            part = new BodyPart();
-
-            if (limb != null)
-            {
-                part.limb = limb;
-            }
-        }
-        else
-        {
-            part = part.copy();
-        }
+        BodyPart part = new BodyPart();
 
         part.init();
 
         this.parts.parts.add(part);
-        this.part = part;
         this.setPart(part);
 
         this.bodyParts.setCurrentDirect(part);
         this.bodyParts.update();
     }
 
-    protected void removePart(GuiButtonElement b)
+    protected void dupePart(GuiIconElement b)
     {
-        if (this.part == null)
+        if (this.bodyParts.isDeselected())
+        {
+            return;
+        }
+
+        BodyPart part = this.bodyParts.getCurrentFirst().copy();
+
+        part.init();
+
+        this.parts.parts.add(part);
+        this.setPart(part);
+
+        this.bodyParts.setCurrentDirect(part);
+        this.bodyParts.update();
+    }
+
+    protected void removePart(GuiIconElement b)
+    {
+        if (this.bodyParts.isDeselected())
         {
             return;
         }
 
         List<BodyPart> parts = this.parts.parts;
-        int index = parts.indexOf(this.part);
+        int index = -1;
+
+        for (int i = 0; i < parts.size(); i ++)
+        {
+            if (parts.get(i) == this.part)
+            {
+                index = i;
+
+                break;
+            }
+        }
 
         if (index != -1)
         {
@@ -153,13 +187,43 @@ public class GuiBodyPartEditor extends GuiMorphPanel<AbstractMorph, GuiAbstractM
 
             if (parts.size() >= 1)
             {
-                this.setPart(parts.get(index >= 0 ? index : 0));
+                this.setPart(parts.get(MathUtils.clamp(index, 0, parts.size() - 1)));
             }
             else
             {
                 this.setPart(null);
             }
         }
+
+        this.bodyParts.update();
+    }
+
+    protected void copyParts(GuiIconElement b)
+    {
+        buffer.clear();
+
+        for (BodyPart part : this.parts.parts)
+        {
+            buffer.add(part.copy());
+        }
+    }
+
+    protected void pasteParts(GuiIconElement b)
+    {
+        for (BodyPart part : buffer)
+        {
+            BodyPart clone = part.copy();
+
+            this.parts.parts.add(clone);
+            clone.init();
+        }
+
+        if (!this.parts.parts.isEmpty())
+        {
+            this.setPart(this.parts.parts.get(this.parts.parts.size() - 1));
+        }
+
+        this.bodyParts.update();
     }
 
     protected void toggleTarget(GuiToggleElement b)

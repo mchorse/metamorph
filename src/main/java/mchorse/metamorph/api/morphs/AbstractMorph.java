@@ -87,6 +87,12 @@ public abstract class AbstractMorph
         return this.name;
     }
 
+    @SideOnly(Side.CLIENT)
+    public boolean hasCustomName()
+    {
+        return this.displayName != null && !this.displayName.isEmpty();
+    }
+
     public boolean hasCustomSettings()
     {
         if (this.settings == MorphSettings.DEFAULT)
