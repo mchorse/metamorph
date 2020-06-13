@@ -61,7 +61,7 @@ public class ClientProxy extends CommonProxy
 
     public static GuiSurvivalScreen getSurvivalScreen()
     {
-        if (survivalScreen == null || true)
+        if (survivalScreen == null)
         {
             survivalScreen = new GuiSurvivalScreen();
         }
