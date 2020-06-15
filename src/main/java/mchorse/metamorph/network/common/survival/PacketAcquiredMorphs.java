@@ -1,14 +1,12 @@
 package mchorse.metamorph.network.common.survival;
 
+import io.netty.buffer.ByteBuf;
+import mchorse.metamorph.api.MorphUtils;
+import mchorse.metamorph.api.morphs.AbstractMorph;
+import net.minecraftforge.fml.common.network.simpleimpl.IMessage;
+
 import java.util.ArrayList;
 import java.util.List;
-
-import io.netty.buffer.ByteBuf;
-import mchorse.metamorph.api.MorphManager;
-import mchorse.metamorph.api.morphs.AbstractMorph;
-import net.minecraft.nbt.NBTTagCompound;
-import net.minecraftforge.fml.common.network.ByteBufUtils;
-import net.minecraftforge.fml.common.network.simpleimpl.IMessage;
 
 /**
  * Acquired morphs packet
@@ -32,7 +30,12 @@ public class PacketAcquiredMorphs implements IMessage
     {
         for (int i = 0, c = buf.readInt(); i < c; i++)
         {
-            this.morphs.add(MorphManager.INSTANCE.morphFromNBT(ByteBufUtils.readTag(buf)));
+            AbstractMorph morph = MorphUtils.morphFromBuf(buf);
+
+            if (morph != null)
+            {
+                this.morphs.add(morph);
+            }
         }
     }
 
@@ -43,10 +46,7 @@ public class PacketAcquiredMorphs implements IMessage
 
         for (AbstractMorph morph : this.morphs)
         {
-            NBTTagCompound tag = new NBTTagCompound();
-
-            morph.toNBT(tag);
-            ByteBufUtils.writeTag(buf, tag);
+            MorphUtils.morphToBuf(buf, morph);
         }
     }
 }

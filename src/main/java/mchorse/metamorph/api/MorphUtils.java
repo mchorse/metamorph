@@ -7,6 +7,7 @@ import java.util.Map;
 import java.util.Set;
 
 import io.netty.buffer.ByteBuf;
+import mchorse.mclib.utils.NBTUtils;
 import mchorse.metamorph.api.events.RegisterBlacklistEvent;
 import mchorse.metamorph.api.events.RegisterRemapEvent;
 import mchorse.metamorph.api.events.RegisterSettingsEvent;
@@ -155,12 +156,7 @@ public class MorphUtils
      */
     public static void morphToBuf(ByteBuf buffer, AbstractMorph morph)
     {
-        buffer.writeBoolean(morph != null);
-
-        if (morph != null)
-        {
-            ByteBufUtils.writeTag(buffer, morph.toNBT());
-        }
+        ByteBufUtils.writeTag(buffer, morph == null ? null : morph.toNBT());
     }
 
     /**
@@ -174,11 +170,6 @@ public class MorphUtils
      */
     public static AbstractMorph morphFromBuf(ByteBuf buffer)
     {
-        if (buffer.readBoolean())
-        {
-            return MorphManager.INSTANCE.morphFromNBT(ByteBufUtils.readTag(buffer));
-        }
-
-        return null;
+        return MorphManager.INSTANCE.morphFromNBT(NBTUtils.readInfiniteTag(buffer));
     }
 }
