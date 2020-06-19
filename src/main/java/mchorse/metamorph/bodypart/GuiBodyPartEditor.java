@@ -48,7 +48,7 @@ public class GuiBodyPartEditor extends GuiMorphPanel<AbstractMorph, GuiAbstractM
     protected GuiBodyPartTransformations transformations;
 
     protected GuiStringListElement limbs;
-    protected GuiElements<GuiElement> elements = new GuiElements<GuiElement>(this);
+    protected GuiElement elements;
 
     protected BodyPartManager parts;
     protected BodyPart part;
@@ -108,6 +108,7 @@ public class GuiBodyPartEditor extends GuiMorphPanel<AbstractMorph, GuiAbstractM
         sidebar.flex().relative(this).x(10).y(1, -30).wh(width, 20).row(0).height(20);
         sidebar.add(this.add, this.dupe, this.remove, this.copy, this.paste);
 
+        this.elements = new GuiElement(mc);
         this.elements.add(this.limbs, this.pickMorph, this.useTarget, this.transformations);
         this.add(sidebar, this.bodyParts, this.elements);
 
