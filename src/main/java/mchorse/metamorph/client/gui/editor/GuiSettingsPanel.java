@@ -67,7 +67,7 @@ public class GuiSettingsPanel extends GuiMorphPanel<AbstractMorph, GuiAbstractMo
 				}
 			}
 		});
-		this.abilities.multi().background();
+		this.abilities.multi().background().tooltip(IKey.lang("metamorph.gui.editor.abilities_tooltip"));
 		this.attack = new GuiStringListElement(mc, (values) ->
 		{
 			this.ensureCustomSettings();

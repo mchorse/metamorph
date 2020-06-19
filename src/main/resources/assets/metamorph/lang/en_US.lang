@@ -86,6 +86,7 @@ metamorph.gui.editor.display_name=Display name
 metamorph.gui.editor.health=Health
 metamorph.gui.editor.speed=Speed
 metamorph.gui.editor.abilities=Abilities
+metamorph.gui.editor.abilities_tooltip=Shift + click on the abilities in the list, to select multiple abilities
 metamorph.gui.editor.attack=Attack
 metamorph.gui.editor.action=Action
 metamorph.gui.editor.reset=Reset
