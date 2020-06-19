@@ -80,7 +80,7 @@ public class GuiAbstractMorph<T extends AbstractMorph> extends GuiPanelBase<GuiM
             }
         }
 
-        index += GuiScreen.isShiftKeyDown() ? -1 : 1;
+        index += GuiScreen.isShiftKeyDown() ? 1 : -1;
         index = MathUtils.cycler(index, 0, this.panels.size() - 1);
 
         this.buttons.elements.get(index).clickItself(GuiBase.getCurrent());
