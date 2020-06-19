@@ -30,7 +30,7 @@ public class GuiEntityMorph extends GuiAbstractMorph<EntityMorph>
 		super(mc);
 
 		this.bodyPart = new GuiBodyPartEditor(mc, this);
-		this.registerKeybind(this.registerPanel(this.bodyPart, IKey.lang("metamorph.gui.body_parts.parts"), Icons.LIMB), IKey.lang("metamorph.gui.body_parts.open"), Keyboard.KEY_B);
+		this.registerPanel(this.bodyPart, IKey.lang("metamorph.gui.body_parts.parts"), Icons.LIMB);
 	}
 
 	@Override

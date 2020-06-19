@@ -90,6 +90,8 @@ metamorph.gui.editor.attack=Attack
 metamorph.gui.editor.action=Action
 metamorph.gui.editor.reset=Reset
 metamorph.gui.editor.item_morph=Item
+metamorph.gui.editor.keys.category=Morph editor keybinds
+metamorph.gui.editor.keys.cycle=Cycle between morph panels
 
 metamorph.gui.label.label=Label
 metamorph.gui.label.max_width=Max width
