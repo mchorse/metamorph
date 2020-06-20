@@ -69,6 +69,10 @@ public class ItemMorph extends ItemStackMorph
 	@SideOnly(Side.CLIENT)
 	public void render(EntityLivingBase entity, double x, double y, double z, float entityYaw, float partialTicks)
 	{
+		GlStateManager.enableBlend();
+		GlStateManager.enableAlpha();
+		GlStateManager.blendFunc(GlStateManager.SourceFactor.SRC_ALPHA, GlStateManager.DestFactor.ONE_MINUS_SRC_ALPHA);
+
 		GlStateManager.pushMatrix();
 		GlStateManager.translate(x, y, z);
 
