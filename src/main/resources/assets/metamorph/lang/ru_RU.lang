@@ -86,10 +86,13 @@ metamorph.gui.editor.display_name=Отображать имя
 metamorph.gui.editor.health=Здоровье
 metamorph.gui.editor.speed=Скорость
 metamorph.gui.editor.abilities=Способности
+metamorph.gui.editor.abilities_tooltip=Нажмите клавишу шифт и кликните на способности из списка, чтобы выбрать сразу несколько способносте
 metamorph.gui.editor.attack=Атака
 metamorph.gui.editor.action=Действие
 metamorph.gui.editor.reset=Сбросить
 metamorph.gui.editor.item_morph=Предмет
+metamorph.gui.editor.keys.category=Клавиши редактора морфов
+metamorph.gui.editor.keys.cycle=Зацикливание между панелями морфов
 
 metamorph.gui.label.label=Название
 metamorph.gui.label.max_width=Максимальная ширина
