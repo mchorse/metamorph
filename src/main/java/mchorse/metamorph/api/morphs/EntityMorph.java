@@ -39,6 +39,7 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
 import net.minecraft.util.DamageSource;
 import net.minecraft.util.EnumHand;
+import net.minecraft.util.EnumHandSide;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.SoundEvent;
 import net.minecraft.util.math.BlockPos;
@@ -313,10 +314,13 @@ public class EntityMorph extends AbstractMorph implements IBodyPartProvider
                 this.setupLimbs();
             }
 
+            boolean wasSneak = false;
+
             ModelBase model = render.getMainModel();
 
             if (model instanceof ModelBiped)
             {
+                wasSneak = ((ModelBiped) model).isSneak;
                 ((ModelBiped) model).isSneak = entity.isSneaking();
             }
 
@@ -336,6 +340,11 @@ public class EntityMorph extends AbstractMorph implements IBodyPartProvider
             else
             {
                 render.doRender(this.entity, x, y, z, entityYaw, partialTicks);
+            }
+
+            if (model instanceof ModelBiped)
+            {
+                ((ModelBiped) model).isSneak = wasSneak;
             }
 
             renderEntity = null;
@@ -391,11 +400,6 @@ public class EntityMorph extends AbstractMorph implements IBodyPartProvider
         entity.setHealth(entity.getMaxHealth());
         entity.noClip = true;
         entity.setAlwaysRenderNameTag(true);
-
-        if (entity instanceof EntityLiving)
-        {
-            ((EntityLiving) entity).setLeftHanded(true);
-        }
 
         if (this.settings == MorphSettings.DEFAULT)
         {
@@ -524,6 +528,12 @@ public class EntityMorph extends AbstractMorph implements IBodyPartProvider
 
         this.entity.prevSwingProgress = target.prevSwingProgress;
         this.entity.prevLimbSwingAmount = target.prevLimbSwingAmount;
+        this.entity.swingingHand = target.swingingHand;
+
+        if (this.entity instanceof EntityLiving)
+        {
+            ((EntityLiving) this.entity).setLeftHanded(target.getPrimaryHand() == EnumHandSide.LEFT);
+        }
 
         if (target instanceof EntityPlayer && ((EntityPlayer) target).isCreative())
         {
