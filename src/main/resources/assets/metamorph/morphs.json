@@ -34,19 +34,19 @@
         "hostile": true
     },
     "minecraft:horse": {
-        "abilities": ["prevent_fall"],
+        "abilities": ["prevent_fall", "step_up"],
         "action": "jump",
         "health": 24,
         "speed": 0.15
     },
     "minecraft:donkey": {
-        "abilities": ["prevent_fall"],
+        "abilities": ["prevent_fall", "step_up"],
         "action": "jump",
         "health": 24,
         "speed": 0.15
     },
     "minecraft:mule": {
-        "abilities": ["prevent_fall"],
+        "abilities": ["prevent_fall", "step_up"],
         "action": "jump",
         "health": 24,
         "speed": 0.15
@@ -57,13 +57,13 @@
     	"hostile": true
     },
     "minecraft:skeleton_horse": {
-        "abilities": ["prevent_fall"],
+        "abilities": ["prevent_fall", "step_up", "rotten"],
         "action": "jump",
         "health": 24,
         "speed": 0.15
     },
     "minecraft:zombie_horse": {
-        "abilities": ["prevent_fall"],
+        "abilities": ["prevent_fall", "step_up", "rotten"],
         "action": "jump",
         "health": 24,
         "speed": 0.15,
@@ -125,7 +125,7 @@
         "hostile": true
     },
     "minecraft:zombie_pigman": {
-        "abilities": ["fire_proof", "hungerless"],
+        "abilities": ["fire_proof", "hungerless", "rotten"],
         "health": 20,
         "hostile": true,
         "hands": true
@@ -196,19 +196,19 @@
         "hostile": true
     },
     "minecraft:skeleton": {
-        "abilities": ["sun_allergy"],
+        "abilities": ["sun_allergy", "rotten"],
         "health": 20,
         "hostile": true,
         "hands": true
     },
     "minecraft:stray": {
-        "abilities": ["sun_allergy"],
+        "abilities": ["sun_allergy", "rotten"],
         "health": 20,
         "hostile": true,
         "hands": true
     },
     "minecraft:wither_skeleton": {
-        "abilities": ["fire_proof"],
+        "abilities": ["fire_proof", "rotten"],
         "attack": "wither",
         "health": 20,
         "hostile": true,
@@ -221,19 +221,19 @@
         "hands": true
     },
     "minecraft:zombie": {
-        "abilities": ["sun_allergy", "hungerless"],
+        "abilities": ["sun_allergy", "hungerless", "rotten"],
         "health": 20,
         "hostile": true,
         "hands": true
     },
     "minecraft:husk": {
-        "abilities": ["sun_allergy", "hungerless"],
+        "abilities": ["sun_allergy", "hungerless", "rotten"],
         "health": 20,
         "hostile": true,
         "hands": true
     },
     "minecraft:zombie_villager": {
-        "abilities": ["sun_allergy", "hungerless"],
+        "abilities": ["sun_allergy", "hungerless", "rotten"],
         "health": 20,
         "hostile": true,
         "hands": true
