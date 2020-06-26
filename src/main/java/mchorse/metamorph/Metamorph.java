@@ -38,7 +38,7 @@ import net.minecraftforge.fml.common.network.NetworkRegistry;
  * they're outdated), however, iChun saying that he's working on Morph for 
  * 1.10.2, this is really exciting! :D
  */
-@Mod(modid = Metamorph.MOD_ID, name = Metamorph.MODNAME, version = Metamorph.VERSION, updateJSON = "https://raw.githubusercontent.com/mchorse/metamorph/master/version.json", dependencies = "after:moreplayermodels;required-after:mclib@[%MCLIB%,)")
+@Mod(modid = Metamorph.MOD_ID, name = Metamorph.MODNAME, version = Metamorph.VERSION, updateJSON = "https://raw.githubusercontent.com/mchorse/metamorph/1.12/version.json", dependencies = "after:moreplayermodels;required-after:mclib@[%MCLIB%,)")
 public class Metamorph
 {
     /* Metadata fields */
