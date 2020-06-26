@@ -21,11 +21,18 @@ public class GuiCreativeMorphsMenu extends GuiCreativeMorphsList
 {
     private GuiButtonElement close;
     private GuiButtonElement acquire;
+    private boolean menu;
 
     public GuiCreativeMorphsMenu(Minecraft mc, Consumer<AbstractMorph> callback)
     {
+        this(mc, false, callback);
+    }
+
+    public GuiCreativeMorphsMenu(Minecraft mc, boolean menu, Consumer<AbstractMorph> callback)
+    {
         super(mc, callback);
 
+        this.menu = menu;
         this.acquire = new GuiButtonElement(mc, IKey.lang("metamorph.gui.acquire"), (b) ->
         {
             AbstractMorph cell = this.getSelected();
@@ -43,9 +50,12 @@ public class GuiCreativeMorphsMenu extends GuiCreativeMorphsList
 
         this.bar.flex().row(0).preferred(1);
         this.bar.prepend(this.acquire);
-        this.bar.add(this.close);
 
-        this.exitKey.active = true;
+        if (!this.menu)
+        {
+            this.bar.add(this.close);
+        }
+
         this.markContainer();
 
         this.keys().register(IKey.lang("metamorph.gui.creative.keys.acquire"), Keyboard.KEY_A, () -> this.acquire.clickItself(GuiBase.getCurrent())).category(this.exitKey.category).active(() -> !this.isEditMode());
@@ -54,7 +64,7 @@ public class GuiCreativeMorphsMenu extends GuiCreativeMorphsList
     @Override
     public void exit()
     {
-        if (!this.isEditMode() && !this.isNested())
+        if (!this.menu && !this.isEditMode() && !this.isNested())
         {
             this.finish();
             this.removeFromParent();
@@ -68,9 +78,14 @@ public class GuiCreativeMorphsMenu extends GuiCreativeMorphsList
     }
 
     @Override
-    protected void updateExitKey()
+    protected boolean updateExitKey()
     {
-        this.exitKey.active = true;
+        if (this.menu)
+        {
+            return this.isEditMode() || this.isNested();
+        }
+
+        return true;
     }
 
     @Override
@@ -97,7 +112,11 @@ public class GuiCreativeMorphsMenu extends GuiCreativeMorphsList
     public void draw(GuiContext context)
     {
         GL11.glClear(GL11.GL_DEPTH_BUFFER_BIT);
-        Gui.drawRect(this.area.x, this.area.y, this.area.ex(), this.area.ey(), 0xaa000000);
+
+        if (!this.menu)
+        {
+            Gui.drawRect(this.area.x, this.area.y, this.area.ex(), this.area.ey(), 0xaa000000);
+        }
 
         super.draw(context);
     }

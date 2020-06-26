@@ -109,10 +109,9 @@ public class GuiCreativeMorphsList extends GuiElement
         /* Morph editor keybinds */
         IKey category = IKey.lang("metamorph.gui.creative.keys.category");
 
-        this.exitKey = this.keys().register(IKey.lang("metamorph.gui.creative.keys.exit"), Keyboard.KEY_ESCAPE, this::exit).category(category);
+        this.exitKey = this.keys().register(IKey.lang("metamorph.gui.creative.keys.exit"), Keyboard.KEY_ESCAPE, this::exit).category(category).active(this::updateExitKey);
 
         this.reload();
-        this.updateExitKey();
 
         this.morphs.keys().register(IKey.lang("metamorph.gui.creative.keys.edit"), Keyboard.KEY_E, this::enterEditMorph).category(category);
         this.morphs.keys().register(IKey.lang("metamorph.gui.creative.keys.quick"), Keyboard.KEY_Q, this::toggleQuickEdit).category(category);
@@ -139,9 +138,9 @@ public class GuiCreativeMorphsList extends GuiElement
         GuiBase.getCurrent().setContextMenu(null);
     }
 
-    protected void updateExitKey()
+    protected boolean updateExitKey()
     {
-        this.exitKey.active = this.editor.delegate != null || !this.nestedEdits.isEmpty();
+        return this.editor.delegate != null || !this.nestedEdits.isEmpty();
     }
 
     public Runnable showGlobalMorphs(AbstractMorph morph)

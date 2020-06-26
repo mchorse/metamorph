@@ -41,10 +41,8 @@ public class GuiCreativeScreen extends GuiBase
     private GuiButtonElement close;
     private GuiCreativeMorphsList pane;
 
-    public GuiCreativeScreen()
+    public GuiCreativeScreen(Minecraft mc)
     {
-        Minecraft mc = Minecraft.getMinecraft();
-
         this.selectors = new GuiSelectorEditor(mc);
         this.selectors.setVisible(false);
 

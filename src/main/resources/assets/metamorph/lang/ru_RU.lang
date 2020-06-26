@@ -6,6 +6,7 @@ entity.metamorph.Morph.name=Морф
 key.metamorph=Метаморф
 key.metamorph.action=Использовать действие
 key.metamorph.creative_menu=Открыть меню превращения креатива
+key.metamorph.selector_menu=Открыть меню селекторов существ
 key.metamorph.survival_menu=Открыть меню превращения выживания
 key.metamorph.demorph=Сбросить морф (обратно стать игроком)
 

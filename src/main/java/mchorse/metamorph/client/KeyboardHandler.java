@@ -5,6 +5,7 @@ import mchorse.metamorph.api.MorphManager;
 import mchorse.metamorph.capabilities.morphing.IMorphing;
 import mchorse.metamorph.capabilities.morphing.Morphing;
 import mchorse.metamorph.client.gui.creative.GuiCreativeScreen;
+import mchorse.metamorph.client.gui.creative.GuiSelectorsScreen;
 import mchorse.metamorph.network.Dispatcher;
 import mchorse.metamorph.network.common.survival.PacketAction;
 import mchorse.metamorph.network.common.survival.PacketSelectMorph;
@@ -30,6 +31,7 @@ public class KeyboardHandler
     /* Action key */
     private KeyBinding keyAction;
     private KeyBinding keyCreativeMenu;
+    private KeyBinding keySelectorMenu;
     private KeyBinding keySurvivalMenu;
 
     /* Morph related keys */
@@ -42,6 +44,7 @@ public class KeyboardHandler
         /* Create key bindings */
         keyAction = new KeyBinding("key.metamorph.action", Keyboard.KEY_V, category);
         keyCreativeMenu = new KeyBinding("key.metamorph.creative_menu", Keyboard.KEY_B, category);
+        keySelectorMenu = new KeyBinding("key.metamorph.selector_menu", Keyboard.KEY_MINUS, category);
         keySurvivalMenu = new KeyBinding("key.metamorph.survival_menu", Keyboard.KEY_X, category);
 
         keyDemorph = new KeyBinding("key.metamorph.demorph", Keyboard.KEY_PERIOD, category);
@@ -49,6 +52,7 @@ public class KeyboardHandler
         /* Register them in the client registry */
         ClientRegistry.registerKeyBinding(keyAction);
         ClientRegistry.registerKeyBinding(keyCreativeMenu);
+        ClientRegistry.registerKeyBinding(keySelectorMenu);
         ClientRegistry.registerKeyBinding(keySurvivalMenu);
 
         ClientRegistry.registerKeyBinding(keyDemorph);
@@ -66,7 +70,13 @@ public class KeyboardHandler
 
         if (this.keyCreativeMenu.isPressed() && player.isCreative())
         {
-            mc.displayGuiScreen(new GuiCreativeScreen());
+            mc.displayGuiScreen(new GuiCreativeScreen(mc));
+            wasUsed = true;
+        }
+
+        if (this.keySelectorMenu.isPressed())
+        {
+            mc.displayGuiScreen(new GuiSelectorsScreen(mc));
             wasUsed = true;
         }
 

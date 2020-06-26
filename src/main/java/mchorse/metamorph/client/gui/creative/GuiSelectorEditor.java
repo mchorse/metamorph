@@ -37,23 +37,31 @@ public class GuiSelectorEditor extends GuiElement
 	private EntitySelector selector;
 	private Timer timer = new Timer(200);
 	private boolean selecting;
+	private boolean menu;
 
 	public GuiSelectorEditor(Minecraft mc)
 	{
+		this(mc, false);
+	}
+
+	public GuiSelectorEditor(Minecraft mc, boolean menu)
+	{
 		super(mc);
+
+		this.menu = menu;
 
 		this.selectors = new GuiSelectorListElement(mc, this::fillData);
 		this.selectors.sorting().background(0xff000000).setList(EntityModelHandler.selectors);
 		this.selectors.context(() ->
 		{
-			GuiSimpleContextMenu menu = new GuiSimpleContextMenu(mc).action(Icons.ADD, IKey.lang("metamorph.gui.selectors.add"), this::addSelector);
+			GuiSimpleContextMenu contextMenu = new GuiSimpleContextMenu(mc).action(Icons.ADD, IKey.lang("metamorph.gui.selectors.add"), this::addSelector);
 
 			if (!this.selectors.getCurrent().isEmpty())
 			{
-				menu.action(Icons.REMOVE, IKey.lang("metamorph.gui.selectors.remove"), this::removeSelector);
+				contextMenu.action(Icons.REMOVE, IKey.lang("metamorph.gui.selectors.remove"), this::removeSelector);
 			}
 
-			return menu;
+			return contextMenu;
 		});
 
 		this.form = new GuiElement(mc);
@@ -101,7 +109,13 @@ public class GuiSelectorEditor extends GuiElement
 		GuiLabel type = Elements.label(IKey.lang("metamorph.gui.selectors.type"), 16).anchor(0, 1);
 		GuiLabel match = Elements.label(IKey.lang("metamorph.gui.selectors.match"), 16).anchor(0, 1);
 
-		this.form.add(title.tooltip(IKey.lang("metamorph.gui.selectors.tooltip")), name, this.name, type, this.type, match, this.match, this.active,this.pick);
+		this.form.add(title.tooltip(IKey.lang("metamorph.gui.selectors.tooltip")), name, this.name, type, this.type, match, this.match, this.active);
+
+		if (!this.menu)
+		{
+			this.form.add(this.pick);
+		}
+
 		this.markContainer().add(this.form, this.selectors);
 
 		this.selectors.setIndex(0);
@@ -160,6 +174,24 @@ public class GuiSelectorEditor extends GuiElement
 		this.active.toggled(selector.enabled);
 	}
 
+	public void setMorph(AbstractMorph morph)
+	{
+		if (!this.isVisible() || this.selector == null)
+		{
+			return;
+		}
+
+		if (this.selecting || this.menu)
+		{
+			this.selector.morph = morph == null ? null : morph.toNBT();
+		}
+
+		this.pick.setEnabled(true);
+		this.selecting = false;
+		this.selector.updateTime();
+		this.timer.mark();
+	}
+
 	@Override
 	public void draw(GuiContext context)
 	{
@@ -176,24 +208,6 @@ public class GuiSelectorEditor extends GuiElement
 		{
 			this.drawCenteredString(this.font, "Right click here...", this.selectors.area.mx(), this.selectors.area.my(), 0x888888);
 		}
-	}
-
-	public void setMorph(AbstractMorph morph)
-	{
-		if (!this.isVisible() || this.selector == null)
-		{
-			return;
-		}
-
-		if (this.selecting && this.selector != null)
-		{
-			this.selector.morph = morph == null ? null : morph.toNBT();
-		}
-
-		this.pick.setEnabled(true);
-		this.selecting = false;
-		this.selector.updateTime();
-		this.timer.mark();
 	}
 
 	public static class GuiSelectorListElement extends GuiListElement<EntitySelector>
