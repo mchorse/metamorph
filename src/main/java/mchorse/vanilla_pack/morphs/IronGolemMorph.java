@@ -36,17 +36,6 @@ public class IronGolemMorph extends EntityMorph
     }
 
     @Override
-    public void attack(Entity target, EntityLivingBase source)
-    {
-        if (this.entity != null)
-        {
-            this.entity.attackEntityAsMob(target);
-        }
-
-        super.attack(target, source);
-    }
-
-    @Override
     public AbstractMorph create()
     {
         return new IronGolemMorph();
