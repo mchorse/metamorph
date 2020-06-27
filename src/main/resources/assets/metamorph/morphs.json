@@ -243,5 +243,10 @@
         "action": "fire_breath",
         "health": 200,
         "hostile": true
+    },
+    "minecraft:villager_golem": {
+        "abilities": ["prevent_fall", "step_up"],
+	"attack": "mob",
+        "health": 100
     }
 }
