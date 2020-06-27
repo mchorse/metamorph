@@ -36,6 +36,7 @@ import mchorse.vanilla_pack.actions.Snowball;
 import mchorse.vanilla_pack.actions.Spit;
 import mchorse.vanilla_pack.actions.Teleport;
 import mchorse.vanilla_pack.attacks.KnockbackAttack;
+import mchorse.vanilla_pack.attacks.MobAttack;
 import mchorse.vanilla_pack.attacks.PoisonAttack;
 import mchorse.vanilla_pack.attacks.WitherAttack;
 import mchorse.vanilla_pack.editors.GuiBlockMorph;
@@ -116,9 +117,10 @@ public class MetamorphFactory implements IMorphFactory
         actions.put("teleport", new Teleport());
 
         /* Register default attacks */
+        attacks.put("knockback", new KnockbackAttack());
+        attacks.put("mob", new MobAttack());
         attacks.put("poison", new PoisonAttack());
         attacks.put("wither", new WitherAttack());
-        attacks.put("knockback", new KnockbackAttack());
 
         /* Register main section */
         manager.list.register(new MetamorphSection(this, "entity"));
