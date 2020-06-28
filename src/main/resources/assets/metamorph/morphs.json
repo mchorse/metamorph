@@ -144,8 +144,7 @@
 	"attack": "mob",
         "health": 100,
 	"hands": true
-    }
-    
+    }.
     "minecraft:blaze": {
         "abilities": ["fly", "fire_proof", "water_allergy"],
         "action": "small_fireball",
