@@ -140,10 +140,11 @@
         "hands": true
     },
     "minecraft:villager_golem": {
-        "attack": "knockback",
+        "abilities": ["prevent_fall", "step_up"],
+	"attack": "mob",
         "health": 100,
-		"hands": true
-    },
+	"hands": true
+    }
     
     "minecraft:blaze": {
         "abilities": ["fly", "fire_proof", "water_allergy"],
@@ -243,10 +244,5 @@
         "action": "fire_breath",
         "health": 200,
         "hostile": true
-    },
-    "minecraft:villager_golem": {
-        "abilities": ["prevent_fall", "step_up"],
-	"attack": "mob",
-        "health": 100
     }
 }
