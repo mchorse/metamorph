@@ -244,12 +244,18 @@ public class MorphHandler
     @SubscribeEvent
     public void onPlayerAttack(LivingAttackEvent event)
     {
-        Entity source = event.getSource().getTrueSource();
+        DamageSource source = event.getSource();
+        Entity trueSource = source.getTrueSource();
         Entity target = event.getEntity();
 
-        if (source instanceof EntityPlayer)
+		if(source instanceof EntityDamageSourceIndirect)
+		{
+			return;
+		}
+        
+        if (trueSource instanceof EntityPlayer)
         {
-            EntityPlayer player = (EntityPlayer) source;
+            EntityPlayer player = (EntityPlayer) trueSource;
             IMorphing capability = Morphing.get(player);
 
             if (capability == null || !capability.isMorphed())
