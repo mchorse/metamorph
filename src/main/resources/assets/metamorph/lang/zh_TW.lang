@@ -92,8 +92,8 @@ metamorph.gui.editor.attack=攻擊
 metamorph.gui.editor.action=動作
 metamorph.gui.editor.reset=重置
 metamorph.gui.editor.item_morph=物品
-metamorph.gui.editor.keys.category=Morph editor keybinds
-metamorph.gui.editor.keys.cycle=Cycle between morph panels
+metamorph.gui.editor.keys.category=偽裝編輯器快捷鍵
+metamorph.gui.editor.keys.cycle=在偽裝面板間循環切換
 
 metamorph.gui.label.label=標簽
 metamorph.gui.label.max_width=最大寬度
