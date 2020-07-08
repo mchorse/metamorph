@@ -33,13 +33,13 @@ metamorph.gui.no_morph=没有选中伪装...
 metamorph.gui.morph_render_error=渲染该伪装时发生错误
 
 metamorph.gui.selectors.title=实体选择器
-metamorph.gui.selectors.tooltip=通过此功能, 你可以为指定名称或指定类型的实体添加伪装...
+metamorph.gui.selectors.tooltip=通过此功能, 您可以为指定名称或指定类型的实体添加伪装...
 metamorph.gui.selectors.add=添加选择器
 metamorph.gui.selectors.remove=移除选择器
 metamorph.gui.selectors.name=名称
 metamorph.gui.selectors.type=类型
 metamorph.gui.selectors.match=匹配 NBT
-metamorph.gui.selectors.match_tooltip=你可以在此处指定一个 NBT 标签, 该标签必须与实体的 NBT 标签部分匹配
+metamorph.gui.selectors.match_tooltip=您可以在此处指定一个 NBT 标签, 该标签必须与实体的 NBT 标签部分匹配
 metamorph.gui.selectors.enabled=启用
 
 metamorph.gui.morphs.keys.category=伪装列表导航
@@ -72,10 +72,10 @@ metamorph.gui.creative.context.to_recent=复制到最近的伪装
 metamorph.gui.creative.context.remove_morph=移除伪装
 metamorph.gui.creative.context.copy=复制 NBT
 metamorph.gui.creative.context.paste=粘贴 NBT
-metamorph.gui.creative.context.paste_modal=粘贴或输入你伪装的 NBT 标签...
+metamorph.gui.creative.context.paste_modal=粘贴或输入您伪装的 NBT 标签...
 
 metamorph.gui.survival.title=生存模式伪装菜单
-metamorph.gui.survival.keybind_tooltip=你可以通过此输入框绑定一个快捷键, 这个快捷键会让你变到这个伪装 (当你在菜单或游戏世界中按下时触发)
+metamorph.gui.survival.keybind_tooltip=您可以通过此输入框绑定一个快捷键, 这个快捷键会让您变到这个伪装 (当您在菜单或游戏世界中按下时触发)
 metamorph.gui.survival.only_favorites=仅显示收藏
 metamorph.gui.survival.favorite=收藏
 metamorph.gui.survival.keys.category=生存模式伪装菜单
@@ -164,7 +164,7 @@ metamorph.success.acquire=玩家 %s 成功获取了 %s 伪装!
 morph.category.generic=未分类伪装
 morph.category.animal=动物伪装
 morph.category.boss=Boss 伪装
-morph.category.acquired=你的伪装
+morph.category.acquired=您的伪装
 morph.category.hostile=敌对生物伪装 
 morph.category.modded=来自 %s 的伪装
 morph.category.recent=最近的伪装
