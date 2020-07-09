@@ -1,5 +1,20 @@
 # Metamorph Change Log
 
+## Metamorph 1.2.1
+
+This is a small patch that fixes some mob morph behavior (all of these fixes and tweaks were made by @IndeanaJones).
+
+**Compatible** with McLib `2.0`. It doesn't mean that future versions of McLib would be incompatible, but older versions are most likely incompatible.
+
+* Added `rotten`, `step_up` abilities
+* Added `mob` attack
+* Added support for bigger explosions when charged creeper morph is acquired for `explode` action
+* Fixed jumping ability not working during the rain
+* Fixed and improved hostile mechanic
+* Fixed morph attack actions being applied even through indirect player damage
+* Improved iron golem morph
+* Updated Chinese strings for 1.2 (thanks to Chunk7, KuenYo_ and H2SO4GepaoAX)
+
 ## Metamorph 1.2
 
 This big update adds many quality of life features related to management of morphs. Custom user categories, direct editing of acquired, recent morphs category, better editing. Basically after this update management of morphs is a bliss.
