@@ -1,8 +1,5 @@
 package mchorse.metamorph.api;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import mchorse.metamorph.ClientProxy;
 import mchorse.metamorph.Metamorph;
 import mchorse.metamorph.api.events.SpawnGhostEvent;
@@ -15,6 +12,9 @@ import net.minecraft.entity.EntityLiving;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.util.DamageSource;
+import net.minecraft.util.EntityDamageSourceIndirect;
+import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.common.util.FakePlayer;
 import net.minecraftforge.event.entity.living.LivingAttackEvent;
@@ -24,6 +24,9 @@ import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.common.gameevent.PlayerEvent.PlayerChangedDimensionEvent;
 import net.minecraftforge.fml.common.gameevent.TickEvent.Phase;
 import net.minecraftforge.fml.common.gameevent.TickEvent.PlayerTickEvent;
+
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Server event handler
