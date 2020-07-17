@@ -65,13 +65,13 @@ public class GuiSelectorEditor extends GuiElement
 		});
 
 		this.form = new GuiElement(mc);
-		this.name = new GuiTextElement(mc, (name) ->
+		this.name = new GuiTextElement(mc, 1000, (name) ->
 		{
 			this.selector.name = name;
 			this.selector.updateTime();
 			this.timer.mark();
 		});
-		this.type = new GuiTextElement(mc, (name) ->
+		this.type = new GuiTextElement(mc, 1000, (name) ->
 		{
 			this.selector.type = name;
 			this.selector.updateTime();
