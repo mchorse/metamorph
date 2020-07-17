@@ -4,6 +4,7 @@ import mchorse.mclib.client.gui.framework.GuiBase;
 import mchorse.mclib.client.gui.framework.elements.list.GuiListElement;
 import mchorse.mclib.client.gui.framework.elements.utils.GuiContext;
 import mchorse.mclib.client.gui.framework.elements.utils.GuiDraw;
+import mchorse.metamorph.api.morphs.AbstractMorph;
 import net.minecraft.client.Minecraft;
 
 import java.util.List;
@@ -39,11 +40,16 @@ public class GuiBodyPartListElement extends GuiListElement<BodyPart>
     @Override
     protected String elementToString(BodyPart element)
     {
-        String label = element.limb;
+        String label = element.limb.isEmpty() ? "_" : element.limb;
 
-        if (!element.morph.isEmpty() && element.morph.get().hasCustomName())
+        if (!element.morph.isEmpty())
         {
-            label += (label.isEmpty() ? "" : " - ") + element.morph.get().getDisplayName();
+            AbstractMorph morph = element.morph.get();
+
+            if (morph.hasCustomName())
+            {
+                label += " - " + element.morph.get().getDisplayName();
+            }
         }
 
         return label;
