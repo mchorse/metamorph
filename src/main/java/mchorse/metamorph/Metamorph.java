@@ -3,6 +3,7 @@ package mchorse.metamorph;
 import mchorse.mclib.McLib;
 import mchorse.mclib.config.ConfigBuilder;
 import mchorse.mclib.config.values.ValueBoolean;
+import mchorse.mclib.config.values.ValueInt;
 import mchorse.mclib.events.RegisterConfigEvent;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import org.apache.logging.log4j.Level;
@@ -75,6 +76,7 @@ public class Metamorph
     public static ValueBoolean morphInTightSpaces;
     public static ValueBoolean showMorphIdleSounds;
     public static ValueBoolean pauseGUIInSP;
+    public static ValueInt maxRecentMorphs;
 
     /* Events */
 
@@ -96,6 +98,7 @@ public class Metamorph
         this.morphInTightSpaces = builder.getBoolean("morph_in_tight_spaces", false);
         this.showMorphIdleSounds = builder.getBoolean("show_morph_idle_sounds", true);
         this.pauseGUIInSP = builder.getBoolean("pause_gui_in_sp", true);
+        this.maxRecentMorphs = builder.getInt("max_recent_morphs", 20, 1, 200);
 
         event.modules.add(builder.build());
     }

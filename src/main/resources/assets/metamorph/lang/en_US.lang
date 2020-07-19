@@ -146,6 +146,8 @@ metamorph.config.morphs.show_morph_idle_sounds=Show morph idle sounds
 metamorph.config.comments.morphs.show_morph_idle_sounds=Whether players make entity idle sounds when morphed
 metamorph.config.morphs.pause_gui_in_sp=Pause morph GUIs
 metamorph.config.comments.morphs.pause_gui_in_sp=Whether creative and survival morph GUIs should be paused in singleplayer
+metamorph.config.morphs.max_recent_morphs=Max. recent morphs
+metamorph.config.comments.morphs.max_recent_morphs=The maximum amount of recent morphs that can be added in the morph menu before being discarded
 
 # Commands
 metamorph.commands.morph=Morph command. This command is responsible for morphing player into specified morph.\n\n/morph <username> [morph_name] [data_tag]
