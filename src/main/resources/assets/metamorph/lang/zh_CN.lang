@@ -68,9 +68,9 @@ metamorph.gui.creative.context.rename_category=重命名类别
 metamorph.gui.creative.context.rename_category_modal=为该类别命名...
 metamorph.gui.creative.context.remove_category=移除分类
 metamorph.gui.creative.context.clear_category=清空
-metamorph.gui.creative.context.to_recent=复制到最近的伪装
+metamorph.gui.creative.context.to_recent=拷贝到最近的伪装
 metamorph.gui.creative.context.remove_morph=移除伪装
-metamorph.gui.creative.context.copy=复制 NBT
+metamorph.gui.creative.context.copy=拷贝 NBT
 metamorph.gui.creative.context.paste=粘贴 NBT
 metamorph.gui.creative.context.paste_modal=粘贴或输入您伪装的 NBT 标签...
 
@@ -146,6 +146,8 @@ metamorph.config.morphs.show_morph_idle_sounds=播放伪装的空闲音效
 metamorph.config.comments.morphs.show_morph_idle_sounds=伪装后玩家是否发出实体的空闲音效
 metamorph.config.morphs.pause_gui_in_sp=打开伪装 GUI 后暂停
 metamorph.config.comments.morphs.pause_gui_in_sp=不论是创造模式或生存模式伪装菜单, 在单人模式下打开伪装 GUI 后暂停游戏
+metamorph.config.morphs.max_recent_morphs=最近伪装最大值
+metamorph.config.comments.morphs.max_recent_morphs=在被丢弃之前可以添加到伪装菜单中最近的伪装的最大值
 
 # Commands
 metamorph.commands.morph=伪装命令。该命令可以让玩家伪装成指定的伪装。\n\n/morph <username> [morph_name] [data_tag]
