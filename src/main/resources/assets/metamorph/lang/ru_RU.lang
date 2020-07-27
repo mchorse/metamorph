@@ -146,6 +146,8 @@ metamorph.config.morphs.show_morph_idle_sounds=Проигрывать звуки
 metamorph.config.comments.morphs.show_morph_idle_sounds=Проигрываются ли звуки бездействия морфа, в который превратился игрок
 metamorph.config.morphs.pause_gui_in_sp=Остановка интерфейса превращения
 metamorph.config.comments.morphs.pause_gui_in_sp=Происходит ли остановка времени при открытии интерфейса превращения выживания и креатива в одиночной игре
+metamorph.config.morphs.max_recent_morphs=Максимальное количество недавних морфов
+metamorph.config.comments.morphs.max_recent_morphs=Максиально возможное количество недавних морфов, которые добавляются в меню морфов перед удалением
 
 # Commands
 metamorph.commands.morph=Команда превращения. Эта команда отвечает за превращение игрока в какой-либо конкретный морф.\n\n/morph <username> [morph_name] [data_tag]
