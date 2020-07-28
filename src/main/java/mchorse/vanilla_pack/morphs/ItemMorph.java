@@ -69,6 +69,14 @@ public class ItemMorph extends ItemStackMorph
 	@SideOnly(Side.CLIENT)
 	public void render(EntityLivingBase entity, double x, double y, double z, float entityYaw, float partialTicks)
 	{
+		float lastBrightnessX = OpenGlHelper.lastBrightnessX;
+		float lastBrightnessY = OpenGlHelper.lastBrightnessY;
+
+		if (!this.lighting)
+		{
+			OpenGlHelper.setLightmapTextureCoords(OpenGlHelper.lightmapTexUnit, 240, 240);
+		}
+
 		GlStateManager.enableBlend();
 		GlStateManager.enableAlpha();
 		GlStateManager.blendFunc(GlStateManager.SourceFactor.SRC_ALPHA, GlStateManager.DestFactor.ONE_MINUS_SRC_ALPHA);
@@ -83,6 +91,11 @@ public class ItemMorph extends ItemStackMorph
 		render.renderItem(this.stack, model);
 
 		GlStateManager.popMatrix();
+
+		if (!this.lighting)
+		{
+			OpenGlHelper.setLightmapTextureCoords(OpenGlHelper.lightmapTexUnit, lastBrightnessX, lastBrightnessY);
+		}
 	}
 
 	@Override

@@ -9,6 +9,7 @@ import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.BlockRendererDispatcher;
 import net.minecraft.client.renderer.GlStateManager;
+import net.minecraft.client.renderer.OpenGlHelper;
 import net.minecraft.client.renderer.RenderHelper;
 import net.minecraft.client.renderer.texture.TextureMap;
 import net.minecraft.entity.EntityLivingBase;
@@ -98,6 +99,14 @@ public class BlockMorph extends ItemStackMorph
     {
         Minecraft mc = Minecraft.getMinecraft();
 
+        float lastBrightnessX = OpenGlHelper.lastBrightnessX;
+        float lastBrightnessY = OpenGlHelper.lastBrightnessY;
+
+        if (!this.lighting)
+        {
+            OpenGlHelper.setLightmapTextureCoords(OpenGlHelper.lightmapTexUnit, 240, 240);
+        }
+
         GlStateManager.enableRescaleNormal();
         BlockRendererDispatcher blockrendererdispatcher = mc.getBlockRendererDispatcher();
         GlStateManager.pushMatrix();
@@ -110,6 +119,11 @@ public class BlockMorph extends ItemStackMorph
         GlStateManager.translate(0.0F, 0.0F, 1.0F);
         GlStateManager.popMatrix();
         GlStateManager.disableRescaleNormal();
+
+        if (!this.lighting)
+        {
+            OpenGlHelper.setLightmapTextureCoords(OpenGlHelper.lightmapTexUnit, lastBrightnessX, lastBrightnessY);
+        }
     }
 
     /**
