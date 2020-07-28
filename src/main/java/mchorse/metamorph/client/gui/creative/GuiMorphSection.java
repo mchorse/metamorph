@@ -9,6 +9,7 @@ import mchorse.mclib.client.gui.framework.elements.utils.GuiDraw;
 import mchorse.mclib.client.gui.utils.Area;
 import mchorse.mclib.client.gui.utils.Icons;
 import mchorse.mclib.client.gui.utils.keys.IKey;
+import mchorse.mclib.utils.Keys;
 import mchorse.metamorph.api.MorphUtils;
 import mchorse.metamorph.api.creative.categories.MorphCategory;
 import mchorse.metamorph.api.creative.categories.UserCategory;
@@ -20,7 +21,6 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.Gui;
 import net.minecraft.client.gui.GuiScreen;
 import net.minecraft.client.renderer.GlStateManager;
-import org.lwjgl.input.Keyboard;
 import org.lwjgl.opengl.GL11;
 
 import java.util.function.Consumer;
@@ -510,7 +510,7 @@ public class GuiMorphSection extends GuiElement
 
 		if (morph.keybind != -1)
 		{
-			String key = Keyboard.getKeyName(morph.keybind);
+			String key = Keys.getKeyName(morph.keybind);
 			int kw = this.font.getStringWidth(key);
 			int kx = x + w - 6 - kw;
 			int ky = y + h - 6 - this.font.FONT_HEIGHT;
