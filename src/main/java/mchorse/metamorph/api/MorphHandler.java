@@ -301,7 +301,7 @@ public class MorphHandler
             
             AbstractMorph currentMorph = morphing.getCurrentMorph();
 
-            if (morphing.getCurrentMorph().settings.hostile && source.getAttackingEntity() != target && 
+            if (morphing.getCurrentMorph().getSettings().hostile && source.getAttackingEntity() != target && 
             !(currentMorph instanceof mchorse.metamorph.api.morphs.EntityMorph && ((mchorse.metamorph.api.morphs.EntityMorph) currentMorph).getEntity() == source.getAttackingEntity()))
             {
                 if (source instanceof EntityLiving)
