@@ -29,27 +29,32 @@ public class MorphSettingsAdapter implements JsonDeserializer<MorphSettings>
         MorphSettings morph = new MorphSettings();
         MorphManager manager = MorphManager.INSTANCE;
 
-        if (object.has("health") && object.get("health").isJsonPrimitive())
+        morph.hasHealth = object.has("health") && object.get("health").isJsonPrimitive();
+        if (morph.hasHealth)
         {
             morph.health = object.get("health").getAsInt();
         }
 
-        if (object.has("speed") && object.get("speed").isJsonPrimitive())
+        morph.hasSpeed = object.has("speed") && object.get("speed").isJsonPrimitive();
+        if (morph.hasSpeed)
         {
             morph.speed = object.get("speed").getAsFloat();
         }
 
-        if (object.has("hostile") && object.get("hostile").isJsonPrimitive())
+        morph.hasHostile = object.has("hostile") && object.get("hostile").isJsonPrimitive();
+        if (morph.hasHostile)
         {
             morph.hostile = object.get("hostile").getAsBoolean();
         }
 
-        if (object.has("hands") && object.get("hands").isJsonPrimitive())
+        morph.hasHands = object.has("hands") && object.get("hands").isJsonPrimitive();
+        if (morph.hasHands)
         {
             morph.hands = object.get("hands").getAsBoolean();
         }
 
-        if (object.has("abilities") && object.get("abilities").isJsonArray())
+        morph.hasAbilities = object.has("abilities") && object.get("abilities").isJsonArray();
+        if (morph.hasAbilities)
         {
             morph.abilities.clear();
 
@@ -69,22 +74,26 @@ public class MorphSettingsAdapter implements JsonDeserializer<MorphSettings>
             }
         }
 
-        if (object.has("action") && object.get("action").isJsonPrimitive())
+        morph.hasAction = object.has("action") && object.get("action").isJsonPrimitive();
+        if (morph.hasAction)
         {
             morph.action = manager.actions.get(object.get("action").getAsString());
         }
 
-        if (object.has("attack") && object.get("attack").isJsonPrimitive())
+        morph.hasAttack = object.has("attack") && object.get("attack").isJsonPrimitive();
+        if (morph.hasAttack)
         {
             morph.attack = manager.attacks.get(object.get("attack").getAsString());
         }
 
-        if (object.has("updates") && object.get("updates").isJsonPrimitive())
+        morph.hasUpdates = object.has("updates") && object.get("updates").isJsonPrimitive();
+        if (morph.hasUpdates)
         {
             morph.updates = object.get("updates").getAsBoolean();
         }
         
-        if (object.has("shadow_option") && object.get("shadow_option").isJsonPrimitive())
+        morph.hasShadowOption = object.has("shadow_option") && object.get("shadow_option").isJsonPrimitive();
+        if (morph.hasShadowOption)
         {
             morph.shadowOption = object.get("shadow_option").getAsInt();
         }

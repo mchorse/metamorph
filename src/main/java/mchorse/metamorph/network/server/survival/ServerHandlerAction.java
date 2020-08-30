@@ -21,7 +21,7 @@ public class ServerHandlerAction extends ServerMessageHandler<PacketAction>
             AbstractMorph morph = capability.getCurrentMorph();
 
             morph.action(player);
-            MinecraftForge.EVENT_BUS.post(new MorphActionEvent(player, morph.settings.action, morph));
+            MinecraftForge.EVENT_BUS.post(new MorphActionEvent(player, morph.getSettings().action, morph));
         }
     }
 }

@@ -31,6 +31,8 @@ import net.minecraft.entity.EntityAgeable;
 import net.minecraft.entity.EntityList;
 import net.minecraft.entity.EntityLiving;
 import net.minecraft.entity.EntityLivingBase;
+import net.minecraft.entity.SharedMonsterAttributes;
+import net.minecraft.entity.ai.attributes.IAttributeInstance;
 import net.minecraft.entity.boss.EntityDragon;
 import net.minecraft.entity.monster.EntityMob;
 import net.minecraft.entity.passive.EntityAnimal;
@@ -219,7 +221,7 @@ public class EntityMorph extends AbstractMorph implements IBodyPartProvider
     @SuppressWarnings("rawtypes")
     public boolean renderHand(EntityPlayer player, EnumHand hand)
     {
-        if (!this.settings.hands)
+        if (!getSettings().hands)
         {
             return true;
         }
@@ -373,6 +375,42 @@ public class EntityMorph extends AbstractMorph implements IBodyPartProvider
             renderEntity = null;
         }
     }
+    
+    /* Entity morph settings */
+
+    /**
+     * These are settings that are defined from the morph entity.
+     * They have lower priority than activeSettings.
+     */
+    protected MorphSettings entitySettings = null;
+    
+    protected void setEntitySettings(MorphSettings entitySettings) {
+        this.entitySettings = entitySettings;
+        this.needSettingsUpdate = true;
+    }
+    
+    @Override
+    public void initializeSettings()
+    {
+        if (!this.needSettingsUpdate)
+        {
+            return;
+        }
+
+        this.settings = MorphSettings.DEFAULT_MORPHED.copy();
+        
+        if (this.entitySettings != null)
+        {
+            this.settings.applyOverrides(this.entitySettings);
+        }
+        
+        if (this.activeSettings != null)
+        {
+            this.settings.applyOverrides(this.activeSettings);
+        }
+        
+        finishInitializingSettings();
+    }
 
     @SideOnly(Side.CLIENT)
     protected void setupBodyPart()
@@ -493,18 +531,22 @@ public class EntityMorph extends AbstractMorph implements IBodyPartProvider
         entity.noClip = true;
         entity.setAlwaysRenderNameTag(true);
 
-        if (this.settings == MorphSettings.DEFAULT)
+        if (entity instanceof EntityLiving)
         {
-            this.customSettings = true;
-            this.settings = new MorphSettings();
-
-            if (this.settings.health == 20)
-            {
-                this.settings.health = (int) entity.getMaxHealth();
-            }
-
-            this.settings.hostile = entity instanceof EntityMob || entity instanceof EntityAnimal;
+            ((EntityLiving) entity).setLeftHanded(false);
         }
+
+        MorphSettings entitySettings = new MorphSettings();
+        entitySettings.health = (int)entity.getMaxHealth();
+        entitySettings.hostile = entity instanceof EntityMob || entity instanceof EntityAnimal;
+        IAttributeInstance speedAttribute = entity.getEntityAttribute(SharedMonsterAttributes.MOVEMENT_SPEED);
+        if (speedAttribute != null)
+        {
+            // By vanilla convention, mob movement speeds tend to be 2.5x
+            // what the equivalent player speed would be.
+            entitySettings.speed = 0.4F * (float)speedAttribute.getBaseValue();
+        }
+        setEntitySettings(entitySettings);
 
         if (entity instanceof EntityLiving && !(entity instanceof EntityDragon))
         {
@@ -715,7 +757,7 @@ public class EntityMorph extends AbstractMorph implements IBodyPartProvider
 
     protected void updateEntity(EntityLivingBase target)
     {
-        if (this.settings.updates)
+        if (getSettings().updates)
         {
             if (!Metamorph.showMorphIdleSounds.get())
             {
@@ -801,9 +843,13 @@ public class EntityMorph extends AbstractMorph implements IBodyPartProvider
             this.renderer = (RenderLivingBase) renderer;
             ModelBase model = this.renderer.getMainModel();
 
-            if (this.customSettings && model instanceof ModelBiped || model instanceof ModelQuadruped)
+            if (this.entity != null && model instanceof ModelBiped || model instanceof ModelQuadruped)
             {
-                this.settings.hands = true;
+                // Entity settings should have been defined when setEntity(...) was called
+                assert(this.entitySettings != null);
+                MorphSettings entitySettings = this.entitySettings != null ? this.entitySettings : new MorphSettings();
+                entitySettings.hands = true;
+                setEntitySettings(entitySettings);
             }
 
             if (bodyPartMap == null)
@@ -1019,6 +1065,7 @@ public class EntityMorph extends AbstractMorph implements IBodyPartProvider
             }
 
             this.entity = null;
+            setEntitySettings(null);
         }
     }
 
@@ -1036,8 +1083,9 @@ public class EntityMorph extends AbstractMorph implements IBodyPartProvider
         if (from instanceof EntityMorph)
         {
             EntityMorph morph = (EntityMorph) from;
-
-            this.entityData = morph.entityData == null ? null : morph.entityData.copy();
+            
+            this.entitySettings = this.entitySettings != null ? this.entitySettings.copy() : null;
+            this.entityData = morph.entityData != null ? morph.entityData.copy() : null;
             this.parts.copy(morph.parts);
             this.scale = morph.scale;
             this.userTexture = RLUtils.clone(morph.userTexture);

@@ -67,12 +67,100 @@ public abstract class AbstractMorph
      */
     public int keybind = -1;
 
-    /* Abilities */
+    /* Morph Settings */
 
     /**
-     * Morph settings
+     * The authoritative settings for the morph.
      */
-    public MorphSettings settings = MorphSettings.DEFAULT;
+    @Deprecated
+    public MorphSettings settings = MorphSettings.DEFAULT.copy();
+
+    /**
+     * If this is false, {@link #settings} will be initialized
+     * as needed. If this is true, {@link #settings} will remain
+     * at whatever value it was set to in {@link #forceSettings(MorphSettings)}
+     */
+    protected boolean forcedSettings = false;
+    
+    protected boolean needSettingsUpdate = false;
+
+    /**
+     * The highest priority settings, defined through
+     * configuration.
+     */
+    protected MorphSettings activeSettings = null;
+    
+    /**
+     * This is called to initialize settings for morphs, if
+     * settings are out-of-date.
+     */
+    public void initializeSettings()
+    {
+        if (!this.needSettingsUpdate)
+        {
+            return;
+        }
+
+        this.settings = MorphSettings.DEFAULT_MORPHED.copy();
+
+        if (this.activeSettings != null)
+        {
+            this.settings.applyOverrides(this.activeSettings);
+        }
+        
+        finishInitializingSettings();
+    }
+    
+    protected void finishInitializingSettings()
+    {
+        this.needSettingsUpdate = false;
+        this.forcedSettings = false;
+    }
+
+    /**
+     * This sets the active settings for the morph, usually defined
+     * by the user through JSON configuration. These settings usually
+     * have the highest priority.
+     */
+    public void setActiveSettings(MorphSettings activeSettings)
+    {
+        this.activeSettings = activeSettings;
+        this.needSettingsUpdate = true;
+    }
+    
+    /**
+     * This forces a morph to use the given settings. These settings
+     * will not be overridden and must be complete settings
+     * (no null fields allowed).
+     */
+    public void forceSettings(MorphSettings settings)
+    {
+        this.settings = settings;
+        this.forcedSettings = true;
+    }
+    
+    /**
+     * Undoes the effects of {@link #forceSettings}
+     */
+    public void clearForcedSettings()
+    {
+        this.settings = null;
+        this.forcedSettings = false;
+        this.needSettingsUpdate = true;
+    }
+    
+    /**
+     * Gets the morph settings or initializes them if
+     * not defined.
+     */
+    public MorphSettings getSettings()
+    {
+        if (!this.forcedSettings)
+        {
+            initializeSettings();
+        }
+        return this.settings;
+    }
 
     /**
      * Custom hitbox setting
@@ -158,12 +246,13 @@ public abstract class AbstractMorph
     {
         this.updateHitbox(target);
 
-        if (target.isServerWorld())
+        MorphSettings settings = this.getSettings();
+        if (settings.speed != 0.1F)
         {
-            target.getEntityAttribute(SharedMonsterAttributes.MOVEMENT_SPEED).setBaseValue(this.settings.speed);
+            target.getEntityAttribute(SharedMonsterAttributes.MOVEMENT_SPEED).setBaseValue(settings.speed);
         }
 
-        for (IAbility ability : this.settings.abilities)
+        for (IAbility ability : settings.abilities)
         {
             ability.update(target);
         }
@@ -181,7 +270,7 @@ public abstract class AbstractMorph
      */
     public void morph(EntityLivingBase target)
     {
-        for (IAbility ability : this.settings.abilities)
+        for (IAbility ability : this.getSettings().abilities)
         {
             ability.onMorph(target);
         }
@@ -195,7 +284,7 @@ public abstract class AbstractMorph
      */
     public void demorph(EntityLivingBase target)
     {
-        for (IAbility ability : this.settings.abilities)
+        for (IAbility ability : this.getSettings().abilities)
         {
             ability.onDemorph(target);
         }
@@ -276,9 +365,9 @@ public abstract class AbstractMorph
      */
     public void action(EntityLivingBase target)
     {
-        if (this.settings.action != null)
+        if (this.getSettings().action != null)
         {
-            this.settings.action.execute(target, this);
+            this.getSettings().action.execute(target, this);
         }
     }
 
@@ -287,33 +376,54 @@ public abstract class AbstractMorph
      */
     public void attack(Entity target, EntityLivingBase source)
     {
-        if (this.settings.attack != null)
+        if (this.getSettings().attack != null)
         {
-            this.settings.attack.attack(target, source);
+            this.getSettings().attack.attack(target, source);
         }
     }
 
+    /**
+     * <p>Used when copying morphs</p>
+     * 
+     * <p>
+     * <b>IMPORTANT</b>: When you subclass other morphs, don't forget to override
+     * their method with your own.
+     * </p>
+     */
+    public abstract AbstractMorph create();
+    
     /**
      * Clone a morph
      */
     public final AbstractMorph copy()
     {
         AbstractMorph morph = this.create();
+        // If this fails, then modder forgot to override copy()
+        assert(this.getClass().isInstance(morph));
 
         morph.copy(this);
 
         return morph;
     }
 
-    public abstract AbstractMorph create();
-
+    /**
+     * <p>Copy this {@link AbstractMorph}</p>
+     * 
+     * <p>
+     * <b>IMPORTANT</b>: If you subclass other morphs, and your morph contains new
+     * data, don't for get to override their method with your own.
+     * </p>
+     */
     public void copy(AbstractMorph from)
     {
         this.name = from.name;
         this.displayName = from.displayName;
         this.favorite = from.favorite;
+        this.settings = from.settings != null ? from.settings.copy() : null;
+        this.activeSettings = from.activeSettings != null ? from.activeSettings.copy() : null;
+        this.forcedSettings = from.forcedSettings;
+        this.needSettingsUpdate = from.needSettingsUpdate;
         this.keybind = from.keybind;
-        this.settings = this.hasCustomSettings() ? from.settings.copy() : from.settings;
         this.hitbox.copy(from.hitbox);
     }
 
@@ -444,6 +554,8 @@ public abstract class AbstractMorph
      */
     public void reset()
     {
+        setActiveSettings(null);
+        clearForcedSettings();
         this.hitbox.reset();
     }
 

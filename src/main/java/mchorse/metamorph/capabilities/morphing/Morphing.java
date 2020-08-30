@@ -277,7 +277,7 @@ public class Morphing implements IMorphing
             {
                 AbstractMorph current = this.morph.get();
 
-                this.setHealth(player, current.settings.health);
+                this.setHealth(player, current.getSettings().health);
                 current.morph(player);
             }
 
@@ -454,7 +454,7 @@ public class Morphing implements IMorphing
 
             if (!Metamorph.disableHealth.get())
             {
-                this.setMaxHealth(player, morph.settings.health);
+                this.setMaxHealth(player, morph.getSettings().health);
             }
 
             morph.update(player);
