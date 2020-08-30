@@ -1,5 +1,6 @@
 package mchorse.vanilla_pack.morphs;
 
+import mchorse.metamorph.api.morphs.AbstractMorph;
 import mchorse.metamorph.api.morphs.EntityMorph;
 import mchorse.metamorph.capabilities.morphing.IMorphing;
 import net.minecraft.entity.EntityLivingBase;
@@ -50,6 +51,12 @@ public class ShulkerMorph extends EntityMorph
         super.update(target, cap);
 
         this.entity.renderYawOffset = this.entity.prevRenderYawOffset = 0;
+    }
+
+    @Override
+    public AbstractMorph getNewInstance()
+    {
+        return new ShulkerMorph();
     }
 
     @Override

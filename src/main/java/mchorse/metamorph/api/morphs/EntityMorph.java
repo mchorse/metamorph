@@ -28,6 +28,8 @@ import net.minecraft.entity.EntityAgeable;
 import net.minecraft.entity.EntityList;
 import net.minecraft.entity.EntityLiving;
 import net.minecraft.entity.EntityLivingBase;
+import net.minecraft.entity.SharedMonsterAttributes;
+import net.minecraft.entity.ai.attributes.IAttributeInstance;
 import net.minecraft.entity.boss.EntityDragon;
 import net.minecraft.entity.monster.EntityMob;
 import net.minecraft.entity.passive.EntityAnimal;
@@ -136,7 +138,7 @@ public class EntityMorph extends AbstractMorph
     @SuppressWarnings("rawtypes")
     public boolean renderHand(EntityPlayer player, EnumHand hand)
     {
-        if (!this.settings.hands)
+        if (!getSettings().hands)
         {
             return true;
         }
@@ -269,6 +271,42 @@ public class EntityMorph extends AbstractMorph
             renderEntity = null;
         }
     }
+    
+    /* Entity morph settings */
+
+    /**
+     * These are settings that are defined from the morph entity.
+     * They have lower priority than activeSettings.
+     */
+    protected MorphSettings entitySettings = null;
+    
+    protected void setEntitySettings(MorphSettings entitySettings) {
+        this.entitySettings = entitySettings;
+        this.needSettingsUpdate = true;
+    }
+    
+    @Override
+    public void initializeSettings()
+    {
+        if (!this.needSettingsUpdate)
+        {
+            return;
+        }
+
+        this.settings = MorphSettings.DEFAULT_MORPHED.clone();
+        
+        if (this.entitySettings != null)
+        {
+            this.settings.applyOverrides(this.entitySettings);
+        }
+        
+        if (this.activeSettings != null)
+        {
+            this.settings.applyOverrides(this.activeSettings);
+        }
+        
+        finishInitializingSettings();
+    }
 
     /* Other stuff */
 
@@ -288,18 +326,17 @@ public class EntityMorph extends AbstractMorph
             ((EntityLiving) entity).setLeftHanded(false);
         }
 
-        if (this.settings == MorphSettings.DEFAULT)
+        MorphSettings entitySettings = new MorphSettings();
+        entitySettings.health = (int)entity.getMaxHealth();
+        entitySettings.hostile = entity instanceof EntityMob || entity instanceof EntityAnimal;
+        IAttributeInstance speedAttribute = entity.getEntityAttribute(SharedMonsterAttributes.MOVEMENT_SPEED);
+        if (speedAttribute != null)
         {
-            this.customSettings = true;
-            this.settings = new MorphSettings();
-
-            if (this.settings.health == 20)
-            {
-                this.settings.health = (int) entity.getMaxHealth();
-            }
-
-            this.settings.hostile = entity instanceof EntityMob || entity instanceof EntityAnimal;
+            // By vanilla convention, mob movement speeds tend to be 2.5x
+            // what the equivalent player speed would be.
+            entitySettings.speed = 0.4F * (float)speedAttribute.getBaseValue();
         }
+        setEntitySettings(entitySettings);
 
         if (entity instanceof EntityLiving && !(entity instanceof EntityDragon))
         {
@@ -497,7 +534,7 @@ public class EntityMorph extends AbstractMorph
 
     protected void updateEntity(EntityLivingBase target)
     {
-        if (this.settings.updates)
+        if (getSettings().updates)
         {
             if (!Metamorph.proxy.config.show_morph_idle_sounds)
             {
@@ -575,9 +612,13 @@ public class EntityMorph extends AbstractMorph
         {
             ModelBase model = ((RenderLivingBase<?>) renderer).getMainModel();
 
-            if (this.customSettings && model instanceof ModelBiped || model instanceof ModelQuadruped)
+            if (this.entity != null && model instanceof ModelBiped || model instanceof ModelQuadruped)
             {
-                this.settings.hands = true;
+                // Entity settings should have been defined when setEntity(...) was called
+                assert(this.entitySettings != null);
+                MorphSettings entitySettings = this.entitySettings != null ? this.entitySettings : new MorphSettings();
+                entitySettings.hands = true;
+                setEntitySettings(entitySettings);
             }
         }
     }
@@ -723,14 +764,10 @@ public class EntityMorph extends AbstractMorph
     @Override
     public void reset()
     {
+        super.reset();
+
         this.resetEntity();
         this.entityData = null;
-
-        if (this.customSettings)
-        {
-            this.settings = MorphSettings.DEFAULT;
-            this.customSettings = false;
-        }
     }
 
     public void resetEntity()
@@ -744,18 +781,22 @@ public class EntityMorph extends AbstractMorph
             }
 
             this.entity = null;
+            setEntitySettings(null);
         }
     }
 
-    /**
-     * Clone this {@link EntityMorph} 
-     */
+    @Override
+    public AbstractMorph getNewInstance()
+    {
+        return new EntityMorph();
+    }
+
     @Override
     public AbstractMorph clone(boolean isRemote)
     {
-        EntityMorph morph = new EntityMorph();
+        EntityMorph morph = (EntityMorph)super.clone(isRemote);
 
-        AbstractMorph.copyBase(this, morph);
+        morph.entitySettings = this.entitySettings != null ? this.entitySettings.clone() : null;
         morph.entityData = this.entityData.copy();
 
         return morph;

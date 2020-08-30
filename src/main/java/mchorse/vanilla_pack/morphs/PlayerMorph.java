@@ -155,17 +155,20 @@ public class PlayerMorph extends EntityMorph
         entity.chasingPosY += d1 * 0.25D;
     }
 
+    @Override
+    public AbstractMorph getNewInstance()
+    {
+        return new PlayerMorph();
+    }
+
     /**
      * Clone the player morph 
      */
     @Override
     public AbstractMorph clone(boolean isRemote)
     {
-        PlayerMorph morph = new PlayerMorph();
+        PlayerMorph morph = (PlayerMorph)super.clone(isRemote);
 
-        AbstractMorph.copyBase(this, morph);
-
-        morph.entityData = this.entityData.copy();
         morph.profile = this.profile;
 
         if (isRemote)

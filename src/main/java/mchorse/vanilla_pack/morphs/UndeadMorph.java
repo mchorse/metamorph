@@ -47,13 +47,7 @@ public class UndeadMorph extends EntityMorph
     }
 
     @Override
-    public AbstractMorph clone(boolean isRemote)
-    {
-        UndeadMorph morph = new UndeadMorph();
-
-        AbstractMorph.copyBase(this, morph);
-        morph.entityData = this.entityData.copy();
-
-        return morph;
+    public AbstractMorph getNewInstance() {
+        return new UndeadMorph();
     }
 }

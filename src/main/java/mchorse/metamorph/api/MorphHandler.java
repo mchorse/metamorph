@@ -282,7 +282,7 @@ public class MorphHandler
                 return;
             }
 
-            if (morphing.getCurrentMorph().settings.hostile && source.getAttackingEntity() != target)
+            if (morphing.getCurrentMorph().getSettings().hostile && source.getAttackingEntity() != target)
             {
                 if (source instanceof EntityLiving)
                 {
