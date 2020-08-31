@@ -1,6 +1,7 @@
 package mchorse.metamorph.client;
 
 import mchorse.metamorph.ClientProxy;
+import mchorse.metamorph.Metamorph;
 import mchorse.metamorph.api.MorphManager;
 import mchorse.metamorph.capabilities.morphing.IMorphing;
 import mchorse.metamorph.capabilities.morphing.Morphing;
@@ -68,7 +69,7 @@ public class KeyboardHandler
         boolean wasUsed = false;
         boolean spectator = player.isSpectator();
 
-        if (this.keyCreativeMenu.isPressed() && player.isCreative())
+        if (this.keyCreativeMenu.isPressed() && Metamorph.proxy.canUse(player))
         {
             mc.displayGuiScreen(new GuiCreativeScreen(mc));
             wasUsed = true;

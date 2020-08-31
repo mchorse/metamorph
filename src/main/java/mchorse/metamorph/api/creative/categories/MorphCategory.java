@@ -112,7 +112,7 @@ public class MorphCategory
 
 	protected boolean morph(EntityPlayer player, AbstractMorph morph)
 	{
-		if (player.isCreative() || Metamorph.allowMorphingIntoCategoryMorphs.get())
+		if (Metamorph.proxy.canUse(player))
 		{
 			Dispatcher.sendToServer(new PacketMorph(morph));
 

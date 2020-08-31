@@ -15,6 +15,7 @@ import mchorse.metamorph.entity.EntityMorph;
 import mchorse.metamorph.entity.SoundHandler;
 import mchorse.metamorph.network.Dispatcher;
 import mchorse.vanilla_pack.MetamorphFactory;
+import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.common.capabilities.CapabilityManager;
@@ -121,4 +122,9 @@ public class CommonProxy
      */
     public void postLoad(FMLPostInitializationEvent event)
     {}
+
+    public boolean canUse(EntityPlayer player)
+    {
+        return player.isCreative() || Metamorph.allowMorphingIntoCategoryMorphs.get();
+    }
 }

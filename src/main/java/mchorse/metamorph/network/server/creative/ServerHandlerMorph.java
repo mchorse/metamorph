@@ -11,7 +11,7 @@ public class ServerHandlerMorph extends ServerMessageHandler<PacketMorph>
     @Override
     public void run(EntityPlayerMP player, PacketMorph message)
     {
-        if (player.isCreative() || Metamorph.allowMorphingIntoCategoryMorphs.get())
+        if (Metamorph.proxy.canUse(player))
         {
             MorphAPI.morph(player, message.morph, false);
         }
