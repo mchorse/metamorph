@@ -46,6 +46,7 @@ public class GuiSurvivalScreen extends GuiBase
     public GuiToggleElement favorite;
 
     private boolean creative;
+    private boolean allowed;
 
     public GuiSurvivalScreen()
     {
@@ -96,10 +97,12 @@ public class GuiSurvivalScreen extends GuiBase
         EntityPlayer player = Minecraft.getMinecraft().player;
         IMorphing cap = Morphing.get(player);
         boolean creative = player.isCreative();
+        boolean allowed = Metamorph.allowMorphingIntoCategoryMorphs.get();
 
-        if (this.creative != creative || creative || this.morphs.sections.isEmpty())
+        if (this.creative != creative || this.allowed != allowed || creative || this.morphs.sections.isEmpty())
         {
             this.creative = creative;
+            this.allowed = allowed;
             this.morphs.setupSections(creative, (section) -> this.fill(section.morph));
         }
 

@@ -1,5 +1,6 @@
 package mchorse.metamorph.client.gui.survival;
 
+import mchorse.metamorph.Metamorph;
 import mchorse.metamorph.api.MorphManager;
 import mchorse.metamorph.api.creative.MorphList;
 import mchorse.metamorph.api.creative.categories.AcquiredCategory;
@@ -33,7 +34,7 @@ public class GuiSurvivalMorphs extends GuiMorphs
 		MorphSection section;
 		AcquiredCategory category;
 
-		if (creative)
+		if (creative || Metamorph.allowMorphingIntoCategoryMorphs.get())
 		{
 			UserSection user = (UserSection) list.sections.get(0);
 

@@ -77,6 +77,7 @@ public class Metamorph
     public static ValueBoolean showMorphIdleSounds;
     public static ValueBoolean pauseGUIInSP;
     public static ValueInt maxRecentMorphs;
+    public static ValueBoolean allowMorphingIntoCategoryMorphs;
 
     /* Events */
 
@@ -85,20 +86,21 @@ public class Metamorph
     {
         ConfigBuilder builder = event.createBuilder(MOD_ID);
 
-        this.preventGhosts = builder.category("acquiring").getBoolean("prevent_ghosts", true);
-        this.preventKillAcquire = builder.getBoolean("prevent_kill_acquire", false);
-        this.acquireImmediately = builder.getBoolean("acquire_immediately", false);
+        preventGhosts = builder.category("acquiring").getBoolean("prevent_ghosts", true);
+        preventKillAcquire = builder.getBoolean("prevent_kill_acquire", false);
+        acquireImmediately = builder.getBoolean("acquire_immediately", false);
 
-        this.keepMorphs = builder.category("morphs").getBoolean("keep_morphs", true);
-        this.disablePov = builder.getBoolean("disable_pov", false);
-        this.disableHealth = builder.getBoolean("disable_health", false);
-        this.disableMorphAnimation = builder.getBoolean("disable_morph_animation", false);
-        this.disableMorphDisguise = builder.getBoolean("disable_morph_disguise", false);
-        this.disableFirstPersonHand = builder.getBoolean("disable_first_person_hand", false);
-        this.morphInTightSpaces = builder.getBoolean("morph_in_tight_spaces", false);
-        this.showMorphIdleSounds = builder.getBoolean("show_morph_idle_sounds", true);
-        this.pauseGUIInSP = builder.getBoolean("pause_gui_in_sp", true);
-        this.maxRecentMorphs = builder.getInt("max_recent_morphs", 20, 1, 200);
+        keepMorphs = builder.category("morphs").getBoolean("keep_morphs", true);
+        disablePov = builder.getBoolean("disable_pov", false);
+        disableHealth = builder.getBoolean("disable_health", false);
+        disableMorphAnimation = builder.getBoolean("disable_morph_animation", false);
+        disableMorphDisguise = builder.getBoolean("disable_morph_disguise", false);
+        disableFirstPersonHand = builder.getBoolean("disable_first_person_hand", false);
+        morphInTightSpaces = builder.getBoolean("morph_in_tight_spaces", false);
+        showMorphIdleSounds = builder.getBoolean("show_morph_idle_sounds", true);
+        pauseGUIInSP = builder.getBoolean("pause_gui_in_sp", true);
+        maxRecentMorphs = builder.getInt("max_recent_morphs", 20, 1, 200);
+        allowMorphingIntoCategoryMorphs = builder.getBoolean("allow_morphing_into_category_morphs", false);
 
         event.modules.add(builder.build());
     }

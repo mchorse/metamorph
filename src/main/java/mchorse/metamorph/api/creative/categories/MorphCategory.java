@@ -1,5 +1,6 @@
 package mchorse.metamorph.api.creative.categories;
 
+import mchorse.metamorph.Metamorph;
 import mchorse.metamorph.api.MorphManager;
 import mchorse.metamorph.api.creative.sections.MorphSection;
 import mchorse.metamorph.api.morphs.AbstractMorph;
@@ -111,7 +112,7 @@ public class MorphCategory
 
 	protected boolean morph(EntityPlayer player, AbstractMorph morph)
 	{
-		if (player.isCreative())
+		if (player.isCreative() || Metamorph.allowMorphingIntoCategoryMorphs.get())
 		{
 			Dispatcher.sendToServer(new PacketMorph(morph));
 
