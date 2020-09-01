@@ -13,7 +13,7 @@ public class ServerHandlerMorph extends ServerMessageHandler<PacketMorph>
     {
         if (Metamorph.proxy.canUse(player))
         {
-            MorphAPI.morph(player, message.morph, false);
+            MorphAPI.morph(player, message.morph, Metamorph.allowMorphingIntoCategoryMorphs.get());
         }
     }
 }
