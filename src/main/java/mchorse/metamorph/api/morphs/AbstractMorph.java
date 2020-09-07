@@ -165,7 +165,7 @@ public abstract class AbstractMorph
     @SideOnly(Side.CLIENT)
     public boolean renderHand(EntityPlayer player, EnumHand hand)
     {
-        return false;
+        return !getSettings().hands;
     }
 
     /* Update loop */
