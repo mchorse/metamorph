@@ -78,6 +78,7 @@ public class Metamorph
     public static ValueBoolean pauseGUIInSP;
     public static ValueInt maxRecentMorphs;
     public static ValueBoolean allowMorphingIntoCategoryMorphs;
+    public static ValueBoolean loadEntityMorphs;
 
     /* Events */
 
@@ -101,6 +102,7 @@ public class Metamorph
         pauseGUIInSP = builder.getBoolean("pause_gui_in_sp", true);
         maxRecentMorphs = builder.getInt("max_recent_morphs", 20, 1, 200);
         allowMorphingIntoCategoryMorphs = builder.getBoolean("allow_morphing_into_category_morphs", false);
+        loadEntityMorphs = builder.getBoolean("load_entity_morphs", true);
 
         event.modules.add(builder.build());
     }

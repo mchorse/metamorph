@@ -1,5 +1,6 @@
 package mchorse.vanilla_pack;
 
+import mchorse.metamorph.Metamorph;
 import mchorse.metamorph.api.EntityUtils;
 import mchorse.metamorph.api.MorphManager;
 import mchorse.metamorph.api.creative.categories.MorphCategory;
@@ -39,8 +40,16 @@ public class MetamorphSection extends MorphSection
 	@Override
 	public void update(World world)
 	{
-		if (!this.categories.isEmpty())
+		boolean full = !this.categories.isEmpty();
+		boolean loading = Metamorph.loadEntityMorphs.get();
+
+		if (full || !loading)
 		{
+			if (full && !loading)
+			{
+				this.reset();
+			}
+
 			return;
 		}
 

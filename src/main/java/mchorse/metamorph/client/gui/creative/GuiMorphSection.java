@@ -181,6 +181,11 @@ public class GuiMorphSection extends GuiElement
 
 	public int getY(AbstractMorph selected)
 	{
+		if (this.section.categories.isEmpty())
+		{
+			return 0;
+		}
+
 		int y = HEADER_HEIGHT;
 		int row = this.getPerRow();
 
@@ -264,7 +269,7 @@ public class GuiMorphSection extends GuiElement
 	{
 		boolean result = false;
 
-		if (this.area.isInside(context))
+		if (this.area.isInside(context) && !this.section.categories.isEmpty())
 		{
 			if (context.mouseY - this.area.y < HEADER_HEIGHT && context.mouseButton == 0)
 			{
@@ -372,11 +377,6 @@ public class GuiMorphSection extends GuiElement
 	@Override
 	public void draw(GuiContext context)
 	{
-		Gui.drawRect(this.area.x, this.area.y, this.area.ex(), this.area.y + HEADER_HEIGHT, 0xbb000000);
-
-		this.font.drawStringWithShadow(this.section.getTitle(), this.area.x + 7, this.area.y + 10 - this.font.FONT_HEIGHT / 2, 0xffffff);
-		(this.section.hidden ? Icons.MOVE_DOWN : Icons.MOVE_UP).render(this.area.ex() - 18 - 3, this.area.y + 10 + (this.section.hidden ? 1 : -1), 0, 0.5F);
-
 		int y = this.drawMorphs(context) + (this.last ? 30 : 0);
 
 		if (this.area.h != y)
@@ -394,6 +394,18 @@ public class GuiMorphSection extends GuiElement
 	 */
 	protected int drawMorphs(GuiContext context)
 	{
+		if (this.section.categories.isEmpty())
+		{
+			return 0;
+		}
+
+		/* Draw header */
+		Gui.drawRect(this.area.x, this.area.y, this.area.ex(), this.area.y + HEADER_HEIGHT, 0xbb000000);
+
+		this.font.drawStringWithShadow(this.section.getTitle(), this.area.x + 7, this.area.y + 10 - this.font.FONT_HEIGHT / 2, 0xffffff);
+		(this.section.hidden ? Icons.MOVE_DOWN : Icons.MOVE_UP).render(this.area.ex() - 18 - 3, this.area.y + 10 + (this.section.hidden ? 1 : -1), 0, 0.5F);
+
+		/* Draw categories */
 		int y = HEADER_HEIGHT;
 
 		this.hoverMorph = null;
