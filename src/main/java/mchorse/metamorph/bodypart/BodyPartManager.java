@@ -113,6 +113,29 @@ public class BodyPartManager
         }
     }
 
+    public void afterMerge(BodyPartManager manager)
+    {
+        if (manager.parts.size() != this.parts.size())
+        {
+            this.copy(manager);
+
+            return;
+        }
+
+        for (int i = 0, c = this.parts.size(); i < c; i++)
+        {
+            BodyPart part = this.parts.get(i);
+            BodyPart other = manager.parts.get(i);
+
+            if (part.morph.isEmpty() || other.morph.isEmpty())
+            {
+                continue;
+            }
+
+            part.morph.get().afterMerge(other.morph.get());
+        }
+    }
+
     /* NBT */
 
     public NBTTagList toNBT()
