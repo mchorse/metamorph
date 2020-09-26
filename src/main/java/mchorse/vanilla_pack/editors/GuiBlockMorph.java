@@ -1,14 +1,13 @@
 package mchorse.vanilla_pack.editors;
 
+import mchorse.mclib.client.gui.utils.Icons;
 import mchorse.mclib.client.gui.utils.Label;
 import mchorse.mclib.client.gui.utils.keys.IKey;
 import mchorse.metamorph.api.morphs.AbstractMorph;
 import mchorse.metamorph.client.gui.editor.GuiAbstractMorph;
-import mchorse.metamorph.util.MMIcons;
 import mchorse.vanilla_pack.editors.panels.GuiItemStackPanel;
 import mchorse.vanilla_pack.morphs.BlockMorph;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.resources.I18n;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
@@ -26,7 +25,7 @@ public class GuiBlockMorph extends GuiAbstractMorph<BlockMorph>
 		super(mc);
 
 		this.defaultPanel = this.block = new GuiItemStackPanel(mc, this);
-		this.registerPanel(this.block, IKey.lang("metamorph.gui.panels.block"), MMIcons.BLOCK);
+		this.registerPanel(this.block, IKey.lang("metamorph.gui.panels.block"), Icons.BLOCK);
 	}
 
 	@Override

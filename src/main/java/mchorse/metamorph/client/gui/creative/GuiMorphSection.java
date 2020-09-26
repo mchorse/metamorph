@@ -16,7 +16,6 @@ import mchorse.metamorph.api.creative.categories.UserCategory;
 import mchorse.metamorph.api.creative.sections.MorphSection;
 import mchorse.metamorph.api.morphs.AbstractMorph;
 import mchorse.metamorph.client.gui.GuiMorphs;
-import mchorse.metamorph.util.MMIcons;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.Gui;
 import net.minecraft.client.gui.GuiScreen;
@@ -535,7 +534,7 @@ public class GuiMorphSection extends GuiElement
 		{
 			/* Stupid hack because the morph seems to change the blend function or something */
 			GlStateManager.blendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
-			GuiDraw.drawOutlinedIcon(MMIcons.FAVORITE, x + 2, y + 2, 0xffffffff);
+			GuiDraw.drawOutlinedIcon(Icons.FAVORITE, x + 2, y + 2, 0xffffffff);
 		}
 	}
 }
