@@ -35,6 +35,7 @@ public class BodyPart
     public Vector3f scale = new Vector3f(1, 1, 1);
     public Vector3f rotate = new Vector3f(180, 0, 0);
     public boolean useTarget = false;
+    public boolean enabled = true;
     public String limb = "";
 
     private EntityLivingBase entity;
@@ -69,7 +70,7 @@ public class BodyPart
     {
         entity = this.useTarget ? entity : this.entity;
 
-        if (this.morph.get() == null || entity == null)
+        if (this.morph.get() == null || entity == null || !this.enabled)
         {
             return;
         }
@@ -128,7 +129,7 @@ public class BodyPart
     {
         entity = this.useTarget ? entity : this.entity;
 
-        if (entity != null)
+        if (entity != null && this.enabled)
         {
             if (!this.useTarget)
             {
@@ -165,6 +166,7 @@ public class BodyPart
         this.scale.set(part.scale);
         this.rotate.set(part.rotate);
         this.useTarget = part.useTarget;
+        this.enabled = part.enabled;
 
         for (int i = 0; i < part.slots.length; i++)
         {
@@ -190,6 +192,7 @@ public class BodyPart
             result = result && Objects.equal(this.scale, part.scale);
             result = result && Objects.equal(this.rotate, part.rotate);
             result = result && this.useTarget == part.useTarget;
+            result = result && this.enabled == part.enabled;
 
             for (int i = 0; i < this.slots.length; i++)
             {
@@ -211,6 +214,7 @@ public class BodyPart
         part.scale.set(this.scale);
         part.rotate.set(this.rotate);
         part.useTarget = this.useTarget;
+        part.enabled = this.enabled;
 
         for (int i = 0; i < this.slots.length; i++)
         {
@@ -247,6 +251,7 @@ public class BodyPart
         NBTUtils.readFloatList(tag.getTagList("R", 5), this.rotate);
 
         if (tag.hasKey("Target")) this.useTarget = tag.getBoolean("Target");
+        if (tag.hasKey("Enabled")) this.enabled = tag.getBoolean("Enabled");
         if (tag.hasKey("Limb")) this.limb = tag.getString("Limb");
     }
 
@@ -292,6 +297,7 @@ public class BodyPart
         }
 
         if (this.useTarget) tag.setBoolean("Target", this.useTarget);
+        if (!this.enabled) tag.setBoolean("Enabled", this.enabled);
         if (!this.limb.isEmpty()) tag.setString("Limb", this.limb);
     }
 }

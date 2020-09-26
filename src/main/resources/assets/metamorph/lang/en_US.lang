@@ -13,6 +13,7 @@ key.metamorph.demorph=Demorph (turn back to player)
 # GUI
 metamorph.gui.body_parts.pick=Pick morph
 metamorph.gui.body_parts.use_target=Use target
+metamorph.gui.body_parts.enabled=Enabled
 metamorph.gui.body_parts.parts=Body parts
 metamorph.gui.body_parts.limbs=Limbs
 metamorph.gui.body_parts.open=Open body parts

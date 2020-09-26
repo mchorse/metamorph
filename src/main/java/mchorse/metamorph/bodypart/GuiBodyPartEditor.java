@@ -38,6 +38,7 @@ public class GuiBodyPartEditor extends GuiMorphPanel<AbstractMorph, GuiAbstractM
     protected GuiBodyPartListElement bodyParts;
     protected GuiNestedEdit pickMorph;
     protected GuiToggleElement useTarget;
+    protected GuiToggleElement enabled;
 
     protected GuiIconElement add;
     protected GuiIconElement dupe;
@@ -93,23 +94,29 @@ public class GuiBodyPartEditor extends GuiMorphPanel<AbstractMorph, GuiAbstractM
         this.paste.flex().w(20);
 
         this.useTarget = new GuiToggleElement(mc, IKey.lang("metamorph.gui.body_parts.use_target"), false, this::toggleTarget);
+        this.enabled = new GuiToggleElement(mc, IKey.lang("metamorph.gui.body_parts.enabled"), false, this::toggleEnabled);
         this.transformations = new GuiBodyPartTransformations(mc);
 
         int width = 110;
-
-        this.transformations.flex().relative(this.area).x(0.5F, -95).y(1, -10).wh(190, 70).anchorY(1F);
-        this.limbs.flex().relative(this).set(0, 50, width, 90).x(1, -115).h(1, -80);
-        this.pickMorph.flex().relative(this).set(0, 10, width, 20).x(1, -115);
-        this.bodyParts.flex().relative(this).set(10, 22, width, 0).hTo(this.transformations.flex(), 1F, -20);
-        this.useTarget.flex().relative(this).set(0, 0, width, 11).x(1, -115).y(1, -21);
 
         GuiElement sidebar = new GuiElement(mc);
 
         sidebar.flex().relative(this).x(10).y(1, -30).wh(width, 20).row(0).height(20);
         sidebar.add(this.add, this.dupe, this.remove, this.copy, this.paste);
 
+        GuiElement bottomEditor = new GuiElement(mc);
+
+        bottomEditor.flex().relative(this).x(1, -115).y(1, -10).w(width).anchorY(1F);
+        bottomEditor.flex().column(5).vertical().stretch();
+        bottomEditor.add(this.enabled, this.useTarget);
+
+        this.transformations.flex().relative(this.area).x(0.5F, -95).y(1, -10).wh(190, 70).anchorY(1F);
+        this.limbs.flex().relative(this).set(0, 50, width, 90).x(1, -115).hTo(bottomEditor.area, -5);
+        this.pickMorph.flex().relative(this).set(0, 10, width, 20).x(1, -115);
+        this.bodyParts.flex().relative(this).set(10, 22, width, 0).hTo(this.transformations.flex(), 1F, -20);
+
         this.elements = new GuiElement(mc);
-        this.elements.add(this.limbs, this.pickMorph, this.useTarget, this.transformations);
+        this.elements.add(bottomEditor, this.limbs, this.pickMorph, this.transformations);
         this.add(sidebar, this.bodyParts, this.elements);
 
         /* Inventory */
@@ -235,6 +242,14 @@ public class GuiBodyPartEditor extends GuiMorphPanel<AbstractMorph, GuiAbstractM
         }
     }
 
+    protected void toggleEnabled(GuiToggleElement b)
+    {
+        if (this.part != null)
+        {
+            this.part.enabled = b.isToggled();
+        }
+    }
+
     protected void pickItem(ItemStack stack)
     {
         if (this.part == null)
@@ -309,6 +324,7 @@ public class GuiBodyPartEditor extends GuiMorphPanel<AbstractMorph, GuiAbstractM
         {
             this.transformations.setBodyPart(part);
 
+            this.enabled.toggled(part.enabled);
             this.useTarget.toggled(part.useTarget);
 
             for (int i = 0; i < this.slots.length; i++)
