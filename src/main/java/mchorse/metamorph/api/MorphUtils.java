@@ -12,6 +12,8 @@ import mchorse.metamorph.api.events.RegisterBlacklistEvent;
 import mchorse.metamorph.api.events.RegisterRemapEvent;
 import mchorse.metamorph.api.events.RegisterSettingsEvent;
 import mchorse.metamorph.api.morphs.AbstractMorph;
+import mchorse.metamorph.api.morphs.utils.ISyncableMorph;
+import mchorse.metamorph.bodypart.IBodyPartProvider;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.nbt.NBTTagCompound;
@@ -130,6 +132,27 @@ public class MorphUtils
     public static AbstractMorph copy(AbstractMorph morph)
     {
         return morph == null ? null : morph.copy();
+    }
+
+    /**
+     * Pause given morph
+     */
+    public static boolean pause(AbstractMorph morph, AbstractMorph previous, int offset)
+    {
+        if (morph instanceof ISyncableMorph)
+        {
+            ((ISyncableMorph) morph).pause(previous, offset);
+
+            return true;
+        }
+        else if (morph instanceof IBodyPartProvider)
+        {
+            ((IBodyPartProvider) morph).getBodyPart().pause(previous, offset);
+
+            return true;
+        }
+
+        return false;
     }
 
     /**

@@ -16,7 +16,13 @@ public class Animation
 
 	public void pause()
 	{
+		this.pause(0);
+	}
+
+	public void pause(int progress)
+	{
 		this.paused = true;
+		this.progress = progress;
 	}
 
 	public float getFactor(float partialTicks)

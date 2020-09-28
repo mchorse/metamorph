@@ -3,6 +3,9 @@ package mchorse.metamorph.bodypart;
 import java.util.ArrayList;
 import java.util.List;
 
+import mchorse.metamorph.api.MorphUtils;
+import mchorse.metamorph.api.morphs.AbstractMorph;
+import mchorse.metamorph.api.morphs.utils.ISyncableMorph;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
@@ -133,6 +136,24 @@ public class BodyPartManager
             }
 
             part.morph.get().afterMerge(other.morph.get());
+        }
+    }
+
+    public void pause(AbstractMorph previous, int offset)
+    {
+        BodyPartManager parts = previous instanceof IBodyPartProvider ? ((IBodyPartProvider) previous).getBodyPart() : null;
+
+        for (int i = 0; i < this.parts.size(); i++)
+        {
+            AbstractMorph current = this.parts.get(i).morph.get();
+            AbstractMorph past = null;
+
+            if (parts != null)
+            {
+                past = i < parts.parts.size() ? parts.parts.get(i).morph.get() : null;
+            }
+
+            MorphUtils.pause(current, past, offset);
         }
     }
 
