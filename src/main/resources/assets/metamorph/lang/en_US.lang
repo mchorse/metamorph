@@ -111,6 +111,11 @@ metamorph.gui.panels.nbt_data=NBT data
 metamorph.gui.panels.username=Username
 metamorph.gui.panels.updating=Updating...
 
+metamorph.gui.animation.animates=Animates
+metamorph.gui.animation.ignored=Ignored
+metamorph.gui.animation.animation_duration=Duration
+metamorph.gui.animation.pick_interpolation=Pick interpolation
+
 metamorph.gui.status.tight_space=There is not enough space to morph here
 
 # Config
