@@ -27,7 +27,12 @@ public class Animation
 
 	public float getFactor(float partialTicks)
 	{
-		return MathUtils.clamp((this.progress + (this.paused ? 0 : partialTicks)) / (float) this.duration, 0, 1);
+		if (!this.animates)
+		{
+			return 1F;
+		}
+
+		return MathUtils.clamp((this.progress + (this.paused ? 0 : partialTicks)) / (float) this.duration, 0F, 1F);
 	}
 
 	public void reset()
@@ -76,7 +81,7 @@ public class Animation
 
 	public boolean isInProgress()
 	{
-		return this.paused || (this.animates && this.progress < this.duration);
+		return this.animates && (this.paused || this.progress < this.duration);
 	}
 
 	public NBTTagCompound toNBT()
