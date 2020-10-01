@@ -102,5 +102,7 @@ public class Animation
 		if (tag.hasKey("Ignored")) this.ignored = tag.getBoolean("Ignored");
 		if (tag.hasKey("Duration")) this.duration = tag.getInteger("Duration");
 		if (tag.hasKey("Interp")) this.interp = Interpolation.values()[tag.getInteger("Interp")];
+
+		this.reset();
 	}
 }

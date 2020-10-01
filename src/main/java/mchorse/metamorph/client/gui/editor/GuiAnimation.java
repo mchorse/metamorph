@@ -63,7 +63,7 @@ public class GuiAnimation extends GuiElement
 		{
 			this.animation.interp = interp.get(0);
 		});
-		this.interpolations.flex().relative(this.pickInterpolation).y(1F).w(1F).h(96);
+		this.interpolations.markIgnored().flex().relative(this.pickInterpolation).y(1F).w(1F).h(96);
 
 		this.flex().column(5).vertical().stretch().height(20).padding(10);
 
@@ -73,6 +73,8 @@ public class GuiAnimation extends GuiElement
 		{
 			this.addAfter(this.animationDuration, this.ignored);
 		}
+
+		this.add(this.interpolations);
 	}
 
 	public void fill(Animation animation)
