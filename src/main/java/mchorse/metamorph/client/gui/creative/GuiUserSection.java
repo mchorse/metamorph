@@ -3,6 +3,7 @@ package mchorse.metamorph.client.gui.creative;
 import mchorse.mclib.client.gui.framework.elements.IGuiElement;
 import mchorse.mclib.client.gui.framework.elements.context.GuiContextMenu;
 import mchorse.mclib.client.gui.framework.elements.context.GuiSimpleContextMenu;
+import mchorse.mclib.client.gui.framework.elements.modals.GuiConfirmModal;
 import mchorse.mclib.client.gui.framework.elements.modals.GuiModal;
 import mchorse.mclib.client.gui.framework.elements.modals.GuiPromptModal;
 import mchorse.mclib.client.gui.framework.elements.utils.GuiContext;
@@ -52,7 +53,7 @@ public class GuiUserSection extends GuiMorphSection
 			MorphCategory category = this.hoverCategory;
 
 			contextMenu.action(Icons.EDIT, IKey.lang("metamorph.gui.creative.context.rename_category"), () -> this.renameCategory(category));
-			contextMenu.action(Icons.REMOVE, IKey.lang("metamorph.gui.creative.context.remove_category"), () -> this.section.remove(category));
+			contextMenu.action(Icons.REMOVE, IKey.lang("metamorph.gui.creative.context.remove_category"), () -> this.removeCategory(category));
 		}
 		else if (this.hoverCategory instanceof RecentCategory)
 		{
@@ -131,6 +132,24 @@ public class GuiUserSection extends GuiMorphSection
 			});
 
 			modal.setValue(category.getTitle());
+			modal.flex().relative(this.parent).xy(0.5F, 0.5F).wh(160, 180).anchor(0.5F, 0.5F);
+
+			return modal;
+		});
+	}
+
+	private void removeCategory(MorphCategory category)
+	{
+		GuiModal.addModal(this.parent, () ->
+		{
+			GuiConfirmModal modal = new GuiConfirmModal(this.mc, IKey.lang("metamorph.gui.creative.context.remove_category_modal"), (value) ->
+			{
+				if (value)
+				{
+					this.section.remove(category);
+				}
+			});
+
 			modal.flex().relative(this.parent).xy(0.5F, 0.5F).wh(160, 180).anchor(0.5F, 0.5F);
 
 			return modal;
