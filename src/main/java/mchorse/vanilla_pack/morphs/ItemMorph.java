@@ -107,7 +107,7 @@ public class ItemMorph extends ItemStackMorph
 		{
 			ItemMorph item = (ItemMorph) obj;
 
-			result = result && ItemStack.areItemStacksEqualUsingNBTShareTag(this.stack, item.stack);
+			result = result && ItemStack.areItemStacksEqual(this.stack, item.stack);
 		}
 
 		return result;

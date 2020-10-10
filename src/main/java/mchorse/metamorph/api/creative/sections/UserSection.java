@@ -201,7 +201,13 @@ public class UserSection extends MorphSection
 			{
 				if (morph != null)
 				{
-					morphs.add(morph.toNBT().toString());
+					JsonElement morphJSON = new JsonParser().parse(morph.toNBT().toString());
+					if (!(morphJSON instanceof JsonObject))
+					{
+						System.out.println("A non-null morph NBT is not a JSON object. How is this possible?");
+						continue;
+					}
+					morphs.add((JsonObject)morphJSON);
 
 					i ++;
 				}

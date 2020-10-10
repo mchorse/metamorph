@@ -87,7 +87,7 @@ public class LabelMorph extends AbstractMorph
 	@SideOnly(Side.CLIENT)
 	private void renderString()
 	{
-		FontRenderer font = Minecraft.getMinecraft().fontRenderer;
+		FontRenderer font = Minecraft.getMinecraft().fontRendererObj;
 
 		if (this.max <= 0)
 		{
