@@ -2,32 +2,37 @@ package mchorse.metamorph.network;
 
 import mchorse.mclib.network.AbstractDispatcher;
 import mchorse.metamorph.Metamorph;
-import mchorse.metamorph.network.client.ClientHandlerAcquireMorph;
-import mchorse.metamorph.network.client.ClientHandlerAcquiredMorphs;
+import mchorse.metamorph.network.client.creative.ClientHandlerAcquireMorph;
+import mchorse.metamorph.network.client.survival.ClientHandlerAcquiredMorphs;
 import mchorse.metamorph.network.client.ClientHandlerBlacklist;
-import mchorse.metamorph.network.client.ClientHandlerFavoriteMorph;
-import mchorse.metamorph.network.client.ClientHandlerMorph;
-import mchorse.metamorph.network.client.ClientHandlerMorphPlayer;
-import mchorse.metamorph.network.client.ClientHandlerMorphState;
-import mchorse.metamorph.network.client.ClientHandlerRemoveMorph;
+import mchorse.metamorph.network.client.survival.ClientHandlerFavorite;
+import mchorse.metamorph.network.client.survival.ClientHandlerKeybind;
+import mchorse.metamorph.network.client.creative.ClientHandlerMorph;
+import mchorse.metamorph.network.client.survival.ClientHandlerMorphPlayer;
+import mchorse.metamorph.network.client.survival.ClientHandlerMorphState;
+import mchorse.metamorph.network.client.survival.ClientHandlerRemoveMorph;
 import mchorse.metamorph.network.client.ClientHandlerSettings;
-import mchorse.metamorph.network.common.PacketAcquireMorph;
-import mchorse.metamorph.network.common.PacketAcquiredMorphs;
-import mchorse.metamorph.network.common.PacketAction;
+import mchorse.metamorph.network.common.creative.PacketAcquireMorph;
+import mchorse.metamorph.network.common.survival.PacketAcquiredMorphs;
+import mchorse.metamorph.network.common.survival.PacketAction;
 import mchorse.metamorph.network.common.PacketBlacklist;
-import mchorse.metamorph.network.common.PacketFavoriteMorph;
-import mchorse.metamorph.network.common.PacketMorph;
-import mchorse.metamorph.network.common.PacketMorphPlayer;
-import mchorse.metamorph.network.common.PacketMorphState;
-import mchorse.metamorph.network.common.PacketRemoveMorph;
-import mchorse.metamorph.network.common.PacketSelectMorph;
+import mchorse.metamorph.network.common.survival.PacketFavorite;
+import mchorse.metamorph.network.common.survival.PacketKeybind;
+import mchorse.metamorph.network.common.creative.PacketMorph;
+import mchorse.metamorph.network.common.survival.PacketMorphPlayer;
+import mchorse.metamorph.network.common.survival.PacketMorphState;
+import mchorse.metamorph.network.common.survival.PacketRemoveMorph;
+import mchorse.metamorph.network.common.survival.PacketSelectMorph;
 import mchorse.metamorph.network.common.PacketSettings;
-import mchorse.metamorph.network.server.ServerHandlerAcquireMorph;
-import mchorse.metamorph.network.server.ServerHandlerAction;
-import mchorse.metamorph.network.server.ServerHandlerFavoriteMorph;
-import mchorse.metamorph.network.server.ServerHandlerMorph;
-import mchorse.metamorph.network.server.ServerHandlerRemoveMorph;
-import mchorse.metamorph.network.server.ServerHandlerSelectMorph;
+import mchorse.metamorph.network.common.creative.PacketSyncMorph;
+import mchorse.metamorph.network.server.creative.ServerHandlerAcquireMorph;
+import mchorse.metamorph.network.server.survival.ServerHandlerAction;
+import mchorse.metamorph.network.server.survival.ServerHandlerFavorite;
+import mchorse.metamorph.network.server.survival.ServerHandlerKeybind;
+import mchorse.metamorph.network.server.creative.ServerHandlerMorph;
+import mchorse.metamorph.network.server.survival.ServerHandlerRemoveMorph;
+import mchorse.metamorph.network.server.survival.ServerHandlerSelectMorph;
+import mchorse.metamorph.network.server.creative.ServerHandlerSyncMorph;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraftforge.fml.common.network.simpleimpl.IMessage;
@@ -38,7 +43,7 @@ import net.minecraftforge.fml.relauncher.Side;
  */
 public class Dispatcher
 {
-    public static final AbstractDispatcher DISPATCHER = new AbstractDispatcher(Metamorph.MODID)
+    public static final AbstractDispatcher DISPATCHER = new AbstractDispatcher(Metamorph.MOD_ID)
     {
         @Override
         public void register()
@@ -54,6 +59,7 @@ public class Dispatcher
             register(PacketAcquireMorph.class, ClientHandlerAcquireMorph.class, Side.CLIENT);
             register(PacketAcquireMorph.class, ServerHandlerAcquireMorph.class, Side.SERVER);
             register(PacketAcquiredMorphs.class, ClientHandlerAcquiredMorphs.class, Side.CLIENT);
+            register(PacketSyncMorph.class, ServerHandlerSyncMorph.class, Side.SERVER);
 
             register(PacketSelectMorph.class, ServerHandlerSelectMorph.class, Side.SERVER);
 
@@ -61,8 +67,11 @@ public class Dispatcher
             register(PacketMorphState.class, ClientHandlerMorphState.class, Side.CLIENT);
 
             /* Managing morphs */
-            register(PacketFavoriteMorph.class, ClientHandlerFavoriteMorph.class, Side.CLIENT);
-            register(PacketFavoriteMorph.class, ServerHandlerFavoriteMorph.class, Side.SERVER);
+            register(PacketFavorite.class, ClientHandlerFavorite.class, Side.CLIENT);
+            register(PacketFavorite.class, ServerHandlerFavorite.class, Side.SERVER);
+
+            register(PacketKeybind.class, ClientHandlerKeybind.class, Side.CLIENT);
+            register(PacketKeybind.class, ServerHandlerKeybind.class, Side.SERVER);
 
             register(PacketRemoveMorph.class, ClientHandlerRemoveMorph.class, Side.CLIENT);
             register(PacketRemoveMorph.class, ServerHandlerRemoveMorph.class, Side.SERVER);

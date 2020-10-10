@@ -1,230 +1,268 @@
 package mchorse.metamorph.bodypart;
 
-import java.util.Collection;
-import java.util.List;
-import java.util.function.Consumer;
-
-import mchorse.mclib.client.gui.framework.GuiTooltip;
-import mchorse.mclib.client.gui.framework.elements.GuiButtonElement;
+import mchorse.mclib.client.gui.framework.elements.GuiElement;
 import mchorse.mclib.client.gui.framework.elements.GuiElements;
-import mchorse.mclib.client.gui.framework.elements.GuiTrackpadElement;
-import mchorse.mclib.client.gui.framework.elements.IGuiElement;
-import mchorse.mclib.client.gui.framework.elements.list.GuiListElement;
+import mchorse.mclib.client.gui.framework.elements.buttons.GuiButtonElement;
+import mchorse.mclib.client.gui.framework.elements.buttons.GuiIconElement;
+import mchorse.mclib.client.gui.framework.elements.buttons.GuiSlotElement;
+import mchorse.mclib.client.gui.framework.elements.buttons.GuiToggleElement;
+import mchorse.mclib.client.gui.framework.elements.input.GuiTransformations;
 import mchorse.mclib.client.gui.framework.elements.list.GuiStringListElement;
-import mchorse.mclib.client.gui.utils.Area;
-import mchorse.mclib.client.gui.widgets.GuiInventory;
-import mchorse.mclib.client.gui.widgets.GuiInventory.IInventoryPicker;
-import mchorse.mclib.client.gui.widgets.GuiSlot;
+import mchorse.mclib.client.gui.framework.elements.utils.GuiContext;
+import mchorse.mclib.client.gui.framework.elements.utils.GuiInventoryElement;
+import mchorse.mclib.client.gui.utils.Icons;
+import mchorse.mclib.client.gui.utils.keys.IKey;
+import mchorse.mclib.utils.MathUtils;
+import mchorse.metamorph.api.MorphUtils;
 import mchorse.metamorph.api.morphs.AbstractMorph;
-import mchorse.metamorph.capabilities.morphing.IMorphing;
-import mchorse.metamorph.capabilities.morphing.Morphing;
+import mchorse.metamorph.client.gui.creative.GuiNestedEdit;
 import mchorse.metamorph.client.gui.editor.GuiAbstractMorph;
 import mchorse.metamorph.client.gui.editor.GuiMorphPanel;
-import mchorse.metamorph.client.gui.elements.GuiCreativeMorphs;
-import mchorse.metamorph.client.gui.elements.GuiCreativeMorphsMenu;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.Gui;
-import net.minecraft.client.gui.GuiButton;
-import net.minecraft.client.gui.GuiScreen;
 import net.minecraft.client.resources.I18n;
 import net.minecraft.item.ItemStack;
-import net.minecraftforge.fml.client.config.GuiCheckBox;
+import net.minecraft.nbt.NBTTagCompound;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.List;
+
 @SideOnly(Side.CLIENT)
-public class GuiBodyPartEditor extends GuiMorphPanel<AbstractMorph, GuiAbstractMorph> implements IInventoryPicker
+public class GuiBodyPartEditor extends GuiMorphPanel<AbstractMorph, GuiAbstractMorph>
 {
+    public static List<BodyPart> buffer = new ArrayList<BodyPart>();
+
     protected GuiBodyPartListElement bodyParts;
-    protected GuiButtonElement<GuiButton> pickMorph;
-    protected GuiButtonElement<GuiCheckBox> useTarget;
-    protected GuiCreativeMorphs morphPicker;
+    protected GuiNestedEdit pickMorph;
+    protected GuiToggleElement useTarget;
+    protected GuiToggleElement enabled;
 
-    protected GuiButtonElement<GuiButton> addPart;
-    protected GuiButtonElement<GuiButton> removePart;
+    protected GuiIconElement add;
+    protected GuiIconElement dupe;
+    protected GuiIconElement remove;
+    protected GuiIconElement copy;
+    protected GuiIconElement paste;
 
-    protected GuiTrackpadElement tx;
-    protected GuiTrackpadElement ty;
-    protected GuiTrackpadElement tz;
-    protected GuiTrackpadElement sx;
-    protected GuiTrackpadElement sy;
-    protected GuiTrackpadElement sz;
-    protected GuiTrackpadElement rx;
-    protected GuiTrackpadElement ry;
-    protected GuiTrackpadElement rz;
+    protected GuiBodyPartTransformations transformations;
 
     protected GuiStringListElement limbs;
-    protected GuiElements<IGuiElement> elements = new GuiElements<IGuiElement>();
+    protected GuiElement elements;
 
     protected BodyPartManager parts;
     protected BodyPart part;
 
-    protected GuiInventory inventory;
-    protected GuiSlot[] slots = new GuiSlot[6];
-    protected GuiSlot active;
+    protected GuiInventoryElement inventory;
+    protected GuiElement stacks;
+    protected GuiSlotElement[] slots = new GuiSlotElement[6];
 
     public GuiBodyPartEditor(Minecraft mc, GuiAbstractMorph editor)
     {
         super(mc, editor);
 
-        this.createChildren();
+        this.limbs = new GuiStringListElement(mc, (str) -> this.pickLimb(str.get(0)));
 
-        this.tx = new GuiTrackpadElement(mc, I18n.format("metamorph.gui.x"), (value) -> this.part.part.translate[0] = value);
-        this.ty = new GuiTrackpadElement(mc, I18n.format("metamorph.gui.y"), (value) -> this.part.part.translate[1] = value);
-        this.tz = new GuiTrackpadElement(mc, I18n.format("metamorph.gui.z"), (value) -> this.part.part.translate[2] = value);
-        this.sx = new GuiTrackpadElement(mc, I18n.format("metamorph.gui.x"), (value) -> this.part.part.scale[0] = value);
-        this.sy = new GuiTrackpadElement(mc, I18n.format("metamorph.gui.y"), (value) -> this.part.part.scale[1] = value);
-        this.sz = new GuiTrackpadElement(mc, I18n.format("metamorph.gui.z"), (value) -> this.part.part.scale[2] = value);
-        this.rx = new GuiTrackpadElement(mc, I18n.format("metamorph.gui.x"), (value) -> this.part.part.rotate[0] = value);
-        this.ry = new GuiTrackpadElement(mc, I18n.format("metamorph.gui.y"), (value) -> this.part.part.rotate[1] = value);
-        this.rz = new GuiTrackpadElement(mc, I18n.format("metamorph.gui.z"), (value) -> this.part.part.rotate[2] = value);
+        this.bodyParts = new GuiBodyPartListElement(mc, (part) -> this.setPart(part.isEmpty() ? null : part.get(0)));
+        this.bodyParts.background().sorting();
 
-        this.tx.resizer().set(0, 35, 60, 20).parent(this.area).x(0.5F, -95).y(1, -80);
-        this.ty.resizer().set(0, 25, 60, 20).relative(this.tx.resizer());
-        this.tz.resizer().set(0, 25, 60, 20).relative(this.ty.resizer());
-        this.sx.resizer().set(65, 0, 60, 20).relative(this.tx.resizer());
-        this.sy.resizer().set(0, 25, 60, 20).relative(this.sx.resizer());
-        this.sz.resizer().set(0, 25, 60, 20).relative(this.sy.resizer());
-        this.rx.resizer().set(65, 0, 60, 20).relative(this.sx.resizer());
-        this.ry.resizer().set(0, 25, 60, 20).relative(this.rx.resizer());
-        this.rz.resizer().set(0, 25, 60, 20).relative(this.ry.resizer());
-
-        this.limbs = new GuiStringListElement(mc, (str) -> this.pickLimb(str));
-
-        this.bodyParts = new GuiBodyPartListElement(mc, (part) -> this.setPart(part));
-
-        this.pickMorph = GuiButtonElement.button(mc, I18n.format("metamorph.gui.pick"), (b) ->
+        this.pickMorph = new GuiNestedEdit(mc, (editing) ->
         {
-            if (this.morphPicker == null)
+            BodyPart part = this.part;
+
+            this.editor.morphs.nestEdit(part.morph.get(), editing, (morph) ->
             {
-                IMorphing morphing = Morphing.get(this.mc.player);
-
-                this.morphPicker = new GuiCreativeMorphsMenu(mc, 6, null, morphing);
-                this.morphPicker.resizer().parent(this.area).set(0, 0, 0, 0).w(1, 0).h(1, 0);
-                this.morphPicker.callback = (morph) ->
+                if (part != null)
                 {
-                    if (this.part != null) this.part.part.morph.setDirect(morph);
-                };
-
-                GuiScreen screen = Minecraft.getMinecraft().currentScreen;
-
-                this.morphPicker.resize(screen.width, screen.height);
-                this.children.add(this.morphPicker);
-            }
-
-            this.children.unfocus();
-            this.morphPicker.setSelected(this.part.part.morph.get());
-            this.morphPicker.setVisible(true);
+                    part.morph.setDirect(MorphUtils.copy(morph));
+                }
+            });
         });
 
-        this.addPart = GuiButtonElement.button(mc, I18n.format("metamorph.gui.add"), (b) ->
+        this.add = new GuiIconElement(mc, Icons.ADD, this::addPart);
+        this.add.tooltip(IKey.lang("metamorph.gui.body_parts.add_tooltip"));
+        this.add.flex().w(20);
+        this.dupe = new GuiIconElement(mc, Icons.DUPE, this::dupePart);
+        this.dupe.tooltip(IKey.lang("metamorph.gui.body_parts.dupe_tooltip"));
+        this.remove = new GuiIconElement(mc, Icons.REMOVE, this::removePart);
+        this.remove.tooltip(IKey.lang("metamorph.gui.body_parts.remove_tooltip"));
+        this.copy = new GuiIconElement(mc, Icons.COPY, this::copyParts);
+        this.copy.tooltip(IKey.lang("metamorph.gui.body_parts.copy_tooltip"));
+        this.paste = new GuiIconElement(mc, Icons.PASTE, this::pasteParts);
+        this.paste.tooltip(IKey.lang("metamorph.gui.body_parts.paste_tooltip"));
+        this.paste.flex().w(20);
+
+        this.useTarget = new GuiToggleElement(mc, IKey.lang("metamorph.gui.body_parts.use_target"), false, this::toggleTarget);
+        this.enabled = new GuiToggleElement(mc, IKey.lang("metamorph.gui.body_parts.enabled"), false, this::toggleEnabled);
+        this.transformations = new GuiBodyPartTransformations(mc);
+
+        int width = 110;
+
+        GuiElement sidebar = new GuiElement(mc);
+
+        sidebar.flex().relative(this).x(10).y(1, -30).wh(width, 20).row(0).height(20);
+        sidebar.add(this.add, this.dupe, this.remove, this.copy, this.paste);
+
+        GuiElement bottomEditor = new GuiElement(mc);
+
+        bottomEditor.flex().relative(this).x(1, -115).y(1, -10).w(width).anchorY(1F);
+        bottomEditor.flex().column(5).vertical().stretch();
+        bottomEditor.add(this.enabled, this.useTarget);
+
+        this.transformations.flex().relative(this.area).x(0.5F, -95).y(1, -10).wh(190, 70).anchorY(1F);
+        this.limbs.flex().relative(this).set(0, 50, width, 90).x(1, -115).hTo(bottomEditor.area, -5);
+        this.pickMorph.flex().relative(this).set(0, 10, width, 20).x(1, -115);
+        this.bodyParts.flex().relative(this).set(10, 22, width, 0).hTo(this.transformations.flex(), 1F, -20);
+
+        this.elements = new GuiElement(mc);
+        this.elements.add(bottomEditor, this.limbs, this.pickMorph, this.transformations);
+        this.add(sidebar, this.bodyParts, this.elements);
+
+        /* Inventory */
+        this.stacks = new GuiElement(mc);
+        this.stacks.flex().relative(this).x(0.5F).y(10).anchor(0.5F, 0).row(5).resize();
+
+        this.inventory = new GuiInventoryElement(mc, this::pickItem);
+        this.inventory.flex().relative(this.stacks).x(0.5F, 0).y(1, 10).anchor(0.5F, 0).row(6);
+        this.inventory.setVisible(false);
+
+        for (int i = 0; i < this.slots.length; i++)
         {
-            BodyPart part = this.bodyParts.getCurrent();
-            String limb = this.limbs.getCurrent();
+            this.slots[i] = new GuiSlotElement(mc, i, this.inventory);
+            this.stacks.add(this.slots[i]);
+        }
 
-            if (part == null)
+        this.elements.add(this.stacks, this.inventory);
+    }
+
+    protected void addPart(GuiIconElement b)
+    {
+        BodyPart part = new BodyPart();
+
+        part.init();
+
+        this.parts.parts.add(part);
+        this.setPart(part);
+
+        this.bodyParts.setCurrentDirect(part);
+        this.bodyParts.update();
+    }
+
+    protected void dupePart(GuiIconElement b)
+    {
+        if (this.bodyParts.isDeselected())
+        {
+            return;
+        }
+
+        BodyPart part = this.bodyParts.getCurrentFirst().copy();
+
+        part.init();
+
+        this.parts.parts.add(part);
+        this.setPart(part);
+
+        this.bodyParts.setCurrentDirect(part);
+        this.bodyParts.update();
+    }
+
+    protected void removePart(GuiIconElement b)
+    {
+        if (this.bodyParts.isDeselected())
+        {
+            return;
+        }
+
+        List<BodyPart> parts = this.parts.parts;
+        int index = -1;
+
+        for (int i = 0; i < parts.size(); i ++)
+        {
+            if (parts.get(i) == this.part)
             {
-                part = new BodyPart();
-                part.part = new MorphBodyPart();
+                index = i;
 
-                if (limb != null)
-                {
-                    part.limb = limb;
-                }
+                break;
+            }
+        }
+
+        if (index != -1)
+        {
+            parts.remove(this.part);
+            this.bodyParts.update();
+            index--;
+
+            if (parts.size() >= 1)
+            {
+                this.setPart(parts.get(MathUtils.clamp(index, 0, parts.size() - 1)));
             }
             else
             {
-                part = part.clone(true);
+                this.setPart(null);
             }
+        }
 
-            part.init();
+        this.bodyParts.update();
+    }
 
-            this.parts.parts.add(part);
-            this.bodyParts.update();
-            this.bodyParts.setCurrent(part);
-            this.part = part;
-            this.setPart(part);
-        });
+    protected void copyParts(GuiIconElement b)
+    {
+        buffer.clear();
 
-        this.removePart = GuiButtonElement.button(mc, I18n.format("metamorph.gui.remove"), (b) ->
+        for (BodyPart part : this.parts.parts)
         {
-            if (this.part == null)
-            {
-                return;
-            }
-
-            List<BodyPart> parts = this.parts.parts;
-            int index = parts.indexOf(this.part);
-
-            if (index != -1)
-            {
-                parts.remove(this.part);
-                this.bodyParts.update();
-                index--;
-
-                if (parts.size() >= 1)
-                {
-                    this.setPart(parts.get(index >= 0 ? index : 0));
-                }
-                else
-                {
-                    this.setPart(null);
-                }
-            }
-        });
-
-        this.useTarget = GuiButtonElement.checkbox(mc, I18n.format("metamorph.gui.use_target"), false, (b) ->
-        {
-            if (this.part != null) this.part.part.useTarget = b.button.isChecked();
-        });
-
-        this.limbs.resizer().parent(this.area).set(0, 80, 105, 90).x(1, -115).h(1, -106);
-        this.pickMorph.resizer().parent(this.area).set(0, 40, 105, 20).x(1, -115);
-        this.addPart.resizer().parent(this.area).set(10, 10, 50, 20);
-        this.removePart.resizer().relative(this.addPart.resizer()).set(55, 0, 50, 20);
-        this.bodyParts.resizer().parent(this.area).set(10, 50, 105, 0).h(1, -55);
-        this.useTarget.resizer().parent(this.area).set(0, 0, 60, 11).x(1, -115).y(1, -21);
-
-        this.elements.add(this.tx, this.ty, this.tz, this.sx, this.sy, this.sz, this.rx, this.ry, this.rz, this.limbs, this.pickMorph, this.useTarget);
-        this.children.add(this.addPart, this.removePart, this.bodyParts, this.elements);
-
-        /* Inventory */
-        this.inventory = new GuiInventory(this, mc.player);
-
-        for (int i = 0; i < this.slots.length; i++)
-        {
-            this.slots[i] = new GuiSlot(i);
+            buffer.add(part.copy());
         }
     }
 
-    @Override
-    public void pickItem(GuiInventory inventory, ItemStack stack)
+    protected void pasteParts(GuiIconElement b)
     {
-        if (this.active != null)
+        for (BodyPart part : buffer)
         {
-            this.active.stack = stack.isEmpty() ? ItemStack.EMPTY : stack.copy();
-            this.part.part.slots[this.active.slot] = this.active.stack;
-            this.inventory.visible = false;
-            this.part.part.updateEntity();
+            BodyPart clone = part.copy();
+
+            this.parts.parts.add(clone);
+            clone.init();
+        }
+
+        if (!this.parts.parts.isEmpty())
+        {
+            this.setPart(this.parts.parts.get(this.parts.parts.size() - 1));
+        }
+
+        this.bodyParts.update();
+    }
+
+    protected void toggleTarget(GuiToggleElement b)
+    {
+        if (this.part != null)
+        {
+            this.part.useTarget = b.isToggled();
         }
     }
 
-    @Override
-    public void resize(int width, int height)
+    protected void toggleEnabled(GuiToggleElement b)
     {
-        super.resize(width, height);
-
-        for (int i = 0; i < this.slots.length; i++)
+        if (this.part != null)
         {
-            this.slots[i].update(this.area.getX(0.5F) + 30 * i - 85, this.area.y + 10);
+            this.part.enabled = b.isToggled();
+        }
+    }
+
+    protected void pickItem(ItemStack stack)
+    {
+        if (this.part == null)
+        {
+            return;
         }
 
-        this.inventory.update(this.area.getX(0.5F), this.area.getY(0.5F) - 40);
+        GuiSlotElement element = this.inventory.linked;
 
-        if (this.morphPicker != null)
-        {
-            this.morphPicker.setPerRow((int) Math.ceil(this.morphPicker.area.w / 50.0F));
-        }
+        element.stack = stack.isEmpty() ? ItemStack.EMPTY : stack.copy();
+        this.part.slots[element.slot] = element.stack;
+        this.inventory.unlink();
+        this.part.updateEntity();
     }
 
     @Override
@@ -236,7 +274,21 @@ public class GuiBodyPartEditor extends GuiMorphPanel<AbstractMorph, GuiAbstractM
         {
             BodyPartManager manager = ((IBodyPartProvider) morph).getBodyPart();
 
-            this.startEditing(manager);
+            this.parts = manager;
+
+            this.bodyParts.setList(manager.parts);
+            this.bodyParts.update();
+        }
+    }
+
+    @Override
+    public void startEditing()
+    {
+        super.startEditing();
+
+        if (this.parts != null)
+        {
+            this.setPart(this.parts.parts.isEmpty() ? null : this.parts.parts.get(0));
         }
     }
 
@@ -247,22 +299,6 @@ public class GuiBodyPartEditor extends GuiMorphPanel<AbstractMorph, GuiAbstractM
         this.limbs.sort();
     }
 
-    public void startEditing(BodyPartManager manager)
-    {
-        this.inventory.player = this.mc.player;
-        this.parts = manager;
-
-        this.bodyParts.setList(manager.parts);
-        this.bodyParts.update();
-        this.setPart(manager.parts.isEmpty() ? null : manager.parts.get(0));
-    }
-
-    public void setupBodyEditor()
-    {
-        this.bodyParts.update();
-        this.setPart(this.parts.parts.isEmpty() ? null : this.parts.parts.get(0));
-    }
-
     protected void setPart(BodyPart part)
     {
         this.part = part;
@@ -270,9 +306,10 @@ public class GuiBodyPartEditor extends GuiMorphPanel<AbstractMorph, GuiAbstractM
 
         if (this.part != null)
         {
-            this.fillBodyPart(part.part);
+            this.fillBodyPart(part);
             this.limbs.setCurrent(part.limb);
-            this.bodyParts.setCurrent(part);
+            this.bodyParts.setCurrentDirect(part);
+            this.pickMorph.setMorph(part.morph.get());
         }
     }
 
@@ -281,23 +318,14 @@ public class GuiBodyPartEditor extends GuiMorphPanel<AbstractMorph, GuiAbstractM
         this.part.limb = str;
     }
 
-    public void fillBodyPart(MorphBodyPart part)
+    public void fillBodyPart(BodyPart part)
     {
         if (part != null)
         {
-            this.tx.trackpad.setValue(part.translate[0]);
-            this.ty.trackpad.setValue(part.translate[1]);
-            this.tz.trackpad.setValue(part.translate[2]);
+            this.transformations.setBodyPart(part);
 
-            this.sx.trackpad.setValue(part.scale[0]);
-            this.sy.trackpad.setValue(part.scale[1]);
-            this.sz.trackpad.setValue(part.scale[2]);
-
-            this.rx.trackpad.setValue(part.rotate[0]);
-            this.ry.trackpad.setValue(part.rotate[1]);
-            this.rz.trackpad.setValue(part.rotate[2]);
-
-            this.useTarget.button.setIsChecked(part.useTarget);
+            this.enabled.toggled(part.enabled);
+            this.useTarget.toggled(part.useTarget);
 
             for (int i = 0; i < this.slots.length; i++)
             {
@@ -307,99 +335,87 @@ public class GuiBodyPartEditor extends GuiMorphPanel<AbstractMorph, GuiAbstractM
     }
 
     @Override
-    public boolean mouseClicked(int mouseX, int mouseY, int mouseButton)
+    public void draw(GuiContext context)
     {
-        if (super.mouseClicked(mouseX, mouseY, mouseButton))
-        {
-            return true;
-        }
+        this.font.drawStringWithShadow(I18n.format("metamorph.gui.body_parts.parts"), this.bodyParts.area.x, this.bodyParts.area.y - 12, 0xffffff);
 
         if (this.elements.isVisible())
         {
-            this.inventory.mouseClicked(mouseX, mouseY, mouseButton);
-            this.active = null;
-
-            for (GuiSlot slot : this.slots)
-            {
-                if (slot.area.isInside(mouseX, mouseY))
-                {
-                    this.active = slot;
-                    this.inventory.visible = true;
-                }
-            }
-
-            if (this.active != null || (this.inventory.visible && this.inventory.area.isInside(mouseX, mouseY)))
-            {
-                return true;
-            }
+            Gui.drawRect(this.limbs.area.x, this.limbs.area.y, this.limbs.area.ex(), this.limbs.area.ey(), 0x88000000);
+            this.font.drawStringWithShadow(I18n.format("metamorph.gui.body_parts.limbs"), this.limbs.area.x, this.limbs.area.y - 12, 0xffffff);
         }
 
-        return false;
+        super.draw(context);
     }
 
     @Override
-    public void draw(GuiTooltip tooltip, int mouseX, int mouseY, float partialTicks)
+    public void fromNBT(NBTTagCompound tag)
     {
-        if (this.elements.isVisible())
+        super.fromNBT(tag);
+
+        this.bodyParts.setIndex(tag.getInteger("Index"));
+
+        BodyPart part = this.bodyParts.getCurrentFirst();
+
+        if (part != null)
         {
-            for (GuiSlot slot : this.slots)
-            {
-                slot.draw(mouseX, mouseY, partialTicks);
-            }
-
-            if (this.active != null)
-            {
-                Area a = this.active.area;
-
-                Gui.drawRect(a.x, a.y, a.x + a.w, a.y + a.h, 0x880088ff);
-            }
-
-            this.inventory.draw(mouseX, mouseY, partialTicks);
+            this.setPart(part);
         }
-
-        Gui.drawRect(this.bodyParts.area.x, this.bodyParts.area.y, this.bodyParts.area.getX(1), this.bodyParts.area.getY(1), 0x88000000);
-        this.font.drawStringWithShadow(I18n.format("metamorph.gui.body_parts"), this.bodyParts.area.x, this.bodyParts.area.y - 12, 0xffffff);
-
-        if (this.elements.isVisible())
-        {
-            Gui.drawRect(this.limbs.area.x, this.limbs.area.y, this.limbs.area.getX(1), this.limbs.area.getY(1), 0x88000000);
-            this.font.drawStringWithShadow(I18n.format("metamorph.gui.limbs"), this.limbs.area.x, this.limbs.area.y - 12, 0xffffff);
-
-            this.font.drawStringWithShadow(I18n.format("metamorph.gui.translate"), this.tx.area.x, this.tx.area.y - 12, 0xffffff);
-            this.font.drawStringWithShadow(I18n.format("metamorph.gui.scale"), this.sx.area.x, this.sx.area.y - 12, 0xffffff);
-            this.font.drawStringWithShadow(I18n.format("metamorph.gui.rotate"), this.rx.area.x, this.rx.area.y - 12, 0xffffff);
-        }
-
-        super.draw(tooltip, mouseX, mouseY, partialTicks);
     }
 
-    /**
-     * Body part list which displays body parts 
-     */
-    public static class GuiBodyPartListElement extends GuiListElement<BodyPart>
+    @Override
+    public NBTTagCompound toNBT()
     {
-        public GuiBodyPartListElement(Minecraft mc, Consumer<BodyPart> callback)
-        {
-            super(mc, callback);
+        NBTTagCompound tag = super.toNBT();
 
-            this.scroll.scrollItemSize = 16;
+        tag.setInteger("Index", this.bodyParts.getIndex());
+
+        return tag;
+    }
+
+    public static class GuiBodyPartTransformations extends GuiTransformations
+    {
+        public BodyPart part;
+
+        public GuiBodyPartTransformations(Minecraft mc)
+        {
+            super(mc);
+        }
+
+        public void setBodyPart(BodyPart part)
+        {
+            this.part = part;
+
+            if (part != null)
+            {
+                this.fillT(part.translate.x, part.translate.y, part.translate.z);
+                this.fillS(part.scale.x, part.scale.y, part.scale.z);
+                this.fillR(part.rotate.x, part.rotate.y, part.rotate.z);
+            }
         }
 
         @Override
-        public void sort()
-        {}
+        public void setT(double x, double y, double z)
+        {
+            this.part.translate.x = (float) x;
+            this.part.translate.y = (float) y;
+            this.part.translate.z = (float) z;
+        }
 
         @Override
-        public void drawElement(BodyPart element, int i, int x, int y, boolean hover)
+        public void setS(double x, double y, double z)
         {
-            if (this.current == i)
-            {
-                Gui.drawRect(x, y, x + this.scroll.w, y + this.scroll.scrollItemSize, 0x880088ff);
-            }
+            this.part.scale.x = (float) x;
+            this.part.scale.y = (float) y;
+            this.part.scale.z = (float) z;
+        }
 
-            String label = i + (!element.limb.isEmpty() ? " - " + element.limb : "");
-
-            this.font.drawStringWithShadow(label, x + 4, y + 4, hover ? 16777120 : 0xffffff);
+        @Override
+        public void setR(double x, double y, double z)
+        {
+            this.part.rotate.x = (float) x;
+            this.part.rotate.y = (float) y;
+            this.part.rotate.z = (float) z;
         }
     }
 }

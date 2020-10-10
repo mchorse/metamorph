@@ -15,7 +15,7 @@ import net.minecraft.entity.EntityLivingBase;
 public class IronGolemMorph extends EntityMorph
 {
     @Override
-    public void update(EntityLivingBase target, IMorphing cap)
+    public void update(EntityLivingBase target)
     {
         if (target.motionY > 0)
         {
@@ -32,30 +32,12 @@ public class IronGolemMorph extends EntityMorph
         target.motionX *= 0.5;
         target.motionZ *= 0.5;
 
-        super.update(target, cap);
+        super.update(target);
     }
 
     @Override
-    public void attack(Entity target, EntityLivingBase source)
+    public AbstractMorph create()
     {
-        if (this.entity != null)
-        {
-            this.entity.attackEntityAsMob(target);
-        }
-
-        super.attack(target, source);
-    }
-
-    @Override
-    public AbstractMorph clone()
-    {
-        IronGolemMorph morph = new IronGolemMorph();
-
-        morph.name = this.name;
-        morph.settings = this.settings;
-
-        morph.entityData = this.entityData.copy();
-
-        return morph;
+        return new IronGolemMorph();
     }
 }

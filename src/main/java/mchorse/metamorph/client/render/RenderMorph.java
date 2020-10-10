@@ -1,5 +1,6 @@
 package mchorse.metamorph.client.render;
 
+import mchorse.metamorph.api.MorphUtils;
 import mchorse.metamorph.entity.EntityMorph;
 import net.minecraft.client.model.ModelBase;
 import net.minecraft.client.renderer.GlStateManager;
@@ -71,7 +72,7 @@ public class RenderMorph extends RenderLivingBase<EntityMorph>
         GlStateManager.rotate(rotation, 0, 1, 0);
         GlStateManager.scale(alpha, alpha, alpha);
 
-        entity.morph.render(entity, 0, 0, 0, entityYaw, partialTicks);
+        MorphUtils.render(entity.morph, entity, 0, 0, 0, entityYaw, partialTicks);
 
         GlStateManager.disableBlend();
         GlStateManager.disableNormalize();

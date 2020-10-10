@@ -5,14 +5,16 @@ import mchorse.metamorph.api.MorphManager;
 import mchorse.metamorph.capabilities.morphing.IMorphing;
 import mchorse.metamorph.capabilities.morphing.Morphing;
 import mchorse.metamorph.capabilities.morphing.MorphingProvider;
+import mchorse.metamorph.capabilities.render.ModelProvider;
 import mchorse.metamorph.network.Dispatcher;
-import mchorse.metamorph.network.common.PacketAcquiredMorphs;
+import mchorse.metamorph.network.common.survival.PacketAcquiredMorphs;
 import mchorse.metamorph.network.common.PacketBlacklist;
-import mchorse.metamorph.network.common.PacketMorph;
-import mchorse.metamorph.network.common.PacketMorphPlayer;
-import mchorse.metamorph.network.common.PacketMorphState;
+import mchorse.metamorph.network.common.creative.PacketMorph;
+import mchorse.metamorph.network.common.survival.PacketMorphPlayer;
+import mchorse.metamorph.network.common.survival.PacketMorphState;
 import mchorse.metamorph.network.common.PacketSettings;
 import net.minecraft.entity.Entity;
+import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.util.ResourceLocation;
@@ -31,18 +33,25 @@ import net.minecraftforge.fml.common.gameevent.PlayerEvent.PlayerLoggedInEvent;
  */
 public class CapabilityHandler
 {
-    public static final ResourceLocation MORPHING_CAP = new ResourceLocation(Metamorph.MODID, "morphing_capability");
+    public static final ResourceLocation MORPHING_CAP = new ResourceLocation(Metamorph.MOD_ID, "morphing_capability");
+    public static final ResourceLocation MODEL_CAP = new ResourceLocation(Metamorph.MOD_ID, "model");
 
     /**
-     * Attach capabilities (well, only one, right now)
+     * Attach capabilities
      */
     @SubscribeEvent
     @SuppressWarnings(value = {"deprecation"})
     public void attachCapability(AttachCapabilitiesEvent.Entity event)
     {
-        if (!(event.getEntity() instanceof EntityPlayer)) return;
+        if (event.getObject() instanceof EntityLivingBase)
+        {
+            event.addCapability(MODEL_CAP, new ModelProvider());
+        }
 
-        event.addCapability(MORPHING_CAP, new MorphingProvider());
+        if (event.getObject() instanceof EntityPlayer)
+        {
+            event.addCapability(MORPHING_CAP, new MorphingProvider());
+        }
     }
 
     /**
@@ -121,7 +130,7 @@ public class CapabilityHandler
         IMorphing morphing = Morphing.get(player);
         IMorphing oldMorphing = Morphing.get(event.getOriginal());
 
-        if (Metamorph.proxy.config.keep_morphs || !event.isWasDeath())
+        if (Metamorph.keepMorphs.get() || !event.isWasDeath())
         {
             morphing.copy(oldMorphing, player);
         }

@@ -86,6 +86,13 @@ public class CommandMetamorph extends CommandBase
             MorphManager.INSTANCE.setActiveSettings(settings);
             this.broadcastPacket(new PacketSettings(settings));
         }
+        else if (string.equals("remapper"))
+        {
+            /* Reload morph config */
+            Map<String, String> map = MorphUtils.reloadRemapper();
+
+            MorphManager.INSTANCE.setActiveMap(map);
+        }
     }
 
     /**
@@ -118,7 +125,7 @@ public class CommandMetamorph extends CommandBase
         {
             if (args[0].equals("reload"))
             {
-                return getListOfStringsMatchingLastWord(args, "blacklist", "morphs");
+                return getListOfStringsMatchingLastWord(args, "blacklist", "morphs", "remapper");
             }
         }
 

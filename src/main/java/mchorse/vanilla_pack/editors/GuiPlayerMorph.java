@@ -1,7 +1,10 @@
 package mchorse.vanilla_pack.editors;
 
+import mchorse.mclib.client.gui.utils.keys.IKey;
 import mchorse.metamorph.api.morphs.AbstractMorph;
 import mchorse.metamorph.client.gui.editor.GuiAbstractMorph;
+import mchorse.metamorph.util.MMIcons;
+import mchorse.vanilla_pack.editors.panels.GuiUsernamePanel;
 import mchorse.vanilla_pack.morphs.PlayerMorph;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.resources.I18n;
@@ -18,7 +21,7 @@ public class GuiPlayerMorph extends GuiAbstractMorph<PlayerMorph>
         super(mc);
 
         this.defaultPanel = this.username = new GuiUsernamePanel(mc, this);
-        this.registerPanel(this.username, GuiAbstractMorph.PANEL_ICONS, I18n.format("metamorph.gui.panels.username"), 16, 0, 16, 16);
+        this.registerPanel(this.username, IKey.lang("metamorph.gui.panels.username"), MMIcons.USER);
     }
 
     @Override

@@ -1,29 +1,25 @@
 package mchorse.metamorph.api;
 
+import mchorse.metamorph.api.abilities.IAbility;
+import mchorse.metamorph.api.abilities.IAction;
+import mchorse.metamorph.api.abilities.IAttackAbility;
+import mchorse.metamorph.api.creative.MorphList;
+import mchorse.metamorph.api.creative.sections.UserSection;
+import mchorse.metamorph.api.morphs.AbstractMorph;
+import mchorse.metamorph.client.gui.editor.GuiAbstractMorph;
+import net.minecraft.client.Minecraft;
+import net.minecraft.entity.Entity;
+import net.minecraft.entity.EntityList;
+import net.minecraft.nbt.NBTTagCompound;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
+
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.TreeSet;
-
-import mchorse.metamorph.api.abilities.IAbility;
-import mchorse.metamorph.api.abilities.IAction;
-import mchorse.metamorph.api.abilities.IAttackAbility;
-import mchorse.metamorph.api.morphs.AbstractMorph;
-import mchorse.metamorph.api.morphs.EntityMorph;
-import mchorse.metamorph.client.gui.editor.GuiAbstractMorph;
-import net.minecraft.client.Minecraft;
-import net.minecraft.client.resources.I18n;
-import net.minecraft.entity.Entity;
-import net.minecraft.entity.EntityList;
-import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.util.ResourceLocation;
-import net.minecraft.world.World;
-import net.minecraftforge.fml.common.registry.EntityEntry;
-import net.minecraftforge.fml.common.registry.ForgeRegistries;
-import net.minecraftforge.fml.relauncher.Side;
-import net.minecraftforge.fml.relauncher.SideOnly;
 
 /**
  * Morph manager class
@@ -33,14 +29,9 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 public class MorphManager
 {
     /**
-     * Default <s>football</s> morph manager 
+     * Default <s>football</s> morph manager
      */
     public static final MorphManager INSTANCE = new MorphManager();
-
-    /**
-     * Because FUCK 1.11!
-     */
-    public static final Map<String, ResourceLocation> NAME_TO_RL = new HashMap<String, ResourceLocation>();
 
     /**
      * Registered abilities 
@@ -74,15 +65,14 @@ public class MorphManager
     public Set<String> activeBlacklist = new TreeSet<String>();
 
     /**
-     * Initiate a map of string entity name to its registry name  
+     * Active morph ID remapper
      */
-    public static void initiateMap()
-    {
-        for (EntityEntry entity : ForgeRegistries.ENTITIES.getValues())
-        {
-            NAME_TO_RL.put(entity.getName(), entity.getRegistryName());
-        }
-    }
+    public Map<String, String> activeMap = new HashMap<String, String>();
+
+    /**
+     * Global morph list
+     */
+    public final MorphList list = new MorphList();
 
     /**
      * Check whether morph by the given name is blacklisted 
@@ -93,7 +83,7 @@ public class MorphManager
     }
 
     /**
-     * Set currently blacklist for usage 
+     * Set currently used morph ID blacklist
      */
     public void setActiveBlacklist(Set<String> blacklist)
     {
@@ -102,7 +92,7 @@ public class MorphManager
     }
 
     /**
-     * Set currently blacklist for usage 
+     * Set currently used morph settings
      */
     public void setActiveSettings(Map<String, MorphSettings> settings)
     {
@@ -119,18 +109,26 @@ public class MorphManager
             }
             else
             {
-                setting.merge(entry.getValue());
+                setting.copy(entry.getValue());
             }
 
             newSettings.put(key, setting);
         }
 
-        this.activeSettings.clear();
-        this.activeSettings.putAll(newSettings);
+        this.activeSettings = newSettings;
     }
 
     /**
-     * That's a singleton, boy! 
+     * Set current morph ID remapper
+     */
+    public void setActiveMap(Map<String, String> map)
+    {
+        this.activeMap.clear();
+        this.activeMap.putAll(map);
+    }
+
+    /**
+     * That's a singleton, boy!
      */
     private MorphManager()
     {}
@@ -140,6 +138,8 @@ public class MorphManager
      */
     public void register()
     {
+        this.list.register(new UserSection("user"));
+
         for (int i = this.factories.size() - 1; i >= 0; i--)
         {
             this.factories.get(i).register(this);
@@ -147,26 +147,14 @@ public class MorphManager
     }
 
     /**
-     * Register all morph factories on the client side 
-     */
-    @SideOnly(Side.CLIENT)
-    public void registerClient()
-    {
-        for (int i = this.factories.size() - 1; i >= 0; i--)
-        {
-            this.factories.get(i).registerClient(this);
-        }
-    }
-
-    /**
      * Register morph editors 
      */
     @SideOnly(Side.CLIENT)
-    public void registerMorphEditors(List<GuiAbstractMorph> editors)
+    public void registerMorphEditors(Minecraft mc, List<GuiAbstractMorph> editors)
     {
         for (int i = this.factories.size() - 1; i >= 0; i--)
         {
-            this.factories.get(i).registerMorphEditors(editors);
+            this.factories.get(i).registerMorphEditors(mc, editors);
         }
     }
 
@@ -178,6 +166,8 @@ public class MorphManager
      */
     public boolean hasMorph(String name)
     {
+        name = this.remap(name);
+
         if (isBlacklisted(name))
         {
             return false;
@@ -202,6 +192,16 @@ public class MorphManager
      */
     public AbstractMorph morphFromNBT(NBTTagCompound tag)
     {
+        if (tag == null)
+        {
+            return null;
+        }
+
+        if (tag.hasKey("Name"))
+        {
+            tag.setString("Name", this.remap(tag.getString("Name")));
+        }
+
         String name = tag.getString("Name");
 
         if (isBlacklisted(name))
@@ -232,26 +232,15 @@ public class MorphManager
      */
     public void applySettings(AbstractMorph morph)
     {
+        if (morph.settings != MorphSettings.DEFAULT)
+        {
+            return;
+        }
+
         if (this.activeSettings.containsKey(morph.name))
         {
             morph.settings = this.activeSettings.get(morph.name);
         }
-    }
-
-    /**
-     * Get all morphs that factories provide. Take in account that this code 
-     * don't apply morph settings.
-     */
-    public MorphList getMorphs(World world)
-    {
-        MorphList morphs = new MorphList();
-
-        for (int i = this.factories.size() - 1; i >= 0; i--)
-        {
-            this.factories.get(i).getMorphs(morphs, world);
-        }
-
-        return morphs;
     }
 
     /**
@@ -267,37 +256,12 @@ public class MorphManager
     }
 
     /**
-     * Get display name for morph (only client)
+     * Remap morph name
      */
-    @SideOnly(Side.CLIENT)
-    public String morphDisplayNameFromMorph(AbstractMorph morph)
+    public String remap(String name)
     {
-        for (int i = this.factories.size() - 1; i >= 0; i--)
-        {
-            String name = this.factories.get(i).displayNameForMorph(morph);
+        String remapped = this.activeMap.get(name);
 
-            if (name != null)
-            {
-                return name;
-            }
-        }
-
-        /* Falling back to default method */
-        String name = morph.name;
-
-        try
-        {
-            if (morph instanceof EntityMorph)
-            {
-                name = EntityList.getEntityString(((EntityMorph) morph).getEntity(Minecraft.getMinecraft().world));
-            }
-        }
-        catch (Exception e)
-        {}
-
-        String key = "entity." + name + ".name";
-        String result = I18n.format(key);
-
-        return key.equals(result) ? name : result;
+        return remapped == null ? name : remapped;
     }
 }

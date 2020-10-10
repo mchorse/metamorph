@@ -7,10 +7,10 @@ import mchorse.metamorph.api.morphs.AbstractMorph;
 import mchorse.metamorph.capabilities.morphing.IMorphing;
 import mchorse.metamorph.capabilities.morphing.Morphing;
 import mchorse.metamorph.network.Dispatcher;
-import mchorse.metamorph.network.common.PacketAcquireMorph;
-import mchorse.metamorph.network.common.PacketMorph;
-import mchorse.metamorph.network.common.PacketMorphPlayer;
-import mchorse.metamorph.network.common.PacketMorphState;
+import mchorse.metamorph.network.common.creative.PacketAcquireMorph;
+import mchorse.metamorph.network.common.creative.PacketMorph;
+import mchorse.metamorph.network.common.survival.PacketMorphPlayer;
+import mchorse.metamorph.network.common.survival.PacketMorphState;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.network.play.server.SPacketChat;
@@ -53,7 +53,7 @@ public class MorphAPI
             return false;
         }
 
-        if (!force && !player.noClip && !Metamorph.proxy.config.morph_in_tight_spaces && !EntityUtils.canPlayerMorphFit(player, morphing.getCurrentMorph(), morph))
+        if (!force && !player.noClip && !Metamorph.morphInTightSpaces.get() && !EntityUtils.canPlayerMorphFit(player, morphing.getCurrentMorph(), morph))
         {
             if (!player.world.isRemote)
             {
@@ -87,13 +87,18 @@ public class MorphAPI
         return morphed;
     }
 
+    public static boolean acquire(EntityPlayer player, AbstractMorph morph)
+    {
+        return acquire(player, morph, true);
+    }
+
     /**
      * Make given player acquire a given morph. Usable on both sides, but it's 
      * better to use it on the server.
      * 
      * @return true, if player has acquired a morph
      */
-    public static boolean acquire(EntityPlayer player, AbstractMorph morph)
+    public static boolean acquire(EntityPlayer player, AbstractMorph morph, boolean notify)
     {
         if (morph == null)
         {
@@ -109,7 +114,7 @@ public class MorphAPI
 
         boolean acquired = Morphing.get(player).acquireMorph(event.morph);
 
-        if (!player.world.isRemote && acquired)
+        if (notify && !player.world.isRemote && acquired)
         {
             Dispatcher.sendTo(new PacketAcquireMorph(event.morph), (EntityPlayerMP) player);
         }

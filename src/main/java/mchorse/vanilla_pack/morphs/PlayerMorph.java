@@ -33,7 +33,14 @@ public class PlayerMorph extends EntityMorph
 
     public PlayerMorph()
     {
-        this.name = "Player";
+        this.name = "player";
+    }
+
+    @Override
+    @SideOnly(Side.CLIENT)
+    protected String getSubclassDisplayName()
+    {
+        return this.profile == null ? super.getSubclassDisplayName() : this.profile.getName();
     }
 
     public void setProfile(String username)
@@ -158,33 +165,23 @@ public class PlayerMorph extends EntityMorph
         entity.chasingPosY += d1 * 0.25D;
     }
 
-    /**
-     * Clone the player morph 
-     */
     @Override
-    public AbstractMorph clone(boolean isRemote)
+    public AbstractMorph create()
     {
-        PlayerMorph morph = new PlayerMorph();
-
-        AbstractMorph.copyBase(this, morph);
-
-        morph.entityData = this.entityData.copy();
-        morph.profile = this.profile;
-
-        if (isRemote)
-        {
-            morph.renderer = this.renderer;
-        }
-
-        return morph;
+        return new PlayerMorph();
     }
 
     @Override
-    public void reset()
+    public void copy(AbstractMorph from)
     {
-        super.reset();
+        super.copy(from);
 
-        this.profile = null;
+        if (from instanceof PlayerMorph)
+        {
+            PlayerMorph morph = (PlayerMorph) from;
+
+            this.profile = morph.profile;
+        }
     }
 
     @Override
@@ -200,6 +197,14 @@ public class PlayerMorph extends EntityMorph
         }
 
         return result;
+    }
+
+    @Override
+    public void reset()
+    {
+        super.reset();
+
+        this.profile = null;
     }
 
     @Override

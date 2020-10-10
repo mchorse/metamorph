@@ -78,18 +78,7 @@ public class EntityUtils
         tag.removeTag("UUIDMost");
 
         /* Attributes */
-        if (tag.hasKey("Attributes"))
-        {
-            NBTTagList attributes = tag.getTagList("Attributes", 10);
-
-            for (int i = attributes.tagCount() - 1; i >= 0; i--)
-            {
-                if (removeAttributes.contains(attributes.getCompoundTagAt(i).getString("Name")))
-                {
-                    attributes.removeTag(i);
-                }
-            }
-        }
+        tag.removeTag("Attributes");
 
         /* Shulker tags stripping */
         tag.removeTag("Peek");

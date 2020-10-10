@@ -1,11 +1,9 @@
 package mchorse.metamorph.entity;
 
-import java.util.Arrays;
-import java.util.UUID;
-
 import io.netty.buffer.ByteBuf;
 import mchorse.metamorph.api.MorphAPI;
 import mchorse.metamorph.api.MorphManager;
+import mchorse.metamorph.api.MorphUtils;
 import mchorse.metamorph.api.models.IMorphProvider;
 import mchorse.metamorph.api.morphs.AbstractMorph;
 import net.minecraft.entity.EntityLivingBase;
@@ -26,6 +24,9 @@ import net.minecraft.world.World;
 import net.minecraft.world.WorldServer;
 import net.minecraftforge.fml.common.network.ByteBufUtils;
 import net.minecraftforge.fml.common.registry.IEntityAdditionalSpawnData;
+
+import java.util.Arrays;
+import java.util.UUID;
 
 /**
  * Entity morph
@@ -299,22 +300,7 @@ public class EntityMorph extends EntityLivingBase implements IEntityAdditionalSp
     public void writeSpawnData(ByteBuf buffer)
     {
         ByteBufUtils.writeUTF8String(buffer, this.owner != null ? this.owner.toString() : "");
-
-        if (this.morph != null)
-        {
-            NBTTagCompound tag = new NBTTagCompound();
-
-            this.morph.toNBT(tag);
-
-            boolean hasData = tag != null && !tag.hasNoTags();
-
-            buffer.writeBoolean(hasData);
-
-            if (hasData)
-            {
-                ByteBufUtils.writeTag(buffer, tag);
-            }
-        }
+        MorphUtils.morphToBuf(buffer, this.morph);
     }
 
     @Override
@@ -323,13 +309,7 @@ public class EntityMorph extends EntityLivingBase implements IEntityAdditionalSp
         String owner = ByteBufUtils.readUTF8String(buffer);
 
         this.owner = owner.isEmpty() ? null : UUID.fromString(owner);
-
-        if (buffer.readBoolean())
-        {
-            NBTTagCompound tag = ByteBufUtils.readTag(buffer);
-
-            this.morph = MorphManager.INSTANCE.morphFromNBT(tag);
-        }
+        this.morph = MorphUtils.morphFromBuf(buffer);
 
         this.setSize(morph);
     }

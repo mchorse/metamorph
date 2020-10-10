@@ -15,7 +15,7 @@ public class Jumping extends Ability
     {
         boolean moving = target.moveStrafing != 0 || target.moveForward != 0;
 
-        if (target.onGround && moving && target.motionY <= 0 && !target.isWet())
+        if (target.onGround && moving && !target.isInWater())
         {
             target.motionY += 0.5D;
         }
