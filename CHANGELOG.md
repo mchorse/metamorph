@@ -1,8 +1,85 @@
 # Metamorph Change Log
 
+## Metamorph 1.2.2
+
+This is a small patch that features a couple of tweaks.
+
+**Compatible** with McLib `2.0.2`. It doesn't mean that future versions of McLib would be incompatible, but older versions are most likely incompatible.
+
+* Added empty label to body part list when no limb selected
+* Added an option to specify the maximum of recent morphs that can be stored
+* Added `Lighting` option to `item` and `block` morphs
+* Changed the key names to be prettier (using McLib's utility)
+* Fixed max length of entity selector text fields (reported by Frtc)
+
+## Metamorph 1.2.1
+
+This is a small patch that fixes some mob morph behavior (all of these fixes and tweaks were made by @IndeanaJones).
+
+**Compatible** with McLib `2.0`. It doesn't mean that future versions of McLib would be incompatible, but older versions are most likely incompatible.
+
+* Added `rotten`, `step_up` abilities
+* Added `mob` attack
+* Added support for bigger explosions when charged creeper morph is acquired for `explode` action
+* Fixed jumping ability not working during the rain
+* Fixed and improved hostile mechanic
+* Fixed morph attack actions being applied even through indirect player damage
+* Improved iron golem morph
+* Updated Chinese strings for 1.2 (thanks to Chunk7, KuenYo_ and H2SO4GepaoAX)
+
+## Metamorph 1.2
+
+This big update adds many quality of life features related to management of morphs. Custom user categories, direct editing of acquired, recent morphs category, better editing. Basically after this update management of morphs is a bliss.
+
+**Compatible** with McLib `2.0`. It doesn't mean that future versions of McLib would be incompatible, but older versions are most likely incompatible.
+
+<a href="https://youtu.be/b9WbQa0goUQ"><img src="https://img.youtube.com/vi/b9WbQa0goUQ/0.jpg"></a> 
+
+* Added morph ID remapping mechanism
+* Added entity selectors mechanism 
+* Added config options:
+    * Added a config option to disable first person rendering (suggested by Frtc)
+    * Added a config option to pause morph menus in singleplayer
+* Added new morphs:
+    * Added `item` morph — allows to morph into an item stack
+    * Added `label` morph — allows to morph into text
+* Added more common morph properties:
+    * Added display name option to morphs
+    * Added editing of morph settings to the morph
+    * Added global morph keybinds
+    * Added sorting to body part list
+* Added body part system for entity morphs
+* Added copy /morph command button
+* Added keybinds in creative and survival morph menus
+* Added morph rendered instead of flat preview into base morph editors GUI
+* Improved creative morph menu management:
+    * Added custom user categories
+    * Added "Recent morphs" morph category
+    * Added an ability to edit and remove acquire morphs
+    * Added block morph editor for easier editing of block morph
+    * Added quick editing in creative morph menu with presets and quick editor tabs
+    * Added keybinds:
+        * Morph into selected morph (`Return` key)
+        * Acquire selected morph (`A` key)
+        * Edit currently selected morph (`E` key)
+        * Toggle quick editor (`Q` key)
+        * Toggle entity selectors menu (`S` key)
+        * Focus search bar (`Ctrl + F` keys)
+        * Arrow keys to select morphs
+        * Open body part menu (`B` key)
+        * Cycle between morph panels (`Tab` key, suggested by Chunk7)
+    * Changed nested morph editing to not create new creative morph editors
+* Fixed health getting stuck at the previous morph's health
+* Fixed crash with body part system on the server side
+* Fixed action keybind working in spectator mode (reported by Greyberet)
+* Fixed horse morphs not getting a saddle (reported by Datron)
+* Fixed morphed mobs being left handed all the time
+* Removed all configuration options from Mod Options (they were moved into McLib's configuration system)
+* Rewritten fully creative and survival morph menus
+
 ## Metamorph 1.1.10
 
-This is a small patch update with a couple of bug fixes (mainly by asanetargoss).
+This is a tiny patch update with a couple of bug fixes (mainly by asanetargoss).
 
 **Compatible** with McLib `1.0.4`. It doesn't mean that future versions of McLib would be incompatible, but older versions are most likely incompatible.
 

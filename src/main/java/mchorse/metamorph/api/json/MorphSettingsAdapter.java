@@ -28,7 +28,6 @@ public class MorphSettingsAdapter implements JsonDeserializer<MorphSettings>
 
         MorphSettings morph = new MorphSettings();
         MorphManager manager = MorphManager.INSTANCE;
-        List<IAbility> abilities = new ArrayList<IAbility>();
 
         if (object.has("health"))
         {
@@ -52,17 +51,17 @@ public class MorphSettingsAdapter implements JsonDeserializer<MorphSettings>
 
         if (object.has("abilities"))
         {
+            morph.abilities.clear();
+
             for (JsonElement ability : object.get("abilities").getAsJsonArray())
             {
                 IAbility iability = manager.abilities.get(ability.getAsString());
 
                 if (iability != null)
                 {
-                    abilities.add(iability);
+                    morph.abilities.add(iability);
                 }
             }
-
-            morph.abilities = abilities.toArray(new IAbility[abilities.size()]);
         }
 
         if (object.has("action"))

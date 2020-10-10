@@ -5,15 +5,13 @@ import java.util.List;
 
 import mchorse.metamorph.Metamorph;
 import mchorse.metamorph.api.Morph;
-import mchorse.metamorph.api.MorphManager;
+import mchorse.metamorph.api.MorphUtils;
 import mchorse.metamorph.api.morphs.AbstractMorph;
-import mchorse.metamorph.client.gui.elements.GuiSurvivalMorphs;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.SharedMonsterAttributes;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.SoundEvents;
-import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.DamageSource;
 import net.minecraft.util.EnumParticleTypes;
 import net.minecraft.world.WorldServer;
@@ -76,27 +74,13 @@ public class Morphing implements IMorphing
      */
     private float lastHealth;
 
-    /**
-     * GUI menu which is responsible for choosing morphs
-     */
-    @SideOnly(Side.CLIENT)
-    private GuiSurvivalMorphs overlay;
-
-    /**
-     * Whether {@link #overlay} is non-null
-     *
-     * This is a separate field because {@link #overlay} is SideOnly(CLIENT), so referring to it on the server (where
-     * it would always be null) is not possible (will result in NoSuchFieldError).
-     */
-    private boolean hasOverlay = false;
-
-
     public static IMorphing get(EntityPlayer player)
     {
         if (player == null)
         {
             return null;
         }
+
         return player.getCapability(MorphingProvider.MORPHING_CAP, null);
     }
 
@@ -104,7 +88,7 @@ public class Morphing implements IMorphing
     @SideOnly(Side.CLIENT)
     public boolean isAnimating()
     {
-        if (Metamorph.proxy.config.disable_morph_animation)
+        if (Metamorph.disableMorphAnimation.get())
         {
             return false;
         }
@@ -130,6 +114,11 @@ public class Morphing implements IMorphing
     @SideOnly(Side.CLIENT)
     public boolean renderPlayer(EntityPlayer player, double x, double y, double z, float yaw, float partialTick)
     {
+        if (player.isSpectator())
+        {
+            return false;
+        }
+
         if (this.morph.isEmpty() && !this.isAnimating())
         {
             return false;
@@ -142,9 +131,10 @@ public class Morphing implements IMorphing
 
         if (!this.isAnimating())
         {
-            this.morph.get().render(player, x, y, z, yaw, partialTick);
-
-            return true;
+            if (MorphUtils.render(this.morph.get(), player, x, y, z, yaw, partialTick))
+            {
+                return true;
+            }
         }
 
         GlStateManager.pushMatrix();
@@ -168,7 +158,7 @@ public class Morphing implements IMorphing
                 GlStateManager.scale(1 - anim, 1 - anim, 1 - anim);
             }
 
-            this.morph.get().render(player, 0, 0, 0, yaw, partialTick);
+            MorphUtils.render(this.morph.get(), player, 0, 0, 0, yaw, partialTick);
         }
         else if (this.previousMorph != null)
         {
@@ -189,7 +179,7 @@ public class Morphing implements IMorphing
                 GlStateManager.scale(anim, anim, anim);
             }
 
-            this.previousMorph.render(player, 0, 0, 0, yaw, partialTick);
+            MorphUtils.render(this.previousMorph, player, 0, 0, 0, yaw, partialTick);
         }
 
         GlStateManager.popMatrix();
@@ -219,11 +209,6 @@ public class Morphing implements IMorphing
 
         this.acquiredMorphs.add(morph);
 
-        if (this.hasOverlay)
-        {
-            this.overlay.setupMorphs(this);
-        }
-
         return true;
     }
 
@@ -252,11 +237,6 @@ public class Morphing implements IMorphing
     {
         this.acquiredMorphs.clear();
         this.acquiredMorphs.addAll(morphs);
-
-        if (this.hasOverlay)
-        {
-            this.overlay.setupMorphs(this);
-        }
     }
 
     @Override
@@ -275,7 +255,7 @@ public class Morphing implements IMorphing
             return true;
         }
 
-        boolean creative = player != null ? player.isCreative() : false;
+        boolean creative = player != null && player.isCreative();
 
         if (force || creative || this.acquiredMorph(morph))
         {
@@ -291,7 +271,7 @@ public class Morphing implements IMorphing
                 }
             }
 
-            this.setMorph(morph, player == null ? false : player.world.isRemote);
+            this.setMorph(morph);
 
             if (player != null && !this.morph.isEmpty())
             {
@@ -321,19 +301,19 @@ public class Morphing implements IMorphing
             this.setHealth(player, this.lastHealth <= 0.0F ? 20.0F : this.lastHealth);
         }
 
-        this.setMorph(null, player == null ? false : player.world.isRemote);
+        this.setMorph(null);
     }
 
     /**
      * Set current morph, as well as update animation information  
      */
-    protected void setMorph(AbstractMorph morph, boolean isRemote)
+    protected void setMorph(AbstractMorph morph)
     {
         AbstractMorph previous = this.morph.get();
 
-        if (this.morph.set(morph, isRemote))
+        if (this.morph.set(morph))
         {
-            if (!Metamorph.proxy.config.disable_morph_animation)
+            if (!Metamorph.disableMorphAnimation.get())
             {
                 this.animation = 20;
             }
@@ -349,34 +329,33 @@ public class Morphing implements IMorphing
     }
 
     @Override
-    public boolean favorite(int index)
+    public void favorite(int index)
     {
         if (index >= 0 && index < this.acquiredMorphs.size())
         {
             AbstractMorph morph = this.acquiredMorphs.get(index);
 
             morph.favorite = !morph.favorite;
-
-            if (this.hasOverlay)
-            {
-                this.overlay.favorite(index);
-            }
         }
+    }
 
-        return false;
+    @Override
+    public void keybind(int index, int keycode)
+    {
+        if (index >= 0 && index < this.acquiredMorphs.size())
+        {
+            AbstractMorph morph = this.acquiredMorphs.get(index);
+
+            morph.keybind = keycode;
+        }
     }
 
     @Override
     public boolean remove(int index)
     {
-        if (!this.acquiredMorphs.isEmpty() && index >= 0 && index < this.acquiredMorphs.size())
+        if (index >= 0 && index < this.acquiredMorphs.size())
         {
             this.acquiredMorphs.remove(index);
-
-            if (this.hasOverlay)
-            {
-                this.overlay.remove(index);
-            }
 
             return true;
         }
@@ -391,7 +370,7 @@ public class Morphing implements IMorphing
 
         if (morphing.getCurrentMorph() != null)
         {
-            this.setCurrentMorph(morphing.getCurrentMorph().clone(player.world.isRemote), player, true);
+            this.setCurrentMorph(morphing.getCurrentMorph().copy(), player, true);
         }
         else
         {
@@ -455,7 +434,7 @@ public class Morphing implements IMorphing
             this.animation--;
         }
 
-        if (this.animation == 16 && !player.world.isRemote && !Metamorph.proxy.config.disable_morph_animation)
+        if (this.animation == 16 && !player.world.isRemote && !Metamorph.disableMorphAnimation.get())
         {
             /* Pop! */
             ((WorldServer) player.world).spawnParticle(EnumParticleTypes.EXPLOSION_NORMAL, false, player.posX, player.posY + 0.5, player.posZ, 25, 0.5, 0.5, 0.5, 0.05);
@@ -467,12 +446,12 @@ public class Morphing implements IMorphing
         {
             AbstractMorph morph = this.morph.get();
 
-            if (!Metamorph.proxy.config.disable_health)
+            if (!Metamorph.disableHealth.get())
             {
                 this.setMaxHealth(player, morph.settings.health);
             }
 
-            morph.update(player, this);
+            morph.update(player);
         }
     }
 
@@ -486,7 +465,7 @@ public class Morphing implements IMorphing
      */
     protected void setHealth(EntityLivingBase target, float health)
     {
-        if (Metamorph.proxy.config.disable_health)
+        if (Metamorph.disableHealth.get())
         {
             return;
         }
@@ -533,19 +512,5 @@ public class Morphing implements IMorphing
         {
             target.getEntityAttribute(SharedMonsterAttributes.MAX_HEALTH).setBaseValue(health);
         }
-    }
-
-    @Override
-    @SideOnly(Side.CLIENT)
-    public GuiSurvivalMorphs getOverlay()
-    {
-        if (this.overlay == null)
-        {
-            this.overlay = new GuiSurvivalMorphs();
-            this.overlay.setupMorphs(this);
-            this.hasOverlay = true;
-        }
-
-        return this.overlay;
     }
 }

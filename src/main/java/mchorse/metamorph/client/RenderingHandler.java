@@ -1,13 +1,15 @@
 package mchorse.metamorph.client;
 
+import mchorse.metamorph.ClientProxy;
+import mchorse.metamorph.api.MorphManager;
 import mchorse.metamorph.api.morphs.EntityMorph;
 import mchorse.metamorph.capabilities.morphing.IMorphing;
 import mchorse.metamorph.capabilities.morphing.Morphing;
-import mchorse.metamorph.client.gui.elements.GuiHud;
-import mchorse.metamorph.client.gui.elements.GuiOverlay;
-import mchorse.metamorph.client.gui.elements.GuiSurvivalMorphs;
+import mchorse.metamorph.client.gui.overlays.GuiHud;
+import mchorse.metamorph.client.gui.overlays.GuiOverlay;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.entity.EntityPlayerSP;
+import net.minecraft.client.gui.GuiMainMenu;
 import net.minecraft.client.gui.ScaledResolution;
 import net.minecraft.client.renderer.EntityRenderer;
 import net.minecraft.client.renderer.GlStateManager;
@@ -16,6 +18,7 @@ import net.minecraft.client.renderer.entity.RenderManager;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.scoreboard.Team;
+import net.minecraftforge.client.event.GuiOpenEvent;
 import net.minecraftforge.client.event.RenderGameOverlayEvent;
 import net.minecraftforge.client.event.RenderLivingEvent;
 import net.minecraftforge.client.event.RenderPlayerEvent;
@@ -56,16 +59,6 @@ public class RenderingHandler
 
         if (event.getType() == RenderGameOverlayEvent.ElementType.ALL)
         {
-            IMorphing morphing = Morphing.get(Minecraft.getMinecraft().player);
-            if (morphing != null)
-            {
-                GuiSurvivalMorphs overlay = morphing.getOverlay();
-                if (!overlay.inGUI)
-                {
-                    overlay.render(resolution.getScaledWidth(), resolution.getScaledHeight());
-                }
-            }
-
             this.morphOverlay.render(resolution.getScaledWidth(), resolution.getScaledHeight());
         }
     }
@@ -232,5 +225,15 @@ public class RenderingHandler
         int i = "deadmau5".equals(name) ? -10 : 0;
 
         EntityRenderer.drawNameplate(this.manager.getFontRenderer(), name, (float) x, (float) y + pz, (float) z, i, px, py, thirdFrontal, sneaking);
+    }
+
+    @SubscribeEvent
+    public void onGuiOpen(GuiOpenEvent event)
+    {
+        if (event.getGui() instanceof GuiMainMenu)
+        {
+            MorphManager.INSTANCE.list.reset();
+            ClientProxy.survivalScreen = null;
+        }
     }
 }

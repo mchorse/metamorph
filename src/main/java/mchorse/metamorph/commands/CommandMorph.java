@@ -40,8 +40,7 @@ public class CommandMorph extends CommandBase
     @Override
     public int getRequiredPermissionLevel()
     {
-        /* Because /op command has the same level, and I trust it */
-        return 3;
+        return 2;
     }
 
     @Override

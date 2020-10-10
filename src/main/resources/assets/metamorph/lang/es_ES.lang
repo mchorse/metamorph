@@ -1,0 +1,176 @@
+#PARSE_ESCAPES
+
+entity.metamorph.Morph.name=Morph
+
+# Keyboard bindings strings
+key.metamorph=Metamorph
+key.metamorph.action=Acción de uso
+key.metamorph.creative_menu=Abrir menú Morphs del modo Creativo
+key.metamorph.selector_menu=Abrir menú Selector de entidades
+key.metamorph.survival_menu=Abrir menú Morphs del modo Supervivencia
+key.metamorph.demorph=Eliminar morph (Regresa a como era antes)
+
+# GUI
+metamorph.gui.body_parts.pick=Elegir morph
+metamorph.gui.body_parts.use_target=Usar objetivo
+metamorph.gui.body_parts.parts=Partes del cuerpo
+metamorph.gui.body_parts.limbs=Extremidades
+metamorph.gui.body_parts.open=Abrir menú Partes del cuerpo
+metamorph.gui.body_parts.add_tooltip=Agregar una nueva parte del cuerpo...
+metamorph.gui.body_parts.dupe_tooltip=Duplicar parte del cuerpo seleccionada...
+metamorph.gui.body_parts.remove_tooltip=Eliminar parte del cuerpo seleccionada...
+metamorph.gui.body_parts.copy_tooltip=Copiar todas las partes del cuerpo...
+metamorph.gui.body_parts.paste_tooltip=Pegar partes del cuerpo...
+
+metamorph.gui.add=Agregar
+metamorph.gui.remove=Eliminar
+metamorph.gui.morph=Morph
+metamorph.gui.acquire=Adquirir
+metamorph.gui.acquired=Adquirido
+metamorph.gui.close=Cerrar
+metamorph.gui.search=Buscar
+metamorph.gui.no_morph=No se seleccionó ningún morph...
+metamorph.gui.morph_render_error=Se produjo un error al procesar este morph
+
+metamorph.gui.selectors.title=Selector de entidades
+metamorph.gui.selectors.tooltip=Con esta característica, puedes agregar morphs a entidades por nombre específico o por su tipo...
+metamorph.gui.selectors.add=Agregar un selector
+metamorph.gui.selectors.remove=Eliminar un selector
+metamorph.gui.selectors.name=Nombre
+metamorph.gui.selectors.type=Tipo
+metamorph.gui.selectors.match=Coincidencia NBT
+metamorph.gui.selectors.match_tooltip=Aquí puedes espicificar una etiqueta NBT que debe coincidir parcialmente con la etiqueta NBT de la entidad
+metamorph.gui.selectors.enabled=Activado
+
+metamorph.gui.morphs.keys.category=Navegador de moprhs
+metamorph.gui.morphs.keys.up=Seleccionar morph de arriba
+metamorph.gui.morphs.keys.down=Seleccionar morph de abajo
+metamorph.gui.morphs.keys.right=Seleccionar morph de la derecha
+metamorph.gui.morphs.keys.left=Seleccionar morph de la izquierda
+
+metamorph.gui.creative.command=Copiar comando /morph para el morph seleccionado
+metamorph.gui.creative.edit=Editar
+metamorph.gui.creative.pick=Escoger
+metamorph.gui.creative.quick=Edición rápida
+metamorph.gui.creative.presets=Preajustes
+metamorph.gui.creative.random=Preajuste aleatorio
+metamorph.gui.creative.keys.category=Menú Morphs del modo Creativo
+metamorph.gui.creative.keys.exit=Salir del editor de morph
+metamorph.gui.creative.keys.edit=Editar morph seleccionada
+metamorph.gui.creative.keys.focus=Enfocar barra de búsqueda
+metamorph.gui.creative.keys.quick=Alternar menú de edición rápida
+metamorph.gui.creative.keys.acquire=Adquirir el morph seleccionado
+metamorph.gui.creative.keys.morph=Transformar en morph seleccionado
+metamorph.gui.creative.context.add_global=Agregar a Morphs globales...
+metamorph.gui.creative.context.edit=Editar morph...
+metamorph.gui.creative.context.add_category=Agregar una nueva categoría
+metamorph.gui.creative.context.rename_category=Renombrar categoría
+metamorph.gui.creative.context.rename_category_modal=Cambia el nombre de dicha categoría...
+metamorph.gui.creative.context.remove_category=Remover categoría
+metamorph.gui.creative.context.clear_category=Borrar
+metamorph.gui.creative.context.to_recent=Copiar a reciente
+metamorph.gui.creative.context.remove_morph=Eliminar morph
+metamorph.gui.creative.context.copy=Copiar NBT
+metamorph.gui.creative.context.paste=Pegar NBT
+metamorph.gui.creative.context.paste_modal=Pegue o ingrese la etiqueta NBT de su morph...
+
+metamorph.gui.survival.title=Menú Morphs del modo Supervivencia
+metamorph.gui.survival.keybind_tooltip=Con este campo puedes vincular una tecla que te transformará en este morph en particular(aunque la presiones en este menú o en el mundo)
+metamorph.gui.survival.only_favorites=Solo favoritos
+metamorph.gui.survival.favorite=Favoritos
+metamorph.gui.survival.keys.category=Menú Morphs del modo Supervivencia
+metamorph.gui.survival.keys.toggle_favorites=Alternar morphs favoritas
+metamorph.gui.survival.keys.focus_keybind=Enfocar combinación de teclas
+
+metamorph.gui.editor.settings=Ajustes de morph
+metamorph.gui.editor.display_name=Nombre a mostrar
+metamorph.gui.editor.health=Vida
+metamorph.gui.editor.speed=Velocidad
+metamorph.gui.editor.abilities=Habilidades
+metamorph.gui.editor.abilities_tooltip=Shift + click en las habilidades de la lista para seleccionar múltiples habilidades
+metamorph.gui.editor.attack=Atacar
+metamorph.gui.editor.action=Acción
+metamorph.gui.editor.reset=Reiniciar
+metamorph.gui.editor.item_morph=Item
+metamorph.gui.editor.keys.category=Editor de combinación de teclas de Morphs
+metamorph.gui.editor.keys.cycle=Ciclo entre paneles de Morphs
+
+metamorph.gui.label.label=Etiqueta
+metamorph.gui.label.max_width=Anchura máxima
+metamorph.gui.label.anchor=Anclaje
+metamorph.gui.label.color=Color del texto
+metamorph.gui.label.shadow=Sombra
+metamorph.gui.label.shadow_offset=Desplazamiento de sombra
+metamorph.gui.label.shadow_color=Color de sombra
+metamorph.gui.label.lighting=Iluminación
+metamorph.gui.label.lighting_tooltip=Cuando está deshabilitado, el lightmap de Minecraft no se aplicará, lo que significa que brillará en la oscuridad. Los Shaders, que tengan incluído el efecto Bloom, harán que este morph parezca un cartel de Neón
+
+metamorph.gui.edit=Editar
+metamorph.gui.panels.nbt_data=Datos NBT
+metamorph.gui.panels.username=Nombre de usuario
+metamorph.gui.panels.updating=Actualizando...
+
+metamorph.gui.status.tight_space=No hay suficiente espacio para transformar aquí
+
+# Config
+metamorph.config.title=Metamorph
+
+metamorph.config.acquiring.title=Adquisición del morph
+metamorph.config.acquiring.tooltip=Todas las opciones relacionadas con las formas de obtener morphs
+
+metamorph.config.acquiring.prevent_ghosts=Prevenir fantasmas
+metamorph.config.comments.acquiring.prevent_ghosts=Evita que aparezca el fantasma del jugador si este ya tiene asignado una morph para usar después de haber muerto
+metamorph.config.acquiring.prevent_kill_acquire=Evitar adquirir cuando matas
+metamorph.config.comments.acquiring.prevent_kill_acquire=Evitar la adqusición de morphs al matar a otros morphs
+metamorph.config.acquiring.acquire_immediately=Adquirir morph inmediatamente
+metamorph.config.comments.acquiring.acquire_immediately=Aquirir un morph inmediatamente después de que el jugador mate a una entidad en lugar de generar un fantasma
+
+metamorph.config.morphs.title=Morphs
+metamorph.config.morphs.tooltip=Todas las opciones relacionadas con la transformación y los ajustes de morphs
+
+metamorph.config.morphs.keep_morphs=Conservar morph al morir
+metamorph.config.comments.morphs.keep_morphs=EL jugador conserva su morph incluso después de morir
+metamorph.config.morphs.disable_pov=Desactivar POV
+metamorph.config.comments.morphs.disable_pov=Desactivar la modificaión del punto de vista. Solicitado debido a MorePlayerModel
+metamorph.config.morphs.disable_health=Desactivar la escala de salud
+metamorph.config.comments.morphs.disable_health=Desactivar la modificación de salud. Solicitado debido a Tough as Nails
+metamorph.config.morphs.disable_morph_animation=Morphs sin animaciones
+metamorph.config.comments.morphs.disable_morph_animation=Desactiva las animaciones de los morphs
+metamorph.config.morphs.disable_morph_disguise=Desactivar la hostilidad de los morphs
+metamorph.config.comments.morphs.disable_morph_disguise=Desactiva la hostilidad de los morph nombrados como "hostiles" para evitar ser atacados por entidades hostiles
+metamorph.config.morphs.disable_first_person_hand=Desactivar la mano en primera persona
+metamorph.config.comments.morphs.disable_first_person_hand=Oculta completamente la mano en primera persona
+metamorph.config.morphs.morph_in_tight_spaces=Transformación en espacios reducidos	
+metamorph.config.comments.morphs.morph_in_tight_spaces=Permite transformarse en lugares estrechos incluso si pudiera causar asfixia y/o permitir el paso a través de paredes
+metamorph.config.morphs.show_morph_idle_sounds=Mostrar sonidos de morphs inactivos
+metamorph.config.comments.morphs.show_morph_idle_sounds=Si los jugadores hacen una entidad inactiva emitirá sonidos cuando se transforme
+metamorph.config.morphs.pause_gui_in_sp=Pausar las GUIs de Morphs
+metamorph.config.comments.morphs.pause_gui_in_sp=Las GUI de Morphs de los modos Creativo y Supervivencia deben detenerse en el modo Un solo jugador
+metamorph.config.morphs.max_recent_morphs=Máx. de morphs recientes
+metamorph.config.comments.morphs.max_recent_morphs=La cantidad máxima de morphs recientes que se pueden agregar en el menú de morphs antes de ser descartadas
+
+# Commands
+metamorph.commands.morph=Comando Morph. Este comando es responsable de transformar al jugador en un morph específico.\n\n/morph <username> [morph_name] [data_tag]
+metamorph.commands.acquire_morph=Comando Acquire morph. Este comando es responsable de enviar un morph a un jugador en Morphs adquiridas.\n\n/morph <username> <morph_name> [data_tag]
+metamorph.commands.metamorph=Comando Metamorph server. Este comando permite administrar las cosas de Metamorph en el servidor.\n\n/metamorph reload <blacklist|morphs> - reloads Metamorph's blacklist or morph configuration
+
+metamorph.error.morph.not_player=Entidad %s no es un jugador!
+metamorph.error.morph.nbt=Ocurrió un error durante el análisis de la etiqueta de datos:\n%s
+metamorph.error.morph.factory=Imposible transformar en %2$s con esta etiqueta de datos
+metamorph.error.acquire=Imposible adquirir un morph con el nombre %s!
+metamorph.success.morph=El jugador %s fue exitosamente transformado en %s!
+metamorph.success.demorph=El jugador con el nombre %s fue exitosamente destransformado!
+metamorph.success.acquire=El jugador %s adquirió exitosamente el morph %s!
+
+# Morph categories
+morph.category.generic=Morphs sin clsaificar
+morph.category.animal=Morphs de animales
+morph.category.boss=Morphs de jefes
+morph.category.acquired=Tus morphs
+morph.category.hostile=Morphs hostiles
+morph.category.modded=Morphs de %s
+morph.category.recent=Morphs recientes
+
+# Morph sections and categories
+morph.section.entity=Morphs de entidades (Metamorph)
+morph.section.user=Morphs de usuario

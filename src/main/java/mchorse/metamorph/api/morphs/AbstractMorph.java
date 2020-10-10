@@ -1,10 +1,9 @@
 package mchorse.metamorph.api.morphs;
 
 import mchorse.metamorph.Metamorph;
+import mchorse.metamorph.api.MorphManager;
 import mchorse.metamorph.api.MorphSettings;
 import mchorse.metamorph.api.abilities.IAbility;
-import mchorse.metamorph.capabilities.morphing.IMorphing;
-import mchorse.metamorph.capabilities.morphing.Morphing;
 import mchorse.metamorph.entity.SoundHandler;
 import net.minecraft.client.renderer.entity.Render;
 import net.minecraft.entity.Entity;
@@ -18,6 +17,8 @@ import net.minecraft.util.SoundEvent;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
+
+import java.util.Objects;
 
 /**
  * Base class for all different types of morphs
@@ -38,9 +39,21 @@ public abstract class AbstractMorph
     public String name = "";
 
     /**
+     * Morph's display name
+     */
+    public String displayName = "";
+
+    /* Survival morph properties */
+
+    /**
      * Is this morph is favorite 
      */
     public boolean favorite = false;
+
+    /**
+     * Is this morph is favorite
+     */
+    public int keybind = -1;
 
     /* Abilities */
 
@@ -49,22 +62,50 @@ public abstract class AbstractMorph
      */
     public MorphSettings settings = MorphSettings.DEFAULT;
 
-    /* Rendering */
+    /**
+     * Whether this morph is erroring when rendering
+     */
+    public boolean errorRendering;
 
     /**
-     * Client morph renderer. It's for {@link EntityPlayer} only, don't try 
-     * using it with other types of entities.
+     * Get display name of this morph
      */
     @SideOnly(Side.CLIENT)
-    public Render<? extends Entity> renderer;
-
-    /* Clone code */
-
-    public static void copyBase(AbstractMorph from, AbstractMorph to)
+    public String getDisplayName()
     {
-        to.name = from.name;
-        to.favorite = from.favorite;
-        to.settings = from.settings;
+        if (this.displayName != null && !this.displayName.isEmpty())
+        {
+            return this.displayName;
+        }
+
+        return this.getSubclassDisplayName();
+    }
+
+    @SideOnly(Side.CLIENT)
+    protected String getSubclassDisplayName()
+    {
+        return this.name;
+    }
+
+    @SideOnly(Side.CLIENT)
+    public boolean hasCustomName()
+    {
+        return this.displayName != null && !this.displayName.isEmpty();
+    }
+
+    public boolean hasCustomSettings()
+    {
+        if (this.settings == MorphSettings.DEFAULT)
+        {
+            return false;
+        }
+
+        if (this.settings == MorphManager.INSTANCE.activeSettings.get(this.name))
+        {
+            return false;
+        }
+
+        return true;
     }
 
     /* Render methods */
@@ -96,7 +137,7 @@ public abstract class AbstractMorph
      * Update the player based on its morph abilities and properties. This 
      * method also responsible for updating AABB size. 
      */
-    public void update(EntityLivingBase target, IMorphing cap)
+    public void update(EntityLivingBase target)
     {
         if (this.settings.speed != 0.1F)
         {
@@ -162,7 +203,7 @@ public abstract class AbstractMorph
         float minEyeToHeadDifference = 0.1F;
         height = Math.max(height, minEyeToHeadDifference * 2);
         
-        if (target instanceof EntityPlayer && !Metamorph.proxy.config.disable_pov)
+        if (target instanceof EntityPlayer && !Metamorph.disablePov.get())
         {
             float eyeHeight = height * 0.9F;
             if (eyeHeight + minEyeToHeadDifference > height)
@@ -208,14 +249,27 @@ public abstract class AbstractMorph
     }
 
     /**
-     * <p>Clone a morph.</p>
-     * 
-     * <p>
-     * <b>IMPORTANT</b>: when you subclass other morphs, don't forget to override 
-     * their method with your own.
-     * </p>
+     * Clone a morph
      */
-    public abstract AbstractMorph clone(boolean isRemote);
+    public final AbstractMorph copy()
+    {
+        AbstractMorph morph = this.create();
+
+        morph.copy(this);
+
+        return morph;
+    }
+
+    public abstract AbstractMorph create();
+
+    public void copy(AbstractMorph from)
+    {
+        this.name = from.name;
+        this.displayName = from.displayName;
+        this.favorite = from.favorite;
+        this.keybind = from.keybind;
+        this.settings = this.hasCustomSettings() ? from.settings.copy() : from.settings;
+    }
 
     /* Getting size */
 
@@ -235,7 +289,7 @@ public abstract class AbstractMorph
      */
     public float getEyeHeight(EntityLivingBase target)
     {
-        if (!Metamorph.proxy.config.disable_pov)
+        if (!Metamorph.disablePov.get())
         {
             return this.getHeight(target) * 0.9F;
         }
@@ -304,7 +358,9 @@ public abstract class AbstractMorph
         {
             AbstractMorph morph = (AbstractMorph) obj;
 
-            return morph.name.equals(this.name);
+            return Objects.equals(this.name, morph.name) &&
+                Objects.equals(this.displayName, morph.displayName) &&
+                Objects.equals(this.settings, morph.settings);
         }
 
         return super.equals(obj);
@@ -314,10 +370,16 @@ public abstract class AbstractMorph
      * Check whether the morph can be merged (this should allow 
      * overwriting of a morph instead of completely replacing it)
      */
-    public boolean canMerge(AbstractMorph morph, boolean isRemote)
+    public boolean canMerge(AbstractMorph morph)
     {
         return false;
     }
+
+    /**
+     * Collect the data from previous morph
+     */
+    public void afterMerge(AbstractMorph morph)
+    {}
 
     /**
      * Reset data for editing 
@@ -327,6 +389,15 @@ public abstract class AbstractMorph
 
     /* Reading / writing to NBT */
 
+    public final NBTTagCompound toNBT()
+    {
+        NBTTagCompound tag = new NBTTagCompound();
+
+        this.toNBT(tag);
+
+        return tag;
+    }
+
     /**
      * Save abstract morph's properties to NBT compound 
      */
@@ -334,7 +405,32 @@ public abstract class AbstractMorph
     {
         tag.setString("Name", this.name);
 
-        if (this.favorite) tag.setBoolean("Favorite", this.favorite);
+        if (this.hasCustomSettings())
+        {
+            NBTTagCompound settings = new NBTTagCompound();
+
+            this.settings.toNBT(settings);
+
+            if (!settings.hasNoTags())
+            {
+                tag.setTag("Settings", settings);
+            }
+        }
+
+        if (this.displayName != null && !this.displayName.isEmpty())
+        {
+            tag.setString("DisplayName", this.displayName);
+        }
+
+        if (this.favorite)
+        {
+            tag.setBoolean("Favorite", this.favorite);
+        }
+
+        if (this.keybind >= 0)
+        {
+            tag.setInteger("Keybind", this.keybind);
+        }
     }
 
     /**
@@ -346,6 +442,25 @@ public abstract class AbstractMorph
 
         this.name = tag.getString("Name");
 
-        if (tag.hasKey("Favorite")) this.favorite = tag.getBoolean("Favorite");
+        if (tag.hasKey("Settings"))
+        {
+            this.settings = new MorphSettings();
+            this.settings.fromNBT(tag.getCompoundTag("Settings"));
+        }
+
+        if (tag.hasKey("DisplayName"))
+        {
+            this.displayName = tag.getString("DisplayName");
+        }
+
+        if (tag.hasKey("Favorite"))
+        {
+            this.favorite = tag.getBoolean("Favorite");
+        }
+
+        if (tag.hasKey("Keybind"))
+        {
+            this.keybind = tag.getInteger("Keybind");
+        }
     }
 }

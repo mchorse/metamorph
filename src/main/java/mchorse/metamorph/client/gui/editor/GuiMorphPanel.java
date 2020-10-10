@@ -3,6 +3,7 @@ package mchorse.metamorph.client.gui.editor;
 import mchorse.mclib.client.gui.framework.elements.GuiElement;
 import mchorse.metamorph.api.morphs.AbstractMorph;
 import net.minecraft.client.Minecraft;
+import net.minecraft.nbt.NBTTagCompound;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
@@ -16,7 +17,6 @@ public class GuiMorphPanel<T extends AbstractMorph, E extends GuiAbstractMorph> 
     public GuiMorphPanel(Minecraft mc, E editor)
     {
         super(mc);
-        this.createChildren();
 
         this.editor = editor;
     }
@@ -30,5 +30,13 @@ public class GuiMorphPanel<T extends AbstractMorph, E extends GuiAbstractMorph> 
     public void fillData(T morph)
     {
         this.morph = morph;
+    }
+
+    public void fromNBT(NBTTagCompound tag)
+    {}
+
+    public NBTTagCompound toNBT()
+    {
+        return new NBTTagCompound();
     }
 }

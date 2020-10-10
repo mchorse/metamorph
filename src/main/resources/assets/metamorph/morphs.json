@@ -7,7 +7,6 @@
         "health": 20,
         "hands": true
     },
-    
     "Bat": {
         "abilities": ["fly", "night_vision", "prevent_fall"],
         "health": 6,
@@ -29,11 +28,10 @@
         "hands": true
     },
     "EntityHorse": {
-        "abilities": ["prevent_fall"],
+        "abilities": ["prevent_fall", "step_up"],
         "action": "jump",
         "health": 24,
-        "speed": 0.15,
-        "hands": false
+        "speed": 0.15
     },
     "MushroomCow": {
         "health": 10,
@@ -91,7 +89,7 @@
         "hostile": true
     },
     "PigZombie": {
-        "abilities": ["fire_proof", "hungerless"],
+        "abilities": ["fire_proof", "hungerless", "rotten"],
         "health": 20,
         "hostile": true,
         "hands": true
@@ -106,12 +104,12 @@
         "hands": true
     },
     "VillagerGolem": {
-        "attack": "knockback",
+        "abilities": ["prevent_fall", "step_up"],
+        "attack": "mob",
         "health": 100,
         "speed": 0.04,
         "hands": true
     },
-    
     "Blaze": {
         "abilities": ["fly", "fire_proof", "water_allergy"],
         "action": "small_fireball",
@@ -158,13 +156,13 @@
         "hostile": true
     },
     "Skeleton": {
-        "abilities": ["sun_allergy"],
+        "abilities": ["sun_allergy", "rotten"],
         "health": 20,
         "hostile": true,
         "hands": true
     },
     "WitherSkeleton": {
-        "abilities": ["fire_proof"],
+        "abilities": ["fire_proof", "rotten"],
         "attack": "wither",
         "health": 20,
         "hostile": true,
@@ -177,7 +175,7 @@
         "hands": true
     },
     "Zombie": {
-        "abilities": ["sun_allergy", "hungerless"],
+        "abilities": ["sun_allergy", "hungerless", "rotten"],
         "health": 20,
         "hostile": true,
         "hands": true

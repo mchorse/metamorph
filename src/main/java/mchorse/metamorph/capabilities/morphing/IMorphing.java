@@ -1,13 +1,12 @@
 package mchorse.metamorph.capabilities.morphing;
 
-import java.util.List;
-
 import mchorse.metamorph.api.morphs.AbstractMorph;
-import mchorse.metamorph.client.gui.elements.GuiSurvivalMorphs;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.util.DamageSource;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
+
+import java.util.List;
 
 /**
  * Morphing interface
@@ -100,7 +99,12 @@ public interface IMorphing
      * @return if true then given favorite was added, or false if it was 
      *         removed
      */
-    public boolean favorite(int index);
+    public void favorite(int index);
+
+    /**
+     * Change keybind
+     */
+    public void keybind(int index, int keybind);
 
     /**
      * Remove a morph at given index
@@ -156,10 +160,4 @@ public interface IMorphing
      * Update the player 
      */
     public void update(EntityPlayer player);
-
-    /**
-     * Gets the GUI menu which is responsible for choosing morphs
-     */
-    @SideOnly(Side.CLIENT)
-    public GuiSurvivalMorphs getOverlay();
 }
