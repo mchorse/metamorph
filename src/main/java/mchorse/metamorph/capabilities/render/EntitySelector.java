@@ -30,11 +30,11 @@ public class EntitySelector
         }
 
         String nameTag = target.getName();
-        ResourceLocation entityName = EntityList.getKey(target);
+        String entityName = EntityList.getEntityString(target);
 
         if (entityName == null)
         {
-            entityName = new ResourceLocation(target instanceof EntityPlayer ? "player" : "");
+            entityName = target instanceof EntityPlayer ? "player" : "";
         }
 
         String n = this.name;
@@ -46,7 +46,7 @@ public class EntitySelector
         if (negativeName) n = n.substring(1);
         if (negativeType) t = t.substring(1);
 
-        ResourceLocation rt = new ResourceLocation(t);
+        String rt = t; // rt is a ResourceLocation in 1.11+
 
         boolean matchesName = this.name.isEmpty() || negativeName != nameTag.equals(n);
         boolean matchesType = this.type.equals("*") || negativeType != entityName.equals(rt);

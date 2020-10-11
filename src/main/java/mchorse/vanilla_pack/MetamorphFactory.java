@@ -1,5 +1,6 @@
 package mchorse.vanilla_pack;
 
+import mchorse.metamorph.Metamorph;
 import mchorse.metamorph.api.IMorphFactory;
 import mchorse.metamorph.api.MorphManager;
 import mchorse.metamorph.api.abilities.IAbility;
@@ -33,7 +34,6 @@ import mchorse.vanilla_pack.actions.ShulkerBullet;
 import mchorse.vanilla_pack.actions.Sliverfish;
 import mchorse.vanilla_pack.actions.SmallFireball;
 import mchorse.vanilla_pack.actions.Snowball;
-import mchorse.vanilla_pack.actions.Spit;
 import mchorse.vanilla_pack.actions.Teleport;
 import mchorse.vanilla_pack.attacks.KnockbackAttack;
 import mchorse.vanilla_pack.attacks.MobAttack;
@@ -57,7 +57,6 @@ import net.minecraft.entity.EntityList;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.ResourceLocation;
-import net.minecraftforge.fml.common.registry.EntityEntry;
 import net.minecraftforge.fml.common.registry.ForgeRegistries;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
@@ -113,7 +112,6 @@ public class MetamorphFactory implements IMorphFactory
         actions.put("silverfish", new Sliverfish());
         actions.put("small_fireball", new SmallFireball());
         actions.put("snowball", new Snowball());
-        actions.put("spit", new Spit());
         actions.put("teleport", new Teleport());
 
         /* Register default attacks */
@@ -156,13 +154,13 @@ public class MetamorphFactory implements IMorphFactory
         }
 
         Class<? extends Entity> clazz = null;
-        ResourceLocation key = new ResourceLocation(name);
+        String key = name; // key is a ResourceLocation in 1.11+
 
-        for (EntityEntry entity : ForgeRegistries.ENTITIES)
+        for (String entityName : EntityList.getEntityNameList())
         {
-            if (entity.getRegistryName().equals(key))
+            if (entityName.equals(key))
             {
-                clazz = entity.getEntityClass();
+                clazz = EntityList.NAME_TO_CLASS.get(entityName);
             }
         }
 
@@ -214,15 +212,15 @@ public class MetamorphFactory implements IMorphFactory
      */
     public EntityMorph morphFromName(String name)
     {
-        if (name.equals("minecraft:zombie") || name.equals("minecraft:skeleton") || name.equals("minecraft:zombie_villager"))
+        if (name.equals("Zombie") || name.equals("Skeleton"))
         {
             return new UndeadMorph();
         }
-        else if (name.equals("minecraft:villager_golem"))
+        else if (name.equals("VillagerGolem"))
         {
             return new IronGolemMorph();
         }
-        else if (name.equals("minecraft:shulker"))
+        else if (name.equals("Shulker"))
         {
             return new ShulkerMorph();
         }

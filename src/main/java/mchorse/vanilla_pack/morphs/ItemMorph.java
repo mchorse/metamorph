@@ -147,7 +147,7 @@ public class ItemMorph extends ItemStackMorph
 	{
 		super.toNBT(tag);
 
-		if (!this.stack.isEmpty())
+		if (this.stack != null)
 		{
 			tag.setTag("Stack", this.stack.serializeNBT());
 		}
@@ -160,7 +160,7 @@ public class ItemMorph extends ItemStackMorph
 
 		if (tag.hasKey("Stack"))
 		{
-			this.stack = new ItemStack(tag.getCompoundTag("Stack"));
+			this.stack = ItemStack.loadItemStackFromNBT(tag.getCompoundTag("Stack"));
 		}
 	}
 }

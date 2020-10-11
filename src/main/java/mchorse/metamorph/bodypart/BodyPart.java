@@ -30,7 +30,7 @@ import javax.vecmath.Vector3f;
 public class BodyPart
 {
     public Morph morph = new Morph();
-    public ItemStack[] slots = new ItemStack[] {ItemStack.EMPTY, ItemStack.EMPTY, ItemStack.EMPTY, ItemStack.EMPTY, ItemStack.EMPTY, ItemStack.EMPTY};
+    public ItemStack[] slots = new ItemStack[] {null, null, null, null, null, null};
     public Vector3f translate = new Vector3f();
     public Vector3f scale = new Vector3f(1, 1, 1);
     public Vector3f rotate = new Vector3f(180, 0, 0);
@@ -240,7 +240,7 @@ public class BodyPart
             for (int i = 0, c = items.tagCount(); i < c; i++)
             {
                 NBTTagCompound compound = items.getCompoundTagAt(i);
-                ItemStack stack = new ItemStack(compound);
+                ItemStack stack = ItemStack.loadItemStackFromNBT(compound);
 
                 this.slots[i] = stack;
             }
@@ -271,7 +271,7 @@ public class BodyPart
             NBTTagCompound compound = new NBTTagCompound();
             ItemStack stack = this.slots[i];
 
-            if (!stack.isEmpty())
+            if (stack != null)
             {
                 stack.writeToNBT(compound);
             }

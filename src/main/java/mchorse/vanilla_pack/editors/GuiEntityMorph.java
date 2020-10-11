@@ -21,7 +21,7 @@ import java.util.List;
 @SideOnly(Side.CLIENT)
 public class GuiEntityMorph extends GuiAbstractMorph<EntityMorph>
 {
-	public static final List<String> animals = Arrays.asList("minecraft:pig", "minecraft:chicken", "minecraft:cow", "minecraft:mooshroom", "minecraft:polar_bear", "minecraft:sheep", "minecraft:ocelot");
+	public static final List<String> animals = Arrays.asList("Pig", "Chicken", "Cow", "MushroomCow", "PolarBear", "Sheep", "Ozelot");
 
 	public GuiBodyPartEditor bodyPart;
 
@@ -65,7 +65,7 @@ public class GuiEntityMorph extends GuiAbstractMorph<EntityMorph>
 			this.addPreset(morph, presets, "Baby", "{Age:-1}");
 		}
 
-		if (name.equals("minecraft:sheep"))
+		if (name.equals("Sheep"))
 		{
 			this.addPreset(morph, presets, "Sheared", "{Sheared:1b}");
 			this.addPreset(morph, presets, "Sheared (baby)", "{Age:-1,Sheared:1b}");
@@ -79,13 +79,13 @@ public class GuiEntityMorph extends GuiAbstractMorph<EntityMorph>
 			this.addPreset(morph, presets, "Baby Jeb", "{Age:-1,CustomName:\"jeb_\"}");
 		}
 
-		if (name.equals("minecraft:slime") || name.equals("minecraft:magma_cube"))
+		if (name.equals("Slime") || name.equals("LavaSlime"))
 		{
 			this.addPreset(morph, presets, "Medium", "{Size:1}");
 			this.addPreset(morph, presets, "Big", "{Size:2}");
 		}
 
-		if (name.equals("minecraft:ocelot"))
+		if (name.equals("Ozelot"))
 		{
 			for (int i = 1; i < 4; i++)
 			{
@@ -94,36 +94,24 @@ public class GuiEntityMorph extends GuiAbstractMorph<EntityMorph>
 			}
 		}
 
-		if (name.equals("minecraft:parrot"))
-		{
-			for (int i = 1; i <= 4; i++)
-			{
-				this.addPreset(morph, presets, "Parrot #" + i, "{Variant:" + i + "}");
-			}
-		}
-
-		if (name.equals("minecraft:horse"))
+		if (name.equals("EntityHorse"))
 		{
 			for (int i = 1; i <= 6; i++)
 			{
-				this.addPreset(morph, presets, "Horse #" + i, "{Variant:" + i + "}");
+				this.addPreset(morph, presets, "Horse #" + i, "{Type:0,Variant:" + i + "}");
 			}
+            this.addPreset(morph, presets, "Donkey", "{Type:1,Variant:0}");
+            this.addPreset(morph, presets, "Mule", "{Type:2,Variant:0}");
+            this.addPreset(morph, presets, "Zombie", "{Type:3,Variant:0}");
+            this.addPreset(morph, presets, "Skeleton", "{Type:4,Variant:0}");
 		}
 
-		if (name.equals("minecraft:llama"))
-		{
-			for (int i = 1; i < 4; i++)
-			{
-				this.addPreset(morph, presets, "Llama #" + i, "{Variant:" + i + "}");
-			}
-		}
-
-		if (name.equals("minecraft:bat"))
+		if (name.equals("Bat"))
 		{
 			this.addPreset(morph, presets, "Flying", "{BatFlags:2}");
 		}
 
-		if (name.equals("minecraft:rabbit"))
+		if (name.equals("Rabbit"))
 		{
 			for (int i = 1; i < 6; i++)
 			{
@@ -133,12 +121,28 @@ public class GuiEntityMorph extends GuiAbstractMorph<EntityMorph>
 			this.addPreset(morph, presets, "Toast", "{CustomName:\"Toast\"}");
 		}
 
-		if (name.equals("minecraft:zombie"))
+        if (name.equals("Skeleton"))
+        {
+            this.addPreset(morph, presets, "Wither", "{SkeltonType:1}");
+            this.addPreset(morph, presets, "Stray", "{SkeltonType:2}");
+        }
+
+		if (name.equals("Zombie"))
 		{
 			this.addPreset(morph, presets, "Baby", "{IsBaby:1b}");
+
+	        for (int i = 1; i < 7; i++)
+	        {
+	            this.addPreset(morph, presets, "Zombie #" + i, "{ZombieType:" + i + "}");
+	        }
 		}
 
-		if (name.equals("minecraft:villager") || name.equals("minecraft:zombie_villager"))
+        if (name.equals("Guardian"))
+        {
+            this.addPreset(morph, presets, "Elder", "{Elder:1b}");
+        }
+
+		if (name.equals("Villager"))
 		{
 			this.addPreset(morph, presets, "Librarian", "{ProfessionName:\"minecraft:librarian\"}");
 			this.addPreset(morph, presets, "Priest", "{ProfessionName:\"minecraft:priest\"}");

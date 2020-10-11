@@ -53,9 +53,9 @@ public class MetamorphSection extends MorphSection
 			return;
 		}
 
-		for (ResourceLocation rl : EntityList.getEntityNameList())
+		for (String rl : EntityList.getEntityNameList())
 		{
-			String name = MorphManager.INSTANCE.remap(rl.toString());
+			String name = MorphManager.INSTANCE.remap(rl);
 
 			if (this.factory.hasMorph(name))
 			{
@@ -104,7 +104,7 @@ public class MetamorphSection extends MorphSection
 		try
 		{
 			EntityMorph morph = this.factory.morphFromName(name);
-			EntityLivingBase entity = (EntityLivingBase) EntityList.createEntityByIDFromName(new ResourceLocation(name), world);
+			EntityLivingBase entity = (EntityLivingBase) EntityList.createEntityByName(name, world);
 
 			if (entity == null)
 			{
@@ -120,7 +120,7 @@ public class MetamorphSection extends MorphSection
 			String category = "generic";
 
 			/* Category for third-party modded mobs */
-			if (!name.startsWith("minecraft:"))
+			if (name.contains("."))
 			{
 				category = name.substring(0, name.indexOf(":"));
 			}
@@ -128,11 +128,11 @@ public class MetamorphSection extends MorphSection
 			{
 				category = "boss";
 			}
-			else if (entity instanceof EntityAnimal || name.equals("minecraft:bat") || name.equals("minecraft:squid"))
+			else if (entity instanceof EntityAnimal || name.equals("Bat") || name.equals("Squid"))
 			{
 				category = "animal";
 			}
-			else if (entity instanceof EntityMob || name.equals("minecraft:ghast") || name.equals("minecraft:magma_cube") || name.equals("minecraft:slime") || name.equals("minecraft:shulker"))
+			else if (entity instanceof EntityMob || name.equals("Ghast") || name.equals("LavaSlime") || name.equals("Slime") || name.equals("Shulker"))
 			{
 				category = "hostile";
 			}
