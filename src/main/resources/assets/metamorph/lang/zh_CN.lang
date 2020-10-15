@@ -8,11 +8,12 @@ key.metamorph.action=使用动作
 key.metamorph.creative_menu=打开创造模式伪装菜单
 key.metamorph.selector_menu=打开实体选择器菜单
 key.metamorph.survival_menu=打开生存模式伪装菜单
-key.metamorph.demorph=取消伪装(变回玩家)
+key.metamorph.demorph=取消伪装（变回玩家）
 
 # GUI
 metamorph.gui.body_parts.pick=选择伪装
 metamorph.gui.body_parts.use_target=使用目标
+metamorph.gui.body_parts.enabled=启用
 metamorph.gui.body_parts.parts=身体部分
 metamorph.gui.body_parts.limbs=肢体
 metamorph.gui.body_parts.open=打开身体部分
@@ -33,13 +34,13 @@ metamorph.gui.no_morph=没有选中伪装...
 metamorph.gui.morph_render_error=渲染该伪装时发生错误
 
 metamorph.gui.selectors.title=实体选择器
-metamorph.gui.selectors.tooltip=通过此功能, 您可以为指定名称或指定类型的实体添加伪装...
+metamorph.gui.selectors.tooltip=通过此功能，您可以为指定名称或指定类型的实体添加伪装...
 metamorph.gui.selectors.add=添加选择器
 metamorph.gui.selectors.remove=移除选择器
 metamorph.gui.selectors.name=名称
 metamorph.gui.selectors.type=类型
 metamorph.gui.selectors.match=匹配 NBT
-metamorph.gui.selectors.match_tooltip=您可以在此处指定一个 NBT 标签, 该标签必须与实体的 NBT 标签部分匹配
+metamorph.gui.selectors.match_tooltip=您可以在此处指定一个 NBT 标签，该标签必须与实体的 NBT 标签部分匹配
 metamorph.gui.selectors.enabled=启用
 
 metamorph.gui.morphs.keys.category=伪装列表导航
@@ -63,9 +64,10 @@ metamorph.gui.creative.keys.acquire=获取当前所选的伪装
 metamorph.gui.creative.keys.morph=伪装成当前所选的伪装
 metamorph.gui.creative.context.add_global=添加为全局伪装...
 metamorph.gui.creative.context.edit=编辑伪装...
-metamorph.gui.creative.context.add_category=添加新类别
-metamorph.gui.creative.context.rename_category=重命名类别
-metamorph.gui.creative.context.rename_category_modal=为该类别命名...
+metamorph.gui.creative.context.add_category=添加新分类
+metamorph.gui.creative.context.rename_category=重命名分类
+metamorph.gui.creative.context.rename_category_modal=为该分类命名...
+metamorph.gui.creative.context.remove_category_modal=您确定要删除这一伪装分类吗？它将永远消失...
 metamorph.gui.creative.context.remove_category=移除分类
 metamorph.gui.creative.context.clear_category=清空
 metamorph.gui.creative.context.to_recent=拷贝到最近的伪装
@@ -75,7 +77,7 @@ metamorph.gui.creative.context.paste=粘贴 NBT
 metamorph.gui.creative.context.paste_modal=粘贴或输入您伪装的 NBT 标签...
 
 metamorph.gui.survival.title=生存模式伪装菜单
-metamorph.gui.survival.keybind_tooltip=您可以通过此输入框绑定一个快捷键, 这个快捷键会让您变到这个伪装 (当您在菜单或游戏世界中按下时触发)
+metamorph.gui.survival.keybind_tooltip=您可以通过此输入框绑定一个快捷键，该快捷键会让您变成这个伪装（当您在菜单或游戏世界中按下时触发）
 metamorph.gui.survival.only_favorites=仅显示收藏
 metamorph.gui.survival.favorite=收藏
 metamorph.gui.survival.keys.category=生存模式伪装菜单
@@ -87,7 +89,7 @@ metamorph.gui.editor.display_name=显示名称
 metamorph.gui.editor.health=生命值
 metamorph.gui.editor.speed=速度
 metamorph.gui.editor.abilities=技能
-metamorph.gui.editor.abilities_tooltip=按住 Shift 并单击列表中的技能, 即可进行多选
+metamorph.gui.editor.abilities_tooltip=按住 Shift 并单击列表中的技能，即可进行多选
 metamorph.gui.editor.attack=攻击
 metamorph.gui.editor.action=动作
 metamorph.gui.editor.reset=重置
@@ -103,12 +105,17 @@ metamorph.gui.label.shadow=阴影
 metamorph.gui.label.shadow_offset=阴影偏移
 metamorph.gui.label.shadow_color=阴影颜色
 metamorph.gui.label.lighting=发光
-metamorph.gui.label.lighting_tooltip=禁用时, Minecraft 的光照图将不会被应用, 这意味着它会在暗处发光。带有泛光 (Bloom) 效果的光影包, 可以让这个伪装看起来像霓虹灯一样。
+metamorph.gui.label.lighting_tooltip=禁用时，将不会应用 Minecraft 的光照图，这意味着它会在暗处发光。带有泛光（Bloom）效果的光影包，可以让这个伪装看起来像霓虹灯一样。
 
 metamorph.gui.edit=编辑
 metamorph.gui.panels.nbt_data=NBT 数据
 metamorph.gui.panels.username=用户名
 metamorph.gui.panels.updating=更新中...
+
+metamorph.gui.animation.animates=动画
+metamorph.gui.animation.ignored=跳过
+metamorph.gui.animation.animation_duration=持续时间
+metamorph.gui.animation.pick_interpolation=选择差值
 
 metamorph.gui.status.tight_space=此处没有足够的空间来进行伪装
 
@@ -119,11 +126,11 @@ metamorph.config.acquiring.title=伪装获取
 metamorph.config.acquiring.tooltip=所有与伪装获取方式相关的选项
 
 metamorph.config.acquiring.prevent_ghosts=避免幽灵
-metamorph.config.comments.acquiring.prevent_ghosts=若玩家已有当前被杀死生物的伪装, 则会避免幽灵的生成
+metamorph.config.comments.acquiring.prevent_ghosts=若玩家已有当前被杀死生物的伪装，则会避免幽灵的生成
 metamorph.config.acquiring.prevent_kill_acquire=避免通过击杀获取
 metamorph.config.comments.acquiring.prevent_kill_acquire=避免通过击杀生物的方式获取伪装
 metamorph.config.acquiring.acquire_immediately=立即获取伪装
-metamorph.config.comments.acquiring.acquire_immediately=在玩家杀死实体后立即获取伪装, 而不是生成幽灵
+metamorph.config.comments.acquiring.acquire_immediately=在玩家杀死实体后立即获取伪装，而不是生成幽灵
 
 metamorph.config.morphs.title=伪装
 metamorph.config.morphs.tooltip=所有与伪装方式和伪装相关的设置
@@ -131,36 +138,40 @@ metamorph.config.morphs.tooltip=所有与伪装方式和伪装相关的设置
 metamorph.config.morphs.keep_morphs=死后保持伪装
 metamorph.config.comments.morphs.keep_morphs=在玩家死后继续保持伪装
 metamorph.config.morphs.disable_pov=禁用 POV
-metamorph.config.comments.morphs.disable_pov=禁用修改视点高度。应 MorePlayerModels 的要求加入该功能
+metamorph.config.comments.morphs.disable_pov=禁用视点高度修改。应 MorePlayerModels 的要求加入该功能
 metamorph.config.morphs.disable_health=禁用生命值伸缩
-metamorph.config.comments.morphs.disable_health=禁用修改生命值。应意志坚定 (Tough As Nails) 的要求加入该功能
+metamorph.config.comments.morphs.disable_health=禁用生命值修改。应意志坚定（Tough As Nails）的要求加入该功能
 metamorph.config.morphs.disable_morph_animation=禁用伪装动画
 metamorph.config.comments.morphs.disable_morph_animation=禁用伪装时的动画效果
 metamorph.config.morphs.disable_morph_disguise=禁用伪装无敌
-metamorph.config.comments.morphs.disable_morph_disguise=禁用带有「无敌」技能标签的伪装, 避免被敌对生物攻击
+metamorph.config.comments.morphs.disable_morph_disguise=禁用带有“无敌”技能标签的伪装，避免被敌对生物攻击
 metamorph.config.morphs.disable_first_person_hand=禁用第一人称手臂
 metamorph.config.comments.morphs.disable_first_person_hand=完全隐藏第一人称手臂的显示
 metamorph.config.morphs.morph_in_tight_spaces=允许在狭窄空间伪装
-metamorph.config.comments.morphs.morph_in_tight_spaces=即使在可能造成窒息时进行伪装, 并允许穿墙
+metamorph.config.comments.morphs.morph_in_tight_spaces=即使在可能造成窒息时进行伪装，并允许穿墙
 metamorph.config.morphs.show_morph_idle_sounds=播放伪装的空闲音效
 metamorph.config.comments.morphs.show_morph_idle_sounds=伪装后玩家是否发出实体的空闲音效
 metamorph.config.morphs.pause_gui_in_sp=打开伪装 GUI 后暂停
-metamorph.config.comments.morphs.pause_gui_in_sp=不论是创造模式或生存模式伪装菜单, 在单人模式下打开伪装 GUI 后暂停游戏
+metamorph.config.comments.morphs.pause_gui_in_sp=不论是创造模式或生存模式伪装菜单，在单人模式下打开伪装 GUI 后暂停游戏
 metamorph.config.morphs.max_recent_morphs=最近伪装最大值
 metamorph.config.comments.morphs.max_recent_morphs=在被丢弃之前可以添加到伪装菜单中最近的伪装的最大值
+metamorph.config.morphs.allow_morphing_into_category_morphs=允许伪装为分类中的伪装
+metamorph.config.comments.morphs.allow_morphing_into_category_morphs=启用后，该选项允许在生存模式下伪装为最近的和自定义分类伪装。该选项还允许你在生存模式下打开创造模式伪装菜单
+metamorph.config.morphs.load_entity_morphs=加载实体伪装
+metamorph.config.comments.morphs.load_entity_morphs=实体伪装是否会被加载至创造模式伪装菜单
 
 # Commands
-metamorph.commands.morph=伪装命令。该命令可以让玩家伪装成指定的伪装。\n\n/morph <username> [morph_name] [data_tag]
-metamorph.commands.acquire_morph=获取伪装命令。该命令可以将伪装发送到指定玩家的已获取伪装列表。\n\n/morph <username> <morph_name> [data_tag]
+metamorph.commands.morph=伪装命令。该命令可以让玩家伪装成指定的伪装。\n\n/morph <用户名> [伪装名称] [数据标签]
+metamorph.commands.acquire_morph=获取伪装命令。该命令可以将伪装发送到指定玩家的已获取伪装列表。\n\n/morph <用户名> <伪装名称> [数据标签]
 metamorph.commands.metamorph=Metamorph 服务器命令。该命令可用于在服务端管理 Metamorph 的东西。\n\n/metamorph reload <blacklist|morphs> - 重新载入 Metamorph 的黑名单或伪装配置
 
-metamorph.error.morph.not_player=实体 %s 不是玩家!
+metamorph.error.morph.not_player=实体 %s 不是玩家！
 metamorph.error.morph.nbt=在解析数据标签: \n%s 时出现错误
 metamorph.error.morph.factory=无法通过给定的数据标签伪装为 %2$s
-metamorph.error.acquire=无法通过名称: %s 获取伪装!
-metamorph.success.morph=玩家 %s 成功伪装成了 %s!
-metamorph.success.demorph=玩家 %s 成功取消了伪装!
-metamorph.success.acquire=玩家 %s 成功获取了 %s 伪装!
+metamorph.error.acquire=无法通过名称: %s 获取伪装！
+metamorph.success.morph=玩家 %s 成功伪装成了 %s！
+metamorph.success.demorph=玩家 %s 成功取消了伪装！
+metamorph.success.acquire=玩家 %s 成功获取了 %s 伪装！
 
 # Morph categories
 morph.category.generic=未分类伪装
@@ -172,5 +183,5 @@ morph.category.modded=来自 %s 的伪装
 morph.category.recent=最近的伪装
 
 # Morph sections and categories
-morph.section.entity=实体伪装 (Metamorph)
+morph.section.entity=实体伪装（Metamorph）
 morph.section.user=玩家伪装
