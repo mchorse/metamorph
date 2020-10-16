@@ -72,7 +72,7 @@ public class NetworkHandler
         @Override
         public void run()
         {
-            EntityPlayer player = Minecraft.getMinecraft().theWorld.getPlayerEntityByName(this.args[0]);
+            EntityPlayer player = Minecraft.getMinecraft().world.getPlayerEntityByName(this.args[0]);
 
             if (player == null)
             {

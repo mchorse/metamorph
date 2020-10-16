@@ -22,7 +22,7 @@ public class Fireball implements IAction
     @Override
     public void execute(EntityLivingBase target, @Nullable AbstractMorph morph)
     {
-        World world = target.worldObj;
+        World world = target.world;
 
         if (world.isRemote)
         {
@@ -50,7 +50,7 @@ public class Fireball implements IAction
         fireball.posY = target.posY + target.height * 0.9;
         fireball.posZ = target.posZ;
 
-        world.spawnEntityInWorld(fireball);
+        world.spawnEntity(fireball);
 
         if (target instanceof EntityPlayer)
         {

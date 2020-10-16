@@ -1,8 +1,5 @@
 package mchorse.metamorph.api;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import mchorse.metamorph.ClientProxy;
 import mchorse.metamorph.Metamorph;
 import mchorse.metamorph.api.events.SpawnGhostEvent;
@@ -15,6 +12,9 @@ import net.minecraft.entity.EntityLiving;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.util.DamageSource;
+import net.minecraft.util.EntityDamageSourceIndirect;
+import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.common.util.FakePlayer;
 import net.minecraftforge.event.entity.living.LivingAttackEvent;
@@ -24,6 +24,9 @@ import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.common.gameevent.PlayerEvent.PlayerChangedDimensionEvent;
 import net.minecraftforge.fml.common.gameevent.TickEvent.Phase;
 import net.minecraftforge.fml.common.gameevent.TickEvent.PlayerTickEvent;
+
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Server event handler
@@ -81,7 +84,7 @@ public class MorphHandler
         if (capability == null || !capability.isMorphed())
         {
             /* Restore default eye height */
-            if (!Metamorph.proxy.config.disable_pov)
+            if (!Metamorph.disablePov.get())
             {
                 player.eyeHeight = player.getDefaultEyeHeight();
             }
@@ -90,7 +93,7 @@ public class MorphHandler
         /* Keep client gui state up-to-date for morphs with the
          * Swim ability.
          */
-        if (player.worldObj.isRemote)
+        if (player.world.isRemote)
         {
             boolean hasSquidAir = false;
             int squidAir = 300;
@@ -110,7 +113,7 @@ public class MorphHandler
         {
             e.printStackTrace();
 
-            if (!player.worldObj.isRemote)
+            if (!player.world.isRemote)
             {
                 MorphAPI.demorph(player);
             }
@@ -130,12 +133,12 @@ public class MorphHandler
         Entity source = event.getSource().getEntity();
         Entity target = event.getEntity();
 
-        if (target.worldObj.isRemote || source instanceof FakePlayer)
+        if (target.world.isRemote || source instanceof FakePlayer)
         {
             return;
         }
 
-        if (!(source instanceof EntityPlayer) || target instanceof EntityPlayer || Metamorph.proxy.config.prevent_kill_acquire)
+        if (!(source instanceof EntityPlayer) || target instanceof EntityPlayer || Metamorph.preventKillAcquire.get())
         {
             return;
         }
@@ -165,14 +168,14 @@ public class MorphHandler
         AbstractMorph morph = MorphManager.INSTANCE.morphFromNBT(tag);
         boolean acquired = capability.acquiredMorph(morph);
 
-        if (Metamorph.proxy.config.acquire_immediately && !acquired)
+        if (Metamorph.acquireImmediately.get() && !acquired)
         {
             MorphAPI.acquire(player, morph);
 
             return;
         }
 
-        if (!Metamorph.proxy.config.prevent_ghosts || !acquired)
+        if (!Metamorph.preventGhosts.get() || !acquired)
         {
             SpawnGhostEvent spawnGhostEvent = new SpawnGhostEvent.Pre(player, morph);
 
@@ -182,10 +185,10 @@ public class MorphHandler
             }
             morph = spawnGhostEvent.morph;
 
-            EntityMorph morphEntity = new EntityMorph(player.worldObj, player.getUniqueID(), morph);
+            EntityMorph morphEntity = new EntityMorph(player.world, player.getUniqueID(), morph);
 
             morphEntity.setPositionAndRotation(target.posX, target.posY + target.height / 2, target.posZ, target.rotationYaw, target.rotationPitch);
-            player.worldObj.spawnEntityInWorld(morphEntity);
+            player.world.spawnEntity(morphEntity);
 
             MinecraftForge.EVENT_BUS.post(new SpawnGhostEvent.Post(player, morph));
         }
@@ -238,12 +241,18 @@ public class MorphHandler
     @SubscribeEvent
     public void onPlayerAttack(LivingAttackEvent event)
     {
-        Entity source = event.getSource().getEntity();
+        DamageSource source = event.getSource();
+        Entity trueSource = source.getSourceOfDamage();
         Entity target = event.getEntity();
 
-        if (source instanceof EntityPlayer)
+        if(source instanceof EntityDamageSourceIndirect)
         {
-            EntityPlayer player = (EntityPlayer) source;
+        	return;
+        }
+        
+        if (trueSource instanceof EntityPlayer)
+        {
+            EntityPlayer player = (EntityPlayer) trueSource;
             IMorphing capability = Morphing.get(player);
 
             if (capability == null || !capability.isMorphed())
@@ -259,12 +268,14 @@ public class MorphHandler
      * Another morphing handler.
      * 
      * This handler is responsible for canceling setting attack target for 
-     * hostile morphs.
+     * hostile morphs.  Also handles any instance where the morph entity
+     * is targeted instead of the player, and shifts the targetting onto
+     * the player.
      */
     @SubscribeEvent
     public void onLivingSetAttackTarget(LivingSetAttackTargetEvent event)
     {
-        if (Metamorph.proxy.config.disable_morph_disguise)
+        if (Metamorph.disableMorphDisguise.get())
         {
             return;
         }
@@ -281,8 +292,11 @@ public class MorphHandler
             {
                 return;
             }
+			
+			AbstractMorph currentMorph = morphing.getCurrentMorph();
 
-            if (morphing.getCurrentMorph().settings.hostile && source.getAttackingEntity() != target)
+            if (morphing.getCurrentMorph().settings.hostile && source.getAttackingEntity() != target && 
+			!(currentMorph instanceof mchorse.metamorph.api.morphs.EntityMorph && ((mchorse.metamorph.api.morphs.EntityMorph) currentMorph).getEntity() == source.getAttackingEntity()))
             {
                 if (source instanceof EntityLiving)
                 {
@@ -290,6 +304,30 @@ public class MorphHandler
                 }
             }
         }
+		else if(target != null)
+		{
+			List playerList = target.world.getEntitiesWithinAABB(EntityPlayer.class, new AxisAlignedBB(target.posX-1,target.posY-1,target.posZ-1,target.posX+1,target.posY+1,target.posZ+1));
+			for(int i = 0; i < playerList.size(); i++)
+			{
+				Object o = playerList.get(i);
+				if(o instanceof EntityPlayer)
+				{
+					EntityPlayer player = (EntityPlayer) o;
+					IMorphing capability = Morphing.get(player);
+					if(capability == null)
+						continue;
+					AbstractMorph currentMorph = capability.getCurrentMorph();
+					if(currentMorph == null)
+						continue;
+					if (currentMorph instanceof mchorse.metamorph.api.morphs.EntityMorph)
+					{
+						mchorse.metamorph.api.morphs.EntityMorph currentEntityMorph = (mchorse.metamorph.api.morphs.EntityMorph) currentMorph;
+						if(currentEntityMorph.getEntity() == target && source instanceof EntityLiving)
+							((EntityLiving) event.getEntity()).setAttackTarget(player);
+					}
+				}
+			}
+		}
     }
     
     /**
@@ -311,12 +349,12 @@ public class MorphHandler
      */
     private void runFutureTasks(EntityPlayer player)
     {
-        if (player.worldObj.isRemote && !FUTURE_TASKS_CLIENT.isEmpty())
+        if (player.world.isRemote && !FUTURE_TASKS_CLIENT.isEmpty())
         {
             FUTURE_TASKS_CLIENT.remove(0).run();
         }
 
-        if (!player.worldObj.isRemote && !FUTURE_TASKS_SERVER.isEmpty())
+        if (!player.world.isRemote && !FUTURE_TASKS_SERVER.isEmpty())
         {
             FUTURE_TASKS_SERVER.remove(0).run();
         }

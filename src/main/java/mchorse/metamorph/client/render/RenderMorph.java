@@ -1,5 +1,6 @@
 package mchorse.metamorph.client.render;
 
+import mchorse.metamorph.api.MorphUtils;
 import mchorse.metamorph.entity.EntityMorph;
 import net.minecraft.client.model.ModelBase;
 import net.minecraft.client.renderer.GlStateManager;
@@ -71,7 +72,7 @@ public class RenderMorph extends RenderLivingBase<EntityMorph>
         GlStateManager.rotate(rotation, 0, 1, 0);
         GlStateManager.scale(alpha, alpha, alpha);
 
-        entity.morph.render(entity, 0, 0, 0, entityYaw, partialTicks);
+        MorphUtils.render(entity.morph, entity, 0, 0, 0, entityYaw, partialTicks);
 
         GlStateManager.disableBlend();
         GlStateManager.disableNormalize();
@@ -99,9 +100,9 @@ public class RenderMorph extends RenderLivingBase<EntityMorph>
         float y = 1.0F;
         float z = 1.0F;
 
-        x = MathHelper.clamp_float(x, 0.0F, 1.5F);
-        y = MathHelper.clamp_float(y, 0.0F, 1.5F);
-        z = MathHelper.clamp_float(z, 0.0F, 1.5F);
+        x = MathHelper.clamp(x, 0.0F, 1.5F);
+        y = MathHelper.clamp(y, 0.0F, 1.5F);
+        z = MathHelper.clamp(z, 0.0F, 1.5F);
 
         GlStateManager.scale(x * scale, y * scale, z * scale);
     }

@@ -9,10 +9,14 @@ import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.BlockRendererDispatcher;
 import net.minecraft.client.renderer.GlStateManager;
+import net.minecraft.client.renderer.OpenGlHelper;
+import net.minecraft.client.renderer.RenderHelper;
 import net.minecraft.client.renderer.texture.TextureMap;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
+import net.minecraft.item.ItemBlock;
+import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.BlockPos;
@@ -25,7 +29,7 @@ import net.minecraftforge.fml.relauncher.SideOnly;
  * 
  * This morph allows players to disguise themselves as blocks.
  */
-public class BlockMorph extends AbstractMorph
+public class BlockMorph extends ItemStackMorph
 {
     /**
      * Block state to render, doesn't really mean anything on the server 
@@ -43,7 +47,22 @@ public class BlockMorph extends AbstractMorph
      */
     public BlockMorph()
     {
-        this.name = "metamorph.Block";
+        this.name = "block";
+    }
+
+    @Override
+    public void setStack(ItemStack stack)
+    {
+        if (stack.getItem() instanceof ItemBlock)
+        {
+            this.block = ((ItemBlock) stack.getItem()).getBlock().getStateFromMeta(stack.getItemDamage());
+        }
+    }
+
+    @Override
+    public ItemStack getStack()
+    {
+        return new ItemStack(this.block.getBlock(), 1, this.block.getBlock().getMetaFromState(this.block));
     }
 
     /**
@@ -80,6 +99,14 @@ public class BlockMorph extends AbstractMorph
     {
         Minecraft mc = Minecraft.getMinecraft();
 
+        float lastBrightnessX = OpenGlHelper.lastBrightnessX;
+        float lastBrightnessY = OpenGlHelper.lastBrightnessY;
+
+        if (!this.lighting)
+        {
+            OpenGlHelper.setLightmapTextureCoords(OpenGlHelper.lightmapTexUnit, 240, 240);
+        }
+
         GlStateManager.enableRescaleNormal();
         BlockRendererDispatcher blockrendererdispatcher = mc.getBlockRendererDispatcher();
         GlStateManager.pushMatrix();
@@ -92,6 +119,11 @@ public class BlockMorph extends AbstractMorph
         GlStateManager.translate(0.0F, 0.0F, 1.0F);
         GlStateManager.popMatrix();
         GlStateManager.disableRescaleNormal();
+
+        if (!this.lighting)
+        {
+            OpenGlHelper.setLightmapTextureCoords(OpenGlHelper.lightmapTexUnit, lastBrightnessX, lastBrightnessY);
+        }
     }
 
     /**
@@ -105,9 +137,9 @@ public class BlockMorph extends AbstractMorph
      * it has the block position.
      */
     @Override
-    public void update(EntityLivingBase target, IMorphing cap)
+    public void update(EntityLivingBase target)
     {
-        super.update(target, cap);
+        super.update(target);
 
         if (this.blockPos != null)
         {
@@ -119,17 +151,23 @@ public class BlockMorph extends AbstractMorph
     }
 
     @Override
-    public AbstractMorph clone(boolean isRemote)
+    public AbstractMorph create()
     {
-        BlockMorph morph = new BlockMorph();
+        return new BlockMorph();
+    }
 
-        AbstractMorph.copyBase(this, morph);
+    @Override
+    public void copy(AbstractMorph from)
+    {
+        super.copy(from);
 
-        /* Data relevant only to this morph */
-        morph.block = this.block;
-        morph.blockPos = this.blockPos;
+        if (from instanceof BlockMorph)
+        {
+            BlockMorph morph = (BlockMorph) from;
 
-        return morph;
+            this.block = morph.block;
+            this.blockPos = morph.blockPos;
+        }
     }
 
     @Override

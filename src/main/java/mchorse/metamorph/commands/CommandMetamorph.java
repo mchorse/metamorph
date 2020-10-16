@@ -29,13 +29,13 @@ import net.minecraftforge.fml.common.network.simpleimpl.IMessage;
 public class CommandMetamorph extends CommandBase
 {
     @Override
-    public String getCommandName()
+    public String getName()
     {
         return "metamorph";
     }
 
     @Override
-    public String getCommandUsage(ICommandSender sender)
+    public String getUsage(ICommandSender sender)
     {
         return "metamorph.commands.metamorph";
     }
@@ -51,7 +51,7 @@ public class CommandMetamorph extends CommandBase
     {
         if (args.length < 1)
         {
-            throw new WrongUsageException(this.getCommandUsage(sender));
+            throw new WrongUsageException(this.getUsage(sender));
         }
 
         if (args.length >= 1)
@@ -86,6 +86,13 @@ public class CommandMetamorph extends CommandBase
             MorphManager.INSTANCE.setActiveSettings(settings);
             this.broadcastPacket(new PacketSettings(settings));
         }
+        else if (string.equals("remapper"))
+        {
+            /* Reload morph config */
+            Map<String, String> map = MorphUtils.reloadRemapper();
+
+            MorphManager.INSTANCE.setActiveMap(map);
+        }
     }
 
     /**
@@ -95,7 +102,7 @@ public class CommandMetamorph extends CommandBase
     {
         PlayerList players = FMLCommonHandler.instance().getMinecraftServerInstance().getPlayerList();
 
-        for (String username : players.getAllUsernames())
+        for (String username : players.getOnlinePlayerNames())
         {
             EntityPlayerMP player = players.getPlayerByUsername(username);
 
@@ -107,7 +114,7 @@ public class CommandMetamorph extends CommandBase
     }
 
     @Override
-    public List<String> getTabCompletionOptions(MinecraftServer server, ICommandSender sender, String[] args, BlockPos pos)
+    public List<String> getTabCompletions(MinecraftServer server, ICommandSender sender, String[] args, BlockPos pos)
     {
         if (args.length == 1)
         {
@@ -118,10 +125,10 @@ public class CommandMetamorph extends CommandBase
         {
             if (args[0].equals("reload"))
             {
-                return getListOfStringsMatchingLastWord(args, "blacklist", "morphs");
+                return getListOfStringsMatchingLastWord(args, "blacklist", "morphs", "remapper");
             }
         }
 
-        return super.getTabCompletionOptions(server, sender, args, pos);
+        return super.getTabCompletions(server, sender, args, pos);
     }
 }

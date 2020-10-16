@@ -3,6 +3,8 @@ package mchorse.metamorph.api;
 import mchorse.metamorph.api.morphs.AbstractMorph;
 import net.minecraft.nbt.NBTTagCompound;
 
+import java.util.Objects;
+
 /**
  * Morph container 
  * 
@@ -27,10 +29,15 @@ public class Morph
         return this.morph == null;
     }
 
-    public boolean set(AbstractMorph morph, boolean isRemote)
+    public boolean set(AbstractMorph morph)
     {
-        if (this.morph == null || !this.morph.canMerge(morph, isRemote))
+        if (this.morph == null || !this.morph.canMerge(morph))
         {
+            if (this.morph != null && morph != null)
+            {
+                morph.afterMerge(this.morph);
+            }
+
             this.morph = morph;
 
             return true;
@@ -49,14 +56,25 @@ public class Morph
         return this.morph;
     }
 
-    public AbstractMorph clone(boolean isRemote)
+    @Override
+    public boolean equals(Object obj)
     {
-        return MorphUtils.clone(this.morph, isRemote);
+        if (obj instanceof Morph)
+        {
+            return Objects.equals(this.morph, ((Morph) obj).morph);
+        }
+
+        return super.equals(obj);
     }
 
-    public void copy(Morph morph, boolean isRemote)
+    public AbstractMorph copy()
     {
-        this.set(morph.clone(isRemote), isRemote);
+        return MorphUtils.copy(this.morph);
+    }
+
+    public void copy(Morph morph)
+    {
+        this.set(morph.copy());
     }
 
     public void fromNBT(NBTTagCompound tag)

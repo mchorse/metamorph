@@ -18,7 +18,7 @@ public class FireBreath implements IAction
     @Override
     public void execute(EntityLivingBase target, @Nullable AbstractMorph morph)
     {
-        if (target.worldObj.isRemote)
+        if (target.world.isRemote)
         {
             return;
         }
@@ -35,15 +35,15 @@ public class FireBreath implements IAction
         double d3 = vec3d.yCoord * d1;
         double d4 = vec3d.zCoord * d1;
 
-        target.worldObj.playEvent((EntityPlayer) null, 1017, new BlockPos(target), 0);
+        target.world.playEvent((EntityPlayer) null, 1017, new BlockPos(target), 0);
 
-        EntityDragonFireball fireball = new EntityDragonFireball(target.worldObj, target, d2, d3, d4);
+        EntityDragonFireball fireball = new EntityDragonFireball(target.world, target, d2, d3, d4);
 
         fireball.posX = target.posX + d2 / d1;
         fireball.posY = target.posY + target.height * 0.9;
         fireball.posZ = target.posZ + d4 / d1;
 
-        target.worldObj.spawnEntityInWorld(fireball);
+        target.world.spawnEntity(fireball);
 
         if (target instanceof EntityPlayer)
         {

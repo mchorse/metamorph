@@ -6,88 +6,172 @@ entity.metamorph.Morph.name=Морф
 key.metamorph=Changeling
 
 key.metamorph.action=Использовать действие
-key.metamorph.creative_menu=Открыть меню морфов креатива
-key.metamorph.survival_menu=Открыть меню морфов выживания
-
-key.metamorph.morph.next=Следующий морф
-key.metamorph.morph.prev=Предыдущий морф
-key.metamorph.morph.next_var=Следующая вариация морфа
-key.metamorph.morph.prev_var=Предыдущая варицация морфа
-key.metamorph.morph.select=Выбрать текущий морф
-key.metamorph.morph.demorph=Сбросить морф (превратиться обратно в игрока)
+key.metamorph.creative_menu=Открыть меню превращения креатива
+key.metamorph.selector_menu=Открыть меню селекторов существ
+key.metamorph.survival_menu=Открыть меню превращения выживания
+key.metamorph.demorph=Сбросить морф (обратно стать игроком)
 
 # GUI
-metamorph.gui.x=X
-metamorph.gui.y=Y
-metamorph.gui.z=Z
-metamorph.gui.pick=Выбрать морф
+metamorph.gui.body_parts.pick=Выбрать морф
+metamorph.gui.body_parts.use_target=Использовать цель
+metamorph.gui.body_parts.parts=Части тела
+metamorph.gui.body_parts.limbs=Конечности
+metamorph.gui.body_parts.open=Открыть части тела
+metamorph.gui.body_parts.add_tooltip=Добавить новую часть тела...
+metamorph.gui.body_parts.dupe_tooltip=Клонировать выбранную часть тела...
+metamorph.gui.body_parts.remove_tooltip=Удалить выбранную часть тела...
+metamorph.gui.body_parts.copy_tooltip=Копировать все части тела...
+metamorph.gui.body_parts.paste_tooltip=Вставить скопированные части тела...
+
 metamorph.gui.add=Добавить
 metamorph.gui.remove=Удалить
-metamorph.gui.use_target=Использовать цель
-metamorph.gui.body_parts=Части тела
-metamorph.gui.limbs=Конечности
-metamorph.gui.translate=Перемещение
-metamorph.gui.scale=Масштаб
-metamorph.gui.rotate=Вращение
-
-metamorph.gui.creative_title=Меню морфов креатива
-metamorph.gui.survival_title=Меню морфов выживания
-metamorph.gui.morph=Морф
+metamorph.gui.morph=Превратиться
 metamorph.gui.acquire=Приобрести
+metamorph.gui.acquired=Приобретён
 metamorph.gui.close=Закрыть
-metamorph.gui.remove=Убрать
-metamorph.gui.favorite=Избранные
-metamorph.gui.unfavorite=Не избранные
-metamorph.gui.search=Искать
-metamorph.gui.only_favorites=Показать избранные
-metamorph.gui.all_morphs=Показать все
-metamorph.gui.no_morph=Морф не выбран
-metamorph.gui.selected=Выбранный
+metamorph.gui.search=Поиск
+metamorph.gui.no_morph=Не выбрано ни одного морфа...
+metamorph.gui.morph_render_error=В отображении этого морфа произошла ошибка
 
-metamorph.gui.from_morph=От морфа
+metamorph.gui.selectors.title=Селектор существ
+metamorph.gui.selectors.tooltip=С этой функцией, вы можете добавлять морфы существам по точному имени или типу...
+metamorph.gui.selectors.add=Добавить селектор
+metamorph.gui.selectors.remove=Удалить селектор
+metamorph.gui.selectors.name=Название
+metamorph.gui.selectors.type=Тип
+metamorph.gui.selectors.match=Сходящийся NBT
+metamorph.gui.selectors.match_tooltip=Здесь вы можете указать NBT-тэг который должен частично сходиться с NBT-тэгом существа
+metamorph.gui.selectors.enabled=Включён
+
+metamorph.gui.morphs.keys.category=Навигация по морфам
+metamorph.gui.morphs.keys.up=Выбрать морф сверху
+metamorph.gui.morphs.keys.down=Выбрать морф снизу
+metamorph.gui.morphs.keys.right=Выбрать морф справа
+metamorph.gui.morphs.keys.left=Выбрать морф слева
+
+metamorph.gui.creative.command=Копировать компанду /morph для выбранного морфа
+metamorph.gui.creative.edit=Редактировать
+metamorph.gui.creative.pick=Выбрать
+metamorph.gui.creative.quick=Быстрое редактирование
+metamorph.gui.creative.presets=Предустановки
+metamorph.gui.creative.random=Случайная предустановка
+metamorph.gui.creative.keys.category=Меню превращения креатива
+metamorph.gui.creative.keys.exit=Меню превращения выживания
+metamorph.gui.creative.keys.edit=Редактировать выбранный морф
+metamorph.gui.creative.keys.focus=Панель поиска
+metamorph.gui.creative.keys.quick=Включить меню быстрого редактирования
+metamorph.gui.creative.keys.acquire=Приобрести выбранный морф
+metamorph.gui.creative.keys.morph=Превратиться в выбранный морф
+metamorph.gui.creative.context.add_global=Добавить к глобальным морфам...
+metamorph.gui.creative.context.edit=Редактировать морф...
+metamorph.gui.creative.context.add_category=Добавить новую категорию
+metamorph.gui.creative.context.rename_category=Переименовать категорию
+metamorph.gui.creative.context.rename_category_modal=Назовите выбранную категории...
+metamorph.gui.creative.context.remove_category=Удалить категорию
+metamorph.gui.creative.context.clear_category=Очистить
+metamorph.gui.creative.context.to_recent=Копировать к последнему морфу
+metamorph.gui.creative.context.remove_morph=Удалить морф
+metamorph.gui.creative.context.copy=Копировать NBT
+metamorph.gui.creative.context.paste=Вставить NBT
+metamorph.gui.creative.context.paste_modal=Вставьте или введите NBT-тэг вашего морфа...
+
+metamorph.gui.survival.title=Меню Превращения Выживания
+metamorph.gui.survival.keybind_tooltip=В этом поле вы можете назначить клавишу, на которую вы превратитесь в конкретный морф (всякий раз когда вы нажимете её в этом меню или в мире вообще)
+metamorph.gui.survival.only_favorites=Только любимые
+metamorph.gui.survival.favorite=Любимые
+metamorph.gui.survival.keys.category=Меню превращения выживания
+metamorph.gui.survival.keys.toggle_favorites=Включить любимые морфы
+metamorph.gui.survival.keys.focus_keybind=Клавиша
+
+metamorph.gui.editor.settings=Параметры морфа
+metamorph.gui.editor.display_name=Отображать имя
+metamorph.gui.editor.health=Здоровье
+metamorph.gui.editor.speed=Скорость
+metamorph.gui.editor.abilities=Способности
+metamorph.gui.editor.abilities_tooltip=Нажмите клавишу шифт и кликните на способности из списка, чтобы выбрать сразу несколько способносте
+metamorph.gui.editor.attack=Атака
+metamorph.gui.editor.action=Действие
+metamorph.gui.editor.reset=Сбросить
+metamorph.gui.editor.item_morph=Предмет
+metamorph.gui.editor.keys.category=Клавиши редактора морфов
+metamorph.gui.editor.keys.cycle=Зацикливание между панелями морфов
+
+metamorph.gui.label.label=Название
+metamorph.gui.label.max_width=Максимальная ширина
+metamorph.gui.label.anchor=Якорная точка
+metamorph.gui.label.color=Цвет текста
+metamorph.gui.label.shadow=Тень
+metamorph.gui.label.shadow_offset=Смещение тени
+metamorph.gui.label.shadow_color=Цвет тени
+metamorph.gui.label.lighting=Свечение
+metamorph.gui.label.lighting_tooltip=Если отключить этот параметр, то карта свечения из Майнкрафта не будет применена, то есть морф применения будет светиться в темноте. Шейдерпаки у которых есть опция блума (bloom), will make this morph look like neon sign
+
 metamorph.gui.edit=Редактировать
-metamorph.gui.finish=Закончить
-metamorph.gui.panels.nbt_data=NBT дата
-metamorph.gui.panels.nbt=NBT дата
-metamorph.gui.panels.name=Имя
+metamorph.gui.panels.nbt_data=NBT-дата
 metamorph.gui.panels.username=Имя пользователя
 metamorph.gui.panels.updating=Обновление...
 
-metamorph.gui.status.tight_space=Здесь недостаточно места для превращения
+metamorph.gui.status.tight_space=Здесь не хватает места для превращения
 
 # Config
-metamorph.config.general.title=Общие
-metamorph.config.keep_morphs=Сохранить морфы после смерти
-metamorph.config.prevent_ghosts=Отключить появление призраков
-metamorph.config.hide_username=Спрятать никнейм пользователя
-metamorph.config.prevent_kill_acquire=Не приобретать морфы после убийства
-metamorph.config.show_demorph=Показать деморф
-metamorph.config.disable_pov=Отключить поле зрения
-metamorph.config.disable_health=Отключить смену размера здоровья
-metamorph.config.disable_morph_animation=Отключить анимацию морфов
-metamorph.config.disable_morph_disguise=Отключить враждебность морфов
-metamorph.config.acquire_immediately=Сразу приобрести морф
-metamorph.config.morph_in_tight_spaces=Разрешить превращение в тесных местах
+metamorph.config.title=Changeling
+
+metamorph.config.acquiring.title=Приобретение морфов
+metamorph.config.acquiring.tooltip=Все параметры, касающиеся получения морфов
+
+metamorph.config.acquiring.prevent_ghosts=Отключить появление призраков
+metamorph.config.comments.acquiring.prevent_ghosts=Отключить появление призраков если у игрока уже есть морф убитого существа
+metamorph.config.acquiring.prevent_kill_acquire=Отключить приобретение убийством
+metamorph.config.comments.acquiring.prevent_kill_acquire=Отключить приобретение морфов убийством морфов
+metamorph.config.acquiring.acquire_immediately=Приобретать морф мгновенно
+metamorph.config.comments.acquiring.acquire_immediately=Приобретать морфы сразу после того как игрок убивает существо вместо необходимости ловить призрака
+
+metamorph.config.morphs.title=Морфы
+metamorph.config.morphs.tooltip=Все параметры, касающиеся морфов и их настроек
+
+metamorph.config.morphs.keep_morphs=Сохранять приобретённые морфов после смерти
+metamorph.config.comments.morphs.keep_morphs=Сохранять приобретённые морфы после смерти игрока
+metamorph.config.morphs.disable_pov=Отключить поле зрения
+metamorph.config.comments.morphs.disable_pov=Отключить изменение значения поля зрения. Опцию запросили из-за проблем с модом MorePlayerModels (поставьте на true если у вас дёргается экран)
+metamorph.config.morphs.disable_health=Отключить масштабирование здоровья
+metamorph.config.comments.morphs.disable_health=Отключить изменение очков здоровья. Опцию запросили из-за мода Tough as Nails
+metamorph.config.morphs.disable_morph_animation=Отключить анимацию превращения
+metamorph.config.comments.morphs.disable_morph_animation=Отключает анимацию превращения (частицы и так далее)
+metamorph.config.morphs.disable_morph_disguise=Отключить враждебность морфов
+metamorph.config.comments.morphs.disable_morph_disguise=Отключить способности морфов с пометкой "враждебные" для того, чтобы не быть атакованным враждебными мобами
+metamorph.config.morphs.disable_first_person_hand=Отключить руку в режиме от первого лица
+metamorph.config.comments.morphs.disable_first_person_hand=Полностью отключить отображение руки в режиме от первого лица
+metamorph.config.morphs.morph_in_tight_spaces=Разрешить превращение в узких пространствах
+metamorph.config.comments.morphs.morph_in_tight_spaces=Разрешает превращение даже при возможности удушья, а также разрешает прохождение сквозь стены
+metamorph.config.morphs.show_morph_idle_sounds=Проигрывать звуки бездействия морфов
+metamorph.config.comments.morphs.show_morph_idle_sounds=Проигрываются ли звуки бездействия морфа, в который превратился игрок
+metamorph.config.morphs.pause_gui_in_sp=Остановка интерфейса превращения
+metamorph.config.comments.morphs.pause_gui_in_sp=Происходит ли остановка времени при открытии интерфейса превращения выживания и креатива в одиночной игре
+metamorph.config.morphs.max_recent_morphs=Максимальное количество недавних морфов
+metamorph.config.comments.morphs.max_recent_morphs=Максиально возможное количество недавних морфов, которые добавляются в меню морфов перед удалением
 
 # Commands
-metamorph.commands.morph=Команда морфа. Эта команда отвечает за превращение игрока в какой-либо конкретный морф.\n\n/morph <username> [morph_name] [data_tag]
-metamorph.commands.acquire_morph=Команда приобретения морфа. Эта команда отвечает за добавление морфа в список приобретённых игроком.\n\n/morph <username> <morph_name> [data_tag]
-metamorph.commands.metamorph=Серверные команды Changeling. Эти команды позволяют вам руководить серверными параметрами Changeling.\n\n/metamorph reload <blacklist|morphs> - перезагрузить черный список Changeling или конфигурацию морфа
+metamorph.commands.morph=Команда превращения. Эта команда отвечает за превращение игрока в какой-либо конкретный морф.\n\n/morph <username> [morph_name] [data_tag]
+metamorph.commands.acquire_morph=Команда приобретения морфа. Эта команда отвечает за добавление морфа в список морфов приобретённых игроком.\n\n/morph <username> <morph_name> [data_tag]
+metamorph.commands.metamorph=Серверная команда Changelingа. Эта команда позволяет вам управлять серверными параметрами Changelingа.\n\n/metamorph reload <blacklist|morphs> - перезагрузить черный список Changelingа или конфигурацию морфа
 
 metamorph.error.morph.not_player=Существо %s не является игроком!
-metamorph.error.morph.nbt=Возникла ошибка во время анализа дата-тэга:\n%s
-metamorph.error.acquire=Невозможно приобрести морф с именем %s!
-metamorph.success.morph=Игрок с именем пользователя %s успешно превратился в морф %s!
-metamorph.success.demorph=Игрок с именем пользователя %s успешно превратился обратно в игрока!
-metamorph.success.acquire=Игрок с именем пользователя %s успешно приобрёл морф %s!
+metamorph.error.morph.nbt=Произошла ошибка во время синтаксического анализа (парсинга) дата-тэга:\n%s
+metamorph.error.morph.factory=Невозможно превратиться в морф %2$s с заданным тэгом данных
+metamorph.error.acquire=Невозможно приобрестие морф с именем %s!
+metamorph.success.morph=Игрок с никнеймом %s успешно превратился в морф %s!
+metamorph.success.demorph=Игрок с никнеймом %s успешно сбросил морф!
+metamorph.success.acquire=Игрок с никнеймом %s успешно приобрёл морф %s!
 
 # Morph categories
-morph.category.unknown=Неизвестные морфы
-morph.category.unsorted=Неотсортированные морфы
+morph.category.generic=Неотсортированные морфы
 morph.category.animal=Морфы животных
-morph.category.blocks=Морфы блоков
 morph.category.boss=Морфы боссов
 morph.category.acquired=Ваши морфы
 morph.category.hostile=Враждебные морфы
-morph.category.players=Морфы игрока
 morph.category.modded=Морфы из %s
+morph.category.recent=Последние морфы
+
+# Morph sections and categories
+morph.section.entity=Морфы существ (Changelingа)
+morph.section.user=Пользовательские морфы

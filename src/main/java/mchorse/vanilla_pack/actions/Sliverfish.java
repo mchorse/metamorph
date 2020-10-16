@@ -20,7 +20,7 @@ public class Sliverfish implements IAction
     @Override
     public void execute(EntityLivingBase target, AbstractMorph morph)
     {
-        if (target.worldObj.isRemote)
+        if (target.world.isRemote)
         {
             return;
         }
@@ -31,17 +31,17 @@ public class Sliverfish implements IAction
         Vec3d look = target.getLook(1.0F);
         Vec3d vec = pos.addVector(look.xCoord * reachDistance, look.yCoord * reachDistance, look.zCoord * reachDistance);
 
-        RayTraceResult result = target.worldObj.rayTraceBlocks(pos, vec, false, false, true);
+        RayTraceResult result = target.world.rayTraceBlocks(pos, vec, false, false, true);
 
         if (result != null && result.typeOfHit == Type.BLOCK && target instanceof EntityPlayer)
         {
             BlockMorph block = new BlockMorph();
 
             block.blockPos = result.getBlockPos();
-            block.block = target.worldObj.getBlockState(block.blockPos);
+            block.block = target.world.getBlockState(block.blockPos);
             block.name = "metamorph.Block";
 
-            target.worldObj.setBlockToAir(block.blockPos);
+            target.world.setBlockToAir(block.blockPos);
 
             MorphAPI.morph((EntityPlayer) target, block, true);
         }

@@ -3,7 +3,9 @@ package mchorse.metamorph.bodypart;
 import java.util.ArrayList;
 import java.util.List;
 
-import mchorse.metamorph.capabilities.morphing.IMorphing;
+import mchorse.metamorph.api.MorphUtils;
+import mchorse.metamorph.api.morphs.AbstractMorph;
+import mchorse.metamorph.api.morphs.utils.ISyncableMorph;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
@@ -16,8 +18,6 @@ import net.minecraftforge.fml.relauncher.SideOnly;
  * Simplifies management of body parts for mods that use it. Besides 
  * that it allows in the future to implement different types of body 
  * parts such as particle body part...
- * 
- * Damn, I want particle body parts...
  */
 public class BodyPartManager
 {
@@ -63,11 +63,11 @@ public class BodyPartManager
     /**
      * Update body limbs 
      */
-    public void updateBodyLimbs(EntityLivingBase target, IMorphing cap)
+    public void updateBodyLimbs(EntityLivingBase target)
     {
         for (BodyPart part : this.parts)
         {
-            part.update(target, cap);
+            part.update(target);
         }
     }
 
@@ -84,22 +84,22 @@ public class BodyPartManager
         return super.equals(obj);
     }
 
-    public void copy(BodyPartManager manager, boolean isRemote)
+    public void copy(BodyPartManager manager)
     {
         this.reset();
         this.parts.clear();
 
         for (BodyPart part : manager.parts)
         {
-            this.parts.add(part.clone(isRemote));
+            this.parts.add(part.copy());
         }
     }
 
-    public void merge(BodyPartManager manager, boolean isRemote)
+    public void merge(BodyPartManager manager)
     {
         if (manager.parts.size() != this.parts.size())
         {
-            this.copy(manager, isRemote);
+            this.copy(manager);
 
             return;
         }
@@ -109,10 +109,51 @@ public class BodyPartManager
             BodyPart part = this.parts.get(i);
             BodyPart other = manager.parts.get(i);
 
-            if (!part.canMerge(other, isRemote))
+            if (!part.canMerge(other))
             {
-                this.parts.set(i, other.clone(isRemote));
+                this.parts.set(i, other.copy());
             }
+        }
+    }
+
+    public void afterMerge(BodyPartManager manager)
+    {
+        if (manager.parts.size() != this.parts.size())
+        {
+            this.copy(manager);
+
+            return;
+        }
+
+        for (int i = 0, c = this.parts.size(); i < c; i++)
+        {
+            BodyPart part = this.parts.get(i);
+            BodyPart other = manager.parts.get(i);
+
+            if (part.morph.isEmpty() || other.morph.isEmpty())
+            {
+                continue;
+            }
+
+            part.morph.get().afterMerge(other.morph.get());
+        }
+    }
+
+    public void pause(AbstractMorph previous, int offset)
+    {
+        BodyPartManager parts = previous instanceof IBodyPartProvider ? ((IBodyPartProvider) previous).getBodyPart() : null;
+
+        for (int i = 0; i < this.parts.size(); i++)
+        {
+            AbstractMorph current = this.parts.get(i).morph.get();
+            AbstractMorph past = null;
+
+            if (parts != null)
+            {
+                past = i < parts.parts.size() ? parts.parts.get(i).morph.get() : null;
+            }
+
+            MorphUtils.pause(current, past, offset);
         }
     }
 

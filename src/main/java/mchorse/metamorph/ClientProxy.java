@@ -1,14 +1,13 @@
 package mchorse.metamorph;
 
-import java.lang.reflect.Field;
-import java.util.Map;
-
-import mchorse.metamorph.api.MorphManager;
+import mchorse.metamorph.api.MorphUtils;
+import mchorse.metamorph.client.EntityModelHandler;
 import mchorse.metamorph.client.KeyboardHandler;
 import mchorse.metamorph.client.NetworkHandler;
 import mchorse.metamorph.client.RenderingHandler;
-import mchorse.metamorph.client.gui.elements.GuiHud;
-import mchorse.metamorph.client.gui.elements.GuiOverlay;
+import mchorse.metamorph.client.gui.overlays.GuiHud;
+import mchorse.metamorph.client.gui.overlays.GuiOverlay;
+import mchorse.metamorph.client.gui.survival.GuiSurvivalScreen;
 import mchorse.metamorph.client.render.RenderMorph;
 import mchorse.metamorph.entity.EntityMorph;
 import net.minecraft.client.Minecraft;
@@ -25,6 +24,9 @@ import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
+import java.lang.reflect.Field;
+import java.util.Map;
+
 /**
  * Client proxy
  * 
@@ -39,6 +41,11 @@ public class ClientProxy extends CommonProxy
      * GUI overlay which is responsible for showing up acquired morphs
      */
     public static GuiOverlay morphOverlay = new GuiOverlay();
+
+    /**
+     * Cached survival screen
+     */
+    public static GuiSurvivalScreen survivalScreen;
     
     public static GuiHud hud = new GuiHud();
 
@@ -46,6 +53,21 @@ public class ClientProxy extends CommonProxy
      * Keyboard handler 
      */
     public static KeyboardHandler keys;
+
+    /**
+     * Entity model handler
+     */
+    public static EntityModelHandler models;
+
+    public static GuiSurvivalScreen getSurvivalScreen()
+    {
+        if (survivalScreen == null)
+        {
+            survivalScreen = new GuiSurvivalScreen();
+        }
+
+        return survivalScreen;
+    }
 
     @Override
     public void preLoad(FMLPreInitializationEvent event)
@@ -68,9 +90,19 @@ public class ClientProxy extends CommonProxy
         /* Register client event handlers */
         MinecraftForge.EVENT_BUS.register(new RenderingHandler(morphOverlay, hud));
         MinecraftForge.EVENT_BUS.register(keys = new KeyboardHandler());
+        MinecraftForge.EVENT_BUS.register(models = new EntityModelHandler());
 
-        /* Register client morph manager */
-        MorphManager.INSTANCE.registerClient();
+        models.loadSelectors();
+
+        if (!this.selectors.exists())
+        {
+            MorphUtils.generateFile(this.selectors, "[]");
+        }
+
+        if (!this.list.exists())
+        {
+            MorphUtils.generateFile(this.selectors, "[]");
+        }
     }
 
     /**
