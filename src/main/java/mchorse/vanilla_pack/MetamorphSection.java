@@ -122,7 +122,7 @@ public class MetamorphSection extends MorphSection
 			/* Category for third-party modded mobs */
 			if (name.contains("."))
 			{
-				category = name.substring(0, name.indexOf(":"));
+				category = name.substring(0, name.indexOf("."));
 			}
 			else if (entity instanceof EntityDragon || entity instanceof EntityWither || entity instanceof EntityGiantZombie)
 			{
