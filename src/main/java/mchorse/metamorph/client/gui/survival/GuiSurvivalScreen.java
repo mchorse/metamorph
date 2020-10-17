@@ -254,6 +254,10 @@ public class GuiSurvivalScreen extends GuiBase
         {
             this.closeScreen();
         }
+        else if (Minecraft.getMinecraft().gameSettings.keyBindInventory.getKeyCode() == keyCode ||
+                ((Metamorph.proxy instanceof ClientProxy) && ClientProxy.keys.keySurvivalMenu.getKeyCode() == keyCode)) {
+            this.closeScreen();
+        }
     }
 
     @Override

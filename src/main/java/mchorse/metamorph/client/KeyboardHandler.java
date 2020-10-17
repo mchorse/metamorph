@@ -33,7 +33,7 @@ public class KeyboardHandler
     private KeyBinding keyAction;
     private KeyBinding keyCreativeMenu;
     private KeyBinding keySelectorMenu;
-    private KeyBinding keySurvivalMenu;
+    public KeyBinding keySurvivalMenu;
 
     /* Morph related keys */
     public KeyBinding keyDemorph;
