@@ -29,27 +29,32 @@ public class MorphSettingsAdapter implements JsonDeserializer<MorphSettings>
         MorphSettings morph = new MorphSettings();
         MorphManager manager = MorphManager.INSTANCE;
 
-        if (object.has("health"))
+        morph.hasHealth = object.has("health");
+        if (morph.hasHealth)
         {
             morph.health = object.get("health").getAsInt();
         }
 
-        if (object.has("speed"))
+        morph.hasSpeed = object.has("speed");
+        if (morph.hasSpeed)
         {
             morph.speed = object.get("speed").getAsFloat();
         }
 
-        if (object.has("hostile"))
+        morph.hasHostile = object.has("hostile");
+        if (morph.hasHostile)
         {
             morph.hostile = object.get("hostile").getAsBoolean();
         }
 
-        if (object.has("hands"))
+        morph.hasHands = object.has("hands");
+        if (morph.hasHands)
         {
             morph.hands = object.get("hands").getAsBoolean();
         }
 
-        if (object.has("abilities"))
+        morph.hasAbilities = object.has("abilities");
+        if (morph.hasAbilities)
         {
             morph.abilities.clear();
 
@@ -64,17 +69,20 @@ public class MorphSettingsAdapter implements JsonDeserializer<MorphSettings>
             }
         }
 
-        if (object.has("action"))
+        morph.hasAction = object.has("action");
+        if (morph.hasAction)
         {
             morph.action = manager.actions.get(object.get("action").getAsString());
         }
 
-        if (object.has("attack"))
+        morph.hasAttack = object.has("attack");
+        if (morph.hasAttack)
         {
             morph.attack = manager.attacks.get(object.get("attack").getAsString());
         }
 
-        if (object.has("updates"))
+        morph.hasUpdates = object.has("updates");
+        if (morph.hasUpdates)
         {
             morph.updates = object.get("updates").getAsBoolean();
         }

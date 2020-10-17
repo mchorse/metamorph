@@ -54,7 +54,7 @@ public class MorphManager
     public List<IMorphFactory> factories = new ArrayList<IMorphFactory>();
 
     /**
-     * Active morph settings 
+     * Active morph settings from JSON config
      */
     public Map<String, MorphSettings> activeSettings = new HashMap<String, MorphSettings>();
 
@@ -217,7 +217,7 @@ public class MorphManager
                 
                 if (morph != null)
                 {
-	                this.applySettings(morph);
+                    this.applySettings(morph);
 	
 	                return morph;
                 }
@@ -232,15 +232,7 @@ public class MorphManager
      */
     public void applySettings(AbstractMorph morph)
     {
-        if (morph.settings != MorphSettings.DEFAULT)
-        {
-            return;
-        }
-
-        if (this.activeSettings.containsKey(morph.name))
-        {
-            morph.settings = this.activeSettings.get(morph.name);
-        }
+        morph.setActiveSettings(this.activeSettings.get(morph.name));
     }
 
     /**

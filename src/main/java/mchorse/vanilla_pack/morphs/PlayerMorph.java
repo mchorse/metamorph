@@ -168,6 +168,9 @@ public class PlayerMorph extends EntityMorph
         return new PlayerMorph();
     }
 
+    /**
+     * Copy the player morph 
+     */
     @Override
     public void copy(AbstractMorph from)
     {

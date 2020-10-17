@@ -2,8 +2,6 @@ package mchorse.vanilla_pack.morphs;
 
 import mchorse.metamorph.api.morphs.AbstractMorph;
 import mchorse.metamorph.api.morphs.EntityMorph;
-import mchorse.metamorph.capabilities.morphing.IMorphing;
-import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
 
 /**

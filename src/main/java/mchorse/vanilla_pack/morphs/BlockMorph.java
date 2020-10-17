@@ -163,7 +163,7 @@ public class BlockMorph extends ItemStackMorph
 
         if (from instanceof BlockMorph)
         {
-            BlockMorph morph = (BlockMorph) from;
+            BlockMorph morph = (BlockMorph)from;
 
             this.block = morph.block;
             this.blockPos = morph.blockPos;

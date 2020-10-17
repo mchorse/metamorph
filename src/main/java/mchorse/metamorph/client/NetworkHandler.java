@@ -116,7 +116,7 @@ public class NetworkHandler
             if (morph != null)
             {
                 /* No fancy stuff or actions */
-                morph.settings = MorphSettings.DEFAULT;
+                morph.forceSettings(MorphSettings.DEFAULT);
 
                 Morphing.get(player).setCurrentMorph(morph, player, true);
             }
