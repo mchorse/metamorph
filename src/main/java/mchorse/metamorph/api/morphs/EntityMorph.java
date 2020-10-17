@@ -11,6 +11,7 @@ import mchorse.metamorph.capabilities.morphing.IMorphing;
 import mchorse.metamorph.capabilities.morphing.Morphing;
 import mchorse.metamorph.entity.SoundHandler;
 import mchorse.metamorph.util.InvokeUtil;
+import mchorse.metamorph.world.WorldHandler;
 import net.minecraft.block.Block;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.model.ModelBase;
@@ -636,7 +637,17 @@ public class EntityMorph extends AbstractMorph implements IBodyPartProvider
             {
                 this.entity.setSilent(true);
             }
+            boolean spawnParticles = WorldHandler.shouldSpawnMorphParticles(target);
+            if (!spawnParticles)
+            {
+                // Blaze morphs generate so many particles that it makes it too hard to see in first person
+                WorldHandler.setEnableWorldParticles(target.world, false);
+            }
             this.entity.onUpdate();
+            if (!spawnParticles)
+            {
+                WorldHandler.setEnableWorldParticles(target.world, true);
+            }
             this.entity.setSilent(false);
         }
     }

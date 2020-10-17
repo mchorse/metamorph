@@ -79,6 +79,7 @@ public class Metamorph
     public static ValueInt maxRecentMorphs;
     public static ValueBoolean allowMorphingIntoCategoryMorphs;
     public static ValueBoolean loadEntityMorphs;
+    public static ValueBoolean spawnParticlesFirstPerson;
 
     /* Events */
 
@@ -103,6 +104,7 @@ public class Metamorph
         maxRecentMorphs = builder.getInt("max_recent_morphs", 20, 1, 200);
         allowMorphingIntoCategoryMorphs = builder.getBoolean("allow_morphing_into_category_morphs", false);
         loadEntityMorphs = builder.getBoolean("load_entity_morphs", true);
+        spawnParticlesFirstPerson = builder.getBoolean("spawn_particles_first_person", false);
 
         event.modules.add(builder.build());
     }

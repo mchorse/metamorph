@@ -14,9 +14,9 @@ import mchorse.metamorph.capabilities.render.ModelRendererStorage;
 import mchorse.metamorph.entity.EntityMorph;
 import mchorse.metamorph.entity.SoundHandler;
 import mchorse.metamorph.network.Dispatcher;
+import mchorse.metamorph.world.WorldHandler;
 import mchorse.vanilla_pack.MetamorphFactory;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.common.capabilities.CapabilityManager;
 import net.minecraftforge.fml.common.event.FMLPostInitializationEvent;
@@ -90,6 +90,7 @@ public class CommonProxy
         /* Event listeners */
         MinecraftForge.EVENT_BUS.register(new MorphHandler());
         MinecraftForge.EVENT_BUS.register(new SoundHandler());
+        MinecraftForge.EVENT_BUS.register(new WorldHandler());
         MinecraftForge.EVENT_BUS.register(new CapabilityHandler());
         MinecraftForge.EVENT_BUS.register(new RegisterHandler());
 
@@ -126,5 +127,13 @@ public class CommonProxy
     public boolean canUse(EntityPlayer player)
     {
         return player.isCreative() || Metamorph.allowMorphingIntoCategoryMorphs.get();
+    }
+
+    /**
+     * Changed to false in ClientProxy
+     */
+    public boolean isDedicatedServer()
+    {
+        return true;
     }
 }
