@@ -468,8 +468,7 @@ public abstract class AbstractMorph
             AbstractMorph morph = (AbstractMorph) obj;
 
             return Objects.equals(this.name, morph.name) &&
-                Objects.equals(this.displayName, morph.displayName) &&
-                Objects.equals(this.settings, morph.settings);
+                Objects.equals(this.displayName, morph.displayName);
         }
 
         return super.equals(obj);
