@@ -27,6 +27,7 @@ metamorph.gui.body_parts.paste_tooltip=Paste copied body parts...
 metamorph.gui.add=Add
 metamorph.gui.remove=Remove
 metamorph.gui.morph=Morph
+metamorph.gui.demorph=Demorph
 metamorph.gui.acquire=Acquire
 metamorph.gui.acquired=Acquired
 metamorph.gui.close=Close

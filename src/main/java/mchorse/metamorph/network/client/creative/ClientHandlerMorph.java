@@ -1,6 +1,7 @@
 package mchorse.metamorph.network.client.creative;
 
 import mchorse.mclib.network.ClientMessageHandler;
+import mchorse.metamorph.ClientProxy;
 import mchorse.metamorph.capabilities.morphing.IMorphing;
 import mchorse.metamorph.capabilities.morphing.Morphing;
 import mchorse.metamorph.network.common.creative.PacketMorph;
@@ -19,6 +20,7 @@ public class ClientHandlerMorph extends ClientMessageHandler<PacketMorph>
         if (capability != null)
         {
             capability.setCurrentMorph(message.morph, player, true);
+            ClientProxy.getSurvivalScreen().checkCurrentMorph();
         }
     }
 }

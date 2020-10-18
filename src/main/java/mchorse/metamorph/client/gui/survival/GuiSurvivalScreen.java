@@ -38,12 +38,13 @@ public class GuiSurvivalScreen extends GuiBase
 {
     public GuiSurvivalMorphs morphs;
     public GuiElement sidebar;
-    public GuiToggleElement onlyFavorite;
-
-    public GuiButtonElement morph;
     public GuiButtonElement remove;
+
+    public GuiButtonElement demorph;
+    public GuiButtonElement morph;
     public GuiKeybindElement keybind;
     public GuiToggleElement favorite;
+    public GuiToggleElement onlyFavorite;
 
     private boolean creative;
     private boolean allowed;
@@ -54,24 +55,25 @@ public class GuiSurvivalScreen extends GuiBase
 
         Minecraft mc = this.context.mc;
 
+        this.demorph = new GuiButtonElement(mc, IKey.lang("metamorph.gui.demorph"), this::demorph);
         this.morph = new GuiButtonElement(mc, IKey.lang("metamorph.gui.morph"), this::morph);
-        this.remove = new GuiButtonElement(mc, IKey.lang("metamorph.gui.remove"), this::remove);
         this.keybind = new GuiKeybindElement(mc, this::setKeybind);
         this.keybind.tooltip(IKey.lang("metamorph.gui.survival.keybind_tooltip"));
         this.favorite = new GuiToggleElement(mc, IKey.lang("metamorph.gui.survival.favorite"), this::favorite);
+        this.onlyFavorite = new GuiToggleElement(mc, IKey.lang("metamorph.gui.survival.only_favorites"), (button) -> this.morphs.setFavorite(button.isToggled()));
+
+        this.remove = new GuiButtonElement(mc, IKey.lang("metamorph.gui.remove"), this::remove);
+        this.remove.flex().relative(this.root).x(1F).w(120).h(20).anchor(1F, 0F);
 
         this.sidebar = new GuiScrollElement(mc);
         this.sidebar.flex().relative(this.root).y(20).w(140).hTo(this.root.resizer(), 1F).column(5).stretch().height(20).padding(10);
-        this.sidebar.add(Elements.row(mc, 5, 0, 20, this.morph, this.remove), this.keybind, this.favorite);
-
-        this.onlyFavorite = new GuiToggleElement(mc, IKey.lang("metamorph.gui.survival.only_favorites"), (button) -> this.morphs.setFavorite(button.isToggled()));
-        this.onlyFavorite.flex().relative(this.root).x(1F).w(120).h(20).anchor(1F, 0F);
+        this.sidebar.add(this.demorph, this.morph, this.keybind, this.favorite, this.onlyFavorite);
 
         this.morphs = new GuiSurvivalMorphs(mc);
         this.morphs.flex().relative(this.root).x(140).y(20).wTo(this.root.resizer(), 1F).hTo(this.root.resizer(), 1F).column(0).vertical().stretch().scroll();
 
         this.root.flex().xy(0.5F, 0.5F).wh(1F, 1F).anchor(0.5F, 0.5F).maxW(500).maxH(300);
-        this.root.add(this.morphs, this.sidebar, this.onlyFavorite);
+        this.root.add(this.morphs, this.sidebar, this.remove);
 
         /* Setup keybinds */
         IKey category = IKey.lang("metamorph.gui.survival.keys.category");
@@ -119,13 +121,38 @@ public class GuiSurvivalScreen extends GuiBase
         this.morphs.setSelected(morph);
         this.fill(this.morphs.getSelected());
     }
+    
+    public void checkCurrentMorph(AbstractMorph currentMorph, AbstractMorph selectedMorph)
+    {
+        this.demorph.setEnabled(currentMorph != null);
+        if (currentMorph == null)
+        {
+            this.morph.setEnabled(selectedMorph != null);
+        }
+        else
+        {
+            this.morph.setEnabled(selectedMorph != null && !currentMorph.equals(selectedMorph));
+        }
+    }
+    
+    public void checkCurrentMorph()
+    {
+        EntityPlayer player = Minecraft.getMinecraft().player;
+        IMorphing cap = Morphing.get(player);
+        AbstractMorph currentMorph = cap.getCurrentMorph();
+        checkCurrentMorph(currentMorph, this.morphs.getSelected());
+    }
 
     /**
      * Fill the fields with the data from current morph
      */
     public void fill(AbstractMorph morph)
     {
-        this.morph.setEnabled(morph != null);
+        EntityPlayer player = Minecraft.getMinecraft().player;
+        IMorphing cap = Morphing.get(player);
+        AbstractMorph currentMorph = cap.getCurrentMorph();
+        checkCurrentMorph(currentMorph, morph);
+
         this.remove.setEnabled(morph != null);
         this.keybind.setEnabled(morph != null);
         this.keybind.setKeybind(Keyboard.KEY_NONE);
@@ -136,6 +163,15 @@ public class GuiSurvivalScreen extends GuiBase
             this.favorite.toggled(morph.favorite);
             this.keybind.setKeybind(morph.keybind);
         }
+    }
+
+    /**
+     * Demorph player from morph
+     */
+    private void demorph(GuiButtonElement button)
+    {
+        Dispatcher.sendToServer(new PacketSelectMorph(-1));
+        this.closeScreen();
     }
 
     /**
