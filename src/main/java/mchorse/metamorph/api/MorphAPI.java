@@ -1,5 +1,7 @@
 package mchorse.metamorph.api;
 
+import java.util.List;
+
 import mchorse.metamorph.Metamorph;
 import mchorse.metamorph.api.events.AcquireMorphEvent;
 import mchorse.metamorph.api.events.MorphEvent;
@@ -11,11 +13,15 @@ import mchorse.metamorph.network.common.creative.PacketAcquireMorph;
 import mchorse.metamorph.network.common.creative.PacketMorph;
 import mchorse.metamorph.network.common.survival.PacketMorphPlayer;
 import mchorse.metamorph.network.common.survival.PacketMorphState;
+import mchorse.metamorph.network.common.survival.PacketSelectMorph;
+import net.minecraft.client.Minecraft;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.network.play.server.SPacketChat;
 import net.minecraft.util.text.TextComponentTranslation;
 import net.minecraftforge.common.MinecraftForge;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 
 /**
  * Morph API class
@@ -84,6 +90,46 @@ public class MorphAPI
         }
 
         return morphed;
+    }
+    
+    /**
+     * Request the server to survival morph the player.
+     */
+    @SideOnly(Side.CLIENT)
+    public static boolean selectMorph(AbstractMorph morph)
+    {
+        int index = -1;
+        if (morph != null)
+        {
+            EntityPlayer player = Minecraft.getMinecraft().player;
+            IMorphing cap = Morphing.get(player);
+            List<AbstractMorph> acquiredMorphs = cap.getAcquiredMorphs();
+            for (int i = 0; i < acquiredMorphs.size(); i++)
+            {
+                AbstractMorph acquiredMorph = acquiredMorphs.get(i);
+                if (acquiredMorph.equals(morph))
+                {
+                    index = i;
+                    break;
+                }
+            }
+            if (index == -1)
+            {
+                return false;
+            }
+        }
+
+        Dispatcher.sendToServer(new PacketSelectMorph(index));
+        return true;
+    }
+
+    /**
+     * Request the server to survival demorph the player.
+     */
+    @SideOnly(Side.CLIENT)
+    public static boolean selectDemorph()
+    {
+        return selectMorph(null);
     }
 
     public static boolean acquire(EntityPlayer player, AbstractMorph morph)

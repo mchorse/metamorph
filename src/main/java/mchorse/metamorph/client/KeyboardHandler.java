@@ -2,6 +2,7 @@ package mchorse.metamorph.client;
 
 import mchorse.metamorph.ClientProxy;
 import mchorse.metamorph.Metamorph;
+import mchorse.metamorph.api.MorphAPI;
 import mchorse.metamorph.api.MorphManager;
 import mchorse.metamorph.capabilities.morphing.IMorphing;
 import mchorse.metamorph.capabilities.morphing.Morphing;
@@ -105,7 +106,7 @@ public class KeyboardHandler
         {
             if (morphing != null && morphing.isMorphed())
             {
-                Dispatcher.sendToServer(new PacketSelectMorph(-1));
+                MorphAPI.selectDemorph();
                 wasUsed = true;
             }
         }

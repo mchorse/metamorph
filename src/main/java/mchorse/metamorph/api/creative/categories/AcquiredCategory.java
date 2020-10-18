@@ -1,5 +1,6 @@
 package mchorse.metamorph.api.creative.categories;
 
+import mchorse.metamorph.api.MorphAPI;
 import mchorse.metamorph.api.creative.sections.MorphSection;
 import mchorse.metamorph.api.morphs.AbstractMorph;
 import mchorse.metamorph.network.Dispatcher;
@@ -69,7 +70,7 @@ public class AcquiredCategory extends MorphCategory
 
 		if (index >= 0)
 		{
-			Dispatcher.sendToServer(new PacketSelectMorph(index));
+			MorphAPI.selectMorph(morph);
 		}
 
 		return true;

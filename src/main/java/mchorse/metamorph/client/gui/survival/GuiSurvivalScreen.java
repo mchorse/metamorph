@@ -11,6 +11,7 @@ import mchorse.mclib.client.gui.utils.Elements;
 import mchorse.mclib.client.gui.utils.keys.IKey;
 import mchorse.metamorph.ClientProxy;
 import mchorse.metamorph.Metamorph;
+import mchorse.metamorph.api.MorphAPI;
 import mchorse.metamorph.api.MorphManager;
 import mchorse.metamorph.api.morphs.AbstractMorph;
 import mchorse.metamorph.capabilities.morphing.IMorphing;
@@ -20,7 +21,6 @@ import mchorse.metamorph.network.common.creative.PacketMorph;
 import mchorse.metamorph.network.common.survival.PacketFavorite;
 import mchorse.metamorph.network.common.survival.PacketKeybind;
 import mchorse.metamorph.network.common.survival.PacketRemoveMorph;
-import mchorse.metamorph.network.common.survival.PacketSelectMorph;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.Gui;
 import net.minecraft.client.resources.I18n;
@@ -170,7 +170,7 @@ public class GuiSurvivalScreen extends GuiBase
      */
     private void demorph(GuiButtonElement button)
     {
-        Dispatcher.sendToServer(new PacketSelectMorph(-1));
+        MorphAPI.selectDemorph();
         this.closeScreen();
     }
 
@@ -185,7 +185,7 @@ public class GuiSurvivalScreen extends GuiBase
         {
             if (this.morphs.isAcquiredSelected())
             {
-                Dispatcher.sendToServer(new PacketSelectMorph(this.indexOf(morph)));
+                MorphAPI.selectMorph(morph);
             }
             else
             {
@@ -284,7 +284,7 @@ public class GuiSurvivalScreen extends GuiBase
     {
         if (keyCode == ClientProxy.keys.keyDemorph.getKeyCode())
         {
-            Dispatcher.sendToServer(new PacketSelectMorph(-1));
+            MorphAPI.selectDemorph();
         }
         else if (MorphManager.INSTANCE.list.keyTyped(this.mc.player, keyCode))
         {
