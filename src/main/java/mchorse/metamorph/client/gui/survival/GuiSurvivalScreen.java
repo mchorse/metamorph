@@ -8,6 +8,7 @@ import mchorse.mclib.client.gui.framework.elements.buttons.GuiToggleElement;
 import mchorse.mclib.client.gui.framework.elements.input.GuiKeybindElement;
 import mchorse.mclib.client.gui.framework.elements.utils.GuiDraw;
 import mchorse.mclib.client.gui.utils.Elements;
+import mchorse.mclib.client.gui.utils.GuiUtils;
 import mchorse.mclib.client.gui.utils.keys.IKey;
 import mchorse.metamorph.ClientProxy;
 import mchorse.metamorph.Metamorph;
@@ -25,6 +26,7 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.Gui;
 import net.minecraft.client.resources.I18n;
 import net.minecraft.entity.player.EntityPlayer;
+
 import org.lwjgl.input.Keyboard;
 
 /**
@@ -48,6 +50,10 @@ public class GuiSurvivalScreen extends GuiBase
 
     private boolean creative;
     private boolean allowed;
+    
+    AbstractMorph lastMorphSelected = null;
+    private static final int DOUBLE_CLICK_TIME_MS = 500;
+    private long lastClickTime = -DOUBLE_CLICK_TIME_MS - 1;
 
     public GuiSurvivalScreen()
     {
@@ -142,6 +148,27 @@ public class GuiSurvivalScreen extends GuiBase
         AbstractMorph currentMorph = cap.getCurrentMorph();
         checkCurrentMorph(currentMorph, this.morphs.getSelected());
     }
+    
+    private void checkDoubleClick(AbstractMorph morph)
+    {
+        if (morph == null)
+        {
+            return;
+        }
+        
+        long clickTime = Minecraft.getSystemTime();
+        long dt = clickTime - lastClickTime;
+        lastClickTime = clickTime;
+        if (dt > 0 && dt < DOUBLE_CLICK_TIME_MS && lastMorphSelected.equals(morph))
+        {
+            MorphAPI.selectMorph(morph);
+            GuiUtils.playClick();
+            // Prevent re-fires
+            lastClickTime = 0;
+            this.closeScreen();
+        }
+        lastMorphSelected = morph;
+    }
 
     /**
      * Fill the fields with the data from current morph
@@ -163,6 +190,8 @@ public class GuiSurvivalScreen extends GuiBase
             this.favorite.toggled(morph.favorite);
             this.keybind.setKeybind(morph.keybind);
         }
+
+        checkDoubleClick(morph);
     }
 
     /**
