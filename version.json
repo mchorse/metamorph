@@ -1,6 +1,7 @@
 {
     "homepage":"https://www.curseforge.com/minecraft/mc-mods/metamorph",
     "1.12.2":{
+        "1.2.3": "This small update mostly needed for Blockbuster update.",
         "1.2.2": "This is a small patch that features a couple of tweaks.",
         "1.2.1": "This is a small patch that fixes some mob morph behavior (all of these fixes and tweaks were made by IndeanaJones).",
         "1.2": "This big update adds many quality of life features related to management of morphs. Custom user categories, direct editing of acquired, recent morphs category, better editing. Basically after this update management of morphs is a bliss.",
@@ -25,8 +26,8 @@
         "1.1.5": "This is a small, quick and dirty patch that provides several bugfixes (mainly for Blockbuster's update)."
     },
     "promos":{
-        "1.12.2-latest":"1.2.2",
-        "1.12.2-recommended":"1.2.2",
+        "1.12.2-latest":"1.2.3",
+        "1.12.2-recommended":"1.2.3",
         "1.11.2-latest":"1.1.10",
         "1.11.2-recommended":"1.1.10",
         "1.10.2-latest":"1.1.10",

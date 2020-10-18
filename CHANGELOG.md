@@ -1,4 +1,14 @@
-# Metamorph Change Log
+## Metamorph 1.2.3
+
+This is small update mostly needed for Blockbuster update.
+
+**Compatible** with McLib `2.1`. It doesn't mean that future versions of McLib would be incompatible, but older versions are most likely incompatible.
+
+* Added an option to allow morphing in recent and user categories morphs (and opening creative morph menu)
+* Added an option to allow disable population of entity morphs (suggested by Chunk7)
+* Added remove category confirmation modal (suggested by JC2020)
+* Fixed `/morph` command not working with MC functions (reported by Joziah2)
+* Fixed animated morphs jittering when enabling animates or changing the duration
 
 ## Metamorph 1.2.2
 
