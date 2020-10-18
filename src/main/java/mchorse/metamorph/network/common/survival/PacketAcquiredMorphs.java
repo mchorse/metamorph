@@ -14,15 +14,17 @@ import java.util.List;
 public class PacketAcquiredMorphs implements IMessage
 {
     public List<AbstractMorph> morphs;
+    public AbstractMorph lastSelectedMorph;
 
     public PacketAcquiredMorphs()
     {
         this.morphs = new ArrayList<AbstractMorph>();
     }
 
-    public PacketAcquiredMorphs(List<AbstractMorph> morphs)
+    public PacketAcquiredMorphs(List<AbstractMorph> morphs, AbstractMorph lastSelectedMorph)
     {
         this.morphs = morphs;
+        this.lastSelectedMorph = lastSelectedMorph;
     }
 
     @Override
@@ -37,6 +39,8 @@ public class PacketAcquiredMorphs implements IMessage
                 this.morphs.add(morph);
             }
         }
+        
+        this.lastSelectedMorph = MorphUtils.morphFromBuf(buf);
     }
 
     @Override
@@ -48,5 +52,7 @@ public class PacketAcquiredMorphs implements IMessage
         {
             MorphUtils.morphToBuf(buf, morph);
         }
+        
+        MorphUtils.morphToBuf(buf, lastSelectedMorph);
     }
 }

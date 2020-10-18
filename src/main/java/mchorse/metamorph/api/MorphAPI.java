@@ -102,8 +102,8 @@ public class MorphAPI
         if (morph != null)
         {
             EntityPlayer player = Minecraft.getMinecraft().player;
-            IMorphing cap = Morphing.get(player);
-            List<AbstractMorph> acquiredMorphs = cap.getAcquiredMorphs();
+            IMorphing morphing = Morphing.get(player);
+            List<AbstractMorph> acquiredMorphs = morphing.getAcquiredMorphs();
             for (int i = 0; i < acquiredMorphs.size(); i++)
             {
                 AbstractMorph acquiredMorph = acquiredMorphs.get(i);
@@ -117,6 +117,8 @@ public class MorphAPI
             {
                 return false;
             }
+
+            morphing.setLastSelectedMorph(morph);
         }
 
         Dispatcher.sendToServer(new PacketSelectMorph(index));

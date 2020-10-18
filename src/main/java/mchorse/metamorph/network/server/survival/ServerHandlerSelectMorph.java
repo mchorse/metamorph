@@ -33,6 +33,10 @@ public class ServerHandlerSelectMorph extends ServerMessageHandler<PacketSelectM
             morph = morphs.get(index);
         }
 
+        if (morph != null)
+        {
+            capability.setLastSelectedMorph(morph);
+        }
         MorphAPI.morph(player, MorphUtils.copy(morph), false);
     }
 }

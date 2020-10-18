@@ -9,6 +9,7 @@ key.metamorph.action=Use action
 key.metamorph.creative_menu=Open creative morph menu
 key.metamorph.selector_menu=Open entity selectors menu
 key.metamorph.survival_menu=Open survival morph menu
+key.metamorph.morph_recent=Morph most recent
 key.metamorph.demorph=Demorph (turn back to player)
 
 # GUI

@@ -84,6 +84,16 @@ public interface IMorphing
     public boolean setCurrentMorph(AbstractMorph morph, EntityPlayer player, boolean force);
 
     /**
+     * Get morph of last survival morph attempt
+     */
+    public AbstractMorph getLastSelectedMorph();
+
+    /**
+     * Set morph of last survival morph attempt
+     */
+    public void setLastSelectedMorph(AbstractMorph morph);
+
+    /**
      * Demorph this capability 
      */
     public void demorph(EntityPlayer player);

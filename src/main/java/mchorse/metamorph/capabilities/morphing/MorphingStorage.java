@@ -45,6 +45,14 @@ public class MorphingStorage implements IStorage<IMorphing>
             tag.setTag("Morph", morph);
         }
 
+        if (instance.getLastSelectedMorph() != null)
+        {
+            NBTTagCompound selectedMorph = new NBTTagCompound();
+            instance.getLastSelectedMorph().toNBT(selectedMorph);
+            
+            tag.setTag("RecentMorph", selectedMorph);
+        }
+
         tag.setTag("Morphs", acquired);
 
         for (AbstractMorph acquiredMorph : instance.getAcquiredMorphs())
@@ -66,6 +74,7 @@ public class MorphingStorage implements IStorage<IMorphing>
             NBTTagCompound tag = (NBTTagCompound) nbt;
             NBTTagList acquired = tag.getTagList("Morphs", 10);
             NBTTagCompound morphTag = tag.getCompoundTag("Morph");
+            NBTTagCompound selectedMorphTag = tag.getCompoundTag("RecentMorph");
 
             instance.setLastHealthRatio(tag.getFloat("LastHealthRatio"));
             instance.setHasSquidAir(tag.getBoolean("HasSquidAir"));
@@ -75,6 +84,7 @@ public class MorphingStorage implements IStorage<IMorphing>
             if (!tag.hasNoTags())
             {
                 instance.setCurrentMorph(MorphManager.INSTANCE.morphFromNBT(morphTag), null, true);
+                instance.setLastSelectedMorph(MorphManager.INSTANCE.morphFromNBT(selectedMorphTag));
             }
 
             List<AbstractMorph> acquiredMorphs = new ArrayList<AbstractMorph>();

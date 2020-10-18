@@ -144,6 +144,6 @@ public class CapabilityHandler
         EntityPlayerMP mp = (EntityPlayerMP) player;
 
         Dispatcher.sendTo(new PacketMorph(cap.getCurrentMorph()), mp);
-        Dispatcher.sendTo(new PacketAcquiredMorphs(cap.getAcquiredMorphs()), mp);
+        Dispatcher.sendTo(new PacketAcquiredMorphs(cap.getAcquiredMorphs(), cap.getLastSelectedMorph()), mp);
     }
 }

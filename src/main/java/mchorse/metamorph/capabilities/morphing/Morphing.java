@@ -42,6 +42,11 @@ public class Morphing implements IMorphing
     private AbstractMorph previousMorph;
 
     /**
+     * Used for recent morph hotkey
+     */
+    private AbstractMorph lastSelectedMorph;
+
+    /**
      * Animation timer 
      */
     private int animation;
@@ -285,6 +290,22 @@ public class Morphing implements IMorphing
         }
 
         return false;
+    }
+
+    /**
+     * Get morph of last survival morph attempt
+     */
+    public AbstractMorph getLastSelectedMorph()
+    {
+        return lastSelectedMorph;
+    }
+
+    /**
+     * Set morph of last survival morph attempt
+     */
+    public void setLastSelectedMorph(AbstractMorph morph)
+    {
+        this.lastSelectedMorph = morph;
     }
 
     @Override

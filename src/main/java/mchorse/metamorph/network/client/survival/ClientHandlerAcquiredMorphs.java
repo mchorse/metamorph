@@ -17,5 +17,6 @@ public class ClientHandlerAcquiredMorphs extends ClientMessageHandler<PacketAcqu
         IMorphing morphing = Morphing.get(player);
 
         morphing.setAcquiredMorphs(message.morphs);
+        morphing.setLastSelectedMorph(message.lastSelectedMorph);
     }
 }
