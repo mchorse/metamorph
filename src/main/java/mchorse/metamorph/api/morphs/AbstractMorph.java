@@ -516,7 +516,6 @@ public abstract class AbstractMorph
 
             return Objects.equals(this.name, morph.name) &&
                 Objects.equals(this.displayName, morph.displayName) &&
-                Objects.equals(this.settings, morph.settings) &&
                 Objects.equals(this.hitbox, morph.hitbox);
         }
 
