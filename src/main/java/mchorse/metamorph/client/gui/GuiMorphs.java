@@ -30,7 +30,7 @@ public class GuiMorphs extends GuiScrollElement
 	{
 		super(mc);
 
-		this.scroll.scrollSpeed = 35;
+		this.scroll.scrollSpeed = 45;
 
 		IKey category = IKey.lang("metamorph.gui.morphs.keys.category");
 

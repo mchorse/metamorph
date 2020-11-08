@@ -1,6 +1,5 @@
 package mchorse.metamorph.client.gui.creative;
 
-import mchorse.mclib.client.gui.framework.elements.IGuiElement;
 import mchorse.mclib.client.gui.framework.elements.context.GuiContextMenu;
 import mchorse.mclib.client.gui.framework.elements.context.GuiSimpleContextMenu;
 import mchorse.mclib.client.gui.framework.elements.modals.GuiConfirmModal;
@@ -11,15 +10,14 @@ import mchorse.mclib.client.gui.utils.Icons;
 import mchorse.mclib.client.gui.utils.keys.IKey;
 import mchorse.metamorph.api.MorphManager;
 import mchorse.metamorph.api.creative.categories.AcquiredCategory;
+import mchorse.metamorph.api.creative.categories.MorphCategory;
 import mchorse.metamorph.api.creative.categories.RecentCategory;
+import mchorse.metamorph.api.creative.categories.UserCategory;
 import mchorse.metamorph.api.creative.sections.MorphSection;
 import mchorse.metamorph.api.creative.sections.UserSection;
-import mchorse.metamorph.api.creative.categories.MorphCategory;
-import mchorse.metamorph.api.creative.categories.UserCategory;
 import mchorse.metamorph.api.morphs.AbstractMorph;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiScreen;
-import net.minecraft.entity.item.EntityXPOrb;
 import net.minecraft.nbt.JsonToNBT;
 
 import java.util.function.Consumer;
