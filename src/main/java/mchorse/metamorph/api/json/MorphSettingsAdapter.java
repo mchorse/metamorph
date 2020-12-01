@@ -69,12 +69,12 @@ public class MorphSettingsAdapter implements JsonDeserializer<MorphSettings>
             }
         }
 
-        if (object.has("action") && object.get("updates").isJsonPrimitive())
+        if (object.has("action") && object.get("action").isJsonPrimitive())
         {
             morph.action = manager.actions.get(object.get("action").getAsString());
         }
 
-        if (object.has("attack") && object.get("updates").isJsonPrimitive())
+        if (object.has("attack") && object.get("attack").isJsonPrimitive())
         {
             morph.attack = manager.attacks.get(object.get("attack").getAsString());
         }
