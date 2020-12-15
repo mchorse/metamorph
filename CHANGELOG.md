@@ -1,6 +1,15 @@
+## Metamorph 1.2.4
+
+This patch fix features some bug fixes that are required for the release of my new Chameleon mod.
+
+**Compatible** with McLib `2.1`. It doesn't mean that future versions of McLib would be incompatible, but older versions are most likely incompatible.
+
+* Changed the scrolling speed of morph panels from `35` to `45` pixels per mouse wheel scroll
+* Fixed morph settings parsing to be more lenient to the provided data types
+
 ## Metamorph 1.2.3
 
-This is small update mostly needed for Blockbuster update.
+This small update mostly needed for Blockbuster update.
 
 **Compatible** with McLib `2.1`. It doesn't mean that future versions of McLib would be incompatible, but older versions are most likely incompatible.
 
