@@ -33,7 +33,7 @@ public class BodyPart
     public ItemStack[] slots = new ItemStack[] {ItemStack.EMPTY, ItemStack.EMPTY, ItemStack.EMPTY, ItemStack.EMPTY, ItemStack.EMPTY, ItemStack.EMPTY};
     public Vector3f translate = new Vector3f();
     public Vector3f scale = new Vector3f(1, 1, 1);
-    public Vector3f rotate = new Vector3f(180, 0, 0);
+    public Vector3f rotate = new Vector3f(0, 0, 0);
     public boolean useTarget = false;
     public boolean enabled = true;
     public String limb = "";

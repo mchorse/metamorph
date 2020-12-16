@@ -140,6 +140,7 @@ public class GuiBodyPartEditor extends GuiMorphPanel<AbstractMorph, GuiAbstractM
     {
         BodyPart part = new BodyPart();
 
+        this.setupNewBodyPart(part);
         part.init();
 
         this.parts.parts.add(part);
@@ -148,6 +149,9 @@ public class GuiBodyPartEditor extends GuiMorphPanel<AbstractMorph, GuiAbstractM
         this.bodyParts.setCurrentDirect(part);
         this.bodyParts.update();
     }
+
+    protected void setupNewBodyPart(BodyPart part)
+    {}
 
     protected void dupePart(GuiIconElement b)
     {
