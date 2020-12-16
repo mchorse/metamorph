@@ -2,6 +2,7 @@ package mchorse.metamorph.client.gui.editor;
 
 import mchorse.mclib.client.gui.framework.elements.GuiScrollElement;
 import mchorse.mclib.client.gui.framework.elements.buttons.GuiButtonElement;
+import mchorse.mclib.client.gui.framework.elements.input.GuiKeybindElement;
 import mchorse.mclib.client.gui.framework.elements.input.GuiTextElement;
 import mchorse.mclib.client.gui.framework.elements.input.GuiTrackpadElement;
 import mchorse.mclib.client.gui.framework.elements.list.GuiStringListElement;
@@ -17,6 +18,7 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.client.resources.I18n;
 import net.minecraft.nbt.JsonToNBT;
 import net.minecraft.nbt.NBTTagCompound;
+import org.lwjgl.input.Keyboard;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -25,6 +27,7 @@ public class GuiSettingsPanel extends GuiMorphPanel<AbstractMorph, GuiAbstractMo
 {
 	public GuiScrollElement element;
 
+	public GuiKeybindElement keybind;
 	public GuiButtonElement reset;
 	public GuiTextElement displayName;
 	public GuiStringListElement abilities;
@@ -42,8 +45,22 @@ public class GuiSettingsPanel extends GuiMorphPanel<AbstractMorph, GuiAbstractMo
 
 		this.element = new GuiScrollElement(mc);
 		this.element.scroll.opposite = true;
+		this.element.scroll.cancelScrollEdge = true;
 		this.element.flex().relative(this).w(120).h(1F).column(5).vertical().stretch().scroll().height(20).padding(10);
 
+		this.keybind = new GuiKeybindElement(mc, (key) ->
+		{
+			if (key == Keyboard.KEY_ESCAPE)
+			{
+				this.morph.keybind = -1;
+				this.keybind.setKeybind(-1);
+			}
+			else
+			{
+				this.morph.keybind = key;
+			}
+		});
+		this.keybind.tooltip(IKey.lang("metamorph.gui.editor.keybind_tooltip"));
 		this.reset = new GuiButtonElement(mc, IKey.lang("metamorph.gui.editor.reset"), (button) ->
 		{
 			this.morph.settings = MorphSettings.DEFAULT;
@@ -103,6 +120,7 @@ public class GuiSettingsPanel extends GuiMorphPanel<AbstractMorph, GuiAbstractMo
 		this.data.flex().relative(this).relative(this.element).x(1F, 10).y(1, -30).wTo(this.flex(), 1F, -10);
 
 		this.element.add(this.reset);
+		this.element.add(Elements.label(IKey.lang("metamorph.gui.editor.keybind"), 16).anchor(0, 1F), this.keybind);
 		this.element.add(Elements.label(IKey.lang("metamorph.gui.editor.display_name"), 16).anchor(0, 1F), this.displayName);
 		this.element.add(Elements.label(IKey.lang("metamorph.gui.editor.health"), 16).anchor(0, 1F), this.health);
 		this.element.add(Elements.label(IKey.lang("metamorph.gui.editor.speed"), 16).anchor(0, 1F), this.speed);
@@ -167,6 +185,7 @@ public class GuiSettingsPanel extends GuiMorphPanel<AbstractMorph, GuiAbstractMo
 
 		this.updateNBT();
 
+		this.keybind.setKeybind(morph.keybind);
 		this.displayName.setText(morph.displayName);
 		this.health.setValue(morph.settings.health);
 		this.speed.setValue(morph.settings.speed);

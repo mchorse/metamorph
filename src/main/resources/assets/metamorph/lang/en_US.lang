@@ -86,6 +86,8 @@ metamorph.gui.survival.keys.toggle_favorites=Toggle favorite morphs
 metamorph.gui.survival.keys.focus_keybind=Focus keybind
 
 metamorph.gui.editor.settings=Morph settings
+metamorph.gui.editor.keybind=Keybind
+metamorph.gui.editor.keybind_tooltip=Setting keybind here will allow you to morph into this morph by pressing this key either in the world or in survival morph menu
 metamorph.gui.editor.display_name=Display name
 metamorph.gui.editor.health=Health
 metamorph.gui.editor.speed=Speed
