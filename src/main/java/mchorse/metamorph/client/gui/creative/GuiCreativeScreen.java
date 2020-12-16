@@ -100,16 +100,7 @@ public class GuiCreativeScreen extends GuiBase
 
     private void copyMorphCommand(GuiIconElement button)
     {
-        AbstractMorph morph = this.pane.getSelected();
-
-        if (morph != null)
-        {
-            NBTTagCompound nbt = morph.toNBT();
-
-            nbt.removeTag("Name");
-
-            GuiScreen.setClipboardString("/morph @p " + morph.name + " " + nbt.toString());
-        }
+        GuiScreen.setClipboardString(GuiMorphSection.getMorphCommand(this.pane.getSelected()));
     }
 
     private void toggleEntitySelector(GuiIconElement button)

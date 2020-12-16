@@ -2,6 +2,7 @@ package mchorse.metamorph.client.gui.creative;
 
 import mchorse.mclib.McLib;
 import mchorse.mclib.client.gui.framework.elements.GuiElement;
+import mchorse.mclib.client.gui.framework.elements.buttons.GuiIconElement;
 import mchorse.mclib.client.gui.framework.elements.context.GuiContextMenu;
 import mchorse.mclib.client.gui.framework.elements.context.GuiSimpleContextMenu;
 import mchorse.mclib.client.gui.framework.elements.utils.GuiContext;
@@ -20,6 +21,7 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.Gui;
 import net.minecraft.client.gui.GuiScreen;
 import net.minecraft.client.renderer.GlStateManager;
+import net.minecraft.nbt.NBTTagCompound;
 import org.lwjgl.opengl.GL11;
 
 import java.util.function.Consumer;
@@ -47,6 +49,20 @@ public class GuiMorphSection extends GuiElement
 	public int height;
 
 	private String filter = "";
+
+	public static String getMorphCommand(AbstractMorph morph)
+	{
+		if (morph != null)
+		{
+			NBTTagCompound nbt = morph.toNBT();
+
+			nbt.removeTag("Name");
+
+			return "/morph @p " + morph.name + " " + nbt.toString();
+		}
+
+		return "";
+	}
 
 	public GuiMorphSection(Minecraft mc, GuiCreativeMorphsList parent, MorphSection section, Consumer<GuiMorphSection> callback)
 	{
@@ -367,6 +383,7 @@ public class GuiMorphSection extends GuiElement
 			}
 
 			contextMenu.action(Icons.EDIT, IKey.lang("metamorph.gui.creative.context.edit"), () -> this.parent.enterEditMorph(morph));
+			contextMenu.action(Icons.COPY, IKey.lang("metamorph.gui.creative.context.copy_command"), () -> GuiScreen.setClipboardString(getMorphCommand(morph)));
 			contextMenu.action(Icons.COPY, IKey.lang("metamorph.gui.creative.context.copy"), () -> GuiScreen.setClipboardString(morph.toNBT().toString()));
 		}
 
