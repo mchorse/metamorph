@@ -64,6 +64,12 @@ public class ModelRenderer implements IModelRenderer
         }
     }
 
+    @Override
+    public boolean canRender()
+    {
+        return this.selector != null;
+    }
+
     /**
      * Render the animator controller based on given entity
      */
