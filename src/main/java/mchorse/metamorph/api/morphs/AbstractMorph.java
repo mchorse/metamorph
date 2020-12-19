@@ -416,6 +416,17 @@ public abstract class AbstractMorph
     {}
 
     /**
+     * This method should be used by any morphs that support merging to copy essential
+     * whenever they merge
+     */
+    protected void mergeBasic(AbstractMorph morph)
+    {
+        this.displayName = morph.displayName;
+        this.settings = morph.settings;
+        this.hitbox.copy(morph.hitbox);
+    }
+
+    /**
      * Reset data for editing 
      */
     public void reset()
