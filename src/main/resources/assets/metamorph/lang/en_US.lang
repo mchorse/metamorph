@@ -101,6 +101,14 @@ metamorph.gui.editor.item_morph=Item
 metamorph.gui.editor.keys.category=Morph editor keybinds
 metamorph.gui.editor.keys.cycle=Cycle between morph panels
 
+metamorph.gui.editor.hitbox.enabled=Custom hitbox
+metamorph.gui.editor.hitbox.size=Size
+metamorph.gui.editor.hitbox.width=Hitbox width
+metamorph.gui.editor.hitbox.height=Hitbox height
+metamorph.gui.editor.hitbox.sneaking_height=Hitbox sneaking height
+metamorph.gui.editor.hitbox.eye=Eye position
+metamorph.gui.editor.hitbox.eye_tooltip=Eye height factor of the height, where 0 is at the bottom and 1 on the top of the hitbox
+
 metamorph.gui.label.label=Label
 metamorph.gui.label.max_width=Max width
 metamorph.gui.label.anchor=Anchor
