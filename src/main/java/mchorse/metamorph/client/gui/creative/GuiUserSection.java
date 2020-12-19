@@ -39,45 +39,38 @@ public class GuiUserSection extends GuiMorphSection
 			return contextMenu;
 		}
 
-		if (this.hoverCategory != null)
+		MorphCategory category = this.hoverCategory;
+		AbstractMorph morph = this.hoverMorph;
+
+		boolean user = category instanceof UserCategory;
+		boolean acquired = category instanceof AcquiredCategory;
+		boolean recent = category instanceof RecentCategory;
+
+		if (category != null)
 		{
-			contextMenu.action(Icons.PASTE, IKey.lang("metamorph.gui.creative.context.paste"), () -> this.pasteMorph(this.hoverCategory));
+			contextMenu.action(Icons.PASTE, IKey.lang("metamorph.gui.creative.context.paste"), () -> this.pasteMorph(category));
+		}
+
+		if (morph != null && (user || acquired))
+		{
+			contextMenu.action(Icons.REFRESH, IKey.lang("metamorph.gui.creative.context.to_recent"), () -> this.copyToRecent(morph));
 		}
 
 		contextMenu.action(Icons.ADD, IKey.lang("metamorph.gui.creative.context.add_category"), () -> section.add(new UserCategory(this.section, "User category")));
 
-		if (this.hoverCategory instanceof UserCategory)
+		if (user)
 		{
-			MorphCategory category = this.hoverCategory;
-
 			contextMenu.action(Icons.EDIT, IKey.lang("metamorph.gui.creative.context.rename_category"), () -> this.renameCategory(category));
-			contextMenu.action(Icons.REMOVE, IKey.lang("metamorph.gui.creative.context.remove_category"), () -> this.removeCategory(category));
-		}
-		else if (this.hoverCategory instanceof RecentCategory)
-		{
-			MorphCategory category = this.hoverCategory;
-
-			contextMenu.action(Icons.REMOVE, IKey.lang("metamorph.gui.creative.context.clear_category"), () ->
-			{
-				category.clear();
-				this.parent.setSelected(null);
-			});
-		}
-		else if (this.hoverCategory instanceof AcquiredCategory || this.hoverCategory instanceof UserCategory)
-		{
-			AbstractMorph morph = this.hoverMorph;
-
-			if (morph != null)
-			{
-				contextMenu.action(Icons.REFRESH, IKey.lang("metamorph.gui.creative.context.to_recent"), () -> this.copyToRecent(morph));
-			}
+			contextMenu.action(Icons.CLOSE, IKey.lang("metamorph.gui.creative.context.remove_category"), () -> this.removeCategory(category));
 		}
 
-		if (this.hoverMorph != null && this.hoverCategory != null)
+		if (recent || acquired)
 		{
-			MorphCategory category = this.hoverCategory;
-			AbstractMorph morph = this.hoverMorph;
+			contextMenu.action(Icons.CLOSE, IKey.lang("metamorph.gui.creative.context.clear_category"), () -> this.clearCategory(category));
+		}
 
+		if (morph != null && category != null)
+		{
 			contextMenu.action(Icons.CLOSE, IKey.lang("metamorph.gui.creative.context.remove_morph"), () -> category.remove(morph));
 		}
 
@@ -145,6 +138,24 @@ public class GuiUserSection extends GuiMorphSection
 				if (value)
 				{
 					this.section.remove(category);
+				}
+			});
+
+			modal.flex().relative(this.parent).xy(0.5F, 0.5F).wh(160, 180).anchor(0.5F, 0.5F);
+
+			return modal;
+		});
+	}
+
+	private void clearCategory(MorphCategory category)
+	{
+		GuiModal.addModal(this.parent, () ->
+		{
+			GuiConfirmModal modal = new GuiConfirmModal(this.mc, IKey.lang("metamorph.gui.creative.context.clear_category_modal"), (value) ->
+			{
+				if (value)
+				{
+					category.clear();
 				}
 			});
 

@@ -13,6 +13,7 @@ import mchorse.metamorph.network.client.survival.ClientHandlerMorphState;
 import mchorse.metamorph.network.client.survival.ClientHandlerRemoveMorph;
 import mchorse.metamorph.network.client.ClientHandlerSettings;
 import mchorse.metamorph.network.common.creative.PacketAcquireMorph;
+import mchorse.metamorph.network.common.creative.PacketClearAcquired;
 import mchorse.metamorph.network.common.survival.PacketAcquiredMorphs;
 import mchorse.metamorph.network.common.survival.PacketAction;
 import mchorse.metamorph.network.common.PacketBlacklist;
@@ -26,6 +27,7 @@ import mchorse.metamorph.network.common.survival.PacketSelectMorph;
 import mchorse.metamorph.network.common.PacketSettings;
 import mchorse.metamorph.network.common.creative.PacketSyncMorph;
 import mchorse.metamorph.network.server.creative.ServerHandlerAcquireMorph;
+import mchorse.metamorph.network.server.creative.ServerHandlerClearAcquired;
 import mchorse.metamorph.network.server.survival.ServerHandlerAction;
 import mchorse.metamorph.network.server.survival.ServerHandlerFavorite;
 import mchorse.metamorph.network.server.survival.ServerHandlerKeybind;
@@ -62,6 +64,7 @@ public class Dispatcher
             register(PacketSyncMorph.class, ServerHandlerSyncMorph.class, Side.SERVER);
 
             register(PacketSelectMorph.class, ServerHandlerSelectMorph.class, Side.SERVER);
+            register(PacketClearAcquired.class, ServerHandlerClearAcquired.class, Side.SERVER);
 
             /* Morph state */
             register(PacketMorphState.class, ClientHandlerMorphState.class, Side.CLIENT);

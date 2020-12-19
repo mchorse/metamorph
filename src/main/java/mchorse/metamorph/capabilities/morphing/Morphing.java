@@ -364,6 +364,12 @@ public class Morphing implements IMorphing
     }
 
     @Override
+    public void removeAcquired()
+    {
+        this.acquiredMorphs.clear();
+    }
+
+    @Override
     public void copy(IMorphing morphing, EntityPlayer player)
     {
         this.acquiredMorphs.addAll(morphing.getAcquiredMorphs());

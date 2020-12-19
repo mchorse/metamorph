@@ -112,6 +112,11 @@ public interface IMorphing
     public boolean remove(int index);
 
     /**
+     * Remove all acquired morphs
+     */
+    public void removeAcquired();
+
+    /**
      * Copy data from other morph 
      */
     public void copy(IMorphing morphing, EntityPlayer player);
