@@ -377,7 +377,7 @@ public class EntityMorph extends AbstractMorph implements IBodyPartProvider
                 {
                     GlStateManager.pushMatrix();
                     entry.getValue().postRender(scale);
-                    part.render(target, partialTicks);
+                    part.render(this, target, partialTicks);
                     GlStateManager.popMatrix();
 
                     break;
@@ -618,7 +618,7 @@ public class EntityMorph extends AbstractMorph implements IBodyPartProvider
             horse.setHorseSaddled(this.entityData.hasKey("SaddleItem"));
         }
 
-        this.parts.updateBodyLimbs(target);
+        this.parts.updateBodyLimbs(this, target);
     }
 
     protected void updateEntity(EntityLivingBase target)

@@ -63,11 +63,11 @@ public class BodyPartManager
     /**
      * Update body limbs 
      */
-    public void updateBodyLimbs(EntityLivingBase target)
+    public void updateBodyLimbs(AbstractMorph parent, EntityLivingBase target)
     {
         for (BodyPart part : this.parts)
         {
-            part.update(target);
+            part.update(parent, target);
         }
     }
 
@@ -145,15 +145,15 @@ public class BodyPartManager
 
         for (int i = 0; i < this.parts.size(); i++)
         {
-            AbstractMorph current = this.parts.get(i).morph.get();
-            AbstractMorph past = null;
+            BodyPart current = this.parts.get(i);
+            BodyPart past = null;
 
             if (parts != null)
             {
-                past = i < parts.parts.size() ? parts.parts.get(i).morph.get() : null;
+                past = i < parts.parts.size() ? parts.parts.get(i) : null;
             }
 
-            MorphUtils.pause(current, past, offset);
+            current.pause(past, offset);
         }
     }
 
