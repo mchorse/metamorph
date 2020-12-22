@@ -13,6 +13,6 @@ public class ClientHandlerBlacklist extends ClientMessageHandler<PacketBlacklist
     @Override
     public void run(EntityPlayerSP player, PacketBlacklist message)
     {
-        MorphManager.INSTANCE.setActiveBlacklist(message.blacklist);
+        MorphManager.INSTANCE.setActiveBlacklist(player.world, message.blacklist);
     }
 }

@@ -7,10 +7,12 @@ import mchorse.metamorph.api.creative.MorphList;
 import mchorse.metamorph.api.creative.sections.UserSection;
 import mchorse.metamorph.api.morphs.AbstractMorph;
 import mchorse.metamorph.client.gui.editor.GuiAbstractMorph;
+import mchorse.vanilla_pack.MetamorphSection;
 import net.minecraft.client.Minecraft;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityList;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.world.World;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
@@ -85,10 +87,18 @@ public class MorphManager
     /**
      * Set currently used morph ID blacklist
      */
-    public void setActiveBlacklist(Set<String> blacklist)
+    public void setActiveBlacklist(World world, Set<String> blacklist)
     {
         this.activeBlacklist.clear();
         this.activeBlacklist.addAll(blacklist);
+
+        MetamorphSection section = this.list.getSection(MetamorphSection.class);
+
+        if (section != null && world != null)
+        {
+            section.reset();
+            section.update(world);
+        }
     }
 
     /**

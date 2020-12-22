@@ -18,6 +18,7 @@ import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.management.PlayerList;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.world.World;
 import net.minecraftforge.fml.common.FMLCommonHandler;
 import net.minecraftforge.fml.common.network.simpleimpl.IMessage;
 
@@ -60,7 +61,7 @@ public class CommandMetamorph extends CommandBase
 
             if (action.equals("reload") && args.length >= 2)
             {
-                this.reload(args[1]);
+                this.reload(sender.getEntityWorld(), args[1]);
             }
         }
     }
@@ -68,14 +69,14 @@ public class CommandMetamorph extends CommandBase
     /**
      * Reload something (blacklist or morph configuration) 
      */
-    private void reload(String string)
+    private void reload(World world, String string)
     {
         /* Reload blacklist */
         if (string.equals("blacklist"))
         {
             Set<String> blacklist = MorphUtils.reloadBlacklist();
 
-            MorphManager.INSTANCE.setActiveBlacklist(blacklist);
+            MorphManager.INSTANCE.setActiveBlacklist(world, blacklist);
             this.broadcastPacket(new PacketBlacklist(blacklist));
         }
         else if (string.equals("morphs"))

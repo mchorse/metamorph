@@ -62,4 +62,17 @@ public class MorphList
 
         return false;
     }
+
+    public <T> T getSection(Class<T> clazz)
+    {
+        for (MorphSection section : this.sections)
+        {
+            if (section.getClass() == clazz)
+            {
+                return clazz.cast(section);
+            }
+        }
+
+        return null;
+    }
 }
