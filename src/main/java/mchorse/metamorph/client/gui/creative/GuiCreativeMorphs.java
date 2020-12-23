@@ -95,7 +95,7 @@ public class GuiCreativeMorphs extends GuiMorphs
 			else
 			{
 				this.selected = selectedSection;
-				this.parent.scrollTo = true;
+				this.scrollTo();
 
 				selectedSection.morph = found;
 				selectedSection.category = selectedCategory;
@@ -133,7 +133,7 @@ public class GuiCreativeMorphs extends GuiMorphs
 		this.selected.category = this.user.recent;
 		this.parent.pickMorph(morph);
 
-		this.parent.scrollTo = true;
+		this.scrollTo();
 
 		return morph;
 	}

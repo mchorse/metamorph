@@ -61,8 +61,6 @@ public class GuiCreativeMorphsList extends GuiElement
     public GuiQuickEditor quickEditor;
     public GuiCreativeMorphs morphs;
 
-    protected boolean scrollTo;
-
     private Timer timer = new Timer(100);
     private Stack<NestedEdit> nestedEdits = new Stack<NestedEdit>();
 
@@ -257,7 +255,7 @@ public class GuiCreativeMorphsList extends GuiElement
         this.morphs.setFilter("");
         this.morphs.setSelectedDirect(edit.selected, edit.selectedMorph, edit.selectedCategory);
         this.callback = edit.callback;
-        this.scrollTo = true;
+        this.morphs.scrollTo();
 
         this.enterEditMorph(edit.editMorph);
         this.editor.delegate.fromNBT(edit.data);
@@ -468,12 +466,6 @@ public class GuiCreativeMorphsList extends GuiElement
         }
 
         super.draw(context);
-
-        if (this.scrollTo && !this.isEditMode())
-        {
-            this.morphs.scrollTo();
-            this.scrollTo = false;
-        }
     }
 
     private void drawOverlay(GuiContext context)

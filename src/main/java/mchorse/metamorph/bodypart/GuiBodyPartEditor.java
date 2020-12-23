@@ -116,6 +116,7 @@ public class GuiBodyPartEditor extends GuiMorphPanel<AbstractMorph, GuiAbstractM
         this.bodyParts.flex().relative(this).set(10, 22, width, 0).hTo(this.transformations.flex(), 1F, -20);
 
         this.elements = new GuiElement(mc);
+        this.elements.flex().relative(this).x(1F, -130).w(130).h(1F);
         this.elements.add(bottomEditor, this.limbs, this.pickMorph, this.transformations);
         this.add(sidebar, this.bodyParts, this.elements);
 

@@ -53,7 +53,7 @@ public class GuiSettingsPanel extends GuiMorphPanel<AbstractMorph, GuiAbstractMo
 
 		this.left = new GuiScrollElement(mc);
 		this.left.scroll.opposite = true;
-		this.left.scroll.cancelScrollEdge = true;
+		this.left.cancelScrollEdge();
 		this.left.flex().relative(this).w(130).h(1F).column(5).vertical().stretch().scroll().height(20).padding(10);
 
 		this.keybind = new GuiKeybindElement(mc, (key) ->

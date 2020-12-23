@@ -24,7 +24,8 @@ public class GuiMorphs extends GuiScrollElement
 
 	public int x;
 	public int y;
-	public boolean scrollTo;
+
+	private boolean scrollTo;
 
 	public GuiMorphs(Minecraft mc)
 	{
@@ -263,6 +264,13 @@ public class GuiMorphs extends GuiScrollElement
 	 */
 	public void scrollTo()
 	{
+		if (this.area.w == 0)
+		{
+			this.scrollTo = true;
+
+			return;
+		}
+
 		AbstractMorph morph = this.getSelected();
 
 		if (morph == null)
@@ -281,19 +289,26 @@ public class GuiMorphs extends GuiScrollElement
 				break;
 			}
 
-			y += section.height;
+			y += section.getFullHeight();
 		}
 	}
 
 	@Override
-	public void draw(GuiContext context)
+	public void resize()
 	{
-		super.draw(context);
+		super.resize();
+
+		for (GuiMorphSection section : this.sections)
+		{
+			section.flex().h(section.getFullHeight());
+		}
+
+		super.resize();
 
 		if (this.scrollTo)
 		{
-			this.scrollTo();
 			this.scrollTo = false;
+			this.scrollTo();
 		}
 	}
 }

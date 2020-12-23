@@ -2,12 +2,12 @@ package mchorse.metamorph.client.gui.creative;
 
 import mchorse.mclib.McLib;
 import mchorse.mclib.client.gui.framework.elements.GuiElement;
-import mchorse.mclib.client.gui.framework.elements.buttons.GuiIconElement;
 import mchorse.mclib.client.gui.framework.elements.context.GuiContextMenu;
 import mchorse.mclib.client.gui.framework.elements.context.GuiSimpleContextMenu;
 import mchorse.mclib.client.gui.framework.elements.utils.GuiContext;
 import mchorse.mclib.client.gui.framework.elements.utils.GuiDraw;
 import mchorse.mclib.client.gui.utils.Area;
+import mchorse.mclib.client.gui.utils.Icon;
 import mchorse.mclib.client.gui.utils.Icons;
 import mchorse.mclib.client.gui.utils.keys.IKey;
 import mchorse.mclib.utils.Keys;
@@ -279,6 +279,31 @@ public class GuiMorphSection extends GuiElement
 		return (int) Math.ceil(size / (float) this.getPerRow()) * this.cellHeight;
 	}
 
+	public int getFullHeight()
+	{
+		int h = HEADER_HEIGHT + (this.last ? 30 : 0);
+
+		if (!this.section.hidden)
+		{
+			for (MorphCategory category : this.section.categories)
+			{
+				int count = this.getMorphsSize(category);
+
+				if (category.isHidden() || (count == 0 && !this.noFilter()))
+				{
+					continue;
+				}
+
+				h += CATEGORY_HEIGHT + 5;
+				h += this.getCategoryHeight(category) + 5;
+			}
+
+			h -= 5;
+		}
+
+		return h;
+	}
+
 	@Override
 	public boolean mouseClicked(GuiContext context)
 	{
@@ -393,12 +418,13 @@ public class GuiMorphSection extends GuiElement
 	@Override
 	public void draw(GuiContext context)
 	{
-		int y = this.drawMorphs(context) + (this.last ? 30 : 0);
+		this.drawMorphs(context);
 
-		if (this.area.h != y)
+		int h = this.getFullHeight();
+
+		if (this.area.h != h)
 		{
-			this.height = y;
-			this.flex().h(y);
+			this.flex().h(h);
 			this.getParent().getParent().resize();
 		}
 
@@ -406,20 +432,22 @@ public class GuiMorphSection extends GuiElement
 	}
 
 	/**
-	 * Draw morphs and return the final height
+	 * Draw morphs
 	 */
-	protected int drawMorphs(GuiContext context)
+	protected void drawMorphs(GuiContext context)
 	{
 		if (this.section.categories.isEmpty())
 		{
-			return 0;
+			return;
 		}
 
 		/* Draw header */
+		Icon toggleIcon = this.section.hidden ? Icons.MOVE_DOWN : Icons.MOVE_UP;
+
 		Gui.drawRect(this.area.x, this.area.y, this.area.ex(), this.area.y + HEADER_HEIGHT, 0xbb000000);
 
 		this.font.drawStringWithShadow(this.section.getTitle(), this.area.x + 7, this.area.y + 10 - this.font.FONT_HEIGHT / 2, 0xffffff);
-		(this.section.hidden ? Icons.MOVE_DOWN : Icons.MOVE_UP).render(this.area.ex() - 18 - 3, this.area.y + 10 + (this.section.hidden ? 1 : -1), 0, 0.5F);
+		toggleIcon.render(this.area.ex() - 18 - 3, this.area.y + 10 + (this.section.hidden ? 1 : -1), 0, 0.5F);
 
 		/* Draw categories */
 		int y = HEADER_HEIGHT;
@@ -429,11 +457,13 @@ public class GuiMorphSection extends GuiElement
 
 		if (this.section.hidden)
 		{
-			return y;
+			return;
 		}
 
+		Area viewport = context.getViewport();
 		int row = this.getPerRow();
 
+		category:
 		for (MorphCategory category : this.section.categories)
 		{
 			int count = this.getMorphsSize(category);
@@ -485,17 +515,23 @@ public class GuiMorphSection extends GuiElement
 					this.hoverMorph = morph;
 				}
 
-				GuiDraw.scissor(mx, my, w, this.cellHeight, context);
-				this.drawMorph(context, morph, mx, my, w, this.cellHeight, this.hoverMorph == morph, this.morph == morph);
-				GuiDraw.unscissor(context);
+				if (Area.SHARED.intersects(viewport))
+				{
+					GuiDraw.scissor(mx, my, w, this.cellHeight, context);
+					this.drawMorph(context, morph, mx, my, w, this.cellHeight, this.hoverMorph == morph, this.morph == morph);
+					GuiDraw.unscissor(context);
+				}
+
+				if (Area.SHARED.y > viewport.ey())
+				{
+					break category;
+				}
 
 				j ++;
 			}
 
 			y += this.cellHeight + 5;
 		}
-
-		return y;
 	}
 
 	/**
