@@ -39,6 +39,7 @@ public class BodyPart
     public Vector3f rotate = new Vector3f(180, 0, 0);
     public boolean useTarget = false;
     public boolean enabled = true;
+    public boolean animate = true;
     public String limb = "";
 
     private EntityLivingBase entity;
@@ -94,7 +95,7 @@ public class BodyPart
         float ry = this.rotate.y;
         float rz = this.rotate.z;
 
-        if (animation != null && animation.isInProgress() && this.lastTranslate != null)
+        if (animation != null && animation.isInProgress() && this.lastTranslate != null && this.animate)
         {
             Interpolation inter = animation.interp;
             float factor = animation.getFactor(partialTicks);
@@ -206,6 +207,7 @@ public class BodyPart
         this.rotate.set(part.rotate);
         this.useTarget = part.useTarget;
         this.enabled = part.enabled;
+        this.animate = part.animate;
 
         for (int i = 0; i < part.slots.length; i++)
         {
@@ -244,6 +246,7 @@ public class BodyPart
             result = result && Objects.equal(this.rotate, part.rotate);
             result = result && this.useTarget == part.useTarget;
             result = result && this.enabled == part.enabled;
+            result = result && this.animate == part.animate;
 
             for (int i = 0; i < this.slots.length; i++)
             {
@@ -266,6 +269,7 @@ public class BodyPart
         part.rotate.set(this.rotate);
         part.useTarget = this.useTarget;
         part.enabled = this.enabled;
+        part.animate = this.animate;
 
         for (int i = 0; i < this.slots.length; i++)
         {
@@ -303,6 +307,7 @@ public class BodyPart
 
         if (tag.hasKey("Target")) this.useTarget = tag.getBoolean("Target");
         if (tag.hasKey("Enabled")) this.enabled = tag.getBoolean("Enabled");
+        if (tag.hasKey("Animate")) this.animate = tag.getBoolean("Animate");
         if (tag.hasKey("Limb")) this.limb = tag.getString("Limb");
     }
 
@@ -349,6 +354,7 @@ public class BodyPart
 
         if (this.useTarget) tag.setBoolean("Target", this.useTarget);
         if (!this.enabled) tag.setBoolean("Enabled", this.enabled);
+        if (!this.animate) tag.setBoolean("Animate", this.animate);
         if (!this.limb.isEmpty()) tag.setString("Limb", this.limb);
     }
 }
