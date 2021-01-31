@@ -1,6 +1,6 @@
 ## Metamorph 1.2.5
 
-This patch update adds a keybind field to creative morph menu, added animation of body part transfromations based on parent animated morph, and improved performance in the creative morph list.
+This patch update adds a keybind field to creative morph menu, added animation of body part transformations based on parent animated morph, and improved performance in the creative morph list.
 
 **Compatible** with McLib `2.2`. It doesn't mean that future versions of McLib would be incompatible, but older versions are most likely incompatible.
 
