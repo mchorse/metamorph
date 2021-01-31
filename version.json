@@ -1,7 +1,7 @@
 {
     "homepage": "https://www.curseforge.com/minecraft/mc-mods/metamorph",
     "1.12.2": {
-        "1.2.5": "This patch update adds a keybind field to creative morph menu, added animation of body part transfromations based on parent animated morph, and improved performance in the creative morph list.",
+        "1.2.5": "This patch update adds a keybind field to creative morph menu, added animation of body part transformations based on parent animated morph, and improved performance in the creative morph list.",
         "1.2.4": "This patch fix features some bug fixes that are required for the release of my new Chameleon mod.",
         "1.2.3": "This small update mostly needed for Blockbuster update.",
         "1.2.2": "This is a small patch that features a couple of tweaks.",
