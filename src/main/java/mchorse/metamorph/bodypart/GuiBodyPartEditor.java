@@ -6,6 +6,8 @@ import mchorse.mclib.client.gui.framework.elements.buttons.GuiButtonElement;
 import mchorse.mclib.client.gui.framework.elements.buttons.GuiIconElement;
 import mchorse.mclib.client.gui.framework.elements.buttons.GuiSlotElement;
 import mchorse.mclib.client.gui.framework.elements.buttons.GuiToggleElement;
+import mchorse.mclib.client.gui.framework.elements.context.GuiContextMenu;
+import mchorse.mclib.client.gui.framework.elements.context.GuiSimpleContextMenu;
 import mchorse.mclib.client.gui.framework.elements.input.GuiTransformations;
 import mchorse.mclib.client.gui.framework.elements.list.GuiStringListElement;
 import mchorse.mclib.client.gui.framework.elements.utils.GuiContext;
@@ -22,8 +24,10 @@ import mchorse.metamorph.client.gui.editor.GuiAbstractMorph;
 import mchorse.metamorph.client.gui.editor.GuiMorphPanel;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.Gui;
+import net.minecraft.client.gui.GuiScreen;
 import net.minecraft.client.resources.I18n;
 import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.JsonToNBT;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
@@ -70,6 +74,7 @@ public class GuiBodyPartEditor extends GuiMorphPanel<AbstractMorph, GuiAbstractM
 
         this.bodyParts = new GuiBodyPartListElement(mc, (part) -> this.setPart(part.isEmpty() ? null : part.get(0)));
         this.bodyParts.background().sorting();
+        this.bodyParts.context(this::bodyPartContextMenu);
 
         this.pickMorph = new GuiNestedEdit(mc, (editing) ->
         {
@@ -141,11 +146,53 @@ public class GuiBodyPartEditor extends GuiMorphPanel<AbstractMorph, GuiAbstractM
         this.elements.add(this.stacks, this.inventory);
     }
 
+    private GuiContextMenu bodyPartContextMenu()
+    {
+        GuiSimpleContextMenu menu = new GuiSimpleContextMenu(mc);
+        String text = GuiScreen.getClipboardString();
+        BodyPart part = null;
+
+        try
+        {
+            NBTTagCompound tag = JsonToNBT.getTagFromJson(text);
+
+            part = new BodyPart();
+            part.fromNBT(tag);
+        }
+        catch (Exception e)
+        {}
+
+        if (!this.bodyParts.isDeselected())
+        {
+            menu.action(Icons.COPY, IKey.lang("metamorph.gui.body_parts.context.copy"), () ->
+            {
+                NBTTagCompound tag = new NBTTagCompound();
+
+                this.bodyParts.getCurrentFirst().toNBT(tag);
+                GuiScreen.setClipboardString(tag.toString());
+            });
+        }
+
+        if (part != null)
+        {
+            final BodyPart destination = part;
+
+            menu.action(Icons.PASTE, IKey.lang("metamorph.gui.body_parts.context.paste"), () -> this.addPart(destination.copy()));
+        }
+
+        return menu.actions.getList().isEmpty() ? null : menu;
+    }
+
     protected void addPart(GuiIconElement b)
     {
         BodyPart part = new BodyPart();
 
         this.setupNewBodyPart(part);
+        this.addPart(part);
+    }
+
+    protected void addPart(BodyPart part)
+    {
         part.init();
 
         this.parts.parts.add(part);
