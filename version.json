@@ -1,6 +1,7 @@
 {
     "homepage": "https://www.curseforge.com/minecraft/mc-mods/metamorph",
     "1.12.2": {
+        "1.2.6": "This patch update adds context menu to body part list, which allows to copy paste body parts.",
         "1.2.5": "This patch update adds a keybind field to creative morph menu, added animation of body part transformations based on parent animated morph, and improved performance in the creative morph list.",
         "1.2.4": "This patch fix features some bug fixes that are required for the release of my new Chameleon mod.",
         "1.2.3": "This small update mostly needed for Blockbuster update.",
@@ -28,8 +29,8 @@
         "1.1.5": "This is a small, quick and dirty patch that provides several bugfixes (mainly for Blockbuster's update)."
     },
     "promos": {
-        "1.12.2-latest":"1.2.5",
-        "1.12.2-recommended":"1.2.5",
+        "1.12.2-latest":"1.2.6",
+        "1.12.2-recommended":"1.2.6",
         "1.11.2-latest":"1.1.10",
         "1.11.2-recommended":"1.1.10",
         "1.10.2-latest":"1.1.10",

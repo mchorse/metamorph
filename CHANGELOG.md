@@ -1,3 +1,11 @@
+## Metamorph 1.2.6
+
+This patch update adds context menu to body part list, which allows to copy paste body parts.
+
+**Compatible** with McLib `2.2`. It doesn't mean that future versions of McLib would be incompatible, but older versions are most likely incompatible.
+
+* Add **Copy body part** and **Paste copied body part** context menu items to body part list (suggested by Crazy)
+
 ## Metamorph 1.2.5
 
 This patch update adds a keybind field to creative morph menu, added animation of body part transformations based on parent animated morph, and improved performance in the creative morph list.
