@@ -8,62 +8,62 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 
 public class UserCategory extends MorphCategory
 {
-	public UserCategory(MorphSection parent, String title)
-	{
-		super(parent, title);
-	}
+    public UserCategory(MorphSection parent, String title)
+    {
+        super(parent, title);
+    }
 
-	@Override
-	@SideOnly(Side.CLIENT)
-	public String getTitle()
-	{
-		return this.title;
-	}
+    @Override
+    @SideOnly(Side.CLIENT)
+    public String getTitle()
+    {
+        return this.title;
+    }
 
-	@Override
-	public boolean isHidden()
-	{
-		return false;
-	}
+    @Override
+    public boolean isHidden()
+    {
+        return false;
+    }
 
-	@Override
-	public void addMorph(AbstractMorph morph)
-	{
-		super.addMorph(morph);
+    @Override
+    public void addMorph(AbstractMorph morph)
+    {
+        super.addMorph(morph);
 
-		if (this.parent instanceof UserSection)
-		{
-			((UserSection) this.parent).save();
-		}
-	}
+        if (this.parent instanceof UserSection)
+        {
+            ((UserSection) this.parent).save();
+        }
+    }
 
-	@Override
-	public boolean isEditable(AbstractMorph morph)
-	{
-		return this.morphs.indexOf(morph) != -1;
-	}
+    @Override
+    public boolean isEditable(AbstractMorph morph)
+    {
+        return this.morphs.indexOf(morph) != -1;
+    }
 
-	@Override
-	public void edit(AbstractMorph morph)
-	{
-		int index = this.morphs.indexOf(morph);
+    @Override
+    public void edit(AbstractMorph morph)
+    {
+        int index = this.morphs.indexOf(morph);
 
-		if (index >= 0 && this.parent instanceof UserSection)
-		{
-			((UserSection) this.parent).save();
-		}
-	}
+        if (index >= 0 && this.parent instanceof UserSection)
+        {
+            ((UserSection) this.parent).save();
+        }
+    }
 
-	@Override
-	public boolean remove(AbstractMorph morph)
-	{
-		boolean result = super.remove(morph);
+    @Override
+    public boolean remove(AbstractMorph morph)
+    {
+        boolean result = super.remove(morph);
 
-		if (result && this.parent instanceof UserSection)
-		{
-			((UserSection) this.parent).save();
-		}
+        if (result && this.parent instanceof UserSection)
+        {
+            ((UserSection) this.parent).save();
+        }
 
-		return result;
-	}
+        return result;
+    }
 }

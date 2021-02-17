@@ -8,14 +8,14 @@ import net.minecraft.entity.player.EntityPlayerMP;
 
 public class ServerHandlerClearAcquired extends ServerMessageHandler<PacketClearAcquired>
 {
-	@Override
-	public void run(EntityPlayerMP player, PacketClearAcquired message)
-	{
-		IMorphing cap = Morphing.get(player);
+    @Override
+    public void run(EntityPlayerMP player, PacketClearAcquired message)
+    {
+        IMorphing cap = Morphing.get(player);
 
-		if (cap != null)
-		{
-			cap.removeAcquired();
-		}
-	}
+        if (cap != null)
+        {
+            cap.removeAcquired();
+        }
+    }
 }

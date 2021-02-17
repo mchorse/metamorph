@@ -5,14 +5,14 @@ import net.minecraftforge.fml.common.network.simpleimpl.IMessage;
 
 public class PacketClearAcquired implements IMessage
 {
-	public PacketClearAcquired()
-	{}
+    public PacketClearAcquired()
+    {}
 
-	@Override
-	public void fromBytes(ByteBuf buf)
-	{}
+    @Override
+    public void fromBytes(ByteBuf buf)
+    {}
 
-	@Override
-	public void toBytes(ByteBuf buf)
-	{}
+    @Override
+    public void toBytes(ByteBuf buf)
+    {}
 }

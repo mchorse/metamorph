@@ -6,59 +6,59 @@ import net.minecraft.nbt.NBTTagCompound;
 
 public abstract class ItemStackMorph extends AbstractMorph
 {
-	public boolean lighting = true;
+    public boolean lighting = true;
 
-	public abstract void setStack(ItemStack stack);
+    public abstract void setStack(ItemStack stack);
 
-	public abstract ItemStack getStack();
+    public abstract ItemStack getStack();
 
-	@Override
-	public boolean equals(Object obj)
-	{
-		boolean result = super.equals(obj);
+    @Override
+    public boolean equals(Object obj)
+    {
+        boolean result = super.equals(obj);
 
-		if (obj instanceof ItemStackMorph)
-		{
-			ItemStackMorph morph = (ItemStackMorph) obj;
+        if (obj instanceof ItemStackMorph)
+        {
+            ItemStackMorph morph = (ItemStackMorph) obj;
 
-			result = result && this.lighting == morph.lighting;
-		}
+            result = result && this.lighting == morph.lighting;
+        }
 
-		return result;
-	}
+        return result;
+    }
 
-	@Override
-	public void copy(AbstractMorph from)
-	{
-		super.copy(from);
+    @Override
+    public void copy(AbstractMorph from)
+    {
+        super.copy(from);
 
-		if (from instanceof ItemStackMorph)
-		{
-			ItemStackMorph morph = (ItemStackMorph) from;
+        if (from instanceof ItemStackMorph)
+        {
+            ItemStackMorph morph = (ItemStackMorph) from;
 
-			this.lighting = morph.lighting;
-		}
-	}
+            this.lighting = morph.lighting;
+        }
+    }
 
-	@Override
-	public void toNBT(NBTTagCompound tag)
-	{
-		super.toNBT(tag);
+    @Override
+    public void toNBT(NBTTagCompound tag)
+    {
+        super.toNBT(tag);
 
-		if (!this.lighting)
-		{
-			tag.setBoolean("Lighting", this.lighting);
-		}
-	}
+        if (!this.lighting)
+        {
+            tag.setBoolean("Lighting", this.lighting);
+        }
+    }
 
-	@Override
-	public void fromNBT(NBTTagCompound tag)
-	{
-		super.fromNBT(tag);
+    @Override
+    public void fromNBT(NBTTagCompound tag)
+    {
+        super.fromNBT(tag);
 
-		if (tag.hasKey("Lighting"))
-		{
-			this.lighting = tag.getBoolean("Lighting");
-		}
-	}
+        if (tag.hasKey("Lighting"))
+        {
+            this.lighting = tag.getBoolean("Lighting");
+        }
+    }
 }

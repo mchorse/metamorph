@@ -235,7 +235,7 @@ public class GuiAbstractMorph<T extends AbstractMorph> extends GuiPanelBase<GuiM
         }
     }
 
-	public NBTTagCompound toNBT()
+    public NBTTagCompound toNBT()
     {
         NBTTagCompound tag = new NBTTagCompound();
 
@@ -252,5 +252,5 @@ public class GuiAbstractMorph<T extends AbstractMorph> extends GuiPanelBase<GuiM
         tag.setInteger("PanelHash", this.view.delegate.hashCode());
 
         return tag;
-	}
+    }
 }

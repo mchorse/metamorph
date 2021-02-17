@@ -227,9 +227,9 @@ public class MorphManager
                 
                 if (morph != null)
                 {
-	                this.applySettings(morph);
-	
-	                return morph;
+                    this.applySettings(morph);
+    
+                    return morph;
                 }
             }
         }

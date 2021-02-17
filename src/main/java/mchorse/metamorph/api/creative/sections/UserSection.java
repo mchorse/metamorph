@@ -39,186 +39,186 @@ import java.util.function.Consumer;
  */
 public class UserSection extends MorphSection
 {
-	public AcquiredCategory acquired;
-	public RecentCategory recent;
+    public AcquiredCategory acquired;
+    public RecentCategory recent;
 
-	public boolean loaded = false;
-	public List<UserCategory> global = new ArrayList<UserCategory>();
+    public boolean loaded = false;
+    public List<UserCategory> global = new ArrayList<UserCategory>();
 
-	public UserSection(String title)
-	{
-		super(title);
+    public UserSection(String title)
+    {
+        super(title);
 
-		this.acquired = new AcquiredCategory(this, "acquired");
-		this.recent = new RecentCategory(this, "recent");
-	}
+        this.acquired = new AcquiredCategory(this, "acquired");
+        this.recent = new RecentCategory(this, "recent");
+    }
 
-	@Override
-	public void add(MorphCategory category)
-	{
-		super.add(category);
+    @Override
+    public void add(MorphCategory category)
+    {
+        super.add(category);
 
-		if (category instanceof UserCategory)
-		{
-			this.global.add((UserCategory) category);
-		}
+        if (category instanceof UserCategory)
+        {
+            this.global.add((UserCategory) category);
+        }
 
-		this.save();
-	}
+        this.save();
+    }
 
-	@Override
-	public void remove(MorphCategory category)
-	{
-		super.remove(category);
+    @Override
+    public void remove(MorphCategory category)
+    {
+        super.remove(category);
 
-		if (category instanceof UserCategory)
-		{
-			this.global.remove(category);
-		}
+        if (category instanceof UserCategory)
+        {
+            this.global.remove(category);
+        }
 
-		this.save();
-	}
+        this.save();
+    }
 
-	@Override
-	@SideOnly(Side.CLIENT)
-	public void update(World world)
-	{
-		super.update(world);
+    @Override
+    @SideOnly(Side.CLIENT)
+    public void update(World world)
+    {
+        super.update(world);
 
-		IMorphing morphing = Morphing.get(Minecraft.getMinecraft().player);
+        IMorphing morphing = Morphing.get(Minecraft.getMinecraft().player);
 
-		this.categories.clear();
-		this.categories.add(this.acquired);
-		this.categories.add(this.recent);
-		this.acquired.setMorph(morphing == null ? Collections.emptyList() : morphing.getAcquiredMorphs());
+        this.categories.clear();
+        this.categories.add(this.acquired);
+        this.categories.add(this.recent);
+        this.acquired.setMorph(morphing == null ? Collections.emptyList() : morphing.getAcquiredMorphs());
 
-		if (!this.loaded)
-		{
-			this.load();
-			this.loaded = true;
-		}
+        if (!this.loaded)
+        {
+            this.load();
+            this.loaded = true;
+        }
 
-		this.categories.addAll(this.global);
-	}
+        this.categories.addAll(this.global);
+    }
 
-	@Override
-	public void reset()
-	{
-		super.reset();
+    @Override
+    public void reset()
+    {
+        super.reset();
 
-		if (this.loaded)
-		{
-			this.save();
-			this.loaded = false;
-		}
+        if (this.loaded)
+        {
+            this.save();
+            this.loaded = false;
+        }
 
-		this.categories.clear();
-		this.acquired.clear();
-		this.recent.clear();
-		this.global.clear();
-	}
+        this.categories.clear();
+        this.acquired.clear();
+        this.recent.clear();
+        this.global.clear();
+    }
 
-	@Override
-	@SideOnly(Side.CLIENT)
-	public GuiMorphSection getGUI(Minecraft mc, GuiCreativeMorphsList parent, Consumer<GuiMorphSection> callback)
-	{
-		return new GuiUserSection(mc, parent, this, callback);
-	}
+    @Override
+    @SideOnly(Side.CLIENT)
+    public GuiMorphSection getGUI(Minecraft mc, GuiCreativeMorphsList parent, Consumer<GuiMorphSection> callback)
+    {
+        return new GuiUserSection(mc, parent, this, callback);
+    }
 
-	public void load()
-	{
-		File file = Metamorph.proxy.list;
+    public void load()
+    {
+        File file = Metamorph.proxy.list;
 
-		if (!file.exists())
-		{
-			return;
-		}
+        if (!file.exists())
+        {
+            return;
+        }
 
-		try
-		{
-			List<UserCategory> categories = new ArrayList<UserCategory>();
-			String content = FileUtils.readFileToString(file, Charset.defaultCharset());
-			JsonArray object = new JsonParser().parse(content).getAsJsonArray();
-			int i = 0;
+        try
+        {
+            List<UserCategory> categories = new ArrayList<UserCategory>();
+            String content = FileUtils.readFileToString(file, Charset.defaultCharset());
+            JsonArray object = new JsonParser().parse(content).getAsJsonArray();
+            int i = 0;
 
-			for (JsonElement entry : object)
-			{
-				JsonObject cat = entry.getAsJsonObject();
-				UserCategory category = new UserCategory(this, cat.get("title").getAsString());
+            for (JsonElement entry : object)
+            {
+                JsonObject cat = entry.getAsJsonObject();
+                UserCategory category = new UserCategory(this, cat.get("title").getAsString());
 
-				if (cat.has("morphs"))
-				{
-					for (JsonElement string : cat.get("morphs").getAsJsonArray())
-					{
-						try {
-							AbstractMorph morph = MorphManager.INSTANCE.morphFromNBT(JsonToNBT.getTagFromJson(string.getAsString()));
+                if (cat.has("morphs"))
+                {
+                    for (JsonElement string : cat.get("morphs").getAsJsonArray())
+                    {
+                        try {
+                            AbstractMorph morph = MorphManager.INSTANCE.morphFromNBT(JsonToNBT.getTagFromJson(string.getAsString()));
 
-							if (morph != null)
-							{
-								category.add(morph);
-								i ++;
-							}
-						}
-						catch (Exception e)
-						{
-							e.printStackTrace();
-						}
-					}
-				}
+                            if (morph != null)
+                            {
+                                category.add(morph);
+                                i ++;
+                            }
+                        }
+                        catch (Exception e)
+                        {
+                            e.printStackTrace();
+                        }
+                    }
+                }
 
-				categories.add(category);
-			}
+                categories.add(category);
+            }
 
-			System.out.println("Loading " + categories.size() + " categories with " + i + " morphs!");
+            System.out.println("Loading " + categories.size() + " categories with " + i + " morphs!");
 
-			this.global = categories;
-		}
-		catch (Exception e)
-		{
-			e.printStackTrace();
-		}
-	}
+            this.global = categories;
+        }
+        catch (Exception e)
+        {
+            e.printStackTrace();
+        }
+    }
 
-	public void save()
-	{
-		if (!this.loaded)
-		{
-			return;
-		}
+    public void save()
+    {
+        if (!this.loaded)
+        {
+            return;
+        }
 
-		JsonArray array = new JsonArray();
-		int i = 0;
+        JsonArray array = new JsonArray();
+        int i = 0;
 
-		for (UserCategory category : this.global)
-		{
-			JsonObject cat = new JsonObject();
-			JsonArray morphs = new JsonArray();
+        for (UserCategory category : this.global)
+        {
+            JsonObject cat = new JsonObject();
+            JsonArray morphs = new JsonArray();
 
-			cat.addProperty("title", category.getTitle());
-			cat.add("morphs", morphs);
+            cat.addProperty("title", category.getTitle());
+            cat.add("morphs", morphs);
 
-			for (AbstractMorph morph : category.getMorphs())
-			{
-				if (morph != null)
-				{
-					morphs.add(morph.toNBT().toString());
+            for (AbstractMorph morph : category.getMorphs())
+            {
+                if (morph != null)
+                {
+                    morphs.add(morph.toNBT().toString());
 
-					i ++;
-				}
-			}
+                    i ++;
+                }
+            }
 
-			array.add(cat);
-		}
+            array.add(cat);
+        }
 
-		System.out.println("Saving " + array.size() + " categories with " + i + " morphs to list.json!");
+        System.out.println("Saving " + array.size() + " categories with " + i + " morphs to list.json!");
 
-		try
-		{
-			FileUtils.writeStringToFile(Metamorph.proxy.list, JsonUtils.jsonToPretty(array), Charset.defaultCharset());
-		}
-		catch (Exception e)
-		{
-			e.printStackTrace();
-		}
-	}
+        try
+        {
+            FileUtils.writeStringToFile(Metamorph.proxy.list, JsonUtils.jsonToPretty(array), Charset.defaultCharset());
+        }
+        catch (Exception e)
+        {
+            e.printStackTrace();
+        }
+    }
 }

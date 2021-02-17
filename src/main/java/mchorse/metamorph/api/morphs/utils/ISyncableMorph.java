@@ -4,7 +4,7 @@ import mchorse.metamorph.api.morphs.AbstractMorph;
 
 public interface ISyncableMorph
 {
-	public void pause(AbstractMorph previous, int offset);
+    public void pause(AbstractMorph previous, int offset);
 
-	public boolean isPaused();
+    public boolean isPaused();
 }

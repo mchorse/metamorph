@@ -8,10 +8,10 @@ import net.minecraft.entity.player.EntityPlayerMP;
 
 public class ServerHandlerKeybind extends ServerMessageHandler<PacketKeybind>
 {
-	@Override
-	public void run(EntityPlayerMP player, PacketKeybind message)
-	{
-		Morphing.get(player).keybind(message.index, message.keybind);
-		Dispatcher.sendTo(message, player);
-	}
+    @Override
+    public void run(EntityPlayerMP player, PacketKeybind message)
+    {
+        Morphing.get(player).keybind(message.index, message.keybind);
+        Dispatcher.sendTo(message, player);
+    }
 }

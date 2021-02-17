@@ -251,10 +251,10 @@ public class MorphHandler
         Entity trueSource = source.getTrueSource();
         Entity target = event.getEntity();
 
-		if(source instanceof EntityDamageSourceIndirect)
-		{
-			return;
-		}
+        if(source instanceof EntityDamageSourceIndirect)
+        {
+            return;
+        }
         
         if (trueSource instanceof EntityPlayer)
         {
@@ -298,11 +298,11 @@ public class MorphHandler
             {
                 return;
             }
-			
-			AbstractMorph currentMorph = morphing.getCurrentMorph();
+            
+            AbstractMorph currentMorph = morphing.getCurrentMorph();
 
             if (morphing.getCurrentMorph().settings.hostile && source.getAttackingEntity() != target && 
-			!(currentMorph instanceof mchorse.metamorph.api.morphs.EntityMorph && ((mchorse.metamorph.api.morphs.EntityMorph) currentMorph).getEntity() == source.getAttackingEntity()))
+            !(currentMorph instanceof mchorse.metamorph.api.morphs.EntityMorph && ((mchorse.metamorph.api.morphs.EntityMorph) currentMorph).getEntity() == source.getAttackingEntity()))
             {
                 if (source instanceof EntityLiving)
                 {
@@ -310,30 +310,30 @@ public class MorphHandler
                 }
             }
         }
-		else if(target != null)
-		{
-			List playerList = target.world.getEntitiesWithinAABB(EntityPlayer.class, new AxisAlignedBB(target.posX-1,target.posY-1,target.posZ-1,target.posX+1,target.posY+1,target.posZ+1));
-			for(int i = 0; i < playerList.size(); i++)
-			{
-				Object o = playerList.get(i);
-				if(o instanceof EntityPlayer)
-				{
-					EntityPlayer player = (EntityPlayer) o;
-					IMorphing capability = Morphing.get(player);
-					if(capability == null)
-						continue;
-					AbstractMorph currentMorph = capability.getCurrentMorph();
-					if(currentMorph == null)
-						continue;
-					if (currentMorph instanceof mchorse.metamorph.api.morphs.EntityMorph)
-					{
-						mchorse.metamorph.api.morphs.EntityMorph currentEntityMorph = (mchorse.metamorph.api.morphs.EntityMorph) currentMorph;
-						if(currentEntityMorph.getEntity() == target && source instanceof EntityLiving)
-							((EntityLiving) event.getEntity()).setAttackTarget(player);
-					}
-				}
-			}
-		}
+        else if(target != null)
+        {
+            List playerList = target.world.getEntitiesWithinAABB(EntityPlayer.class, new AxisAlignedBB(target.posX-1,target.posY-1,target.posZ-1,target.posX+1,target.posY+1,target.posZ+1));
+            for(int i = 0; i < playerList.size(); i++)
+            {
+                Object o = playerList.get(i);
+                if(o instanceof EntityPlayer)
+                {
+                    EntityPlayer player = (EntityPlayer) o;
+                    IMorphing capability = Morphing.get(player);
+                    if(capability == null)
+                        continue;
+                    AbstractMorph currentMorph = capability.getCurrentMorph();
+                    if(currentMorph == null)
+                        continue;
+                    if (currentMorph instanceof mchorse.metamorph.api.morphs.EntityMorph)
+                    {
+                        mchorse.metamorph.api.morphs.EntityMorph currentEntityMorph = (mchorse.metamorph.api.morphs.EntityMorph) currentMorph;
+                        if(currentEntityMorph.getEntity() == target && source instanceof EntityLiving)
+                            ((EntityLiving) event.getEntity()).setAttackTarget(player);
+                    }
+                }
+            }
+        }
     }
 
     /**

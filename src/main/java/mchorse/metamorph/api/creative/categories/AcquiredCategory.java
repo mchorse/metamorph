@@ -14,73 +14,73 @@ import java.util.List;
 
 public class AcquiredCategory extends MorphCategory
 {
-	public AcquiredCategory(MorphSection parent, String title)
-	{
-		super(parent, title);
-	}
+    public AcquiredCategory(MorphSection parent, String title)
+    {
+        super(parent, title);
+    }
 
-	public void setMorph(List<AbstractMorph> morphs)
-	{
-		this.morphs = morphs;
-	}
+    public void setMorph(List<AbstractMorph> morphs)
+    {
+        this.morphs = morphs;
+    }
 
-	@Override
-	public void clear()
-	{
-		super.clear();
+    @Override
+    public void clear()
+    {
+        super.clear();
 
-		Dispatcher.sendToServer(new PacketClearAcquired());
-	}
+        Dispatcher.sendToServer(new PacketClearAcquired());
+    }
 
-	@Override
-	protected void addMorph(AbstractMorph morph)
-	{
-		super.addMorph(morph);
+    @Override
+    protected void addMorph(AbstractMorph morph)
+    {
+        super.addMorph(morph);
 
-		Dispatcher.sendToServer(new PacketAcquireMorph(morph, false));
-	}
+        Dispatcher.sendToServer(new PacketAcquireMorph(morph, false));
+    }
 
-	@Override
-	public boolean isEditable(AbstractMorph morph)
-	{
-		return this.morphs.indexOf(morph) != -1;
-	}
+    @Override
+    public boolean isEditable(AbstractMorph morph)
+    {
+        return this.morphs.indexOf(morph) != -1;
+    }
 
-	@Override
-	public void edit(AbstractMorph morph)
-	{
-		int index = this.morphs.indexOf(morph);
+    @Override
+    public void edit(AbstractMorph morph)
+    {
+        int index = this.morphs.indexOf(morph);
 
-		if (index >= 0)
-		{
-			Dispatcher.sendToServer(new PacketSyncMorph(morph, index));
-		}
-	}
+        if (index >= 0)
+        {
+            Dispatcher.sendToServer(new PacketSyncMorph(morph, index));
+        }
+    }
 
-	@Override
-	public boolean remove(AbstractMorph morph)
-	{
-		int index = this.morphs.indexOf(morph);
-		boolean has = index != -1;
+    @Override
+    public boolean remove(AbstractMorph morph)
+    {
+        int index = this.morphs.indexOf(morph);
+        boolean has = index != -1;
 
-		if (has)
-		{
-			Dispatcher.sendToServer(new PacketRemoveMorph(index));
-		}
+        if (has)
+        {
+            Dispatcher.sendToServer(new PacketRemoveMorph(index));
+        }
 
-		return has;
-	}
+        return has;
+    }
 
-	@Override
-	protected boolean morph(EntityPlayer player, AbstractMorph morph)
-	{
-		int index = this.morphs.indexOf(morph);
+    @Override
+    protected boolean morph(EntityPlayer player, AbstractMorph morph)
+    {
+        int index = this.morphs.indexOf(morph);
 
-		if (index >= 0)
-		{
-			Dispatcher.sendToServer(new PacketSelectMorph(index));
-		}
+        if (index >= 0)
+        {
+            Dispatcher.sendToServer(new PacketSelectMorph(index));
+        }
 
-		return true;
-	}
+        return true;
+    }
 }

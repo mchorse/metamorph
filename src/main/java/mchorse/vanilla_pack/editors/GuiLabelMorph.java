@@ -11,19 +11,19 @@ import net.minecraft.client.resources.I18n;
 
 public class GuiLabelMorph extends GuiAbstractMorph<LabelMorph>
 {
-	public GuiLabelPanel label;
+    public GuiLabelPanel label;
 
-	public GuiLabelMorph(Minecraft mc)
-	{
-		super(mc);
+    public GuiLabelMorph(Minecraft mc)
+    {
+        super(mc);
 
-		this.defaultPanel = this.label = new GuiLabelPanel(mc, this);
-		this.registerPanel(this.label, IKey.lang("metamorph.gui.label.label"), MMIcons.LABEL);
-	}
+        this.defaultPanel = this.label = new GuiLabelPanel(mc, this);
+        this.registerPanel(this.label, IKey.lang("metamorph.gui.label.label"), MMIcons.LABEL);
+    }
 
-	@Override
-	public boolean canEdit(AbstractMorph morph)
-	{
-		return morph instanceof LabelMorph;
-	}
+    @Override
+    public boolean canEdit(AbstractMorph morph)
+    {
+        return morph instanceof LabelMorph;
+    }
 }

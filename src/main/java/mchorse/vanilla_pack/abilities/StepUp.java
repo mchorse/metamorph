@@ -13,18 +13,18 @@ public class StepUp extends Ability
     @Override
     public void update(EntityLivingBase target)
     {
-		target.stepHeight = 1.0f;
+        target.stepHeight = 1.0f;
     }
-	
-	@Override
+    
+    @Override
     public void onMorph(EntityLivingBase target)
     {
-		target.stepHeight = 1.0f;
+        target.stepHeight = 1.0f;
     }
-	
-	@Override
+    
+    @Override
     public void onDemorph(EntityLivingBase target)
     {
-		target.stepHeight = 0.6f;
+        target.stepHeight = 0.6f;
     }
 }

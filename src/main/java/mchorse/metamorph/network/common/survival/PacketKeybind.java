@@ -4,33 +4,33 @@ import io.netty.buffer.ByteBuf;
 
 public class PacketKeybind extends PacketIndex
 {
-	public int keybind;
+    public int keybind;
 
-	public PacketKeybind()
-	{
-		super();
-	}
+    public PacketKeybind()
+    {
+        super();
+    }
 
-	public PacketKeybind(int index, int keybind)
-	{
-		super(index);
+    public PacketKeybind(int index, int keybind)
+    {
+        super(index);
 
-		this.keybind = keybind;
-	}
+        this.keybind = keybind;
+    }
 
-	@Override
-	public void fromBytes(ByteBuf buf)
-	{
-		super.fromBytes(buf);
+    @Override
+    public void fromBytes(ByteBuf buf)
+    {
+        super.fromBytes(buf);
 
-		this.keybind = buf.readInt();
-	}
+        this.keybind = buf.readInt();
+    }
 
-	@Override
-	public void toBytes(ByteBuf buf)
-	{
-		super.toBytes(buf);
+    @Override
+    public void toBytes(ByteBuf buf)
+    {
+        super.toBytes(buf);
 
-		buf.writeInt(this.keybind);
-	}
+        buf.writeInt(this.keybind);
+    }
 }

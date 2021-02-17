@@ -9,21 +9,21 @@ import net.minecraft.entity.player.EntityPlayer;
 
 public class GuiMorphRenderer extends GuiModelRenderer
 {
-	public AbstractMorph morph;
+    public AbstractMorph morph;
 
-	public GuiMorphRenderer(Minecraft mc)
-	{
-		super(mc);
-	}
+    public GuiMorphRenderer(Minecraft mc)
+    {
+        super(mc);
+    }
 
-	@Override
-	protected void drawUserModel(GuiContext context)
-	{
-		if (this.morph == null)
-		{
-			return;
-		}
+    @Override
+    protected void drawUserModel(GuiContext context)
+    {
+        if (this.morph == null)
+        {
+            return;
+        }
 
-		MorphUtils.render(this.morph, this.entity, 0, 0, 0, this.yaw, context.partialTicks);
-	}
+        MorphUtils.render(this.morph, this.entity, 0, 0, 0, this.yaw, context.partialTicks);
+    }
 }

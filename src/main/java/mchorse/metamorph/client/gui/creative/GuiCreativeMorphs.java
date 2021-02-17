@@ -15,131 +15,131 @@ import java.util.function.Consumer;
 
 public class GuiCreativeMorphs extends GuiMorphs
 {
-	public UserSection user;
-	public GuiMorphSection userSection;
+    public UserSection user;
+    public GuiMorphSection userSection;
 
-	private GuiCreativeMorphsList parent;
+    private GuiCreativeMorphsList parent;
 
-	public GuiCreativeMorphs(Minecraft mc, GuiCreativeMorphsList parent)
-	{
-		super(mc);
+    public GuiCreativeMorphs(Minecraft mc, GuiCreativeMorphsList parent)
+    {
+        super(mc);
 
-		this.parent = parent;
-	}
+        this.parent = parent;
+    }
 
-	public void setupSections(GuiCreativeMorphsList menu, Consumer<GuiMorphSection> callback)
-	{
-		MorphList list = MorphManager.INSTANCE.list;
+    public void setupSections(GuiCreativeMorphsList menu, Consumer<GuiMorphSection> callback)
+    {
+        MorphList list = MorphManager.INSTANCE.list;
 
-		list.update(this.mc.world);
-		MinecraftForge.EVENT_BUS.post(new ReloadMorphs());
+        list.update(this.mc.world);
+        MinecraftForge.EVENT_BUS.post(new ReloadMorphs());
 
-		this.sections.clear();
-		this.removeAll();
+        this.sections.clear();
+        this.removeAll();
 
-		for (MorphSection section : list.sections)
-		{
-			GuiMorphSection element = section.getGUI(this.mc, menu, callback);
+        for (MorphSection section : list.sections)
+        {
+            GuiMorphSection element = section.getGUI(this.mc, menu, callback);
 
-			if (section instanceof UserSection)
-			{
-				this.user = (UserSection) section;
-				this.userSection = element;
-			}
+            if (section instanceof UserSection)
+            {
+                this.user = (UserSection) section;
+                this.userSection = element;
+            }
 
-			element.flex();
-			this.sections.add(element);
-			this.add(element);
-		}
+            element.flex();
+            this.sections.add(element);
+            this.add(element);
+        }
 
-		this.sections.get(this.sections.size() - 1).last = true;
-	}
+        this.sections.get(this.sections.size() - 1).last = true;
+    }
 
-	@Override
-	public void setSelected(AbstractMorph morph)
-	{
-		super.setSelected(morph);
+    @Override
+    public void setSelected(AbstractMorph morph)
+    {
+        super.setSelected(morph);
 
-		if (this.selected != null)
-		{
-			this.selected.reset();
-		}
+        if (this.selected != null)
+        {
+            this.selected.reset();
+        }
 
-		if (morph != null)
-		{
-			AbstractMorph found = null;
-			MorphCategory selectedCategory = null;
-			GuiMorphSection selectedSection = null;
+        if (morph != null)
+        {
+            AbstractMorph found = null;
+            MorphCategory selectedCategory = null;
+            GuiMorphSection selectedSection = null;
 
-			searchForMorph:
-			for (GuiMorphSection section : this.sections)
-			{
-				for (MorphCategory category : section.section.categories)
-				{
-					found = category.getEqual(morph);
+            searchForMorph:
+            for (GuiMorphSection section : this.sections)
+            {
+                for (MorphCategory category : section.section.categories)
+                {
+                    found = category.getEqual(morph);
 
-					if (found != null)
-					{
-						selectedCategory = category;
-						selectedSection = section;
+                    if (found != null)
+                    {
+                        selectedCategory = category;
+                        selectedSection = section;
 
-						break searchForMorph;
-					}
-				}
-			}
+                        break searchForMorph;
+                    }
+                }
+            }
 
-			if (found == null)
-			{
-				this.copyToRecent(morph);
-			}
-			else
-			{
-				this.selected = selectedSection;
-				this.scrollTo();
+            if (found == null)
+            {
+                this.copyToRecent(morph);
+            }
+            else
+            {
+                this.selected = selectedSection;
+                this.scrollTo();
 
-				selectedSection.morph = found;
-				selectedSection.category = selectedCategory;
-				this.parent.pickMorph(found);
-			}
-		}
-		else
-		{
-			this.selected = null;
-		}
-	}
+                selectedSection.morph = found;
+                selectedSection.category = selectedCategory;
+                this.parent.pickMorph(found);
+            }
+        }
+        else
+        {
+            this.selected = null;
+        }
+    }
 
-	public void syncSelected()
-	{
-		AbstractMorph morph = this.getSelected();
+    public void syncSelected()
+    {
+        AbstractMorph morph = this.getSelected();
 
-		if (morph != null && this.selected != null && this.selected.category != null)
-		{
-			this.selected.category.edit(morph);
-		}
-	}
+        if (morph != null && this.selected != null && this.selected.category != null)
+        {
+            this.selected.category.edit(morph);
+        }
+    }
 
-	public AbstractMorph copyToRecent(AbstractMorph morph)
-	{
-		if (this.selected != null)
-		{
-			this.selected.reset();
-		}
+    public AbstractMorph copyToRecent(AbstractMorph morph)
+    {
+        if (this.selected != null)
+        {
+            this.selected.reset();
+        }
 
-		morph = morph.copy();
+        morph = morph.copy();
 
-		this.user.recent.add(morph);
-		this.selected = this.userSection;
-		this.selected.morph = morph;
-		this.selected.category = this.user.recent;
-		this.parent.pickMorph(morph);
+        this.user.recent.add(morph);
+        this.selected = this.userSection;
+        this.selected.morph = morph;
+        this.selected.category = this.user.recent;
+        this.parent.pickMorph(morph);
 
-		this.scrollTo();
+        this.scrollTo();
 
-		return morph;
-	}
+        return morph;
+    }
 
-	public boolean isSelectedMorphIsEditable()
-	{
-		return this.selected != null && this.selected.category != null && this.selected.category.isEditable(this.getSelected());
-	}
+    public boolean isSelectedMorphIsEditable()
+    {
+        return this.selected != null && this.selected.category != null && this.selected.category.isEditable(this.getSelected());
+    }
 }

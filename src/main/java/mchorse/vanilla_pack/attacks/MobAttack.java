@@ -25,17 +25,17 @@ public class MobAttack implements IAttackAbility
         if (source instanceof EntityPlayer)
         {
             EntityPlayer player = (EntityPlayer) source;
-			IMorphing capability = Morphing.get(player);
-			if(capability == null)
-				return;
-			AbstractMorph currentMorph = capability.getCurrentMorph();
-			if(currentMorph == null)
-				return;
-			if(currentMorph instanceof EntityMorph)
-			{
-				EntityMorph currentEntityMorph = (EntityMorph) currentMorph;
-				currentEntityMorph.getEntity(source.world).attackEntityAsMob(target);
-			}
+            IMorphing capability = Morphing.get(player);
+            if(capability == null)
+                return;
+            AbstractMorph currentMorph = capability.getCurrentMorph();
+            if(currentMorph == null)
+                return;
+            if(currentMorph instanceof EntityMorph)
+            {
+                EntityMorph currentEntityMorph = (EntityMorph) currentMorph;
+                currentEntityMorph.getEntity(source.world).attackEntityAsMob(target);
+            }
         }
     }
 }

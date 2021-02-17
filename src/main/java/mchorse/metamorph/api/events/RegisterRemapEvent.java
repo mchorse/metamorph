@@ -14,8 +14,8 @@ import java.util.Map;
  */
 public class RegisterRemapEvent extends Event
 {
-	/**
-	 * Map of which morph IDs should be remapped
-	 */
-	public Map<String, String> map = new HashMap<String, String>();
+    /**
+     * Map of which morph IDs should be remapped
+     */
+    public Map<String, String> map = new HashMap<String, String>();
 }

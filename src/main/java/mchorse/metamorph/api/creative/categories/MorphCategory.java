@@ -17,108 +17,108 @@ import java.util.List;
 
 public class MorphCategory
 {
-	public MorphSection parent;
+    public MorphSection parent;
 
-	public String title;
-	protected List<AbstractMorph> morphs = new ArrayList<AbstractMorph>();
+    public String title;
+    protected List<AbstractMorph> morphs = new ArrayList<AbstractMorph>();
 
-	public MorphCategory(MorphSection parent, String title)
-	{
-		this.parent = parent;
-		this.title = title;
-	}
+    public MorphCategory(MorphSection parent, String title)
+    {
+        this.parent = parent;
+        this.title = title;
+    }
 
-	@SideOnly(Side.CLIENT)
-	public String getTitle()
-	{
-		return I18n.format("morph.category." + this.title);
-	}
+    @SideOnly(Side.CLIENT)
+    public String getTitle()
+    {
+        return I18n.format("morph.category." + this.title);
+    }
 
-	public List<AbstractMorph> getMorphs()
-	{
-		return this.morphs;
-	}
+    public List<AbstractMorph> getMorphs()
+    {
+        return this.morphs;
+    }
 
-	public boolean isHidden()
-	{
-		return this.morphs.isEmpty();
-	}
+    public boolean isHidden()
+    {
+        return this.morphs.isEmpty();
+    }
 
-	public AbstractMorph getEqual(AbstractMorph morph)
-	{
-		for (AbstractMorph child : this.morphs)
-		{
-			if (child.equals(morph))
-			{
-				return child;
-			}
-		}
+    public AbstractMorph getEqual(AbstractMorph morph)
+    {
+        for (AbstractMorph child : this.morphs)
+        {
+            if (child.equals(morph))
+            {
+                return child;
+            }
+        }
 
-		return null;
-	}
+        return null;
+    }
 
-	public void clear()
-	{
-		this.morphs.clear();
-	}
+    public void clear()
+    {
+        this.morphs.clear();
+    }
 
-	public void sort()
-	{
-		Collections.sort(this.morphs, (a, b) -> a.name.compareToIgnoreCase(b.name));
-	}
+    public void sort()
+    {
+        Collections.sort(this.morphs, (a, b) -> a.name.compareToIgnoreCase(b.name));
+    }
 
-	public final void add(AbstractMorph morph)
-	{
-		if (MorphManager.isBlacklisted(morph.name))
-		{
-			return;
-		}
+    public final void add(AbstractMorph morph)
+    {
+        if (MorphManager.isBlacklisted(morph.name))
+        {
+            return;
+        }
 
-		MorphManager.INSTANCE.applySettings(morph);
+        MorphManager.INSTANCE.applySettings(morph);
 
-		this.addMorph(morph);
-	}
+        this.addMorph(morph);
+    }
 
-	protected void addMorph(AbstractMorph morph)
-	{
-		this.morphs.add(morph);
-	}
+    protected void addMorph(AbstractMorph morph)
+    {
+        this.morphs.add(morph);
+    }
 
-	public boolean isEditable(AbstractMorph morph)
-	{
-		return false;
-	}
+    public boolean isEditable(AbstractMorph morph)
+    {
+        return false;
+    }
 
-	public void edit(AbstractMorph morph)
-	{}
+    public void edit(AbstractMorph morph)
+    {}
 
-	public boolean remove(AbstractMorph morph)
-	{
-		return this.morphs.remove(morph);
-	}
+    public boolean remove(AbstractMorph morph)
+    {
+        return this.morphs.remove(morph);
+    }
 
-	public boolean keyTyped(EntityPlayer player, int keycode)
-	{
-		for (AbstractMorph morph : this.morphs)
-		{
-			if (morph.keybind == keycode && this.morph(player, morph))
-			{
-				return true;
-			}
-		}
+    public boolean keyTyped(EntityPlayer player, int keycode)
+    {
+        for (AbstractMorph morph : this.morphs)
+        {
+            if (morph.keybind == keycode && this.morph(player, morph))
+            {
+                return true;
+            }
+        }
 
-		return false;
-	}
+        return false;
+    }
 
-	protected boolean morph(EntityPlayer player, AbstractMorph morph)
-	{
-		if (Metamorph.proxy.canUse(player))
-		{
-			Dispatcher.sendToServer(new PacketMorph(morph));
+    protected boolean morph(EntityPlayer player, AbstractMorph morph)
+    {
+        if (Metamorph.proxy.canUse(player))
+        {
+            Dispatcher.sendToServer(new PacketMorph(morph));
 
-			return true;
-		}
+            return true;
+        }
 
-		return false;
-	}
+        return false;
+    }
 }

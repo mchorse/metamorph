@@ -28,10 +28,10 @@ public class Explode implements IAction
         {
             return;
         }
-		
-		int explosionPower = 3;
-		boolean isPowered = false;
-		
+        
+        int explosionPower = 3;
+        boolean isPowered = false;
+        
         if (morph instanceof EntityMorph)
         {
             EntityLivingBase entity = ((EntityMorph) morph).getEntity();
@@ -39,11 +39,11 @@ public class Explode implements IAction
             if (entity instanceof EntityCreeper)
             {
                 explosionPower = ReflectionHelper.getPrivateValue(EntityCreeper.class, (EntityCreeper) entity, "explosionRadius", "field_82226_g");
-				isPowered = ((EntityCreeper) entity).getPowered();
+                isPowered = ((EntityCreeper) entity).getPowered();
             }
         }
 
-		float f = isPowered ? 2.0F : 1.0F;
+        float f = isPowered ? 2.0F : 1.0F;
         target.world.createExplosion(target, target.posX, target.posY, target.posZ, explosionPower * f, true);
 
         if (!(target instanceof EntityPlayer) || (target instanceof EntityPlayer && !((EntityPlayer) target).isCreative()))
