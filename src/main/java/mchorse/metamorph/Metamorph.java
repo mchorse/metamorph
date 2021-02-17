@@ -97,12 +97,16 @@ public class Metamorph
         disableMorphAnimation = builder.getBoolean("disable_morph_animation", false);
         disableMorphDisguise = builder.getBoolean("disable_morph_disguise", false);
         disableFirstPersonHand = builder.getBoolean("disable_first_person_hand", false);
+        disableFirstPersonHand.clientSide();
         morphInTightSpaces = builder.getBoolean("morph_in_tight_spaces", false);
         showMorphIdleSounds = builder.getBoolean("show_morph_idle_sounds", true);
         pauseGUIInSP = builder.getBoolean("pause_gui_in_sp", true);
+        pauseGUIInSP.clientSide();
         maxRecentMorphs = builder.getInt("max_recent_morphs", 20, 1, 200);
+        maxRecentMorphs.clientSide();
         allowMorphingIntoCategoryMorphs = builder.getBoolean("allow_morphing_into_category_morphs", false);
         loadEntityMorphs = builder.getBoolean("load_entity_morphs", true);
+        loadEntityMorphs.clientSide();
 
         event.modules.add(builder.build());
     }
