@@ -62,7 +62,9 @@ public class Metamorph
      */
     public static FMLEventChannel channel;
 
-    /* Metamorph configuration */
+    /* Configuration */
+    public static ValueBoolean opEntitySelector;
+
     public static ValueBoolean preventGhosts;
     public static ValueBoolean preventKillAcquire;
     public static ValueBoolean acquireImmediately;
@@ -85,6 +87,10 @@ public class Metamorph
     @SubscribeEvent
     public void onConfigRegister(RegisterConfigEvent event)
     {
+        opEntitySelector = event.opAccess.category(MOD_ID).getBoolean("entity_selectors", true);
+        opEntitySelector.syncable();
+
+        /* Metamorph configuration */
         ConfigBuilder builder = event.createBuilder(MOD_ID);
 
         preventGhosts = builder.category("acquiring").getBoolean("prevent_ghosts", true);

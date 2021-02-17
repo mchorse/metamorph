@@ -1,5 +1,6 @@
 package mchorse.metamorph;
 
+import mchorse.mclib.utils.OpHelper;
 import mchorse.metamorph.api.MorphUtils;
 import mchorse.metamorph.client.EntityModelHandler;
 import mchorse.metamorph.client.KeyboardHandler;
@@ -179,5 +180,11 @@ public class ClientProxy extends CommonProxy
         NetworkPlayerInfo networkplayerinfo = Minecraft.getMinecraft().getConnection().getPlayerInfo(player.getGameProfile().getId());
 
         return networkplayerinfo != null ? networkplayerinfo.getGameType() : GameType.CREATIVE;
+    }
+
+    @Override
+    public boolean canEditSelectors()
+    {
+        return Minecraft.getMinecraft().isIntegratedServerRunning() || OpHelper.isPlayerOp() || Metamorph.opEntitySelector.get();
     }
 }

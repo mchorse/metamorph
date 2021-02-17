@@ -127,4 +127,9 @@ public class CommonProxy
     {
         return player.isCreative() || Metamorph.allowMorphingIntoCategoryMorphs.get();
     }
+
+    public boolean canEditSelectors()
+    {
+        return true;
+    }
 }

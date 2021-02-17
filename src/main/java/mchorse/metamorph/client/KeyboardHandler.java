@@ -13,7 +13,6 @@ import mchorse.metamorph.network.common.survival.PacketSelectMorph;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.settings.KeyBinding;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.world.GameType;
 import net.minecraftforge.fml.client.registry.ClientRegistry;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.common.gameevent.InputEvent;
@@ -75,7 +74,7 @@ public class KeyboardHandler
             wasUsed = true;
         }
 
-        if (this.keySelectorMenu.isPressed())
+        if (this.keySelectorMenu.isPressed() && Metamorph.proxy.canEditSelectors())
         {
             mc.displayGuiScreen(new GuiSelectorsScreen(mc));
             wasUsed = true;
