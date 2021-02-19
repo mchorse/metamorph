@@ -185,6 +185,6 @@ public class ClientProxy extends CommonProxy
     @Override
     public boolean canEditSelectors()
     {
-        return Minecraft.getMinecraft().isIntegratedServerRunning() || OpHelper.isPlayerOp() || Metamorph.opEntitySelector.get();
+        return OpHelper.isPlayerOp() || Metamorph.opEntitySelector.get();
     }
 }
