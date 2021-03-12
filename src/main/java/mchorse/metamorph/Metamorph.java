@@ -113,8 +113,6 @@ public class Metamorph
         allowMorphingIntoCategoryMorphs = builder.getBoolean("allow_morphing_into_category_morphs", false);
         loadEntityMorphs = builder.getBoolean("load_entity_morphs", true);
         loadEntityMorphs.clientSide();
-
-        event.modules.add(builder.build());
     }
 
     @EventHandler
