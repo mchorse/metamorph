@@ -53,6 +53,7 @@ public class GuiAnimation extends GuiElement
         });
         this.animationDuration.tooltip(IKey.lang("metamorph.gui.animation.animation_duration"));
         this.animationDuration.limit(0).integer();
+        this.animationDuration.values(2, 1, 5);
 
         this.pickInterpolation = new GuiButtonElement(mc, IKey.lang("metamorph.gui.animation.pick_interpolation"), (b) ->
         {
