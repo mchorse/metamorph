@@ -97,23 +97,22 @@ public class BodyPartManager
 
     public void merge(BodyPartManager manager)
     {
-        if (manager.parts.size() != this.parts.size())
+        for (int i = 0, c = manager.parts.size(); i < c; i++)
         {
-            this.copy(manager);
-
-            return;
-        }
-
-        for (int i = 0, c = this.parts.size(); i < c; i++)
-        {
-            BodyPart part = this.parts.get(i);
+            BodyPart part = i < this.parts.size() ? this.parts.get(i) : null;
             BodyPart other = manager.parts.get(i);
 
-            if (!part.canMerge(other))
+            if (part == null)
+            {
+                this.parts.add(other);
+            }
+            else if (!part.canMerge(other))
             {
                 this.parts.set(i, other.copy());
             }
         }
+
+        this.ensureCount(manager.parts.size());
     }
 
     public void afterMerge(BodyPartManager manager)
@@ -154,6 +153,21 @@ public class BodyPartManager
             }
 
             current.pause(past, offset);
+        }
+
+        if (parts != null)
+        {
+            this.ensureCount(parts.parts.size());
+        }
+    }
+
+    private void ensureCount(int count)
+    {
+        count = Math.max(count, 0);
+
+        while (this.parts.size() > count)
+        {
+            this.parts.remove(this.parts.size() - 1);
         }
     }
 
