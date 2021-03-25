@@ -84,7 +84,10 @@ public class GuiBodyPartEditor extends GuiMorphPanel<AbstractMorph, GuiAbstractM
             {
                 if (part != null)
                 {
-                    part.morph.setDirect(MorphUtils.copy(morph));
+                    AbstractMorph copy = MorphUtils.copy(morph);
+
+                    part.morph.setDirect(copy);
+                    this.applyUseTarget(part, copy);
                 }
             });
         });
@@ -144,6 +147,20 @@ public class GuiBodyPartEditor extends GuiMorphPanel<AbstractMorph, GuiAbstractM
         }
 
         this.elements.add(this.stacks, this.inventory);
+    }
+
+    private void applyUseTarget(BodyPart part, AbstractMorph copy)
+    {
+        if (copy == null)
+        {
+            return;
+        }
+
+        if (copy.name.equals("snowstorm") || copy.name.equals("particle"))
+        {
+            part.useTarget = true;
+            this.useTarget.toggled(part.useTarget);
+        }
     }
 
     private GuiContextMenu bodyPartContextMenu()
