@@ -6,6 +6,8 @@ import mchorse.mclib.client.gui.framework.elements.buttons.GuiToggleElement;
 import mchorse.mclib.client.gui.framework.elements.input.GuiTrackpadElement;
 import mchorse.mclib.client.gui.framework.elements.list.GuiInterpolationList;
 import mchorse.mclib.client.gui.framework.elements.list.GuiListElement;
+import mchorse.mclib.client.gui.framework.elements.utils.GuiContext;
+import mchorse.mclib.client.gui.utils.InterpolationRenderer;
 import mchorse.mclib.client.gui.utils.keys.IKey;
 import mchorse.mclib.utils.Interpolation;
 import mchorse.metamorph.api.morphs.utils.Animation;
@@ -88,5 +90,16 @@ public class GuiAnimation extends GuiElement
         this.animationDuration.setValue(animation.duration);
         this.interpolations.setCurrent(animation.interp);
         this.interpolations.setVisible(false);
+    }
+
+    @Override
+    public void draw(GuiContext context)
+    {
+        super.draw(context);
+
+        if (this.pickInterpolation.area.isInside(context) || (this.interpolations.isVisible() && this.interpolations.area.isInside(context)))
+        {
+            InterpolationRenderer.drawInterpolationPreview(this.animation.interp, context, this.pickInterpolation.area.x - 10, this.pickInterpolation.area.y, 1F, 0F, this.animation.duration);
+        }
     }
 }
