@@ -97,6 +97,8 @@ public class BodyPartManager
 
     public void merge(BodyPartManager manager)
     {
+        this.initiated = false;
+
         for (int i = 0, c = manager.parts.size(); i < c; i++)
         {
             BodyPart part = i < this.parts.size() ? this.parts.get(i) : null;
@@ -153,11 +155,6 @@ public class BodyPartManager
             }
 
             current.pause(past, offset);
-        }
-
-        if (parts != null)
-        {
-            this.ensureCount(parts.parts.size());
         }
     }
 
