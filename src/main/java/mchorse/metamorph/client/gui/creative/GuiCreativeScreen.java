@@ -4,6 +4,7 @@ import mchorse.mclib.client.gui.framework.GuiBase;
 import mchorse.mclib.client.gui.framework.elements.buttons.GuiButtonElement;
 import mchorse.mclib.client.gui.framework.elements.buttons.GuiIconElement;
 import mchorse.mclib.client.gui.framework.elements.utils.GuiDraw;
+import mchorse.mclib.client.gui.framework.tooltips.LabelTooltip;
 import mchorse.mclib.client.gui.utils.Icons;
 import mchorse.mclib.client.gui.utils.keys.IKey;
 import mchorse.mclib.utils.OpHelper;
@@ -89,7 +90,7 @@ public class GuiCreativeScreen extends GuiBase
 
         this.root.add(this.pane, this.morph, this.acquire, this.close, this.selectors, this.icon, this.copy);
 
-        this.root.keys().register(this.icon.tooltip.label, Keyboard.KEY_S, () -> this.icon.clickItself(this.context)).active(Metamorph.proxy.canEditSelectors()).category(this.pane.exitKey.category);
+        this.root.keys().register(((LabelTooltip) this.icon.tooltip).label, Keyboard.KEY_S, () -> this.icon.clickItself(this.context)).active(Metamorph.proxy.canEditSelectors()).category(this.pane.exitKey.category);
         this.root.keys().register(IKey.lang("metamorph.gui.creative.keys.acquire"), Keyboard.KEY_A, () -> this.acquire.clickItself(this.context)).category(this.pane.exitKey.category).active(() -> !this.pane.isEditMode());
         this.root.keys().register(IKey.lang("metamorph.gui.creative.keys.morph"), Keyboard.KEY_RETURN, () -> this.morph.clickItself(this.context)).category(this.pane.exitKey.category).active(() -> !this.pane.isEditMode());
     }

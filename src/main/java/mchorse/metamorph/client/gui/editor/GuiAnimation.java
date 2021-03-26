@@ -7,6 +7,7 @@ import mchorse.mclib.client.gui.framework.elements.input.GuiTrackpadElement;
 import mchorse.mclib.client.gui.framework.elements.list.GuiInterpolationList;
 import mchorse.mclib.client.gui.framework.elements.list.GuiListElement;
 import mchorse.mclib.client.gui.framework.elements.utils.GuiContext;
+import mchorse.mclib.client.gui.framework.tooltips.InterpolationTooltip;
 import mchorse.mclib.client.gui.utils.InterpolationRenderer;
 import mchorse.mclib.client.gui.utils.keys.IKey;
 import mchorse.mclib.utils.Interpolation;
@@ -26,6 +27,8 @@ public class GuiAnimation extends GuiElement
     public GuiListElement<Interpolation> interpolations;
 
     public Animation animation;
+
+    private InterpolationTooltip interpolationTooltip = new InterpolationTooltip(0F, 0, () -> this.animation.interp, () -> this.animation.duration);
 
     public GuiAnimation(Minecraft mc)
     {
@@ -61,12 +64,13 @@ public class GuiAnimation extends GuiElement
         {
             this.interpolations.toggleVisible();
         });
+        this.pickInterpolation.tooltip(this.interpolationTooltip);
 
         this.interpolations = new GuiInterpolationList(mc, (interp) ->
         {
             this.animation.interp = interp.get(0);
         });
-        this.interpolations.markIgnored().flex().relative(this.pickInterpolation).y(1F).w(1F).h(96);
+        this.interpolations.tooltip(this.interpolationTooltip).markIgnored().flex().relative(this.pickInterpolation).y(1F).w(1F).h(96);
 
         this.flex().column(5).vertical().stretch().height(20).padding(10);
 
@@ -90,16 +94,5 @@ public class GuiAnimation extends GuiElement
         this.animationDuration.setValue(animation.duration);
         this.interpolations.setCurrent(animation.interp);
         this.interpolations.setVisible(false);
-    }
-
-    @Override
-    public void draw(GuiContext context)
-    {
-        super.draw(context);
-
-        if (this.pickInterpolation.area.isInside(context) || (this.interpolations.isVisible() && this.interpolations.area.isInside(context)))
-        {
-            InterpolationRenderer.drawInterpolationPreview(this.animation.interp, context, this.pickInterpolation.area.x - 10, this.pickInterpolation.area.y, 1F, 0F, this.animation.duration);
-        }
     }
 }
