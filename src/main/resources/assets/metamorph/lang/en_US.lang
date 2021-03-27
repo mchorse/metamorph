@@ -175,6 +175,7 @@ metamorph.config.morphs.allow_morphing_into_category_morphs=Allow morphing into 
 metamorph.config.comments.morphs.allow_morphing_into_category_morphs=When enabled, this option allows to morph into recent and custom category morphs while being in survival. This option also allows to open creative morph menu in survival
 metamorph.config.morphs.load_entity_morphs=Load entity morphs
 metamorph.config.comments.morphs.load_entity_morphs=Whether entity morphs should be loaded in creative morph menu
+metamorph.config.comments.morphs.render_bodypart_axis=Render Axis for body parts
 
 # OP access config
 op_access.config.metamorph.title=Metamorph
