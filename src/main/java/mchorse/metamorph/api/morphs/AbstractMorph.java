@@ -19,6 +19,7 @@ import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
+import javax.vecmath.Vector3f;
 import java.util.Objects;
 
 /**
@@ -32,6 +33,17 @@ import java.util.Objects;
  */
 public abstract class AbstractMorph
 {
+
+    public Vector3f cachedTranslation = new Vector3f();
+
+    /**
+     * At the moment no use -> would be useful to have realistic physics
+     * for every limb, see robotics https://www.tu-chemnitz.de/informatik/KI/edu/robotik/ws2017/vel.kin.pdf
+     */
+    public Vector3f angularVelocity = new Vector3f();
+
+    public int age = 0;
+
     /* Meta information */
 
     /**
@@ -156,6 +168,8 @@ public abstract class AbstractMorph
         {
             ability.update(target);
         }
+
+        this.age++;
     }
 
     /* Morph and demorph handlers */
