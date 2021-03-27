@@ -4,6 +4,7 @@ import com.google.common.base.Objects;
 import mchorse.mclib.client.Draw;
 import mchorse.mclib.client.gui.framework.elements.GuiModelRenderer;
 import mchorse.mclib.utils.Interpolation;
+import mchorse.mclib.utils.MatrixUtils;
 import mchorse.metamorph.api.MorphUtils;
 import mchorse.metamorph.api.morphs.utils.Animation;
 import mchorse.metamorph.api.morphs.utils.IAnimationProvider;
@@ -25,6 +26,8 @@ import net.minecraft.nbt.NBTTagList;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
+import javax.vecmath.Matrix3f;
+import javax.vecmath.Matrix4f;
 import javax.vecmath.Vector3f;
 
 /**
@@ -32,6 +35,9 @@ import javax.vecmath.Vector3f;
  */
 public class BodyPart
 {
+    public static Vector3f cachedTranslation = new Vector3f();
+    public static Vector3f cachedAngularVelocity = new Vector3f();
+    public static Matrix4f modelViewMatrix = new Matrix4f();
     public Morph morph = new Morph();
     public ItemStack[] slots = new ItemStack[] {ItemStack.EMPTY, ItemStack.EMPTY, ItemStack.EMPTY, ItemStack.EMPTY, ItemStack.EMPTY, ItemStack.EMPTY};
     public Vector3f translate = new Vector3f();
@@ -47,6 +53,7 @@ public class BodyPart
     private Vector3f lastTranslate;
     private Vector3f lastScale;
     private Vector3f lastRotate;
+    private Vector3f previousRotation = new Vector3f();
 
     @SideOnly(Side.CLIENT)
     public void init()
@@ -111,6 +118,41 @@ public class BodyPart
             rz = inter.interpolate(this.lastRotate.z, rz, factor);
         }
 
+        if (this.morph.get() != null)
+        {
+            MatrixUtils.Transformation modelView = new MatrixUtils.Transformation();
+
+            if (MatrixUtils.matrix != null)
+            {
+                modelView = MatrixUtils.extractTransformations(MatrixUtils.matrix, MatrixUtils.readModelView(modelViewMatrix));
+            }
+
+            /* translation */
+
+            this.morph.get().cachedTranslation.set(cachedTranslation);
+
+            Vector3f translate = new Vector3f(tx, ty, tz);
+            Matrix3f transformation = new Matrix3f(modelView.getRotation3f());
+
+            transformation.mul(modelView.getScale3f());
+            transformation.transform(translate);
+
+            this.morph.get().cachedTranslation.add(translate);
+
+            /* angular velocity */
+            /*Matrix3f rotation1 = MatrixUtils.getZYXrotationMatrix(rx, ry, rz);
+            Matrix3f rotation0 = MatrixUtils.getZYXrotationMatrix(this.previousRotation.x, this.previousRotation.y, this.previousRotation.z);
+            rotation0.invert();
+            rotation1.mul(rotation0);
+            this.morph.get().angularVelocity.set(MatrixUtils.getAngularVelocity(rotation1));
+            this.morph.get().angularVelocity.add(cachedAngularVelocity);
+            if (this.morph.get().age != this.lastAge) this.previousRotation.set(rx, ry, rz);
+            this.lastAge = this.morph.get().age;*/
+        }
+
+        cachedTranslation.set(0,0,0);
+        //cachedAngularVelocity.set(0,0,0);
+
         GL11.glPushMatrix();
         GL11.glTranslatef(tx, ty, tz);
 
@@ -148,6 +190,7 @@ public class BodyPart
             GlStateManager.disableLighting();
 
             Draw.point(0, 0, 0);
+            Draw.axis(0.1F);
 
             GlStateManager.enableLighting();
             GlStateManager.enableDepth();
