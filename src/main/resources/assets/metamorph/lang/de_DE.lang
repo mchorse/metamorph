@@ -39,6 +39,7 @@ metamorph.config.prevent_kill_acquire=Erwerben durch Töten vermeiden
 metamorph.config.show_demorph=Demorph zeigen
 metamorph.config.disable_pov=POV deaktivieren
 metamorph.config.disable_health=Gesundheitsskalierung deaktivieren
+metamorph.config.comments.morphs.render_bodypart_axis=Achsen für Bodyparts anzeigen
 
 # Commands
 metamorph.commands.morph=Morph-Befehl. Dieser Befehl ist für die Verwandlung eines Spielers in den angegebenen Morph verantwortlich.\n\n/morph <username> [morph_name] [data_tag]

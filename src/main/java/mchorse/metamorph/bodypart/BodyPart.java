@@ -5,6 +5,7 @@ import mchorse.mclib.client.Draw;
 import mchorse.mclib.client.gui.framework.elements.GuiModelRenderer;
 import mchorse.mclib.utils.Interpolation;
 import mchorse.mclib.utils.MatrixUtils;
+import mchorse.metamorph.Metamorph;
 import mchorse.metamorph.api.MorphUtils;
 import mchorse.metamorph.api.morphs.utils.Animation;
 import mchorse.metamorph.api.morphs.utils.IAnimationProvider;
@@ -190,7 +191,11 @@ public class BodyPart
             GlStateManager.disableLighting();
 
             Draw.point(0, 0, 0);
-            Draw.axis(0.1F);
+
+            if (Metamorph.renderBodyPartAxis.get())
+            {
+                Draw.axis(0.1F);
+            }
 
             GlStateManager.enableLighting();
             GlStateManager.enableDepth();

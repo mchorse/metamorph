@@ -78,6 +78,7 @@ public class Metamorph
     public static ValueBoolean morphInTightSpaces;
     public static ValueBoolean showMorphIdleSounds;
     public static ValueBoolean pauseGUIInSP;
+    public static ValueBoolean renderBodyPartAxis;
     public static ValueInt maxRecentMorphs;
     public static ValueBoolean allowMorphingIntoCategoryMorphs;
     public static ValueBoolean loadEntityMorphs;
@@ -108,6 +109,8 @@ public class Metamorph
         showMorphIdleSounds = builder.getBoolean("show_morph_idle_sounds", true);
         pauseGUIInSP = builder.getBoolean("pause_gui_in_sp", true);
         pauseGUIInSP.clientSide();
+        renderBodyPartAxis = builder.getBoolean("render_bodypart_axis", true);
+        renderBodyPartAxis.clientSide();
         maxRecentMorphs = builder.getInt("max_recent_morphs", 20, 1, 200);
         maxRecentMorphs.clientSide();
         allowMorphingIntoCategoryMorphs = builder.getBoolean("allow_morphing_into_category_morphs", false);
