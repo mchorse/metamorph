@@ -285,6 +285,8 @@ public class GuiMorphSection extends GuiElement
 
         if (!this.section.hidden)
         {
+            int visibleCategories = 0;
+
             for (MorphCategory category : this.section.categories)
             {
                 int count = this.getMorphsSize(category);
@@ -296,9 +298,13 @@ public class GuiMorphSection extends GuiElement
 
                 h += CATEGORY_HEIGHT + 5;
                 h += this.getCategoryHeight(category) + 5;
+                visibleCategories += 1;
             }
 
-            h -= 5;
+            if (visibleCategories > 0)
+            {
+                h -= 5;
+            }
         }
 
         return h;
