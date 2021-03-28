@@ -33,7 +33,6 @@ import java.util.Objects;
  */
 public abstract class AbstractMorph
 {
-
     public Vector3f cachedTranslation = new Vector3f();
 
     /**

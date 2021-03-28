@@ -39,6 +39,7 @@ public class BodyPart
     public static Vector3f cachedTranslation = new Vector3f();
     public static Vector3f cachedAngularVelocity = new Vector3f();
     public static Matrix4f modelViewMatrix = new Matrix4f();
+
     public Morph morph = new Morph();
     public ItemStack[] slots = new ItemStack[] {ItemStack.EMPTY, ItemStack.EMPTY, ItemStack.EMPTY, ItemStack.EMPTY, ItemStack.EMPTY, ItemStack.EMPTY};
     public Vector3f translate = new Vector3f();
@@ -119,7 +120,7 @@ public class BodyPart
             rz = inter.interpolate(this.lastRotate.z, rz, factor);
         }
 
-        if (this.morph.get() != null)
+        if (!this.morph.isEmpty())
         {
             MatrixUtils.Transformation modelView = new MatrixUtils.Transformation();
 
@@ -369,6 +370,7 @@ public class BodyPart
         }
 
         NBTTagList list = new NBTTagList();
+        int empty = 0;
 
         for (int i = 0; i < this.slots.length; i++)
         {
@@ -379,11 +381,18 @@ public class BodyPart
             {
                 stack.writeToNBT(compound);
             }
+            else
+            {
+                empty += 1;
+            }
 
             list.appendTag(compound);
         }
 
-        tag.setTag("Items", list);
+        if (empty != this.slots.length)
+        {
+            tag.setTag("Items", list);
+        }
 
         if (this.translate.x != 0 || this.translate.y != 0 || this.translate.z != 0)
         {
