@@ -246,11 +246,19 @@ public class BodyPart
 
     public boolean canMerge(BodyPart part)
     {
-        this.lastTranslate = new Vector3f(this.translate);
-        this.lastScale = new Vector3f(this.scale);
-        this.lastRotate = new Vector3f(this.rotate);
+        if (this.morph.set(part.morph.copy()))
+        {
+            this.lastTranslate = new Vector3f(this.translate);
+            this.lastScale = new Vector3f(this.scale);
+            this.lastRotate = new Vector3f(this.rotate);
+        }
+        else
+        {
+            this.lastTranslate = null;
+            this.lastScale = null;
+            this.lastRotate = null;
+        }
 
-        this.morph.copy(part.morph);
         this.translate.set(part.translate);
         this.scale.set(part.scale);
         this.rotate.set(part.rotate);
