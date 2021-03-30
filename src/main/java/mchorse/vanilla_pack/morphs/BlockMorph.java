@@ -107,6 +107,7 @@ public class BlockMorph extends ItemStackMorph
             OpenGlHelper.setLightmapTextureCoords(OpenGlHelper.lightmapTexUnit, 240, 240);
         }
 
+        GlStateManager.enableCull();
         GlStateManager.enableRescaleNormal();
         BlockRendererDispatcher blockrendererdispatcher = mc.getBlockRendererDispatcher();
         GlStateManager.pushMatrix();
@@ -119,6 +120,7 @@ public class BlockMorph extends ItemStackMorph
         GlStateManager.translate(0.0F, 0.0F, 1.0F);
         GlStateManager.popMatrix();
         GlStateManager.disableRescaleNormal();
+        GlStateManager.disableCull();
 
         if (!this.lighting)
         {
