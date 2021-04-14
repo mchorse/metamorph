@@ -27,7 +27,7 @@ public class Animation
 
     public float getFactor(float partialTicks)
     {
-        if (!this.animates)
+        if (!this.animates || this.duration <= 0)
         {
             return 1F;
         }
