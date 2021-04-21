@@ -51,7 +51,7 @@ public class GuiSelectorEditor extends GuiElement
         this.menu = menu;
 
         this.selectors = new GuiSelectorListElement(mc, this::fillData);
-        this.selectors.sorting().background(0xff000000).setList(EntityModelHandler.selectors);
+        this.selectors.sorting().background().setList(EntityModelHandler.selectors);
         this.selectors.context(() ->
         {
             GuiSimpleContextMenu contextMenu = new GuiSimpleContextMenu(mc).action(Icons.ADD, IKey.lang("metamorph.gui.selectors.add"), this::addSelector);
@@ -104,10 +104,14 @@ public class GuiSelectorEditor extends GuiElement
         this.form.flex().relative(this).w(1F).column(5).vertical().stretch().height(20).padding(10);
         this.selectors.flex().relative(this.form).y(1F).w(1F).hTo(this.flex(), 1F);
 
-        GuiLabel title = Elements.label(IKey.lang("metamorph.gui.selectors.title"), this.font.FONT_HEIGHT);
-        GuiLabel name = Elements.label(IKey.lang("metamorph.gui.selectors.name"), 16).anchor(0, 1);
-        GuiLabel type = Elements.label(IKey.lang("metamorph.gui.selectors.type"), 16).anchor(0, 1);
-        GuiLabel match = Elements.label(IKey.lang("metamorph.gui.selectors.match"), 16).anchor(0, 1);
+        GuiLabel title = Elements.label(IKey.lang("metamorph.gui.selectors.title"));
+        GuiLabel name = Elements.label(IKey.lang("metamorph.gui.selectors.name"));
+        GuiLabel type = Elements.label(IKey.lang("metamorph.gui.selectors.type"));
+        GuiLabel match = Elements.label(IKey.lang("metamorph.gui.selectors.match"));
+
+        name.marginTop(8);
+        type.marginTop(8);
+        match.marginTop(8);
 
         this.form.add(title.tooltip(IKey.lang("metamorph.gui.selectors.tooltip")), name, this.name, type, this.type, match, this.match, this.active);
 

@@ -186,7 +186,7 @@ public class GuiAbstractMorph<T extends AbstractMorph> extends GuiPanelBase<GuiM
         });
 
         displayName.setText(morph.displayName);
-        elements.add(Elements.label(IKey.lang("metamorph.gui.editor.display_name"), this.font.FONT_HEIGHT));
+        elements.add(Elements.label(IKey.lang("metamorph.gui.editor.display_name")));
         elements.add(displayName);
 
         return elements;

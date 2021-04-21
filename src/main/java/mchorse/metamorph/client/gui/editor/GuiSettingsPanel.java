@@ -128,13 +128,13 @@ public class GuiSettingsPanel extends GuiMorphPanel<AbstractMorph, GuiAbstractMo
         this.data.flex().relative(this).relative(this.left).x(1F, 10).y(1, -30).wTo(this.flex(), 1F, -10);
 
         this.left.add(this.reset);
-        this.left.add(Elements.label(IKey.lang("metamorph.gui.editor.keybind"), 16).anchor(0, 1F), this.keybind);
-        this.left.add(Elements.label(IKey.lang("metamorph.gui.editor.display_name"), 16).anchor(0, 1F), this.displayName);
-        this.left.add(Elements.label(IKey.lang("metamorph.gui.editor.health"), 16).anchor(0, 1F), this.health);
-        this.left.add(Elements.label(IKey.lang("metamorph.gui.editor.speed"), 16).anchor(0, 1F), this.speed);
-        this.left.add(Elements.label(IKey.lang("metamorph.gui.editor.abilities"), 16).anchor(0, 1F), this.abilities);
-        this.left.add(Elements.label(IKey.lang("metamorph.gui.editor.attack"), 16).anchor(0, 1F), this.attack);
-        this.left.add(Elements.label(IKey.lang("metamorph.gui.editor.action"), 16).anchor(0, 1F), this.action);
+        this.left.add(Elements.label(IKey.lang("metamorph.gui.editor.keybind")).marginTop(8), this.keybind);
+        this.left.add(Elements.label(IKey.lang("metamorph.gui.editor.display_name")).marginTop(8), this.displayName);
+        this.left.add(Elements.label(IKey.lang("metamorph.gui.editor.health")).marginTop(8), this.health);
+        this.left.add(Elements.label(IKey.lang("metamorph.gui.editor.speed")).marginTop(8), this.speed);
+        this.left.add(Elements.label(IKey.lang("metamorph.gui.editor.abilities")).marginTop(8), this.abilities);
+        this.left.add(Elements.label(IKey.lang("metamorph.gui.editor.attack")).marginTop(8), this.attack);
+        this.left.add(Elements.label(IKey.lang("metamorph.gui.editor.action")).marginTop(8), this.action);
 
         this.right = new GuiScrollElement(mc);
         this.right.flex().relative(this).x(1F).w(130).h(1F).anchorX(1F).column(5).vertical().stretch().scroll().height(20).padding(10);
@@ -150,8 +150,8 @@ public class GuiSettingsPanel extends GuiMorphPanel<AbstractMorph, GuiAbstractMo
         this.hitboxEyePosition.limit(0.01, Integer.MAX_VALUE).tooltip(IKey.lang("metamorph.gui.editor.hitbox.eye_tooltip"));
 
         this.right.add(this.hitboxEnabled);
-        this.right.add(Elements.label(IKey.lang("metamorph.gui.editor.hitbox.size")), this.hitboxWidth, this.hitboxHeight, this.hitboxSneakingHeight);
-        this.right.add(Elements.label(IKey.lang("metamorph.gui.editor.hitbox.eye")), this.hitboxEyePosition);
+        this.right.add(Elements.label(IKey.lang("metamorph.gui.editor.hitbox.size")).marginTop(8), this.hitboxWidth, this.hitboxHeight, this.hitboxSneakingHeight);
+        this.right.add(Elements.label(IKey.lang("metamorph.gui.editor.hitbox.eye")).marginTop(8), this.hitboxEyePosition);
 
         this.add(this.left, this.right, this.data);
     }

@@ -54,14 +54,14 @@ public class GuiLabelPanel extends GuiMorphPanel<LabelMorph, GuiLabelMorph>
         this.element.scroll.opposite = true;
         this.element.flex().relative(this).w(120).h(1F).column(5).vertical().stretch().scroll().height(20).padding(10);
 
-        this.element.add(Elements.label(IKey.lang("metamorph.gui.label.label"), 16).anchor(0, 1F), this.label);
-        this.element.add(Elements.label(IKey.lang("metamorph.gui.label.max_width"), 16).anchor(0, 1F), this.max);
-        this.element.add(Elements.label(IKey.lang("metamorph.gui.label.anchor"), 16).anchor(0, 1F), this.anchorX, this.anchorY);
-        this.element.add(Elements.label(IKey.lang("metamorph.gui.label.color"), 16).anchor(0, 1F), this.color, this.lighting);
+        this.element.add(Elements.label(IKey.lang("metamorph.gui.label.label")).marginTop(8), this.label);
+        this.element.add(Elements.label(IKey.lang("metamorph.gui.label.max_width")).marginTop(8), this.max);
+        this.element.add(Elements.label(IKey.lang("metamorph.gui.label.anchor")).marginTop(8), this.anchorX, this.anchorY);
+        this.element.add(Elements.label(IKey.lang("metamorph.gui.label.color")).marginTop(8), this.color, this.lighting);
 
         this.element.add(this.shadow);
-        this.element.add(Elements.label(IKey.lang("metamorph.gui.label.shadow_offset"), 16).anchor(0, 1F), this.shadowX, this.shadowY);
-        this.element.add(Elements.label(IKey.lang("metamorph.gui.label.shadow_color"), 16).anchor(0, 1F), this.shadowColor);
+        this.element.add(Elements.label(IKey.lang("metamorph.gui.label.shadow_offset")).marginTop(8), this.shadowX, this.shadowY);
+        this.element.add(Elements.label(IKey.lang("metamorph.gui.label.shadow_color")).marginTop(8), this.shadowColor);
 
         this.add(this.element);
     }
