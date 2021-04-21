@@ -9,6 +9,7 @@ import mchorse.mclib.client.gui.framework.elements.input.GuiKeybindElement;
 import mchorse.mclib.client.gui.framework.elements.utils.GuiDraw;
 import mchorse.mclib.client.gui.utils.Elements;
 import mchorse.mclib.client.gui.utils.keys.IKey;
+import mchorse.mclib.utils.ColorUtils;
 import mchorse.metamorph.ClientProxy;
 import mchorse.metamorph.Metamorph;
 import mchorse.metamorph.api.MorphManager;
@@ -260,7 +261,7 @@ public class GuiSurvivalScreen extends GuiBase
     public void drawScreen(int mouseX, int mouseY, float partialTicks)
     {
         GuiDraw.drawCustomBackground(this.root.area.x, this.root.area.y, this.root.area.w, this.root.area.h);
-        this.sidebar.area.draw(0x88000000);
+        this.sidebar.area.draw(ColorUtils.HALF_BLACK);
         Gui.drawRect(this.root.area.x, this.root.area.y, this.root.area.ex(), this.root.area.y + 20, 0xcc000000);
         this.context.font.drawStringWithShadow(I18n.format("metamorph.gui.survival.title"), this.root.area.x + 6, this.root.area.y + 10 - this.context.font.FONT_HEIGHT / 2, 0xffffff);
 

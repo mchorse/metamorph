@@ -52,7 +52,7 @@ public class GuiOverlay extends Gui
             boolean disappear = morph.timer <= this.cap;
 
             int progress = this.cap - morph.timer;
-            int alpha = (int) (255 * morph.timer / this.cap);
+            int alpha = (255 * morph.timer / this.cap);
             int y = height - 10 + (disappear ? (int) (40 * (float) progress / this.cap) : 0);
             int color = disappear ? 0x00ffffff + (alpha << 24) : 0xffffffff;
 

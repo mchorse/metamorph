@@ -10,6 +10,7 @@ import mchorse.mclib.client.gui.utils.Area;
 import mchorse.mclib.client.gui.utils.Icon;
 import mchorse.mclib.client.gui.utils.Icons;
 import mchorse.mclib.client.gui.utils.keys.IKey;
+import mchorse.mclib.utils.ColorUtils;
 import mchorse.mclib.utils.Keys;
 import mchorse.metamorph.api.MorphUtils;
 import mchorse.metamorph.api.creative.categories.MorphCategory;
@@ -479,7 +480,7 @@ public class GuiMorphSection extends GuiElement
                 continue;
             }
 
-            GuiDraw.drawTextBackground(this.font, category.getTitle(), this.area.x + 7, this.area.y + y + 8 - this.font.FONT_HEIGHT / 2, 0xeeeeee, 0x88000000, 2);
+            GuiDraw.drawTextBackground(this.font, category.getTitle(), this.area.x + 7, this.area.y + y + 8 - this.font.FONT_HEIGHT / 2, 0xeeeeee, ColorUtils.HALF_BLACK, 2);
 
             Area.SHARED.copy(this.area);
             Area.SHARED.y = this.area.y + y;
@@ -558,7 +559,7 @@ public class GuiMorphSection extends GuiElement
         int spotX = x + w / 2;
         int spotY = y + h / 2;
 
-        GuiDraw.drawDropCircleShadow(spotX, spotY, spot, (int) (spot * 0.65F), 10, 0x44000000, 0x00);
+        GuiDraw.drawDropCircleShadow(spotX, spotY, spot, (int) (spot * 0.65F), 10, 0x44000000, 0);
 
         if (morph.errorRendering)
         {

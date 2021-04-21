@@ -31,7 +31,7 @@ public class LabelMorph extends AbstractMorph
     public boolean shadow = false;
     public float shadowX = 1F;
     public float shadowY = 1F;
-    public int shadowColor = 0x000000;
+    public int shadowColor = 0;
 
     public LabelMorph()
     {
@@ -217,7 +217,7 @@ public class LabelMorph extends AbstractMorph
         if (this.shadow) tag.setBoolean("Shadow", this.shadow);
         if (this.shadowX != 1F) tag.setFloat("ShadowX", this.shadowX);
         if (this.shadowY != 1F) tag.setFloat("ShadowY", this.shadowY);
-        if (this.shadowColor != 0x000000) tag.setInteger("ShadowColor", this.shadowColor);
+        if (this.shadowColor != 0) tag.setInteger("ShadowColor", this.shadowColor);
         if (!this.lighting) tag.setBoolean("Lighting", this.lighting);
     }
 

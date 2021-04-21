@@ -14,6 +14,7 @@ import mchorse.mclib.client.gui.framework.elements.utils.GuiContext;
 import mchorse.mclib.client.gui.framework.elements.utils.GuiInventoryElement;
 import mchorse.mclib.client.gui.utils.Icons;
 import mchorse.mclib.client.gui.utils.keys.IKey;
+import mchorse.mclib.utils.ColorUtils;
 import mchorse.mclib.utils.Direction;
 import mchorse.mclib.utils.MathUtils;
 import mchorse.metamorph.api.MorphUtils;
@@ -71,6 +72,7 @@ public class GuiBodyPartEditor extends GuiMorphPanel<AbstractMorph, GuiAbstractM
         super(mc, editor);
 
         this.limbs = new GuiStringListElement(mc, (str) -> this.pickLimb(str.get(0)));
+        this.limbs.background();
 
         this.bodyParts = new GuiBodyPartListElement(mc, (part) -> this.setPart(part.isEmpty() ? null : part.get(0)));
         this.bodyParts.background().sorting();
@@ -435,7 +437,6 @@ public class GuiBodyPartEditor extends GuiMorphPanel<AbstractMorph, GuiAbstractM
 
         if (this.elements.isVisible())
         {
-            Gui.drawRect(this.limbs.area.x, this.limbs.area.y, this.limbs.area.ex(), this.limbs.area.ey(), 0x88000000);
             this.font.drawStringWithShadow(I18n.format("metamorph.gui.body_parts.limbs"), this.limbs.area.x, this.limbs.area.y - 12, 0xffffff);
         }
 
