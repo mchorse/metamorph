@@ -22,6 +22,7 @@ public class GuiCreativeMorphsMenu extends GuiCreativeMorphsList
     private GuiButtonElement close;
     private GuiButtonElement acquire;
     private boolean menu;
+    private boolean pickUponExit;
 
     public GuiCreativeMorphsMenu(Minecraft mc, Consumer<AbstractMorph> callback)
     {
@@ -61,6 +62,13 @@ public class GuiCreativeMorphsMenu extends GuiCreativeMorphsList
         this.keys().register(IKey.lang("metamorph.gui.creative.keys.acquire"), Keyboard.KEY_A, () -> this.acquire.clickItself(GuiBase.getCurrent())).category(this.exitKey.category).active(() -> !this.isEditMode());
     }
 
+    public GuiCreativeMorphsMenu pickUponExit()
+    {
+        this.pickUponExit = true;
+
+        return this;
+    }
+
     @Override
     public void exit()
     {
@@ -68,6 +76,11 @@ public class GuiCreativeMorphsMenu extends GuiCreativeMorphsList
         {
             this.finish();
             this.removeFromParent();
+
+            if (this.pickUponExit)
+            {
+                this.pickMorph(this.getSelected());
+            }
 
             GuiBase.getCurrent().setContextMenu(null);
         }
