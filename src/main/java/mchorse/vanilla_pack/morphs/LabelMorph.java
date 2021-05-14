@@ -3,6 +3,7 @@ package mchorse.vanilla_pack.morphs;
 import mchorse.mclib.utils.Color;
 import mchorse.mclib.utils.ColorUtils;
 import mchorse.mclib.utils.MathUtils;
+import mchorse.mclib.utils.MatrixUtils;
 import mchorse.mclib.utils.TextUtils;
 import mchorse.metamorph.api.morphs.AbstractMorph;
 import net.minecraft.client.Minecraft;
@@ -10,7 +11,6 @@ import net.minecraft.client.gui.FontRenderer;
 import net.minecraft.client.renderer.BufferBuilder;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.renderer.OpenGlHelper;
-import net.minecraft.client.renderer.RenderHelper;
 import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
 import net.minecraft.entity.EntityLivingBase;
@@ -20,12 +20,16 @@ import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 import org.lwjgl.opengl.GL11;
 
+import javax.vecmath.Matrix4f;
+import javax.vecmath.Vector3f;
+import javax.vecmath.Vector4f;
 import java.util.List;
 import java.util.Objects;
 
 public class LabelMorph extends AbstractMorph
 {
     public static final String DEFAULT_LABEL = "Lorem ipsum";
+    public static final Matrix4f matrix = new Matrix4f();
 
     public String label = DEFAULT_LABEL;
     public int max = -1;
@@ -43,6 +47,8 @@ public class LabelMorph extends AbstractMorph
     /* Background */
     public int background = 0x00000000;
     public float offset = 3;
+
+    public boolean billboard;
 
     public LabelMorph()
     {
@@ -79,8 +85,27 @@ public class LabelMorph extends AbstractMorph
         GlStateManager.disableLighting();
         GlStateManager.disableCull();
         GlStateManager.pushMatrix();
+
         GlStateManager.translate(x, y, z);
         GlStateManager.scale(scale, -scale, scale);
+
+        if (this.billboard)
+        {
+            /* Get matrix */
+            Matrix4f matrix4f = MatrixUtils.readModelView(matrix);
+            Vector4f zero = new Vector4f(0, 0, 0, 1);
+
+            matrix4f.transform(zero);
+            matrix4f.setIdentity();
+            matrix4f.setTranslation(new Vector3f(zero.x, zero.y, zero.z));
+            matrix4f.transpose();
+
+            MatrixUtils.loadModelView(matrix4f);
+            GlStateManager.scale(-scale, scale, scale);
+
+            GL11.glRotatef(180.0F, 0.0F, 1.0F, 0.0F);
+            GL11.glRotatef(180.0F, 1.0F, 0.0F, 0.0F);
+        }
 
         this.renderString();
 
@@ -207,6 +232,7 @@ public class LabelMorph extends AbstractMorph
             result = result && this.lighting == label.lighting;
             result = result && this.background == label.background;
             result = result && this.offset == label.offset;
+            result = result && this.billboard == label.billboard;
         }
 
         return result;
@@ -239,6 +265,7 @@ public class LabelMorph extends AbstractMorph
             this.lighting = label.lighting;
             this.background = label.background;
             this.offset = label.offset;
+            this.billboard = label.billboard;
         }
     }
 
@@ -271,6 +298,7 @@ public class LabelMorph extends AbstractMorph
         if (!this.lighting) tag.setBoolean("Lighting", this.lighting);
         if (this.background != 0) tag.setInteger("Background", this.background);
         if (this.offset != 3) tag.setFloat("Offset", this.offset);
+        if (this.billboard) tag.setBoolean("Billboard", this.billboard);
     }
 
     @Override
@@ -290,5 +318,6 @@ public class LabelMorph extends AbstractMorph
         if (tag.hasKey("Lighting")) this.lighting = tag.getBoolean("Lighting");
         if (tag.hasKey("Background")) this.background = tag.getInteger("Background");
         if (tag.hasKey("Offset")) this.offset = tag.getFloat("Offset");
+        if (tag.hasKey("Billboard")) this.billboard = tag.getBoolean("Billboard");
     }
 }

@@ -123,6 +123,7 @@ metamorph.gui.label.shadow_color=Shadow color
 metamorph.gui.label.lighting=Lighting
 metamorph.gui.label.lighting_tooltip=When disabled, Minecraft's lightmap won't be applied, meaning it would glow in the dark. Shader packs, that have bloom effect, will make this morph look like neon sign
 metamorph.gui.label.background=Background
+metamorph.gui.label.billboard=Look at player
 
 metamorph.gui.edit=Edit
 metamorph.gui.panels.nbt_data=NBT data

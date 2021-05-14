@@ -31,6 +31,8 @@ public class GuiLabelPanel extends GuiMorphPanel<LabelMorph, GuiLabelMorph>
     public GuiColorElement background;
     public GuiTrackpadElement offset;
 
+    public GuiToggleElement billboard;
+
     public GuiLabelPanel(Minecraft mc, GuiLabelMorph editor)
     {
         super(mc, editor);
@@ -57,6 +59,8 @@ public class GuiLabelPanel extends GuiMorphPanel<LabelMorph, GuiLabelMorph>
         this.background.picker.editAlpha();
         this.offset = new GuiTrackpadElement(mc, (value) -> this.morph.offset = value.floatValue());
 
+        this.billboard = new GuiToggleElement(mc, IKey.lang("metamorph.gui.label.billboard"), (b) -> this.morph.billboard = b.isToggled());
+
         this.element = new GuiScrollElement(mc);
         this.element.scroll.opposite = true;
         this.element.flex().relative(this).w(120).h(1F).column(5).vertical().stretch().scroll().height(20).padding(10);
@@ -71,6 +75,7 @@ public class GuiLabelPanel extends GuiMorphPanel<LabelMorph, GuiLabelMorph>
         this.element.add(Elements.label(IKey.lang("metamorph.gui.label.shadow_color")).marginTop(8), this.shadowColor);
 
         this.element.add(Elements.label(IKey.lang("metamorph.gui.label.background")).marginTop(8), this.background, this.offset);
+        this.element.add(this.billboard.marginTop(8));
 
         this.add(this.element);
     }
@@ -94,5 +99,6 @@ public class GuiLabelPanel extends GuiMorphPanel<LabelMorph, GuiLabelMorph>
 
         this.background.picker.setColor(morph.background);
         this.offset.setValue(morph.offset);
+        this.billboard.toggled(morph.billboard);
     }
 }
