@@ -1,18 +1,24 @@
 package mchorse.vanilla_pack.morphs;
 
+import mchorse.mclib.utils.Color;
+import mchorse.mclib.utils.ColorUtils;
 import mchorse.mclib.utils.MathUtils;
 import mchorse.mclib.utils.TextUtils;
 import mchorse.metamorph.api.morphs.AbstractMorph;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.FontRenderer;
+import net.minecraft.client.renderer.BufferBuilder;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.renderer.OpenGlHelper;
 import net.minecraft.client.renderer.RenderHelper;
+import net.minecraft.client.renderer.Tessellator;
+import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
+import org.lwjgl.opengl.GL11;
 
 import java.util.List;
 import java.util.Objects;
@@ -33,6 +39,10 @@ public class LabelMorph extends AbstractMorph
     public float shadowX = 1F;
     public float shadowY = 1F;
     public int shadowColor = 0;
+
+    /* Background */
+    public int background = 0x00000000;
+    public float offset = 3;
 
     public LabelMorph()
     {
@@ -97,6 +107,8 @@ public class LabelMorph extends AbstractMorph
             int x = -(int) (w * this.anchorX);
             int y = -(int) (font.FONT_HEIGHT * this.anchorY);
 
+            this.drawShadow(x, y, w, font.FONT_HEIGHT);
+
             if (this.shadow)
             {
                 GlStateManager.pushMatrix();
@@ -113,6 +125,8 @@ public class LabelMorph extends AbstractMorph
             List<String> labels = font.listFormattedStringToWidth(text, max);
             int h = MathUtils.clamp(labels.size() - 1, 0, 100) * 12 + font.FONT_HEIGHT;
             int y = -(int) (h * this.anchorY);
+
+            this.drawShadow(-(int) (max * this.anchorX), y, max, h);
 
             if (this.shadow)
             {
@@ -142,6 +156,36 @@ public class LabelMorph extends AbstractMorph
         }
     }
 
+    @SideOnly(Side.CLIENT)
+    private void drawShadow(int x, int y, int w, int h)
+    {
+        Color color = ColorUtils.COLOR.set(this.background, true);
+
+        if (color.a <= 0)
+        {
+            return;
+        }
+
+        GlStateManager.disableTexture2D();
+        GlStateManager.pushMatrix();
+        GlStateManager.enableBlend();
+        GlStateManager.tryBlendFuncSeparate(GlStateManager.SourceFactor.SRC_ALPHA, GlStateManager.DestFactor.ONE_MINUS_SRC_ALPHA, GlStateManager.SourceFactor.ONE, GlStateManager.DestFactor.ZERO);
+        GlStateManager.translate(0, 0, -0.2F);
+
+        BufferBuilder buffer = Tessellator.getInstance().getBuffer();
+
+        buffer.begin(GL11.GL_QUADS, DefaultVertexFormats.POSITION_COLOR);
+        buffer.pos(x + w + this.offset, y - this.offset, 0).color(color.r, color.g, color.b, color.a).endVertex();
+        buffer.pos(x - this.offset, y - this.offset, 0).color(color.r, color.g, color.b, color.a).endVertex();
+        buffer.pos(x - this.offset, y + h + this.offset, 0).color(color.r, color.g, color.b, color.a).endVertex();
+        buffer.pos(x + w + this.offset, y + h + this.offset, 0).color(color.r, color.g, color.b, color.a).endVertex();
+
+        Tessellator.getInstance().draw();
+
+        GlStateManager.popMatrix();
+        GlStateManager.enableTexture2D();
+    }
+
     @Override
     public boolean equals(Object obj)
     {
@@ -161,6 +205,8 @@ public class LabelMorph extends AbstractMorph
             result = result && this.shadowY == label.shadowY;
             result = result && this.shadowColor == label.shadowColor;
             result = result && this.lighting == label.lighting;
+            result = result && this.background == label.background;
+            result = result && this.offset == label.offset;
         }
 
         return result;
@@ -191,6 +237,8 @@ public class LabelMorph extends AbstractMorph
             this.shadowY = label.shadowY;
             this.shadowColor = label.shadowColor;
             this.lighting = label.lighting;
+            this.background = label.background;
+            this.offset = label.offset;
         }
     }
 
@@ -221,6 +269,8 @@ public class LabelMorph extends AbstractMorph
         if (this.shadowY != 1F) tag.setFloat("ShadowY", this.shadowY);
         if (this.shadowColor != 0) tag.setInteger("ShadowColor", this.shadowColor);
         if (!this.lighting) tag.setBoolean("Lighting", this.lighting);
+        if (this.background != 0) tag.setInteger("Background", this.background);
+        if (this.offset != 3) tag.setFloat("Offset", this.offset);
     }
 
     @Override
@@ -238,5 +288,7 @@ public class LabelMorph extends AbstractMorph
         if (tag.hasKey("ShadowY")) this.shadowY = tag.getFloat("ShadowY");
         if (tag.hasKey("ShadowColor")) this.shadowColor = tag.getInteger("ShadowColor");
         if (tag.hasKey("Lighting")) this.lighting = tag.getBoolean("Lighting");
+        if (tag.hasKey("Background")) this.background = tag.getInteger("Background");
+        if (tag.hasKey("Offset")) this.offset = tag.getFloat("Offset");
     }
 }

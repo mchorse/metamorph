@@ -28,6 +28,9 @@ public class GuiLabelPanel extends GuiMorphPanel<LabelMorph, GuiLabelMorph>
     public GuiTrackpadElement shadowY;
     public GuiColorElement shadowColor;
 
+    public GuiColorElement background;
+    public GuiTrackpadElement offset;
+
     public GuiLabelPanel(Minecraft mc, GuiLabelMorph editor)
     {
         super(mc, editor);
@@ -50,6 +53,10 @@ public class GuiLabelPanel extends GuiMorphPanel<LabelMorph, GuiLabelMorph>
         this.shadowY.limit(-100, 100).values(0.1F, 0.01F, 0.5F).increment(0.1F);
         this.shadowColor = new GuiColorElement(mc, (value) -> this.morph.shadowColor = value);
 
+        this.background = new GuiColorElement(mc, (value) -> this.morph.background = value);
+        this.background.picker.editAlpha();
+        this.offset = new GuiTrackpadElement(mc, (value) -> this.morph.offset = value.floatValue());
+
         this.element = new GuiScrollElement(mc);
         this.element.scroll.opposite = true;
         this.element.flex().relative(this).w(120).h(1F).column(5).vertical().stretch().scroll().height(20).padding(10);
@@ -62,6 +69,8 @@ public class GuiLabelPanel extends GuiMorphPanel<LabelMorph, GuiLabelMorph>
         this.element.add(this.shadow);
         this.element.add(Elements.label(IKey.lang("metamorph.gui.label.shadow_offset")).marginTop(8), this.shadowX, this.shadowY);
         this.element.add(Elements.label(IKey.lang("metamorph.gui.label.shadow_color")).marginTop(8), this.shadowColor);
+
+        this.element.add(Elements.label(IKey.lang("metamorph.gui.label.background")).marginTop(8), this.background, this.offset);
 
         this.add(this.element);
     }
@@ -82,5 +91,8 @@ public class GuiLabelPanel extends GuiMorphPanel<LabelMorph, GuiLabelMorph>
         this.shadowX.setValue(morph.shadowX);
         this.shadowY.setValue(morph.shadowY);
         this.shadowColor.picker.setColor(morph.shadowColor);
+
+        this.background.picker.setColor(morph.background);
+        this.offset.setValue(morph.offset);
     }
 }
