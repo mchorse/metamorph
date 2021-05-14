@@ -1,6 +1,7 @@
 package mchorse.vanilla_pack.morphs;
 
 import mchorse.mclib.utils.MathUtils;
+import mchorse.mclib.utils.TextUtils;
 import mchorse.metamorph.api.morphs.AbstractMorph;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.FontRenderer;
@@ -88,10 +89,11 @@ public class LabelMorph extends AbstractMorph
     private void renderString()
     {
         FontRenderer font = Minecraft.getMinecraft().fontRenderer;
+        String text = TextUtils.processColoredText(this.label);
 
         if (this.max <= 0)
         {
-            int w = font.getStringWidth(this.label);
+            int w = font.getStringWidth(text);
             int x = -(int) (w * this.anchorX);
             int y = -(int) (font.FONT_HEIGHT * this.anchorY);
 
@@ -99,16 +101,16 @@ public class LabelMorph extends AbstractMorph
             {
                 GlStateManager.pushMatrix();
                 GlStateManager.translate(this.shadowX, this.shadowY, -0.1F);
-                font.drawString(this.label, x, y, this.shadowColor);
+                font.drawString(text, x, y, this.shadowColor);
                 GlStateManager.popMatrix();
             }
 
-            font.drawString(this.label, x, y, this.color);
+            font.drawString(text, x, y, this.color);
         }
         else
         {
             int max = MathUtils.clamp(this.max, 6, Integer.MAX_VALUE);
-            List<String> labels = font.listFormattedStringToWidth(this.label, max);
+            List<String> labels = font.listFormattedStringToWidth(text, max);
             int h = MathUtils.clamp(labels.size() - 1, 0, 100) * 12 + font.FONT_HEIGHT;
             int y = -(int) (h * this.anchorY);
 
