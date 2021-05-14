@@ -15,7 +15,9 @@ import net.minecraft.client.renderer.EntityRenderer;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.renderer.entity.RenderLivingBase;
 import net.minecraft.client.renderer.entity.RenderManager;
+import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
+import net.minecraft.entity.monster.EntityCaveSpider;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.scoreboard.Team;
 import net.minecraftforge.client.event.GuiOpenEvent;
@@ -147,13 +149,14 @@ public class RenderingHandler
         event.setCanceled(true);
 
         EntityLivingBase target = event.getEntity();
+        Entity camera = Minecraft.getMinecraft().getRenderViewEntity();
 
-        if (!this.canRenderName(host))
+        if (!this.canRenderName(host) || camera == null)
         {
             return;
         }
 
-        double dist = target.getDistanceSq(this.manager.renderViewEntity);
+        double dist = target.getDistanceSq(camera);
         float factor = target.isSneaking() ? 32.0F : 64.0F;
 
         if (dist < factor * factor)
