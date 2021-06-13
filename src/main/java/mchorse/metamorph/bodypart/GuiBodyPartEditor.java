@@ -390,7 +390,8 @@ public class GuiBodyPartEditor extends GuiMorphPanel<AbstractMorph, GuiAbstractM
 
     protected void pickLimb(String str)
     {
-        this.part.limb = str;
+    	this.part.setLimb(this.morph, str, GuiScreen.isAltKeyDown());
+    	this.fillBodyPart(this.part);
     }
 
     public void fillBodyPart(BodyPart part)
