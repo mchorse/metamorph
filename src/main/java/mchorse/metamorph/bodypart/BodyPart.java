@@ -1,35 +1,38 @@
 package mchorse.metamorph.bodypart;
 
-import com.google.common.base.Objects;
-import mchorse.mclib.client.Draw;
-import mchorse.mclib.client.gui.framework.elements.GuiModelRenderer;
-import mchorse.mclib.utils.Interpolation;
-import mchorse.mclib.utils.MatrixUtils;
-import mchorse.metamorph.Metamorph;
-import mchorse.metamorph.api.MorphUtils;
-import mchorse.metamorph.api.morphs.utils.Animation;
-import mchorse.metamorph.api.morphs.utils.IAnimationProvider;
-import net.minecraft.client.renderer.GlStateManager;
-import net.minecraft.client.renderer.OpenGlHelper;
+import javax.vecmath.Matrix3f;
+import javax.vecmath.Matrix4f;
+import javax.vecmath.Vector3f;
+
 import org.lwjgl.opengl.GL11;
 
+import com.google.common.base.Objects;
+
+import mchorse.mclib.client.Draw;
+import mchorse.mclib.client.gui.framework.elements.GuiModelRenderer;
 import mchorse.mclib.utils.DummyEntity;
+import mchorse.mclib.utils.Interpolation;
+import mchorse.mclib.utils.MatrixUtils;
+import mchorse.mclib.utils.MatrixUtils.Transformation;
+import mchorse.mclib.utils.MatrixUtils.Transformation.RotationOrder;
 import mchorse.mclib.utils.NBTUtils;
+import mchorse.metamorph.Metamorph;
 import mchorse.metamorph.api.Morph;
+import mchorse.metamorph.api.MorphUtils;
 import mchorse.metamorph.api.morphs.AbstractMorph;
-import mchorse.metamorph.capabilities.morphing.IMorphing;
+import mchorse.metamorph.api.morphs.utils.Animation;
+import mchorse.metamorph.api.morphs.utils.IAnimationProvider;
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.renderer.GlStateManager;
+import net.minecraft.client.renderer.OpenGlHelper;
 import net.minecraft.entity.EntityLivingBase;
+import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.EntityEquipmentSlot;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
-
-import javax.vecmath.Matrix3f;
-import javax.vecmath.Matrix4f;
-import javax.vecmath.Vector3f;
 
 /**
  * Morph body part
@@ -39,6 +42,7 @@ public class BodyPart
     public static Vector3f cachedTranslation = new Vector3f();
     public static Vector3f cachedAngularVelocity = new Vector3f();
     public static Matrix4f modelViewMatrix = new Matrix4f();
+    public static boolean recording = false;
 
     public Morph morph = new Morph();
     public ItemStack[] slots = new ItemStack[] {ItemStack.EMPTY, ItemStack.EMPTY, ItemStack.EMPTY, ItemStack.EMPTY, ItemStack.EMPTY, ItemStack.EMPTY};
@@ -56,6 +60,8 @@ public class BodyPart
     private Vector3f lastScale;
     private Vector3f lastRotate;
     private Vector3f previousRotation = new Vector3f();
+    
+    public Matrix4f lastMatrix = null;
 
     @SideOnly(Side.CLIENT)
     public void init()
@@ -85,6 +91,12 @@ public class BodyPart
     @SideOnly(Side.CLIENT)
     public void render(AbstractMorph parent, EntityLivingBase entity, float partialTicks)
     {
+    	if (recording)
+    	{
+    		this.lastMatrix = MatrixUtils.readModelView(new Matrix4f());
+    		return;
+    	}
+    	
         entity = this.useTarget ? entity : this.entity;
 
         if (this.morph.get() == null || entity == null || !this.enabled)
@@ -429,5 +441,72 @@ public class BodyPart
         if (!this.enabled) tag.setBoolean("Enabled", this.enabled);
         if (!this.animate) tag.setBoolean("Animate", this.animate);
         if (!this.limb.isEmpty()) tag.setString("Limb", this.limb);
+    }
+    
+    @SideOnly(Side.CLIENT)
+    public void setLimb(AbstractMorph parent, String limb, boolean convertTransform)
+    {
+        if (this.limb.equals(limb))
+        {
+            return;
+        }
+
+        if (this.limb.isEmpty() || !convertTransform)
+        {
+            this.limb = limb;
+            return;
+        }
+
+        recording = true;
+        EntityPlayer player = Minecraft.getMinecraft().player;
+
+        int lastMatrixMode = GL11.glGetInteger(GL11.GL_MATRIX_MODE);
+        GL11.glMatrixMode(GL11.GL_MODELVIEW);
+
+        GL11.glPushMatrix();
+        GL11.glLoadIdentity();
+        MorphUtils.render(parent, player, 0, 0, 0, 0, 0);
+        GL11.glPopMatrix();
+        Matrix4f last = this.lastMatrix;
+        Matrix4f transform = new Matrix4f();
+        transform.setIdentity();
+        transform.setTranslation(this.translate);
+        last.mul(transform);
+        transform.rotZ((float) Math.toRadians(this.rotate.z));
+        last.mul(transform);
+        transform.rotY((float) Math.toRadians(this.rotate.y));
+        last.mul(transform);
+        transform.rotX((float) Math.toRadians(this.rotate.x));
+        last.mul(transform);
+        transform.setIdentity();
+        transform.m00 = this.scale.x;
+        transform.m11 = this.scale.y;
+        transform.m22 = this.scale.z;
+        last.mul(transform);
+
+        this.limb = limb;
+
+        GL11.glPushMatrix();
+        GL11.glLoadIdentity();
+        MorphUtils.render(parent, player, 0, 0, 0, 0, 0);
+        GL11.glPopMatrix();
+        Matrix4f current = this.lastMatrix;
+
+        Transformation extract = MatrixUtils.extractTransformations(current, last);
+
+        if (extract.getCreationException() == null)
+        {
+            Vector3f rotate = extract.getRotation(RotationOrder.XYZ);
+            if (rotate != null)
+            {
+                this.translate.set(extract.getTranslation3f());
+                this.rotate.set(rotate);
+                this.scale.set(extract.getScale());
+            }
+        }
+
+        GL11.glMatrixMode(lastMatrixMode);
+
+        recording = false;
     }
 }
