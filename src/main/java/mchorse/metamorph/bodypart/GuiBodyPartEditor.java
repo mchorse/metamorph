@@ -413,7 +413,7 @@ public class GuiBodyPartEditor extends GuiMorphPanel<AbstractMorph, GuiAbstractM
 
             for (int i = 0; i < this.slots.length; i++)
             {
-                this.slots[i].stack = part.slots[i];
+                this.slots[i].setStack(part.slots[i]);
             }
         }
     }
