@@ -1,8 +1,6 @@
 package mchorse.metamorph.bodypart;
 
 import mchorse.mclib.client.gui.framework.elements.GuiElement;
-import mchorse.mclib.client.gui.framework.elements.GuiElements;
-import mchorse.mclib.client.gui.framework.elements.buttons.GuiButtonElement;
 import mchorse.mclib.client.gui.framework.elements.buttons.GuiIconElement;
 import mchorse.mclib.client.gui.framework.elements.buttons.GuiSlotElement;
 import mchorse.mclib.client.gui.framework.elements.buttons.GuiToggleElement;
@@ -11,10 +9,8 @@ import mchorse.mclib.client.gui.framework.elements.context.GuiSimpleContextMenu;
 import mchorse.mclib.client.gui.framework.elements.input.GuiTransformations;
 import mchorse.mclib.client.gui.framework.elements.list.GuiStringListElement;
 import mchorse.mclib.client.gui.framework.elements.utils.GuiContext;
-import mchorse.mclib.client.gui.framework.elements.utils.GuiInventoryElement;
 import mchorse.mclib.client.gui.utils.Icons;
 import mchorse.mclib.client.gui.utils.keys.IKey;
-import mchorse.mclib.utils.ColorUtils;
 import mchorse.mclib.utils.Direction;
 import mchorse.mclib.utils.MathUtils;
 import mchorse.metamorph.api.MorphUtils;
@@ -24,7 +20,6 @@ import mchorse.metamorph.client.gui.creative.GuiNestedEdit;
 import mchorse.metamorph.client.gui.editor.GuiAbstractMorph;
 import mchorse.metamorph.client.gui.editor.GuiMorphPanel;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.gui.Gui;
 import net.minecraft.client.gui.GuiScreen;
 import net.minecraft.client.resources.I18n;
 import net.minecraft.item.ItemStack;
@@ -63,7 +58,6 @@ public class GuiBodyPartEditor extends GuiMorphPanel<AbstractMorph, GuiAbstractM
     protected BodyPartManager parts;
     protected BodyPart part;
 
-    protected GuiInventoryElement inventory;
     protected GuiElement stacks;
     protected GuiSlotElement[] slots = new GuiSlotElement[6];
 
@@ -138,17 +132,15 @@ public class GuiBodyPartEditor extends GuiMorphPanel<AbstractMorph, GuiAbstractM
         this.stacks = new GuiElement(mc);
         this.stacks.flex().relative(this).x(0.5F).y(10).anchor(0.5F, 0).row(5).resize();
 
-        this.inventory = new GuiInventoryElement(mc, this::pickItem);
-        this.inventory.flex().relative(this.stacks).x(0.5F, 0).y(1, 10).anchor(0.5F, 0).row(6);
-        this.inventory.setVisible(false);
-
         for (int i = 0; i < this.slots.length; i++)
         {
-            this.slots[i] = new GuiSlotElement(mc, i, this.inventory);
+            int slot = i;
+
+            this.slots[i] = new GuiSlotElement(mc, i, (stack) -> this.pickItem(stack, slot));
             this.stacks.add(this.slots[i]);
         }
 
-        this.elements.add(this.stacks, this.inventory);
+        this.elements.add(this.stacks);
     }
 
     private void applyUseTarget(BodyPart part, AbstractMorph copy)
@@ -333,18 +325,14 @@ public class GuiBodyPartEditor extends GuiMorphPanel<AbstractMorph, GuiAbstractM
         }
     }
 
-    protected void pickItem(ItemStack stack)
+    protected void pickItem(ItemStack stack, int slot)
     {
         if (this.part == null)
         {
             return;
         }
 
-        GuiSlotElement element = this.inventory.linked;
-
-        element.stack = stack.isEmpty() ? ItemStack.EMPTY : stack.copy();
-        this.part.slots[element.slot] = element.stack;
-        this.inventory.unlink();
+        this.part.slots[slot] = stack;
         this.part.updateEntity();
     }
 
