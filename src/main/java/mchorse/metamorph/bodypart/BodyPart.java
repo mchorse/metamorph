@@ -246,7 +246,9 @@ public class BodyPart
 
     public boolean canMerge(BodyPart part)
     {
-        if (this.morph.set(part.morph.copy()) && Objects.equal(this.limb, part.limb))
+        this.morph.set(part.morph.copy());
+
+        if (Objects.equal(this.limb, part.limb))
         {
             this.lastTranslate = new Vector3f(this.translate);
             this.lastScale = new Vector3f(this.scale);
