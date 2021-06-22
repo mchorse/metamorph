@@ -5,22 +5,27 @@ entity.metamorph.Morph.name=Morph
 # Keyboard bindings strings
 key.metamorph=Metamorph
 key.metamorph.action=Acción de uso
-key.metamorph.creative_menu=Abrir menú Morphs para el modo Creativo
-key.metamorph.selector_menu=Abrir menú Selector de entidades
-key.metamorph.survival_menu=Abrir menú Morphs para el modo Supervivencia
+key.metamorph.creative_menu=Abrir Menú Morphs para el modo Creativo
+key.metamorph.selector_menu=Abrir Menú Selector de entidades
+key.metamorph.survival_menu=Abrir Menú Morphs para el modo Supervivencia
 key.metamorph.demorph=Eliminar morph (Recupera el aspecto antiguo)
 
 # GUI
 metamorph.gui.body_parts.pick=Elegir morph
 metamorph.gui.body_parts.use_target=Usar objetivo
+metamorph.gui.body_parts.enabled=Activado
+metamorph.gui.body_parts.animate=Animar
+metamorph.gui.body_parts.animate_tooltip=Esta opción habilita las animaciones de las partes del cuerpo a las cuales se les ha asignado un morph
 metamorph.gui.body_parts.parts=Partes del cuerpo
 metamorph.gui.body_parts.limbs=Extremidades
-metamorph.gui.body_parts.open=Abrir menú Partes del cuerpo
-metamorph.gui.body_parts.add_tooltip=Agregar una nueva parte del cuerpo...
+metamorph.gui.body_parts.open=Abrir Menú Partes del cuerpo
+metamorph.gui.body_parts.add_tooltip=Añadir una nueva parte del cuerpo..
 metamorph.gui.body_parts.dupe_tooltip=Duplicar parte del cuerpo seleccionada...
-metamorph.gui.body_parts.remove_tooltip=Eliminar parte del cuerpo seleccionada...
+metamorph.gui.body_parts.remove_tooltip=Elimina la parte del cuerpo seleccionada...
 metamorph.gui.body_parts.copy_tooltip=Copiar todas las partes del cuerpo...
-metamorph.gui.body_parts.paste_tooltip=Pegar partes del cuerpo...
+metamorph.gui.body_parts.paste_tooltip=Pegar todas las partes del cuerpo...
+metamorph.gui.body_parts.context.copy=Copiar todas las partes del cuerpo
+metamorph.gui.body_parts.context.paste=Pegar partes del cuerpo copiadas
 
 metamorph.gui.add=Agregar
 metamorph.gui.remove=Eliminar
@@ -65,11 +70,14 @@ metamorph.gui.creative.context.add_global=Agregar a Morphs globales...
 metamorph.gui.creative.context.edit=Editar morph...
 metamorph.gui.creative.context.add_category=Agregar una nueva categoría
 metamorph.gui.creative.context.rename_category=Renombrar categoría
-metamorph.gui.creative.context.remove_category=Remover categoría
-metamorph.gui.creative.context.rename_category_modal=Cambia el nombre de dicha categoría...
-metamorph.gui.creative.context.clear_category=Borrar
+metamorph.gui.creative.context.rename_category_modal=Agrega un nombre a dicha categoría...
+metamorph.gui.creative.context.remove_category=Eliminar categoría
+metamorph.gui.creative.context.remove_category_modal=¿Estás seguro que quieres borrar esta categoría de morph? Será eliminado para siempre...
+metamorph.gui.creative.context.clear_category=Eliminar todos los morphs
+metamorph.gui.creative.context.clear_category_modal=¿Estás seguro que quieres eliminar todos los morphs en esta categpría? Será eliminado para siempre... 
 metamorph.gui.creative.context.to_recent=Copiar a reciente
 metamorph.gui.creative.context.remove_morph=Eliminar morph
+metamorph.gui.creative.context.copy_command=Copiar /morph command
 metamorph.gui.creative.context.copy=Copiar NBT
 metamorph.gui.creative.context.paste=Pegar NBT
 metamorph.gui.creative.context.paste_modal=Pegue o ingrese la etiqueta NBT de su morph...
@@ -83,17 +91,27 @@ metamorph.gui.survival.keys.toggle_favorites=Alternar morphs favoritas
 metamorph.gui.survival.keys.focus_keybind=Enfocar combinación de teclas
 
 metamorph.gui.editor.settings=Ajustes de morph
-metamorph.gui.editor.display_name=Nombre a mostrar
+metamorph.gui.editor.keybind=Combinación de teclas
+metamorph.gui.editor.keybind_tooltip=Configurar la combinación de teclas aquí le permitirá transformarse en este morph pulsando esta tecla ya sea en el Modo Supervivencia o el Menú Morphs
+metamorph.gui.editor.display_name=Nombre a mostar
 metamorph.gui.editor.health=Vida
 metamorph.gui.editor.speed=Velocidad
 metamorph.gui.editor.abilities=Habilidades
-metamorph.gui.editor.abilities_tooltip=Shift + click en las habilidades de la lista para seleccionar múltiples habilidades
+metamorph.gui.editor.abilities_tooltip=Shift + click en la lista de habilidades para seleccionar múltiples habilidades
 metamorph.gui.editor.attack=Atacar
 metamorph.gui.editor.action=Acción
-metamorph.gui.editor.reset=Reiniciar
+metamorph.gui.editor.reset=Reniciar
 metamorph.gui.editor.item_morph=Item
-metamorph.gui.editor.keys.category=Editor de combinación de teclas de Morphs
-metamorph.gui.editor.keys.cycle=Ciclo entre paneles de Morphs
+metamorph.gui.editor.keys.category=Combinación de teclas del Editor de Morphs
+metamorph.gui.editor.keys.cycle=Ciclo entre paneles de morphs
+
+metamorph.gui.editor.hitbox.enabled=Casillas personalidaas
+metamorph.gui.editor.hitbox.size=tamaño
+metamorph.gui.editor.hitbox.width=Ancho de la casilla
+metamorph.gui.editor.hitbox.height=Altura de la casilla
+metamorph.gui.editor.hitbox.sneaking_height=Hitbox sneaking height
+metamorph.gui.editor.hitbox.eye=Posición de los ojos
+metamorph.gui.editor.hitbox.eye_tooltip=Factor de altura del ojo, donde 0 está en la parte inferior y 1 en la parte superior de la casilla
 
 metamorph.gui.label.label=Etiqueta
 metamorph.gui.label.max_width=Anchura máxima
@@ -104,11 +122,18 @@ metamorph.gui.label.shadow_offset=Desplazamiento de sombra
 metamorph.gui.label.shadow_color=Color de sombra
 metamorph.gui.label.lighting=Iluminación
 metamorph.gui.label.lighting_tooltip=Cuando está deshabilitado, el lightmap de Minecraft no se aplicará, lo que significa que brillará en la oscuridad. Los Shaders, que tengan incluído el efecto Bloom, harán que este morph parezca un cartel de Neón
+metamorph.gui.label.background=Fondo
+metamorph.gui.label.billboard=Mira al jugador
 
 metamorph.gui.edit=Editar
 metamorph.gui.panels.nbt_data=Datos NBT
 metamorph.gui.panels.username=Nombre de usuario
 metamorph.gui.panels.updating=Actualizando...
+
+metamorph.gui.animation.animates=Anima
+metamorph.gui.animation.ignored=Ignorado
+metamorph.gui.animation.animation_duration=Duración
+metamorph.gui.animation.pick_interpolation=Elegir interpolación
 
 metamorph.gui.status.tight_space=No hay suficiente espacio para transformar aquí
 
@@ -148,11 +173,24 @@ metamorph.config.morphs.pause_gui_in_sp=Pausar las GUIs de Morphs
 metamorph.config.comments.morphs.pause_gui_in_sp=Las GUI de Morphs de los modos Creativo y Supervivencia deben detenerse en el modo Un solo jugador
 metamorph.config.morphs.max_recent_morphs=Máx. de morphs recientes
 metamorph.config.comments.morphs.max_recent_morphs=La cantidad máxima de morphs recientes que se pueden agregar en el menú de morphs antes de ser descartadas
+metamorph.config.morphs.allow_morphing_into_category_morphs=Permite transformarse en moprhs de la categoría
+metamorph.config.comments.morphs.allow_morphing_into_category_morphs=Cuando está habilitada, esta opción permite transformarse en morphs de categorías recientes y personalizadas mientras está en supervivencia. Esta opción también permite abrir el Menú de Morphs creativo en supervivencia
+metamorph.config.morphs.load_entity_morphs=Cargar morphs de entidade
+metamorph.config.comments.morphs.load_entity_morphs=Si los morphs de entidades deben cargarse en el Menú de Morph para el Modo Creativo
+metamorph.config.morphs.render_bodypart_axis=Mostrar ejes de las partes del cuerpo
+metamorph.config.comments.morphs.render_bodypart_axis=Cuando está habilitadolas los ejes de las partes del cuerpo se muestran en la GUI del editor de partes del cuerpo
+
+# OP access config
+op_access.config.metamorph.title=Metamorph
+op_access.config.metamorph.tooltip=Opciones de acceso OP de Metamorph
+
+op_access.config.metamorph.entity_selectors=Selectores de entidades
+op_access.config.comments.metamorph.entity_selectors=¿Pueden los jugadores no OP editar selectores de entidades?
 
 # Commands
 metamorph.commands.morph=Comando Morph. Este comando es responsable de transformar al jugador en un morph específico.\n\n/morph <username> [morph_name] [data_tag]
 metamorph.commands.acquire_morph=Comando Acquire morph. Este comando es responsable de enviar un morph a un jugador en Morphs adquiridas.\n\n/morph <username> <morph_name> [data_tag]
-metamorph.commands.metamorph=Comando Metamorph server. Este comando permite administrar las cosas de Metamorph en el servidor.\n\n/metamorph reload <blacklist|morphs> - reloads Metamorph's blacklist or morph configuration
+metamorph.commands.metamorph=Comando Metamorph server. Este comando permite administrar las cosas de Metamorph en el servidor.\n\n/metamorph reload <blacklist|morphs> - recarga la lista negra de Metamorph o la configuración de morph
 
 metamorph.error.morph.not_player=Entidad %s no es un jugador!
 metamorph.error.morph.nbt=Ocurrió un error durante el análisis de la etiqueta de datos:\n%s
