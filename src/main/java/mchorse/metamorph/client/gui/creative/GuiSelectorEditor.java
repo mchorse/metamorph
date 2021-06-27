@@ -131,6 +131,11 @@ public class GuiSelectorEditor extends GuiElement
         ModelRenderer.selectorsUpdate = System.currentTimeMillis();
     }
 
+    public EntitySelector getSelector()
+    {
+        return this.selector;
+    }
+
     private void addSelector()
     {
         EntityModelHandler.selectors.add(new EntitySelector());
