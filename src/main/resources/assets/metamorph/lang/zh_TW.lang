@@ -111,6 +111,7 @@ metamorph.gui.editor.texture=選取材質貼圖...
 metamorph.gui.editor.texture_tooltip=該功能不一定適用於所有生物，因為部分生物擁有非常規的渲染實現。
 metamorph.gui.editor.keys.category=偽裝編輯器快捷鍵
 metamorph.gui.editor.keys.cycle=在偽裝面板間循環切換
+metamorph.gui.editor.shadowmapping=陰影映射
 
 metamorph.gui.editor.hitbox.enabled=自定義碰撞箱
 metamorph.gui.editor.hitbox.size=大小

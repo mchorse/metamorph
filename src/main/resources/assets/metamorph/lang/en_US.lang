@@ -111,6 +111,7 @@ metamorph.gui.editor.texture=Pick a texture...
 metamorph.gui.editor.texture_tooltip=This feature won't work for all mobs, because some mobs can have custom rendering implementation
 metamorph.gui.editor.keys.category=Morph editor keybinds
 metamorph.gui.editor.keys.cycle=Cycle between morph panels
+metamorph.gui.editor.shadowmapping=Shadow Mapping
 
 metamorph.gui.editor.hitbox.enabled=Custom hitbox
 metamorph.gui.editor.hitbox.size=Size

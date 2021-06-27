@@ -43,6 +43,8 @@ public class GuiSettingsPanel extends GuiMorphPanel<AbstractMorph, GuiAbstractMo
     public GuiTrackpadElement hitboxHeight;
     public GuiTrackpadElement hitboxSneakingHeight;
     public GuiTrackpadElement hitboxEyePosition;
+    
+    public GuiToggleElement shadowMapping;
 
     public GuiTextElement data;
     public boolean error;
@@ -152,6 +154,15 @@ public class GuiSettingsPanel extends GuiMorphPanel<AbstractMorph, GuiAbstractMo
         this.right.add(this.hitboxEnabled);
         this.right.add(Elements.label(IKey.lang("metamorph.gui.editor.hitbox.size")).marginTop(8), this.hitboxWidth, this.hitboxHeight, this.hitboxSneakingHeight);
         this.right.add(Elements.label(IKey.lang("metamorph.gui.editor.hitbox.eye")).marginTop(8), this.hitboxEyePosition);
+        
+        this.shadowMapping = new GuiToggleElement(mc, IKey.lang("metamorph.gui.editor.shadowmapping"), (b) -> this.morph.settings.shadowMapping = b.isToggled());
+        try
+        {
+            Class.forName("net.optifine.shaders.Shaders");
+            this.right.add(Elements.label(IKey.str("Optifine")).marginTop(8), this.shadowMapping);
+        }
+        catch (ClassNotFoundException e)
+        {}
 
         this.add(this.left, this.right, this.data);
     }
@@ -184,6 +195,8 @@ public class GuiSettingsPanel extends GuiMorphPanel<AbstractMorph, GuiAbstractMo
         this.hitboxHeight.setValue(morph.hitbox.height);
         this.hitboxSneakingHeight.setValue(morph.hitbox.sneakingHeight);
         this.hitboxEyePosition.setValue(morph.hitbox.eye);
+        
+        this.shadowMapping.toggled(morph.settings.shadowMapping);
     }
 
     public void updateNBT()
