@@ -3,6 +3,7 @@ package mchorse.metamorph.api;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.PrintWriter;
+import java.lang.reflect.Field;
 import java.util.Map;
 import java.util.Set;
 
@@ -24,6 +25,21 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 
 public class MorphUtils
 {
+    
+    public static final Field isShadowPass;
+    
+    static {
+        Field field = null;
+        try
+        {
+            Class clazz = Class.forName("net.optifine.shaders.Shaders");
+            field = clazz.getField("isShadowPass");
+        }
+        catch (Exception e)
+        {}
+        isShadowPass = field;
+    }
+    
     /**
      * Generate an empty file
      */
@@ -85,6 +101,19 @@ public class MorphUtils
         if (morph == null || morph.errorRendering)
         {
             return false;
+        }
+        
+        if (isShadowPass != null && !morph.settings.shadowMapping)
+        {
+            try
+            {
+                if (isShadowPass.getBoolean(null))
+                {
+                    return false;
+                }
+            }
+            catch (Exception e)
+            {}
         }
 
         try

@@ -83,6 +83,11 @@ public class MorphSettingsAdapter implements JsonDeserializer<MorphSettings>
         {
             morph.updates = object.get("updates").getAsBoolean();
         }
+        
+        if (object.has("shadowmapping") && object.get("shadowmapping").isJsonPrimitive())
+        {
+            morph.shadowMapping = object.get("shadowmapping").getAsBoolean();
+        }
 
         return morph;
     }

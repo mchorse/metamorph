@@ -67,6 +67,11 @@ public class MorphSettings
      * Does this morph updates itself 
      */
     public boolean updates = true;
+    
+    /**
+     * Whether to render this morph in shadow pass
+     */
+    public boolean shadowMapping = true;
 
     @Override
     public boolean equals(Object obj)
@@ -81,7 +86,8 @@ public class MorphSettings
                 this.health == settings.health &&
                 this.speed == settings.speed &&
                 this.hostile == settings.hostile &&
-                this.updates == settings.updates;
+                this.updates == settings.updates &&
+                this.shadowMapping == settings.shadowMapping;
         }
 
         return super.equals(obj);
@@ -112,6 +118,8 @@ public class MorphSettings
         this.hostile = setting.hostile;
         this.hands = setting.hands;
         this.updates = setting.updates;
+        
+        this.shadowMapping = setting.shadowMapping;
     }
 
     /**
@@ -150,6 +158,7 @@ public class MorphSettings
         buf.writeBoolean(this.hostile);
         buf.writeBoolean(this.hands);
         buf.writeBoolean(this.updates);
+        buf.writeBoolean(this.shadowMapping);
     }
 
     /**
@@ -188,6 +197,7 @@ public class MorphSettings
         this.hostile = buf.readBoolean();
         this.hands = buf.readBoolean();
         this.updates = buf.readBoolean();
+        this.shadowMapping = buf.readBoolean();
     }
 
     /**
@@ -240,6 +250,11 @@ public class MorphSettings
         if (!this.updates)
         {
             tag.setBoolean("Updates", this.updates);
+        }
+        
+        if (!this.shadowMapping)
+        {
+            tag.setBoolean("ShadowMapping", this.shadowMapping);
         }
     }
 
@@ -298,6 +313,11 @@ public class MorphSettings
         if (tag.hasKey("Updates"))
         {
             this.updates = tag.getBoolean("Updates");
+        }
+        
+        if (tag.hasKey("ShadowMapping"))
+        {
+            this.shadowMapping = tag.getBoolean("ShadowMapping");
         }
     }
 
