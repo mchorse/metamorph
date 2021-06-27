@@ -9,10 +9,11 @@ import net.minecraft.entity.EntityLivingBase;
 
 public class ModelRenderer implements IModelRenderer
 {
+    public static long selectorsUpdate = System.currentTimeMillis();
+
     public EntitySelector selector;
     public AbstractMorph morph;
-    public long selectorTime = -1;
-    public int check;
+    public long lastUpdate = -1;
 
     public static IModelRenderer get(Entity entity)
     {
@@ -22,13 +23,12 @@ public class ModelRenderer implements IModelRenderer
     @Override
     public void update(EntityLivingBase target)
     {
-        if (this.check == 10)
+        if (this.lastUpdate < selectorsUpdate)
         {
-            this.watchSelector(target);
-            this.check = 0;
-        }
+            this.lastUpdate = selectorsUpdate;
 
-        this.check++;
+            this.updateSelector(target);
+        }
 
         if (this.selector != null && this.morph != null)
         {
@@ -36,30 +36,20 @@ public class ModelRenderer implements IModelRenderer
         }
     }
 
-    /**
-     * Watch selector 
-     */
-    protected void watchSelector(EntityLivingBase target)
+    @Override
+    public void updateSelector(EntityLivingBase target)
     {
-        if (this.selector != null && (this.selector.time > this.selectorTime || !this.selector.matches(target)))
-        {
-            this.selector = null;
-            this.morph = null;
-            this.selectorTime = -1;
-        }
+        this.selector = null;
+        this.morph = null;
 
-        if (this.selector == null)
+        for (EntitySelector selector : EntityModelHandler.selectors)
         {
-            for (EntitySelector selector : EntityModelHandler.selectors)
+            if (selector.matches(target))
             {
-                if (selector.matches(target))
-                {
-                    this.selector = selector;
-                    this.selectorTime = selector.time;
-                    this.morph = MorphManager.INSTANCE.morphFromNBT(this.selector.morph);
+                this.selector = selector;
+                this.morph = MorphManager.INSTANCE.morphFromNBT(this.selector.morph);
 
-                    break;
-                }
+                return;
             }
         }
     }

@@ -15,13 +15,6 @@ public class EntitySelector
     public NBTTagCompound match;
     public NBTTagCompound morph;
 
-    public long time = System.currentTimeMillis();
-
-    public void updateTime()
-    {
-        this.time = System.currentTimeMillis();
-    }
-
     public boolean matches(EntityLivingBase target)
     {
         if (target == null || !this.enabled)

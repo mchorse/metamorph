@@ -5,7 +5,9 @@ import mchorse.metamorph.api.MorphManager;
 import mchorse.metamorph.capabilities.morphing.IMorphing;
 import mchorse.metamorph.capabilities.morphing.Morphing;
 import mchorse.metamorph.capabilities.morphing.MorphingProvider;
+import mchorse.metamorph.capabilities.render.IModelRenderer;
 import mchorse.metamorph.capabilities.render.ModelProvider;
+import mchorse.metamorph.capabilities.render.ModelRenderer;
 import mchorse.metamorph.network.Dispatcher;
 import mchorse.metamorph.network.common.survival.PacketAcquiredMorphs;
 import mchorse.metamorph.network.common.PacketBlacklist;
@@ -116,6 +118,12 @@ public class CapabilityHandler
                 this.sendAcquiredMorphs(morphing, player);
                 Dispatcher.sendTo(new PacketMorphState(player, morphing), (EntityPlayerMP) player);
             }
+        }
+        else if (event.getEntity() instanceof EntityLivingBase)
+        {
+            IModelRenderer renderer = ModelRenderer.get(event.getEntity());
+
+            renderer.updateSelector((EntityLivingBase) event.getEntity());
         }
     }
 

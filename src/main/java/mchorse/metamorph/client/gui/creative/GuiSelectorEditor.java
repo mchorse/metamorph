@@ -13,9 +13,9 @@ import mchorse.mclib.client.gui.utils.Icons;
 import mchorse.mclib.client.gui.utils.keys.IKey;
 import mchorse.mclib.utils.Timer;
 import mchorse.metamorph.ClientProxy;
-import mchorse.metamorph.api.MorphUtils;
 import mchorse.metamorph.api.morphs.AbstractMorph;
 import mchorse.metamorph.capabilities.render.EntitySelector;
+import mchorse.metamorph.capabilities.render.ModelRenderer;
 import mchorse.metamorph.client.EntityModelHandler;
 import net.minecraft.client.Minecraft;
 import net.minecraft.nbt.JsonToNBT;
@@ -68,13 +68,13 @@ public class GuiSelectorEditor extends GuiElement
         this.name = new GuiTextElement(mc, 1000, (name) ->
         {
             this.selector.name = name;
-            this.selector.updateTime();
+            this.updateTime();
             this.timer.mark();
         });
         this.type = new GuiTextElement(mc, 1000, (name) ->
         {
             this.selector.type = name;
-            this.selector.updateTime();
+            this.updateTime();
             this.timer.mark();
         });
         this.match = new GuiTextElement(mc, 10000, (value) ->
@@ -82,7 +82,7 @@ public class GuiSelectorEditor extends GuiElement
             try
             {
                 this.selector.match = JsonToNBT.getTagFromJson(value);
-                this.selector.updateTime();
+                this.updateTime();
                 this.timer.mark();
             }
             catch (Exception e)
@@ -92,7 +92,7 @@ public class GuiSelectorEditor extends GuiElement
         this.active = new GuiToggleElement(mc, IKey.lang("metamorph.gui.selectors.enabled"), (toggle) ->
         {
             this.selector.enabled = toggle.isToggled();
-            this.selector.updateTime();
+            this.updateTime();
             this.timer.mark();
         });
         this.pick = new GuiButtonElement(mc, IKey.lang("metamorph.gui.body_parts.pick"), (button) ->
@@ -126,6 +126,11 @@ public class GuiSelectorEditor extends GuiElement
         this.fillData(this.selectors.getCurrent());
     }
 
+    private void updateTime()
+    {
+        ModelRenderer.selectorsUpdate = System.currentTimeMillis();
+    }
+
     private void addSelector()
     {
         EntityModelHandler.selectors.add(new EntitySelector());
@@ -145,7 +150,7 @@ public class GuiSelectorEditor extends GuiElement
             selector.name = "";
             selector.type = "";
             selector.morph = null;
-            selector.updateTime();
+            this.updateTime();
 
             int current = this.selectors.current.get(0);
 
@@ -192,7 +197,7 @@ public class GuiSelectorEditor extends GuiElement
 
         this.pick.setEnabled(true);
         this.selecting = false;
-        this.selector.updateTime();
+        this.updateTime();
         this.timer.mark();
     }
 
