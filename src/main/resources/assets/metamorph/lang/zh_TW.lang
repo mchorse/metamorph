@@ -15,17 +15,17 @@ metamorph.gui.body_parts.pick=選擇偽裝
 metamorph.gui.body_parts.use_target=使用目標
 metamorph.gui.body_parts.enabled=啟用
 metamorph.gui.body_parts.animate=動畫
-metamorph.gui.body_parts.animate_tooltip=當父級偽裝啟用動畫功能時，該選項可以將身體部分的變換信息直接動畫化
-metamorph.gui.body_parts.parts=身體部分
+metamorph.gui.body_parts.animate_tooltip=當父級偽裝啟用動畫功能時，該選項可以將身體附件的變換信息直接動畫化
+metamorph.gui.body_parts.parts=身體附件
 metamorph.gui.body_parts.limbs=肢體
-metamorph.gui.body_parts.open=打開身體部分
-metamorph.gui.body_parts.add_tooltip=添加壹個新的身體部分...
-metamorph.gui.body_parts.dupe_tooltip=復制當前所選的身體部分...
-metamorph.gui.body_parts.remove_tooltip=移除當前所選的身體部分...
-metamorph.gui.body_parts.copy_tooltip=拷貝所有身體部分...
-metamorph.gui.body_parts.paste_tooltip=粘貼所有拷貝的身體部分...
-metamorph.gui.body_parts.context.copy=拷貝身體部分
-metamorph.gui.body_parts.context.paste=粘貼身體部分
+metamorph.gui.body_parts.open=打開身體附件
+metamorph.gui.body_parts.add_tooltip=添加一個新的身體附件...
+metamorph.gui.body_parts.dupe_tooltip=覆制當前所選的身體附件...
+metamorph.gui.body_parts.remove_tooltip=移除當前所選的身體附件...
+metamorph.gui.body_parts.copy_tooltip=拷貝所有身體附件...
+metamorph.gui.body_parts.paste_tooltip=粘貼所有拷貝的身體附件...
+metamorph.gui.body_parts.context.copy=拷貝身體附件
+metamorph.gui.body_parts.context.paste=粘貼身體附件
 
 metamorph.gui.add=添加
 metamorph.gui.remove=移除
@@ -44,7 +44,7 @@ metamorph.gui.selectors.remove=移除選擇器
 metamorph.gui.selectors.name=名稱
 metamorph.gui.selectors.type=類型
 metamorph.gui.selectors.match=匹配 NBT
-metamorph.gui.selectors.match_tooltip=您可以在此處指定壹個 NBT 標簽，該標簽必須與實體的 NBT 標簽部分匹配
+metamorph.gui.selectors.match_tooltip=您可以在此處指定一個 NBT 標簽，該標簽必須與實體的 NBT 標簽部分匹配
 metamorph.gui.selectors.enabled=啟用
 
 metamorph.gui.morphs.keys.category=偽裝列表導航
@@ -72,7 +72,7 @@ metamorph.gui.creative.context.add_category=添加新分類
 metamorph.gui.creative.context.rename_category=重命名分類
 metamorph.gui.creative.context.rename_category_modal=為該分類命名...
 metamorph.gui.creative.context.remove_category=移除分類
-metamorph.gui.creative.context.remove_category_modal=您確定要刪除這壹偽裝分類嗎？它將永遠消失...
+metamorph.gui.creative.context.remove_category_modal=您確定要刪除這一偽裝分類嗎？它將永遠消失...
 metamorph.gui.creative.context.clear_category=移除所有偽裝
 metamorph.gui.creative.context.clear_category_modal=您確定要刪除該分類下的所有偽裝嗎？它們將永遠消失...
 metamorph.gui.creative.context.to_recent=拷貝到最近的偽裝
@@ -83,7 +83,7 @@ metamorph.gui.creative.context.paste=粘貼 NBT
 metamorph.gui.creative.context.paste_modal=粘貼或輸入您偽裝的 NBT 標簽...
 
 metamorph.gui.survival.title=生存模式偽裝菜單
-metamorph.gui.survival.keybind_tooltip=您可以通過此輸入框綁定壹個快捷鍵，該快捷鍵會讓您變成這個偽裝（當您在菜單或遊戲世界中按下時觸發）
+metamorph.gui.survival.keybind_tooltip=您可以通過此輸入框綁定一個快捷鍵，該快捷鍵會讓您變成這個偽裝（當您在菜單或遊戲世界中按下時觸發）
 metamorph.gui.survival.only_favorites=僅顯示收藏
 metamorph.gui.survival.favorite=收藏
 metamorph.gui.survival.keys.category=生存模式偽裝菜單
@@ -92,7 +92,7 @@ metamorph.gui.survival.keys.focus_keybind=聚焦快捷鍵
 
 metamorph.gui.editor.settings=偽裝設置
 metamorph.gui.editor.keybind=快捷鍵
-metamorph.gui.editor.keybind_tooltip=在此設置快捷鍵後，妳就可以按下這個按鈕變形為當前的偽裝，無論是在遊戲還是在生存模式偽裝菜單中都可以
+metamorph.gui.editor.keybind_tooltip=在此設置快捷鍵後，你就可以按下這個按鈕變形為當前的偽裝，無論是在遊戲還是在生存模式偽裝菜單中都可以
 metamorph.gui.editor.display_name=顯示名稱
 metamorph.gui.editor.health=生命值
 metamorph.gui.editor.speed=速度
@@ -121,7 +121,9 @@ metamorph.gui.label.shadow=陰影
 metamorph.gui.label.shadow_offset=陰影偏移
 metamorph.gui.label.shadow_color=陰影顏色
 metamorph.gui.label.lighting=發光
-metamorph.gui.label.lighting_tooltip=禁用時，將不會應用 Minecraft 的光照圖，這意味著它會在暗處發光。帶有泛光（Bloom）效果的光影包，可以讓這個偽裝看起來像霓虹燈壹樣。
+metamorph.gui.label.lighting_tooltip=禁用時，將不會應用 Minecraft 的光照圖，這意味著它會在暗處發光。帶有泛光（Bloom）效果的光影包，可以讓這個偽裝看起來像霓虹燈一樣。
+metamorph.gui.label.background=背景
+metamorph.gui.label.billboard=看向玩家
 
 metamorph.gui.edit=編輯
 metamorph.gui.panels.nbt_data=NBT 數據
@@ -131,7 +133,7 @@ metamorph.gui.panels.updating=更新中...
 metamorph.gui.animation.animates=動畫
 metamorph.gui.animation.ignored=跳過
 metamorph.gui.animation.animation_duration=持續時間
-metamorph.gui.animation.pick_interpolation=選擇差值
+metamorph.gui.animation.pick_interpolation=選擇插值
 
 metamorph.gui.status.tight_space=此處沒有足夠的空間來進行偽裝
 
@@ -156,13 +158,13 @@ metamorph.config.comments.morphs.keep_morphs=在玩家死後繼續保持偽裝
 metamorph.config.morphs.disable_pov=禁用 POV
 metamorph.config.comments.morphs.disable_pov=禁用視點高度修改。應 MorePlayerModels 的要求加入該功能
 metamorph.config.morphs.disable_health=禁用生命值伸縮
-metamorph.config.comments.morphs.disable_health=禁用生命值修改。應意誌堅定（Tough As Nails）的要求加入該功能
+metamorph.config.comments.morphs.disable_health=禁用生命值修改。應意志堅定（Tough As Nails）的要求加入該功能
 metamorph.config.morphs.disable_morph_animation=禁用偽裝動畫
 metamorph.config.comments.morphs.disable_morph_animation=禁用偽裝時的動畫效果
 metamorph.config.morphs.disable_morph_disguise=禁用偽裝無敵
 metamorph.config.comments.morphs.disable_morph_disguise=禁用帶有“無敵”技能標簽的偽裝，避免被敵對生物攻擊
-metamorph.config.morphs.disable_first_person_hand=禁用第壹人稱手臂
-metamorph.config.comments.morphs.disable_first_person_hand=完全隱藏第壹人稱手臂的顯示
+metamorph.config.morphs.disable_first_person_hand=禁用第一人稱手臂
+metamorph.config.comments.morphs.disable_first_person_hand=完全隱藏第一人稱手臂的顯示
 metamorph.config.morphs.morph_in_tight_spaces=允許在狹窄空間偽裝
 metamorph.config.comments.morphs.morph_in_tight_spaces=即使在可能造成窒息時進行偽裝，並允許穿墻
 metamorph.config.morphs.show_morph_idle_sounds=播放偽裝的空閑音效
@@ -172,9 +174,18 @@ metamorph.config.comments.morphs.pause_gui_in_sp=不論是創造模式或生存�
 metamorph.config.morphs.max_recent_morphs=最近偽裝最大值
 metamorph.config.comments.morphs.max_recent_morphs=在被丟棄之前可以添加到偽裝菜單中最近的偽裝的最大值
 metamorph.config.morphs.allow_morphing_into_category_morphs=允許偽裝為分類中的偽裝
-metamorph.config.comments.morphs.allow_morphing_into_category_morphs=啟用後，該選項允許在生存模式下偽裝為最近的和自定義分類偽裝。該選項還允許妳在生存模式下打開創造模式偽裝菜單
+metamorph.config.comments.morphs.allow_morphing_into_category_morphs=啟用後，該選項允許在生存模式下偽裝為最近的和自定義分類偽裝。該選項還允許你在生存模式下打開創造模式偽裝菜單
 metamorph.config.morphs.load_entity_morphs=加載實體偽裝
 metamorph.config.comments.morphs.load_entity_morphs=實體偽裝是否會被加載至創造模式偽裝菜單
+metamorph.config.morphs.render_bodypart_axis=為身體附件渲染座標軸
+metamorph.config.comments.morphs.render_bodypart_axis=啟用後，身體附件的座標軸就會在身體附件編輯器 GUI 中進行顯示。
+
+# OP access config
+op_access.config.metamorph.title=Metamorph
+op_access.config.metamorph.tooltip=Metamorph OP 訪問權限選項
+
+op_access.config.metamorph.entity_selectors=實體選擇器
+op_access.config.comments.metamorph.entity_selectors=非 OP 玩家是否可以編輯實體選擇器？
 
 # Commands
 metamorph.commands.morph=偽裝命令。該命令可以讓玩家偽裝成指定的偽裝。\n\n/morph <用戶名> [偽裝名稱] [數據標簽]
@@ -194,7 +205,7 @@ morph.category.generic=未分類偽裝
 morph.category.animal=動物偽裝
 morph.category.boss=Boss 偽裝
 morph.category.acquired=您的偽裝
-morph.category.hostile=敵對生物偽裝 
+morph.category.hostile=敵對生物偽裝
 morph.category.modded=來自 %s 的偽裝
 morph.category.recent=最近的偽裝
 
