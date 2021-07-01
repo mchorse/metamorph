@@ -15,8 +15,8 @@ metamorph.gui.body_parts.pick=Выбрать морф
 metamorph.gui.body_parts.use_target=Использовать цель
 metamorph.gui.body_parts.enabled=Включено
 metamorph.gui.body_parts.animate=Анимируется
-metamorph.gui.body_parts.parts=Части тела
 metamorph.gui.body_parts.animate_tooltip=Этот параметр включает анимацию трансформаций частей тела вместе с анимацией родительского морфа
+metamorph.gui.body_parts.parts=Части тела
 metamorph.gui.body_parts.limbs=Конечности
 metamorph.gui.body_parts.open=Открыть части тела
 metamorph.gui.body_parts.add_tooltip=Добавить новую часть тела...
@@ -122,6 +122,8 @@ metamorph.gui.label.shadow_offset=Смещение тени
 metamorph.gui.label.shadow_color=Цвет тени
 metamorph.gui.label.lighting=Свечение
 metamorph.gui.label.lighting_tooltip=Если отключить этот параметр, то карта свечения из Майнкрафта не будет применена, то есть морф применения будет светиться в темноте. Шейдерпаки у которых есть опция блума (bloom), will make this morph look like neon sign
+metamorph.gui.label.background=Background
+metamorph.gui.label.billboard=Look at player
 
 metamorph.gui.edit=Редактировать
 metamorph.gui.panels.nbt_data=NBT-данные
@@ -175,6 +177,15 @@ metamorph.config.morphs.allow_morphing_into_category_morphs=Позволить �
 metamorph.config.comments.morphs.allow_morphing_into_category_morphs=Если включена, эта опция позволит превращаться в недавние морфы и морфы из пользовательских категорий во время нахождения в режиме выживания. This option also allows to open creative morph menu in survival
 metamorph.config.morphs.load_entity_morphs=Загрузить морфы существ
 metamorph.config.comments.morphs.load_entity_morphs=Должны ли морфы существ быть загруженными в меню превращения креатива
+metamorph.config.morphs.render_bodypart_axis=Render Axis for body parts
+metamorph.config.comments.morphs.render_bodypart_axis=When enabled, body part axes are displayed in the body part editor GUI
+
+# OP access config
+op_access.config.metamorph.title=Metamorph
+op_access.config.metamorph.tooltip=Metamorph's OP access options
+
+op_access.config.metamorph.entity_selectors=Entity selectors
+op_access.config.comments.metamorph.entity_selectors=Can non-OP players edit entity selectors?
 
 # Commands
 metamorph.commands.morph=Команда превращения. Эта команда отвечает за превращение игрока в какой-либо конкретный морф.\n\n/morph <username> [morph_name] [data_tag]

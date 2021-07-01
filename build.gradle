@@ -183,3 +183,56 @@ task compareLangFiles {
         }
     }
 }
+
+task copyLangStrings {
+    doLast {
+        def parse = { File file ->
+            def map = new HashMap()
+            def splits = file.text.split("\n");
+
+            for (split in splits) {
+                def index = split.indexOf("=")
+
+                if (index == -1) {
+                    continue
+                }
+
+                map.put(split.substring(0, index), split.substring(index + 1))
+            }
+
+            return map
+        }
+        
+        def help = file("src/main/resources/assets/${project.archivesBaseName}/lang/")
+        def en = file("${help.getAbsolutePath()}/en_US.lang")
+
+        for (file in help.listFiles())
+        {
+            if (file.name.endsWith(".lang") && !file.name.startsWith("en_"))
+            {
+                def strings = parse(file)
+                def splits = en.text.split("\n")
+
+                for (def i = 0; i < splits.length; i++) {
+                    def str = splits[i];
+
+                    if (str.contains("=")) {
+                        def index = str.indexOf("=")
+                        def key = str.substring(0, index)
+                        def value = str.substring(index)
+
+                        if (strings.containsKey(key)) {
+                            splits[i] = key + "=" + strings.get(key)
+                        }
+                    }
+                }
+
+                file.write(splits.join("\n"))
+
+                print("Wrote to ${file.name}...")
+            }
+        }
+
+        print("Done!")
+    }
+}
