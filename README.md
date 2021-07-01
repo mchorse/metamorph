@@ -1,4 +1,4 @@
-**ATTENTION**: This mod is in non-gameplay maintenance mode, meaning that I'm **not going** to work on gameplay features **nor** I'm accepting suggestions. Check out [Changeling](https://www.curseforge.com/minecraft/mc-mods/changeling) mod maintained by asanetargoss, which is a gameplay-wise successor. 
+**ATTENTION**: This mod is **no longer being developed**, and it's maintained (bugs and crash fixes) until August/September of 2021. If you wish to continue the mod, feel free to check out the [source code](https://github.com/mchorse/metamorph).  
 
 ![Metamorph](http://i.imgur.com/gbHB5iQ.png)
 
@@ -8,7 +8,7 @@
 
 Most of vanilla mob morphs have their abilities (preconfigured), meanwhile most of modded morphs only grant you appearance and some attributes like health, unless configured. Morphs can be disabled and configured. See mod's wiki for more information.
 
-Heavily inspired by iChun's Morph mod and zacuke's Shape Shifter Z mod, and works only with Forge for Minecraft 1.12.2 (past versions available in 1.10.2 and 1.11.2).
+Heavily inspired by iChun's Morph mod and zacuke's Shape Shifter Z mod, and works only with Forge for Minecraft 1.12.2 (past versions are available for 1.10.2 and 1.11.2).
 
 ## FAQ
 

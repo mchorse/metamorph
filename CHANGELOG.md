@@ -1,3 +1,22 @@
+## Metamorph 1.2.7
+
+This patch update adds a lot of random features.
+
+**Compatible** with McLib `2.3`. It doesn't mean that future versions of McLib would be incompatible, but older versions are most likely incompatible.
+
+* Added OP access only to entity selectors
+* Added automatic enabling of Use target when picking Blockbuster's `particle` or `snowstorm` morphs
+* Added interpolation preview to animation component
+* Added an option to disable rendering of body part axes (developed by Chryfi)
+* Added text formatting to `label` morph (for example `Hey [6man[r!` highlights `man` as gold color, suggestd by Centryfuga)
+* Added background color option to `label` morph (suggestd by Sbriser)
+* Added look at player option to `label` morph (suggested by Sbriser and Jvonlins)
+* Changed animation duration field to increment 1, 2, 5 (weak, normal, strong)
+* Changed body parts merging to correctly handle transition of non equal amount of incoming body parts
+* Improved entity selectors (intant application of selectors upon newly spawned mobs, and instant update on mobs when changing)
+* Fixed `block` morph Z-fighting
+* Fixed NPE in Metamorph's name renderer (reported by Berm1zzov)
+
 ## Metamorph 1.2.6
 
 This patch update adds context menu to body part list, which allows to copy paste body parts.
