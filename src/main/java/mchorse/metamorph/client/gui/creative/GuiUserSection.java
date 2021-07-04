@@ -71,7 +71,7 @@ public class GuiUserSection extends GuiMorphSection
 
         if (morph != null && category != null)
         {
-            contextMenu.action(Icons.CLOSE, IKey.lang("metamorph.gui.creative.context.remove_morph"), () -> category.remove(morph));
+            contextMenu.action(Icons.CLOSE, IKey.lang("metamorph.gui.creative.context.remove_morph"), () -> this.removeMorph(category, morph));
         }
 
         return contextMenu;
@@ -133,17 +133,27 @@ public class GuiUserSection extends GuiMorphSection
     {
         GuiModal.addModal(this.parent, () ->
         {
-            GuiConfirmModal modal = new GuiConfirmModal(this.mc, IKey.lang("metamorph.gui.creative.context.remove_category_modal"), (value) ->
+            return GuiConfirmModal.createTemplate(this.mc, this.parent, IKey.lang("metamorph.gui.creative.context.remove_category_modal"), (value) ->
             {
                 if (value)
                 {
                     this.section.remove(category);
                 }
             });
+        });
+    }
 
-            modal.flex().relative(this.parent).xy(0.5F, 0.5F).wh(160, 180).anchor(0.5F, 0.5F);
-
-            return modal;
+    private void removeMorph(MorphCategory category, AbstractMorph morph)
+    {
+        GuiModal.addModal(this.parent, () ->
+        {
+            return GuiConfirmModal.createTemplate(this.mc, this.parent, IKey.lang("metamorph.gui.creative.context.remove_morph_modal"), (value) ->
+            {
+                if (value)
+                {
+                    category.remove(morph);
+                }
+            });
         });
     }
 
