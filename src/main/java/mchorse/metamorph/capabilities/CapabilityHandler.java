@@ -44,7 +44,7 @@ public class CapabilityHandler
     @SubscribeEvent
     public void attachCapability(AttachCapabilitiesEvent<Entity> event)
     {
-        if (event.getObject() instanceof EntityLivingBase)
+        if (event.getObject() instanceof EntityLivingBase && event.getObject().world.isRemote)
         {
             event.addCapability(MODEL_CAP, new ModelProvider());
         }
@@ -107,23 +107,21 @@ public class CapabilityHandler
     @SubscribeEvent
     public void onPlayerSpawn(EntityJoinWorldEvent event)
     {
-        if (event.getEntity() instanceof EntityPlayer)
+        Entity entity = event.getEntity();
+
+        if (entity instanceof EntityPlayer && !entity.world.isRemote)
         {
-            EntityPlayer player = (EntityPlayer) event.getEntity();
+            EntityPlayer player = (EntityPlayer) entity;
+            IMorphing morphing = Morphing.get(player);
 
-            if (!player.world.isRemote)
-            {
-                IMorphing morphing = Morphing.get(player);
-
-                this.sendAcquiredMorphs(morphing, player);
-                Dispatcher.sendTo(new PacketMorphState(player, morphing), (EntityPlayerMP) player);
-            }
+            this.sendAcquiredMorphs(morphing, player);
+            Dispatcher.sendTo(new PacketMorphState(player, morphing), (EntityPlayerMP) player);
         }
-        else if (event.getEntity() instanceof EntityLivingBase)
+        else if (entity instanceof EntityLivingBase && entity.world.isRemote)
         {
-            IModelRenderer renderer = ModelRenderer.get(event.getEntity());
+            IModelRenderer renderer = ModelRenderer.get(entity);
 
-            renderer.updateSelector((EntityLivingBase) event.getEntity());
+            renderer.updateSelector((EntityLivingBase) entity);
         }
     }
 

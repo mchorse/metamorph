@@ -6,6 +6,8 @@ import mchorse.metamorph.api.morphs.AbstractMorph;
 import mchorse.metamorph.client.EntityModelHandler;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 
 public class ModelRenderer implements IModelRenderer
 {
@@ -37,6 +39,7 @@ public class ModelRenderer implements IModelRenderer
     }
 
     @Override
+    @SideOnly(Side.CLIENT)
     public void updateSelector(EntityLivingBase target)
     {
         this.selector = null;
