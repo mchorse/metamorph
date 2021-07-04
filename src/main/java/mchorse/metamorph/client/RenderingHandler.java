@@ -9,7 +9,6 @@ import mchorse.metamorph.client.gui.overlays.GuiHud;
 import mchorse.metamorph.client.gui.overlays.GuiOverlay;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.entity.EntityPlayerSP;
-import net.minecraft.client.gui.GuiMainMenu;
 import net.minecraft.client.gui.ScaledResolution;
 import net.minecraft.client.renderer.EntityRenderer;
 import net.minecraft.client.renderer.GlStateManager;
@@ -17,15 +16,14 @@ import net.minecraft.client.renderer.entity.RenderLivingBase;
 import net.minecraft.client.renderer.entity.RenderManager;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
-import net.minecraft.entity.monster.EntityCaveSpider;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.scoreboard.Team;
-import net.minecraftforge.client.event.GuiOpenEvent;
 import net.minecraftforge.client.event.RenderGameOverlayEvent;
 import net.minecraftforge.client.event.RenderLivingEvent;
 import net.minecraftforge.client.event.RenderPlayerEvent;
 import net.minecraftforge.fml.common.eventhandler.EventPriority;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
+import net.minecraftforge.fml.common.network.FMLNetworkEvent;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
@@ -231,12 +229,9 @@ public class RenderingHandler
     }
 
     @SubscribeEvent
-    public void onGuiOpen(GuiOpenEvent event)
+    public void onClientDisconnect(FMLNetworkEvent.ClientDisconnectionFromServerEvent event)
     {
-        if (event.getGui() instanceof GuiMainMenu)
-        {
-            MorphManager.INSTANCE.list.reset();
-            ClientProxy.survivalScreen = null;
-        }
+        MorphManager.INSTANCE.list.reset();
+        ClientProxy.survivalScreen = null;
     }
 }
