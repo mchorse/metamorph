@@ -1,3 +1,12 @@
+## Metamorph 1.2.8
+
+This is a hot fix patch that fixes dedicated server crash on start.
+
+**Compatible** with McLib `2.3`. It doesn't mean that future versions of McLib would be incompatible, but older versions are most likely incompatible.
+
+* Fixed a dedicated server crash on start due to referencing client code
+* Fixed morphs not being reset after exiting multiplayer server immediately
+
 ## Metamorph 1.2.7
 
 This patch update adds a lot of random features.
