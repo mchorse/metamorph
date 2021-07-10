@@ -14,6 +14,7 @@ import mchorse.metamorph.api.events.RegisterRemapEvent;
 import mchorse.metamorph.api.events.RegisterSettingsEvent;
 import mchorse.metamorph.api.morphs.AbstractMorph;
 import mchorse.metamorph.api.morphs.utils.ISyncableMorph;
+import mchorse.metamorph.bodypart.BodyPart;
 import mchorse.metamorph.bodypart.IBodyPartProvider;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
@@ -178,6 +179,33 @@ public class MorphUtils
         {
             ((IBodyPartProvider) morph).getBodyPart().pause(previous, offset);
 
+            return true;
+        }
+
+        return false;
+    }
+    
+    /**
+     * Resume given morph from pause.
+     */
+    public static boolean resume(AbstractMorph morph)
+    {
+        if (morph instanceof ISyncableMorph)
+        {
+            ((ISyncableMorph) morph).resume();
+            
+            return true;
+        }
+        else if (morph instanceof IBodyPartProvider)
+        {
+            for (BodyPart part : ((IBodyPartProvider) morph).getBodyPart().parts)
+            {
+                if (!part.morph.isEmpty() && part.morph.get() instanceof ISyncableMorph)
+                {
+                    ((ISyncableMorph) part.morph.get()).resume();
+                }
+            }
+            
             return true;
         }
 
