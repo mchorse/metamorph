@@ -146,7 +146,14 @@ public class LabelMorph extends AbstractMorph
         }
         else
         {
-            int max = MathUtils.clamp(this.max, 6, Integer.MAX_VALUE);
+            int min = 6;
+
+            for (int i = 0; i < text.length(); i++)
+            {
+                min = Math.max(font.getCharWidth(text.charAt(i)), min);
+            }
+            
+            int max = MathUtils.clamp(this.max, min, Integer.MAX_VALUE);
             List<String> labels = font.listFormattedStringToWidth(text, max);
             int h = MathUtils.clamp(labels.size() - 1, 0, 100) * 12 + font.FONT_HEIGHT;
             int y = -(int) (h * this.anchorY);
