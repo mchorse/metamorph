@@ -22,6 +22,7 @@ import mchorse.metamorph.api.MorphUtils;
 import mchorse.metamorph.api.morphs.AbstractMorph;
 import mchorse.metamorph.api.morphs.utils.Animation;
 import mchorse.metamorph.api.morphs.utils.IAnimationProvider;
+import mchorse.metamorph.api.morphs.utils.IMorphGenerator;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.renderer.OpenGlHelper;
@@ -306,6 +307,44 @@ public class BodyPart
         }
 
         MorphUtils.pause(this.morph.get(), previous == null ? null : previous.morph.get(), offset);
+    }
+
+    public BodyPart genCurrentBodyPart(AbstractMorph morph, float partialTicks)
+    {
+        BodyPart part = this.copy();
+
+        if (morph instanceof IAnimationProvider)
+        {
+            Animation animation = ((IAnimationProvider) morph).getAnimation();
+
+            if (animation.isInProgress() && this.lastTranslate != null && this.animate)
+            {
+                Interpolation inter = animation.interp;
+                float factor = animation.getFactor(partialTicks);
+
+                part.translate.x = inter.interpolate(this.lastTranslate.x, this.translate.x, factor);
+                part.translate.y = inter.interpolate(this.lastTranslate.y, this.translate.y, factor);
+                part.translate.z = inter.interpolate(this.lastTranslate.z, this.translate.z, factor);
+                part.scale.x = inter.interpolate(this.lastScale.x, this.scale.x, factor);
+                part.scale.y = inter.interpolate(this.lastScale.y, this.scale.y, factor);
+                part.scale.z = inter.interpolate(this.lastScale.z, this.scale.z, factor);
+                part.rotate.x = inter.interpolate(this.lastRotate.x, this.rotate.x, factor);
+                part.rotate.y = inter.interpolate(this.lastRotate.y, this.rotate.y, factor);
+                part.rotate.z = inter.interpolate(this.lastRotate.z, this.rotate.z, factor);
+            }
+        }
+
+        if (this.morph.get() instanceof IMorphGenerator)
+        {
+            IMorphGenerator generator = (IMorphGenerator) this.morph.get();
+
+            if (generator.canGenerate())
+            {
+                part.morph.setDirect(generator.genCurrentMorph(partialTicks));
+            }
+        }
+
+        return part;
     }
 
     @Override
