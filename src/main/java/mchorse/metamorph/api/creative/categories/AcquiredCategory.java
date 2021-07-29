@@ -19,7 +19,7 @@ public class AcquiredCategory extends MorphCategory
         super(parent, title);
     }
 
-    public void setMorph(List<AbstractMorph> morphs)
+    public void setMorphs(List<AbstractMorph> morphs)
     {
         this.morphs = morphs;
     }

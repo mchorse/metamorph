@@ -47,7 +47,7 @@ public class GuiSurvivalMorphs extends GuiMorphs
             section = new MorphSection("user");
             category = new AcquiredCategory(section, "acquired");
 
-            category.setMorph(cap == null ? Collections.emptyList() : cap.getAcquiredMorphs());
+            category.setMorphs(cap == null ? Collections.emptyList() : cap.getAcquiredMorphs());
             section.add(category);
         }
 

@@ -38,6 +38,29 @@ public class CapabilityHandler
     public static final ResourceLocation MORPHING_CAP = new ResourceLocation(Metamorph.MOD_ID, "morphing_capability");
     public static final ResourceLocation MODEL_CAP = new ResourceLocation(Metamorph.MOD_ID, "model");
 
+    private static Boolean isMohist;
+
+    private static boolean isMohist()
+    {
+        if (isMohist != null)
+        {
+            return isMohist;
+        }
+
+        try
+        {
+            Class.forName("com.mohistmc.MohistMC");
+
+            isMohist = true;
+        }
+        catch (Exception e)
+        {
+            isMohist = false;
+        }
+
+        return isMohist;
+    }
+
     /**
      * Attach capabilities
      */
@@ -135,9 +158,12 @@ public class CapabilityHandler
         IMorphing morphing = Morphing.get(player);
         IMorphing oldMorphing = Morphing.get(event.getOriginal());
 
-        if (Metamorph.keepMorphs.get() || !event.isWasDeath())
+        if (!isMohist())
         {
-            morphing.copy(oldMorphing, player);
+            if (Metamorph.keepMorphs.get() || !event.isWasDeath())
+            {
+                morphing.copy(oldMorphing, player);
+            }
         }
     }
 

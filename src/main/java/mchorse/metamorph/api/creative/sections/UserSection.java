@@ -27,6 +27,7 @@ import org.apache.commons.io.FileUtils;
 import java.io.File;
 import java.nio.charset.Charset;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
 import java.util.function.Consumer;
@@ -90,7 +91,7 @@ public class UserSection extends MorphSection
         this.categories.clear();
         this.categories.add(this.acquired);
         this.categories.add(this.recent);
-        this.acquired.setMorph(morphing == null ? Collections.emptyList() : morphing.getAcquiredMorphs());
+        this.acquired.setMorphs(morphing == null ? Collections.emptyList() : morphing.getAcquiredMorphs());
 
         if (!this.loaded)
         {
@@ -113,7 +114,7 @@ public class UserSection extends MorphSection
         }
 
         this.categories.clear();
-        this.acquired.clear();
+        this.acquired.setMorphs(Collections.emptyList());
         this.recent.clear();
         this.global.clear();
     }
