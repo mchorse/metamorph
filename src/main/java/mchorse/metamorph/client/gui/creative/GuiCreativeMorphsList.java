@@ -3,6 +3,7 @@ package mchorse.metamorph.client.gui.creative;
 import mchorse.mclib.client.gui.framework.GuiBase;
 import mchorse.mclib.client.gui.framework.elements.GuiDelegateElement;
 import mchorse.mclib.client.gui.framework.elements.GuiElement;
+import mchorse.mclib.client.gui.framework.elements.GuiModelRenderer;
 import mchorse.mclib.client.gui.framework.elements.buttons.GuiButtonElement;
 import mchorse.mclib.client.gui.framework.elements.context.GuiSimpleContextMenu;
 import mchorse.mclib.client.gui.framework.elements.input.GuiTextElement;
@@ -28,6 +29,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Stack;
 import java.util.function.Consumer;
+
+import javax.vecmath.Vector3f;
 
 /**
  * Scroll list of available morphs
@@ -65,6 +68,13 @@ public class GuiCreativeMorphsList extends GuiElement
     private Stack<NestedEdit> nestedEdits = new Stack<NestedEdit>();
 
     protected Keybind exitKey;
+
+    protected boolean keepViewport;
+
+    protected Vector3f lastPos = new Vector3f();
+    protected float lastYaw;
+    protected float lastPitch;
+    protected float lastScale;
 
     /**
      * Initiate this GUI.
@@ -221,8 +231,19 @@ public class GuiCreativeMorphsList extends GuiElement
 
     public void nestEdit(AbstractMorph selected, boolean editing, Consumer<AbstractMorph> callback)
     {
-        NestedEdit edit = new NestedEdit(this.morphs.filter, this.editor.delegate.morph, this.editor.delegate.toNBT(), this.callback, this.morphs.selected, editing);
+        this.nestEdit(selected, editing, false, callback);
+    }
+
+    public void nestEdit(AbstractMorph selected, boolean editing, boolean keepViewport, Consumer<AbstractMorph> callback)
+    {
+        NestedEdit edit = new NestedEdit(this.morphs.filter, this.editor.delegate.morph, this.editor.delegate.toNBT(), this.callback, this.morphs.selected, editing, this.keepViewport);
         this.callback = callback;
+        this.keepViewport = keepViewport;
+
+        if (keepViewport)
+        {
+            this.saveViewport();
+        }
 
         if (editing)
         {
@@ -259,6 +280,13 @@ public class GuiCreativeMorphsList extends GuiElement
 
         this.enterEditMorph(edit.editMorph);
         this.editor.delegate.fromNBT(edit.data);
+
+        if (this.keepViewport)
+        {
+            this.loadViewport();
+        }
+
+        this.keepViewport = edit.keepViewport;
     }
 
     /* Edit mode */
@@ -300,6 +328,11 @@ public class GuiCreativeMorphsList extends GuiElement
         if (editor != null)
         {
             this.setEditor(editor);
+
+            if (this.keepViewport)
+            {
+                this.loadViewport();
+            }
         }
     }
 
@@ -308,6 +341,11 @@ public class GuiCreativeMorphsList extends GuiElement
         if (!this.isEditMode())
         {
             return;
+        }
+
+        if (this.keepViewport)
+        {
+            this.saveViewport();
         }
 
         AbstractMorph edited = this.editor.delegate.morph;
@@ -353,6 +391,8 @@ public class GuiCreativeMorphsList extends GuiElement
         {
             this.pickMorph(MorphUtils.copy(this.getSelected()));
         }
+
+        this.keepViewport = false;
     }
 
     private GuiAbstractMorph getMorphEditor(AbstractMorph morph)
@@ -375,6 +415,25 @@ public class GuiCreativeMorphsList extends GuiElement
         }
 
         return null;
+    }
+
+    private void saveViewport()
+    {
+        GuiModelRenderer renderer = this.editor.delegate.renderer;
+
+        this.lastPos.set(renderer.pos);
+        this.lastPitch = renderer.pitch;
+        this.lastYaw = renderer.yaw;
+        this.lastScale = renderer.scale;
+    }
+
+    private void loadViewport()
+    {
+        GuiModelRenderer renderer = this.editor.delegate.renderer;
+
+        renderer.setPosition(this.lastPos.x, this.lastPos.y, this.lastPos.z);
+        renderer.setRotation(this.lastYaw, this.lastPitch);
+        renderer.setScale(this.lastScale);
     }
 
     /* Morph selection and filtering */
@@ -518,14 +577,16 @@ public class GuiCreativeMorphsList extends GuiElement
         public AbstractMorph selectedMorph;
         public AbstractMorph editMorph;
         public boolean editing;
+        public boolean keepViewport;
 
-        public NestedEdit(String filter, AbstractMorph editMorph, NBTTagCompound data, Consumer<AbstractMorph> callback, GuiMorphSection selected, boolean editing)
+        public NestedEdit(String filter, AbstractMorph editMorph, NBTTagCompound data, Consumer<AbstractMorph> callback, GuiMorphSection selected, boolean editing, boolean keepViewport)
         {
             this.filter = filter;
             this.data = data;
             this.editMorph = editMorph;
             this.callback = callback;
             this.editing = editing;
+            this.keepViewport = keepViewport;
 
             this.selected = selected;
             this.selectedCategory = selected == null ? null : selected.category;

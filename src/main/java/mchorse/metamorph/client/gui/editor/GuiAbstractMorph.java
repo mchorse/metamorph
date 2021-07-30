@@ -14,6 +14,8 @@ import mchorse.mclib.client.gui.utils.Label;
 import mchorse.mclib.client.gui.utils.keys.IKey;
 import mchorse.mclib.utils.MathUtils;
 import mchorse.metamorph.api.morphs.AbstractMorph;
+import mchorse.metamorph.api.morphs.utils.Animation;
+import mchorse.metamorph.api.morphs.utils.IAnimationProvider;
 import mchorse.metamorph.bodypart.GuiBodyPartEditor;
 import mchorse.metamorph.client.gui.creative.GuiCreativeMorphsList;
 import mchorse.metamorph.client.gui.creative.GuiMorphRenderer;
@@ -190,6 +192,26 @@ public class GuiAbstractMorph<T extends AbstractMorph> extends GuiPanelBase<GuiM
         elements.add(displayName);
 
         return elements;
+    }
+
+    /**
+     * Get current tick for preview
+     */
+    public int getCurrentTick()
+    {
+        int tick = 0;
+
+        if (this.morph instanceof IAnimationProvider)
+        {
+            Animation animation = ((IAnimationProvider) this.morph).getAnimation();
+
+            if (animation.animates)
+            {
+                tick = animation.duration;
+            }
+        }
+
+        return tick;
     }
 
     @Override
