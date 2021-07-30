@@ -14,6 +14,8 @@ import java.util.List;
 
 public class GuiMorphs extends GuiScrollElement
 {
+    private static final MorphCategory EMPTY_CATEGORY = new MorphCategory(null, null);
+
     /**
      * Cached previous filter. Used for avoiding double recalculations
      */
@@ -105,7 +107,7 @@ public class GuiMorphs extends GuiScrollElement
                 }
 
                 section = this.sections.get(sectionIndex);
-                category = section.section.categories.get(section.section.categories.size() - 1);
+                category = section.section.categories.isEmpty() ? EMPTY_CATEGORY : section.section.categories.get(section.section.categories.size() - 1);
             }
             else if (index >= section.section.categories.size())
             {
@@ -117,7 +119,7 @@ public class GuiMorphs extends GuiScrollElement
                 }
 
                 section = this.sections.get(sectionIndex);
-                category = section.section.categories.get(0);
+                category = section.section.categories.isEmpty() ? EMPTY_CATEGORY : section.section.categories.get(0);
             }
             else
             {
