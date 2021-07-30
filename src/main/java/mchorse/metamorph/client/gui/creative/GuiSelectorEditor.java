@@ -86,7 +86,11 @@ public class GuiSelectorEditor extends GuiElement
                 this.timer.mark();
             }
             catch (Exception e)
-            {}
+            {
+                this.selector.match = null;
+                this.updateTime();
+                this.timer.mark();
+            }
         });
         this.match.tooltip(IKey.lang("metamorph.gui.selectors.match_tooltip"));
         this.active = new GuiToggleElement(mc, IKey.lang("metamorph.gui.selectors.enabled"), (toggle) ->
