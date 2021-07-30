@@ -1,3 +1,16 @@
+## Metamorph 1.2.9
+
+This is patch fixes a couple of bugs.
+
+**Compatible** with McLib `2.3.1`. It doesn't mean that future versions of McLib would be incompatible, but older versions are most likely incompatible.
+
+* Added confirmation modal when removing individual morphs (added by Chryfi)
+* Fixed acquired morphs being cleared
+* Fixed entity selector's matching NBT field not resetting the value
+* Fixed entity selectors not updating when entity's data was changed
+* Fixed entity's hitbox remained same from past entity selectors
+* Fixed crash when using arrow keys navigation when Chameleon with no models installed
+
 ## Metamorph 1.2.8
 
 This is a hot fix patch that fixes dedicated server crash on start.
