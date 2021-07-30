@@ -17,6 +17,10 @@ public class ModelRenderer implements IModelRenderer
     public AbstractMorph morph;
     public long lastUpdate = -1;
 
+    private int timer;
+    private float lastW = -1;
+    private float lastH = -1;
+
     public static IModelRenderer get(Entity entity)
     {
         return entity.getCapability(ModelProvider.MODEL, null);
@@ -25,7 +29,7 @@ public class ModelRenderer implements IModelRenderer
     @Override
     public void update(EntityLivingBase target)
     {
-        if (this.lastUpdate < selectorsUpdate)
+        if (this.lastUpdate < selectorsUpdate || this.IsNotMatchedAnymore(target))
         {
             this.lastUpdate = selectorsUpdate;
 
@@ -36,6 +40,25 @@ public class ModelRenderer implements IModelRenderer
         {
             this.morph.update(target);
         }
+    }
+
+    private boolean IsNotMatchedAnymore(EntityLivingBase target)
+    {
+        this.timer += 1;
+
+        if (this.timer > 10)
+        {
+            this.timer = 0;
+
+            if (this.selector == null)
+            {
+                return true;
+            }
+
+            return !this.selector.matches(target);
+        }
+
+        return false;
     }
 
     @Override
@@ -52,8 +75,23 @@ public class ModelRenderer implements IModelRenderer
                 this.selector = selector;
                 this.morph = MorphManager.INSTANCE.morphFromNBT(this.selector.morph);
 
+                if (this.lastW < 0)
+                {
+                    this.lastW = target.width;
+                    this.lastH = target.height;
+                }
+
                 return;
             }
+        }
+
+        if (this.selector == null && this.lastW > 0 && this.lastH > 0)
+        {
+            target.width = this.lastW;
+            target.height = this.lastH;
+
+            this.lastW = -1;
+            this.lastH = -1;
         }
     }
 
