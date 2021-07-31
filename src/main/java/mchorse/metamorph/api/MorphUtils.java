@@ -9,6 +9,7 @@ import java.util.Set;
 
 import io.netty.buffer.ByteBuf;
 import mchorse.mclib.utils.NBTUtils;
+import mchorse.mclib.utils.ReflectionUtils;
 import mchorse.metamorph.api.events.RegisterBlacklistEvent;
 import mchorse.metamorph.api.events.RegisterRemapEvent;
 import mchorse.metamorph.api.events.RegisterSettingsEvent;
@@ -26,21 +27,6 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 
 public class MorphUtils
 {
-    
-    public static final Field isShadowPass;
-    
-    static {
-        Field field = null;
-        try
-        {
-            Class clazz = Class.forName("net.optifine.shaders.Shaders");
-            field = clazz.getField("isShadowPass");
-        }
-        catch (Exception e)
-        {}
-        isShadowPass = field;
-    }
-    
     /**
      * Generate an empty file
      */
@@ -103,18 +89,12 @@ public class MorphUtils
         {
             return false;
         }
-        
-        if (isShadowPass != null && !morph.settings.shadowMapping)
+
+        boolean isShadowPass = ReflectionUtils.isOptifineShadowPass();
+
+        if (isShadowPass && morph.settings.shadowOption == 1 || !isShadowPass && morph.settings.shadowOption == 2)
         {
-            try
-            {
-                if (isShadowPass.getBoolean(null))
-                {
-                    return false;
-                }
-            }
-            catch (Exception e)
-            {}
+            return false;
         }
 
         try
