@@ -2,6 +2,7 @@ package mchorse.metamorph.client.gui.editor;
 
 import mchorse.mclib.client.gui.framework.elements.GuiScrollElement;
 import mchorse.mclib.client.gui.framework.elements.buttons.GuiButtonElement;
+import mchorse.mclib.client.gui.framework.elements.buttons.GuiCirculateElement;
 import mchorse.mclib.client.gui.framework.elements.buttons.GuiToggleElement;
 import mchorse.mclib.client.gui.framework.elements.input.GuiKeybindElement;
 import mchorse.mclib.client.gui.framework.elements.input.GuiTextElement;
@@ -44,7 +45,7 @@ public class GuiSettingsPanel extends GuiMorphPanel<AbstractMorph, GuiAbstractMo
     public GuiTrackpadElement hitboxSneakingHeight;
     public GuiTrackpadElement hitboxEyePosition;
     
-    public GuiToggleElement shadowMapping;
+    public GuiCirculateElement shadowOption;
 
     public GuiTextElement data;
     public boolean error;
@@ -154,12 +155,17 @@ public class GuiSettingsPanel extends GuiMorphPanel<AbstractMorph, GuiAbstractMo
         this.right.add(this.hitboxEnabled);
         this.right.add(Elements.label(IKey.lang("metamorph.gui.editor.hitbox.size")).marginTop(8), this.hitboxWidth, this.hitboxHeight, this.hitboxSneakingHeight);
         this.right.add(Elements.label(IKey.lang("metamorph.gui.editor.hitbox.eye")).marginTop(8), this.hitboxEyePosition);
-        
-        this.shadowMapping = new GuiToggleElement(mc, IKey.lang("metamorph.gui.editor.shadowmapping"), (b) -> this.morph.settings.shadowMapping = b.isToggled());
+
+        this.shadowOption = new GuiCirculateElement(mc, (element) -> this.morph.settings.shadowOption = element.getValue());
+        for (OptifineShadowOption option : OptifineShadowOption.values())
+        {
+            this.shadowOption.addLabel(IKey.lang("metamorph.gui.editor.shadow." + option.name().toLowerCase()));
+        }
+
         try
         {
             Class.forName("net.optifine.shaders.Shaders");
-            this.right.add(Elements.label(IKey.str("Optifine")).marginTop(8), this.shadowMapping);
+            this.right.add(Elements.label(IKey.str("Optifine")).marginTop(8), this.shadowOption);
         }
         catch (ClassNotFoundException e)
         {}
@@ -195,8 +201,8 @@ public class GuiSettingsPanel extends GuiMorphPanel<AbstractMorph, GuiAbstractMo
         this.hitboxHeight.setValue(morph.hitbox.height);
         this.hitboxSneakingHeight.setValue(morph.hitbox.sneakingHeight);
         this.hitboxEyePosition.setValue(morph.hitbox.eye);
-        
-        this.shadowMapping.toggled(morph.settings.shadowMapping);
+
+        this.shadowOption.setValue(morph.settings.shadowOption);
     }
 
     public void updateNBT()
@@ -264,5 +270,10 @@ public class GuiSettingsPanel extends GuiMorphPanel<AbstractMorph, GuiAbstractMo
         {
             this.font.drawStringWithShadow(I18n.format("metamorph.gui.panels.nbt_data"), this.data.area.x, this.data.area.y - 12, this.error ? 0xffff3355 : 0xffffff);
         }
+    }
+
+    public enum OptifineShadowOption
+    {
+        ALL, NOSHADOW, ONLYSHADOW
     }
 }

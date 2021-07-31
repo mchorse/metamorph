@@ -71,7 +71,7 @@ public class MorphSettings
     /**
      * Whether to render this morph in shadow pass
      */
-    public boolean shadowMapping = true;
+    public int shadowOption = 0;
 
     @Override
     public boolean equals(Object obj)
@@ -87,7 +87,7 @@ public class MorphSettings
                 this.speed == settings.speed &&
                 this.hostile == settings.hostile &&
                 this.updates == settings.updates &&
-                this.shadowMapping == settings.shadowMapping;
+                this.shadowOption == settings.shadowOption;
         }
 
         return super.equals(obj);
@@ -119,7 +119,7 @@ public class MorphSettings
         this.hands = setting.hands;
         this.updates = setting.updates;
         
-        this.shadowMapping = setting.shadowMapping;
+        this.shadowOption = setting.shadowOption;
     }
 
     /**
@@ -158,7 +158,7 @@ public class MorphSettings
         buf.writeBoolean(this.hostile);
         buf.writeBoolean(this.hands);
         buf.writeBoolean(this.updates);
-        buf.writeBoolean(this.shadowMapping);
+        buf.writeInt(this.shadowOption);
     }
 
     /**
@@ -197,7 +197,7 @@ public class MorphSettings
         this.hostile = buf.readBoolean();
         this.hands = buf.readBoolean();
         this.updates = buf.readBoolean();
-        this.shadowMapping = buf.readBoolean();
+        this.shadowOption = buf.readInt();
     }
 
     /**
@@ -252,9 +252,9 @@ public class MorphSettings
             tag.setBoolean("Updates", this.updates);
         }
         
-        if (!this.shadowMapping)
+        if (this.shadowOption != 0)
         {
-            tag.setBoolean("ShadowMapping", this.shadowMapping);
+            tag.setInteger("ShadowOption", this.shadowOption);
         }
     }
 
@@ -315,9 +315,9 @@ public class MorphSettings
             this.updates = tag.getBoolean("Updates");
         }
         
-        if (tag.hasKey("ShadowMapping"))
+        if (tag.hasKey("ShadowOption"))
         {
-            this.shadowMapping = tag.getBoolean("ShadowMapping");
+            this.shadowOption = tag.getInteger("ShadowOption");
         }
     }
 
