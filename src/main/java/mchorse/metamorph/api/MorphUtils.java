@@ -17,6 +17,8 @@ import mchorse.metamorph.api.morphs.AbstractMorph;
 import mchorse.metamorph.api.morphs.utils.ISyncableMorph;
 import mchorse.metamorph.bodypart.BodyPart;
 import mchorse.metamorph.bodypart.IBodyPartProvider;
+import net.minecraft.client.renderer.BufferBuilder;
+import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.nbt.NBTTagCompound;
@@ -105,7 +107,18 @@ public class MorphUtils
         }
         catch (Exception e)
         {
+            e.printStackTrace();
             morph.errorRendering = true;
+        }
+        finally
+        {
+            try
+            {
+                Tessellator.getInstance().getBuffer().finishDrawing();
+                System.err.println("Unfinished builder comes from class: " + morph.getClass().getName());
+            }
+            catch (IllegalStateException ex)
+            {}
         }
 
         return false;
@@ -130,7 +143,18 @@ public class MorphUtils
         }
         catch (Exception e)
         {
+            e.printStackTrace();
             morph.errorRendering = true;
+        }
+        finally
+        {
+            try
+            {
+                Tessellator.getInstance().getBuffer().finishDrawing();
+                System.err.println("Unfinished builder comes from class: " + morph.getClass().getName());
+            }
+            catch (IllegalStateException ex)
+            {}
         }
 
         return false;
