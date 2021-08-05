@@ -12,7 +12,10 @@ import mchorse.mclib.client.gui.framework.elements.utils.GuiDrawable;
 import mchorse.mclib.client.gui.utils.Area;
 import mchorse.mclib.client.gui.utils.Keybind;
 import mchorse.mclib.client.gui.utils.keys.IKey;
+import mchorse.mclib.utils.Color;
+import mchorse.mclib.utils.DummyEntity;
 import mchorse.mclib.utils.Timer;
+import mchorse.mclib.utils.shaders.Shader;
 import mchorse.metamorph.api.MorphManager;
 import mchorse.metamorph.api.MorphUtils;
 import mchorse.metamorph.api.creative.categories.MorphCategory;
@@ -21,15 +24,21 @@ import mchorse.metamorph.api.morphs.AbstractMorph;
 import mchorse.metamorph.client.gui.editor.GuiAbstractMorph;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.Gui;
+import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.resources.I18n;
 import net.minecraft.nbt.NBTTagCompound;
-import org.lwjgl.input.Keyboard;
 
+import org.apache.commons.io.IOUtils;
+import org.lwjgl.input.Keyboard;
+import org.lwjgl.opengl.GL20;
+
+import java.nio.charset.Charset;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Stack;
 import java.util.function.Consumer;
 
+import javax.vecmath.Vector3d;
 import javax.vecmath.Vector3f;
 
 /**
@@ -41,6 +50,9 @@ import javax.vecmath.Vector3f;
  */
 public class GuiCreativeMorphsList extends GuiElement
 {
+    public static Shader shader;
+    public static int skinColor = -1;
+
     /**
      * Morph consumer 
      */
@@ -64,6 +76,9 @@ public class GuiCreativeMorphsList extends GuiElement
     public GuiQuickEditor quickEditor;
     public GuiCreativeMorphs morphs;
 
+    public List<OnionSkin> onionSkins = new ArrayList<OnionSkin>();
+    public List<OnionSkin> lastOnionSkins;
+
     private Timer timer = new Timer(100);
     private Stack<NestedEdit> nestedEdits = new Stack<NestedEdit>();
 
@@ -75,6 +90,10 @@ public class GuiCreativeMorphsList extends GuiElement
     protected float lastYaw;
     protected float lastPitch;
     protected float lastScale;
+
+    protected boolean doRenderOnionSkin;
+
+    private DummyEntity entity;
 
     /**
      * Initiate this GUI.
@@ -114,6 +133,30 @@ public class GuiCreativeMorphsList extends GuiElement
         this.screen.add(this.morphs, this.bar, this.quickEditor);
         this.add(this.screen, new GuiDrawable(this::drawOverlay), this.editor);
 
+        /* Onion skin */
+        this.doRenderOnionSkin = true;
+        this.entity = new DummyEntity(mc.world);
+
+        if (shader == null)
+        {
+            try
+            {
+                String vert = IOUtils.toString(this.getClass().getResourceAsStream("/assets/metamorph/shaders/onionskin.vert"), Charset.defaultCharset());
+                String frag = IOUtils.toString(this.getClass().getResourceAsStream("/assets/metamorph/shaders/onionskin.frag"), Charset.defaultCharset());
+
+                shader = new Shader();
+                shader.compile(vert, frag, true);
+
+                GL20.glUniform1i(GL20.glGetUniformLocation(shader.programId, "texture"), 0);
+
+                skinColor = GL20.glGetUniformLocation(shader.programId, "onionskin");
+            }
+            catch (Exception e)
+            {
+                e.printStackTrace();
+            }
+        }
+
         /* Morph editor keybinds */
         IKey category = IKey.lang("metamorph.gui.creative.keys.category");
 
@@ -124,6 +167,8 @@ public class GuiCreativeMorphsList extends GuiElement
         this.morphs.keys().register(IKey.lang("metamorph.gui.creative.keys.edit"), Keyboard.KEY_E, this::enterEditMorph).category(category);
         this.morphs.keys().register(IKey.lang("metamorph.gui.creative.keys.quick"), Keyboard.KEY_Q, this::toggleQuickEdit).category(category);
         this.morphs.keys().register(IKey.lang("metamorph.gui.creative.keys.focus"), Keyboard.KEY_F, () -> GuiBase.getCurrent().focus(this.search, true)).held(Keyboard.KEY_LCONTROL).category(category);
+
+        this.keys().register(IKey.lang("metamorph.gui.creative.keys.onionskin"), Keyboard.KEY_Q, () -> this.doRenderOnionSkin = !this.doRenderOnionSkin).active(() -> this.isEditMode() && this.haveOnionSkin()).category(category);
     }
 
     public void reload()
@@ -236,14 +281,24 @@ public class GuiCreativeMorphsList extends GuiElement
 
     public void nestEdit(AbstractMorph selected, boolean editing, boolean keepViewport, Consumer<AbstractMorph> callback)
     {
-        NestedEdit edit = new NestedEdit(this.morphs.filter, this.editor.delegate.morph, this.editor.delegate.toNBT(), this.callback, this.morphs.selected, editing, this.keepViewport);
+        NestedEdit edit = new NestedEdit(this.morphs.filter, this.editor.delegate.morph, this.editor.delegate.toNBT(), this.callback, this.morphs.selected, editing, this.keepViewport, this.lastOnionSkins);
         this.callback = callback;
         this.keepViewport = keepViewport;
 
         if (keepViewport)
         {
             this.saveViewport();
+
+            this.lastOnionSkins = this.lastOnionSkins == null ? new ArrayList<OnionSkin>() : new ArrayList<OnionSkin>(this.lastOnionSkins);
+            this.lastOnionSkins.addAll(this.onionSkins);
         }
+        else
+        {
+            this.lastOnionSkins = null;
+        }
+
+        this.nestedEdits.add(edit);
+        this.updateExitKey();
 
         if (editing)
         {
@@ -255,9 +310,6 @@ public class GuiCreativeMorphsList extends GuiElement
             this.morphs.setFilter("");
             this.setSelected(selected);
         }
-
-        this.nestedEdits.add(edit);
-        this.updateExitKey();
     }
 
     public void restoreEdit()
@@ -287,6 +339,7 @@ public class GuiCreativeMorphsList extends GuiElement
         }
 
         this.keepViewport = edit.keepViewport;
+        this.lastOnionSkins = edit.lastOnionSkins;
     }
 
     /* Edit mode */
@@ -323,6 +376,8 @@ public class GuiCreativeMorphsList extends GuiElement
 
         this.disableDirty();
 
+        this.onionSkins.clear();
+
         GuiAbstractMorph editor = this.getMorphEditor(morph);
 
         if (editor != null)
@@ -333,6 +388,8 @@ public class GuiCreativeMorphsList extends GuiElement
             {
                 this.loadViewport();
             }
+
+            editor.renderer.afterRender = this::renderOnionSkin;
         }
     }
 
@@ -342,6 +399,8 @@ public class GuiCreativeMorphsList extends GuiElement
         {
             return;
         }
+
+        this.editor.delegate.renderer.afterRender = null;
 
         if (this.keepViewport)
         {
@@ -393,6 +452,7 @@ public class GuiCreativeMorphsList extends GuiElement
         }
 
         this.keepViewport = false;
+        this.lastOnionSkins = null;
     }
 
     private GuiAbstractMorph getMorphEditor(AbstractMorph morph)
@@ -434,6 +494,59 @@ public class GuiCreativeMorphsList extends GuiElement
         renderer.setPosition(this.lastPos.x, this.lastPos.y, this.lastPos.z);
         renderer.setRotation(this.lastYaw, this.lastPitch);
         renderer.setScale(this.lastScale);
+    }
+
+    /* Onion skin */
+
+    public boolean haveOnionSkin()
+    {
+        return !this.onionSkins.isEmpty() || this.lastOnionSkins != null && !this.lastOnionSkins.isEmpty();
+    }
+
+    private void renderOnionSkin(GuiContext context)
+    {
+        if (!this.doRenderOnionSkin)
+        {
+            return;
+        }
+
+        this.entity.ticksExisted = this.editor.delegate.renderer.getEntity().ticksExisted;
+
+        shader.bind();
+        GuiModelRenderer.disableRenderingFlag();
+
+        if (this.lastOnionSkins != null)
+        {
+            for (OnionSkin skin : this.lastOnionSkins)
+            {
+                renderSingleOnionSkin(skin, context.partialTicks);
+            }
+        }
+
+        for (OnionSkin skin : this.onionSkins)
+        {
+            renderSingleOnionSkin(skin, context.partialTicks);
+        }
+
+        shader.unbind();
+    }
+
+    private void renderSingleOnionSkin(OnionSkin skin, float partialTicks)
+    {
+        if (skin.morph == null)
+        {
+            return;
+        }
+
+        GL20.glUniform4f(skinColor, skin.color.r, skin.color.g, skin.color.b, skin.color.a);
+
+        entity.prevRotationPitch = entity.rotationPitch = skin.pitch;
+        entity.prevRenderYawOffset = entity.renderYawOffset = skin.yawBody;
+        entity.prevRotationYawHead = entity.rotationYawHead = skin.yawHead;
+
+        GlStateManager.pushMatrix();
+        MorphUtils.render(skin.morph, entity, skin.offset.x, skin.offset.y, skin.offset.z, 0, partialTicks);
+        GlStateManager.popMatrix();
     }
 
     /* Morph selection and filtering */
@@ -578,8 +691,9 @@ public class GuiCreativeMorphsList extends GuiElement
         public AbstractMorph editMorph;
         public boolean editing;
         public boolean keepViewport;
+        public List<OnionSkin> lastOnionSkins;
 
-        public NestedEdit(String filter, AbstractMorph editMorph, NBTTagCompound data, Consumer<AbstractMorph> callback, GuiMorphSection selected, boolean editing, boolean keepViewport)
+        public NestedEdit(String filter, AbstractMorph editMorph, NBTTagCompound data, Consumer<AbstractMorph> callback, GuiMorphSection selected, boolean editing, boolean keepViewport, List<OnionSkin> lastOnionSkins)
         {
             this.filter = filter;
             this.data = data;
@@ -587,10 +701,50 @@ public class GuiCreativeMorphsList extends GuiElement
             this.callback = callback;
             this.editing = editing;
             this.keepViewport = keepViewport;
+            this.lastOnionSkins = lastOnionSkins;
 
             this.selected = selected;
             this.selectedCategory = selected == null ? null : selected.category;
             this.selectedMorph = selected == null ? null : selected.morph;
+        }
+    }
+
+    /**
+     * Onion skin data
+     */
+    public static class OnionSkin
+    {
+        public Color color = new Color();
+
+        public AbstractMorph morph;
+
+        public Vector3d offset = new Vector3d(0, 0, 0);
+
+        public float pitch = 0f;
+
+        public float yawHead = 0f;
+
+        public float yawBody = 0f;
+
+        public OnionSkin color(float r, float g, float b, float a)
+        {
+            this.color.set(r, g, b, a);
+            return this;
+        }
+
+        public OnionSkin morph(AbstractMorph morph)
+        {
+            this.morph = morph;
+            return this;
+        }
+
+        public OnionSkin offset(double x, double y, double z, float pitch, float yawHead, float yawBody)
+        {
+            this.offset.set(x, y, z);
+            this.pitch = pitch;
+            this.yawHead = yawHead;
+            this.yawBody = yawBody;
+            return this;
         }
     }
 }
