@@ -1,5 +1,6 @@
 package mchorse.metamorph.bodypart;
 
+import mchorse.mclib.client.gui.framework.GuiBase;
 import mchorse.mclib.client.gui.framework.elements.GuiElement;
 import mchorse.mclib.client.gui.framework.elements.buttons.GuiIconElement;
 import mchorse.mclib.client.gui.framework.elements.buttons.GuiSlotElement;
@@ -390,7 +391,7 @@ public class GuiBodyPartEditor extends GuiMorphPanel<AbstractMorph, GuiAbstractM
 
     protected void pickLimb(String str)
     {
-    	this.part.setLimb(this.morph, str, GuiScreen.isAltKeyDown());
+    	this.part.setLimb(this.morph, str, GuiScreen.isAltKeyDown(), this.editor.renderer.getEntity(), GuiBase.getCurrent().partialTicks);
     	this.fillBodyPart(this.part);
     }
 
