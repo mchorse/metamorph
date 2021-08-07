@@ -24,7 +24,7 @@ import org.apache.commons.io.FileUtils;
 import java.io.File;
 import java.io.IOException;
 import java.lang.reflect.Type;
-import java.nio.charset.Charset;
+import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -98,7 +98,7 @@ public class EntityModelHandler
             try
             {
                 Type token = (new TypeToken<List<EntitySelector>>() {}).getType();
-                List<EntitySelector> selectors = this.entitySelector.fromJson(FileUtils.readFileToString(selectorsFile, Charset.defaultCharset()), token);
+                List<EntitySelector> selectors = this.entitySelector.fromJson(FileUtils.readFileToString(selectorsFile, StandardCharsets.UTF_8), token);
 
                 EntityModelHandler.selectors.clear();
                 EntityModelHandler.selectors.addAll(selectors);
@@ -116,7 +116,7 @@ public class EntityModelHandler
         {
             JsonElement element = this.entitySelector.toJsonTree(selectors);
 
-            FileUtils.writeStringToFile(Metamorph.proxy.selectors, JsonUtils.jsonToPretty(element), Charset.defaultCharset());
+            FileUtils.writeStringToFile(Metamorph.proxy.selectors, JsonUtils.jsonToPretty(element), StandardCharsets.UTF_8);
         }
         catch (IOException e)
         {
