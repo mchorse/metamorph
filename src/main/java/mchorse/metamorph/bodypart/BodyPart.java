@@ -483,7 +483,7 @@ public class BodyPart
     }
     
     @SideOnly(Side.CLIENT)
-    public void setLimb(AbstractMorph parent, String limb, boolean convertTransform)
+    public void setLimb(AbstractMorph parent, String limb, boolean convertTransform, EntityLivingBase entity, float partialTicks)
     {
         if (this.limb.equals(limb))
         {
@@ -497,16 +497,25 @@ public class BodyPart
         }
 
         recording = true;
-        EntityPlayer player = Minecraft.getMinecraft().player;
 
         int lastMatrixMode = GL11.glGetInteger(GL11.GL_MATRIX_MODE);
         GL11.glMatrixMode(GL11.GL_MODELVIEW);
 
+        this.lastMatrix = null;
         GL11.glPushMatrix();
         GL11.glLoadIdentity();
-        MorphUtils.render(parent, player, 0, 0, 0, 0, 0);
+        MorphUtils.renderDirect(parent, entity, 0, 0, 0, 0, partialTicks);
         GL11.glPopMatrix();
         Matrix4f last = this.lastMatrix;
+
+        if (last == null)
+        {
+            GL11.glMatrixMode(lastMatrixMode);
+            recording = false;
+
+            return;
+        }
+
         Matrix4f transform = new Matrix4f();
         transform.setIdentity();
         transform.setTranslation(this.translate);
@@ -525,11 +534,20 @@ public class BodyPart
 
         this.limb = limb;
 
+        this.lastMatrix = null;
         GL11.glPushMatrix();
         GL11.glLoadIdentity();
-        MorphUtils.render(parent, player, 0, 0, 0, 0, 0);
+        MorphUtils.renderDirect(parent, entity, 0, 0, 0, 0, partialTicks);
         GL11.glPopMatrix();
         Matrix4f current = this.lastMatrix;
+
+        if (current == null)
+        {
+            GL11.glMatrixMode(lastMatrixMode);
+            recording = false;
+
+            return;
+        }
 
         Transformation extract = MatrixUtils.extractTransformations(current, last);
 

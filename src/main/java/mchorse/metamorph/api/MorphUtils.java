@@ -8,6 +8,7 @@ import java.util.Map;
 import java.util.Set;
 
 import io.netty.buffer.ByteBuf;
+import mchorse.mclib.client.gui.framework.elements.GuiModelRenderer;
 import mchorse.mclib.utils.NBTUtils;
 import mchorse.mclib.utils.ReflectionUtils;
 import mchorse.metamorph.api.events.RegisterBlacklistEvent;
@@ -94,7 +95,19 @@ public class MorphUtils
 
         boolean isShadowPass = ReflectionUtils.isOptifineShadowPass();
 
-        if (isShadowPass && morph.settings.shadowOption == 1 || !isShadowPass && morph.settings.shadowOption == 2)
+        if (!GuiModelRenderer.isRendering() && (isShadowPass && morph.settings.shadowOption == 1 || !isShadowPass && morph.settings.shadowOption == 2))
+        {
+            return false;
+        }
+
+        return renderDirect(morph, entity, x, y, z, yaw, partialTick);
+    }
+
+    /* Without shadow pass check */
+    @SideOnly(Side.CLIENT)
+    public static boolean renderDirect(AbstractMorph morph, EntityLivingBase entity, double x, double y, double z, float yaw, float partialTick)
+    {
+        if (morph == null || morph.errorRendering)
         {
             return false;
         }
