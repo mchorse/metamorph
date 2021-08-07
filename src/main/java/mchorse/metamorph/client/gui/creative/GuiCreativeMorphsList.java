@@ -32,7 +32,7 @@ import org.apache.commons.io.IOUtils;
 import org.lwjgl.input.Keyboard;
 import org.lwjgl.opengl.GL20;
 
-import java.nio.charset.Charset;
+import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Stack;
@@ -141,8 +141,8 @@ public class GuiCreativeMorphsList extends GuiElement
         {
             try
             {
-                String vert = IOUtils.toString(this.getClass().getResourceAsStream("/assets/metamorph/shaders/onionskin.vert"), Charset.defaultCharset());
-                String frag = IOUtils.toString(this.getClass().getResourceAsStream("/assets/metamorph/shaders/onionskin.frag"), Charset.defaultCharset());
+                String vert = IOUtils.toString(this.getClass().getResourceAsStream("/assets/metamorph/shaders/onionskin.vert"), StandardCharsets.UTF_8);
+                String frag = IOUtils.toString(this.getClass().getResourceAsStream("/assets/metamorph/shaders/onionskin.frag"), StandardCharsets.UTF_8);
 
                 shader = new Shader();
                 shader.compile(vert, frag, true);

@@ -25,7 +25,7 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 import org.apache.commons.io.FileUtils;
 
 import java.io.File;
-import java.nio.charset.Charset;
+import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -137,7 +137,7 @@ public class UserSection extends MorphSection
         try
         {
             List<UserCategory> categories = new ArrayList<UserCategory>();
-            String content = FileUtils.readFileToString(file, Charset.defaultCharset());
+            String content = FileUtils.readFileToString(file, StandardCharsets.UTF_8);
             JsonArray object = new JsonParser().parse(content).getAsJsonArray();
             int i = 0;
 
@@ -220,7 +220,7 @@ public class UserSection extends MorphSection
 
         try
         {
-            FileUtils.writeStringToFile(Metamorph.proxy.list, JsonUtils.jsonToPretty(array), Charset.defaultCharset());
+            FileUtils.writeStringToFile(Metamorph.proxy.list, JsonUtils.jsonToPretty(array), StandardCharsets.UTF_8);
         }
         catch (Exception e)
         {
