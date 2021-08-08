@@ -121,7 +121,7 @@ public class GuiBodyPartEditor extends GuiMorphPanel<AbstractMorph, GuiAbstractM
         this.bottomEditor.flex().column(5).vertical().stretch();
         this.bottomEditor.add(this.enabled, this.animate, this.useTarget);
 
-        this.transformations.flex().relative(this.area).x(0.5F, -95).y(1, -10).wh(190, 70).anchorY(1F);
+        this.transformations.flex().relative(this.area).x(0.5F, -128).y(1, -10).wh(256, 70).anchorY(1F);
         this.limbs.flex().relative(this).set(0, 50, width, 90).x(1, -115).hTo(this.bottomEditor.area, -5);
         this.pickMorph.flex().relative(this).set(0, 10, width, 20).x(1, -115);
         this.bodyParts.flex().relative(this).set(10, 22, width, 0).hTo(this.transformations.flex(), 1F, -20);
