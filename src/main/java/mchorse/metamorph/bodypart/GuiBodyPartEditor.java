@@ -14,15 +14,23 @@ import mchorse.mclib.client.gui.utils.Icons;
 import mchorse.mclib.client.gui.utils.keys.IKey;
 import mchorse.mclib.utils.Direction;
 import mchorse.mclib.utils.MathUtils;
+import mchorse.mclib.utils.MatrixUtils;
+import mchorse.mclib.utils.MatrixUtils.Transformation;
+import mchorse.mclib.utils.MatrixUtils.Transformation.RotationOrder;
 import mchorse.metamorph.api.MorphUtils;
 import mchorse.metamorph.api.morphs.AbstractMorph;
 import mchorse.metamorph.api.morphs.utils.IAnimationProvider;
+import mchorse.metamorph.client.gui.creative.GuiCreativeMorphsList;
+import mchorse.metamorph.client.gui.creative.GuiCreativeMorphsList.OnionSkin;
 import mchorse.metamorph.client.gui.creative.GuiNestedEdit;
 import mchorse.metamorph.client.gui.editor.GuiAbstractMorph;
 import mchorse.metamorph.client.gui.editor.GuiMorphPanel;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiScreen;
+import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.resources.I18n;
+import net.minecraft.entity.EntityLivingBase;
+import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.JsonToNBT;
 import net.minecraft.nbt.NBTTagCompound;
@@ -33,6 +41,11 @@ import org.lwjgl.input.Keyboard;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
+
+import javax.vecmath.Matrix4f;
+import javax.vecmath.Vector3f;
+
+import com.google.common.collect.ImmutableList;
 
 @SideOnly(Side.CLIENT)
 public class GuiBodyPartEditor extends GuiMorphPanel<AbstractMorph, GuiAbstractMorph>
@@ -77,8 +90,9 @@ public class GuiBodyPartEditor extends GuiMorphPanel<AbstractMorph, GuiAbstractM
         this.pickMorph = new GuiNestedEdit(mc, (editing) ->
         {
             BodyPart part = this.part;
+            GuiCreativeMorphsList morphs = this.editor.morphs;
 
-            this.editor.morphs.nestEdit(part.morph.get(), editing, (morph) ->
+            morphs.nestEdit(part.morph.get(), editing, (morph) ->
             {
                 if (part != null)
                 {
@@ -88,6 +102,72 @@ public class GuiBodyPartEditor extends GuiMorphPanel<AbstractMorph, GuiAbstractM
                     this.applyUseTarget(part, copy);
                 }
             });
+
+            EntityLivingBase entity = this.editor.renderer.getEntity();
+
+            entity.prevRotationPitch = entity.rotationPitch = 0;
+            entity.prevRotationYawHead = entity.rotationYawHead = 0;
+            entity.prevRenderYawOffset = entity.renderYawOffset = 0;
+
+            part.lastMatrix = null;
+            BodyPart.recordMatrix(morph, entity, 0F);
+            Matrix4f last = part.lastMatrix;
+
+            if (last != null)
+            {
+                Matrix4f transform = new Matrix4f();
+
+                transform.setIdentity();
+                transform.setTranslation(part.translate);
+                last.mul(transform);
+                transform.rotZ((float) Math.toRadians(part.rotate.z));
+                last.mul(transform);
+                transform.rotY((float) Math.toRadians(part.rotate.y));
+                last.mul(transform);
+                transform.rotX((float) Math.toRadians(part.rotate.x));
+                last.mul(transform);
+                transform.setIdentity();
+                transform.m00 = part.scale.x;
+                transform.m11 = part.scale.y;
+                transform.m22 = part.scale.z;
+                last.mul(transform);
+
+                transform.setIdentity();
+                Transformation extract = MatrixUtils.extractTransformations(last, transform);
+
+                if (extract.getCreationException() == null)
+                {
+                    Vector3f rotate = extract.getRotation(RotationOrder.XYZ);
+
+                    if (rotate != null)
+                    {
+                        TransformedOnionSkinMorph morph = new TransformedOnionSkinMorph();
+
+                        Vector3f vec = extract.getTranslation3f();
+                        morph.translate[0] = vec.x;
+                        morph.translate[1] = vec.y;
+                        morph.translate[2] = vec.z;
+
+                        vec = rotate;
+                        morph.rotate[0] = vec.x;
+                        morph.rotate[1] = vec.y;
+                        morph.rotate[2] = vec.z;
+
+                        vec = extract.getScale();
+                        morph.scale[0] = vec.x;
+                        morph.scale[1] = vec.y;
+                        morph.scale[2] = vec.z;
+
+                        boolean enabled = part.enabled;
+                        part.enabled = false;
+                        morph.morph = this.morph.copy();
+                        part.enabled = enabled;
+
+                        OnionSkin skin = new OnionSkin().morph(morph).color(1F, 1F, 1F, 1F);
+                        morphs.lastOnionSkins = ImmutableList.<OnionSkin>of(skin);
+                    }
+                }
+            }
         });
 
         this.add = new GuiIconElement(mc, Icons.ADD, this::addPart);
@@ -391,8 +471,72 @@ public class GuiBodyPartEditor extends GuiMorphPanel<AbstractMorph, GuiAbstractM
 
     protected void pickLimb(String str)
     {
-    	this.part.setLimb(this.morph, str, GuiScreen.isAltKeyDown(), this.editor.renderer.getEntity(), GuiBase.getCurrent().partialTicks);
-    	this.fillBodyPart(this.part);
+        BodyPart part = this.part;
+        boolean convert = GuiScreen.isAltKeyDown();
+
+        if (part.limb.equals(str))
+        {
+            return;
+        }
+
+        if (part.limb.isEmpty() || !convert)
+        {
+            part.limb = str;
+            return;
+        }
+
+        part.lastMatrix = null;
+        BodyPart.recordMatrix(this.morph, this.editor.renderer.getEntity(), GuiBase.getCurrent().partialTicks);
+        Matrix4f last = part.lastMatrix;
+
+        if (last == null)
+        {
+            part.limb = str;
+            return;
+        }
+
+        Matrix4f transform = new Matrix4f();
+        transform.setIdentity();
+        transform.setTranslation(part.translate);
+        last.mul(transform);
+        transform.rotZ((float) Math.toRadians(part.rotate.z));
+        last.mul(transform);
+        transform.rotY((float) Math.toRadians(part.rotate.y));
+        last.mul(transform);
+        transform.rotX((float) Math.toRadians(part.rotate.x));
+        last.mul(transform);
+        transform.setIdentity();
+        transform.m00 = part.scale.x;
+        transform.m11 = part.scale.y;
+        transform.m22 = part.scale.z;
+        last.mul(transform);
+
+        part.limb = str;
+
+        part.lastMatrix = null;
+        BodyPart.recordMatrix(this.morph, this.editor.renderer.getEntity(), GuiBase.getCurrent().partialTicks);
+        Matrix4f current = part.lastMatrix;
+
+        if (current == null)
+        {
+            return;
+        }
+
+        Transformation extract = MatrixUtils.extractTransformations(current, last);
+
+        if (extract.getCreationException() == null)
+        {
+            Vector3f rotate = extract.getRotation(RotationOrder.XYZ);
+
+            if (rotate != null)
+            {
+                part.translate.set(extract.getTranslation3f());
+                part.rotate.set(rotate);
+                part.scale.set(extract.getScale());
+            }
+        }
+
+        this.fillBodyPart(part);
     }
 
     public void fillBodyPart(BodyPart part)
@@ -544,5 +688,57 @@ public class GuiBodyPartEditor extends GuiMorphPanel<AbstractMorph, GuiAbstractM
             this.part.rotate.y = (float) y;
             this.part.rotate.z = (float) z;
         }
+    }
+
+    public static class TransformedOnionSkinMorph extends AbstractMorph
+    {
+        public float[] translate = new float[3];
+        public float[] rotate = new float[3];
+        public float[] scale = new float[3];
+        public AbstractMorph morph = null;
+
+        @Override
+        public void renderOnScreen(EntityPlayer player, int x, int y, float scale, float alpha)
+        {}
+
+        @Override
+        public void render(EntityLivingBase entity, double x, double y, double z, float entityYaw, float partialTicks)
+        {
+            if (this.morph == null)
+            {
+                return;
+            }
+
+            GlStateManager.pushMatrix();
+
+            GlStateManager.translate(this.translate[0], this.translate[1], this.translate[2]);
+            GlStateManager.rotate(this.rotate[2], 0, 0, 1);
+            GlStateManager.rotate(this.rotate[1], 0, 1, 0);
+            GlStateManager.rotate(this.rotate[0], 1, 0, 0);
+            GlStateManager.scale(this.scale[0], this.scale[1], this.scale[2]);
+
+            MorphUtils.renderDirect(morph, entity, x, y, z, entityYaw, partialTicks);
+
+            GlStateManager.popMatrix();
+        }
+
+        @Override
+        public AbstractMorph create()
+        {
+            return null;
+        }
+
+        @Override
+        public float getWidth(EntityLivingBase target)
+        {
+            return 0;
+        }
+
+        @Override
+        public float getHeight(EntityLivingBase target)
+        {
+            return 0;
+        }
+        
     }
 }

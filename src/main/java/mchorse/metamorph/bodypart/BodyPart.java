@@ -13,8 +13,6 @@ import mchorse.mclib.client.gui.framework.elements.GuiModelRenderer;
 import mchorse.mclib.utils.DummyEntity;
 import mchorse.mclib.utils.Interpolation;
 import mchorse.mclib.utils.MatrixUtils;
-import mchorse.mclib.utils.MatrixUtils.Transformation;
-import mchorse.mclib.utils.MatrixUtils.Transformation.RotationOrder;
 import mchorse.mclib.utils.NBTUtils;
 import mchorse.metamorph.Metamorph;
 import mchorse.metamorph.api.Morph;
@@ -27,7 +25,6 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.renderer.OpenGlHelper;
 import net.minecraft.entity.EntityLivingBase;
-import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.EntityEquipmentSlot;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
@@ -44,6 +41,24 @@ public class BodyPart
     public static Vector3f cachedAngularVelocity = new Vector3f();
     public static Matrix4f modelViewMatrix = new Matrix4f();
     public static boolean recording = false;
+
+    @SideOnly(Side.CLIENT)
+    public static void recordMatrix(AbstractMorph parent, EntityLivingBase entity, float partialTicks)
+    {
+        recording = true;
+
+        int lastMatrixMode = GL11.glGetInteger(GL11.GL_MATRIX_MODE);
+        GL11.glMatrixMode(GL11.GL_MODELVIEW);
+
+        GL11.glPushMatrix();
+        GL11.glLoadIdentity();
+        MorphUtils.renderDirect(parent, entity, 0, 0, 0, 0, partialTicks);
+        GL11.glPopMatrix();
+
+        GL11.glMatrixMode(lastMatrixMode);
+
+        recording = false;
+    }
 
     public Morph morph = new Morph();
     public ItemStack[] slots = new ItemStack[] {ItemStack.EMPTY, ItemStack.EMPTY, ItemStack.EMPTY, ItemStack.EMPTY, ItemStack.EMPTY, ItemStack.EMPTY};
@@ -480,90 +495,5 @@ public class BodyPart
         if (!this.enabled) tag.setBoolean("Enabled", this.enabled);
         if (!this.animate) tag.setBoolean("Animate", this.animate);
         if (!this.limb.isEmpty()) tag.setString("Limb", this.limb);
-    }
-    
-    @SideOnly(Side.CLIENT)
-    public void setLimb(AbstractMorph parent, String limb, boolean convertTransform, EntityLivingBase entity, float partialTicks)
-    {
-        if (this.limb.equals(limb))
-        {
-            return;
-        }
-
-        if (this.limb.isEmpty() || !convertTransform)
-        {
-            this.limb = limb;
-            return;
-        }
-
-        recording = true;
-
-        int lastMatrixMode = GL11.glGetInteger(GL11.GL_MATRIX_MODE);
-        GL11.glMatrixMode(GL11.GL_MODELVIEW);
-
-        this.lastMatrix = null;
-        GL11.glPushMatrix();
-        GL11.glLoadIdentity();
-        MorphUtils.renderDirect(parent, entity, 0, 0, 0, 0, partialTicks);
-        GL11.glPopMatrix();
-        Matrix4f last = this.lastMatrix;
-
-        if (last == null)
-        {
-            GL11.glMatrixMode(lastMatrixMode);
-            recording = false;
-
-            return;
-        }
-
-        Matrix4f transform = new Matrix4f();
-        transform.setIdentity();
-        transform.setTranslation(this.translate);
-        last.mul(transform);
-        transform.rotZ((float) Math.toRadians(this.rotate.z));
-        last.mul(transform);
-        transform.rotY((float) Math.toRadians(this.rotate.y));
-        last.mul(transform);
-        transform.rotX((float) Math.toRadians(this.rotate.x));
-        last.mul(transform);
-        transform.setIdentity();
-        transform.m00 = this.scale.x;
-        transform.m11 = this.scale.y;
-        transform.m22 = this.scale.z;
-        last.mul(transform);
-
-        this.limb = limb;
-
-        this.lastMatrix = null;
-        GL11.glPushMatrix();
-        GL11.glLoadIdentity();
-        MorphUtils.renderDirect(parent, entity, 0, 0, 0, 0, partialTicks);
-        GL11.glPopMatrix();
-        Matrix4f current = this.lastMatrix;
-
-        if (current == null)
-        {
-            GL11.glMatrixMode(lastMatrixMode);
-            recording = false;
-
-            return;
-        }
-
-        Transformation extract = MatrixUtils.extractTransformations(current, last);
-
-        if (extract.getCreationException() == null)
-        {
-            Vector3f rotate = extract.getRotation(RotationOrder.XYZ);
-            if (rotate != null)
-            {
-                this.translate.set(extract.getTranslation3f());
-                this.rotate.set(rotate);
-                this.scale.set(extract.getScale());
-            }
-        }
-
-        GL11.glMatrixMode(lastMatrixMode);
-
-        recording = false;
     }
 }
