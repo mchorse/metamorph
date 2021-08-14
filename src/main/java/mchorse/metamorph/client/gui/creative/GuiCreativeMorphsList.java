@@ -389,7 +389,8 @@ public class GuiCreativeMorphsList extends GuiElement
                 this.loadViewport();
             }
 
-            editor.renderer.afterRender = this::renderOnionSkin;
+            editor.renderer.beforeRender = this::beforeRenderModel;
+            editor.renderer.afterRender = this::afterRenderModel;
         }
     }
 
@@ -400,6 +401,7 @@ public class GuiCreativeMorphsList extends GuiElement
             return;
         }
 
+        this.editor.delegate.renderer.beforeRender = null;
         this.editor.delegate.renderer.afterRender = null;
 
         if (this.keepViewport)
@@ -494,6 +496,14 @@ public class GuiCreativeMorphsList extends GuiElement
         renderer.setPosition(this.lastPos.x, this.lastPos.y, this.lastPos.z);
         renderer.setRotation(this.lastYaw, this.lastPitch);
         renderer.setScale(this.lastScale);
+    }
+
+    protected void beforeRenderModel(GuiContext context)
+    {}
+
+    protected void afterRenderModel(GuiContext context)
+    {
+        this.renderOnionSkin(context);
     }
 
     /* Onion skin */

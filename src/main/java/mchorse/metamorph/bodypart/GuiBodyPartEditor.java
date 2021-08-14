@@ -91,6 +91,7 @@ public class GuiBodyPartEditor extends GuiMorphPanel<AbstractMorph, GuiAbstractM
         {
             BodyPart part = this.part;
             GuiCreativeMorphsList morphs = this.editor.morphs;
+            OnionSkin skin = this.generateOnionSkin(part);
 
             morphs.nestEdit(part.morph.get(), editing, (morph) ->
             {
@@ -103,70 +104,9 @@ public class GuiBodyPartEditor extends GuiMorphPanel<AbstractMorph, GuiAbstractM
                 }
             });
 
-            EntityLivingBase entity = this.editor.renderer.getEntity();
-
-            entity.prevRotationPitch = entity.rotationPitch = 0;
-            entity.prevRotationYawHead = entity.rotationYawHead = 0;
-            entity.prevRenderYawOffset = entity.renderYawOffset = 0;
-
-            part.lastMatrix = null;
-            BodyPart.recordMatrix(morph, entity, 0F);
-            Matrix4f last = part.lastMatrix;
-
-            if (last != null)
+            if (skin != null)
             {
-                Matrix4f transform = new Matrix4f();
-
-                transform.setIdentity();
-                transform.setTranslation(part.translate);
-                last.mul(transform);
-                transform.rotZ((float) Math.toRadians(part.rotate.z));
-                last.mul(transform);
-                transform.rotY((float) Math.toRadians(part.rotate.y));
-                last.mul(transform);
-                transform.rotX((float) Math.toRadians(part.rotate.x));
-                last.mul(transform);
-                transform.setIdentity();
-                transform.m00 = part.scale.x;
-                transform.m11 = part.scale.y;
-                transform.m22 = part.scale.z;
-                last.mul(transform);
-
-                transform.setIdentity();
-                Transformation extract = MatrixUtils.extractTransformations(last, transform);
-
-                if (extract.getCreationException() == null)
-                {
-                    Vector3f rotate = extract.getRotation(RotationOrder.XYZ);
-
-                    if (rotate != null)
-                    {
-                        TransformedOnionSkinMorph morph = new TransformedOnionSkinMorph();
-
-                        Vector3f vec = extract.getTranslation3f();
-                        morph.translate[0] = vec.x;
-                        morph.translate[1] = vec.y;
-                        morph.translate[2] = vec.z;
-
-                        vec = rotate;
-                        morph.rotate[0] = vec.x;
-                        morph.rotate[1] = vec.y;
-                        morph.rotate[2] = vec.z;
-
-                        vec = extract.getScale();
-                        morph.scale[0] = vec.x;
-                        morph.scale[1] = vec.y;
-                        morph.scale[2] = vec.z;
-
-                        boolean enabled = part.enabled;
-                        part.enabled = false;
-                        morph.morph = this.morph.copy();
-                        part.enabled = enabled;
-
-                        OnionSkin skin = new OnionSkin().morph(morph).color(1F, 1F, 1F, 1F);
-                        morphs.lastOnionSkins = ImmutableList.<OnionSkin>of(skin);
-                    }
-                }
+                morphs.lastOnionSkins = ImmutableList.<OnionSkin>of(skin);
             }
         });
 
@@ -277,6 +217,76 @@ public class GuiBodyPartEditor extends GuiMorphPanel<AbstractMorph, GuiAbstractM
         }
 
         return menu.actions.getList().isEmpty() ? null : menu;
+    }
+
+    private OnionSkin generateOnionSkin(BodyPart part)
+    {
+        EntityLivingBase entity = this.editor.renderer.getEntity();
+
+        entity.prevRotationPitch = entity.rotationPitch = 0;
+        entity.prevRotationYawHead = entity.rotationYawHead = 0;
+        entity.prevRenderYawOffset = entity.renderYawOffset = 0;
+
+        part.lastMatrix = null;
+        BodyPart.recordMatrix(this.morph, entity, 0F);
+        Matrix4f last = part.lastMatrix;
+
+        if (last != null)
+        {
+            Matrix4f transform = new Matrix4f();
+
+            transform.setIdentity();
+            transform.setTranslation(part.translate);
+            last.mul(transform);
+            transform.rotZ((float) Math.toRadians(part.rotate.z));
+            last.mul(transform);
+            transform.rotY((float) Math.toRadians(part.rotate.y));
+            last.mul(transform);
+            transform.rotX((float) Math.toRadians(part.rotate.x));
+            last.mul(transform);
+            transform.setIdentity();
+            transform.m00 = part.scale.x;
+            transform.m11 = part.scale.y;
+            transform.m22 = part.scale.z;
+            last.mul(transform);
+
+            transform.setIdentity();
+            Transformation extract = MatrixUtils.extractTransformations(last, transform);
+
+            if (extract.getCreationException() == null)
+            {
+                Vector3f rotate = extract.getRotation(RotationOrder.XYZ);
+
+                if (rotate != null)
+                {
+                    TransformedOnionSkinMorph morph = new TransformedOnionSkinMorph();
+
+                    Vector3f vec = extract.getTranslation3f();
+                    morph.translate[0] = vec.x;
+                    morph.translate[1] = vec.y;
+                    morph.translate[2] = vec.z;
+
+                    vec = rotate;
+                    morph.rotate[0] = vec.x;
+                    morph.rotate[1] = vec.y;
+                    morph.rotate[2] = vec.z;
+
+                    vec = extract.getScale();
+                    morph.scale[0] = vec.x;
+                    morph.scale[1] = vec.y;
+                    morph.scale[2] = vec.z;
+
+                    boolean enabled = part.enabled;
+                    part.enabled = false;
+                    morph.morph = this.morph.copy();
+                    part.enabled = enabled;
+
+                    return new OnionSkin().morph(morph).color(0.5F, 0.5F, 0.5F, 0.5F);
+                }
+            }
+        }
+
+        return null;
     }
 
     protected void addPart(GuiIconElement b)
