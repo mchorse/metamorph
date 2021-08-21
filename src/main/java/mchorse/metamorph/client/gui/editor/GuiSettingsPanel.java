@@ -156,7 +156,11 @@ public class GuiSettingsPanel extends GuiMorphPanel<AbstractMorph, GuiAbstractMo
         this.right.add(Elements.label(IKey.lang("metamorph.gui.editor.hitbox.size")).marginTop(8), this.hitboxWidth, this.hitboxHeight, this.hitboxSneakingHeight);
         this.right.add(Elements.label(IKey.lang("metamorph.gui.editor.hitbox.eye")).marginTop(8), this.hitboxEyePosition);
 
-        this.shadowOption = new GuiCirculateElement(mc, (element) -> this.morph.settings.shadowOption = element.getValue());
+        this.shadowOption = new GuiCirculateElement(mc, (element) -> 
+        {
+            this.ensureCustomSettings();
+            this.morph.settings.shadowOption = element.getValue();
+        });
         for (OptifineShadowOption option : OptifineShadowOption.values())
         {
             this.shadowOption.addLabel(IKey.lang("metamorph.gui.editor.shadow." + option.name().toLowerCase()));
