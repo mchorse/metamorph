@@ -277,8 +277,18 @@ public class GuiBodyPartEditor extends GuiMorphPanel<AbstractMorph, GuiAbstractM
                     morph.scale[2] = vec.z;
 
                     boolean enabled = part.enabled;
+
                     part.enabled = false;
-                    morph.morph = this.morph.copy();
+
+                    AbstractMorph copy = this.morph.copy();
+
+                    if (copy instanceof IAnimationProvider)
+                    {
+                        ((IAnimationProvider) copy).getAnimation().animates = false;
+                    }
+
+                    morph.morph = copy;
+
                     part.enabled = enabled;
 
                     return new OnionSkin().morph(morph).color(0.5F, 0.5F, 0.5F, 0.5F);
