@@ -1,6 +1,8 @@
 package mchorse.metamorph.api.morphs;
 
 import mchorse.mclib.client.gui.utils.GuiUtils;
+import mchorse.mclib.utils.ReflectionUtils;
+import mchorse.mclib.utils.resources.RLUtils;
 import mchorse.metamorph.Metamorph;
 import mchorse.metamorph.api.EntityUtils;
 import mchorse.metamorph.api.MorphSettings;
@@ -21,6 +23,8 @@ import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.renderer.entity.Render;
 import net.minecraft.client.renderer.entity.RenderLivingBase;
 import net.minecraft.client.renderer.entity.layers.LayerRenderer;
+import net.minecraft.client.renderer.texture.ITextureObject;
+import net.minecraft.client.renderer.texture.TextureManager;
 import net.minecraft.client.resources.I18n;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityAgeable;
@@ -139,6 +143,13 @@ public class EntityMorph extends AbstractMorph implements IBodyPartProvider
     @SideOnly(Side.CLIENT)
     public Map<String, ModelRenderer> limbs;
 
+    public ResourceLocation userTexture;
+
+    public float scale = 1F;
+
+    @SideOnly(Side.CLIENT)
+    private ITextureObject lastTexture;
+
     @Override
     public BodyPartManager getBodyPart()
     {
@@ -179,11 +190,11 @@ public class EntityMorph extends AbstractMorph implements IBodyPartProvider
             scale *= 0.5 / entity.height;
         }
 
-        if (this.name.equals("Ghast"))
+        if (this.name.equals("minecraft:ghast"))
         {
             scale = 5F;
         }
-        else if (this.name.equals("Guardian") && entity.height > 1.8)
+        else if (this.name.equals("minecraft:guardian") && entity.height > 1.8)
         {
             scale *= 1 / entity.height;
         }
@@ -196,7 +207,11 @@ public class EntityMorph extends AbstractMorph implements IBodyPartProvider
         }
 
         this.setupBodyPart();
+        this.replaceUserTexture();
+
         GuiUtils.drawEntityOnScreen(x, y, scale, entity, alpha);
+
+        this.restoreMobTexture();
     }
 
     @Override
@@ -221,6 +236,7 @@ public class EntityMorph extends AbstractMorph implements IBodyPartProvider
             return true;
         }
 
+        this.replaceUserTexture();
         Minecraft.getMinecraft().renderEngine.bindTexture(this.texture);
         ModelBase model = this.renderer.getMainModel();
 
@@ -271,6 +287,8 @@ public class EntityMorph extends AbstractMorph implements IBodyPartProvider
             this.leftHand.rotationPointY = rpy;
             this.leftHand.rotationPointZ = rpz;
         }
+
+        this.restoreMobTexture();
 
         return true;
     }
@@ -326,21 +344,26 @@ public class EntityMorph extends AbstractMorph implements IBodyPartProvider
 
             renderEntity = entity;
             this.setupBodyPart();
+            this.replaceUserTexture();
+
+            GlStateManager.pushMatrix();
+            GlStateManager.translate(x, y, z);
+            GlStateManager.scale(this.scale, this.scale, this.scale);
 
             if (this.entity instanceof EntityDragon)
             {
-                GlStateManager.pushMatrix();
-                GlStateManager.translate(x, y, z);
                 GlStateManager.rotate(180, 0.0F, 1.0F, 0.0F);
 
                 render.doRender(this.entity, 0, 0, 0, entityYaw, partialTicks);
-
-                GlStateManager.popMatrix();
             }
             else
             {
-                render.doRender(this.entity, x, y, z, entityYaw, partialTicks);
+                render.doRender(this.entity, 0, 0, 0, entityYaw, partialTicks);
             }
+
+            GlStateManager.popMatrix();
+
+            this.restoreMobTexture();
 
             if (model instanceof ModelBiped)
             {
@@ -386,6 +409,75 @@ public class EntityMorph extends AbstractMorph implements IBodyPartProvider
         }
 
         GlStateManager.popMatrix();
+    }
+
+    /**
+     * This is pretty ugly, but it's the only way to replace entity's textures...
+     */
+    @SideOnly(Side.CLIENT)
+    private void replaceUserTexture()
+    {
+        if (this.userTexture == null)
+        {
+            return;
+        }
+
+        if (this.texture == null)
+        {
+            this.setupTexture();
+        }
+
+        if (this.texture != null)
+        {
+            if (this.userTexture.equals(this.texture))
+            {
+                return;
+            }
+
+            TextureManager textureManager = Minecraft.getMinecraft().renderEngine;
+            Map<ResourceLocation, ITextureObject> map = ReflectionUtils.getTextures(textureManager);
+
+            if (map != null)
+            {
+                ITextureObject object = map.get(this.userTexture);
+
+                if (object == null)
+                {
+                    textureManager.bindTexture(this.userTexture);
+                    object = map.get(this.userTexture);
+                }
+
+                if (object != null)
+                {
+                    this.lastTexture = map.get(this.texture);
+
+                    if (this.lastTexture == null)
+                    {
+                        textureManager.bindTexture(this.texture);
+                        this.lastTexture = map.get(this.texture);
+                    }
+
+                    if (this.lastTexture != null)
+                    {
+                        map.put(this.texture, object);
+                    }
+                }
+            }
+        }
+    }
+
+    @SideOnly(Side.CLIENT)
+    private void restoreMobTexture()
+    {
+        if (this.lastTexture != null)
+        {
+            TextureManager textureManager = Minecraft.getMinecraft().renderEngine;
+            Map<ResourceLocation, ITextureObject> map = ReflectionUtils.getTextures(textureManager);
+
+            map.put(this.texture, this.lastTexture);
+
+            this.lastTexture = null;
+        }
     }
 
     /* Other stuff */
@@ -738,6 +830,11 @@ public class EntityMorph extends AbstractMorph implements IBodyPartProvider
     @SuppressWarnings({"unchecked", "rawtypes"})
     protected void setupTexture()
     {
+        if (this.texture != null)
+        {
+            return;
+        }
+
         Class<RenderLivingBase> clazz = (Class<RenderLivingBase>) this.renderer.getClass();
 
         for (Method method : clazz.getDeclaredMethods())
@@ -888,6 +985,8 @@ public class EntityMorph extends AbstractMorph implements IBodyPartProvider
 
             result = result && theSame;
             result = result && Objects.equals(morph.parts, this.parts);
+            result = result && morph.scale == this.scale;
+            result = result && Objects.equals(morph.userTexture, this.userTexture);
         }
 
         return result;
@@ -899,6 +998,8 @@ public class EntityMorph extends AbstractMorph implements IBodyPartProvider
         this.parts.reset();
         this.resetEntity();
         this.entityData = null;
+        this.scale = 1F;
+        this.userTexture = null;
 
         if (this.customSettings)
         {
@@ -938,6 +1039,8 @@ public class EntityMorph extends AbstractMorph implements IBodyPartProvider
 
             this.entityData = morph.entityData == null ? null : morph.entityData.copy();
             this.parts.copy(morph.parts);
+            this.scale = morph.scale;
+            this.userTexture = RLUtils.clone(morph.userTexture);
         }
     }
 
@@ -1051,6 +1154,12 @@ public class EntityMorph extends AbstractMorph implements IBodyPartProvider
         super.toNBT(tag);
 
         tag.setTag("EntityData", this.entityData);
+        tag.setFloat("Scale", this.scale);
+
+        if (this.userTexture != null)
+        {
+            tag.setTag("Texture", RLUtils.writeNbt(this.userTexture));
+        }
 
         NBTTagList bodyParts = this.parts.toNBT();
 
@@ -1066,6 +1175,16 @@ public class EntityMorph extends AbstractMorph implements IBodyPartProvider
         super.fromNBT(tag);
 
         this.entityData = tag.getCompoundTag("EntityData");
+
+        if (tag.hasKey("Scale"))
+        {
+            this.scale = tag.getFloat("Scale");
+        }
+
+        if (tag.hasKey("Texture"))
+        {
+            this.userTexture = RLUtils.create(tag.getTag("Texture"));
+        }
 
         if (tag.hasKey("BodyParts", 9))
         {

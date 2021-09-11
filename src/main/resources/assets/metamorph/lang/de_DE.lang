@@ -72,6 +72,7 @@ metamorph.gui.creative.context.add_category=Add a new category
 metamorph.gui.creative.context.rename_category=Rename category
 metamorph.gui.creative.context.rename_category_modal=Give a new name to given category...
 metamorph.gui.creative.context.remove_category=Remove category
+metamorph.gui.creative.context.remove_morph_modal=Are you sure you want to remove this morph? It will be gone forever...
 metamorph.gui.creative.context.remove_category_modal=Are you sure you want to remove this morph category? It will be gone forever...
 metamorph.gui.creative.context.clear_category=Remove all morphs
 metamorph.gui.creative.context.clear_category_modal=Are you sure you want to remove all morphs in this category? It will be gone forever... 
@@ -90,6 +91,7 @@ metamorph.gui.survival.keys.category=Survival morph menu
 metamorph.gui.survival.keys.toggle_favorites=Toggle favorite morphs
 metamorph.gui.survival.keys.focus_keybind=Focus keybind
 
+metamorph.gui.editor.entity=Entity properties
 metamorph.gui.editor.settings=Morph settings
 metamorph.gui.editor.keybind=Keybind
 metamorph.gui.editor.keybind_tooltip=Setting keybind here will allow you to morph into this morph by pressing this key either in the world or in survival morph menu
@@ -102,6 +104,9 @@ metamorph.gui.editor.attack=Attack
 metamorph.gui.editor.action=Action
 metamorph.gui.editor.reset=Reset
 metamorph.gui.editor.item_morph=Item
+metamorph.gui.editor.scale=Entity scale
+metamorph.gui.editor.texture=Pick a texture...
+metamorph.gui.editor.texture_tooltip=This feature won't work for all mobs, because some mobs can have custom rendering implementation
 metamorph.gui.editor.keys.category=Morph editor keybinds
 metamorph.gui.editor.keys.cycle=Cycle between morph panels
 

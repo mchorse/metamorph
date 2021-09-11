@@ -72,6 +72,7 @@ metamorph.gui.creative.context.add_category=Agregar una nueva categoría
 metamorph.gui.creative.context.rename_category=Renombrar categoría
 metamorph.gui.creative.context.rename_category_modal=Agrega un nombre a dicha categoría...
 metamorph.gui.creative.context.remove_category=Eliminar categoría
+metamorph.gui.creative.context.remove_morph_modal=Are you sure you want to remove this morph? It will be gone forever...
 metamorph.gui.creative.context.remove_category_modal=¿Estás seguro que quieres borrar esta categoría de morph? Será eliminado para siempre...
 metamorph.gui.creative.context.clear_category=Eliminar todos los morphs
 metamorph.gui.creative.context.clear_category_modal=¿Estás seguro que quieres eliminar todos los morphs en esta categpría? Será eliminado para siempre... 
@@ -90,6 +91,7 @@ metamorph.gui.survival.keys.category=Menú Morphs del modo Supervivencia
 metamorph.gui.survival.keys.toggle_favorites=Alternar morphs favoritas
 metamorph.gui.survival.keys.focus_keybind=Enfocar combinación de teclas
 
+metamorph.gui.editor.entity=Entity properties
 metamorph.gui.editor.settings=Ajustes de morph
 metamorph.gui.editor.keybind=Combinación de teclas
 metamorph.gui.editor.keybind_tooltip=Configurar la combinación de teclas aquí le permitirá transformarse en este morph pulsando esta tecla ya sea en el Modo Supervivencia o el Menú Morphs
@@ -102,6 +104,9 @@ metamorph.gui.editor.attack=Atacar
 metamorph.gui.editor.action=Acción
 metamorph.gui.editor.reset=Reniciar
 metamorph.gui.editor.item_morph=Item
+metamorph.gui.editor.scale=Entity scale
+metamorph.gui.editor.texture=Pick a texture...
+metamorph.gui.editor.texture_tooltip=This feature won't work for all mobs, because some mobs can have custom rendering implementation
 metamorph.gui.editor.keys.category=Combinación de teclas del Editor de Morphs
 metamorph.gui.editor.keys.cycle=Ciclo entre paneles de morphs
 

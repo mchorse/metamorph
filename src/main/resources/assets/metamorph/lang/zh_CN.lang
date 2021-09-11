@@ -72,6 +72,7 @@ metamorph.gui.creative.context.add_category=添加新分类
 metamorph.gui.creative.context.rename_category=重命名分类
 metamorph.gui.creative.context.rename_category_modal=为该分类命名...
 metamorph.gui.creative.context.remove_category=移除分类
+metamorph.gui.creative.context.remove_morph_modal=Are you sure you want to remove this morph? It will be gone forever...
 metamorph.gui.creative.context.remove_category_modal=您确定要删除这一伪装分类吗？它将永远消失...
 metamorph.gui.creative.context.clear_category=移除所有伪装
 metamorph.gui.creative.context.clear_category_modal=您确定要删除该分类下的所有伪装吗？它们将永远消失...
@@ -90,6 +91,7 @@ metamorph.gui.survival.keys.category=生存模式伪装菜单
 metamorph.gui.survival.keys.toggle_favorites=将伪装切换为收藏
 metamorph.gui.survival.keys.focus_keybind=聚焦快捷键
 
+metamorph.gui.editor.entity=Entity properties
 metamorph.gui.editor.settings=伪装设置
 metamorph.gui.editor.keybind=快捷键
 metamorph.gui.editor.keybind_tooltip=在此设置快捷键后，你就可以按下这个按钮变形为当前的伪装，无论是在游戏还是在生存模式伪装菜单中都可以
@@ -102,6 +104,9 @@ metamorph.gui.editor.attack=攻击
 metamorph.gui.editor.action=动作
 metamorph.gui.editor.reset=重置
 metamorph.gui.editor.item_morph=物品
+metamorph.gui.editor.scale=Entity scale
+metamorph.gui.editor.texture=Pick a texture...
+metamorph.gui.editor.texture_tooltip=This feature won't work for all mobs, because some mobs can have custom rendering implementation
 metamorph.gui.editor.keys.category=伪装编辑器快捷键
 metamorph.gui.editor.keys.cycle=在伪装面板间循环切换
 

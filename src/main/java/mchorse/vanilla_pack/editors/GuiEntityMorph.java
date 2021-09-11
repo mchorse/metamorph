@@ -7,6 +7,7 @@ import mchorse.metamorph.api.morphs.AbstractMorph;
 import mchorse.metamorph.api.morphs.EntityMorph;
 import mchorse.metamorph.bodypart.GuiBodyPartEditor;
 import mchorse.metamorph.client.gui.editor.GuiAbstractMorph;
+import mchorse.vanilla_pack.editors.panels.GuiEntityPanel;
 import net.minecraft.client.Minecraft;
 import net.minecraft.nbt.JsonToNBT;
 import net.minecraft.nbt.NBTTagCompound;
@@ -23,6 +24,7 @@ public class GuiEntityMorph extends GuiAbstractMorph<EntityMorph>
 {
     public static final List<String> animals = Arrays.asList("minecraft:pig", "minecraft:chicken", "minecraft:cow", "minecraft:mooshroom", "minecraft:polar_bear", "minecraft:sheep", "minecraft:ocelot");
 
+    public GuiEntityPanel entityPanel;
     public GuiBodyPartEditor bodyPart;
 
     public GuiEntityMorph(Minecraft mc)
@@ -30,7 +32,11 @@ public class GuiEntityMorph extends GuiAbstractMorph<EntityMorph>
         super(mc);
 
         this.bodyPart = new GuiBodyPartEditor(mc, this);
+        this.entityPanel = new GuiEntityPanel(mc, this);
+
         this.registerPanel(this.bodyPart, IKey.lang("metamorph.gui.body_parts.parts"), Icons.LIMB);
+        this.registerPanel(this.entityPanel, IKey.lang("metamorph.gui.editor.entity"), Icons.POSE);
+        this.defaultPanel = this.entityPanel;
     }
 
     @Override
