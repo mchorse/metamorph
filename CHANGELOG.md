@@ -1,3 +1,13 @@
+## Metamorph 1.2.10
+
+This patch adds an option to replace entity morphs texture.
+
+**Compatible** with McLib `2.3.1`. It doesn't mean that future versions of McLib would be incompatible, but older versions are most likely incompatible.
+
+* Added two options to entity morphs:
+    * User texture: you can change mob's texture for that specific morph
+    * Entity scale: you can change mob's overall size (hitbox is configured separately) for that specific morph
+
 ## Metamorph 1.2.9
 
 This is patch fixes a couple of bugs.

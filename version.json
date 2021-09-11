@@ -1,6 +1,7 @@
 {
     "homepage": "https://www.curseforge.com/minecraft/mc-mods/metamorph",
     "1.12.2": {
+        "1.2.10": "This patch adds an option to replace entity morphs texture.",
         "1.2.9": "This is patch fixes a couple of bugs.",
         "1.2.8": "This is a hot fix patch that fixes dedicated server crash on start.",
         "1.2.7": "This patch update adds a lot of random features.",
@@ -32,8 +33,8 @@
         "1.1.5": "This is a small, quick and dirty patch that provides several bugfixes (mainly for Blockbuster's update)."
     },
     "promos": {
-        "1.12.2-latest":"1.2.9",
-        "1.12.2-recommended":"1.2.9",
+        "1.12.2-latest":"1.2.10",
+        "1.12.2-recommended":"1.2.10",
         "1.11.2-latest":"1.1.10",
         "1.11.2-recommended":"1.1.10",
         "1.10.2-latest":"1.1.10",
