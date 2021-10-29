@@ -30,6 +30,8 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 
 public class MorphUtils
 {
+    public static boolean isRenderingOnScreen = false;
+
     /**
      * Generate an empty file
      */
@@ -150,6 +152,7 @@ public class MorphUtils
 
         try
         {
+            isRenderingOnScreen = true;
             morph.renderOnScreen(player, x, y, scale, alpha);
 
             return true;
@@ -161,6 +164,7 @@ public class MorphUtils
         }
         finally
         {
+            isRenderingOnScreen = false;
             try
             {
                 Tessellator.getInstance().getBuffer().finishDrawing();
