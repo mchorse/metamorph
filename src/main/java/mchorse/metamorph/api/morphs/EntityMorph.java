@@ -354,11 +354,11 @@ public class EntityMorph extends AbstractMorph implements IBodyPartProvider
             {
                 GlStateManager.rotate(180, 0.0F, 1.0F, 0.0F);
 
-                render.doRender(this.entity, 0, 0, 0, entityYaw, partialTicks);
+                Minecraft.getMinecraft().getRenderManager().renderEntity(this.entity, 0, 0, 0, entityYaw, partialTicks, false);
             }
             else
             {
-                render.doRender(this.entity, 0, 0, 0, entityYaw, partialTicks);
+                Minecraft.getMinecraft().getRenderManager().renderEntity(this.entity, 0, 0, 0, entityYaw, partialTicks, false);
             }
 
             GlStateManager.popMatrix();
