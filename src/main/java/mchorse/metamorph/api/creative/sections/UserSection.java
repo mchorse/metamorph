@@ -27,7 +27,6 @@ import org.apache.commons.io.FileUtils;
 import java.io.File;
 import java.nio.charset.Charset;
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
 import java.util.function.Consumer;
@@ -147,6 +146,11 @@ public class UserSection extends MorphSection
                 JsonObject cat = entry.getAsJsonObject();
                 UserCategory category = new UserCategory(this, cat.get("title").getAsString());
 
+                if (cat.has("hidden") && cat.get("hidden").isJsonPrimitive())
+                {
+                    category.hidden = cat.get("hidden").getAsBoolean();
+                }
+
                 if (cat.has("morphs"))
                 {
                     for (JsonElement string : cat.get("morphs").getAsJsonArray())
@@ -196,6 +200,7 @@ public class UserSection extends MorphSection
             JsonArray morphs = new JsonArray();
 
             cat.addProperty("title", category.getTitle());
+            cat.addProperty("hidden", category.hidden);
             cat.add("morphs", morphs);
 
             for (AbstractMorph morph : category.getMorphs())

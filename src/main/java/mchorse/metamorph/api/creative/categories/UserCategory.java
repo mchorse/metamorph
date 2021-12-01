@@ -23,7 +23,7 @@ public class UserCategory extends MorphCategory
     @Override
     public boolean isHidden()
     {
-        return false;
+        return this.hidden;
     }
 
     @Override

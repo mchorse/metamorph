@@ -292,12 +292,13 @@ public class GuiMorphSection extends GuiElement
             {
                 int count = this.getMorphsSize(category);
 
+                h += CATEGORY_HEIGHT + 5;
+
                 if (category.isHidden() || (count == 0 && !this.noFilter()))
                 {
                     continue;
                 }
 
-                h += CATEGORY_HEIGHT + 5;
                 h += this.getCategoryHeight(category) + 5;
                 visibleCategories += 1;
             }
@@ -334,12 +335,19 @@ public class GuiMorphSection extends GuiElement
             {
                 int count = this.getMorphsSize(category);
 
+                if (y < CATEGORY_HEIGHT && context.mouseButton == 0)
+                {
+                    category.hidden = !category.hidden;
+
+                    return true;
+                }
+
+                y -= CATEGORY_HEIGHT + 5;
+
                 if (category.isHidden() || (count == 0 && !this.noFilter()))
                 {
                     continue;
                 }
-
-                y -= CATEGORY_HEIGHT + 5;
 
                 int ix = (int) (x / (this.area.w / (float) row));
                 int iy = y / this.cellHeight;
@@ -475,12 +483,9 @@ public class GuiMorphSection extends GuiElement
         {
             int count = this.getMorphsSize(category);
 
-            if (category.isHidden() || (count == 0 && !this.noFilter()))
-            {
-                continue;
-            }
-
             GuiDraw.drawTextBackground(this.font, category.getTitle(), this.area.x + 7, this.area.y + y + 8 - this.font.FONT_HEIGHT / 2, 0xeeeeee, ColorUtils.HALF_BLACK, 2);
+
+            (category.hidden ? Icons.MOVE_DOWN : Icons.MOVE_UP).render(this.area.ex() - 18 - 3, this.area.y + y + CATEGORY_HEIGHT / 2 + (category.hidden ? 1 : -1), 0, 0.5F);
 
             Area.SHARED.copy(this.area);
             Area.SHARED.y = this.area.y + y;
@@ -493,6 +498,11 @@ public class GuiMorphSection extends GuiElement
 
             float x = 0;
             y += CATEGORY_HEIGHT + 5;
+
+            if (category.isHidden() || (count == 0 && !this.noFilter()))
+            {
+                continue;
+            }
 
             for (int i = 0, j = 0; i < category.getMorphs().size(); i ++)
             {

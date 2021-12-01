@@ -20,6 +20,7 @@ public class MorphCategory
     public MorphSection parent;
 
     public String title;
+    public boolean hidden;
     protected List<AbstractMorph> morphs = new ArrayList<AbstractMorph>();
 
     public MorphCategory(MorphSection parent, String title)
@@ -41,7 +42,7 @@ public class MorphCategory
 
     public boolean isHidden()
     {
-        return this.morphs.isEmpty();
+        return this.morphs.isEmpty() || this.hidden;
     }
 
     public AbstractMorph getEqual(AbstractMorph morph)
