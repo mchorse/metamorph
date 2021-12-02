@@ -27,6 +27,7 @@ import net.minecraft.nbt.JsonToNBT;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
+import org.lwjgl.input.Keyboard;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -141,6 +142,9 @@ public class GuiBodyPartEditor extends GuiMorphPanel<AbstractMorph, GuiAbstractM
         }
 
         this.elements.add(this.stacks);
+
+        this.bodyParts.keys().register(IKey.lang("metamorph.gui.body_parts.keys.select_prev"), Keyboard.KEY_W, () -> this.moveIndex(-1)).category(GuiAbstractMorph.KEY_CATEGORY);
+        this.bodyParts.keys().register(IKey.lang("metamorph.gui.body_parts.keys.select_next"), Keyboard.KEY_S, () -> this.moveIndex(1)).category(GuiAbstractMorph.KEY_CATEGORY);
     }
 
     private void applyUseTarget(BodyPart part, AbstractMorph copy)
@@ -416,6 +420,44 @@ public class GuiBodyPartEditor extends GuiMorphPanel<AbstractMorph, GuiAbstractM
                 this.slots[i].setStack(part.slots[i]);
             }
         }
+    }
+
+    @Override
+    public boolean keyTyped(GuiContext context)
+    {
+        if (super.keyTyped(context))
+        {
+            return true;
+        }
+
+        this.moveIndex(this.getMoveIndex(context.keyCode));
+
+        return false;
+    }
+
+    private void moveIndex(int index)
+    {
+        if (index != 0)
+        {
+            index = MathUtils.cycler(this.bodyParts.getIndex() + index, 0, this.bodyParts.getList().size() - 1);
+
+            this.bodyParts.setIndex(index);
+            this.fillBodyPart(this.bodyParts.getCurrentFirst());
+        }
+    }
+
+    private int getMoveIndex(int keyCode)
+    {
+        if (keyCode == Keyboard.KEY_UP)
+        {
+            return -1;
+        }
+        else if (keyCode == Keyboard.KEY_DOWN)
+        {
+            return -1;
+        }
+
+        return 0;
     }
 
     @Override
