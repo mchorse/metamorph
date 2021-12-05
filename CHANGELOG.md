@@ -1,3 +1,11 @@
+## Metamorph 1.2.11
+
+This update was made by Chryfi. The only change is making Use target option enabled by default for Blockbuster's tracker morphs.
+
+**Compatible** with McLib `2.3.6`. It doesn't mean that future versions of McLib would be incompatible, but older versions are most likely incompatible.
+
+* Added `tracker` morph to Use option enabled by default list
+
 ## Metamorph 1.2.10
 
 This patch adds an option to replace entity morphs texture.
