@@ -1,3 +1,12 @@
+## Metamorph 1.2.12
+
+This update adds a couple of QoL tweaks.
+
+**Compatible** with McLib `2.3.6`. It doesn't mean that future versions of McLib would be incompatible, but older versions are most likely incompatible.
+
+* Added up and down arrows (and `W` and `S`) in body part morph editor panel
+* Added toggle to hide/show separate morph categories
+
 ## Metamorph 1.2.11
 
 This update was made by Chryfi. The only change is making Use target option enabled by default for Blockbuster's tracker morphs.

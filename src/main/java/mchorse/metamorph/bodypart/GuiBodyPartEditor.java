@@ -454,7 +454,7 @@ public class GuiBodyPartEditor extends GuiMorphPanel<AbstractMorph, GuiAbstractM
         }
         else if (keyCode == Keyboard.KEY_DOWN)
         {
-            return -1;
+            return 1;
         }
 
         return 0;
