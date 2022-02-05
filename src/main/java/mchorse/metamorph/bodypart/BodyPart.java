@@ -164,17 +164,23 @@ public class BodyPart
 
         GL11.glScalef(sx, sy, sz);
 
+        float yaw = entity.rotationYaw;
+        float prevYaw = entity.prevRotationYaw;
         float rotationYaw = entity.renderYawOffset;
         float prevRotationYaw = entity.prevRenderYawOffset;
         float rotationYawHead = entity.rotationYawHead;
         float prevRotationYawHead = entity.prevRotationYawHead;
 
+        entity.rotationYaw = entity.rotationYaw - entity.renderYawOffset;
+        entity.prevRotationYaw = entity.prevRotationYaw - entity.prevRenderYawOffset;
         entity.rotationYawHead = entity.rotationYawHead - entity.renderYawOffset;
         entity.prevRotationYawHead = entity.prevRotationYawHead - entity.prevRenderYawOffset;
         entity.renderYawOffset = entity.prevRenderYawOffset = 0;
 
         MorphUtils.render(this.morph.get(), entity, 0, 0, 0, 0, partialTicks);
 
+        entity.rotationYaw = yaw;
+        entity.prevRotationYaw = prevYaw;
         entity.renderYawOffset = rotationYaw;
         entity.prevRenderYawOffset = prevRotationYaw;
         entity.rotationYawHead = rotationYawHead;
