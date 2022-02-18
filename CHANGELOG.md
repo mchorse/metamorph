@@ -1,3 +1,11 @@
+## Metamorph 1.2.13
+
+This update fixed rotation yaw wasn't synchronized with body parts with use target.
+
+**Compatible** with McLib `2.3.6`. It doesn't mean that future versions of McLib would be incompatible, but older versions are most likely incompatible.
+
+* Fixed `entity.rotationYaw` not being synchronized with body parts when use target is enabled.
+
 ## Metamorph 1.2.12
 
 This update adds a couple of QoL tweaks.

@@ -1,6 +1,7 @@
 {
     "homepage": "https://www.curseforge.com/minecraft/mc-mods/metamorph",
     "1.12.2": {
+        "1.2.13": "This patch fixed rotation yaw wasn't synchronized with body parts with use target.",
         "1.2.12": "This update adds a couple of QoL tweaks.",
         "1.2.11": "This update was made by Chryfi. The only change is making Use target option enabled by default for Blockbuster's tracker morphs.",
         "1.2.10": "This patch adds an option to replace entity morphs texture.",
@@ -35,8 +36,8 @@
         "1.1.5": "This is a small, quick and dirty patch that provides several bugfixes (mainly for Blockbuster's update)."
     },
     "promos": {
-        "1.12.2-latest":"1.2.12",
-        "1.12.2-recommended":"1.2.12",
+        "1.12.2-latest":"1.2.13",
+        "1.12.2-recommended":"1.2.13",
         "1.11.2-latest":"1.1.10",
         "1.11.2-recommended":"1.1.10",
         "1.10.2-latest":"1.1.10",
