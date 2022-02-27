@@ -158,7 +158,7 @@ public abstract class AbstractMorph
     {
         this.updateHitbox(target);
 
-        if (this.settings.speed != 0.1F)
+        if (target.isServerWorld())
         {
             target.getEntityAttribute(SharedMonsterAttributes.MOVEMENT_SPEED).setBaseValue(this.settings.speed);
         }
