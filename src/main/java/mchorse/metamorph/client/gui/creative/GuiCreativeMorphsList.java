@@ -409,6 +409,8 @@ public class GuiCreativeMorphsList extends GuiElement
             this.saveViewport();
         }
 
+        this.editor.delegate.finishEdit();
+
         AbstractMorph edited = this.editor.delegate.morph;
 
         if (!this.nestedEdits.isEmpty() && !ignore)
@@ -419,7 +421,6 @@ public class GuiCreativeMorphsList extends GuiElement
             return;
         }
 
-        this.editor.delegate.finishEdit();
         this.morphs.syncSelected();
 
         if (add && edited != null && !this.isSelectedMorphIsEditable())
