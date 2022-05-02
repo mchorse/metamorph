@@ -2,16 +2,18 @@
 
 This update was made by MiaoNLI.
 
+**Compatible** with McLib `2.4`. It doesn't mean that future versions of McLib would be incompatible, but older versions are most likely incompatible.
+
 * GUI
-    * Add Onion Skin (Toggled by Q)
-    * Adjust the width of GuiTransformations
+    * Added Onion Skin (Toggled by Q)
+    * Adjusted the width of GuiTransformations
 * BodyPart
     * Hold down the Alt/Option key to lock the space transformed while switching limbs
     * Show onion skin while editing a morph
 * Morph
-    * Add option to enable/disable/only rendering shadow of Optifine shaderpack
+    * Added option to enable/disable/only rendering shadow of Optifine shaderpack
     * Label Morph
-        * Fix crash when text has non-English character
+        * Fixed crash when text has non-English character
     * Entity Morph
         * Compatible with CEM of Optifine (suggested by MichaelCreeper_)
 * File Encoding
