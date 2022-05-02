@@ -1,4 +1,5 @@
-**ATTENTION**: This mod is **no longer being developed nor maintained by McHorse**. If you wish to continue the mod, feel free to check out the [source code](https://github.com/mchorse/metamorph).  
+**ATTENTION**: This mod is **no longer being maintained by McHorse. It is now maintained by Chryfi.**
+ There are **still going to be official updates by Chryfi and other contributors** and there have been task forces that are investigating on porting it. **If you also want to contribute to official updates**, or to the porting effort, please **join the official [McHorse's Discord server](https://discord.gg/qfxrqUF), so we can communicate with you.** Check out the [source code](https://github.com/mchorse/metamorph). 
 
 ![Metamorph](http://i.imgur.com/gbHB5iQ.png)
 
