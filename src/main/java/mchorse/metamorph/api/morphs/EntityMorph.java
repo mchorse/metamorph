@@ -39,6 +39,7 @@ import net.minecraft.entity.passive.EntityAnimal;
 import net.minecraft.entity.passive.EntityHorse;
 import net.minecraft.entity.passive.EntityPig;
 import net.minecraft.entity.passive.EntityRabbit;
+import net.minecraft.entity.passive.EntityWaterMob;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
@@ -544,7 +545,21 @@ public class EntityMorph extends AbstractMorph implements IBodyPartProvider
         {
             // By vanilla convention, mob movement speeds tend to be 2.5x
             // what the equivalent player speed would be.
-            entitySettings.speed = 0.4F * (float)speedAttribute.getBaseValue();
+            // Squids and players being the major exceptions.
+            if ((entity instanceof EntityWaterMob))
+            {
+                // Check for EntityWaterMob rather than EntitySquid,
+                // as EntityWaterMob would be deleted in an entity class refactor.
+                entitySettings.speed = 0.1F;
+            }
+            else if (entity instanceof EntityPlayer)
+            {
+                entitySettings.speed = (float)speedAttribute.getBaseValue();
+            }
+            else
+            {
+                entitySettings.speed = 0.4F * (float)speedAttribute.getBaseValue();
+            }
         }
         setEntitySettings(entitySettings);
 
