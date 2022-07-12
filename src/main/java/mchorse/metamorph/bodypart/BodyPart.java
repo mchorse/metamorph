@@ -3,7 +3,9 @@ package mchorse.metamorph.bodypart;
 import javax.vecmath.Matrix3f;
 import javax.vecmath.Matrix4f;
 import javax.vecmath.Vector3f;
+import javax.vecmath.Vector4f;
 
+import mchorse.mclib.client.gui.framework.elements.input.GuiTransformations;
 import org.lwjgl.opengl.GL11;
 
 import com.google.common.base.Objects;
@@ -42,24 +44,6 @@ public class BodyPart
     public static Matrix4f modelViewMatrix = new Matrix4f();
     public static boolean recording = false;
 
-    @SideOnly(Side.CLIENT)
-    public static void recordMatrix(AbstractMorph parent, EntityLivingBase entity, float partialTicks)
-    {
-        recording = true;
-
-        int lastMatrixMode = GL11.glGetInteger(GL11.GL_MATRIX_MODE);
-        GL11.glMatrixMode(GL11.GL_MODELVIEW);
-
-        GL11.glPushMatrix();
-        GL11.glLoadIdentity();
-        MorphUtils.renderDirect(parent, entity, 0, 0, 0, 0, partialTicks);
-        GL11.glPopMatrix();
-
-        GL11.glMatrixMode(lastMatrixMode);
-
-        recording = false;
-    }
-
     public Morph morph = new Morph();
     public ItemStack[] slots = new ItemStack[] {ItemStack.EMPTY, ItemStack.EMPTY, ItemStack.EMPTY, ItemStack.EMPTY, ItemStack.EMPTY, ItemStack.EMPTY};
     public Vector3f translate = new Vector3f();
@@ -78,6 +62,24 @@ public class BodyPart
     private Vector3f previousRotation = new Vector3f();
     
     public Matrix4f lastMatrix = null;
+
+    @SideOnly(Side.CLIENT)
+    public static void recordMatrix(AbstractMorph parent, EntityLivingBase entity, float partialTicks)
+    {
+        recording = true;
+
+        int lastMatrixMode = GL11.glGetInteger(GL11.GL_MATRIX_MODE);
+        GL11.glMatrixMode(GL11.GL_MODELVIEW);
+
+        GL11.glPushMatrix();
+        GL11.glLoadIdentity();
+        MorphUtils.renderDirect(parent, entity, 0, 0, 0, 0, partialTicks);
+        GL11.glPopMatrix();
+
+        GL11.glMatrixMode(lastMatrixMode);
+
+        recording = false;
+    }
 
     @SideOnly(Side.CLIENT)
     public void init()
@@ -102,6 +104,29 @@ public class BodyPart
         {
             this.entity.setItemStackToSlot(EntityEquipmentSlot.values()[i], this.slots[i]);
         }
+    }
+
+    public void addTranslation(float x, float y, float z, GuiTransformations.TransformOrientation orientation)
+    {
+        Vector4f trans = new Vector4f(x, y, z, 1);
+
+        if (orientation == GuiTransformations.TransformOrientation.LOCAL)
+        {
+            Matrix4f mat = new Matrix4f();
+            mat.setIdentity();
+            Matrix4f rot = new Matrix4f();
+
+            rot.rotZ((float) Math.toRadians(this.rotate.z));
+            mat.mul(rot);
+            rot.rotY((float) Math.toRadians(this.rotate.y));
+            mat.mul(rot);
+            rot.rotX((float) Math.toRadians(this.rotate.x));
+            mat.mul(rot);
+
+            mat.transform(trans);
+        }
+
+        this.translate.add(new Vector3f(trans.x, trans.y, trans.z));
     }
 
     @SideOnly(Side.CLIENT)
@@ -186,11 +211,21 @@ public class BodyPart
         GL11.glPushMatrix();
         GL11.glTranslatef(tx, ty, tz);
 
+        if (GuiTransformations.GuiStaticTransformOrientation.getOrientation() == GuiTransformations.TransformOrientation.GLOBAL)
+        {
+            this.drawAxis();
+        }
+
         GL11.glRotatef(rz, 0, 0, 1);
         GL11.glRotatef(ry, 0, 1, 0);
         GL11.glRotatef(rx, 1, 0, 0);
 
         GL11.glScalef(sx, sy, sz);
+
+        if (GuiTransformations.GuiStaticTransformOrientation.getOrientation() == GuiTransformations.TransformOrientation.LOCAL)
+        {
+            this.drawAxis();
+        }
 
         float yaw = entity.rotationYaw;
         float prevYaw = entity.prevRotationYaw;
@@ -214,6 +249,11 @@ public class BodyPart
         entity.rotationYawHead = rotationYawHead;
         entity.prevRotationYawHead = prevRotationYawHead;
 
+        GL11.glPopMatrix();
+    }
+
+    protected void drawAxis()
+    {
         /* Draw axis point for body part renderer */
         if (GuiModelRenderer.isRendering())
         {
@@ -229,7 +269,7 @@ public class BodyPart
 
             if (Metamorph.renderBodyPartAxis.get())
             {
-                Draw.axis(0.1F);
+                Draw.axis(0.25F);
             }
 
             GlStateManager.enableLighting();
@@ -240,8 +280,6 @@ public class BodyPart
             GlStateManager.setActiveTexture(OpenGlHelper.defaultTexUnit);
             GlStateManager.enableTexture2D();
         }
-
-        GL11.glPopMatrix();
     }
 
     public void update(AbstractMorph parent, EntityLivingBase entity)
