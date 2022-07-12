@@ -16,7 +16,7 @@ import mchorse.mclib.utils.Direction;
 import mchorse.mclib.utils.MathUtils;
 import mchorse.mclib.utils.MatrixUtils;
 import mchorse.mclib.utils.MatrixUtils.Transformation;
-import mchorse.mclib.utils.MatrixUtils.Transformation.RotationOrder;
+import mchorse.mclib.utils.MatrixUtils.RotationOrder;
 import mchorse.metamorph.api.MorphUtils;
 import mchorse.metamorph.api.morphs.AbstractMorph;
 import mchorse.metamorph.api.morphs.utils.IAnimationProvider;
@@ -671,6 +671,14 @@ public class GuiBodyPartEditor extends GuiMorphPanel<AbstractMorph, GuiAbstractM
         public GuiBodyPartTransformations(Minecraft mc)
         {
             super(mc);
+        }
+
+        @Override
+        public void localTranslate(double x, double y, double z)
+        {
+            this.part.addTranslation((float) x, (float) y, (float) z, GuiStaticTransformOrientation.getOrientation());
+
+            this.fillT(this.part.translate.x, this.part.translate.y, this.part.translate.z);
         }
 
         public void setBodyPart(BodyPart part)
