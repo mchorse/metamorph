@@ -676,7 +676,7 @@ public class GuiBodyPartEditor extends GuiMorphPanel<AbstractMorph, GuiAbstractM
         @Override
         public void localTranslate(double x, double y, double z)
         {
-            this.part.addTranslation((float) x, (float) y, (float) z, GuiStaticTransformOrientation.getOrientation());
+            this.part.addTranslation(x, y, z, GuiStaticTransformOrientation.getOrientation());
 
             this.fillT(this.part.translate.x, this.part.translate.y, this.part.translate.z);
         }
