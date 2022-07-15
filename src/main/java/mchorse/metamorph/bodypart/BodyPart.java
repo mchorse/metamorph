@@ -6,6 +6,7 @@ import javax.vecmath.Vector3f;
 import javax.vecmath.Vector4f;
 
 import mchorse.mclib.client.gui.framework.elements.input.GuiTransformations;
+import mchorse.mclib.utils.ITransformationObject;
 import org.lwjgl.opengl.GL11;
 
 import com.google.common.base.Objects;
@@ -37,7 +38,7 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 /**
  * Morph body part
  */
-public class BodyPart
+public class BodyPart implements ITransformationObject
 {
     public static Vector3f cachedTranslation = new Vector3f();
     public static Vector3f cachedAngularVelocity = new Vector3f();
@@ -106,24 +107,18 @@ public class BodyPart
         }
     }
 
-    public void addTranslation(float x, float y, float z, GuiTransformations.TransformOrientation orientation)
+    @Override
+    public void addTranslation(double x, double y, double z, GuiTransformations.TransformOrientation orientation)
     {
-        Vector4f trans = new Vector4f(x, y, z, 1);
+        Vector4f trans = new Vector4f((float) x,(float) y,(float) z, 1);
 
         if (orientation == GuiTransformations.TransformOrientation.LOCAL)
         {
-            Matrix4f mat = new Matrix4f();
-            mat.setIdentity();
-            Matrix4f rot = new Matrix4f();
+            float rotX = (float) Math.toRadians(this.rotate.x);
+            float rotY = (float) Math.toRadians(this.rotate.y);
+            float rotZ = (float) Math.toRadians(this.rotate.z);
 
-            rot.rotZ((float) Math.toRadians(this.rotate.z));
-            mat.mul(rot);
-            rot.rotY((float) Math.toRadians(this.rotate.y));
-            mat.mul(rot);
-            rot.rotX((float) Math.toRadians(this.rotate.x));
-            mat.mul(rot);
-
-            mat.transform(trans);
+            MatrixUtils.getRotationMatrix(rotX, rotY, rotZ, MatrixUtils.RotationOrder.XYZ).transform(trans);
         }
 
         this.translate.add(new Vector3f(trans.x, trans.y, trans.z));
