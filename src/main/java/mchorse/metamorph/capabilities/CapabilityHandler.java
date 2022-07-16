@@ -67,6 +67,8 @@ public class CapabilityHandler
     @SubscribeEvent
     public void attachCapability(AttachCapabilitiesEvent<Entity> event)
     {
+        if (event == null) return;
+
         if (event.getObject() instanceof EntityLivingBase && event.getObject().world.isRemote)
         {
             event.addCapability(MODEL_CAP, new ModelProvider());
