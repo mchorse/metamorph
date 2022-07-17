@@ -168,6 +168,15 @@ public class GuiBodyPartEditor extends GuiMorphPanel<AbstractMorph, GuiAbstractM
         this.bodyParts.keys().register(IKey.lang("metamorph.gui.body_parts.keys.select_next"), Keyboard.KEY_S, () -> this.moveIndex(1)).category(GuiAbstractMorph.KEY_CATEGORY);
     }
 
+    /**
+     * @param part
+     * @return true if the provided instance reference matches the current selected bodypart
+     */
+    public boolean isSelected(BodyPart part)
+    {
+        return part == this.part;
+    }
+
     private void applyUseTarget(BodyPart part, AbstractMorph copy)
     {
         if (copy == null)
