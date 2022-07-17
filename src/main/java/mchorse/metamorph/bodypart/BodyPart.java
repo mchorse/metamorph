@@ -5,6 +5,7 @@ import javax.vecmath.Matrix4f;
 import javax.vecmath.Vector3f;
 import javax.vecmath.Vector4f;
 
+import mchorse.mclib.client.gui.framework.GuiBase;
 import mchorse.mclib.client.gui.framework.elements.input.GuiTransformations;
 import mchorse.mclib.utils.ITransformationObject;
 import org.lwjgl.opengl.GL11;
@@ -34,6 +35,8 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
+
+import java.util.List;
 
 /**
  * Morph body part
@@ -249,8 +252,10 @@ public class BodyPart implements ITransformationObject
 
     protected void drawAxis()
     {
+        List<GuiBodyPartEditor> childList = GuiBase.getCurrentChildren(GuiBodyPartEditor.class);
+
         /* Draw axis point for body part renderer */
-        if (GuiModelRenderer.isRendering())
+        if (GuiModelRenderer.isRendering() && childList != null && childList.get(0).isSelected(this))
         {
             GlStateManager.setActiveTexture(OpenGlHelper.lightmapTexUnit);
             GlStateManager.disableTexture2D();
@@ -264,7 +269,7 @@ public class BodyPart implements ITransformationObject
 
             if (Metamorph.renderBodyPartAxis.get())
             {
-                Draw.axis(0.25F);
+                Draw.axis(0.2F);
             }
 
             GlStateManager.enableLighting();
