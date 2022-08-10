@@ -164,8 +164,8 @@ public class GuiBodyPartEditor extends GuiMorphPanel<AbstractMorph, GuiAbstractM
 
         this.elements.add(this.stacks);
 
-        this.bodyParts.keys().register(IKey.lang("metamorph.gui.body_parts.keys.select_prev"), Keyboard.KEY_W, () -> this.moveIndex(-1)).category(GuiAbstractMorph.KEY_CATEGORY);
-        this.bodyParts.keys().register(IKey.lang("metamorph.gui.body_parts.keys.select_next"), Keyboard.KEY_S, () -> this.moveIndex(1)).category(GuiAbstractMorph.KEY_CATEGORY);
+        this.bodyParts.keys().register(IKey.lang("metamorph.gui.body_parts.keys.select_prev"), Keyboard.KEY_UP, () -> this.moveIndex(-1)).category(GuiAbstractMorph.KEY_CATEGORY);
+        this.bodyParts.keys().register(IKey.lang("metamorph.gui.body_parts.keys.select_next"), Keyboard.KEY_DOWN, () -> this.moveIndex(1)).category(GuiAbstractMorph.KEY_CATEGORY);
     }
 
     /**
@@ -597,19 +597,6 @@ public class GuiBodyPartEditor extends GuiMorphPanel<AbstractMorph, GuiAbstractM
         }
     }
 
-    @Override
-    public boolean keyTyped(GuiContext context)
-    {
-        if (super.keyTyped(context))
-        {
-            return true;
-        }
-
-        this.moveIndex(this.getMoveIndex(context.keyCode));
-
-        return false;
-    }
-
     private void moveIndex(int index)
     {
         if (index != 0)
@@ -619,20 +606,6 @@ public class GuiBodyPartEditor extends GuiMorphPanel<AbstractMorph, GuiAbstractM
             this.bodyParts.setIndex(index);
             this.fillBodyPart(this.bodyParts.getCurrentFirst());
         }
-    }
-
-    private int getMoveIndex(int keyCode)
-    {
-        if (keyCode == Keyboard.KEY_UP)
-        {
-            return -1;
-        }
-        else if (keyCode == Keyboard.KEY_DOWN)
-        {
-            return 1;
-        }
-
-        return 0;
     }
 
     @Override
