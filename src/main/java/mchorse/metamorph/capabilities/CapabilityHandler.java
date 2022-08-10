@@ -69,7 +69,7 @@ public class CapabilityHandler
     {
         if (event == null) return;
 
-        if (event.getObject() instanceof EntityLivingBase && event.getObject().world.isRemote)
+        if (event.getObject() instanceof EntityLivingBase && event.getObject().world != null && event.getObject().world.isRemote)
         {
             event.addCapability(MODEL_CAP, new ModelProvider());
         }
