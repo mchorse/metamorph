@@ -2,12 +2,14 @@ package mchorse.metamorph.bodypart;
 
 import javax.vecmath.Matrix3f;
 import javax.vecmath.Matrix4f;
+import javax.vecmath.Vector3d;
 import javax.vecmath.Vector3f;
 import javax.vecmath.Vector4f;
 
 import mchorse.mclib.client.gui.framework.GuiBase;
 import mchorse.mclib.client.gui.framework.elements.input.GuiTransformations;
 import mchorse.mclib.utils.ITransformationObject;
+import mchorse.mclib.utils.RenderingUtils;
 import org.lwjgl.opengl.GL11;
 
 import com.google.common.base.Objects;
@@ -209,21 +211,11 @@ public class BodyPart implements ITransformationObject
         GL11.glPushMatrix();
         GL11.glTranslatef(tx, ty, tz);
 
-        if (GuiTransformations.GuiStaticTransformOrientation.getOrientation() == GuiTransformations.TransformOrientation.GLOBAL)
-        {
-            this.drawAxis();
-        }
-
         GL11.glRotatef(rz, 0, 0, 1);
         GL11.glRotatef(ry, 0, 1, 0);
         GL11.glRotatef(rx, 1, 0, 0);
 
         GL11.glScalef(sx, sy, sz);
-
-        if (GuiTransformations.GuiStaticTransformOrientation.getOrientation() == GuiTransformations.TransformOrientation.LOCAL)
-        {
-            this.drawAxis();
-        }
 
         float yaw = entity.rotationYaw;
         float prevYaw = entity.prevRotationYaw;
@@ -239,6 +231,8 @@ public class BodyPart implements ITransformationObject
         entity.renderYawOffset = entity.prevRenderYawOffset = 0;
 
         MorphUtils.render(this.morph.get(), entity, 0, 0, 0, 0, partialTicks);
+
+        this.drawAxis();
 
         entity.rotationYaw = yaw;
         entity.prevRotationYaw = prevYaw;
@@ -257,6 +251,15 @@ public class BodyPart implements ITransformationObject
         /* Draw axis point for body part renderer */
         if (GuiModelRenderer.isRendering() && childList != null && childList.get(0).isSelected(this))
         {
+            GlStateManager.pushMatrix();
+
+            if (GuiTransformations.GuiStaticTransformOrientation.getOrientation() == GuiTransformations.TransformOrientation.GLOBAL)
+            {
+                Vector3d rot = new Vector3d(Math.toRadians(this.rotate.x), Math.toRadians(this.rotate.y), Math.toRadians(this.rotate.z));
+
+                RenderingUtils.glRevertRotationScale(rot, new Vector3d(this.scale), MatrixUtils.RotationOrder.XYZ);
+            }
+
             GlStateManager.setActiveTexture(OpenGlHelper.lightmapTexUnit);
             GlStateManager.disableTexture2D();
             GlStateManager.setActiveTexture(OpenGlHelper.defaultTexUnit);
@@ -271,6 +274,8 @@ public class BodyPart implements ITransformationObject
             {
                 Draw.axis(0.2F);
             }
+
+            GlStateManager.popMatrix();
 
             GlStateManager.enableLighting();
             GlStateManager.enableDepth();
