@@ -6,6 +6,10 @@ import java.io.PrintWriter;
 import java.lang.reflect.Field;
 import java.util.Map;
 import java.util.Set;
+import java.util.function.BooleanSupplier;
+import java.util.function.Consumer;
+import java.util.function.Predicate;
+import java.util.function.Supplier;
 
 import io.netty.buffer.ByteBuf;
 import mchorse.mclib.client.gui.framework.elements.GuiModelRenderer;
@@ -14,9 +18,11 @@ import mchorse.mclib.utils.ReflectionUtils;
 import mchorse.metamorph.api.events.RegisterBlacklistEvent;
 import mchorse.metamorph.api.events.RegisterRemapEvent;
 import mchorse.metamorph.api.events.RegisterSettingsEvent;
+import mchorse.metamorph.api.models.IMorphProvider;
 import mchorse.metamorph.api.morphs.AbstractMorph;
 import mchorse.metamorph.api.morphs.utils.ISyncableMorph;
 import mchorse.metamorph.bodypart.BodyPart;
+import mchorse.metamorph.bodypart.BodyPartManager;
 import mchorse.metamorph.bodypart.IBodyPartProvider;
 import net.minecraft.client.renderer.BufferBuilder;
 import net.minecraft.client.renderer.Tessellator;
@@ -272,5 +278,48 @@ public class MorphUtils
     public static AbstractMorph morphFromBuf(ByteBuf buffer)
     {
         return MorphManager.INSTANCE.morphFromNBT(NBTUtils.readInfiniteTag(buffer));
+    }
+
+    /**
+     * Traverses the morph and its bodyparts to find a morph that matches the provided predicate.
+     * @param morph
+     * @param condition the predicate to apply on the morphs and children
+     * @return true if any of the morph and children match the provided predicate, otherwise false.
+     */
+    public static boolean anyMatch(AbstractMorph morph, Predicate<AbstractMorph> condition)
+    {
+        while (true)
+        {
+            if (condition.test(morph))
+            {
+                return true;
+            }
+
+            if (morph instanceof IBodyPartProvider)
+            {
+                BodyPartManager mgr = ((IBodyPartProvider) morph).getBodyPart();
+                for (BodyPart part : mgr.parts)
+                {
+                    if (part.enabled)
+                    {
+                        if (anyMatch(part.morph.get(), condition))
+                        {
+                            return true;
+                        }
+                    }
+                }
+            }
+
+            if (morph instanceof IMorphProvider)
+            {
+                morph = ((IMorphProvider) morph).getMorph();
+            }
+            else
+            {
+                break;
+            }
+        }
+
+        return false;
     }
 }
