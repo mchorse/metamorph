@@ -429,6 +429,15 @@ public abstract class AbstractMorph
     {}
 
     /**
+     * Whether to activate the use target option in GUIs like BodyPart GUI by default
+     * @return false by default
+     */
+    public boolean useTargetDefault()
+    {
+        return false;
+    }
+
+    /**
      * This method should be used by any morphs that support merging to copy essential
      * whenever they merge
      */

@@ -184,7 +184,7 @@ public class GuiBodyPartEditor extends GuiMorphPanel<AbstractMorph, GuiAbstractM
             return;
         }
 
-        if (copy.name.equals("snowstorm") || copy.name.equals("particle") || copy.name.equals("tracker"))
+        if (copy.useTargetDefault())
         {
             part.useTarget = true;
             this.useTarget.toggled(part.useTarget);
