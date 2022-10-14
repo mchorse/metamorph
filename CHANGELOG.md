@@ -1,3 +1,15 @@
+## Metamorph 1.3.1
+
+This update was made by Chryfi.
+
+**Compatible** with McLib `2.4`. It doesn't mean that future versions of McLib would be incompatible, but older versions are most likely incompatible.
+
+* Added local / global translation mode
+* Added useTargetDefault method to AbstractMorph to get rid of bad name checks in bodypart menu code
+* Fixed bodypart axis drawing at non selected bodyparts
+* Fixed NPE crash with Metamorph capabilities
+* Removed W and S key for bodypart cycling - use the arrow keys now
+
 ## Metamorph 1.3
 
 This update was made by MiaoNLI.
