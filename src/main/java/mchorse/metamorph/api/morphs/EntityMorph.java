@@ -541,11 +541,13 @@ public class EntityMorph extends AbstractMorph implements IBodyPartProvider
         entitySettings.health = (int)entity.getMaxHealth();
         entitySettings.hostile = entity instanceof EntityMob || entity instanceof EntityAnimal;
         IAttributeInstance speedAttribute = entity.getEntityAttribute(SharedMonsterAttributes.MOVEMENT_SPEED);
+
         if (speedAttribute != null)
         {
             // By vanilla convention, mob movement speeds tend to be 2.5x
             // what the equivalent player speed would be.
             // Squids and players being the major exceptions.
+
             if ((entity instanceof EntityWaterMob))
             {
                 // Check for EntityWaterMob rather than EntitySquid,
@@ -561,6 +563,7 @@ public class EntityMorph extends AbstractMorph implements IBodyPartProvider
                 entitySettings.speed = 0.4F * (float)speedAttribute.getBaseValue();
             }
         }
+
         setEntitySettings(entitySettings);
 
         if (entity instanceof EntityLiving && !(entity instanceof EntityDragon))
@@ -778,6 +781,7 @@ public class EntityMorph extends AbstractMorph implements IBodyPartProvider
             {
                 this.entity.setSilent(true);
             }
+
             this.entity.onUpdate();
             this.entity.setSilent(false);
         }

@@ -159,6 +159,7 @@ public abstract class AbstractMorph
         {
             initializeSettings();
         }
+
         return this.settings;
     }
 
@@ -247,6 +248,7 @@ public abstract class AbstractMorph
         this.updateHitbox(target);
 
         MorphSettings settings = this.getSettings();
+
         if (settings.speed != 0.1F)
         {
             target.getEntityAttribute(SharedMonsterAttributes.MOVEMENT_SPEED).setBaseValue(settings.speed);
