@@ -171,6 +171,7 @@ public class MorphSettings
             this.action = setting.action;
             this.hasAction = true;
         }
+
         if (setting.hasAttack)
         {
             this.attack = setting.attack;
@@ -182,21 +183,25 @@ public class MorphSettings
             this.health = setting.health;
             this.hasHealth = true;
         }
+
         if (setting.hasSpeed)
         {
             this.speed = setting.speed;
             this.hasSpeed = true;
         }
+
         if (setting.hasHostile)
         {
             this.hostile = setting.hostile;
             this.hasHostile = true;
         }
+
         if (setting.hasHands)
         {
             this.hands = setting.hands;
             this.hasHands = true;
         }
+
         if (setting.hasUpdates)
         {
             this.updates = setting.updates;
@@ -210,6 +215,7 @@ public class MorphSettings
     public void toBytes(ByteBuf buf)
     {
         buf.writeBoolean(this.hasAbilities);
+
         if (this.hasAbilities)
         {
     		buf.writeInt(this.abilities.size());
@@ -223,10 +229,12 @@ public class MorphSettings
         }
 
         buf.writeBoolean(this.hasAction);
+
         if (this.hasAction)
         {
             String action = getKey(MorphManager.INSTANCE.actions, this.action);
             buf.writeBoolean(action != null);
+
             if (action != null)
             {
                 ByteBufUtils.writeUTF8String(buf, action);
@@ -234,9 +242,11 @@ public class MorphSettings
         }
 
         buf.writeBoolean(this.hasAttack);
+
         if (this.hasAttack) {
             String attack = getKey(MorphManager.INSTANCE.attacks, this.attack);
             buf.writeBoolean(attack != null);
+
             if (attack != null)
             {
                 ByteBufUtils.writeUTF8String(buf, attack);
@@ -244,31 +254,42 @@ public class MorphSettings
         }
         
         buf.writeBoolean(this.hasHealth);
+
         if (this.hasHealth)
         {
             buf.writeInt(this.health);
         }
+
         buf.writeBoolean(this.hasSpeed);
+
         if (this.hasSpeed)
         {
             buf.writeFloat(this.speed);
         }
+
         buf.writeBoolean(this.hasHostile);
+
         if (this.hasHostile)
         {
             buf.writeBoolean(this.hostile);
         }
+
         buf.writeBoolean(this.hasHands);
+
         if (this.hasHands)
         {
             buf.writeBoolean(this.hands);
         }
+
         buf.writeBoolean(this.hasUpdates);
+
         if (this.hasUpdates)
         {
             buf.writeBoolean(this.updates);
         }
+
         buf.writeBoolean(this.hasShadowOption);
+
         if (this.hasShadowOption)
         {
         	buf.writeInt(this.shadowOption);
@@ -281,6 +302,7 @@ public class MorphSettings
     public void fromBytes(ByteBuf buf)
     {
         this.hasAbilities = buf.readBoolean();
+
         if (this.hasAbilities)
         {
             List<IAbility> abilities = new ArrayList<IAbility>();
@@ -293,10 +315,12 @@ public class MorphSettings
                     abilities.add(ability);
                 }
             }
+
             this.abilities = abilities;
         }
 
         this.hasAction = buf.readBoolean();
+
         if (this.hasAction)
         {
             if (buf.readBoolean())
@@ -311,6 +335,7 @@ public class MorphSettings
         }
 
         this.hasAttack = buf.readBoolean();
+
         if (this.hasAttack)
         {
             if (buf.readBoolean())
@@ -325,36 +350,42 @@ public class MorphSettings
         }
         
         this.hasHealth = buf.readBoolean();
+
         if (this.hasHealth)
         {
         	this.health = buf.readInt();
         }
         
         this.hasSpeed = buf.readBoolean();
+
         if (this.hasSpeed)
         {
         	this.speed = buf.readFloat();
         }
         
         this.hasHostile = buf.readBoolean();
+
         if (this.hasHostile)
         {
         	this.hostile = buf.readBoolean();
         }
         
         this.hasHands = buf.readBoolean();
+
         if (this.hasHands)
         {
         	this.hands = buf.readBoolean();
         }
         
         this.hasUpdates = buf.readBoolean();
+
         if (this.hasUpdates)
         {
         	this.updates = buf.readBoolean();
         }
         
         this.hasShadowOption = buf.readBoolean();
+
         if (this.hasShadowOption)
         {
         	this.shadowOption = buf.readInt();
@@ -389,7 +420,9 @@ public class MorphSettings
         if (this.hasAction)
         {
             String actionKey = getKey(MorphManager.INSTANCE.actions, this.action);
+
             if (actionKey == null) { actionKey = "null"; }
+
         	tag.setString("Action", actionKey);
         }
 
@@ -430,6 +463,7 @@ public class MorphSettings
     public void fromNBT(NBTTagCompound tag)
     {
         this.hasAbilities = tag.hasKey("Abilities");
+
     	if (this.hasAbilities)
         {
         	NBTTagList list = tag.getTagList("Abilities", Constants.NBT.TAG_STRING);
@@ -448,48 +482,56 @@ public class MorphSettings
         }
 
     	this.hasAttack = tag.hasKey("Attack");
+
         if (this.hasAttack)
         {
             this.attack = MorphManager.INSTANCE.attacks.get(tag.getString("Attack"));
         }
 
         this.hasAction = tag.hasKey("Action");
+
         if (this.hasAction)
         {
             this.action = MorphManager.INSTANCE.actions.get(tag.getString("Action"));
         }
 
         this.hasHealth = tag.hasKey("HP");
+
         if (this.hasHealth)
         {
             this.health = tag.getInteger("HP");
         }
 
         this.hasSpeed = tag.hasKey("Speed");
+
         if (this.hasSpeed)
         {
             this.speed = tag.getFloat("Speed");
         }
 
         this.hasHostile = tag.hasKey("Hostile");
+
         if (this.hasHostile)
         {
             this.hostile = tag.getBoolean("Hostile");
         }
 
         this.hasHands = tag.hasKey("Hands");
+
         if (this.hasHands)
         {
             this.hands = tag.getBoolean("Hands");
         }
 
         this.hasUpdates = tag.hasKey("Updates");
+
         if (this.hasUpdates)
         {
             this.updates = tag.getBoolean("Updates");
         }
 
         this.hasShadowOption = tag.hasKey("ShadowOption");
+
         if (this.hasShadowOption)
         {
             this.shadowOption = tag.getInteger("ShadowOption");
