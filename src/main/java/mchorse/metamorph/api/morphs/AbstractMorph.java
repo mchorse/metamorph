@@ -165,6 +165,21 @@ public abstract class AbstractMorph
         this.settings = settingsToForce;
         this.forcedSettings = true;
     }
+
+    /**
+     * This forces a morph to use the updated settings. These settings
+     * will not be overridden and must be complete settings
+     * (no null fields allowed).
+     * If the settings have not been forced yet, the morph's existing
+     * settings will be copied and used as the basis for the new forced
+     * settings.
+     */
+    public void forceEditSettings(MorphSettings.Edit edit)
+    {
+    	MorphSettings settingsCopy = this.getSettings().copy();
+    	edit.apply(settingsCopy);
+    	forceSettings(settingsCopy);
+    }
     
     /**
      * Undoes the effects of {@link #forceSettings}
@@ -226,19 +241,20 @@ public abstract class AbstractMorph
         return this.displayName != null && !this.displayName.isEmpty();
     }
 
+    @Deprecated
     public boolean hasCustomSettings()
     {
-        if (this.settings == MorphSettings.DEFAULT)
-        {
-            return false;
-        }
-
-        if (this.settings == MorphManager.INSTANCE.activeSettings.get(this.name))
-        {
-            return false;
-        }
-
-        return true;
+    	if (this.settings != MorphSettings.DEFAULT)
+    	{
+    		return true;
+    	}
+    	
+    	if (this.settings != MorphManager.INSTANCE.activeSettings.get(this.name))
+    	{
+    		return true;
+    	}
+    	
+        return forcedSettings;
     }
 
     /* Render methods */
@@ -614,17 +630,19 @@ public abstract class AbstractMorph
     {
         tag.setString("Name", this.name);
 
-        if (this.hasCustomSettings())
+        if (this.forcedSettings)
         {
             NBTTagCompound settings = new NBTTagCompound();
 
-            this.settings.toNBT(settings);
+            this.getSettings().toNBT(settings);
 
             if (!settings.hasNoTags())
             {
                 tag.setTag("Settings", settings);
             }
         }
+        
+    	tag.setBoolean("ForcedSettings", this.forcedSettings);
 
         if (this.displayName != null && !this.displayName.isEmpty())
         {
@@ -655,11 +673,19 @@ public abstract class AbstractMorph
         this.reset();
 
         this.name = tag.getString("Name");
+        
+        boolean hasForcedSettings = tag.hasKey("ForcedSettings");
+    	this.forcedSettings = tag.getBoolean("ForcedSettings");
 
         if (tag.hasKey("Settings"))
         {
             this.settings = new MorphSettings();
             this.settings.fromNBT(tag.getCompoundTag("Settings"));
+            
+            if (!hasForcedSettings)
+            {
+            	this.forcedSettings = true;
+            }
         }
 
         if (tag.hasKey("DisplayName"))

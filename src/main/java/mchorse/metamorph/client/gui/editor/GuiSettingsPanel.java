@@ -74,7 +74,7 @@ public class GuiSettingsPanel extends GuiMorphPanel<AbstractMorph, GuiAbstractMo
         this.keybind.tooltip(IKey.lang("metamorph.gui.editor.keybind_tooltip"));
         this.reset = new GuiButtonElement(mc, IKey.lang("metamorph.gui.editor.reset"), (button) ->
         {
-            this.morph.settings = MorphSettings.DEFAULT;
+            this.morph.clearForcedSettings();
 
             MorphManager.INSTANCE.applySettings(this.morph);
             this.editor.setPanel(this.editor.defaultPanel);
@@ -82,42 +82,52 @@ public class GuiSettingsPanel extends GuiMorphPanel<AbstractMorph, GuiAbstractMo
         this.displayName = new GuiTextElement(mc, (string) -> this.morph.displayName = string);
         this.abilities = new GuiStringListElement(mc, (values) ->
         {
-            this.ensureCustomSettings();
-            this.morph.settings.abilities.clear();
+        	this.morph.forceEditSettings((settings) ->
+        	{
+                settings.abilities.clear();
 
-            for (String value : values)
-            {
-                IAbility ability = MorphManager.INSTANCE.abilities.get(value);
-
-                if (ability != null)
+                for (String value : values)
                 {
-                    this.morph.settings.abilities.add(ability);
+                    IAbility ability = MorphManager.INSTANCE.abilities.get(value);
+
+                    if (ability != null)
+                    {
+                        settings.abilities.add(ability);
+                    }
                 }
-            }
+        	});
         });
         this.abilities.multi().background().tooltip(IKey.lang("metamorph.gui.editor.abilities_tooltip"));
         this.attack = new GuiStringListElement(mc, (values) ->
         {
-            this.ensureCustomSettings();
-            this.morph.settings.attack = MorphManager.INSTANCE.attacks.get(values.get(0));
+        	this.morph.forceEditSettings((settings) ->
+        	{
+        		settings.attack = MorphManager.INSTANCE.attacks.get(values.get(0));
+        	});
         });
         this.attack.background();
         this.action = new GuiStringListElement(mc, (values) ->
         {
-            this.ensureCustomSettings();
-            this.morph.settings.action = MorphManager.INSTANCE.actions.get(values.get(0));
+        	this.morph.forceEditSettings((settings) ->
+        	{
+        		settings.action = MorphManager.INSTANCE.actions.get(values.get(0));
+        	});
         });
         this.action.background();
         this.health = new GuiTrackpadElement(mc, (value) ->
         {
-            this.ensureCustomSettings();
-            this.morph.settings.health = value.intValue();
+        	this.morph.forceEditSettings((settings) ->
+        	{
+                settings.health = value.intValue();
+        	});
         })
             .limit(0, Float.POSITIVE_INFINITY, true);
         this.speed = new GuiTrackpadElement(mc, (value) ->
         {
-            this.ensureCustomSettings();
-            this.morph.settings.speed = value.floatValue();
+        	this.morph.forceEditSettings((settings) ->
+        	{
+                settings.speed = value.floatValue();
+        	});
         })
             .limit(0, Float.POSITIVE_INFINITY)
             .values(0.05F, 0.01F, 0.1F)
@@ -158,8 +168,10 @@ public class GuiSettingsPanel extends GuiMorphPanel<AbstractMorph, GuiAbstractMo
 
         this.shadowOption = new GuiCirculateElement(mc, (element) -> 
         {
-            this.ensureCustomSettings();
-            this.morph.settings.shadowOption = element.getValue();
+        	this.morph.forceEditSettings((settings) ->
+        	{
+                settings.shadowOption = element.getValue();
+        	});
         });
         for (OptifineShadowOption option : OptifineShadowOption.values())
         {
@@ -175,17 +187,6 @@ public class GuiSettingsPanel extends GuiMorphPanel<AbstractMorph, GuiAbstractMo
         {}
 
         this.add(this.left, this.right, this.data);
-    }
-
-    private void ensureCustomSettings()
-    {
-        if (!this.morph.hasCustomSettings())
-        {
-            MorphSettings old = this.morph.settings;
-
-            this.morph.settings = new MorphSettings();
-            this.morph.settings.copy(old);
-        }
     }
 
     @Override
@@ -206,7 +207,7 @@ public class GuiSettingsPanel extends GuiMorphPanel<AbstractMorph, GuiAbstractMo
         this.hitboxSneakingHeight.setValue(morph.hitbox.sneakingHeight);
         this.hitboxEyePosition.setValue(morph.hitbox.eye);
 
-        this.shadowOption.setValue(morph.settings.shadowOption);
+        this.shadowOption.setValue(morph.getSettings().shadowOption);
     }
 
     public void updateNBT()
@@ -241,12 +242,12 @@ public class GuiSettingsPanel extends GuiMorphPanel<AbstractMorph, GuiAbstractMo
 
         this.keybind.setKeybind(morph.keybind);
         this.displayName.setText(morph.displayName);
-        this.health.setValue(morph.settings.health);
-        this.speed.setValue(morph.settings.speed);
+        this.health.setValue(morph.getSettings().health);
+        this.speed.setValue(morph.getSettings().speed);
 
         List<String> abilities = new ArrayList<String>();
 
-        for (IAbility ability : morph.settings.abilities)
+        for (IAbility ability : morph.getSettings().abilities)
         {
             String key = MorphSettings.getKey(MorphManager.INSTANCE.abilities, ability);
 
@@ -261,8 +262,8 @@ public class GuiSettingsPanel extends GuiMorphPanel<AbstractMorph, GuiAbstractMo
         this.action.sort();
 
         this.abilities.setCurrent(abilities);
-        this.attack.setCurrent(MorphSettings.getKey(MorphManager.INSTANCE.attacks, morph.settings.attack));
-        this.action.setCurrent(MorphSettings.getKey(MorphManager.INSTANCE.actions, morph.settings.action));
+        this.attack.setCurrent(MorphSettings.getKey(MorphManager.INSTANCE.attacks, morph.getSettings().attack));
+        this.action.setCurrent(MorphSettings.getKey(MorphManager.INSTANCE.actions, morph.getSettings().action));
     }
 
     @Override
