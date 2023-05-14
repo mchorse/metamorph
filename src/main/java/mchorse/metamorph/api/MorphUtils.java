@@ -97,7 +97,7 @@ public class MorphUtils
 
         boolean isShadowPass = ReflectionUtils.isOptifineShadowPass();
 
-        if (!GuiModelRenderer.isRendering() && (isShadowPass && morph.settings.shadowOption == 1 || !isShadowPass && morph.settings.shadowOption == 2))
+        if (!GuiModelRenderer.isRendering() && (isShadowPass && morph.getSettings().shadowOption == 1 || !isShadowPass && morph.getSettings().shadowOption == 2))
         {
             return false;
         }

@@ -1,5 +1,10 @@
 package mchorse.metamorph.api;
 
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
+import java.util.Objects;
+
 import io.netty.buffer.ByteBuf;
 import mchorse.metamorph.api.abilities.IAbility;
 import mchorse.metamorph.api.abilities.IAction;
@@ -9,11 +14,6 @@ import net.minecraft.nbt.NBTTagList;
 import net.minecraft.nbt.NBTTagString;
 import net.minecraftforge.common.util.Constants;
 import net.minecraftforge.fml.common.network.ByteBufUtils;
-
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
-import java.util.Objects;
 
 /**
  * Morph settings
@@ -95,6 +95,14 @@ public class MorphSettings
      */
     public int shadowOption = 0;
     public boolean hasShadowOption = true;
+    
+    /**
+     * Morph settings applier lambda
+     */
+    public static interface Edit
+    {
+    	void apply(MorphSettings settings);
+    }
 
     @Override
     public boolean equals(Object obj)
