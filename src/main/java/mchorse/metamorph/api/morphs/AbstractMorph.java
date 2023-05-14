@@ -16,6 +16,7 @@ import net.minecraft.util.DamageSource;
 import net.minecraft.util.EnumHand;
 import net.minecraft.util.SoundEvent;
 import net.minecraft.util.math.AxisAlignedBB;
+import net.minecraftforge.classloading.FMLForgePlugin;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
@@ -98,6 +99,19 @@ public abstract class AbstractMorph
     {
         if (!this.needSettingsUpdate)
         {
+        	if (this.settings == null)
+        	{
+	        	if (FMLForgePlugin.RUNTIME_DEOBF)
+	        	{
+	        		this.settings = MorphSettings.DEFAULT_MORPHED.copy();
+	        	}
+	        	else
+	        	{
+	        		// Developer mode
+	        		throw new NullPointerException("needSettingsUpdate was not set to true when changing morph settings, or the settings was set to null directly when it shouldn't be");
+	        	}
+        	}
+        	
             return;
         }
 
@@ -133,9 +147,22 @@ public abstract class AbstractMorph
      * will not be overridden and must be complete settings
      * (no null fields allowed).
      */
-    public void forceSettings(MorphSettings settings)
+    public void forceSettings(MorphSettings settingsToForce)
     {
-        this.settings = settings;
+    	if (settingsToForce == null)
+    	{
+        	if (FMLForgePlugin.RUNTIME_DEOBF)
+        	{
+        		settingsToForce = MorphSettings.DEFAULT_MORPHED.copy();
+        	}
+        	else
+        	{
+        		// Developer mode
+        		throw new NullPointerException("Forced settings should never be null (are you trying to call clearForcedSettings()?)");
+        	}
+    	}
+    	
+        this.settings = settingsToForce;
         this.forcedSettings = true;
     }
     
