@@ -10,12 +10,14 @@ import net.minecraft.client.renderer.OpenGlHelper;
 import net.minecraft.client.renderer.RenderHelper;
 import net.minecraft.client.renderer.RenderItem;
 import net.minecraft.client.renderer.block.model.IBakedModel;
+import net.minecraft.client.renderer.block.model.ItemCameraTransforms;
 import net.minecraft.client.renderer.texture.TextureMap;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.util.math.MathHelper;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
@@ -57,7 +59,16 @@ public class ItemMorph extends ItemStackMorph
         GlStateManager.translate(x, y - 12, 0);
         GlStateManager.scale(scale, scale, scale);
 
-        GuiInventoryElement.drawItemStack(this.stack, -8, -8, 0, null);
+        if (this.dropped)
+        {
+            RenderItem renderItem = Minecraft.getMinecraft().getRenderItem();
+            renderItem.renderItemIntoGUI(this.stack, 0, 0);
+        }
+        else
+        {
+            GuiInventoryElement.drawItemStack(this.stack, -8, -8, 0, null);
+        }
+
         GlStateManager.popMatrix();
 
         RenderHelper.disableStandardItemLighting();
@@ -82,13 +93,27 @@ public class ItemMorph extends ItemStackMorph
         GlStateManager.blendFunc(GlStateManager.SourceFactor.SRC_ALPHA, GlStateManager.DestFactor.ONE_MINUS_SRC_ALPHA);
 
         GlStateManager.pushMatrix();
-        GlStateManager.translate(x, y, z);
+        if (this.dropped) {
+            // Add time-based motion to create the bobbing effect
+            long ticks = entity.world.getTotalWorldTime();
+            float bobbing = MathHelper.sin((ticks + partialTicks) / 10.0F) * 0.1F + 0.1F;
 
-        Minecraft.getMinecraft().renderEngine.bindTexture(TextureMap.LOCATION_BLOCKS_TEXTURE);
-        RenderItem render = Minecraft.getMinecraft().getRenderItem();
-        IBakedModel model = render.getItemModelWithOverrides(stack, entity.world, entity);
+            GlStateManager.translate(x, 0.25 + y + bobbing, z);
+            GlStateManager.rotate(180.0F, 0.0F, 1.0F, 0.0F); // The model is upside down, rotate it
+            GlStateManager.rotate((entity.ticksExisted + partialTicks) * 2.0F, 0.0F, 1.0F, 0.0F); // Use vanilla rotation
+            Minecraft.getMinecraft().renderEngine.bindTexture(TextureMap.LOCATION_BLOCKS_TEXTURE);
+            RenderItem renderItem = Minecraft.getMinecraft().getRenderItem();
+            renderItem.renderItem(this.stack, ItemCameraTransforms.TransformType.GROUND);
+        }
+        else
+        {
+            GlStateManager.translate(x, y, z);
 
-        render.renderItem(this.stack, model);
+            RenderItem render = Minecraft.getMinecraft().getRenderItem();
+            IBakedModel model = render.getItemModelWithOverrides(stack, entity.world, entity);
+
+            render.renderItem(this.stack, model);
+        }
 
         GlStateManager.popMatrix();
 

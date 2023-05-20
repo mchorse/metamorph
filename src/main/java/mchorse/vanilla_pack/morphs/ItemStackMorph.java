@@ -7,6 +7,7 @@ import net.minecraft.nbt.NBTTagCompound;
 public abstract class ItemStackMorph extends AbstractMorph
 {
     public boolean lighting = true;
+    public boolean dropped = false;
 
     public abstract void setStack(ItemStack stack);
 
@@ -22,6 +23,7 @@ public abstract class ItemStackMorph extends AbstractMorph
             ItemStackMorph morph = (ItemStackMorph) obj;
 
             result = result && this.lighting == morph.lighting;
+            result = result && this.dropped == morph.dropped;
         }
 
         return result;
@@ -37,6 +39,7 @@ public abstract class ItemStackMorph extends AbstractMorph
             ItemStackMorph morph = (ItemStackMorph) from;
 
             this.lighting = morph.lighting;
+            this.dropped = morph.dropped;
         }
     }
 
@@ -49,6 +52,10 @@ public abstract class ItemStackMorph extends AbstractMorph
         {
             tag.setBoolean("Lighting", this.lighting);
         }
+        if (this.dropped)
+        {
+            tag.setBoolean("Dropped", this.dropped);
+        }
     }
 
     @Override
@@ -59,6 +66,10 @@ public abstract class ItemStackMorph extends AbstractMorph
         if (tag.hasKey("Lighting"))
         {
             this.lighting = tag.getBoolean("Lighting");
+        }
+        if (tag.hasKey("Dropped"))
+        {
+            this.dropped = tag.getBoolean("Dropped");
         }
     }
 }

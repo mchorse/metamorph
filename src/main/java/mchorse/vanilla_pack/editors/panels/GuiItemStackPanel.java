@@ -15,8 +15,10 @@ public class GuiItemStackPanel extends GuiMorphPanel<ItemStackMorph, GuiAbstract
 {
     public GuiSlotElement slot;
     public GuiToggleElement lighting;
+    private boolean isItemPanel;
+    public GuiToggleElement dropped;
 
-    public GuiItemStackPanel(Minecraft mc, GuiAbstractMorph<? extends ItemStackMorph> editor)
+    public GuiItemStackPanel(Minecraft mc, GuiAbstractMorph<? extends ItemStackMorph> editor, boolean isItemPanel)
     {
         super(mc, editor);
 
@@ -25,6 +27,14 @@ public class GuiItemStackPanel extends GuiMorphPanel<ItemStackMorph, GuiAbstract
 
         this.slot.flex().relative(this).x(0.5F, 0).y(1, -10).wh(32, 32).anchor(0.5F, 1);
         this.lighting.flex().relative(this).xy(10, 10).w(110);
+
+        if (isItemPanel){
+            this.isItemPanel = true;
+            this.dropped = new GuiToggleElement(mc, IKey.lang("metamorph.gui.editor.item_morph.dropped"), (b) -> this.morph.dropped = b.isToggled());
+            this.dropped.flex().relative(this.lighting.resizer()).y(1F, 5).w(110);
+            this.add(this.slot, this.lighting, this.dropped);
+            return;
+        }
 
         this.add(this.slot, this.lighting);
     }
@@ -36,5 +46,9 @@ public class GuiItemStackPanel extends GuiMorphPanel<ItemStackMorph, GuiAbstract
 
         this.slot.setStack(morph.getStack());
         this.lighting.toggled(morph.lighting);
+        if (this.isItemPanel)
+        {
+            this.dropped.toggled(morph.dropped);
+        }
     }
 }
