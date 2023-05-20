@@ -75,7 +75,8 @@ public class ItemMorph extends ItemStackMorph
         float lastBrightnessX = OpenGlHelper.lastBrightnessX;
         float lastBrightnessY = OpenGlHelper.lastBrightnessY;
 
-        if (!this.lighting) {
+        if (!this.lighting)
+        {
             OpenGlHelper.setLightmapTextureCoords(OpenGlHelper.lightmapTexUnit, 240, 240);
         }
 
@@ -84,48 +85,44 @@ public class ItemMorph extends ItemStackMorph
         GlStateManager.blendFunc(GlStateManager.SourceFactor.SRC_ALPHA, GlStateManager.DestFactor.ONE_MINUS_SRC_ALPHA);
 
         GlStateManager.pushMatrix();
-        if (this.animated && this.realSize)
+        RenderItem renderItem = Minecraft.getMinecraft().getRenderItem();
+
+        if (this.animated)
         {
             // Add time-based motion to create the bobbing effect
             long ticks = entity.world.getTotalWorldTime();
             float bobbing = MathHelper.sin((ticks + partialTicks) / 10.0F) * 0.1F + 0.1F;
 
-            GlStateManager.translate(x, 0.25 + y + bobbing, z);
-            GlStateManager.rotate(180.0F, 0.0F, 1.0F, 0.0F); // The model is upside down, rotate it
-            GlStateManager.rotate((entity.ticksExisted + partialTicks) * 2.0F, 0.0F, 1.0F, 0.0F); // Use vanilla rotation
-            Minecraft.getMinecraft().renderEngine.bindTexture(TextureMap.LOCATION_BLOCKS_TEXTURE);
-            RenderItem renderItem = Minecraft.getMinecraft().getRenderItem();
-            renderItem.renderItem(this.stack, ItemCameraTransforms.TransformType.GROUND);
-        }
-        else if (this.animated)
-        {
-            // Spin and bob, but don't scale
-            long ticks = entity.world.getTotalWorldTime();
-            float bobbing = MathHelper.sin((ticks + partialTicks) / 10.0F) * 0.1F + 0.1F;
-
-            GlStateManager.translate(x, y + bobbing, z);
-            GlStateManager.rotate((entity.ticksExisted + partialTicks) * 2.0F, 0.0F, 1.0F, 0.0F);
-            Minecraft.getMinecraft().renderEngine.bindTexture(TextureMap.LOCATION_BLOCKS_TEXTURE);
-
-            RenderItem renderItem = Minecraft.getMinecraft().getRenderItem();
-            renderItem.renderItem(this.stack, ItemCameraTransforms.TransformType.NONE);
-        }
-        else if (this.realSize)
-        {
-            // Static and not scaled
-            GlStateManager.translate(x, y + 0.5F, z);
-
-            RenderItem renderItem = Minecraft.getMinecraft().getRenderItem();
-            renderItem.renderItem(this.stack, ItemCameraTransforms.TransformType.GROUND);
+            if (this.realSize)
+            {
+                GlStateManager.translate(x, 0.25 + y + bobbing, z);
+                GlStateManager.rotate(180.0F, 0.0F, 1.0F, 0.0F);
+                GlStateManager.rotate((entity.ticksExisted + partialTicks) * 2.0F, 0.0F, 1.0F, 0.0F);
+                Minecraft.getMinecraft().renderEngine.bindTexture(TextureMap.LOCATION_BLOCKS_TEXTURE);
+                renderItem.renderItem(this.stack, ItemCameraTransforms.TransformType.GROUND);
+            }
+            else
+            {
+                GlStateManager.translate(x, y + bobbing, z);
+                GlStateManager.rotate((entity.ticksExisted + partialTicks) * 2.0F, 0.0F, 1.0F, 0.0F);
+                Minecraft.getMinecraft().renderEngine.bindTexture(TextureMap.LOCATION_BLOCKS_TEXTURE);
+                renderItem.renderItem(this.stack, ItemCameraTransforms.TransformType.NONE);
+            }
         }
         else
         {
-            GlStateManager.translate(x, y, z);
-
-            RenderItem render = Minecraft.getMinecraft().getRenderItem();
-            IBakedModel model = render.getItemModelWithOverrides(stack, entity.world, entity);
-
-            render.renderItem(this.stack, model);
+            if (this.realSize)
+            {
+                GlStateManager.translate(x, y + 0.5F, z);
+                renderItem.renderItem(this.stack, ItemCameraTransforms.TransformType.GROUND);
+            }
+            else
+            {
+                GlStateManager.translate(x, y, z);
+                Minecraft.getMinecraft().renderEngine.bindTexture(TextureMap.LOCATION_BLOCKS_TEXTURE);
+                IBakedModel model = renderItem.getItemModelWithOverrides(stack, entity.world, entity);
+                renderItem.renderItem(this.stack, model);
+            }
         }
 
         GlStateManager.popMatrix();
