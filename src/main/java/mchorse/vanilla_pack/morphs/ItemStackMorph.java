@@ -7,7 +7,8 @@ import net.minecraft.nbt.NBTTagCompound;
 public abstract class ItemStackMorph extends AbstractMorph
 {
     public boolean lighting = true;
-    public boolean dropped = false;
+    public boolean animated = false;
+    public boolean realSize = false;
 
     public abstract void setStack(ItemStack stack);
 
@@ -23,7 +24,8 @@ public abstract class ItemStackMorph extends AbstractMorph
             ItemStackMorph morph = (ItemStackMorph) obj;
 
             result = result && this.lighting == morph.lighting;
-            result = result && this.dropped == morph.dropped;
+            result = result && this.animated == morph.animated;
+            result = result && this.realSize == morph.realSize;
         }
 
         return result;
@@ -39,7 +41,8 @@ public abstract class ItemStackMorph extends AbstractMorph
             ItemStackMorph morph = (ItemStackMorph) from;
 
             this.lighting = morph.lighting;
-            this.dropped = morph.dropped;
+            this.animated = morph.animated;
+            this.realSize = morph.realSize;
         }
     }
 
@@ -52,9 +55,13 @@ public abstract class ItemStackMorph extends AbstractMorph
         {
             tag.setBoolean("Lighting", this.lighting);
         }
-        if (this.dropped)
+        if (this.animated)
         {
-            tag.setBoolean("Dropped", this.dropped);
+            tag.setBoolean("Animated", this.animated);
+        }
+        if (this.realSize)
+        {
+            tag.setBoolean("RealSize", this.realSize);
         }
     }
 
@@ -67,9 +74,13 @@ public abstract class ItemStackMorph extends AbstractMorph
         {
             this.lighting = tag.getBoolean("Lighting");
         }
-        if (tag.hasKey("Dropped"))
+        if (tag.hasKey("Animated"))
         {
-            this.dropped = tag.getBoolean("Dropped");
+            this.animated = tag.getBoolean("Animated");
+        }
+        if (tag.hasKey("RealSize"))
+        {
+            this.realSize = tag.getBoolean("RealSize");
         }
     }
 }

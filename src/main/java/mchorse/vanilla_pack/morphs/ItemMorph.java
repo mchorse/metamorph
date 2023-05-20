@@ -1,14 +1,9 @@
 package mchorse.vanilla_pack.morphs;
 
 import mchorse.mclib.client.gui.framework.elements.utils.GuiInventoryElement;
-import mchorse.mclib.utils.MathUtils;
 import mchorse.metamorph.api.morphs.AbstractMorph;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.gui.FontRenderer;
-import net.minecraft.client.renderer.GlStateManager;
-import net.minecraft.client.renderer.OpenGlHelper;
-import net.minecraft.client.renderer.RenderHelper;
-import net.minecraft.client.renderer.RenderItem;
+import net.minecraft.client.renderer.*;
 import net.minecraft.client.renderer.block.model.IBakedModel;
 import net.minecraft.client.renderer.block.model.ItemCameraTransforms;
 import net.minecraft.client.renderer.texture.TextureMap;
@@ -20,8 +15,6 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.math.MathHelper;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
-
-import java.util.Objects;
 
 public class ItemMorph extends ItemStackMorph
 {
@@ -59,7 +52,7 @@ public class ItemMorph extends ItemStackMorph
         GlStateManager.translate(x, y - 12, 0);
         GlStateManager.scale(scale, scale, scale);
 
-        if (this.dropped)
+        if (this.animated)
         {
             RenderItem renderItem = Minecraft.getMinecraft().getRenderItem();
             renderItem.renderItemIntoGUI(this.stack, 0, 0);
@@ -78,13 +71,11 @@ public class ItemMorph extends ItemStackMorph
 
     @Override
     @SideOnly(Side.CLIENT)
-    public void render(EntityLivingBase entity, double x, double y, double z, float entityYaw, float partialTicks)
-    {
+    public void render(EntityLivingBase entity, double x, double y, double z, float entityYaw, float partialTicks) {
         float lastBrightnessX = OpenGlHelper.lastBrightnessX;
         float lastBrightnessY = OpenGlHelper.lastBrightnessY;
 
-        if (!this.lighting)
-        {
+        if (!this.lighting) {
             OpenGlHelper.setLightmapTextureCoords(OpenGlHelper.lightmapTexUnit, 240, 240);
         }
 
@@ -93,7 +84,8 @@ public class ItemMorph extends ItemStackMorph
         GlStateManager.blendFunc(GlStateManager.SourceFactor.SRC_ALPHA, GlStateManager.DestFactor.ONE_MINUS_SRC_ALPHA);
 
         GlStateManager.pushMatrix();
-        if (this.dropped) {
+        if (this.animated && this.realSize)
+        {
             // Add time-based motion to create the bobbing effect
             long ticks = entity.world.getTotalWorldTime();
             float bobbing = MathHelper.sin((ticks + partialTicks) / 10.0F) * 0.1F + 0.1F;
@@ -102,6 +94,27 @@ public class ItemMorph extends ItemStackMorph
             GlStateManager.rotate(180.0F, 0.0F, 1.0F, 0.0F); // The model is upside down, rotate it
             GlStateManager.rotate((entity.ticksExisted + partialTicks) * 2.0F, 0.0F, 1.0F, 0.0F); // Use vanilla rotation
             Minecraft.getMinecraft().renderEngine.bindTexture(TextureMap.LOCATION_BLOCKS_TEXTURE);
+            RenderItem renderItem = Minecraft.getMinecraft().getRenderItem();
+            renderItem.renderItem(this.stack, ItemCameraTransforms.TransformType.GROUND);
+        }
+        else if (this.animated)
+        {
+            // Spin and bob, but don't scale
+            long ticks = entity.world.getTotalWorldTime();
+            float bobbing = MathHelper.sin((ticks + partialTicks) / 10.0F) * 0.1F + 0.1F;
+
+            GlStateManager.translate(x, y + bobbing, z);
+            GlStateManager.rotate((entity.ticksExisted + partialTicks) * 2.0F, 0.0F, 1.0F, 0.0F);
+            Minecraft.getMinecraft().renderEngine.bindTexture(TextureMap.LOCATION_BLOCKS_TEXTURE);
+
+            RenderItem renderItem = Minecraft.getMinecraft().getRenderItem();
+            renderItem.renderItem(this.stack, ItemCameraTransforms.TransformType.NONE);
+        }
+        else if (this.realSize)
+        {
+            // Static and not scaled
+            GlStateManager.translate(x, y + 0.5F, z);
+
             RenderItem renderItem = Minecraft.getMinecraft().getRenderItem();
             renderItem.renderItem(this.stack, ItemCameraTransforms.TransformType.GROUND);
         }
