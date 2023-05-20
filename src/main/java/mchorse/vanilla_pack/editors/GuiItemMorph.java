@@ -20,7 +20,7 @@ public class GuiItemMorph extends GuiAbstractMorph<ItemMorph>
     {
         super(mc);
 
-        this.defaultPanel = this.block = new GuiItemStackPanel(mc, this);
+        this.defaultPanel = this.block = new GuiItemStackPanel(mc, this, true);
         this.registerPanel(this.block, IKey.lang("metamorph.gui.editor.item_morph"), MMIcons.ITEM);
     }
 

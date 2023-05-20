@@ -24,7 +24,7 @@ public class GuiBlockMorph extends GuiAbstractMorph<BlockMorph>
     {
         super(mc);
 
-        this.defaultPanel = this.block = new GuiItemStackPanel(mc, this);
+        this.defaultPanel = this.block = new GuiItemStackPanel(mc, this, false);
         this.registerPanel(this.block, IKey.lang("metamorph.gui.panels.block"), Icons.BLOCK);
     }
 
