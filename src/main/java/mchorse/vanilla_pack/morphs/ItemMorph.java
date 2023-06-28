@@ -1,29 +1,54 @@
 package mchorse.vanilla_pack.morphs;
 
+import com.google.common.collect.BiMap;
+import com.google.common.collect.HashBiMap;
 import mchorse.mclib.client.gui.framework.elements.utils.GuiInventoryElement;
-import mchorse.mclib.utils.MathUtils;
 import mchorse.metamorph.api.morphs.AbstractMorph;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.gui.FontRenderer;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.renderer.OpenGlHelper;
 import net.minecraft.client.renderer.RenderHelper;
 import net.minecraft.client.renderer.RenderItem;
 import net.minecraft.client.renderer.block.model.IBakedModel;
+import net.minecraft.client.renderer.block.model.ItemCameraTransforms;
 import net.minecraft.client.renderer.texture.TextureMap;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraftforge.client.ForgeHooksClient;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
-import java.util.Objects;
-
 public class ItemMorph extends ItemStackMorph
 {
+    @SideOnly(Side.CLIENT)
+    private static BiMap<String, ItemCameraTransforms.TransformType> transformTypes;
+
     public ItemStack stack = new ItemStack(Items.DIAMOND_HOE, 1);
+    public String transform = "";
+
+    @SideOnly(Side.CLIENT)
+    public static BiMap<String, ItemCameraTransforms.TransformType> getTransformTypes()
+    {
+        if (transformTypes == null)
+        {
+            transformTypes = HashBiMap.create();
+
+            transformTypes.put("none", ItemCameraTransforms.TransformType.NONE);
+            transformTypes.put("third_person_left_hand", ItemCameraTransforms.TransformType.THIRD_PERSON_LEFT_HAND);
+            transformTypes.put("third_person_right_hand", ItemCameraTransforms.TransformType.THIRD_PERSON_RIGHT_HAND);
+            transformTypes.put("first_person_left_hand", ItemCameraTransforms.TransformType.FIRST_PERSON_LEFT_HAND);
+            transformTypes.put("first_person_right_hand", ItemCameraTransforms.TransformType.FIRST_PERSON_RIGHT_HAND);
+            transformTypes.put("head", ItemCameraTransforms.TransformType.HEAD);
+            transformTypes.put("gui", ItemCameraTransforms.TransformType.GUI);
+            transformTypes.put("ground", ItemCameraTransforms.TransformType.GROUND);
+            transformTypes.put("fixed", ItemCameraTransforms.TransformType.FIXED);
+        }
+
+        return transformTypes;
+    }
 
     public ItemMorph()
     {
@@ -40,6 +65,14 @@ public class ItemMorph extends ItemStackMorph
     public ItemStack getStack()
     {
         return this.stack;
+    }
+
+    @SideOnly(Side.CLIENT)
+    public ItemCameraTransforms.TransformType getTransformType()
+    {
+        ItemCameraTransforms.TransformType transformType = transformTypes.get(this.transform);
+
+        return transformType == null ? ItemCameraTransforms.TransformType.NONE : transformType;
     }
 
     @Override
@@ -86,7 +119,14 @@ public class ItemMorph extends ItemStackMorph
 
         Minecraft.getMinecraft().renderEngine.bindTexture(TextureMap.LOCATION_BLOCKS_TEXTURE);
         RenderItem render = Minecraft.getMinecraft().getRenderItem();
-        IBakedModel model = render.getItemModelWithOverrides(stack, entity.world, entity);
+        IBakedModel model = render.getItemModelWithOverrides(this.stack, entity.world, entity);
+
+        ItemCameraTransforms.TransformType transform = this.getTransformType();
+
+        if (transform != ItemCameraTransforms.TransformType.NONE)
+        {
+            model = ForgeHooksClient.handleCameraTransforms(model, transform, false);
+        }
 
         render.renderItem(this.stack, model);
 
@@ -108,6 +148,7 @@ public class ItemMorph extends ItemStackMorph
             ItemMorph item = (ItemMorph) obj;
 
             result = result && ItemStack.areItemStacksEqualUsingNBTShareTag(this.stack, item.stack);
+            result = result && this.transform != item.transform;
         }
 
         return result;
@@ -126,7 +167,10 @@ public class ItemMorph extends ItemStackMorph
 
         if (from instanceof ItemMorph)
         {
-            this.stack = ((ItemMorph) from).stack.copy();
+            ItemMorph item = (ItemMorph) from;
+
+            this.stack = item.stack.copy();
+            this.transform = item.transform;
         }
     }
 
@@ -151,6 +195,8 @@ public class ItemMorph extends ItemStackMorph
         {
             tag.setTag("Stack", this.stack.serializeNBT());
         }
+
+        tag.setString("Transform", this.transform);
     }
 
     @Override
@@ -162,5 +208,7 @@ public class ItemMorph extends ItemStackMorph
         {
             this.stack = new ItemStack(tag.getCompoundTag("Stack"));
         }
+
+        this.transform = tag.getString("Transform");
     }
 }
