@@ -1,6 +1,5 @@
 package mchorse.vanilla_pack.editors.panels;
 
-import mchorse.mclib.client.gui.framework.elements.buttons.GuiCirculateElement;
 import mchorse.mclib.client.gui.framework.elements.buttons.GuiSlotElement;
 import mchorse.mclib.client.gui.framework.elements.buttons.GuiToggleElement;
 import mchorse.mclib.client.gui.utils.keys.IKey;
@@ -16,7 +15,6 @@ public class GuiItemStackPanel extends GuiMorphPanel<ItemStackMorph, GuiAbstract
 {
     public GuiSlotElement slot;
     public GuiToggleElement lighting;
-    public GuiCirculateElement transform;
 
     public GuiItemStackPanel(Minecraft mc, GuiAbstractMorph<? extends ItemStackMorph> editor)
     {

@@ -1,9 +1,15 @@
 package mchorse.vanilla_pack.editors.panels;
 
+import mchorse.mclib.client.gui.framework.elements.GuiElement;
+import mchorse.mclib.client.gui.framework.elements.buttons.GuiButtonElement;
 import mchorse.mclib.client.gui.framework.elements.buttons.GuiCirculateElement;
 import mchorse.mclib.client.gui.framework.elements.buttons.GuiSlotElement;
 import mchorse.mclib.client.gui.framework.elements.buttons.GuiToggleElement;
+import mchorse.mclib.client.gui.framework.elements.input.GuiTexturePicker;
+import mchorse.mclib.client.gui.utils.Elements;
 import mchorse.mclib.client.gui.utils.keys.IKey;
+import mchorse.mclib.utils.Direction;
+import mchorse.mclib.utils.resources.RLUtils;
 import mchorse.metamorph.client.gui.editor.GuiAbstractMorph;
 import mchorse.metamorph.client.gui.editor.GuiMorphPanel;
 import mchorse.vanilla_pack.morphs.ItemMorph;
@@ -18,6 +24,9 @@ public class GuiItemPanel extends GuiMorphPanel<ItemMorph, GuiAbstractMorph<? ex
     public GuiSlotElement slot;
     public GuiToggleElement lighting;
     public GuiCirculateElement transform;
+    public GuiButtonElement texture;
+
+    public GuiTexturePicker picker;
 
     public GuiItemPanel(Minecraft mc, GuiAbstractMorph<? extends ItemMorph> editor)
     {
@@ -27,7 +36,6 @@ public class GuiItemPanel extends GuiMorphPanel<ItemMorph, GuiAbstractMorph<? ex
         this.lighting = new GuiToggleElement(mc, IKey.lang("metamorph.gui.label.lighting"), (b) -> this.morph.lighting = b.isToggled());
 
         this.slot.flex().relative(this).x(0.5F, 0).y(1, -10).wh(32, 32).anchor(0.5F, 1);
-        this.lighting.flex().relative(this).xy(10, 10).w(110);
 
         this.transform = new GuiCirculateElement(mc, (b) ->
         {
@@ -36,8 +44,6 @@ public class GuiItemPanel extends GuiMorphPanel<ItemMorph, GuiAbstractMorph<? ex
             this.morph.transform = ItemMorph.getTransformTypes().inverse().get(type);
         });
 
-        this.transform.flex().relative(this.lighting).y(1F, 5).w(1F);
-
         for (ItemCameraTransforms.TransformType transform : ItemCameraTransforms.TransformType.values())
         {
             String key = ItemMorph.getTransformTypes().inverse().get(transform);
@@ -45,7 +51,21 @@ public class GuiItemPanel extends GuiMorphPanel<ItemMorph, GuiAbstractMorph<? ex
             this.transform.addLabel(IKey.lang("metamorph.gui.item.transform." + key));
         }
 
-        this.add(this.slot, this.lighting, this.transform);
+        this.texture = new GuiButtonElement(mc, IKey.lang("metamorph.gui.editor.texture"), (b) ->
+        {
+            this.picker.refresh();
+            this.picker.fill(this.morph.texture);
+            this.add(this.picker);
+            this.picker.resize();
+        });
+        this.picker = new GuiTexturePicker(mc, (rl) -> this.morph.texture = RLUtils.clone(rl));
+        this.picker.flex().relative(this).wh(1F, 1F);
+
+        GuiElement column = Elements.column(mc, 5, this.lighting, this.transform, this.texture);
+
+        column.flex().relative(this).xy(10, 10).w(110);
+
+        this.add(this.slot, column);
     }
 
     @Override

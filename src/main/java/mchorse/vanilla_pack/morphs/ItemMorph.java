@@ -3,7 +3,10 @@ package mchorse.vanilla_pack.morphs;
 import com.google.common.collect.BiMap;
 import com.google.common.collect.HashBiMap;
 import mchorse.mclib.client.gui.framework.elements.utils.GuiInventoryElement;
+import mchorse.mclib.utils.resources.RLUtils;
 import mchorse.metamorph.api.morphs.AbstractMorph;
+import mchorse.vanilla_pack.render.CachedExtrusion;
+import mchorse.vanilla_pack.render.ItemExtruder;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.renderer.OpenGlHelper;
@@ -17,9 +20,13 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.client.ForgeHooksClient;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
+import org.lwjgl.opengl.OpenGLException;
+
+import java.util.Objects;
 
 public class ItemMorph extends ItemStackMorph
 {
@@ -28,6 +35,7 @@ public class ItemMorph extends ItemStackMorph
 
     public ItemStack stack = new ItemStack(Items.DIAMOND_HOE, 1);
     public String transform = "";
+    public ResourceLocation texture;
 
     @SideOnly(Side.CLIENT)
     public static BiMap<String, ItemCameraTransforms.TransformType> getTransformTypes()
@@ -81,19 +89,37 @@ public class ItemMorph extends ItemStackMorph
     {
         GlStateManager.disableCull();
         GlStateManager.enableDepth();
-        RenderHelper.enableGUIStandardItemLighting();
         OpenGlHelper.setLightmapTextureCoords(OpenGlHelper.lightmapTexUnit, 240.0F, 240.0F);
 
         scale = scale / 16F;
 
         GlStateManager.pushMatrix();
         GlStateManager.translate(x, y - 12, 0);
-        GlStateManager.scale(scale, scale, scale);
 
-        GuiInventoryElement.drawItemStack(this.stack, -8, -8, 0, null);
+        if (this.texture != null)
+        {
+            GlStateManager.color(1, 1, 1);
+            GlStateManager.scale(scale * 16F, -scale * 16F, scale * 16F);
+
+            CachedExtrusion extrusion = ItemExtruder.extrude(this.texture);
+
+            if (extrusion != null)
+            {
+                extrusion.render();
+            }
+        }
+        else
+        {
+            GlStateManager.scale(scale, scale, scale);
+
+            RenderHelper.enableGUIStandardItemLighting();
+
+            GuiInventoryElement.drawItemStack(this.stack, -8, -8, 0, null);
+
+            RenderHelper.disableStandardItemLighting();
+        }
+
         GlStateManager.popMatrix();
-
-        RenderHelper.disableStandardItemLighting();
         GlStateManager.enableCull();
         GlStateManager.disableDepth();
     }
@@ -128,7 +154,19 @@ public class ItemMorph extends ItemStackMorph
             model = ForgeHooksClient.handleCameraTransforms(model, transform, false);
         }
 
-        render.renderItem(this.stack, model);
+        if (this.texture != null)
+        {
+            CachedExtrusion extrusion = ItemExtruder.extrude(this.texture);
+
+            if (extrusion != null)
+            {
+                extrusion.render();
+            }
+        }
+        else
+        {
+            render.renderItem(this.stack, model);
+        }
 
         GlStateManager.popMatrix();
 
@@ -148,7 +186,8 @@ public class ItemMorph extends ItemStackMorph
             ItemMorph item = (ItemMorph) obj;
 
             result = result && ItemStack.areItemStacksEqualUsingNBTShareTag(this.stack, item.stack);
-            result = result && this.transform != item.transform;
+            result = result && this.transform.equals(item.transform);
+            result = result && Objects.equals(this.texture, item.texture);
         }
 
         return result;
@@ -171,6 +210,7 @@ public class ItemMorph extends ItemStackMorph
 
             this.stack = item.stack.copy();
             this.transform = item.transform;
+            this.texture = item.texture;
         }
     }
 
@@ -197,6 +237,11 @@ public class ItemMorph extends ItemStackMorph
         }
 
         tag.setString("Transform", this.transform);
+
+        if (this.texture != null)
+        {
+            tag.setString("Texture", this.texture.toString());
+        }
     }
 
     @Override
@@ -210,5 +255,10 @@ public class ItemMorph extends ItemStackMorph
         }
 
         this.transform = tag.getString("Transform");
+
+        if (tag.hasKey("Texture"))
+        {
+            this.texture = RLUtils.create(tag.getString("Texture"));
+        }
     }
 }
