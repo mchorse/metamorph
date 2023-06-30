@@ -21,10 +21,10 @@ import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.ResourceLocation;
+import net.minecraft.util.math.MathHelper;
 import net.minecraftforge.client.ForgeHooksClient;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
-import org.lwjgl.opengl.OpenGLException;
 
 import java.util.Objects;
 
@@ -36,6 +36,7 @@ public class ItemMorph extends ItemStackMorph
     public ItemStack stack = new ItemStack(Items.DIAMOND_HOE, 1);
     public String transform = "";
     public ResourceLocation texture;
+    public boolean animation;
 
     @SideOnly(Side.CLIENT)
     public static BiMap<String, ItemCameraTransforms.TransformType> getTransformTypes()
@@ -78,7 +79,7 @@ public class ItemMorph extends ItemStackMorph
     @SideOnly(Side.CLIENT)
     public ItemCameraTransforms.TransformType getTransformType()
     {
-        ItemCameraTransforms.TransformType transformType = transformTypes.get(this.transform);
+        ItemCameraTransforms.TransformType transformType = getTransformTypes().get(this.transform);
 
         return transformType == null ? ItemCameraTransforms.TransformType.NONE : transformType;
     }
@@ -154,6 +155,15 @@ public class ItemMorph extends ItemStackMorph
             model = ForgeHooksClient.handleCameraTransforms(model, transform, false);
         }
 
+        if (this.animation)
+        {
+            long ticks = entity.world.getTotalWorldTime();
+            float bobbing = MathHelper.sin((ticks + partialTicks) / 10F) * 0.1F + 0.1F;
+
+            GlStateManager.translate(0F, bobbing, 0F);
+            GlStateManager.rotate((entity.ticksExisted + partialTicks) * 2F, 0F, 1F, 0F);
+        }
+
         if (this.texture != null)
         {
             CachedExtrusion extrusion = ItemExtruder.extrude(this.texture);
@@ -188,6 +198,7 @@ public class ItemMorph extends ItemStackMorph
             result = result && ItemStack.areItemStacksEqualUsingNBTShareTag(this.stack, item.stack);
             result = result && this.transform.equals(item.transform);
             result = result && Objects.equals(this.texture, item.texture);
+            result = result && this.animation == item.animation;
         }
 
         return result;
@@ -211,6 +222,7 @@ public class ItemMorph extends ItemStackMorph
             this.stack = item.stack.copy();
             this.transform = item.transform;
             this.texture = item.texture;
+            this.animation = item.animation;
         }
     }
 
@@ -242,6 +254,11 @@ public class ItemMorph extends ItemStackMorph
         {
             tag.setString("Texture", this.texture.toString());
         }
+
+        if (this.animation)
+        {
+            tag.setBoolean("Animation", this.animation);
+        }
     }
 
     @Override
@@ -259,6 +276,11 @@ public class ItemMorph extends ItemStackMorph
         if (tag.hasKey("Texture"))
         {
             this.texture = RLUtils.create(tag.getString("Texture"));
+        }
+
+        if (tag.hasKey("Animation"))
+        {
+            this.animation = tag.getBoolean("Animation");
         }
     }
 }

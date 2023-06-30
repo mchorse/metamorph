@@ -8,7 +8,6 @@ import mchorse.mclib.client.gui.framework.elements.buttons.GuiToggleElement;
 import mchorse.mclib.client.gui.framework.elements.input.GuiTexturePicker;
 import mchorse.mclib.client.gui.utils.Elements;
 import mchorse.mclib.client.gui.utils.keys.IKey;
-import mchorse.mclib.utils.Direction;
 import mchorse.mclib.utils.resources.RLUtils;
 import mchorse.metamorph.client.gui.editor.GuiAbstractMorph;
 import mchorse.metamorph.client.gui.editor.GuiMorphPanel;
@@ -22,9 +21,11 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 public class GuiItemPanel extends GuiMorphPanel<ItemMorph, GuiAbstractMorph<? extends ItemMorph>>
 {
     public GuiSlotElement slot;
+
     public GuiToggleElement lighting;
     public GuiCirculateElement transform;
     public GuiButtonElement texture;
+    public GuiToggleElement animation;
 
     public GuiTexturePicker picker;
 
@@ -34,6 +35,7 @@ public class GuiItemPanel extends GuiMorphPanel<ItemMorph, GuiAbstractMorph<? ex
 
         this.slot = new GuiSlotElement(mc, 0, (stack) -> this.morph.setStack(stack));
         this.lighting = new GuiToggleElement(mc, IKey.lang("metamorph.gui.label.lighting"), (b) -> this.morph.lighting = b.isToggled());
+        this.animation = new GuiToggleElement(mc, IKey.lang("metamorph.gui.item.animation"), (b) -> this.morph.animation = b.isToggled());
 
         this.slot.flex().relative(this).x(0.5F, 0).y(1, -10).wh(32, 32).anchor(0.5F, 1);
 
@@ -61,7 +63,7 @@ public class GuiItemPanel extends GuiMorphPanel<ItemMorph, GuiAbstractMorph<? ex
         this.picker = new GuiTexturePicker(mc, (rl) -> this.morph.texture = RLUtils.clone(rl));
         this.picker.flex().relative(this).wh(1F, 1F);
 
-        GuiElement column = Elements.column(mc, 5, this.lighting, this.transform, this.texture);
+        GuiElement column = Elements.column(mc, 5, this.lighting, this.transform, this.texture, this.animation);
 
         column.flex().relative(this).xy(10, 10).w(110);
 
@@ -78,5 +80,6 @@ public class GuiItemPanel extends GuiMorphPanel<ItemMorph, GuiAbstractMorph<? ex
         this.slot.setStack(morph.getStack());
         this.lighting.toggled(morph.lighting);
         this.transform.setValue(type.ordinal());
+        this.animation.toggled(morph.animation);
     }
 }

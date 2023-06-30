@@ -136,6 +136,7 @@ metamorph.gui.label.lighting_tooltip=When disabled, Minecraft's lightmap won't b
 metamorph.gui.label.background=Background
 metamorph.gui.label.billboard=Look at player
 
+metamorph.gui.item.animation=Animation
 metamorph.gui.item.transform.none=None
 metamorph.gui.item.transform.third_person_left_hand=Left hand (3rd)
 metamorph.gui.item.transform.third_person_right_hand=Right hand (3rd)
