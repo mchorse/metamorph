@@ -14,6 +14,7 @@ import mchorse.metamorph.client.gui.editor.GuiMorphPanel;
 import mchorse.vanilla_pack.morphs.ItemMorph;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.block.model.ItemCameraTransforms;
+import net.minecraft.inventory.EntityEquipmentSlot;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
@@ -26,6 +27,8 @@ public class GuiItemPanel extends GuiMorphPanel<ItemMorph, GuiAbstractMorph<? ex
     public GuiCirculateElement transform;
     public GuiButtonElement texture;
     public GuiToggleElement animation;
+    public GuiToggleElement itemFromEquipment;
+    public GuiCirculateElement equipmentSlot;
 
     public GuiTexturePicker picker;
 
@@ -35,22 +38,28 @@ public class GuiItemPanel extends GuiMorphPanel<ItemMorph, GuiAbstractMorph<? ex
 
         this.slot = new GuiSlotElement(mc, 0, (stack) -> this.morph.setStack(stack));
         this.lighting = new GuiToggleElement(mc, IKey.lang("metamorph.gui.label.lighting"), (b) -> this.morph.lighting = b.isToggled());
-        this.animation = new GuiToggleElement(mc, IKey.lang("metamorph.gui.item.animation"), (b) -> this.morph.animation = b.isToggled());
-
-        this.slot.flex().relative(this).x(0.5F, 0).y(1, -10).wh(32, 32).anchor(0.5F, 1);
-
         this.transform = new GuiCirculateElement(mc, (b) ->
         {
             ItemCameraTransforms.TransformType type = ItemCameraTransforms.TransformType.values()[b.getValue()];
 
             this.morph.transform = ItemMorph.getTransformTypes().inverse().get(type);
         });
+        this.animation = new GuiToggleElement(mc, IKey.lang("metamorph.gui.item.animation"), (b) -> this.morph.animation = b.isToggled());
+        this.itemFromEquipment = new GuiToggleElement(mc, IKey.lang("metamorph.gui.item.item_from_equipment"), (b) -> this.morph.itemFromEquipment = b.isToggled());
+        this.equipmentSlot = new GuiCirculateElement(mc, (b) -> this.morph.equipmentSlot = EntityEquipmentSlot.values()[b.getValue()]);
+
+        this.slot.flex().relative(this).x(0.5F, 0).y(1, -10).wh(32, 32).anchor(0.5F, 1);
 
         for (ItemCameraTransforms.TransformType transform : ItemCameraTransforms.TransformType.values())
         {
             String key = ItemMorph.getTransformTypes().inverse().get(transform);
 
             this.transform.addLabel(IKey.lang("metamorph.gui.item.transform." + key));
+        }
+
+        for (EntityEquipmentSlot slot : EntityEquipmentSlot.values())
+        {
+            this.equipmentSlot.addLabel(IKey.lang("metamorph.gui.item.equipment_slot." + slot.getName()));
         }
 
         this.texture = new GuiButtonElement(mc, IKey.lang("metamorph.gui.editor.texture"), (b) ->
@@ -63,7 +72,7 @@ public class GuiItemPanel extends GuiMorphPanel<ItemMorph, GuiAbstractMorph<? ex
         this.picker = new GuiTexturePicker(mc, (rl) -> this.morph.texture = RLUtils.clone(rl));
         this.picker.flex().relative(this).wh(1F, 1F);
 
-        GuiElement column = Elements.column(mc, 5, this.lighting, this.transform, this.texture, this.animation);
+        GuiElement column = Elements.column(mc, 5, this.lighting, this.transform, this.texture, this.animation, this.itemFromEquipment.marginTop(12), this.equipmentSlot);
 
         column.flex().relative(this).xy(10, 10).w(110);
 
@@ -81,5 +90,7 @@ public class GuiItemPanel extends GuiMorphPanel<ItemMorph, GuiAbstractMorph<? ex
         this.lighting.toggled(morph.lighting);
         this.transform.setValue(type.ordinal());
         this.animation.toggled(morph.animation);
+        this.itemFromEquipment.toggled(morph.itemFromEquipment);
+        this.equipmentSlot.setValue(morph.equipmentSlot.ordinal());
     }
 }

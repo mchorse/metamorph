@@ -18,6 +18,7 @@ import net.minecraft.client.renderer.texture.TextureMap;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Items;
+import net.minecraft.inventory.EntityEquipmentSlot;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.ResourceLocation;
@@ -37,6 +38,8 @@ public class ItemMorph extends ItemStackMorph
     public String transform = "";
     public ResourceLocation texture;
     public boolean animation;
+    public boolean itemFromEquipment;
+    public EntityEquipmentSlot equipmentSlot = EntityEquipmentSlot.MAINHAND;
 
     @SideOnly(Side.CLIENT)
     public static BiMap<String, ItemCameraTransforms.TransformType> getTransformTypes()
@@ -62,6 +65,16 @@ public class ItemMorph extends ItemStackMorph
     public ItemMorph()
     {
         this.name = "item";
+    }
+
+    private ItemStack getStackForRender(EntityLivingBase entity)
+    {
+        if (this.itemFromEquipment)
+        {
+            return entity.getItemStackFromSlot(this.equipmentSlot);
+        }
+
+        return this.stack;
     }
 
     @Override
@@ -146,7 +159,8 @@ public class ItemMorph extends ItemStackMorph
 
         Minecraft.getMinecraft().renderEngine.bindTexture(TextureMap.LOCATION_BLOCKS_TEXTURE);
         RenderItem render = Minecraft.getMinecraft().getRenderItem();
-        IBakedModel model = render.getItemModelWithOverrides(this.stack, entity.world, entity);
+        ItemStack stack = this.getStackForRender(entity);
+        IBakedModel model = render.getItemModelWithOverrides(stack, entity.world, entity);
 
         ItemCameraTransforms.TransformType transform = this.getTransformType();
 
@@ -175,7 +189,7 @@ public class ItemMorph extends ItemStackMorph
         }
         else
         {
-            render.renderItem(this.stack, model);
+            render.renderItem(stack, model);
         }
 
         GlStateManager.popMatrix();
@@ -199,6 +213,8 @@ public class ItemMorph extends ItemStackMorph
             result = result && this.transform.equals(item.transform);
             result = result && Objects.equals(this.texture, item.texture);
             result = result && this.animation == item.animation;
+            result = result && this.itemFromEquipment == item.itemFromEquipment;
+            result = result && this.equipmentSlot == item.equipmentSlot;
         }
 
         return result;
@@ -223,6 +239,8 @@ public class ItemMorph extends ItemStackMorph
             this.transform = item.transform;
             this.texture = item.texture;
             this.animation = item.animation;
+            this.itemFromEquipment = item.itemFromEquipment;
+            this.equipmentSlot = item.equipmentSlot;
         }
     }
 
@@ -259,6 +277,16 @@ public class ItemMorph extends ItemStackMorph
         {
             tag.setBoolean("Animation", this.animation);
         }
+
+        if (this.itemFromEquipment)
+        {
+            tag.setBoolean("ItemFromEquipment", this.itemFromEquipment);
+        }
+
+        if (this.equipmentSlot != EntityEquipmentSlot.MAINHAND)
+        {
+            tag.setString("EquipmentSlot", this.equipmentSlot.getName());
+        }
     }
 
     @Override
@@ -281,6 +309,16 @@ public class ItemMorph extends ItemStackMorph
         if (tag.hasKey("Animation"))
         {
             this.animation = tag.getBoolean("Animation");
+        }
+
+        if (tag.hasKey("ItemFromEquipment"))
+        {
+            this.itemFromEquipment = tag.getBoolean("ItemFromEquipment");
+        }
+
+        if (tag.hasKey("EquipmentSlot"))
+        {
+            this.equipmentSlot = EntityEquipmentSlot.fromString(tag.getString("EquipmentSlot"));
         }
     }
 }

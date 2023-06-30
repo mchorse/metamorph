@@ -137,6 +137,7 @@ metamorph.gui.label.background=Background
 metamorph.gui.label.billboard=Look at player
 
 metamorph.gui.item.animation=Animation
+metamorph.gui.item.item_from_equipment=From equipment
 metamorph.gui.item.transform.none=None
 metamorph.gui.item.transform.third_person_left_hand=Left hand (3rd)
 metamorph.gui.item.transform.third_person_right_hand=Right hand (3rd)
@@ -146,6 +147,12 @@ metamorph.gui.item.transform.head=On head
 metamorph.gui.item.transform.gui=Inventory
 metamorph.gui.item.transform.ground=On ground
 metamorph.gui.item.transform.fixed=Item frame
+metamorph.gui.item.equipment_slot.mainhand=Main hand
+metamorph.gui.item.equipment_slot.offhand=Off hand
+metamorph.gui.item.equipment_slot.feet=Feet
+metamorph.gui.item.equipment_slot.legs=Legs
+metamorph.gui.item.equipment_slot.chest=Chest
+metamorph.gui.item.equipment_slot.head=Head
 
 metamorph.gui.edit=Edit
 metamorph.gui.panels.nbt_data=NBT data
