@@ -2,6 +2,7 @@ package mchorse.vanilla_pack.morphs;
 
 import com.google.common.collect.BiMap;
 import com.google.common.collect.HashBiMap;
+import mchorse.mclib.client.gui.framework.elements.GuiModelRenderer;
 import mchorse.mclib.client.gui.framework.elements.utils.GuiInventoryElement;
 import mchorse.mclib.utils.resources.RLUtils;
 import mchorse.metamorph.api.morphs.AbstractMorph;
@@ -67,10 +68,16 @@ public class ItemMorph extends ItemStackMorph
         this.name = "item";
     }
 
+    @SideOnly(Side.CLIENT)
     private ItemStack getStackForRender(EntityLivingBase entity)
     {
         if (this.itemFromEquipment)
         {
+            if (GuiModelRenderer.isRendering())
+            {
+                entity = Minecraft.getMinecraft().player;
+            }
+
             return entity.getItemStackFromSlot(this.equipmentSlot);
         }
 
