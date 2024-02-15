@@ -99,6 +99,11 @@ public class ItemMorph extends ItemStackMorph
     @SideOnly(Side.CLIENT)
     public ItemCameraTransforms.TransformType getTransformType()
     {
+        if (this.transform == null || this.transform.isEmpty())
+        {
+            return ItemCameraTransforms.TransformType.NONE;
+        }
+        
         ItemCameraTransforms.TransformType transformType = getTransformTypes().get(this.transform);
 
         return transformType == null ? ItemCameraTransforms.TransformType.NONE : transformType;
@@ -217,7 +222,7 @@ public class ItemMorph extends ItemStackMorph
             ItemMorph item = (ItemMorph) obj;
 
             result = result && ItemStack.areItemStacksEqualUsingNBTShareTag(this.stack, item.stack);
-            result = result && this.transform.equals(item.transform);
+            result = result && Objects.equals(this.transform, item.transform);
             result = result && Objects.equals(this.texture, item.texture);
             result = result && this.animation == item.animation;
             result = result && this.itemFromEquipment == item.itemFromEquipment;
