@@ -3,18 +3,15 @@ package mchorse.metamorph.api;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.PrintWriter;
-import java.lang.reflect.Field;
 import java.util.Map;
 import java.util.Set;
-import java.util.function.BooleanSupplier;
-import java.util.function.Consumer;
 import java.util.function.Predicate;
-import java.util.function.Supplier;
 
 import io.netty.buffer.ByteBuf;
 import mchorse.mclib.client.gui.framework.elements.GuiModelRenderer;
+import mchorse.mclib.utils.BetterLightsHelper;
 import mchorse.mclib.utils.NBTUtils;
-import mchorse.mclib.utils.ReflectionUtils;
+import mchorse.mclib.utils.OptifineHelper;
 import mchorse.metamorph.api.events.RegisterBlacklistEvent;
 import mchorse.metamorph.api.events.RegisterRemapEvent;
 import mchorse.metamorph.api.events.RegisterSettingsEvent;
@@ -24,7 +21,6 @@ import mchorse.metamorph.api.morphs.utils.ISyncableMorph;
 import mchorse.metamorph.bodypart.BodyPart;
 import mchorse.metamorph.bodypart.BodyPartManager;
 import mchorse.metamorph.bodypart.IBodyPartProvider;
-import net.minecraft.client.renderer.BufferBuilder;
 import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
@@ -101,9 +97,13 @@ public class MorphUtils
             return false;
         }
 
-        boolean isShadowPass = ReflectionUtils.isOptifineShadowPass();
+        boolean isShadowPass = OptifineHelper.isOptifineShadowPass();
+        boolean noBetterLightsShadows = BetterLightsHelper.isBetterLightsShadowPass() && !morph.getSettings().betterLightsShadow;
 
-        if (!GuiModelRenderer.isRendering() && (isShadowPass && morph.getSettings().shadowOption == 1 || !isShadowPass && morph.getSettings().shadowOption == 2))
+        //TODO
+        if (!GuiModelRenderer.isRendering()
+                && ((isShadowPass && morph.getSettings().shadowOption == 1 || !isShadowPass && morph.getSettings().shadowOption == 2)
+                || (noBetterLightsShadows)))
         {
             return false;
         }

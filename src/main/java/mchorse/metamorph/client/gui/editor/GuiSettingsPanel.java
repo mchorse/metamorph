@@ -11,6 +11,7 @@ import mchorse.mclib.client.gui.framework.elements.list.GuiStringListElement;
 import mchorse.mclib.client.gui.framework.elements.utils.GuiContext;
 import mchorse.mclib.client.gui.utils.Elements;
 import mchorse.mclib.client.gui.utils.keys.IKey;
+import mchorse.mclib.utils.BetterLightsHelper;
 import mchorse.metamorph.api.MorphManager;
 import mchorse.metamorph.api.MorphSettings;
 import mchorse.metamorph.api.abilities.IAbility;
@@ -46,6 +47,7 @@ public class GuiSettingsPanel extends GuiMorphPanel<AbstractMorph, GuiAbstractMo
     public GuiTrackpadElement hitboxEyePosition;
     
     public GuiCirculateElement shadowOption;
+    public GuiToggleElement betterLightsShadow;
 
     public GuiTextElement data;
     public boolean error;
@@ -166,6 +168,7 @@ public class GuiSettingsPanel extends GuiMorphPanel<AbstractMorph, GuiAbstractMo
         this.right.add(Elements.label(IKey.lang("metamorph.gui.editor.hitbox.size")).marginTop(8), this.hitboxWidth, this.hitboxHeight, this.hitboxSneakingHeight);
         this.right.add(Elements.label(IKey.lang("metamorph.gui.editor.hitbox.eye")).marginTop(8), this.hitboxEyePosition);
 
+        /* Optifine shadowpass control */
         this.shadowOption = new GuiCirculateElement(mc, (element) -> 
         {
         	this.morph.forceEditSettings((settings) ->
@@ -185,6 +188,20 @@ public class GuiSettingsPanel extends GuiMorphPanel<AbstractMorph, GuiAbstractMo
         }
         catch (ClassNotFoundException e)
         {}
+
+        /* BetterLights shadowpass control */
+        this.betterLightsShadow = new GuiToggleElement(mc, IKey.lang("metamorph.gui.editor.betterlights_shadow"), (element) ->
+        {
+            this.morph.forceEditSettings((settings) ->
+            {
+                settings.betterLightsShadow = element.isToggled();
+            });
+        });
+
+        if (BetterLightsHelper.isBetterLightsLoaded())
+        {
+            this.right.add(Elements.label(IKey.str("BetterLights")).marginTop(8), this.betterLightsShadow);
+        }
 
         this.add(this.left, this.right, this.data);
     }
@@ -208,6 +225,7 @@ public class GuiSettingsPanel extends GuiMorphPanel<AbstractMorph, GuiAbstractMo
         this.hitboxEyePosition.setValue(morph.hitbox.eye);
 
         this.shadowOption.setValue(morph.getSettings().shadowOption);
+        this.betterLightsShadow.toggled(morph.getSettings().betterLightsShadow);
     }
 
     public void updateNBT()

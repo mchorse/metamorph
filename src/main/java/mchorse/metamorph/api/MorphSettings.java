@@ -95,6 +95,8 @@ public class MorphSettings
      */
     public int shadowOption = 0;
     public boolean hasShadowOption = true;
+    public boolean betterLightsShadow = true;
+    public boolean hasbetterLightsShadow = true;
     
     /**
      * Morph settings applier lambda
@@ -118,7 +120,8 @@ public class MorphSettings
                 (this.hasSpeed == settings.hasSpeed && (this.speed == settings.speed || this.hasSpeed == false)) &&
                 (this.hasHostile == settings.hasHostile && (this.hostile == settings.hostile || this.hasHostile == false)) &&
                 (this.hasUpdates == settings.hasUpdates && (this.updates == settings.updates || this.hasUpdates == false)) &&
-                (this.hasUpdates == settings.hasShadowOption && (this.shadowOption == settings.shadowOption || this.hasShadowOption == false));
+                (this.hasShadowOption == settings.hasShadowOption && (this.shadowOption == settings.shadowOption || this.hasShadowOption == false) &&
+                (this.hasbetterLightsShadow == settings.hasbetterLightsShadow && (this.betterLightsShadow == settings.betterLightsShadow || this.hasbetterLightsShadow == false)));
         }
 
         return super.equals(obj);
@@ -160,6 +163,9 @@ public class MorphSettings
         
 		this.shadowOption = setting.shadowOption;
 		this.hasShadowOption = setting.hasShadowOption;
+
+        this.betterLightsShadow = setting.betterLightsShadow;
+        this.hasbetterLightsShadow = setting.hasbetterLightsShadow;
     }
 
     /**
@@ -214,6 +220,18 @@ public class MorphSettings
         {
             this.updates = setting.updates;
             this.hasUpdates = true;
+        }
+
+        if (setting.hasShadowOption)
+        {
+            this.shadowOption = setting.shadowOption;
+            this.hasShadowOption = true;
+        }
+
+        if (setting.hasbetterLightsShadow)
+        {
+            this.betterLightsShadow = setting.betterLightsShadow;
+            this.hasbetterLightsShadow = true;
         }
     }
 
@@ -301,6 +319,13 @@ public class MorphSettings
         if (this.hasShadowOption)
         {
         	buf.writeInt(this.shadowOption);
+        }
+
+        buf.writeBoolean(this.hasbetterLightsShadow);
+
+        if (this.hasbetterLightsShadow)
+        {
+            buf.writeBoolean(this.betterLightsShadow);
         }
     }
 
@@ -399,6 +424,12 @@ public class MorphSettings
         	this.shadowOption = buf.readInt();
         }
 
+        this.hasbetterLightsShadow = buf.readBoolean();
+
+        if (this.hasbetterLightsShadow)
+        {
+            this.betterLightsShadow = buf.readBoolean();
+        }
     }
 
     /**
@@ -462,6 +493,11 @@ public class MorphSettings
         if (this.hasShadowOption)
         {
             tag.setInteger("ShadowOption", this.shadowOption);
+        }
+
+        if (this.hasbetterLightsShadow)
+        {
+            tag.setBoolean("BetterLightsShadow", this.betterLightsShadow);
         }
     }
 
@@ -543,6 +579,13 @@ public class MorphSettings
         if (this.hasShadowOption)
         {
             this.shadowOption = tag.getInteger("ShadowOption");
+        }
+
+        this.hasbetterLightsShadow = tag.hasKey("BetterLightsShadowOption");
+
+        if (this.hasbetterLightsShadow)
+        {
+            this.betterLightsShadow = tag.getBoolean("BetterLightsShadow");
         }
     }
 

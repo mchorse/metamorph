@@ -1,8 +1,6 @@
 package mchorse.metamorph.api.json;
 
 import java.lang.reflect.Type;
-import java.util.ArrayList;
-import java.util.List;
 
 import com.google.gson.JsonDeserializationContext;
 import com.google.gson.JsonDeserializer;
@@ -105,6 +103,13 @@ public class MorphSettingsAdapter implements JsonDeserializer<MorphSettings>
         if (morph.hasShadowOption)
         {
             morph.shadowOption = object.get("shadow_option").getAsInt();
+        }
+
+        morph.hasbetterLightsShadow = object.has("betterlights_shadow") && object.get("betterlights_shadow").isJsonPrimitive();
+
+        if (morph.hasbetterLightsShadow)
+        {
+            morph.betterLightsShadow = object.get("betterlights_shadow").getAsBoolean();
         }
 
         return morph;
