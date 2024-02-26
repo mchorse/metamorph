@@ -96,6 +96,7 @@ public class GuiSettingsPanel extends GuiMorphPanel<AbstractMorph, GuiAbstractMo
                     }
                 }
         	});
+        	this.updateNBT();
         });
         this.abilities.multi().background().tooltip(IKey.lang("metamorph.gui.editor.abilities_tooltip"));
         this.attack = new GuiStringListElement(mc, (values) ->
@@ -104,6 +105,7 @@ public class GuiSettingsPanel extends GuiMorphPanel<AbstractMorph, GuiAbstractMo
         	{
         		settings.attack = MorphManager.INSTANCE.attacks.get(values.get(0));
         	});
+        	this.updateNBT();
         });
         this.attack.background();
         this.action = new GuiStringListElement(mc, (values) ->
@@ -112,6 +114,7 @@ public class GuiSettingsPanel extends GuiMorphPanel<AbstractMorph, GuiAbstractMo
         	{
         		settings.action = MorphManager.INSTANCE.actions.get(values.get(0));
         	});
+        	this.updateNBT();
         });
         this.action.background();
         this.health = new GuiTrackpadElement(mc, (value) ->
@@ -120,6 +123,7 @@ public class GuiSettingsPanel extends GuiMorphPanel<AbstractMorph, GuiAbstractMo
         	{
                 settings.health = value.intValue();
         	});
+        	this.updateNBT();
         })
             .limit(0, Float.POSITIVE_INFINITY, true);
         this.speed = new GuiTrackpadElement(mc, (value) ->
@@ -128,6 +132,7 @@ public class GuiSettingsPanel extends GuiMorphPanel<AbstractMorph, GuiAbstractMo
         	{
                 settings.speed = value.floatValue();
         	});
+        	this.updateNBT();
         })
             .limit(0, Float.POSITIVE_INFINITY)
             .values(0.05F, 0.01F, 0.1F)
@@ -172,6 +177,7 @@ public class GuiSettingsPanel extends GuiMorphPanel<AbstractMorph, GuiAbstractMo
         	{
                 settings.shadowOption = element.getValue();
         	});
+        	this.updateNBT();
         });
         for (OptifineShadowOption option : OptifineShadowOption.values())
         {
